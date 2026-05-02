@@ -1,6 +1,6 @@
 {
   "version": "seed-v2-listening-audio-first",
-  "track": 0,
+  "track": "cet4",
   "library": 0,
   "group": 0,
   "box": 0,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "000001",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -56,12 +56,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，完成话题预测训练。",
+        "task_prompt": "先听音频，再根据选项预测话题给出判断。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后判断",
+          "focus": "话题预测",
+          "success_criteria": "能基于音频线索给出可解释的判断"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：这张卡的核心不在单个词义，而在话题预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先概括主判断，再回看支持该判断的语义证据。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的话题预测机制。",
+        "tips": [
+          "先标结构词，再判断语义重心。",
+          "若存在转折或因果提示，优先检查提示词后内容。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "000002",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -128,12 +174,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "任务：先听音频，完成话题预测训练。",
+        "task_prompt": "先听音频，再根据选项预测话题给出判断。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后判断",
+          "focus": "话题预测",
+          "success_criteria": "能基于音频线索给出可解释的判断"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：这张卡的核心不在单个词义，而在话题预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先排除与结构信号冲突的选项，再比较剩余项覆盖范围。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的话题预测机制。",
+        "tips": [
+          "先标结构词，再判断语义重心。",
+          "若存在转折或因果提示，优先检查提示词后内容。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "000003",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -183,12 +278,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，完成话题预测训练。",
+        "task_prompt": "先听音频，再根据选项预测话题给出判断。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后判断",
+          "focus": "话题预测",
+          "success_criteria": "能基于音频线索给出可解释的判断"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：这张卡的核心不在单个词义，而在话题预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先找结构触发词，再把点击点锚定在触发词起始附近。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的话题预测机制。",
+        "tips": [
+          "先标结构词，再判断语义重心。",
+          "若存在转折或因果提示，优先检查提示词后内容。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "000004",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -235,12 +376,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，完成话题预测训练。",
+        "task_prompt": "先听音频，再根据选项预测话题给出判断。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后判断",
+          "focus": "话题预测",
+          "success_criteria": "能基于音频线索给出可解释的判断"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：这张卡的核心不在单个词义，而在话题预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先覆盖关键结构段，再在结构结束点松手避免拖尾。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的话题预测机制。",
+        "tips": [
+          "先标结构词，再判断语义重心。",
+          "若存在转折或因果提示，优先检查提示词后内容。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "000005",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -307,12 +494,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "任务：先听音频，完成话题预测训练。",
+        "task_prompt": "先听音频，再根据选项预测话题给出判断。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后判断",
+          "focus": "话题预测",
+          "success_criteria": "能基于音频线索给出可解释的判断"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：这张卡的核心不在单个词义，而在话题预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先排除与结构信号冲突的选项，再比较剩余项覆盖范围。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的话题预测机制。",
+        "tips": [
+          "先标结构词，再判断语义重心。",
+          "若存在转折或因果提示，优先检查提示词后内容。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "000006",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -358,12 +594,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，完成话题预测训练。",
+        "task_prompt": "先听音频，再根据选项预测话题给出判断。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后判断",
+          "focus": "话题预测",
+          "success_criteria": "能基于音频线索给出可解释的判断"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：这张卡的核心不在单个词义，而在话题预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先概括主判断，再回看支持该判断的语义证据。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的话题预测机制。",
+        "tips": [
+          "先标结构词，再判断语义重心。",
+          "若存在转折或因果提示，优先检查提示词后内容。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "000007",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -411,16 +693,62 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "time_window_ms": [
         3700,
         5200
-      ]
+      ],
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "听音频并在话题真正落点出现时点击。别被前半段背景介绍误导。",
+        "task_prompt": "先听音频，再完成根据选项预测话题训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡围绕“根据选项预测话题”训练话题预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：时机点击题要把点击点锚在“语义触发词”后，而不是按节奏盲点。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The interview explains how neighborhood libraries attract teenagers by turning reading rooms into weekend maker spaces.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "tips": [
+          "先听主语和核心动作再判断话题。",
+          "真正话题常在背景介绍之后才落地。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "000008",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -468,13 +796,59 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
-      "target_duration_ms": 4100
+      "target_duration_ms": 4100,
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "长按覆盖“比较对象切换到核心问题”的语义段。",
+        "task_prompt": "先听音频，再完成根据选项预测话题训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡围绕“根据选项预测话题”训练话题预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：长按题要覆盖完整信息段，起止边界由语义决定，不由秒数决定。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The speaker compares meal-kit services and traditional groceries, then focuses on why first-time users quit after one month.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "tips": [
+          "比较句常是铺垫，后句才是考点。",
+          "听到 then, but, however 后提高警惕。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "000009",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -522,12 +896,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "翻面前先口头说出你预测的话题，再核对答案。",
+        "task_prompt": "先听音频，再完成根据选项预测话题训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡围绕“根据选项预测话题”训练话题预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：翻面卡先自述判断，再核对证据，目的是固化可迁移的听辨流程。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“After introducing a recycling campaign, the report emphasizes that participation rose only after schools joined with parent workshops.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "tips": [
+          "先猜“谁做了什么导致了什么”。",
+          "话题判断要包含因果，不是只写名词。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "000010",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -596,12 +1016,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "四选一：选出真正主话题，不要被开头问题陈述带偏。",
+        "task_prompt": "先听音频，再完成根据选项预测话题训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡围绕“根据选项预测话题”训练话题预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：四选一先判考点再删错项，重点排除对象错位和范围错位。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The lecture starts with campus noise complaints, but the key point is how quiet-hour policies improved sleep quality in dormitories.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "tips": [
+          "开头 complaint 常是引入，不是主旨。",
+          "抓 improved, resulted in 这类结果词。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "000011",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -649,16 +1118,62 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "time_window_ms": [
         4000,
         5600
-      ]
+      ],
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "在“真正研究问题”出现的瞬间点击。",
+        "task_prompt": "先听音频，再完成根据选项预测话题训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡围绕“根据选项预测话题”训练话题预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：时机点击题要把点击点锚在“语义触发词”后，而不是按节奏盲点。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The podcast mentions online fitness trends, yet its central concern is why beginners keep exercising longer when they train with small groups.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "tips": [
+          "趋势描述是背景，研究问题才是主话题。",
+          "听到 why 后通常进入核心提问。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "000012",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 0,
       "box": 0,
@@ -706,9 +1221,60 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
-      "target_duration_ms": 4500
+      "target_duration_ms": 4500,
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "长按直到“最终结论”说完再松手。",
+        "task_prompt": "先听音频，再完成根据选项预测话题训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡围绕“根据选项预测话题”训练话题预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：长按题要覆盖完整信息段，起止边界由语义决定，不由秒数决定。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The report reviews bus delays and ticket prices, then concludes that real-time arrival screens changed commuter satisfaction the most.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "tips": [
+          "结论句常在 then concludes 之后。",
+          "多个因素并列时要抓“影响最大”对象。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     }
-  ]
+  ],
+  "track_index": 0,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

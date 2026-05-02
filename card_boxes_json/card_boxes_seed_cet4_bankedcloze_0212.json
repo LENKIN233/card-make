@@ -1,6 +1,6 @@
 {
   "version": "seed-v1-cet4-bankedcloze",
-  "track": 0,
+  "track": "cet4",
   "library": 2,
   "group": 1,
   "box": 2,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "021201",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 2,
@@ -47,12 +47,54 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0212"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "空格语法预判里，如何最快识别‘动词位’？\n\n请总结 4 个高频信号：\n1) 情态动词 + 空格\n2) to + 空格\n3) 助动词 do/does/did 后\n4) 主语 + 空格 + 宾语",
+        "task_prompt": "空格语法预判里，如何最快识别‘动词位’？\n\n请总结 4 个高频信号：\n1) 情态动词 + 空格\n2) to + 空格\n3) 助动词 do/does/did 后\n4) 主语 + 空格 + 宾语",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：优先扫描 can/to/do 等功能词，它们会强约束后面的词性。\n\n② 核心规律：情态动词和助动词后通常接动词原形；to 后通常接不定式原形。若句子主干缺动作，空格常补谓语动词。\n\n③ 验证：如 ‘can reduce stress’、‘to compare options’、‘did improve performance’ 都是动词位的直接证据。",
+        "tips": [
+          "先用句法信号锁定空格角色，再做语义核验，避免只看词面相似度。",
+          "本题线索含情态/不定式标记：优先检查是否为动词原形位。 题面片段：空格语法预判里，如何最快识别‘动词位’？ 请总结 4 个高频信号： 1)..."
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "021202",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 2,
@@ -110,12 +152,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0212"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "句子：\"When choices multiply, people often ___ their decision again and again.\"\n\n为什么空格应先判动词位？",
+        "task_prompt": "句子：\"When choices multiply, people often ___ their decision again and again.\"\n\n为什么空格应先判动词位？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“动词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次同类题按“三步法”处理：先定语法位，再比关键差异，最后代回原句通读确认。",
+        "tips": [
+          "先看四个选项的词性与句法位置，再比搭配与语义方向，最后确认唯一正确项。",
+          "本题线索是并列结构：优先用“并列项词性一致”反推空格。 题面片段：句子：\"When choices multiply, people of..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "C"
       }
     },
     {
       "card_id": "021203",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 2,
@@ -161,12 +248,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0212"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"To avoid overload, students should {{blank}} options into clear categories first.\"\n\n【提示】should + 空格",
+        "task_prompt": "\"To avoid overload, students should {{blank}} options into clear categories first.\"\n\n【提示】should + 空格",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“动词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：填空题先判空格语法角色，再判语义方向，最后在词库中做形式匹配（词性/搭配/逻辑关系）。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只按词义熟悉度选词，忽略搭配和句法位置。纠偏时先做词性过滤，再做语义验证。下次同类题按“语法定位→候选过滤→代回通读”完成，避免直接凭词感作答。",
+        "tips": [
+          "先判空格词性并筛掉不合格词，再代回检查搭配自然度和整句逻辑。",
+          "本题线索含情态/不定式标记：优先检查是否为动词原形位。 题面片段：\"To avoid overload, students should ..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "sort"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "sort"
+        }
+      ]
     },
     {
       "card_id": "021204",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 2,
@@ -224,12 +364,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0212"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "句子：\"Researchers hope to ___ how framing changes people’s final choice.\"\n\n空格为什么应判为动词原形？",
+        "task_prompt": "句子：\"Researchers hope to ___ how framing changes people’s final choice.\"\n\n空格为什么应判为动词原形？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“动词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次同类题按“三步法”处理：先定语法位，再比关键差异，最后代回原句通读确认。",
+        "tips": [
+          "先看四个选项的词性与句法位置，再比搭配与语义方向，最后确认唯一正确项。",
+          "本题线索含情态/不定式标记：优先检查是否为动词原形位。 题面片段：句子：\"Researchers hope to ___ how fram..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "021205",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 2,
@@ -275,12 +460,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0212"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"Even small delays can {{blank}} the quality of a final decision.\"\n\n【提示】can + 空格",
+        "task_prompt": "\"Even small delays can {{blank}} the quality of a final decision.\"\n\n【提示】can + 空格",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“动词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：填空题先判空格语法角色，再判语义方向，最后在词库中做形式匹配（词性/搭配/逻辑关系）。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只按词义熟悉度选词，忽略搭配和句法位置。纠偏时先做词性过滤，再做语义验证。下次同类题按“语法定位→候选过滤→代回通读”完成，避免直接凭词感作答。",
+        "tips": [
+          "先判空格词性并筛掉不合格词，再代回检查搭配自然度和整句逻辑。",
+          "本题线索含情态/不定式标记：优先检查是否为动词原形位。 题面片段：\"Even small delays can {{blank}} the..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "reduce"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "reduce"
+        }
+      ]
     },
     {
       "card_id": "021206",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 2,
@@ -338,12 +576,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0212"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "句子：\"The app does not ___ users enough time to compare alternatives.\"\n\n空格应如何判词性？",
+        "task_prompt": "句子：\"The app does not ___ users enough time to compare alternatives.\"\n\n空格应如何判词性？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“动词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次同类题按“三步法”处理：先定语法位，再比关键差异，最后代回原句通读确认。",
+        "tips": [
+          "先看四个选项的词性与句法位置，再比搭配与语义方向，最后确认唯一正确项。",
+          "本题线索是系表结构：连系动词后优先考虑表语位。 题面片段：句子：\"The app does not ___ users enoug..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "D"
       }
     },
     {
       "card_id": "021207",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 2,
@@ -389,12 +672,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0212"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"Before making a purchase, try to {{blank}} at least three options objectively.\"\n\n【提示】try to + 空格",
+        "task_prompt": "\"Before making a purchase, try to {{blank}} at least three options objectively.\"\n\n【提示】try to + 空格",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“动词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：填空题先判空格语法角色，再判语义方向，最后在词库中做形式匹配（词性/搭配/逻辑关系）。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只按词义熟悉度选词，忽略搭配和句法位置。纠偏时先做词性过滤，再做语义验证。下次同类题按“语法定位→候选过滤→代回通读”完成，避免直接凭词感作答。",
+        "tips": [
+          "先判空格词性并筛掉不合格词，再代回检查搭配自然度和整句逻辑。",
+          "本题线索含情态/不定式标记：优先检查是否为动词原形位。 题面片段：\"Before making a purchase, try to {{..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "compare"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "compare"
+        }
+      ]
     },
     {
       "card_id": "021208",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 2,
@@ -452,12 +788,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0212"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "句子：\"A simple checklist can ___ people from impulsive choices.\"\n\n为什么空格是动词而不是名词？",
+        "task_prompt": "句子：\"A simple checklist can ___ people from impulsive choices.\"\n\n为什么空格是动词而不是名词？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“动词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次同类题按“三步法”处理：先定语法位，再比关键差异，最后代回原句通读确认。",
+        "tips": [
+          "先看四个选项的词性与句法位置，再比搭配与语义方向，最后确认唯一正确项。",
+          "本题线索含情态/不定式标记：优先检查是否为动词原形位。 题面片段：句子：\"A simple checklist can ___ peopl..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "021209",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 2,
@@ -503,12 +884,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0212"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"Good advisors rarely {{blank}} one option without discussing trade-offs.\"\n\n【提示】rarely + 空格 + 宾语 one option",
+        "task_prompt": "\"Good advisors rarely {{blank}} one option without discussing trade-offs.\"\n\n【提示】rarely + 空格 + 宾语 one option",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“动词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：填空题先判空格语法角色，再判语义方向，最后在词库中做形式匹配（词性/搭配/逻辑关系）。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只按词义熟悉度选词，忽略搭配和句法位置。纠偏时先做词性过滤，再做语义验证。下次同类题按“语法定位→候选过滤→代回通读”完成，避免直接凭词感作答。",
+        "tips": [
+          "先判空格词性并筛掉不合格词，再代回检查搭配自然度和整句逻辑。",
+          "本题线索在空格前后搭配：先锁定句法位，再验证语义一致性。 题面片段：\"Good advisors rarely {{blank}} one ..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "recommend"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "recommend"
+        }
+      ]
     },
     {
       "card_id": "021210",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 2,
@@ -566,8 +1000,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0212"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "句子：\"If people pause and ___, they usually make fewer regretful choices.\"\n\n为什么空格优先判动词原形？",
+        "task_prompt": "句子：\"If people pause and ___, they usually make fewer regretful choices.\"\n\n为什么空格优先判动词原形？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“动词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次同类题按“三步法”处理：先定语法位，再比关键差异，最后代回原句通读确认。",
+        "tips": [
+          "先看四个选项的词性与句法位置，再比搭配与语义方向，最后确认唯一正确项。",
+          "本题线索是并列结构：优先用“并列项词性一致”反推空格。 题面片段：句子：\"If people pause and ___, they us..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "C"
       }
     }
-  ]
+  ],
+  "track_index": 0,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

@@ -1,6 +1,6 @@
 {
   "version": "seed-v1-cet4-bankedcloze",
-  "track": 0,
+  "track": "cet4",
   "library": 2,
   "group": 0,
   "box": 3,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "020301",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 0,
       "box": 3,
@@ -47,12 +47,54 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "选词填空中，哪三类结构会强制要求空格填副词（而非形容词或名词）？\n\n想想：情态动词位、比较级修饰位、主动词修饰位各自对应的信号是什么？",
+        "task_prompt": "选词填空中，哪三类结构会强制要求空格填副词（而非形容词或名词）？\n\n想想：情态动词位、比较级修饰位、主动词修饰位各自对应的信号是什么？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：找三类结构——[情态动词 + ___ + V]、[be/连系动词 + ___ + adj]、[V + ___]（动词后或句中的方式补语）。这三类结构中的空格均只接副词。\n\n② 核心规律：副词的行为特征是「不修饰名词」。选词时先问「这个空格修饰的是名词还是非名词」——修饰名词 → 形容词；修饰动词/形容词/副词/句子 → 副词。CET4 词库里副词多数有 -ly 后缀（significantly / increasingly / ultimately / dramatically），但也有不带 -ly 的（often / well / still / yet / hard / fast）。\n\n③ 验证：\"the timing of behaviors can significantly influence health\" → significantly（副词）修饰动词 influence ✓；\"can ultimately be changed\" → ultimately（副词）插在 can 与 be changed 之间 ✓；\"becomes increasingly important\" → increasingly（副词）修饰形容词 important ✓。",
+        "tips": [
+          "先抓空格前后语法信号，再据此确定词性与句法角色。",
+          "本题可用规则：先确定结构位，再做语义确认，可显著降低误判率。 题面片段：选词填空中，哪三类结构会强制要求空格填副词（而非形容词或名词）？ 想想：情态动词..."
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "020302",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 0,
       "box": 3,
@@ -110,12 +152,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "\"...even more important choices, like accepting a new job, can ___ be changed.\"\n\n选项为：ultimately / ultimate / ultimacy / make ultimate\n\n下列哪项正确说明了该空格必须填副词的语法依据？",
+        "task_prompt": "\"...even more important choices, like accepting a new job, can ___ be changed.\"\n\n选项为：ultimately / ultimate / ultimacy / make ultimate\n\n下列哪项正确说明了该空格必须填副词的语法依据？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：\"can ___ be changed\"——情态动词 can 与被动语态 be changed 之间出现空格，这是经典的「副词插入位」。结构：[情态动词] + [副词插入位] + [be + 过去分词（被动）]。\n\n② 核心规律：英语副词可以合法地插在助动词 / 情态动词与主动词之间，而形容词和名词不能独立地插入此结构。因此只要看到「can/will/should/have + ___ + V/be+pp」模式，空格几乎必然是副词。\n\n③ 验证：\"important choices can ultimately be changed\" = 重要决定最终是可以改变的 → ultimately（副词，表「最终」）修饰整个谓语结构 can be changed ✓。语义合理：即使是人生重大选择，也有改变的可能，这是文章（决策分析类）的安慰性论点。",
+        "tips": [
+          "先定位空格句法功能，再逐项排除不合词性和搭配的干扰项。",
+          "本题可用规则：情态动词或不定式标记后优先检查动词原形位。 题面片段：\"...even more important choices, like ac..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "020303",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 0,
       "box": 3,
@@ -161,12 +248,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"The timing of behaviors like exercise or food intake can {{blank}} influence your health.\"\n\n【提示】空格位于情态动词 can 与主动词 influence 之间。注意词库中有形容词和副词的同根词对。",
+        "task_prompt": "\"The timing of behaviors like exercise or food intake can {{blank}} influence your health.\"\n\n【提示】空格位于情态动词 can 与主动词 influence 之间。注意词库中有形容词和副词的同根词对。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：\"can {{blank}} influence\"——空格夹在情态动词 can 与主动词 influence 之间，这是副词插入位的第一类场景（情态动词 + 副词 + 主动词）。\n\n② 核心规律：同根词对 significantly / significant 在词库里极易混淆。判断方式：看空格右侧——右侧是动词（influence）→ 需要修饰动词的副词（significantly）；右侧是名词（impact / effect）→ 需要修饰名词的形容词（significant）。本题右侧是 influence（动词）→ significantly ✓。\n\n③ 验证：\"can significantly influence your health\" = 可以显著影响你的健康 → significantly 修饰动词 influence，语法 ✓，语义 ✓。对比错误：\"can significant influence\" = 语法错误，形容词不能修饰动词。",
+        "tips": [
+          "先按词性过滤词库，再代回原句检查搭配自然度与语义一致性。",
+          "本题可用规则：情态动词或不定式标记后优先检查动词原形位。 题面片段：\"The timing of behaviors like exercise o..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "significantly"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "significantly"
+        }
+      ]
     },
     {
       "card_id": "020304",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 0,
       "box": 3,
@@ -224,12 +364,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "\"The share of Americans working past 70 has grown ___ common over the past two decades.\"\n\n空格处选 increasingly 还是 increasing？下列哪项给出了正确的判断依据？",
+        "task_prompt": "\"The share of Americans working past 70 has grown ___ common over the past two decades.\"\n\n空格处选 increasingly 还是 increasing？下列哪项给出了正确的判断依据？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：\"grown ___ common\"——grown 是连系动词，common 是表语形容词，空格在两者之间作「程度修饰语」。程度修饰语修饰的是形容词 common，因此必须是副词。\n\n② 核心规律：形容词前的程度词一律是副词——extremely / increasingly / deeply / highly / particularly + adj。切记：两个形容词不能直接相邻（没有名词被修饰）。\"increasing common\" 是两个形容词并排，在此结构中语法错误。\n\n③ 验证：\"has grown increasingly common\" = 变得越来越普遍 → increasingly（副词）✓ 修饰形容词 common。对比：\"an increasing number of...\" → increasing（形容词）修饰名词 number ✓（这里是另一种用法，位置不同）。",
+        "tips": [
+          "先定位空格句法功能，再逐项排除不合词性和搭配的干扰项。",
+          "本题可用规则：连系动词后优先考虑表语位（常见为形容词或名词性成分）。 题面片段：\"The share of Americans working past 70 ..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "C"
       }
     },
     {
       "card_id": "020305",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 0,
       "box": 3,
@@ -275,12 +460,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"As data on bike lane economics has grown {{blank}} compelling, more city planners are reconsidering their initial resistance.\"\n\n【提示】空格位于连系动词 grown 与形容词 compelling 之间。",
+        "task_prompt": "\"As data on bike lane economics has grown {{blank}} compelling, more city planners are reconsidering their initial resistance.\"\n\n【提示】空格位于连系动词 grown 与形容词 compelling 之间。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：\"grown {{blank}} compelling\"——grown 是连系动词（grow = become），compelling 是表语形容词，空格在两者之间是程度修饰位，修饰形容词的成分必须是副词。\n\n② 核心规律：CET4 选词填空词库常见程度副词：increasingly, significantly, dramatically, remarkably, gradually, consistently。这些词的共同特征是以 -ly 结尾，都可修饰形容词（以及动词）。同根形容词（increasing, significant, dramatic…）不带 -ly，只修饰名词。\n\n③ 验证：\"has grown increasingly compelling\" = 变得越来越令人信服 → increasingly 修饰形容词 compelling ✓。语义逻辑：随着骑车道经济数据越积越多，证据越来越有说服力，这与段落讨论骑车道争议的语境完全吻合。",
+        "tips": [
+          "先按词性过滤词库，再代回原句检查搭配自然度与语义一致性。",
+          "本题可用规则：连系动词后优先考虑表语位（常见为形容词或名词性成分）。 题面片段：\"As data on bike lane economics has grow..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "increasingly"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "increasingly"
+        }
+      ]
     },
     {
       "card_id": "020306",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 0,
       "box": 3,
@@ -338,12 +576,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "\"Only ___ few retirement studies focus on workers in physical occupations.\"\n\n下列哪项正确解释了空格填 \"a\" 而不填 \"barely\" 或 \"rarely\" 的原因？\n\n（注：此题考察 \"a few\" vs. \"few\" 之间的副词修饰关系，而非选词填空。）\n\n换一个角度：如果句子改为\n\"Retirement researchers ___ focus on workers in physical occupations.\"\n空格应该填频率副词 rarely 还是形容词 rare？为什么？",
+        "task_prompt": "\"Only ___ few retirement studies focus on workers in physical occupations.\"\n\n下列哪项正确解释了空格填 \"a\" 而不填 \"barely\" 或 \"rarely\" 的原因？\n\n（注：此题考察 \"a few\" vs. \"few\" 之间的副词修饰关系，而非选词填空。）\n\n换一个角度：如果句子改为\n\"Retirement researchers ___ focus on workers in physical occupations.\"\n空格应该填频率副词 rarely 还是形容词 rare？为什么？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：\"Researchers ___ focus\"——主语后跟动词的位置，空格位于主语与主动词之间。这是「频率副词插入位」——频率副词放在实义动词前。结构 = [主语] + [频率副词位] + [实义动词]。\n\n② 核心规律：频率副词的插入位是紧靠实义动词的前面（或 be/助动词后面）。形容词（rare / frequent / common）修饰名词，没有办法直接像副词那样放在动词前面充当状语。遇到「主语 + ___ + 动词」时，空格只能是副词或助动词，不是形容词。\n\n③ 验证：\"Retirement researchers rarely focus on physical workers\" = 退休研究者很少关注体力劳动者 → rarely（频率副词）修饰动词 focus ✓。对比错误：\"researchers rare focus\" = 形容词不能作状语 ✗。常见同根词对：rarely（副词）vs. rare（形容词）；frequently（副词）vs. frequent（形容词）。",
+        "tips": [
+          "先定位空格句法功能，再逐项排除不合词性和搭配的干扰项。",
+          "本题可用规则：限定词后多为名词核心位，可先完成词性过滤。 题面片段：\"Only ___ few retirement studies focus o..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "020307",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 0,
       "box": 3,
@@ -389,12 +672,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"Most physicians are not {{blank}} aware that some drugs work better during a specific time of the day.\"\n\n【提示】空格位于 be 动词 are not 之后，形容词 aware 之前。",
+        "task_prompt": "\"Most physicians are not {{blank}} aware that some drugs work better during a specific time of the day.\"\n\n【提示】空格位于 be 动词 are not 之后，形容词 aware 之前。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：\"are not ___ aware\"——are 是 be 动词，aware 是形容词表语，空格在 not 与 aware 之间充当程度修饰语（degree adverb）。修饰形容词 → 副词。\n\n② 核心规律：be / linking verb + [程度副词] + adj 是高频结构（\"is increasingly important\" / \"are not fully aware\" / \"remains deeply concerned\"）。程度词永远是副词。口诀：形容词修名词，副词修形容词。\n\n③ 验证：\"Most physicians are not fully aware\" = 大多数内科医生并没有完全意识到 → fully（副词）✓ 修饰形容词 aware，与原文「医生不了解药物时序效果」的论点吻合。",
+        "tips": [
+          "先按词性过滤词库，再代回原句检查搭配自然度与语义一致性。",
+          "本题可用规则：连系动词后优先考虑表语位（常见为形容词或名词性成分）。 题面片段：\"Most physicians are not {{blank}} aware..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "fully"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "fully"
+        }
+      ]
     },
     {
       "card_id": "020308",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 0,
       "box": 3,
@@ -452,12 +788,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "\"Bike sales during the pandemic ___ by 75 percent, yet many older residents still prefer driving.\"\n\n空格处需要填什么词性？以下哪个选项最准确描述了判断逻辑？",
+        "task_prompt": "\"Bike sales during the pandemic ___ by 75 percent, yet many older residents still prefer driving.\"\n\n空格处需要填什么词性？以下哪个选项最准确描述了判断逻辑？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：\"Bike sales ___ by 75 percent\"——主语 Bike sales（名词短语）后紧跟空格，by 75 percent 是方式/程度状语。主语之后、无助动词介入的空格位 = 谓语动词位（需动词），不是副词位。\n\n② 核心规律：判断副词位之前，先确认「这个位置是否是谓语位」——若是谓语位，需动词；若已有谓语且空格在动词旁边，才看是否是副词位。常见陷阱：\"sales ___ rapidly\"（谓语 + 副词）vs. \"sales rapidly ___\"（谓语 + 副词 → 宾语空格 = 名词）vs. \"sales ___ by 75%\"（谓语空格 = 动词）。\n\n③ 验证：\"Bike sales exploded / rose / increased by 75 percent during the pandemic\" → 谓语动词（exploded/rose/increased）✓。如果误填副词 dramatically，则句子没有谓语动词，语法不完整 ✗。",
+        "tips": [
+          "先定位空格句法功能，再逐项排除不合词性和搭配的干扰项。",
+          "本题可用规则：限定词后多为名词核心位，可先完成词性过滤。 题面片段：\"Bike sales during the pandemic ___ by 7..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "020309",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 0,
       "box": 3,
@@ -503,12 +884,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"Quitting a career can lead to feelings of isolation; {{blank}}, this effect is stronger for men than for women.\"\n\n【提示】空格位于句首，后跟逗号，连接上下两个句子。",
+        "task_prompt": "\"Quitting a career can lead to feelings of isolation; {{blank}}, this effect is stronger for men than for women.\"\n\n【提示】空格位于句首，后跟逗号，连接上下两个句子。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：\"________,\"——句首 + 逗号结构，这是「连接副词位」（conjunctive adverb position）。连接副词是副词的一种，功能是连接逻辑，表因果/转折/递进等关系，位置在句首（后接逗号）或句中（前后均有逗号）。\n\n② 核心规律：连接副词的识别特征：① 必须是副词，不能是形容词或名词；② 单独使用时后接逗号；③ 句子要完整（有主谓）。常考连接副词：consequently / therefore / however / furthermore / moreover / notably / accordingly。形容词（consequent / notable）和名词（consequence）不能独立放在句首接逗号发挥连接功能。\n\n③ 验证：\"Quitting a career leads to isolation; consequently, this effect is stronger for men\" ✓ = 退休会导致孤独感；因此，这种效应在男性中更为突出。句子语法完整，逻辑清晰（前因后果）。",
+        "tips": [
+          "先按词性过滤词库，再代回原句检查搭配自然度与语义一致性。",
+          "本题可用规则：连系动词后优先考虑表语位（常见为形容词或名词性成分）。 题面片段：\"Quitting a career can lead to feelings ..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "consequently"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "consequently"
+        }
+      ]
     },
     {
       "card_id": "020310",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 0,
       "box": 3,
@@ -566,8 +1000,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "挑战题——下面两个空格，哪个填副词，哪个填形容词？\n\n句A：\"The new outdoor seating made streets feel ___ and attracted more customers.\"\n\n句B：\"The new outdoor seating gave the area a ___ and welcoming atmosphere.\"\n\n下列哪项分析完全正确？",
+        "task_prompt": "挑战题——下面两个空格，哪个填副词，哪个填形容词？\n\n句A：\"The new outdoor seating made streets feel ___ and attracted more customers.\"\n\n句B：\"The new outdoor seating gave the area a ___ and welcoming atmosphere.\"\n\n下列哪项分析完全正确？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：句A的关键是 feel——它是连系动词（linking verb），接表语形容词；句B的关键是 a ___ atmosphere——a/an + [空格] + 名词，空格修饰名词，需形容词。两个空格都需要形容词，但原因不同。\n\n② 核心规律：连系动词后的空格 = 形容词（表语），不是副词。常见连系动词：feel / look / seem / appear / become / remain / taste / smell / sound。如果误把 feel 当作「行为动词」，就会错误地填副词（feel vividly × ）。判断方式：feel 能否替换成 become / seem？能 → 连系动词 → 接形容词。\n\n③ 验证：\"made streets feel lively\" = 让街道感觉充满活力（lively 形容词，feel 的表语）✓。\"made streets feel vividly\" = 让街道感觉生动地？— vividly 修饰方式，不修饰状态，语义不通 ✗。句B \"a vibrant atmosphere\" = 一种充满活力的氛围，vibrant（形容词）修饰名词 atmosphere ✓。",
+        "tips": [
+          "先定位空格句法功能，再逐项排除不合词性和搭配的干扰项。",
+          "本题可用规则：并列结构通常要求两侧词性和句法功能对齐。 题面片段：挑战题——下面两个空格，哪个填副词，哪个填形容词？ 句A：\"The new ou..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "D"
       }
     }
-  ]
+  ],
+  "track_index": 0,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

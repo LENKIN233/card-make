@@ -1,6 +1,6 @@
 {
   "version": "seed-v1-cet4-vocabulary-0501",
-  "track": 0,
+  "track": "cet4",
   "library": 5,
   "group": 0,
   "box": 1,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "050101",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -58,13 +58,55 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
-      "audio_url": "ai_tts/cet4/0501/050101.mp3"
+      "audio_url": "ai_tts/cet4/0501/050101.mp3",
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "阅读或听力里，命题人不一定重复原词，而是常把同一词根换成另一种词性。比如：\n\n1. retire -> retirement\n2. protect -> protection / protective\n3. improve -> improvement\n\n为什么这类改写比单纯背近义词更重要？你判断时应该优先盯哪三个点？",
+        "task_prompt": "阅读或听力里，命题人不一定重复原词，而是常把同一词根换成另一种词性。比如：\n\n1. retire -> retirement\n2. protect -> protection / protective\n3. improve -> improvement\n\n为什么这类改写比单纯背近义词更重要？你判断时应该优先盯哪三个点？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：原句和改写句里常出现明显同词根形式，如 retire / retirement、protect / protection、isolate / isolated。词面看起来不同，但核心义仍围绕同一动作、状态或结果。\n\n② 核心规律：命题人常通过词性转换把意思塞进不同句法槽位。动作常被改写成名词结果（improve -> improvement），抽象名词常被改写成动词行为（protection -> protect），状态名词也常被改成形容词表语（isolation -> isolated）。\n\n③ 验证：如果改写后主体不变、方向不反、句意主干仍是同一件事，那么这类词形变化就属于有效同义替换，而不是新信息。",
+        "tips": [
+          "先认词根，再看句法位置；不要只看词尾。",
+          "词性换了不等于意思换了，真正要防的是主体、极性和范围被改。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "050102",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -129,12 +171,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原句：\n\"Workers in more physical jobs may be more likely to look forward to retiring.\"\n\n改写句：\n\"For many manual workers, retirement is something they actively look forward to.\"\n\n为什么这里的 retiring 和 retirement 能稳定对上？",
+        "task_prompt": "原句：\n\"Workers in more physical jobs may be more likely to look forward to retiring.\"\n\n改写句：\n\"For many manual workers, retirement is something they actively look forward to.\"\n\n为什么这里的 retiring 和 retirement 能稳定对上？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：retiring 和 retirement 共享同一词根 retire，且都出现在 look forward to 这样的期待框架里，说明两句都围绕同一未来事件。\n\n② 核心规律：动词常被改写成对应的事件名词，用来填补宾语位或主语位。只要句子仍在谈同一动作所对应的事件，这种转换就成立。\n\n③ 验证：look forward to retiring = 盼着去退休；look forward to retirement = 盼着退休到来。主体仍是体力劳动者，态度仍是期待，所以这是典型 verb -> noun 的保义转换。",
+        "tips": [
+          "动词变名词时，先问：这个名词是不是在给原来的动作命名。",
+          "retire / retirement 这类词族，经常在题干里通过句法位置变化出现。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "050103",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -199,12 +286,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原句：\n\"Quitting a career can lead to feelings of isolation and loneliness.\"\n\n改写句：\n\"After leaving work, some people may feel isolated and lonely.\"\n\n哪一项最准确说明 isolation 和 isolated 在这里的关系？",
+        "task_prompt": "原句：\n\"Quitting a career can lead to feelings of isolation and loneliness.\"\n\n改写句：\n\"After leaving work, some people may feel isolated and lonely.\"\n\n哪一项最准确说明 isolation 和 isolated 在这里的关系？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：isolation 和 isolated 来自同一词根 isolate。原句结构是 feelings of + 名词，改写句结构是 feel + 形容词，两者都在表达人的主观状态。\n\n② 核心规律：抽象状态名词很常被改写成表语形容词，因为题干更愿意直接说\"人感到怎样\"。这属于 noun -> adjective 的高频变形。\n\n③ 验证：feelings of isolation = 孤立感；feel isolated = 感到孤立。loneliness / lonely 也形成同样关系，所以整组改写都在保持原句的情绪含义。",
+        "tips": [
+          "看到 feelings of + 名词 时，可以主动试着改写成 feel + 形容词。",
+          "状态词族很常成对出现：isolation / isolated, loneliness / lonely。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "C"
       }
     },
     {
       "card_id": "050104",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -269,12 +401,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原句：\n\"Strengthening the protection of forest resources can improve the ecological environment.\"\n\n改写句：\n\"Taking stronger measures to protect forest resources can improve the environment.\"\n\n为什么 protection 和 protect 在这里能对齐？",
+        "task_prompt": "原句：\n\"Strengthening the protection of forest resources can improve the ecological environment.\"\n\n改写句：\n\"Taking stronger measures to protect forest resources can improve the environment.\"\n\n为什么 protection 和 protect 在这里能对齐？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：the protection of forest resources 和 protect forest resources 的宾语完全一致，都是 forest resources，说明变的只是句法包装。\n\n② 核心规律：抽象名词结构 the protection of X 常能还原成动词短语 protect X。命题人常借此把书面表达改成更直接的动作表达。\n\n③ 验证：strengthening the protection of forest resources = 加强对森林资源的保护；take measures to protect forest resources = 采取措施保护森林资源。主体仍是政策行动，结果仍是环境改善，因此转换成立。",
+        "tips": [
+          "the protection of X 往往可以直接还原成 protect X。",
+          "遇到政策文体里的抽象名词，试着把它改回动词，看句意是否更清楚。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "050105",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -339,12 +516,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原句：\n\"The ecological environment in many areas has been significantly improved.\"\n\n改写句：\n\"There has been a significant improvement in the ecological environment in many areas.\"\n\n这组改写成立的关键是什么？",
+        "task_prompt": "原句：\n\"The ecological environment in many areas has been significantly improved.\"\n\n改写句：\n\"There has been a significant improvement in the ecological environment in many areas.\"\n\n这组改写成立的关键是什么？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：improved 和 improvement 明显同词根；且两句都把 ecological environment 作为核心对象，没有替换对象。\n\n② 核心规律：被动结果句常常能名词化成 there has been + noun。命题人这样改写，是为了把完整谓语句压缩成名词性结论。\n\n③ 验证：has been significantly improved = 已经得到了显著改善；there has been a significant improvement = 已经出现了显著改善。时间方向、程度和对象都保持稳定，所以是标准 verb -> noun 转换。",
+        "tips": [
+          "has improved / was improved 常常能改写成 there has been / there was an improvement。",
+          "看到 there has been 结构时，先想它是否在给前文动作结果起名字。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "D"
       }
     },
     {
       "card_id": "050106",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -409,12 +631,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原句：\n\"Lucid waters and lush mountains have promoted local industries, creating considerable economic benefits.\"\n\n改写句：\n\"A healthy ecological environment is economically beneficial to local industries.\"\n\n为什么 benefits 和 beneficial 在这里能对上？",
+        "task_prompt": "原句：\n\"Lucid waters and lush mountains have promoted local industries, creating considerable economic benefits.\"\n\n改写句：\n\"A healthy ecological environment is economically beneficial to local industries.\"\n\n为什么 benefits 和 beneficial 在这里能对上？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：benefits 和 beneficial 同词根，且都和 local industries 连在一起，说明受益对象一致。\n\n② 核心规律：结果名词 benefits 常可改写成 be beneficial to ...，把\"带来好处\"换成\"对……有益\"。这属于 noun -> adjective 的高频评价转换。\n\n③ 验证：creating economic benefits for local industries = 为当地产业创造经济收益；be economically beneficial to local industries = 在经济上对当地产业有益。正向评价和对象都稳定，因此改写成立。",
+        "tips": [
+          "bring benefits to = be beneficial to，考试里经常来回切。",
+          "beneficial 前面加 economically / socially / physically 等副词时，本质还是在限定哪方面有益。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "050107",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -467,12 +734,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "For many manual workers, {{blank}} is not just a date on the calendar; it is the life stage they have been waiting for.\n\n【分析提示】空格前没有冠词修饰别的名词，后面 is 提示这里需要一个能直接做主语的名词。想想 retire 这个词族里，哪一个词最适合给\"退休这件事\"命名？",
+        "task_prompt": "For many manual workers, {{blank}} is not just a date on the calendar; it is the life stage they have been waiting for.\n\n【分析提示】空格前没有冠词修饰别的名词，后面 is 提示这里需要一个能直接做主语的名词。想想 retire 这个词族里，哪一个词最适合给\"退休这件事\"命名？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：空格后直接接系动词 is，说明空格需要能独立充当主语的名词，而不是动词原形或形容词。\n\n② 核心规律：当题干想给动作或状态命名，让它进入主语位、宾语位或介词宾语位时，常会把动词转成名词。retire 进入这种位置时，最稳定的就是 retirement。\n\n③ 验证：For many manual workers, retirement is ... 完整自然；For many manual workers, retire is ... ×；retired / retiring 也无法自然表示\"退休这件事本身\"。",
+        "tips": [
+          "看到主语空格，先问自己这里要的是动作本身，还是对动作的命名。",
+          "-ment / -tion / -ty 结尾常常就是把动作或性质名词化的信号。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "retirement"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "retirement"
+        }
+      ]
     },
     {
       "card_id": "050108",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -525,12 +845,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "Without daily workplace contact, some older adults may feel {{blank}} even when they are financially secure.\n\n【分析提示】空格前是 feel，后面是在描述人的主观状态。你需要从 isolate 这个词族里选一个最适合做表语的形式。",
+        "task_prompt": "Without daily workplace contact, some older adults may feel {{blank}} even when they are financially secure.\n\n【分析提示】空格前是 feel，后面是在描述人的主观状态。你需要从 isolate 这个词族里选一个最适合做表语的形式。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：feel ______ 是典型表语位，优先找形容词；这一步先于词义细节。\n\n② 核心规律：很多抽象状态名词在题干里会被还原成形容词，因为英语更常说 people feel isolated，而不是 people feel isolation。\n\n③ 验证：feel isolated 完全成立，表示感到孤立；feel isolation × 不合英语习惯；feel isolate × 词性错误。",
+        "tips": [
+          "系动词或感官动词后面先找形容词：be / feel / seem / become + adj。",
+          "名词很强不代表能直接填空，先看句法槽位，再选词族成员。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "isolated"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "isolated"
+        }
+      ]
     },
     {
       "card_id": "050109",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -583,12 +956,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "Stricter laws are meant to {{blank}} forest resources instead of discussing environmental goals in the abstract.\n\n【分析提示】空格前是 to，后面直接接宾语 forest resources。这里需要的是一个能表示\"实施保护\"动作的动词，而不是抽象名词。",
+        "task_prompt": "Stricter laws are meant to {{blank}} forest resources instead of discussing environmental goals in the abstract.\n\n【分析提示】空格前是 to，后面直接接宾语 forest resources。这里需要的是一个能表示\"实施保护\"动作的动词，而不是抽象名词。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：to ______ forest resources 这个结构已经把词性锁死为动词原形，因为空格后还有明确宾语。\n\n② 核心规律：名词化表达和动词表达会在不同句法槽位来回切换。the protection of forest resources 常可在题干里改写成 protect forest resources。\n\n③ 验证：to protect forest resources 完全成立；to protection forest resources ×；to protective forest resources ×。",
+        "tips": [
+          "to 后如果还带宾语，优先找动词原形。",
+          "看到 the protection of X，顺手练习把它还原成 protect X。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "protect"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "protect"
+        }
+      ]
     },
     {
       "card_id": "050110",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -641,12 +1067,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "Natural food is often more {{blank}} than protein bars when you also need vitamins, antioxidants and other nutrients.\n\n【分析提示】more 后面需要能被程度比较的词；句子是在评价\"真实食物对身体更有益\"。从 benefit 词族里选最合适的形式。",
+        "task_prompt": "Natural food is often more {{blank}} than protein bars when you also need vitamins, antioxidants and other nutrients.\n\n【分析提示】more 后面需要能被程度比较的词；句子是在评价\"真实食物对身体更有益\"。从 benefit 词族里选最合适的形式。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：more ______ than ... 是典型比较结构，空格大概率是形容词或副词；结合 is often 可知这里要的是表语形容词。\n\n② 核心规律：名词 benefit 进入评价句时，常被改写成形容词 beneficial。这样可以直接接在 be / seem / become / more 等结构后面。\n\n③ 验证：is more beneficial than ... 完整自然；is more benefit than ... ×；is more benefited than ... 语义和结构都不对。",
+        "tips": [
+          "比较结构里如果是在评价事物性质，优先找形容词。",
+          "benefit 词族常见双向改写：bring benefits to ... <-> be beneficial to ..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "beneficial"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "beneficial"
+        }
+      ]
     },
     {
       "card_id": "050111",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -698,12 +1177,66 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "【CET4补充｜词性转换】\n在task-oriented clarity语境中，将最合适词汇填入 {{blank}}：\nIn policy communication, clear noun choices can {{blank}} the perceived credibility of an argument.",
+        "task_prompt": "【CET4补充｜词性转换】\n在task-oriented clarity语境中，将最合适词汇填入 {{blank}}：\nIn policy communication, clear noun choices can {{blank}} the perceived credibility of an argument.",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“词性转换”，先判断空格位置需要的语义方向与句法功能。\n② 核心规律：先核对搭配自然度，再判断语体层级，最后比较语义边界。\n③ 验证：将候选项逐一回填原句，确认正确项在意义、搭配和逻辑上同时成立。\n【CET4提示】强调任务语境下的稳定用法与清晰表达。",
+        "tips": [
+          "词性转换题先看功能，再看词面。",
+          "回填验证比直觉选词更稳。",
+          "CET4先锁定基础搭配，再检查语义通顺。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "strengthen"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "strengthen"
+        }
+      ]
     },
     {
       "card_id": "050112",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 1,
@@ -769,8 +1302,59 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "【CET4补充｜词性转换】\n原句：The committee emphasized the importance of transparent communication.\n哪项改写最符合“词性转换但语义等值”？",
+        "task_prompt": "【CET4补充｜词性转换】\n原句：The committee emphasized the importance of transparent communication.\n哪项改写最符合“词性转换但语义等值”？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：先抓题干中的核心表达，判断其在“词性转换”中的功能定位。\n② 核心规律：等值判断要同时满足对象一致、方向一致、语体一致。\n③ 验证：逐项对照原句，排除范围漂移、语义反转和逻辑错位。\n【CET4提示】强调任务语境下的稳定用法与清晰表达。",
+        "tips": [
+          "先排除语义方向错误项，再比语体与范围。",
+          "四选一不要只看词面近似。",
+          "CET4先锁定基础搭配，再检查语义通顺。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     }
-  ]
+  ],
+  "track_index": 0,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }
