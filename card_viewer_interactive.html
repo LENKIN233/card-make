@@ -1369,6 +1369,7 @@
                 warnings.push('⚠️ T6 缺少词汇库！');
             }
             if (type === 6) {
+                const frontText = ((card.front_content || {}).text) || '';
                 const blankCount = countT6Blanks(frontText);
                 const answerCount = Array.isArray(card.blank_answers) ? card.blank_answers.length : 0;
                 if (blankCount === 0) {
@@ -1392,10 +1393,16 @@
                 cardHtml = renderT0(card);
             } else if (type === 1) {
                 cardHtml = renderT1(card);
+            } else if (type === 2) {
+                cardHtml = renderT2(card);
+            } else if (type === 3) {
+                cardHtml = renderT3(card);
             } else if (type === 6) {
                 cardHtml = renderT6(card);
             } else if (type === 4) {
                 cardHtml = renderT4(card);
+            } else if (type === 5) {
+                cardHtml = renderT5(card);
             } else if (type === 7) {
                 cardHtml = renderT7(card);
             } else if (type === 8) {
@@ -1526,6 +1533,115 @@
             `;
         }
 
+        function renderT2(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const windowMs = Array.isArray(card.time_window_ms) ? card.time_window_ms : [];
+            const isFlipped = cardState.flipped || false;
+            const clickedMs = Number.isFinite(cardState.t2ClickedMs) ? cardState.t2ClickedMs : null;
+            const hasResult = typeof cardState.t2IsCorrect === 'boolean';
+            const expectedText = windowMs.length === 2
+                ? `${formatDuration(windowMs[0])} - ${formatDuration(windowMs[1])}`
+                : '未提供';
+
+            if (isFlipped) {
+                const resultHtml = hasResult ? `
+                    <div class="answer-result ${cardState.t2IsCorrect ? 'correct' : 'incorrect'}">
+                        ${cardState.t2IsCorrect ? '✓ 点击落在触发窗口' : '✗ 点击未落在触发窗口'}
+                        <div style="margin-top: 6px; font-size: 12px; opacity: 0.9;">你的点击：${formatDuration(clickedMs || 0)} · 目标窗口：${expectedText}</div>
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="interactive-card flipped">
+                        <div class="card-phase">背面（时机解析）</div>
+                        <div class="card-content">
+                            ${resultHtml}
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                            ${(card.audio && card.audio.transcript) ? renderAdaptiveBlock('音频文字稿', `<div class="card-explanation" style="font-style: italic;">${escapeHtml(card.audio.transcript)}</div>`) : ''}
+                        </div>
+                        <div class="card-actions">
+                            <div style="text-align: center;">
+                                <button class="flip-btn">📖 返回题面</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="interactive-card">
+                    <div class="card-phase">正面（时机点击）</div>
+                    <div class="card-content">
+                        ${renderFrontPanels(front, card)}
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px; text-align: left; width: 100%;">播放音频后，在你认为触发词出现时点击。</div>
+                    </div>
+                    <div class="card-actions">
+                        <div style="text-align: center;">
+                            <button class="flip-btn timing-click-btn" type="button">记录当前点击点</button>
+                        </div>
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderT3(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const targetMs = Number(card.target_duration_ms) || 0;
+            const heldMs = Number.isFinite(cardState.t3HeldMs) ? cardState.t3HeldMs : null;
+            const isFlipped = cardState.flipped || false;
+            const hasResult = typeof cardState.t3IsCorrect === 'boolean';
+
+            if (isFlipped) {
+                const resultHtml = hasResult ? `
+                    <div class="answer-result ${cardState.t3IsCorrect ? 'correct' : 'incorrect'}">
+                        ${cardState.t3IsCorrect ? '✓ 按住时长接近目标区间' : '✗ 按住时长偏离目标区间'}
+                        <div style="margin-top: 6px; font-size: 12px; opacity: 0.9;">你的时长：${formatDuration(heldMs || 0)} · 目标：${targetMs ? formatDuration(targetMs) : '未提供'}</div>
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="interactive-card flipped">
+                        <div class="card-phase">背面（长按解析）</div>
+                        <div class="card-content">
+                            ${resultHtml}
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                            ${(card.audio && card.audio.transcript) ? renderAdaptiveBlock('音频文字稿', `<div class="card-explanation" style="font-style: italic;">${escapeHtml(card.audio.transcript)}</div>`) : ''}
+                        </div>
+                        <div class="card-actions">
+                            <div style="text-align: center;">
+                                <button class="flip-btn">📖 返回题面</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="interactive-card">
+                    <div class="card-phase">正面（长按松手）</div>
+                    <div class="card-content">
+                        ${renderFrontPanels(front, card)}
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px; text-align: left; width: 100%;">听到目标信息链开始时按住，结束时松手。</div>
+                    </div>
+                    <div class="card-actions">
+                        <div style="text-align: center;">
+                            <button class="flip-btn hold-release-btn" type="button">按住并松手</button>
+                        </div>
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
         function renderT4(card) {
             const front = card.front_content || {};
             const back = card.back_content || {};
@@ -1583,6 +1699,49 @@
                     </div>
                     <div class="card-actions">
                         <div style="text-align: center;">
+                            <button class="flip-btn">查看解析 →</button>
+                        </div>
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderT5(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const isFlipped = cardState.flipped || false;
+            const hintOpen = cardState.hintOpen || false;
+
+            if (isFlipped) {
+                return `
+                    <div class="interactive-card flipped">
+                        <div class="card-phase">背面（提示复盘）</div>
+                        <div class="card-content">
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                        </div>
+                        <div class="card-actions">
+                            <div style="text-align: center;">
+                                <button class="flip-btn">📖 返回题面</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="interactive-card">
+                    <div class="card-phase">正面（提示层）</div>
+                    <div class="card-content">
+                        ${renderFrontPanels(front, card)}
+                        ${hintOpen ? renderAdaptiveBlock('提示层', `<div class="card-explanation">${escapeHtml(front.hint_content || '本卡未提供提示内容。').replace(/\n/g, '<br>')}</div>`) : ''}
+                    </div>
+                    <div class="card-actions">
+                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <button class="peek-btn js-hint-toggle" type="button">${hintOpen ? '收起提示' : '露出提示层'}</button>
                             <button class="flip-btn">查看解析 →</button>
                         </div>
                         ${renderFeedbackButtons()}
@@ -1872,6 +2031,43 @@
             });
             // Brief pause so user sees the result, then flip
             setTimeout(() => toggleFlip(), 600);
+        }
+
+        function recordT2Click() {
+            const card = filteredCards[currentCardIdx];
+            const windowMs = Array.isArray(card.time_window_ms) ? card.time_window_ms : [];
+            const clickedMs = Math.floor((globalAudio.currentTime || 0) * 1000);
+            const isCorrect = windowMs.length === 2 && clickedMs >= windowMs[0] && clickedMs <= windowMs[1];
+
+            cardState.t2ClickedMs = clickedMs;
+            cardState.t2IsCorrect = isCorrect;
+            cardState.flipped = true;
+            globalAudio.pause();
+            renderCard();
+        }
+
+        function startT3Hold() {
+            cardState.t3HoldStart = performance.now();
+        }
+
+        function finishT3Hold() {
+            const card = filteredCards[currentCardIdx];
+            const targetMs = Number(card.target_duration_ms) || 0;
+            const start = Number(cardState.t3HoldStart) || performance.now();
+            const heldMs = Math.max(0, Math.floor(performance.now() - start));
+            const tolerance = Math.max(650, targetMs * 0.35);
+
+            cardState.t3HeldMs = heldMs;
+            cardState.t3IsCorrect = targetMs > 0 ? Math.abs(heldMs - targetMs) <= tolerance : heldMs > 0;
+            cardState.flipped = true;
+            delete cardState.t3HoldStart;
+            globalAudio.pause();
+            renderCard();
+        }
+
+        function toggleHintLayer() {
+            cardState.hintOpen = !cardState.hintOpen;
+            renderCard();
         }
 
         function respondT7(answer) {
@@ -2256,6 +2452,30 @@
                 });
             }
 
+            if (type === 2) {
+                const timingBtn = document.querySelector('.timing-click-btn');
+                if (timingBtn) {
+                    timingBtn.removeEventListener('click', toggleFlip);
+                    timingBtn.addEventListener('click', recordT2Click);
+                }
+            }
+
+            if (type === 3) {
+                const holdBtn = document.querySelector('.hold-release-btn');
+                if (holdBtn) {
+                    holdBtn.removeEventListener('click', toggleFlip);
+                    holdBtn.addEventListener('pointerdown', startT3Hold);
+                    holdBtn.addEventListener('pointerup', finishT3Hold);
+                    holdBtn.addEventListener('pointercancel', finishT3Hold);
+                    holdBtn.addEventListener('keydown', (event) => {
+                        if (event.code === 'Space' || event.code === 'Enter') startT3Hold();
+                    });
+                    holdBtn.addEventListener('keyup', (event) => {
+                        if (event.code === 'Space' || event.code === 'Enter') finishT3Hold();
+                    });
+                }
+            }
+
             // Attach eliminate item events for T4
             if (type === 4) {
                 const eliminableItems = document.querySelectorAll('.eliminable-item');
@@ -2268,6 +2488,13 @@
                 if (flipBtn) {
                     flipBtn.removeEventListener('click', toggleFlip);
                     flipBtn.addEventListener('click', checkAndFlipT4);
+                }
+            }
+
+            if (type === 5) {
+                const hintBtn = document.querySelector('.js-hint-toggle');
+                if (hintBtn) {
+                    hintBtn.addEventListener('click', toggleHintLayer);
                 }
             }
 
