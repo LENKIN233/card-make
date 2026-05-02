@@ -1,0 +1,714 @@
+{
+  "version": "seed-v2-listening-audio-first",
+  "track": 0,
+  "library": 0,
+  "group": 3,
+  "box": 3,
+  "card_box_code": "0033",
+  "card_box_name": "地点",
+  "card_group_name": "细节捕捉",
+  "cards": [
+    {
+      "card_id": "003301",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 1,
+      "card_box_code": "0033",
+      "interaction_type": 0,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "任务：先听音频，再判断说话人提到的地点是在说发生地、集合点，还是办理地点。",
+        "task_prompt": "先听音频，再判断说话人提到的地点是在说发生地、集合点，还是办理地点。",
+        "task_schema": {
+          "action": "听后判断地点角色",
+          "focus": "地点名称与事件功能绑定",
+          "success_criteria": "能说出地点在哪里，以及它在流程中承担什么功能"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003301.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：这里的 west lobby 是集合点，不是活动正式举行的地点。",
+        "explanation": "语境揭示：Visitors should meet in the west lobby before being guided into the main auditorium. 地点类题常会同时出现两个地点，但它们在流程里的功能并不一样。"
+      },
+      "analysis_content": {
+        "text": "① 识别信号：地点出现后，要立刻看它和哪个动作动词绑定，如 meet, register, deliver, perform。\n\n② 核心规律：地点题不是简单地记一个地名，而是判断这个地名在事件流程中的功能。lobby、auditorium、office、gate 这些词经常同句出现，若不区分“集合点”和“正式发生地”，就很容易答错。\n\n③ 验证：本句 meet in the west lobby 表示先集合；guided into the main auditorium 才表示后续进入正式场地。因此 west lobby 的功能是集合点，而不是主会场。",
+        "tips": [
+          "地点要和动作一起记，不能只记场所名。",
+          "同句多个地点时，先判断它们在流程中的先后功能。"
+        ]
+      },
+      "options": null,
+      "eliminable_items": null,
+      "audio": {
+        "url": "ai_tts/cet4/0033/003301.mp3",
+        "duration_ms": 5712,
+        "transcript": "Visitors should meet in the west lobby before being guided into the main auditorium.",
+        "path": "ai_tts/cet4/0033/003301.mp3"
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      }
+    },
+    {
+      "card_id": "003302",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 2,
+      "card_box_code": "0033",
+      "interaction_type": 1,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "任务：听完后，选出‘真正办理手续的地点’。",
+        "task_prompt": "听完后，选出‘真正办理手续的地点’。",
+        "task_schema": {
+          "action": "四选一作答",
+          "focus": "经过地点与业务办理点区分",
+          "success_criteria": "锁定 register/check in 对应地点，而不是路过地点"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003302.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "答案：真正办理手续的是 second-floor service desk。",
+        "explanation": "语境揭示：Go past the exhibition hall and register at the second-floor service desk. 地点题很容易被第一个出现的场所带偏。"
+      },
+      "analysis_content": {
+        "text": "① 识别信号：一句里有多个地点时，要看哪个地点和 register, collect, pick up, submit 等业务动词绑定。\n\n② 核心规律：地点类题常用“路线提示”做干扰。先出现的地点未必是答案，它可能只是路标或经过点。真正该答的地点往往出现在与核心动作直接相连的位置。\n\n③ 验证：本句 exhibition hall 只是路过点；register at the second-floor service desk 才是办理动作与地点的直接绑定。因此答案必须是 second-floor service desk。",
+        "tips": [
+          "地点题不要只记第一个地名，要看哪个地名后面跟着关键动作。",
+          "路线中的路标不等于目的地。"
+        ]
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "The exhibition hall.",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "The second-floor service desk.",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "The underground parking area.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "The outdoor ticket gate.",
+          "is_correct": false
+        }
+      ],
+      "eliminable_items": null,
+      "audio": {
+        "url": "ai_tts/cet4/0033/003302.mp3",
+        "duration_ms": 5352,
+        "transcript": "Go past the exhibition hall and register at the second-floor service desk.",
+        "path": "ai_tts/cet4/0033/003302.mp3"
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      }
+    },
+    {
+      "card_id": "003303",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 3,
+      "card_box_code": "0033",
+      "interaction_type": 2,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "任务：播放后，在你第一次听到关键地点名称时点击。",
+        "task_prompt": "播放后，在你第一次听到关键地点名称时点击。",
+        "task_schema": {
+          "action": "时间窗点击",
+          "focus": "关键地点入场定位",
+          "success_criteria": "点击命中地点时刻，并能说出该地点对应的动作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003303.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "目标地点：platform 4，它对应的是乘客换乘位置。",
+        "explanation": "语境揭示：Passengers for the coastal line should wait on platform 4 until the replacement train arrives. 地点类卡要训练的是“地点 + 行动要求”一起抓。"
+      },
+      "analysis_content": {
+        "text": "① 识别信号：地点词一出现，后面经常紧跟 wait, board, meet, report to 这类动作要求。\n\n② 核心规律：地点题不是只听见 platform 4 就结束，而是要连同“在那里做什么”一起收。否则题目换成“Where should passengers wait?”时，你可能记得 platform 4，却不确定它是候车点还是出站口。\n\n③ 验证：本句 platform 4 后面直接接 should wait，因此它是候车换乘点，而不是终点站或售票处。",
+        "tips": [
+          "听到地点后，再追一个动作要求。",
+          "地点信息只有和行为绑定，才真正可答题。"
+        ]
+      },
+      "options": null,
+      "eliminable_items": null,
+      "time_window_ms": [
+        0,
+        5000
+      ],
+      "audio": {
+        "url": "ai_tts/cet4/0033/003303.mp3",
+        "duration_ms": 6624,
+        "transcript": "Passengers for the coastal line should wait on platform 4 until the replacement train arrives.",
+        "path": "ai_tts/cet4/0033/003303.mp3"
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      }
+    },
+    {
+      "card_id": "003304",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 4,
+      "card_box_code": "0033",
+      "interaction_type": 3,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "任务：按住开始听，在句子真正切到‘可答题地点’时松手。",
+        "task_prompt": "按住开始听，在句子真正切到‘可答题地点’时松手。",
+        "task_schema": {
+          "action": "按住并择机松手",
+          "focus": "从背景路线切到最终目标地点",
+          "success_criteria": "在最终地点起点附近松手"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003304.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "目标地点起点：the archive room on the lower level。",
+        "explanation": "语境揭示：You can enter through the main gate, but the documents are stored in the archive room on the lower level. main gate 只是入口，archive room 才是题目真正会问的地点。"
+      },
+      "analysis_content": {
+        "text": "① 识别信号：地点句里若同时出现入口、路径和最终位置，真正题眼通常是后者。\n\n② 核心规律：地点题的高频误判是“把入口当目的地”。很多说明性语句先给你怎么进、从哪走，再给你东西真正在哪里。若不区分 route point 和 target location，就会把 main gate 错选成答案。\n\n③ 验证：本句 main gate 是进入路径；documents are stored in the archive room on the lower level 才说明文件真正位置。松手点应落在 archive room 这段最终目标地点。",
+        "tips": [
+          "入口、路标、目的地三者要分开。",
+          "题目问“在哪”，多半问最终存放或办理地点，不问入口。"
+        ]
+      },
+      "options": null,
+      "eliminable_items": null,
+      "target_duration_ms": 2700,
+      "audio": {
+        "url": "ai_tts/cet4/0033/003304.mp3",
+        "duration_ms": 6648,
+        "transcript": "You can enter through the main gate, but the documents are stored in the archive room on the lower level.",
+        "path": "ai_tts/cet4/0033/003304.mp3"
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      }
+    },
+    {
+      "card_id": "003305",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 5,
+      "card_box_code": "0033",
+      "interaction_type": 1,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "任务：听完后，选出‘真正发生投诉的地点’。",
+        "task_prompt": "听完后，选出‘真正发生投诉的地点’。",
+        "task_schema": {
+          "action": "四选一作答",
+          "focus": "提及地点与事件发生地绑定",
+          "success_criteria": "锁定 complaint/problem 对应地点，而不是背景地点"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003305.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "答案：投诉集中发生在 parking exit，不是在主入口。",
+        "explanation": "语境揭示：Most visitors entered through the main gate, but the complaints were about delays at the parking exit. 句子里两个地点并存，但只有一个与问题事件绑定。"
+      },
+      "analysis_content": {
+        "text": "① 识别信号：地点题里如果题目问 problem/complaint/incident，就要找这些事件词绑定的地点。\n\n② 核心规律：同一句里可能同时给“正常流线地点”和“问题发生地点”。学生若只记第一个地点，常会把 main gate 误选成答案。真正应该答的是与负面事件或核心动作直接相连的地点。\n\n③ 验证：本句 main gate 只对应 entered；complaints were about delays at the parking exit 才把 parking exit 绑定到问题事件上。因此正确答案是 parking exit。",
+        "tips": [
+          "题目问问题发生地，就优先追 problem/complaint/delay 后面的地点。",
+          "先出现的地点不一定和题目要问的事件有关。"
+        ]
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "The main gate.",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "The parking exit.",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "The ticket office.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "The information desk.",
+          "is_correct": false
+        }
+      ],
+      "eliminable_items": null,
+      "audio": {
+        "url": "ai_tts/cet4/0033/003305.mp3",
+        "duration_ms": 6792,
+        "transcript": "Most visitors entered through the main gate, but the complaints were about delays at the parking exit.",
+        "path": "ai_tts/cet4/0033/003305.mp3"
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      }
+    },
+    {
+      "card_id": "003306",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 6,
+      "card_box_code": "0033",
+      "interaction_type": 0,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "任务：听完后，用一句话复述“地点在哪里，以及它对应什么事件或功能”。",
+        "task_prompt": "听完后，用一句话复述“地点在哪里，以及它对应什么事件或功能”。",
+        "task_schema": {
+          "action": "口头复述地点绑定",
+          "focus": "地点、功能与事件三点合并",
+          "success_criteria": "复述不能只说地名，必须说明该地点在流程里负责什么"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003306.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "示例复述：培训会在北楼三层的 seminar room 举行，签到则在外面的 reception counter 完成。",
+        "explanation": "语境揭示：The seminar itself will be held in room 3B of the north building, while check-in takes place at the reception counter outside. 地点复述要带出功能分工，而不是只报两个地名。"
+      },
+      "analysis_content": {
+        "text": "① 识别信号：多地点句常会用 while, before, after, then 把不同地点绑定到不同流程步骤。\n\n② 核心规律：地点类复述不应是“north building, reception counter”这种碎片式回忆，而要形成完整结构：哪里做什么、哪里只是辅助点。地点只有与功能绑定后，才能稳定迁移到不同问法中。\n\n③ 验证：本句 room 3B of the north building 绑定 held；reception counter outside 绑定 check-in。完整复述必须把两个地点分别挂回对应功能。",
+        "tips": [
+          "地点复述模板：在A做X，在B做Y。",
+          "多地点句里，每个地点都要找到自己的流程功能。"
+        ]
+      },
+      "options": null,
+      "eliminable_items": null,
+      "audio": {
+        "url": "ai_tts/cet4/0033/003306.mp3",
+        "duration_ms": 8544,
+        "transcript": "The seminar itself will be held in room 3B of the north building, while check-in takes place at the reception counter outside.",
+        "path": "ai_tts/cet4/0033/003306.mp3"
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      }
+    },
+    {
+      "card_id": "003307",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 7,
+      "card_box_code": "0033",
+      "interaction_type": 2,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "点击地点细节被精确报出的瞬间。",
+        "task_prompt": "先听音频，再完成地点细节定位训练。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003307.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：本题关键是精确提取地点细节，不能只凭大意。",
+        "explanation": "语境揭示：The report includes several distractions, but location detail capture reveals the exact 地点细节 needed for the answer."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：本卡训练地点细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：时机点击应落在信息被唯一限定的位置，避免在背景描述提前操作。\n\n③ 验证与迁移：回听“The report includes several distractions, but location detail capture reveals the exact 地点细节 needed for the answer.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "options": null,
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0033/003307.mp3",
+        "url": "ai_tts/cet4/0033/003307.mp3",
+        "duration_ms": 9216,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "The report includes several distractions, but location detail capture reveals the exact location detail needed for the answer."
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "time_window_ms": [
+        3500,
+        5100
+      ]
+    },
+    {
+      "card_id": "003308",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 8,
+      "card_box_code": "0033",
+      "interaction_type": 3,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "长按覆盖地点细节完整语义段，避免漏听限定词。",
+        "task_prompt": "先听音频，再完成地点细节定位训练。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003308.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：本题关键是精确提取地点细节，不能只凭大意。",
+        "explanation": "语境揭示：In this section, listeners must rely on location detail capture because the tested 地点细节 appears only once."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：本卡训练地点细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：长按要覆盖完整限定结构，尤其注意数字、时间或地点前后的修饰词。\n\n③ 验证与迁移：回听“In this section, listeners must rely on location detail capture because the tested 地点细节 appears only once.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "options": null,
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0033/003308.mp3",
+        "url": "ai_tts/cet4/0033/003308.mp3",
+        "duration_ms": 8928,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "In this section, listeners must rely on location detail capture because the tested location detail appears only once."
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "target_duration_ms": 4120
+    },
+    {
+      "card_id": "003309",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 9,
+      "card_box_code": "0033",
+      "interaction_type": 0,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "翻面前先复述你抓到的地点细节，再核对答案。",
+        "task_prompt": "先听音频，再完成地点细节定位训练。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003309.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：本题关键是精确提取地点细节，不能只凭大意。",
+        "explanation": "语境揭示：The speaker repeats background points, yet location detail capture identifies the precise 地点细节 that should be selected."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：本卡训练地点细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：翻面卡先做自我复述，重点检查是否遗漏限定条件。\n\n③ 验证与迁移：回听“The speaker repeats background points, yet location detail capture identifies the precise 地点细节 that should be selected.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "options": null,
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0033/003309.mp3",
+        "url": "ai_tts/cet4/0033/003309.mp3",
+        "duration_ms": 9240,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "The speaker repeats background points, yet location detail capture identifies the precise location detail that should be selected."
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      }
+    },
+    {
+      "card_id": "003310",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 10,
+      "card_box_code": "0033",
+      "interaction_type": 1,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "四选一：根据音频锁定最准确的地点细节。",
+        "task_prompt": "先听音频，再完成地点细节定位训练。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003310.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "答案：B。解析：本题应以地点细节的精确信息作答。",
+        "explanation": "语境揭示：After a broad introduction, the host uses location detail capture to highlight the core 地点细节 detail in one short clause."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：本卡训练地点细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：四选一先比较限定词一致性，再看核心名词是否匹配。\n\n③ 验证与迁移：回听“After a broad introduction, the host uses location detail capture to highlight the core 地点细节 detail in one short clause.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "只匹配了主题词但忽略限定词",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "主题词与地点细节限定信息都匹配",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "把背景信息当成最终答案",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "只依据语速快慢进行猜测",
+          "is_correct": false
+        }
+      ],
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0033/003310.mp3",
+        "url": "ai_tts/cet4/0033/003310.mp3",
+        "duration_ms": 9720,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "After a broad introduction, the host uses location detail capture to highlight the core location detail detail in one short clause."
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      }
+    },
+    {
+      "card_id": "003311",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 11,
+      "card_box_code": "0033",
+      "interaction_type": 2,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "点击地点细节被精确报出的瞬间。",
+        "task_prompt": "先听音频，再完成地点细节定位训练。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003311.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：本题关键是精确提取地点细节，不能只凭大意。",
+        "explanation": "语境揭示：Although multiple facts are mentioned, location detail capture guides listeners to the most testable 地点细节 evidence."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：本卡训练地点细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：时机点击应落在信息被唯一限定的位置，避免在背景描述提前操作。\n\n③ 验证与迁移：回听“Although multiple facts are mentioned, location detail capture guides listeners to the most testable 地点细节 evidence.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "options": null,
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0033/003311.mp3",
+        "url": "ai_tts/cet4/0033/003311.mp3",
+        "duration_ms": 8712,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "Although multiple facts are mentioned, location detail capture guides listeners to the most testable location detail evidence."
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "time_window_ms": [
+        3980,
+        5580
+      ]
+    },
+    {
+      "card_id": "003312",
+      "track": 0,
+      "library": 0,
+      "group": 3,
+      "box": 3,
+      "card_no": 12,
+      "card_box_code": "0033",
+      "interaction_type": 3,
+      "card_box_name": "地点",
+      "card_group_name": "细节捕捉",
+      "front_content": {
+        "text": "长按覆盖地点细节完整语义段，避免漏听限定词。",
+        "task_prompt": "先听音频，再完成地点细节定位训练。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0033/003312.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：本题关键是精确提取地点细节，不能只凭大意。",
+        "explanation": "语境揭示：The final sentence confirms the conclusion, and location detail capture helps isolate the correct 地点细节 information."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：本卡训练地点细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：长按要覆盖完整限定结构，尤其注意数字、时间或地点前后的修饰词。\n\n③ 验证与迁移：回听“The final sentence confirms the conclusion, and location detail capture helps isolate the correct 地点细节 information.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "options": null,
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0033/003312.mp3",
+        "url": "ai_tts/cet4/0033/003312.mp3",
+        "duration_ms": 9192,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "The final sentence confirms the conclusion, and location detail capture helps isolate the correct location detail information."
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "target_duration_ms": 4600
+    }
+  ]
+}

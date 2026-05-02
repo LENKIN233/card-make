@@ -1,0 +1,717 @@
+{
+  "version": "seed-v2-listening-audio-first",
+  "track": 1,
+  "library": 0,
+  "group": 0,
+  "box": 1,
+  "card_box_code": "1001",
+  "card_box_name": "根据选项预测考点",
+  "card_group_name": "听前预测",
+  "cards": [
+    {
+      "card_id": "100101",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 1,
+      "card_box_code": "1001",
+      "interaction_type": 0,
+      "card_box_name": "根据选项预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，判断这道题最可能追问哪类信息。",
+        "task_prompt": "任务：先听音频，判断这道题最可能追问哪类信息。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据选项预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100101.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：最可能考“最终决定的依据”。",
+        "explanation": "语境揭示：We could book the larger conference room, but it would exceed the budget. The smaller room is available all afternoon, and the client mainly cares that the presentation starts on time."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：larger room、budget、available all afternoon、starts on time 说明说话者在权衡选项并收束到决策依据。② 核心规律：预测考点时，看说话者是在描述背景、表达态度，还是在比较多个方案后落到决定条件；后者通常考“为什么这么决定”。③ 验证与迁移：如果你只记住两个房间的差异，却没抓到 client mainly cares 这一收束句，就容易错过真正考点。",
+        "tips": [
+          "mainly cares that... 这类句子常直接暴露题目要问的决定性条件。",
+          "当音频出现方案比较时，最常考的是最终选择依据，而不是所有细节都考。"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "audio": {
+        "url": "ai_tts/cet6/1001/100101.mp3",
+        "local_path": "ai_tts/cet6/1001/100101.mp3",
+        "duration_ms": 12504,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "We could book the larger conference room, but it would exceed the budget. The smaller room is available all afternoon, and the client mainly cares that the presentation starts on time.",
+        "path": "ai_tts/cet6/1001/100101.mp3"
+      }
+    },
+    {
+      "card_id": "100102",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 2,
+      "card_box_code": "1001",
+      "interaction_type": 1,
+      "card_box_name": "根据选项预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，再判断题目最可能追问哪类信息。",
+        "task_prompt": "任务：先听音频，再判断题目最可能追问哪类信息。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据选项预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100102.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：答案是 A，最可能考研讨会改期的原因。",
+        "explanation": "语境揭示：The seminar was moved from Thursday morning to Friday evening because the guest speaker's flight was canceled in the storm, even though the lecture hall itself remained available."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：moved from Thursday to Friday because... 直接给出变动事实和原因。② 核心规律：当信息结构是“结果 + because 原因”时，最常考的是 why 而不是 where 或 how many。③ 验证与迁移：如果选项里同时有时间、地点、原因，优先看句子真正展开的是哪一类；这里展开最充分的是原因链。",
+        "tips": [
+          "because the guest speaker's flight was canceled 是完整因果链，明显强于 lecture hall remained available 这种补充信息。",
+          "改期题里，storm、flight canceled 这类事件词通常就是题目要追问的原因。"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "Why the seminar had to be rescheduled.",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "How many people will attend the seminar.",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "Where the lecture hall is located.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "What the speaker plans to teach next month.",
+          "is_correct": false
+        }
+      ],
+      "audio": {
+        "url": "ai_tts/cet6/1001/100102.mp3",
+        "local_path": "ai_tts/cet6/1001/100102.mp3",
+        "duration_ms": 10608,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "The seminar was moved from Thursday morning to Friday evening because the guest speaker's flight was canceled in the storm, even though the lecture hall itself remained available.",
+        "path": "ai_tts/cet6/1001/100102.mp3"
+      }
+    },
+    {
+      "card_id": "100103",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 3,
+      "card_box_code": "1001",
+      "interaction_type": 2,
+      "card_box_name": "根据选项预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，再在时限内复述：这道题最可能考什么，以及你依据的线索。",
+        "task_prompt": "任务：先听音频，再在时限内复述：这道题最可能考什么，以及你依据的线索。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据选项预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100103.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：最可能考研究结论是否可靠，线索是 sample size 太小。",
+        "explanation": "语境揭示：The report claims that remote work always boosts productivity, but the lead reviewer points out that only eighteen employees were surveyed, so the conclusion may not apply to the whole company."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：claims that... but... only eighteen employees were surveyed 把考点拉向“结论可靠性”。② 核心规律：当音频先给观点、后给质疑依据时，题目常考 reviewer 的核心质疑点，而不是原始观点内容。③ 验证与迁移：复述时要说出“样本量太小”，否则只是重复表面观点，没有抓到真正考点。",
+        "tips": [
+          "only eighteen employees 是典型的考点触发器，数字小往往对应样本代表性问题。",
+          "always 这种绝对化表达经常配合 reviewer 的质疑，提示题目会考 conclusion 是否站得住。"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "time_window_ms": [
+        3600,
+        5200
+      ],
+      "audio": {
+        "url": "ai_tts/cet6/1001/100103.mp3",
+        "local_path": "ai_tts/cet6/1001/100103.mp3",
+        "duration_ms": 12192,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "The report claims that remote work always boosts productivity, but the lead reviewer points out that only eighteen employees were surveyed, so the conclusion may not apply to the whole company.",
+        "path": "ai_tts/cet6/1001/100103.mp3"
+      }
+    },
+    {
+      "card_id": "100104",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 4,
+      "card_box_code": "1001",
+      "interaction_type": 3,
+      "card_box_name": "根据选项预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，再进行影子跟读，注意真正暴露考点的重读位置。",
+        "task_prompt": "任务：先听音频，再进行影子跟读，注意真正暴露考点的重读位置。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据选项预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100104.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：完成跟读，重点捕捉 supervisor approval takes time 这类考点句。",
+        "explanation": "语境揭示：If you want to apply for the summer internship, send your materials this week, because the department chair needs several days to approve outside placements before the deadline arrives."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：because the department chair needs several days to approve... 是直接解释“为什么要本周提交”的考点句。② 核心规律：跟读时重读 because 后面的限制条件，能帮助你在真实题目里更快预判“题目会问建议背后的原因”。③ 验证与迁移：如果你只记住 apply for the internship，却没抓住 approval takes several days，就会错过建议题的真正考点。",
+        "tips": [
+          "建议类音频常考 why the speaker gives the advice；because 从句通常就是答案源。",
+          "deadline arrives 只是时间压力，真正的逻辑核心是 approval takes several days。"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "target_duration_ms": 5600,
+      "audio": {
+        "url": "ai_tts/cet6/1001/100104.mp3",
+        "local_path": "ai_tts/cet6/1001/100104.mp3",
+        "duration_ms": 11568,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "If you want to apply for the summer internship, send your materials this week, because the department chair needs several days to approve outside placements before the deadline arrives.",
+        "path": "ai_tts/cet6/1001/100104.mp3"
+      }
+    },
+    {
+      "card_id": "100105",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 5,
+      "card_box_code": "1001",
+      "interaction_type": 1,
+      "card_box_name": "根据选项预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，再判断这道题最可能追问什么信息。",
+        "task_prompt": "任务：先听音频，再判断这道题最可能追问什么信息。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据选项预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100105.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：答案是 B，最可能考公司为什么改选火车出差。",
+        "explanation": "语境揭示：The firm canceled the short domestic flight and asked the team to travel by train instead, partly to cut carbon emissions and partly because the station is much closer to the client's downtown office."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：asked the team to travel by train instead, partly... partly... 明确进入“决策原因”结构。② 核心规律：当音频给出替代方案并连续列出 partly... partly...，考点几乎总是“为什么改成这个方案”。③ 验证与迁移：如果你只听到 train 而没听到两个 partly 后的原因，说明还停留在表层事实识别，没有抓住考点。",
+        "tips": [
+          "partly... partly... 是典型的多重理由提示，常预示 why-question。",
+          "carbon emissions 和 downtown office proximity 都是 supporting reasons，不是两个独立主题。"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "How long the train trip will take.",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "Why the team was told to travel by train.",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "Which client the team will meet first.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "How the firm measures carbon emissions.",
+          "is_correct": false
+        }
+      ],
+      "audio": {
+        "url": "ai_tts/cet6/1001/100105.mp3",
+        "local_path": "ai_tts/cet6/1001/100105.mp3",
+        "duration_ms": 12888,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "The firm canceled the short domestic flight and asked the team to travel by train instead, partly to cut carbon emissions and partly because the station is much closer to the client's downtown office.",
+        "path": "ai_tts/cet6/1001/100105.mp3"
+      }
+    },
+    {
+      "card_id": "100106",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 6,
+      "card_box_code": "1001",
+      "interaction_type": 2,
+      "card_box_name": "根据题型预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，再判断短对话考点的分布规律。",
+        "task_prompt": "任务：先听音频，再判断短对话考点的分布规律。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据题型预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100106.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：短对话答案通常集中在最后2-3句，说话人在结尾表明真实立场。",
+        "explanation": "语境揭示：For a short conversation question, the answer is almost always found in the final two or three lines. Speakers tend to summarize, decide, or express their true stance near the end."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：短对话题型 = 结尾导向型，答案在对话最后的决定/总结/态度中。② 核心规律：CET6 短对话题：起始几句建立背景，中间句补充细节，最后1-2句给出答案。③ 验证与迁移：听短对话时，前半段可稍放松，结尾部分必须精确捕捉关键词。",
+        "tips": [
+          "短对话 = 结尾答题，中间背景信息为干扰，重心在最后一句转折或决定。",
+          "Well / Actually / In fact 出现在对话中 = 说话人立场即将翻转，此后是真实态度。"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "time_window_ms": [
+        3000,
+        4400
+      ],
+      "audio": {
+        "url": "ai_tts/cet6/1001/100106.mp3",
+        "local_path": "ai_tts/cet6/1001/100106.mp3",
+        "duration_ms": 13440,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "For a short conversation question, the answer is almost always found in the final two or three lines. Speakers tend to summarize, decide, or express their true stance near the end.",
+        "path": "ai_tts/cet6/1001/100106.mp3"
+      }
+    },
+    {
+      "card_id": "100107",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 7,
+      "card_box_code": "1001",
+      "interaction_type": 3,
+      "card_box_name": "根据题型预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，再判断长对话考题的结构分布特征。",
+        "task_prompt": "任务：先听音频，再判断长对话考题的结构分布特征。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据题型预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100107.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：长对话含细节题和推断题；推断题要求理解说话人之间的隐性关系。",
+        "explanation": "语境揭示：Long conversation questions typically include factual detail items as well as one inference question. The inference question often requires understanding the relationship between the two speakers beyond what is explicitly stated."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：长对话 = 细节+推断的复合考查，每道题的考查层次不同。② 核心规律：CET6 长对话：整体包含约3道题，其中1道常为inference型，需结合语境理解而非直接听到的信息。③ 验证与迁移：长对话中两人立场不同时，推断题往往问双方的关系或分歧。",
+        "tips": [
+          "长对话听第一遍把握整体，第二遍（如果有）定位细节题答案。",
+          "两人意见一致或冲突 = 推断题可能问：他们的关系是什么？他们最终达成了什么结论？"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "target_duration_ms": 5800,
+      "audio": {
+        "url": "ai_tts/cet6/1001/100107.mp3",
+        "local_path": "ai_tts/cet6/1001/100107.mp3",
+        "duration_ms": 15744,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "Long conversation questions typically include factual detail items as well as one inference question. The inference question often requires understanding the relationship between the two speakers beyond what is explicitly stated.",
+        "path": "ai_tts/cet6/1001/100107.mp3"
+      }
+    },
+    {
+      "card_id": "100108",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 8,
+      "card_box_code": "1001",
+      "interaction_type": 0,
+      "card_box_name": "根据题型预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，再说出短文题的典型考题顺序结构。",
+        "task_prompt": "任务：先听音频，再说出短文题的典型考题顺序结构。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据题型预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100108.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：短文题顺序：主旨→细节→作者目的/态度，与文章结构基本一致。",
+        "explanation": "语境揭示：Passage-based questions often start with a main idea question, followed by specific detail questions, and may end with an author's purpose or attitude question. Always answer in this order during practice."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：短文题 = 3-4道题组合，考查覆盖主旨（理解层）、细节（记忆层）、推断/目的（应用层）。② 核心规律：CET6 短文题基本遵循文章顺序出题，主旨在开头，细节在中间，态度/目的在结尾。③ 验证与迁移：听前浏览所有题目，判断哪道是主旨题、哪道是细节题、哪道是推断题，有针对性地听。",
+        "tips": [
+          "短文题先浏览所有四道题，判断考查类型，有选择地听重点段落。",
+          "主旨题 = 不需要精确记录，理解大意即可；细节题 = 必须精准定位关键词。"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "audio": {
+        "url": "ai_tts/cet6/1001/100108.mp3",
+        "local_path": "ai_tts/cet6/1001/100108.mp3",
+        "duration_ms": 14952,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "Passage-based questions often start with a main idea question, followed by specific detail questions, and may end with an author's purpose or attitude question. Always answer in this order during practice.",
+        "path": "ai_tts/cet6/1001/100108.mp3"
+      }
+    },
+    {
+      "card_id": "100109",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 9,
+      "card_box_code": "1001",
+      "interaction_type": 1,
+      "card_box_name": "根据题型预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，再判断因果型考题的题干信号词和应对策略。",
+        "task_prompt": "任务：先听音频，再判断因果型考题的题干信号词和应对策略。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据题型预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100109.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：因果题由 What led to/Why/What was the result 信号，需追踪逻辑链。",
+        "explanation": "语境揭示：Cause-and-effect questions are signaled by stems containing phrases like 'What led to...', 'Why did...', or 'What was the result of...'. These require you to track logical chains rather than surface facts."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：题干 What led to / Why did / As a result of = 因果题型，要追踪原因链和结果链。② 核心规律：CET6 因果题不问事实而问逻辑：cause → direct effect → downstream effect，答案通常是 direct effect。③ 验证与迁移：先标注题干是问原因还是结果，听音时重点追踪 because/due to/result in/lead to。",
+        "tips": [
+          "因果题答案层级：直接原因 > 背景原因 > 延伸结果，选最直接对应项。",
+          "题干用 What caused 问直接原因；What resulted in 问后续结果——方向不同，答案不同。"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "The surface facts mentioned in the passage.",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "The logical chain of cause and effect.",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "The speaker's emotional reaction.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "Background information about the topic.",
+          "is_correct": false
+        }
+      ],
+      "audio": {
+        "url": "ai_tts/cet6/1001/100109.mp3",
+        "local_path": "ai_tts/cet6/1001/100109.mp3",
+        "duration_ms": 13560,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "Cause-and-effect questions are signaled by stems containing phrases like 'What led to...', 'Why did...', or 'What was the result of...'. These require you to track logical chains rather than surface facts.",
+        "path": "ai_tts/cet6/1001/100109.mp3"
+      }
+    },
+    {
+      "card_id": "100110",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 10,
+      "card_box_code": "1001",
+      "interaction_type": 2,
+      "card_box_name": "根据题型预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，再说出数字/日期/人名类细节题的听力挑战。",
+        "task_prompt": "任务：先听音频，再说出数字/日期/人名类细节题的听力挑战。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据题型预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100110.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：细节题挑战：音频故意含多个相似数字作为干扰，需匹配对应事物。",
+        "explanation": "语境揭示：Questions that ask about numbers, dates, or names are straightforward detail questions. The challenge is that the passage may mention several similar numbers as distractors, so listen carefully for which figure matches the specific question."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：题干含数字/日期/人名 = 细节辨析题，音频中同类值会刻意设置干扰。② 核心规律：CET6 数字干扰题：正确数字会与错误数字在音频中紧邻出现，形成 A not B 对比结构。③ 验证与迁移：听时建立 数字 + 对应事物 的对应表，每听到一个数字立刻确认它对应哪个事物。",
+        "tips": [
+          "听数字题时，在草纸画表格：左列写数字，右列写对应事物，逐一填入。",
+          "\"not X but Y\" 结构中，正确数字是 Y，X 是干扰项，很多人误选 X。"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "time_window_ms": [
+        3200,
+        4600
+      ],
+      "audio": {
+        "url": "ai_tts/cet6/1001/100110.mp3",
+        "local_path": "ai_tts/cet6/1001/100110.mp3",
+        "duration_ms": 16032,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "Questions that ask about numbers, dates, or names are straightforward detail questions. The challenge is that the passage may mention several similar numbers as distractors, so listen carefully for which figure matches the specific question.",
+        "path": "ai_tts/cet6/1001/100110.mp3"
+      }
+    },
+    {
+      "card_id": "100111",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 11,
+      "card_box_code": "1001",
+      "interaction_type": 3,
+      "card_box_name": "根据题型预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，再判断态度题在听音时可重点关注的语音信号。",
+        "task_prompt": "任务：先听音频，再判断态度题在听音时可重点关注的语音信号。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据题型预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100111.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：态度题可通过语调（升/降调）、强调、犹豫、委婉等语音线索辅助判断。",
+        "explanation": "语境揭示：Attitude and opinion questions can often be answered based on the speaker's tone alone, before you even process the content. Listen for rising or falling intonation, emphasis, hesitation, and hedging words."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：态度题 = 语音+词汇双通道，语调是辅助但重要的信号。② 核心规律：CET6 态度题：上扬语调 + 积极词 = 正向；下降语调 + 消极词 = 负向；平稳语调 + 保留词 = 中立。③ 验证与迁移：犹豫标记（er/um/well）= 说话人不确定或不情愿，常对应 reluctant/uncertain 态度词。",
+        "tips": [
+          "语调 + 情感词 双信号共同判断态度，强化正确答案可信度。",
+          "说话人停顿/犹豫 = 不情愿/不确定，排除 enthusiastic/fully convinced 类选项。"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "target_duration_ms": 5400,
+      "audio": {
+        "url": "ai_tts/cet6/1001/100111.mp3",
+        "local_path": "ai_tts/cet6/1001/100111.mp3",
+        "duration_ms": 15000,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "Attitude and opinion questions can often be answered based on the speaker's tone alone, before you even process the content. Listen for rising or falling intonation, emphasis, hesitation, and hedging words.",
+        "path": "ai_tts/cet6/1001/100111.mp3"
+      }
+    },
+    {
+      "card_id": "100112",
+      "track": 1,
+      "library": 0,
+      "group": 0,
+      "box": 1,
+      "card_no": 12,
+      "card_box_code": "1001",
+      "interaction_type": 0,
+      "card_box_name": "根据题型预测考点",
+      "card_group_name": "听前预测",
+      "front_content": {
+        "text": "任务：先听音频，再说出 infer/imply 类题目的答题关键原则。",
+        "task_prompt": "任务：先听音频，再说出 infer/imply 类题目的答题关键原则。",
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "根据题型预测考点",
+          "success_criteria": "准确完成交互操作"
+        },
+        "audio_first": true,
+        "image_url": null,
+        "audio_url": "ai_tts/cet6/1001/100112.mp3",
+        "highlight_ranges": []
+      },
+      "back_content": {
+        "text": "结论：推断题原则：正确答案不是原文复述，而是超越字面内容的合理推断。",
+        "explanation": "语境揭示：When a question stem contains the word 'infer' or 'imply', avoid selecting the option that restates what was explicitly stated. The correct answer must involve reasoning beyond the literal content."
+      },
+      "analysis_content": {
+        "text": "① 识别信号：题干 infer/imply/suggest/conclude = 推断题，选项中原文复述项 = 必错项。② 核心规律：CET6 推断题：正确答案必须是音频内容中能推导出的，而非直接说出的结论。③ 验证与迁移：常见干扰项：原文直接陈述（too literal）和无关推断（too far）；正确项：合理但需推理的结论。",
+        "tips": [
+          "看到 infer/imply/suggest，先排除选项中含原文原词的选项——这是 too literal 陷阱。",
+          "推断需要 \"合理性\"：音频能支撑，但不是原文的直接重复，这才是 CET6 推断答案。"
+        ]
+      },
+      "source_ref": {
+        "type": "content_pool",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": null
+      },
+      "audio": {
+        "url": "ai_tts/cet6/1001/100112.mp3",
+        "local_path": "ai_tts/cet6/1001/100112.mp3",
+        "duration_ms": 13560,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "When a question stem contains the word 'infer' or 'imply', avoid selecting the option that restates what was explicitly stated. The correct answer must involve reasoning beyond the literal content.",
+        "path": "ai_tts/cet6/1001/100112.mp3"
+      }
+    }
+  ]
+}
