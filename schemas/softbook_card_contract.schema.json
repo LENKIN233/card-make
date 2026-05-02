@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "softbook-card-contract.schema.json",
+  "title": "Softbook CET Card Contract",
+  "type": "object",
+  "required": [
+    "card_id",
+    "track",
+    "knowledge_ref",
+    "interaction_id",
+    "front",
+    "analysis"
+  ],
+  "properties": {
+    "card_id": {
+      "type": "string",
+      "pattern": "^[0-9]{6}$"
+    },
+    "track": {
+      "enum": ["cet4", "cet6"]
+    },
+    "knowledge_ref": {
+      "type": "object",
+      "required": ["track", "library_id", "group_id", "box_id", "box_prefix"],
+      "properties": {
+        "track": { "enum": ["cet4", "cet6"] },
+        "library_id": { "type": "string" },
+        "library_name": { "type": "string" },
+        "group_id": { "type": "string" },
+        "group_name": { "type": "string" },
+        "box_id": { "type": "string" },
+        "box_name": { "type": "string" },
+        "box_prefix": {
+          "type": "string",
+          "pattern": "^[0-9]{4}$"
+        }
+      }
+    },
+    "interaction_id": {
+      "enum": ["flip", "multiple_choice", "lock", "elimination", "swipe", "hint_layer"]
+    },
+    "front": {
+      "type": "object",
+      "required": ["text"],
+      "properties": {
+        "text": { "type": "string" },
+        "task_prompt": { "type": "string" },
+        "audio_first": { "type": "boolean" },
+        "display_mode": { "type": "string" }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "required": ["text"],
+      "properties": {
+        "text": { "type": "string" },
+        "tips": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "source_ref": {
+      "type": "object",
+      "required": ["type", "provenance_status"],
+      "properties": {
+        "type": { "type": "string" },
+        "provenance_status": {
+          "enum": ["verified", "partial", "documented", "synthetic", "unverified"]
+        },
+        "paper_id": {},
+        "question_id": {},
+        "passage_id": {},
+        "note": {}
+      }
+    }
+  }
+}
