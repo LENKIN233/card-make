@@ -1,0 +1,202 @@
+{
+  "version": "card-make-content-quality-v1",
+  "status": "active",
+  "confirmed_by_user_interview": "2026-05-12",
+  "north_star": {
+    "goal": "Produce high-quality CET4/CET6 cards that help Chinese college students pass the exam through micro-coaching card learning.",
+    "success_is_not": [
+      "field_compliance_only",
+      "large_quantity_without_review",
+      "true_exam_source_only",
+      "generic_english_lecture",
+      "vocabulary_only_drill"
+    ],
+    "final_approval_authority": "user_only"
+  },
+  "default_user_model": {
+    "primary_group": "Chinese college students preparing for CET4/CET6",
+    "baseline": [
+      "unstable_foundation",
+      "low_learning_motivation",
+      "fragmented_study_time"
+    ],
+    "weak_point_tags": [
+      "vocabulary_weak",
+      "grammar_weak",
+      "listening_weak",
+      "reading_slow",
+      "writing_output_weak",
+      "translation_output_weak",
+      "motivation_low",
+      "exam_strategy_weak"
+    ]
+  },
+  "coverage_policy": {
+    "primary_method": [
+      "phase_based_from_foundation_to_pass_to_high_score",
+      "precise_library_group_box_ownership"
+    ],
+    "library_scope": [
+      "听力",
+      "仔细阅读",
+      "选词填空",
+      "写作",
+      "翻译",
+      "词汇",
+      "语法"
+    ],
+    "single_card_goal_policy": "Each card must have exactly one main training goal and may have secondary goals.",
+    "box_quality_policy": "A formal candidate box must show progression from recognition to application to transfer, and must avoid repetition and gaps."
+  },
+  "difficulty_policy": {
+    "tiers": [
+      "foundation",
+      "pass",
+      "high_score"
+    ],
+    "card_assignment": "A card must have one primary difficulty tier and may have secondary tiers.",
+    "cet4_cet6_relationship": "CET4 and CET6 may share structure, but CET6 must raise language, inference, and expression difficulty.",
+    "advanced_card_in_foundation_phase": "Allowed only when labeled and justified."
+  },
+  "allowed_card_prototypes": [
+    "knowledge_explanation",
+    "solving_action",
+    "error_correction",
+    "context_input",
+    "output_imitation",
+    "exam_strategy",
+    "integrated_micro_drill"
+  ],
+  "front_side_policy": {
+    "must_be": [
+      "low_burden",
+      "fast_to_enter",
+      "clearly_related_to_CET",
+      "independent_as_a_learning_task_or_prompt"
+    ],
+    "may_be": [
+      "task",
+      "question",
+      "context",
+      "material",
+      "audio_entry"
+    ],
+    "must_not": [
+      "leak_answer",
+      "leak_analysis_conclusion",
+      "be_back_side_content_with_blanks",
+      "require_back_side_to_make_sense"
+    ]
+  },
+  "back_side_analysis_policy": {
+    "minimum_value": [
+      "mechanism_explanation",
+      "transfer_method",
+      "common_error_point",
+      "how_to_handle_similar_items_next_time"
+    ],
+    "answer_explanation": "Required when the card prototype or interaction asks for a specific answer.",
+    "tone": [
+      "micro_coach",
+      "exam_useful",
+      "not_marketing_copy",
+      "not_chicken_soup",
+      "not_generic"
+    ]
+  },
+  "source_policy": {
+    "true_exam_role": "High-quality source and calibration reference, not the only source.",
+    "allowed_text_source_types": [
+      "true_exam",
+      "exam_rewrite",
+      "simulation",
+      "ai_generated",
+      "human_original"
+    ],
+    "ai_generated_formal_candidate_allowed": true,
+    "requirements_for_non_true_exam_text": [
+      "must_not_impersonate_true_exam",
+      "must_fit_CET_register_and_difficulty",
+      "must_have_natural_English",
+      "must_have_clear_training_goal",
+      "must_be_user_approved_before_formal_use"
+    ],
+    "rewrite_policy": [
+      "may_shortern_or_clarify_for_training",
+      "must_not_change_core_test_point_or_answer_logic",
+      "must_record_source_type"
+    ]
+  },
+  "tts_policy": {
+    "audio_generation_method": "TTS_AI_generated_by_default",
+    "audio_source_type_is_separate_from_text_source_type": true,
+    "text_for_tts_must_pass_content_review_before_audio_generation": true,
+    "tts_text_quality_checks": [
+      "fits_CET_listening_register",
+      "natural_spoken_English",
+      "audibly_clear_not_hard_to_parse_written_sentence",
+      "serves_current_library_group_box",
+      "has_clear_signal_point_or_training_focus",
+      "avoids_Chinese_English",
+      "avoids_forced_scenario_for_fake_test_point"
+    ],
+    "tts_audio_quality_checks": [
+      "accurate_pronunciation",
+      "suitable_speed",
+      "natural_rhythm",
+      "stress_and_pauses_do_not_mislead",
+      "audio_matches_text",
+      "no_auto_play",
+      "front_side_no_required_subtitles",
+      "back_side_transcript_allowed"
+    ]
+  },
+  "blockers": [
+    {
+      "id": "logic_error",
+      "severity": "blocker",
+      "description": "Answer, reasoning, or explanation is contradictory or likely to mislead the learner."
+    },
+    {
+      "id": "language_error",
+      "severity": "blocker",
+      "description": "Chinese explanation is awkward enough to harm learning, or English content is unnatural, ungrammatical, or Chinese-English."
+    },
+    {
+      "id": "inappropriate_wording",
+      "severity": "blocker",
+      "description": "Wording is unclear, misleading, over-marketing, motivational filler, or not suitable for CET learning."
+    },
+    {
+      "id": "low_knowledge_density",
+      "severity": "blocker",
+      "description": "Content only repeats the prompt or answer, says generic reminders, lacks mechanism, or has no transfer/exam value."
+    },
+    {
+      "id": "not_meeting_requirement",
+      "severity": "blocker",
+      "description": "The card does not satisfy the user task, softbook_cet product spec, or library/group/box target."
+    },
+    {
+      "id": "reverse_engineered_front",
+      "severity": "blocker",
+      "description": "The front side is derived from back-side answer or analysis instead of standing as an independent learning input."
+    },
+    {
+      "id": "fake_source_claim",
+      "severity": "blocker",
+      "description": "AI-generated, rewritten, simulated, or human-original material is presented as true exam material."
+    },
+    {
+      "id": "low_quality_variation",
+      "severity": "blocker",
+      "description": "Cards are repeated low-quality variants produced to fill a batch rather than serve real progression."
+    }
+  ],
+  "severity_policy": {
+    "blocker": "Cannot enter candidate batch.",
+    "major": "Can be preserved as draft but must be reworked.",
+    "minor": "May be fixed after review if it does not affect learning correctness or product fit.",
+    "batch_threshold": "Any blocker blocks the card; more than one major issue sends the card to revise."
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "version": "card-make-harness-v1",
+  "status": "active",
+  "workspace_role": {
+    "name": "softbook_cet_card_content_workspace",
+    "purpose": "Produce, review, and stage CET4/CET6 card content for softbook_cet formal use.",
+    "not": [
+      "main_app_repository",
+      "generic_english_learning_project",
+      "vocabulary_only_tool",
+      "true_exam_archive_only"
+    ]
+  },
+  "active_surfaces": {
+    "card_content": "card_boxes_json/",
+    "exam_material_pool": "actual_exams_paper/",
+    "tts_audio_assets": "ai_tts/",
+    "legacy_preview_reader": "card_viewer_interactive.html",
+    "structural_schema": "schemas/softbook_card_contract.schema.json",
+    "structural_validator": "scripts/validate_cards.mjs",
+    "content_harness": "spec/",
+    "review_records": "reviews/"
+  },
+  "softbook_cet_authority_refs": [
+    {
+      "path": "../softbook_cet/spec/product-core.json",
+      "expected_version": "vnext-8",
+      "owns": [
+        "product_promise",
+        "target_users",
+        "learning_experience",
+        "v1_scope"
+      ]
+    },
+    {
+      "path": "../softbook_cet/spec/card-system.json",
+      "expected_version": "vnext-4",
+      "owns": [
+        "minimum_card_requirements",
+        "field_semantics",
+        "content_constraints"
+      ]
+    },
+    {
+      "path": "../softbook_cet/spec/interactions.json",
+      "expected_version": "vnext-4",
+      "owns": [
+        "core_interactions",
+        "audio_binding_policy",
+        "hint_layer_semantics"
+      ]
+    },
+    {
+      "path": "../softbook_cet/spec/knowledge-map.json",
+      "expected_version": "vnext-3",
+      "owns": [
+        "TLGBNN",
+        "library_group_box_hierarchy",
+        "box_semantics"
+      ]
+    },
+    {
+      "path": "../softbook_cet/spec/box-catalog.json",
+      "expected_version": "vnext-2",
+      "owns": [
+        "library_group_box_catalog",
+        "box_prefixes",
+        "seeded_card_counts"
+      ]
+    }
+  ],
+  "content_boundary": {
+    "current_harness_focus": "Card content quality and agent behavior, not legacy migration status.",
+    "formal_use_condition": "Candidate content becomes formal usable content only after explicit user approval is recorded.",
+    "agent_max_authority": [
+      "generate_candidate_cards",
+      "edit_cards_inside_user_authorized_scope",
+      "self_review_candidates",
+      "recommend_user_confirmation",
+      "open_PR_for_harness_or_formal_batch_changes"
+    ],
+    "agent_forbidden_authority": [
+      "declare_final_formal_usability",
+      "auto_merge_harness_or_formal_content",
+      "delete_cards_without_user_confirmation",
+      "change_softbook_cet_product_specs_as_part_of_card_generation"
+    ]
+  },
+  "legacy_status_policy": {
+    "deprecated_for_quality_approval": [
+      "production_status",
+      "contract_ready",
+      "needs_review"
+    ],
+    "allowed_role": "legacy_structure_or_migration_compatibility_only",
+    "replacement_authority": "reviews/approved_batches/ records plus explicit user confirmation"
+  }
+}
