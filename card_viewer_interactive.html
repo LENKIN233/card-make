@@ -1216,42 +1216,26 @@
                 </div>
 
                 <div class="section" id="filterSection" style="display: none;">
-                    <div class="section-title">筛选题型 / 互动模型</div>
+                    <div class="section-title">筛选互动模型</div>
                     <div class="filter-checkbox">
-                        <input type="checkbox" value="0" class="typeFilter" checked />
-                        <label>T0 翻面卡 / flip</label>
+                        <input type="checkbox" value="flip" class="typeFilter" checked />
+                        <label>flip 翻面复盘</label>
                     </div>
                     <div class="filter-checkbox">
-                        <input type="checkbox" value="1" class="typeFilter" checked />
-                        <label>T1 四选一 / multiple_choice</label>
+                        <input type="checkbox" value="multiple_choice" class="typeFilter" checked />
+                        <label>multiple_choice 选择判断</label>
                     </div>
                     <div class="filter-checkbox">
-                        <input type="checkbox" value="2" class="typeFilter" checked />
-                        <label>T2 时机点击 / lock</label>
+                        <input type="checkbox" value="lock" class="typeFilter" checked />
+                        <label>lock 锁定 / 时机</label>
                     </div>
                     <div class="filter-checkbox">
-                        <input type="checkbox" value="3" class="typeFilter" checked />
-                        <label>T3 长按松手 / lock</label>
+                        <input type="checkbox" value="elimination" class="typeFilter" checked />
+                        <label>elimination 消除</label>
                     </div>
                     <div class="filter-checkbox">
-                        <input type="checkbox" value="4" class="typeFilter" checked />
-                        <label>T4 消除卡 / elimination</label>
-                    </div>
-                    <div class="filter-checkbox">
-                        <input type="checkbox" value="5" class="typeFilter" checked />
-                        <label>T5 下滑提示 / flip</label>
-                    </div>
-                    <div class="filter-checkbox">
-                        <input type="checkbox" value="6" class="typeFilter" checked />
-                        <label>T6 选词填空 / multiple_choice</label>
-                    </div>
-                    <div class="filter-checkbox">
-                        <input type="checkbox" value="7" class="typeFilter" checked />
-                        <label>T7 浏览判断 / swipe</label>
-                    </div>
-                    <div class="filter-checkbox">
-                        <input type="checkbox" value="8" class="typeFilter" checked />
-                        <label>T8 时态切换 / multiple_choice</label>
+                        <input type="checkbox" value="swipe" class="typeFilter" checked />
+                        <label>swipe 滑动判断</label>
                     </div>
                 </div>
 
@@ -1322,12 +1306,6 @@
             swipe: 7
         };
 
-        const PRODUCT_TO_LEGACY_TYPES = Object.entries(LEGACY_TO_PRODUCT_INTERACTION).reduce((acc, [legacyType, productType]) => {
-            if (!acc[productType]) acc[productType] = [];
-            acc[productType].push(Number(legacyType));
-            return acc;
-        }, {});
-
         const CONTRACT_REQUIRED_FIELDS = [
             'card_id',
             'track',
@@ -1384,18 +1362,8 @@
             return PRODUCT_TO_RENDER_TYPE[productId] ?? -1;
         }
 
-        function matchesSelectedTypes(card, selectedTypes) {
-            const legacyType = getExplicitLegacyInteractionType(card);
-            if (legacyType !== null) {
-                return selectedTypes.includes(legacyType);
-            }
-            const renderType = getRenderInteractionType(card);
-            if (renderType >= 0) {
-                return selectedTypes.includes(renderType);
-            }
-            const productId = getCardInteractionId(card);
-            const legacyOptions = PRODUCT_TO_LEGACY_TYPES[productId] || [];
-            return legacyOptions.some(type => selectedTypes.includes(type));
+        function matchesSelectedInteractions(card, selectedInteractionIds) {
+            return selectedInteractionIds.includes(getCardInteractionId(card));
         }
 
         function prepareCardForPreview(card) {
@@ -1649,11 +1617,11 @@
         }
 
         function applyFilters() {
-            const selectedTypes = Array.from(document.querySelectorAll('.typeFilter'))
+            const selectedInteractionIds = Array.from(document.querySelectorAll('.typeFilter'))
                 .filter(f => f.checked)
-                .map(f => parseInt(f.value));
+                .map(f => f.value);
 
-            filteredCards = allCards.filter(card => matchesSelectedTypes(card, selectedTypes));
+            filteredCards = allCards.filter(card => matchesSelectedInteractions(card, selectedInteractionIds));
             filteredCards.sort((a, b) => {
                 const aNo = Number.isFinite(Number(a.card_no)) ? Number(a.card_no) : 999999;
                 const bNo = Number.isFinite(Number(b.card_no)) ? Number(b.card_no) : 999999;
