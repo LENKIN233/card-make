@@ -1,0 +1,223 @@
+{
+  "review_id": "20260513-cet4-listening-0000-existing-sample",
+  "created_at": "2026-05-13T22:56:19+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测话题",
+    "box_prefixes": [
+      "0000"
+    ],
+    "card_ids": [
+      "000001",
+      "000002",
+      "000003"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "cards": [
+    {
+      "card_id": "000001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "0",
+        "box": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "训练听前/听后用音频线索预测话题重心",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "目标方向符合听力话题预测，但当前 front 没有给出可执行判断格式或选项，学习动作不成立。",
+        "box_progression_role": "recognition",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "Front asks the learner to make a topic-prediction judgment but does not define the output expected from a flip card.",
+        "The analysis is mostly reusable generic strategy text rather than evidence tied to this audio transcript.",
+        "The card repeats the same front pattern used across the sample, so it does not yet prove box progression."
+      ],
+      "minor_issues": [
+        "TTS text and audio quality have not been separately reviewed."
+      ],
+      "recommendation": "Revise before user review; keep the training goal but rewrite the front and analysis around the actual audio signal."
+    },
+    {
+      "card_id": "000002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "0",
+        "box": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "用听力开头信息判断报告或讲座的中心话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "多选形式可以服务听前预测，但当前选项是策略口号，正确答案可不听音频直接选出。",
+        "box_progression_role": "application",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": true,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "The correct option is a meta-strategy answer, not a content judgment grounded in the audio transcript.",
+        "Distractors are obviously bad behaviors, so the item does not test topic prediction.",
+        "Because the answer can be chosen without listening, the listening-card task fails its own success criteria."
+      ],
+      "minor_issues": [
+        "The analysis repeats the same generic structure-signal text rather than explaining the counseling/exam-season topic signal."
+      ],
+      "recommendation": "Block this sample; rewrite options as plausible topic choices tied to the audio content."
+    },
+    {
+      "card_id": "000003",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "0",
+        "box": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "识别讲座开头对话题范围的限定信号",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "音频文本有话题信号，但当前交互与答案形式不一致，无法作为可执行卡片。",
+        "box_progression_role": "transfer",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": true,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "Back side gives an answer window and says the learner should click near a trigger word, but the card interaction is `flip` and the front does not ask for timestamp selection.",
+        "The front remains a generic topic-prediction prompt and does not expose a concrete transfer task.",
+        "The analysis is not sufficiently tied to the urban water recycling transcript."
+      ],
+      "minor_issues": [
+        "If this is meant to train timestamp anchoring, the interaction contract and front task both need to change."
+      ],
+      "recommendation": "Block this sample; either convert the task to a matching interaction or rewrite it as a true flip card with a concrete topic-prediction answer."
+    }
+  ],
+  "batch_review": {
+    "status": "blocked",
+    "box_progression": "The intended recognition/application/transfer spread is visible only in metadata. In the actual card content, the fronts and analyses are too repetitive to demonstrate progression.",
+    "repetition_or_gap_risks": [
+      "All three fronts use nearly identical wording.",
+      "Analyses reuse the same mechanism paragraphs with only small process substitutions.",
+      "No card yet forces a topic judgment grounded in the specific audio transcript.",
+      "TTS text and audio have not been reviewed as separate quality surfaces."
+    ],
+    "representative_cards": [
+      "000001",
+      "000002",
+      "000003"
+    ],
+    "next_step": "Do not ask for user confirmation on this sample. Revise the 0000 box by drafting a new 3-card candidate sample with concrete topic choices, transcript-grounded analysis, and matched interaction semantics."
+  }
+}
