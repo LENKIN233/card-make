@@ -6,7 +6,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
 const REPORT_PATH = path.join(ROOT, 'reports', 'card_validation_report.json');
 
-const REQUIRED_FIELDS = ['card_id', 'track', 'knowledge_ref', 'interaction_id', 'front', 'analysis'];
+const REQUIRED_FIELDS = ['card_id', 'track', 'knowledge_ref', 'interaction_id', 'front', 'analysis', 'source_ref'];
+const SOURCE_REQUIRED_FIELDS = ['type', 'provenance_status'];
 const CORE_INTERACTIONS = new Set(['flip', 'multiple_choice', 'lock', 'elimination', 'swipe']);
 const TEMPLATE_LEAK_RE = /第\d+卡|当前素材中可优先关注|盒任务要求组织解析|CET[46]独立语料/;
 
@@ -77,6 +78,14 @@ function validate() {
       }
     }
 
+    if (hasValue(card.source_ref)) {
+      for (const field of SOURCE_REQUIRED_FIELDS) {
+        if (!hasValue(card.source_ref[field])) {
+          errors.push({ file, card_id: card.card_id, code: 'missing_source_ref_field', field });
+        }
+      }
+    }
+
     if (card.interaction_id === 'hint_layer') {
       errors.push({ file, card_id: card.card_id, code: 'hint_layer_as_standalone_interaction' });
     } else if (!CORE_INTERACTIONS.has(card.interaction_id)) {
@@ -96,10 +105,6 @@ function validate() {
     });
     if (TEMPLATE_LEAK_RE.test(visibleText)) {
       warnings.push({ file, card_id: card.card_id, code: 'visible_template_text' });
-    }
-
-    if (!card.source_ref?.provenance_status) {
-      warnings.push({ file, card_id: card.card_id, code: 'missing_provenance_status' });
     }
 
     const interaction = card.interaction_id || 'missing';
