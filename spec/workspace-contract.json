@@ -25,6 +25,12 @@
     {
       "path": "../softbook_cet/spec/product-core.json",
       "expected_version": "vnext-8",
+      "required_keys": [
+        "product_promise",
+        "target_users",
+        "learning_experience",
+        "v1_scope"
+      ],
       "owns": [
         "product_promise",
         "target_users",
@@ -35,6 +41,11 @@
     {
       "path": "../softbook_cet/spec/card-system.json",
       "expected_version": "vnext-4",
+      "required_keys": [
+        "minimum_card_requirements",
+        "field_semantics",
+        "content_constraints"
+      ],
       "owns": [
         "minimum_card_requirements",
         "field_semantics",
@@ -44,6 +55,10 @@
     {
       "path": "../softbook_cet/spec/interactions.json",
       "expected_version": "vnext-4",
+      "required_keys": [
+        "interactions",
+        "audio_binding_policy"
+      ],
       "owns": [
         "core_interactions",
         "audio_binding_policy",
@@ -53,6 +68,11 @@
     {
       "path": "../softbook_cet/spec/knowledge-map.json",
       "expected_version": "vnext-3",
+      "required_keys": [
+        "id_schema",
+        "libraries",
+        "box_semantics"
+      ],
       "owns": [
         "TLGBNN",
         "library_group_box_hierarchy",
@@ -62,6 +82,12 @@
     {
       "path": "../softbook_cet/spec/box-catalog.json",
       "expected_version": "vnext-2",
+      "required_keys": [
+        "id_schema",
+        "libraries",
+        "totals",
+        "catalog_policy"
+      ],
       "owns": [
         "library_group_box_catalog",
         "box_prefixes",
@@ -69,6 +95,66 @@
       ]
     }
   ],
+  "upstream_alignment_policy": {
+    "library_group_source_for_generation": "../softbook_cet/spec/box-catalog.json",
+    "knowledge_map_role": "broader knowledge semantics and hierarchy cues",
+    "known_group_alignment_issues": [
+      {
+        "id": "KM-BOX-GROUP-4-0",
+        "library_id": "4",
+        "group_id": "0",
+        "knowledge_map_group": "词义选择",
+        "box_catalog_group": "高级句子",
+        "status": "recorded_risk",
+        "handling": "Use box-catalog for exact card-generation placement until softbook_cet specs are reconciled."
+      },
+      {
+        "id": "KM-BOX-GROUP-4-1",
+        "library_id": "4",
+        "group_id": "1",
+        "knowledge_map_group": "语序重组",
+        "box_catalog_group": "主题化例句",
+        "status": "recorded_risk",
+        "handling": "Use box-catalog for exact card-generation placement until softbook_cet specs are reconciled."
+      },
+      {
+        "id": "KM-BOX-GROUP-4-2",
+        "library_id": "4",
+        "group_id": "2",
+        "knowledge_map_group": "主干搭建",
+        "box_catalog_group": "介词短语",
+        "status": "recorded_risk",
+        "handling": "Use box-catalog for exact card-generation placement until softbook_cet specs are reconciled."
+      },
+      {
+        "id": "KM-BOX-GROUP-4-3",
+        "library_id": "4",
+        "group_id": "3",
+        "knowledge_map_group": "固定表达",
+        "box_catalog_group": null,
+        "status": "recorded_risk",
+        "handling": "Do not generate against this group id from knowledge-map alone; require box-catalog placement."
+      },
+      {
+        "id": "KM-BOX-GROUP-5-0",
+        "library_id": "5",
+        "group_id": "0",
+        "knowledge_map_group": null,
+        "box_catalog_group": "同义词替换",
+        "status": "recorded_risk",
+        "handling": "Use box-catalog for exact card-generation placement until softbook_cet specs are reconciled."
+      },
+      {
+        "id": "KM-BOX-GROUP-6-3",
+        "library_id": "6",
+        "group_id": "3",
+        "knowledge_map_group": "主被动语态",
+        "box_catalog_group": "主/被动语态",
+        "status": "recorded_risk",
+        "handling": "Treat as a naming drift only; use box-catalog label for generated batch records."
+      }
+    ]
+  },
   "content_boundary": {
     "current_harness_focus": "Card content quality and agent behavior, not legacy migration status.",
     "formal_use_condition": "Candidate content becomes formal usable content only after explicit user approval is recorded.",
