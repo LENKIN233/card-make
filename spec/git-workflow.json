@@ -1,0 +1,125 @@
+{
+  "version": "card-make-git-workflow-v1",
+  "status": "active",
+  "purpose": "Make the agent responsible for the Git lifecycle of agent-authored tracked-file changes while preserving user authority over final content approval and PR merge.",
+  "authority_boundary": {
+    "agent_owns": [
+      "pre_edit_git_status_check",
+      "branch_scope_decision",
+      "local_validation",
+      "commit",
+      "push",
+      "open_or_update_draft_PR",
+      "publish_handoff"
+    ],
+    "user_reserves": [
+      "formal_content_approval",
+      "harness_or_formal_content_PR_merge_unless_explicitly_delegated",
+      "approval_to_delete_cards",
+      "approval_to_mark_content_formally_usable"
+    ]
+  },
+  "pre_edit_check": {
+    "required": true,
+    "commands": [
+      "git status --short --branch",
+      "git log --oneline --decorate -5"
+    ],
+    "dirty_worktree_policy": "Do not overwrite unrelated user changes. If dirty files affect the task, inspect and work with them; if unrelated, leave them alone."
+  },
+  "branch_policy": {
+    "preferred_prefixes": [
+      "harness/",
+      "content/",
+      "fix/",
+      "tooling/"
+    ],
+    "scope_rule": "Choose branch names by requirement domain and module boundary, not generic git-flow stages.",
+    "shared_base_branches": [
+      "main",
+      "fix/review-findings-card-contract",
+      "harness/card-content-control"
+    ],
+    "force_push_shared_base_branches": "forbidden",
+    "stacked_PRs_allowed": true
+  },
+  "existing_PR_policy": {
+    "update_existing_when": [
+      "same_requirement_domain",
+      "same_base_branch",
+      "same_review_unit"
+    ],
+    "create_new_when": [
+      "new_requirement_domain",
+      "different_base_branch",
+      "existing_PR_scope_would_blur",
+      "user_requests_separate_review"
+    ],
+    "default_for_harness_followups": "use_existing_PR_for_same_harness_domain; create_stacked_PR_for_distinct_git_workflow_or_quality_gate_domains"
+  },
+  "validation_policy": {
+    "before_commit": [
+      {
+        "scope": "harness_files",
+        "command": "node scripts/validate_harness.mjs"
+      },
+      {
+        "scope": "card_json_or_preview_reader",
+        "command": "node scripts/validate_cards.mjs --write-report"
+      },
+      {
+        "scope": "all_tracked_changes",
+        "command": "git diff --check"
+      }
+    ],
+    "no_remote_checks_policy": "If GitHub reports no checks, local validation plus PR metadata is the evidence of completion."
+  },
+  "completion_policy": {
+    "agent_authored_tracked_changes_default": "validated_commit_push_draft_PR",
+    "local_only_exceptions": [
+      "small_samples_for_user_review",
+      "read_only_audits",
+      "explicit_user_local_only_request"
+    ],
+    "formal_bulk_card_changes_require": [
+      "user_confirmed_sample",
+      "local_validation",
+      "commit",
+      "push",
+      "draft_PR"
+    ],
+    "harness_changes_require": [
+      "local_validation",
+      "commit",
+      "push",
+      "draft_PR"
+    ]
+  },
+  "merge_policy": {
+    "default": "manual_user_confirmation_required",
+    "agent_may_merge_only_when": "user_explicitly_delegates_merge_for_the_specific_PR_or_task_class",
+    "never_merge_when": [
+      "formal_content_not_user_approved",
+      "validator_failing",
+      "PR_scope_mixes_harness_and_bulk_content",
+      "base_branch_or_target_unclear"
+    ]
+  },
+  "handoff_policy": {
+    "directory": "reviews/git_handoffs/",
+    "record_required_when": "agent_publishes_tracked_file_changes",
+    "required_fields": [
+      "branch",
+      "base_branch",
+      "commit_sha",
+      "push_ref",
+      "PR_url",
+      "PR_state",
+      "is_draft",
+      "validation",
+      "local_status",
+      "remaining_risks",
+      "merge_authority"
+    ]
+  }
+}

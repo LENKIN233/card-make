@@ -8,6 +8,8 @@
       "self_review_candidates",
       "revise_user_authorized_scope",
       "mark_discard_candidates",
+      "manage_git_lifecycle_for_agent_authored_tracked_changes",
+      "open_or_update_draft_PRs",
       "commit_push_open_PR_for_harness_changes",
       "commit_push_open_PR_for_user_confirmed_formal_batches"
     ],
@@ -16,6 +18,8 @@
       "batch_generate_before_user_confirms_sample",
       "delete_cards_without_user_confirmation",
       "auto_merge_harness_or_formal_content_PRs",
+      "auto_merge_without_user_authorization",
+      "force_push_main_or_shared_base_branches",
       "mix_harness_changes_with_bulk_card_content_changes"
     ]
   },
@@ -81,9 +85,14 @@
     ]
   },
   "git_policy": {
-    "harness_changes": "commit_push_open_PR_required",
+    "contract": "spec/git-workflow.json",
+    "pre_edit_status_check": "required",
+    "harness_changes": "validated_commit_push_open_or_update_draft_PR_required",
     "small_samples": "may_remain_local_for_user_review",
-    "formal_bulk_card_changes": "commit_push_open_PR_required_after_user_confirmed_sample",
-    "PR_merge": "manual_user_confirmation_required"
+    "formal_bulk_card_changes": "validated_commit_push_open_or_update_draft_PR_required_after_user_confirmed_sample",
+    "existing_PR_update": "update_existing_open_PR_when_same_requirement_domain_and_base",
+    "new_PR": "create_scoped_branch_when_separate_review_unit_or_existing_PR_scope_would_blur",
+    "PR_merge": "manual_user_confirmation_required",
+    "handoff": "branch_base_commit_push_ref_validation_PR_status_required"
   }
 }
