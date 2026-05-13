@@ -1,0 +1,64 @@
+{
+  "version": "card-make-evals-v1",
+  "status": "active",
+  "fixture_suite": "spec/eval-fixtures.json",
+  "golden_tasks": [
+    {
+      "id": "GT-CARD-001",
+      "name": "three_card_sample_for_box",
+      "prompt": "Given one library/group/box target, produce exactly 3 candidate cards with quality metadata and self-review.",
+      "expected": [
+        "uses_softbook_box_target",
+        "states_main_training_goal",
+        "states_weak_point_tags",
+        "states_difficulty",
+        "uses_allowed_card_prototype",
+        "includes_exam_value",
+        "runs_blocker_scan",
+        "does_not_claim_final_usability"
+      ]
+    },
+    {
+      "id": "GT-CARD-002",
+      "name": "tts_listening_text_review",
+      "prompt": "Given a listening box target, draft TTS text and review it before audio generation.",
+      "expected": [
+        "separates_text_source_type_from_audio_generation_method",
+        "checks_spoken_English_naturalness",
+        "checks_signal_point_or_training_focus",
+        "does_not_treat_TTS_as_source_authenticity"
+      ]
+    },
+    {
+      "id": "GT-CARD-003",
+      "name": "reject_reverse_engineered_front",
+      "prompt": "Review a card whose front side is just the back-side answer rewritten as a blank.",
+      "expected": [
+        "marks_reverse_engineered_front_blocker",
+        "explains_why_front_is_not_independent",
+        "does_not_salvage_by_minor_copyedit_only"
+      ]
+    }
+  ],
+  "scorecard": {
+    "delivery_status": ["pass", "revise", "block"],
+    "internal_dimensions": [
+      "box_match",
+      "exam_value",
+      "language_naturalness",
+      "front_back_independence",
+      "cognitive_load",
+      "transfer_value",
+      "box_progression"
+    ],
+    "minimum_rules": [
+      "any_blocker_blocks_card",
+      "more_than_one_major_issue_sends_card_to_revise",
+      "before_user_approval_content_is_candidate_only"
+    ]
+  },
+  "review_cadence": [
+    "after_each_large_batch",
+    "after_any_detected_agent_drift"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "version": "card-make-agent-harness-v1",
+  "status": "active",
+  "influences": {
+    "openai_agents_pattern": [
+      "separate_instructions_from_tools_and_guardrails",
+      "use_evals_for_repeatable_quality_checks",
+      "use_tracing_or_review_records_for decisions_and_tool_outputs",
+      "make_guardrails capable_of_blocking_bad_outputs"
+    ],
+    "anthropic_harness_pattern": [
+      "start_with_simple_workflows_before_complex_agents",
+      "ground_long_running_agents_in_environment_truth",
+      "use_checkpoints_and_artifacts_for_long_tasks",
+      "use_hooks_or_validators_to_turn_preferences_into repeated_checks"
+    ],
+    "project_interpretation": "External agent-harness ideas inform the operating model, but user-confirmed card quality rules are the final authority for this workspace."
+  },
+  "operating_model": {
+    "task_start": [
+      "briefly_restate_user_request",
+      "list_specs_read",
+      "stop_if_restatement_is_wrong"
+    ],
+    "progressive_disclosure": "Read the smallest relevant spec subset, escalate only when the task crosses product, content, interaction, or box boundaries.",
+    "ground_truth_sources": [
+      "current_workspace_files",
+      "../softbook_cet/spec/product-core.json",
+      "../softbook_cet/spec/card-system.json",
+      "../softbook_cet/spec/box-catalog.json",
+      "user_interview_confirmed_rules"
+    ],
+    "guardrails": [
+      "content-quality blockers",
+      "sample before batch",
+      "user-only final approval",
+      "legacy status demotion",
+      "tts text/audio separation",
+      "no harness and bulk-content mixed PR",
+      "recorded upstream catalog alignment issues"
+    ],
+    "records": [
+      "reviews/agent_self_review/",
+      "reviews/approved_batches/",
+      "reports/",
+      "spec/eval-fixtures.json"
+    ]
+  }
+}

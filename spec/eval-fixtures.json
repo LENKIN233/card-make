@@ -1,0 +1,262 @@
+{
+  "version": "card-make-eval-fixtures-v1",
+  "status": "active",
+  "purpose": "Canonical regression fixtures for the card content harness golden tasks.",
+  "fixture_cases": [
+    {
+      "id": "FIX-GT-CARD-001-PASS-THREE-SAMPLE",
+      "golden_task_id": "GT-CARD-001",
+      "type": "sample_batch",
+      "target": {
+        "track": "cet4",
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "1",
+        "box": "数字类",
+        "box_prefix": "0031"
+      },
+      "cards": [
+        {
+          "card_id": "003191",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "3",
+            "group": "细节捕捉",
+            "box_id": "1",
+            "box": "数字类",
+            "box_prefix": "0031"
+          },
+          "interaction_id": "multiple_choice",
+          "front": {
+            "prompt": "In the short audio, focus on the price the woman finally agrees to pay.",
+            "options": ["$5", "$15", "$50", "$55"]
+          },
+          "analysis": {
+            "answer": "$15",
+            "value": "This trains number discrimination under weak stress, a common CET listening detail trap."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Identify the final agreed number in a short listening context.",
+            "secondary_training_goals": ["separate similar-sounding numbers"],
+            "weak_point_tags": ["listening_weak"],
+            "difficulty": {
+              "primary": "foundation",
+              "secondary": []
+            },
+            "card_prototype": "context_input",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only listening micro-drill, not true exam content.",
+              "audio_generation_method": "none"
+            },
+            "exam_value": "CET listening often tests whether the learner catches the final corrected number.",
+            "box_progression_role": "recognition",
+            "review_status": "agent_pass"
+          }
+        },
+        {
+          "card_id": "003192",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "3",
+            "group": "细节捕捉",
+            "box_id": "1",
+            "box": "数字类",
+            "box_prefix": "0031"
+          },
+          "interaction_id": "lock",
+          "front": {
+            "prompt": "Arrange the two numbers in the order they appear in the mini dialogue.",
+            "lock_slots": ["first number", "second number"]
+          },
+          "analysis": {
+            "value": "Ordering numbers forces the learner to track local listening detail instead of guessing from memory."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Track two numbers in sequence during a short listening prompt.",
+            "secondary_training_goals": ["avoid swapping first and final number"],
+            "weak_point_tags": ["listening_weak"],
+            "difficulty": {
+              "primary": "pass",
+              "secondary": []
+            },
+            "card_prototype": "solving_action",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only listening micro-drill, not true exam content.",
+              "audio_generation_method": "none"
+            },
+            "exam_value": "CET listening detail questions often punish learners who catch a number but miss its role.",
+            "box_progression_role": "application",
+            "review_status": "agent_pass"
+          }
+        },
+        {
+          "card_id": "003193",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "3",
+            "group": "细节捕捉",
+            "box_id": "1",
+            "box": "数字类",
+            "box_prefix": "0031"
+          },
+          "interaction_id": "flip",
+          "front": {
+            "prompt": "After hearing a number and a corrected number, decide what the question is really asking you to keep."
+          },
+          "analysis": {
+            "value": "The transfer point is to listen for correction markers such as actually, instead, or make it."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Transfer number-detail listening to correction-marker contexts.",
+            "secondary_training_goals": ["notice correction markers"],
+            "weak_point_tags": ["listening_weak", "exam_strategy_weak"],
+            "difficulty": {
+              "primary": "high_score",
+              "secondary": ["pass"]
+            },
+            "card_prototype": "exam_strategy",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only listening micro-drill, not true exam content.",
+              "audio_generation_method": "none"
+            },
+            "exam_value": "Higher-score CET listening requires keeping the number that survives a correction, not the first number heard.",
+            "box_progression_role": "transfer",
+            "review_status": "agent_pass"
+          }
+        }
+      ],
+      "expected_outcome": {
+        "batch_status": "recommend_user_confirmation",
+        "formal_use_claimed": false,
+        "expected_blockers": [],
+        "box_progression": ["recognition", "application", "transfer"]
+      }
+    },
+    {
+      "id": "FIX-GT-CARD-002-BLOCK-TTS-SOURCE-CONFLATION",
+      "golden_task_id": "GT-CARD-002",
+      "type": "single_card",
+      "cards": [
+        {
+          "card_id": "003198",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "3",
+            "group": "细节捕捉",
+            "box_id": "1",
+            "box": "数字类",
+            "box_prefix": "0031"
+          },
+          "interaction_id": "flip",
+          "front": {
+            "prompt": "Listen to the generated audio and treat it as a true exam recording."
+          },
+          "analysis": {
+            "value": "This card is intentionally bad: it treats generated TTS audio as proof of source authenticity."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Detect source/authenticity confusion in a listening card.",
+            "secondary_training_goals": [],
+            "weak_point_tags": ["listening_weak"],
+            "difficulty": {
+              "primary": "foundation",
+              "secondary": []
+            },
+            "card_prototype": "context_input",
+            "material": {
+              "text_source_type": "ai_generated",
+              "source_note": "Incorrectly claims true exam authenticity because a TTS file exists.",
+              "audio_generation_method": "TTS_AI_generated",
+              "tts_text_reviewed": false,
+              "tts_audio_reviewed": false
+            },
+            "exam_value": "The fixture exists to block source-authenticity drift before audio generation.",
+            "box_progression_role": "recognition",
+            "review_status": "block"
+          }
+        }
+      ],
+      "fixture_flags": {
+        "conflates_tts_with_source_authenticity": true
+      },
+      "expected_outcome": {
+        "card_status": "block",
+        "formal_use_claimed": false,
+        "expected_blockers": ["fake_source_claim"],
+        "blocker_scan": {
+          "fake_source_claim": true
+        }
+      }
+    },
+    {
+      "id": "FIX-GT-CARD-003-BLOCK-REVERSE-FRONT",
+      "golden_task_id": "GT-CARD-003",
+      "type": "single_card",
+      "cards": [
+        {
+          "card_id": "011190",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "1",
+            "library": "仔细阅读",
+            "group_id": "1",
+            "group": "干扰项排除",
+            "box_id": "1",
+            "box": "绝对化",
+            "box_prefix": "0111"
+          },
+          "interaction_id": "multiple_choice",
+          "front": {
+            "prompt": "Fill in the blank: The option is wrong because it uses the word ____."
+          },
+          "analysis": {
+            "answer": "always",
+            "value": "This is intentionally bad because the front side was reverse-engineered from the analysis answer."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Reject a front side that only hides the back-side answer.",
+            "secondary_training_goals": [],
+            "weak_point_tags": ["reading_slow", "exam_strategy_weak"],
+            "difficulty": {
+              "primary": "foundation",
+              "secondary": []
+            },
+            "card_prototype": "error_correction",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only bad card, not true exam content.",
+              "audio_generation_method": "none"
+            },
+            "exam_value": "The fixture protects front-side independence: the prompt must stand as a real reading task.",
+            "box_progression_role": "recognition",
+            "review_status": "block"
+          }
+        }
+      ],
+      "fixture_flags": {
+        "front_stands_alone": false
+      },
+      "expected_outcome": {
+        "card_status": "block",
+        "formal_use_claimed": false,
+        "expected_blockers": ["reverse_engineered_front"],
+        "blocker_scan": {
+          "reverse_engineered_front": true
+        }
+      }
+    }
+  ]
+}
