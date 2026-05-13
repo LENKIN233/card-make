@@ -215,6 +215,162 @@
             font-size: 11px;
         }
 
+        .card-item-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .card-item-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .list-chip {
+            display: inline-flex;
+            align-items: center;
+            max-width: 100%;
+            padding: 2px 6px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-muted);
+            font-size: 10px;
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+
+        .list-chip.warn {
+            border-color: rgba(245, 158, 11, 0.48);
+            color: #ffd58a;
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .list-chip.ok {
+            border-color: rgba(16, 185, 129, 0.45);
+            color: #8df3c2;
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .list-chip.block {
+            border-color: rgba(239, 68, 68, 0.42);
+            color: #ffb0b0;
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .review-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .review-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .review-row strong {
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .review-chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .review-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .review-chip.ok {
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #8df3c2;
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .review-chip.warn {
+            border-color: rgba(245, 158, 11, 0.5);
+            color: #ffd58a;
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .review-chip.block {
+            border-color: rgba(239, 68, 68, 0.45);
+            color: #ffb0b0;
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .review-findings {
+            display: grid;
+            gap: 6px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .review-finding {
+            padding: 7px 8px;
+            border-radius: 6px;
+            border-left: 2px solid var(--border);
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        .review-finding.warn {
+            border-left-color: var(--warning);
+        }
+
+        .review-finding.block {
+            border-left-color: var(--error);
+        }
+
+        .review-finding.ok {
+            border-left-color: var(--success);
+        }
+
+        .secondary-btn {
+            width: 100%;
+            min-height: 36px;
+            padding: 8px 10px;
+            border: 1px solid rgba(0, 212, 255, 0.42);
+            border-radius: 8px;
+            background: rgba(0, 129, 212, 0.12);
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(0, 129, 212, 0.2);
+        }
+
+        .copy-status {
+            min-height: 16px;
+            color: var(--text-muted);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
         /* ============ MAIN CONTENT ============ */
         .main-content {
             display: flex;
@@ -336,6 +492,8 @@
         .card-meta-left {
             display: flex;
             gap: 12px;
+            flex-wrap: wrap;
+            min-width: 0;
         }
 
         .meta-badge {
@@ -1039,43 +1197,61 @@
                     </div>
                 </div>
 
+                <div class="section" id="reviewSection" style="display: none;">
+                    <div class="section-title">审核信号</div>
+                    <div class="review-panel">
+                        <div class="review-row">
+                            <span>当前卡</span>
+                            <strong id="reviewCardId">未选择</strong>
+                        </div>
+                        <div class="review-row">
+                            <span>所属盒子</span>
+                            <strong id="reviewBoxPath">—</strong>
+                        </div>
+                        <div class="review-chip-list" id="reviewChips"></div>
+                        <div class="review-findings" id="reviewFindings"></div>
+                        <button class="secondary-btn" type="button" id="copyReviewDraftBtn">复制审核草稿</button>
+                        <div class="copy-status" id="copyReviewStatus"></div>
+                    </div>
+                </div>
+
                 <div class="section" id="filterSection" style="display: none;">
-                    <div class="section-title">筛选题型</div>
+                    <div class="section-title">筛选题型 / 互动模型</div>
                     <div class="filter-checkbox">
                         <input type="checkbox" value="0" class="typeFilter" checked />
-                        <label>T0 翻面卡</label>
+                        <label>T0 翻面卡 / flip</label>
                     </div>
                     <div class="filter-checkbox">
                         <input type="checkbox" value="1" class="typeFilter" checked />
-                        <label>T1 四选一</label>
+                        <label>T1 四选一 / multiple_choice</label>
                     </div>
                     <div class="filter-checkbox">
                         <input type="checkbox" value="2" class="typeFilter" checked />
-                        <label>T2 时机点击</label>
+                        <label>T2 时机点击 / lock</label>
                     </div>
                     <div class="filter-checkbox">
                         <input type="checkbox" value="3" class="typeFilter" checked />
-                        <label>T3 长按松手</label>
+                        <label>T3 长按松手 / lock</label>
                     </div>
                     <div class="filter-checkbox">
                         <input type="checkbox" value="4" class="typeFilter" checked />
-                        <label>T4 消除卡</label>
+                        <label>T4 消除卡 / elimination</label>
                     </div>
                     <div class="filter-checkbox">
                         <input type="checkbox" value="5" class="typeFilter" checked />
-                        <label>T5 下滑提示</label>
+                        <label>T5 下滑提示 / flip</label>
                     </div>
                     <div class="filter-checkbox">
                         <input type="checkbox" value="6" class="typeFilter" checked />
-                        <label>T6 选词填空</label>
+                        <label>T6 选词填空 / multiple_choice</label>
                     </div>
                     <div class="filter-checkbox">
                         <input type="checkbox" value="7" class="typeFilter" checked />
-                        <label>T7 浏览判断</label>
+                        <label>T7 浏览判断 / swipe</label>
                     </div>
                     <div class="filter-checkbox">
                         <input type="checkbox" value="8" class="typeFilter" checked />
-                        <label>T8 时态切换</label>
+                        <label>T8 时态切换 / multiple_choice</label>
                     </div>
                 </div>
 
@@ -1118,6 +1294,283 @@
             8: 'T8 时态切换'
         };
 
+        const PRODUCT_INTERACTION_TYPES = {
+            flip: 'flip 翻面复盘',
+            multiple_choice: 'multiple_choice 选择判断',
+            lock: 'lock 锁定/时机',
+            elimination: 'elimination 消除',
+            swipe: 'swipe 滑动判断'
+        };
+
+        const LEGACY_TO_PRODUCT_INTERACTION = {
+            0: 'flip',
+            1: 'multiple_choice',
+            2: 'lock',
+            3: 'lock',
+            4: 'elimination',
+            5: 'flip',
+            6: 'multiple_choice',
+            7: 'swipe',
+            8: 'multiple_choice'
+        };
+
+        const PRODUCT_TO_RENDER_TYPE = {
+            flip: 0,
+            multiple_choice: 1,
+            lock: 2,
+            elimination: 4,
+            swipe: 7
+        };
+
+        const PRODUCT_TO_LEGACY_TYPES = Object.entries(LEGACY_TO_PRODUCT_INTERACTION).reduce((acc, [legacyType, productType]) => {
+            if (!acc[productType]) acc[productType] = [];
+            acc[productType].push(Number(legacyType));
+            return acc;
+        }, {});
+
+        const CONTRACT_REQUIRED_FIELDS = [
+            'card_id',
+            'track',
+            'knowledge_ref',
+            'interaction_id',
+            'front',
+            'analysis',
+            'source_ref'
+        ];
+
+        const WARN_SOURCE_STATUSES = new Set(['unverified', 'synthetic', 'simulated', 'unknown']);
+        const REVIEW_BLOCKING_FLAGS = new Set(['missing_front', 'missing_analysis', 'unsupported_interaction']);
+        const REVIEW_WARN_FLAGS = new Set(['unverified_source', 'simulated_source', 'needs_review', 'legacy_migration']);
+
+        function normalizeLegacyType(value) {
+            const type = Number(value);
+            return Number.isInteger(type) && type >= 0 ? type : null;
+        }
+
+        function getExplicitLegacyInteractionType(card) {
+            if (!card || typeof card !== 'object') return null;
+            const direct = normalizeLegacyType(card.interaction_type);
+            if (direct !== null) return direct;
+            const legacy = card.legacy_interaction || {};
+            return normalizeLegacyType(legacy.type);
+        }
+
+        function getCardInteractionId(card) {
+            if (!card || typeof card !== 'object') return 'unknown';
+            const productId = typeof card.interaction_id === 'string' ? card.interaction_id.trim() : '';
+            if (productId) return productId;
+            const legacyType = getExplicitLegacyInteractionType(card);
+            return LEGACY_TO_PRODUCT_INTERACTION[legacyType] || 'unknown';
+        }
+
+        function getRenderInteractionType(card) {
+            const legacyType = getExplicitLegacyInteractionType(card);
+            if (legacyType !== null) return legacyType;
+            const productId = getCardInteractionId(card);
+            if (productId === 'multiple_choice') {
+                if (Array.isArray(card.word_bank) || Array.isArray(card.blank_answers)) return 6;
+                if (Array.isArray(card.form_options)) return 8;
+                return 1;
+            }
+            if (productId === 'lock') {
+                if ('target_duration_ms' in card) return 3;
+                return 2;
+            }
+            if (productId === 'flip') {
+                const front = getCardFront(card);
+                if (front && front.hint_content) return 5;
+                return 0;
+            }
+            return PRODUCT_TO_RENDER_TYPE[productId] ?? -1;
+        }
+
+        function matchesSelectedTypes(card, selectedTypes) {
+            const legacyType = getExplicitLegacyInteractionType(card);
+            if (legacyType !== null) {
+                return selectedTypes.includes(legacyType);
+            }
+            const renderType = getRenderInteractionType(card);
+            if (renderType >= 0) {
+                return selectedTypes.includes(renderType);
+            }
+            const productId = getCardInteractionId(card);
+            const legacyOptions = PRODUCT_TO_LEGACY_TYPES[productId] || [];
+            return legacyOptions.some(type => selectedTypes.includes(type));
+        }
+
+        function prepareCardForPreview(card) {
+            if (!card || typeof card !== 'object') return card;
+            const prepared = { ...card };
+            if (!prepared.front_content && prepared.front) prepared.front_content = prepared.front;
+            if (!prepared.analysis_content && prepared.analysis) prepared.analysis_content = prepared.analysis;
+            if (!prepared.back_content && prepared.answer) prepared.back_content = prepared.answer;
+            if (!prepared.audio && prepared.front && prepared.front.audio_url) {
+                prepared.audio = { url: prepared.front.audio_url, path: prepared.front.audio_url };
+            }
+            if (!('interaction_type' in prepared)) {
+                prepared.interaction_type = getRenderInteractionType(prepared);
+            }
+            return prepared;
+        }
+
+        function getCardFront(card) {
+            return (card && (card.front || card.front_content)) || {};
+        }
+
+        function getCardAnalysis(card) {
+            return (card && (card.analysis || card.analysis_content)) || {};
+        }
+
+        function getCardSource(card) {
+            return (card && card.source_ref) || {};
+        }
+
+        function hasText(value) {
+            return typeof value === 'string' && value.trim().length > 0;
+        }
+
+        function getKnowledgePath(card) {
+            const ref = (card && card.knowledge_ref) || {};
+            const track = ref.track || card.track || 'unknown';
+            const library = ref.library_name || ref.library_id || (card.library ?? 'NA');
+            const group = ref.group_name || ref.group_id || (card.group ?? 'NA');
+            const box = ref.box_name || ref.box_id || card.card_box_name || (card.box ?? 'NA');
+            const prefix = ref.box_prefix || card.card_box_code || '';
+            return `${track} / ${library} / ${group} / ${box}${prefix ? ` / ${prefix}` : ''}`;
+        }
+
+        function getReviewFindings(card) {
+            if (!card) return [{ severity: 'block', text: '未选择卡片。' }];
+
+            const findings = [];
+            const missingFields = CONTRACT_REQUIRED_FIELDS.filter(field => !(field in card) || card[field] === null || card[field] === undefined);
+            if (missingFields.length) {
+                findings.push({
+                    severity: 'block',
+                    code: 'missing_contract_fields',
+                    text: `缺少 softbook 合同字段：${missingFields.join(', ')}。`
+                });
+            }
+
+            const interactionId = getCardInteractionId(card);
+            if (!PRODUCT_INTERACTION_TYPES[interactionId]) {
+                findings.push({
+                    severity: 'block',
+                    code: 'unsupported_interaction',
+                    text: `interaction_id=${interactionId || 'unknown'} 不在当前产品互动集合内。`
+                });
+            }
+
+            const front = getCardFront(card);
+            if (!hasText(front.text) && !hasText(front.task_prompt)) {
+                findings.push({
+                    severity: 'block',
+                    code: 'missing_front',
+                    text: '题面缺少可独立成立的 text 或 task_prompt。'
+                });
+            }
+
+            const analysis = getCardAnalysis(card);
+            if (!hasText(analysis.text)) {
+                findings.push({
+                    severity: 'block',
+                    code: 'missing_analysis',
+                    text: 'analysis.text 缺失，无法审核知识点复盘。'
+                });
+            }
+
+            if (!card.knowledge_ref) {
+                findings.push({
+                    severity: 'block',
+                    code: 'missing_knowledge_ref',
+                    text: '缺少 knowledge_ref，无法确认盒子归属。'
+                });
+            }
+
+            const source = getCardSource(card);
+            const provenance = source.provenance_status || 'unknown';
+            if (!card.source_ref) {
+                findings.push({
+                    severity: 'block',
+                    code: 'missing_source_ref',
+                    text: '缺少 source_ref，不能判断来源类型与可用边界。'
+                });
+            } else if (WARN_SOURCE_STATUSES.has(String(provenance).toLowerCase())) {
+                findings.push({
+                    severity: 'warn',
+                    code: 'source_not_verified',
+                    text: `来源状态为 ${provenance}，只能作为样卡预览或待审内容。`
+                });
+            }
+
+            const flags = Array.isArray(card.quality_flags) ? card.quality_flags : [];
+            flags.forEach(flag => {
+                const severity = REVIEW_BLOCKING_FLAGS.has(flag)
+                    ? 'block'
+                    : (REVIEW_WARN_FLAGS.has(flag) ? 'warn' : 'info');
+                findings.push({
+                    severity,
+                    code: `quality_flag:${flag}`,
+                    text: `quality_flags 包含 ${flag}。`
+                });
+            });
+
+            const status = card.production_status || card.review_status || 'unknown';
+            if (status !== 'reviewed_sample') {
+                findings.push({
+                    severity: 'warn',
+                    code: 'not_user_approved',
+                    text: `当前状态为 ${status}；此字段不是正式发布批准。`
+                });
+            }
+
+            findings.push({
+                severity: 'info',
+                code: 'preview_is_not_approval',
+                text: '预览器只辅助检查呈现和审核信号，不产生最终批准。'
+            });
+
+            return findings;
+        }
+
+        function getReviewTone(card) {
+            const findings = getReviewFindings(card);
+            if (findings.some(f => f.severity === 'block')) return 'block';
+            if (findings.some(f => f.severity === 'warn')) return 'warn';
+            return 'ok';
+        }
+
+        function getReviewToneLabel(tone) {
+            if (tone === 'block') return '阻断';
+            if (tone === 'warn') return '待审';
+            return '可预览';
+        }
+
+        function renderChip(label, tone = '') {
+            const cls = tone ? ` ${tone}` : '';
+            return `<span class="review-chip${cls}">${escapeHtml(label)}</span>`;
+        }
+
+        function renderListChip(label, tone = '') {
+            const cls = tone ? ` ${tone}` : '';
+            return `<span class="list-chip${cls}">${escapeHtml(label)}</span>`;
+        }
+
+        function getCardListMeta(card) {
+            const interactionId = getCardInteractionId(card);
+            const tone = getReviewTone(card);
+            const flags = Array.isArray(card.quality_flags) ? card.quality_flags.length : 0;
+            const source = getCardSource(card);
+            return {
+                tone,
+                toneLabel: getReviewToneLabel(tone),
+                interactionLabel: PRODUCT_INTERACTION_TYPES[interactionId] || interactionId || 'unknown',
+                status: card.production_status || card.review_status || 'unknown',
+                provenance: source.provenance_status || 'unknown',
+                flags
+            };
+        }
+
         // File loading
         document.getElementById('fileInput').addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -1134,6 +1587,8 @@
             };
             reader.readAsText(file);
         });
+
+        document.getElementById('copyReviewDraftBtn').addEventListener('click', copyCurrentReviewDraft);
 
         // Filters
         document.querySelectorAll('.typeFilter').forEach(f => f.addEventListener('change', applyFilters));
@@ -1181,13 +1636,13 @@
 
                 const cards = flat.filter(item => item && typeof item === 'object' && ('interaction_type' in item || 'card_id' in item));
                 if (cards.length > 0) {
-                    return cards;
+                    return cards.map(prepareCardForPreview);
                 }
             }
 
             const extracted = extractFromObject(data);
             if (extracted.length > 0) {
-                return extracted;
+                return extracted.map(prepareCardForPreview);
             }
 
             throw new Error('不支持的 JSON 结构');
@@ -1198,7 +1653,7 @@
                 .filter(f => f.checked)
                 .map(f => parseInt(f.value));
 
-            filteredCards = allCards.filter(card => selectedTypes.includes(card.interaction_type));
+            filteredCards = allCards.filter(card => matchesSelectedTypes(card, selectedTypes));
             filteredCards.sort((a, b) => {
                 const aNo = Number.isFinite(Number(a.card_no)) ? Number(a.card_no) : 999999;
                 const bNo = Number.isFinite(Number(b.card_no)) ? Number(b.card_no) : 999999;
@@ -1211,11 +1666,15 @@
             if (currentCardIdx >= filteredCards.length) {
                 currentCardIdx = filteredCards.length - 1;
             }
+            if (currentCardIdx < 0 && filteredCards.length > 0) {
+                currentCardIdx = 0;
+            }
             renderCard();
         }
 
         function loadCards() {
             document.getElementById('statsSection').style.display = 'block';
+            document.getElementById('reviewSection').style.display = 'block';
             document.getElementById('filterSection').style.display = 'block';
             document.getElementById('cardsSection').style.display = 'block';
             document.getElementById('totalCards').textContent = allCards.length;
@@ -1227,15 +1686,122 @@
             const cardsList = document.getElementById('cardsList');
             cardsList.innerHTML = '';
             filteredCards.forEach((card, idx) => {
+                const meta = getCardListMeta(card);
                 const item = document.createElement('div');
-                item.className = 'card-item';
+                item.className = `card-item${idx === currentCardIdx ? ' active' : ''}`;
                 item.innerHTML = `
-                    <div class="card-item-id">${card.card_id}</div>
-                    <div class="card-item-name">#${card.card_no ?? 'NA'} · ${INTERACTION_TYPES[card.interaction_type] || '未知'} · ${card.card_box_name || '未命名'}</div>
+                    <div class="card-item-top">
+                        <div class="card-item-id">${escapeHtml(card.card_id || 'unknown')}</div>
+                        ${renderListChip(meta.toneLabel, meta.tone)}
+                    </div>
+                    <div class="card-item-name">#${escapeHtml(card.card_no ?? 'NA')} · ${escapeHtml(meta.interactionLabel)} · ${escapeHtml(card.card_box_name || (card.knowledge_ref && card.knowledge_ref.box_name) || '未命名')}</div>
+                    <div class="card-item-chips">
+                        ${renderListChip(meta.status, meta.status === 'reviewed_sample' ? 'ok' : 'warn')}
+                        ${renderListChip(meta.provenance, meta.provenance === 'verified' ? 'ok' : 'warn')}
+                        ${meta.flags ? renderListChip(`flags ${meta.flags}`, 'warn') : renderListChip('no flags', 'ok')}
+                    </div>
                 `;
                 item.addEventListener('click', () => selectCard(idx));
                 cardsList.appendChild(item);
             });
+        }
+
+        function renderReviewPanel(card) {
+            const cardIdEl = document.getElementById('reviewCardId');
+            const boxPathEl = document.getElementById('reviewBoxPath');
+            const chipsEl = document.getElementById('reviewChips');
+            const findingsEl = document.getElementById('reviewFindings');
+            const copyStatusEl = document.getElementById('copyReviewStatus');
+            if (!cardIdEl || !boxPathEl || !chipsEl || !findingsEl) return;
+
+            if (!card) {
+                cardIdEl.textContent = '未选择';
+                boxPathEl.textContent = '—';
+                chipsEl.innerHTML = renderChip('无当前卡', 'block');
+                findingsEl.innerHTML = '<div class="review-finding block">当前筛选条件下没有可预览卡片。</div>';
+                if (copyStatusEl) copyStatusEl.textContent = '';
+                return;
+            }
+
+            const interactionId = getCardInteractionId(card);
+            const source = getCardSource(card);
+            const tone = getReviewTone(card);
+            const flags = Array.isArray(card.quality_flags) ? card.quality_flags : [];
+            const audioUrl = card.audio && card.audio.url;
+            const status = card.production_status || card.review_status || 'unknown';
+
+            cardIdEl.textContent = card.card_id || 'unknown';
+            boxPathEl.textContent = getKnowledgePath(card);
+            chipsEl.innerHTML = [
+                renderChip(getReviewToneLabel(tone), tone),
+                renderChip(PRODUCT_INTERACTION_TYPES[interactionId] || interactionId || 'unknown', PRODUCT_INTERACTION_TYPES[interactionId] ? 'ok' : 'block'),
+                renderChip(status, status === 'reviewed_sample' ? 'ok' : 'warn'),
+                renderChip(`source: ${source.provenance_status || 'unknown'}`, source.provenance_status === 'verified' ? 'ok' : 'warn'),
+                renderChip(audioUrl ? 'audio linked' : 'no audio', audioUrl ? 'ok' : '')
+            ].join('');
+
+            const findings = getReviewFindings(card);
+            findingsEl.innerHTML = findings.map(finding => {
+                const cls = finding.severity === 'block'
+                    ? 'block'
+                    : (finding.severity === 'warn' ? 'warn' : (finding.severity === 'info' ? '' : 'ok'));
+                return `<div class="review-finding ${cls}">${escapeHtml(finding.text)}</div>`;
+            }).join('');
+
+            if (copyStatusEl) {
+                copyStatusEl.textContent = flags.length
+                    ? `质量标记：${flags.join(', ')}`
+                    : '未发现 quality_flags。';
+            }
+        }
+
+        function buildReviewDraft(card) {
+            const findings = getReviewFindings(card);
+            return {
+                card_id: card.card_id || null,
+                interaction_id: getCardInteractionId(card),
+                knowledge_ref: card.knowledge_ref || null,
+                production_status: card.production_status || card.review_status || null,
+                preview_review: {
+                    tool: 'card_viewer_interactive.html',
+                    reviewed_at: new Date().toISOString(),
+                    final_user_approval: false,
+                    findings: findings.map(finding => ({
+                        severity: finding.severity,
+                        code: finding.code || null,
+                        text: finding.text
+                    }))
+                }
+            };
+        }
+
+        async function copyCurrentReviewDraft() {
+            const card = filteredCards[currentCardIdx];
+            const statusEl = document.getElementById('copyReviewStatus');
+            if (!card) {
+                if (statusEl) statusEl.textContent = '没有当前卡可复制。';
+                return;
+            }
+
+            const text = JSON.stringify(buildReviewDraft(card), null, 2);
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    textarea.remove();
+                }
+                if (statusEl) statusEl.textContent = '已复制当前卡审核草稿；仍需写入正式 review 记录并由用户确认。';
+            } catch (err) {
+                if (statusEl) statusEl.textContent = '复制失败，可在控制台查看审核草稿。';
+                console.log(text);
+            }
         }
 
         function selectCard(idx) {
@@ -1267,10 +1833,12 @@
             const card = filteredCards[currentCardIdx];
             if (!card) {
                 document.getElementById('cardViewer').innerHTML = '<div class="placeholder" style="border: 1px solid var(--border);"><div style="font-size: 48px; margin-bottom: 16px;">📭</div>卡片不存在</div>';
+                renderReviewPanel(null);
                 return;
             }
 
-            const type = card.interaction_type;
+            renderReviewPanel(card);
+            const type = getRenderInteractionType(card);
             const html = renderCardByType(card, type);
             document.getElementById('cardViewer').innerHTML = html;
 
@@ -1344,14 +1912,17 @@
         }
 
         function renderCardByType(card, type) {
+            const interactionId = getCardInteractionId(card);
+            const interactionLabel = PRODUCT_INTERACTION_TYPES[interactionId] || INTERACTION_TYPES[type] || interactionId || '未知';
+            const boxName = card.card_box_name || ((card.knowledge_ref || {}).box_name) || '—';
             const metaHtml = `
                 <div class="card-meta-header">
                     <div class="card-meta-left">
-                        <div class="meta-badge">ID: ${card.card_id}</div>
-                        <div class="meta-badge">${INTERACTION_TYPES[type]}</div>
-                        <div class="meta-badge">${card.card_box_name || '—'}</div>
+                        <div class="meta-badge">ID: ${escapeHtml(card.card_id || 'unknown')}</div>
+                        <div class="meta-badge">${escapeHtml(interactionLabel)}</div>
+                        <div class="meta-badge">${escapeHtml(boxName)}</div>
                     </div>
-                    <div class="meta-info">#${card.card_no}</div>
+                    <div class="meta-info">#${escapeHtml(card.card_no ?? 'NA')}</div>
                 </div>
             `;
 
@@ -1468,7 +2039,6 @@
             const back = card.back_content || {};
             const options = card.options || [];
             const isFlipped = cardState.flipped || false;
-            
             if (options.length === 0) {
                 return `
                     <div class="interactive-card">
