@@ -205,6 +205,24 @@ function validateSoftbookRefs(errors, warnings) {
   if (workspace.legacy_status_policy?.replacement_authority !== 'reviews/approved_batches/ records plus explicit user confirmation') {
     pushIssue(errors, 'approval_replacement_authority_drift', {});
   }
+
+  const maxAuthority = workspace.content_boundary?.agent_max_authority || [];
+  if (!maxAuthority.includes('auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation')) {
+    pushIssue(errors, 'workspace_auto_merge_authority_missing', {});
+  }
+
+  const forbiddenAuthority = workspace.content_boundary?.agent_forbidden_authority || [];
+  if (forbiddenAuthority.includes('auto_merge_harness_or_formal_content')) {
+    pushIssue(errors, 'workspace_legacy_auto_merge_forbidden_authority_present', {});
+  }
+  for (const forbidden of [
+    'auto_merge_without_standing_or_explicit_user_authorization',
+    'auto_merge_formal_content_without_user_confirmed_sample_and_scope_delegation',
+  ]) {
+    if (!forbiddenAuthority.includes(forbidden)) {
+      pushIssue(errors, 'workspace_auto_merge_forbidden_authority_missing', { forbidden });
+    }
+  }
 }
 
 function validateUpstreamAlignment(errors, warnings) {
@@ -801,6 +819,12 @@ function validateGitWorkflow(errors) {
   }
   if (handoffTemplate.merge_authority !== 'standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs') {
     pushIssue(errors, 'git_handoff_template_merge_authority_drift', {});
+  }
+  if (handoffTemplate.PR_state !== 'MERGED') {
+    pushIssue(errors, 'git_handoff_template_PR_state_drift', {});
+  }
+  if (handoffTemplate.is_draft !== false) {
+    pushIssue(errors, 'git_handoff_template_draft_state_drift', {});
   }
 }
 
