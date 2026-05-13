@@ -22,6 +22,7 @@ const REQUIRED_METADATA_FIELDS = [
   'card_prototype',
   'material',
   'exam_value',
+  'box_progression_role',
   'review_status',
 ];
 
@@ -75,6 +76,28 @@ function hasOwn(object, key) {
 
 function hasText(value) {
   return typeof value === 'string' && value.trim().length > 0;
+}
+
+function stringSet(values) {
+  return new Set((Array.isArray(values) ? values : []).map(value => String(value)));
+}
+
+function setsEqual(leftValues, rightValues) {
+  const left = stringSet(leftValues);
+  const right = stringSet(rightValues);
+  if (left.size !== right.size) return false;
+  for (const value of left) {
+    if (!right.has(value)) return false;
+  }
+  return true;
+}
+
+function isSubset(values, allowedValues) {
+  const allowed = stringSet(allowedValues);
+  for (const value of stringSet(values)) {
+    if (!allowed.has(value)) return false;
+  }
+  return true;
 }
 
 function issueKey(issue) {
@@ -292,6 +315,9 @@ function validateMetadataSchema(errors) {
       pushIssue(errors, 'metadata_required_field_missing', { field });
     }
   }
+  if ((schema.properties?.quality_metadata?.properties?.review_status?.enum || []).includes('user_approved')) {
+    pushIssue(errors, 'metadata_review_status_allows_user_approved', {});
+  }
 }
 
 function validateWorkflow(errors) {
@@ -418,8 +444,8 @@ function validateSelfReviewCard(card, errors, source, { template }) {
       });
     }
   }
-  if (!hasOwn(metadata, 'box_progression_role')) {
-    pushIssue(errors, 'self_review_card_progression_role_missing', { source, card_id: card.card_id });
+  if (metadata.review_status === 'user_approved') {
+    pushIssue(errors, 'self_review_card_claims_user_approval', { source, card_id: card.card_id });
   }
   validateBlockerScan(card.blocker_scan, errors, `${source}:${card.card_id || 'template-card'}`, { template });
 
@@ -500,7 +526,25 @@ function validateSelfReviewRecord(record, errors, source, { template = false } =
 
   if (!template) {
     const boxPrefixes = record.scope?.box_prefixes || [];
+    const scopeCardIds = record.scope?.card_ids || [];
     const expectedCards = Math.max(1, boxPrefixes.length) * 3;
+    for (const field of ['library', 'group', 'box']) {
+      if (!hasText(record.scope?.[field])) {
+        pushIssue(errors, 'self_review_scope_field_missing', { source, field });
+      }
+    }
+    if (!Array.isArray(boxPrefixes) || boxPrefixes.length === 0) {
+      pushIssue(errors, 'self_review_scope_box_prefixes_missing', { source });
+    }
+    if (!Array.isArray(scopeCardIds) || scopeCardIds.length === 0) {
+      pushIssue(errors, 'self_review_scope_card_ids_missing', { source });
+    } else if (!setsEqual(scopeCardIds, cards.map(card => card.card_id))) {
+      pushIssue(errors, 'self_review_scope_card_ids_mismatch', {
+        source,
+        scopeCardIds,
+        actualCardIds: cards.map(card => card.card_id),
+      });
+    }
     if (cards.length !== expectedCards) {
       pushIssue(errors, 'self_review_sample_card_count_not_three_per_box', {
         source,
@@ -534,17 +578,74 @@ function validateApprovalRecord(record, errors, source, { template = false } = {
     pushIssue(errors, 'approval_record_limits_missing', { source });
   }
   if (!template) {
+    for (const field of ['library', 'group', 'box']) {
+      if (!hasText(record.scope?.[field])) {
+        pushIssue(errors, 'approval_record_scope_field_missing', { source, field });
+      }
+    }
+    if (!Array.isArray(record.scope?.box_prefixes) || record.scope.box_prefixes.length === 0) {
+      pushIssue(errors, 'approval_record_scope_box_prefixes_missing', { source });
+    }
+    if (!Array.isArray(record.scope?.card_ids) || record.scope.card_ids.length === 0) {
+      pushIssue(errors, 'approval_record_scope_card_ids_missing', { source });
+    }
     const linkedReview = record.validation?.agent_self_review;
+    let selfReview = null;
     if (!hasText(linkedReview)) {
       pushIssue(errors, 'approval_record_missing_agent_self_review', { source });
     } else if (!exists(linkedReview)) {
       pushIssue(errors, 'approval_record_agent_self_review_missing_on_disk', { source, linkedReview });
+    } else {
+      selfReview = readJson(linkedReview);
+      const selfReviewErrors = [];
+      validateSelfReviewRecord(selfReview, selfReviewErrors, linkedReview);
+      if (selfReviewErrors.length > 0) {
+        pushIssue(errors, 'approval_record_linked_self_review_invalid', {
+          source,
+          linkedReview,
+          linkedErrors: selfReviewErrors.map(issue => issue.code),
+        });
+      }
     }
     if (!hasText(record.validation?.harness)) {
       pushIssue(errors, 'approval_record_harness_validation_missing', { source });
     }
     if (!hasText(record.validation?.cards)) {
       pushIssue(errors, 'approval_record_card_validation_missing', { source });
+    }
+    if (selfReview) {
+      if (selfReview.batch_review?.status !== 'recommend_user_confirmation') {
+        pushIssue(errors, 'approval_record_self_review_not_recommended', {
+          source,
+          linkedReview,
+          status: selfReview.batch_review?.status,
+        });
+      }
+      for (const field of ['library', 'group', 'box']) {
+        if (record.scope?.[field] !== selfReview.scope?.[field]) {
+          pushIssue(errors, 'approval_record_scope_mismatch', {
+            source,
+            linkedReview,
+            field,
+            approval: record.scope?.[field],
+            selfReview: selfReview.scope?.[field],
+          });
+        }
+      }
+      for (const field of ['box_prefixes', 'card_ids']) {
+        if (!setsEqual(record.scope?.[field], selfReview.scope?.[field])) {
+          pushIssue(errors, 'approval_record_scope_mismatch', {
+            source,
+            linkedReview,
+            field,
+            approval: record.scope?.[field] || [],
+            selfReview: selfReview.scope?.[field] || [],
+          });
+        }
+      }
+    }
+    if (!isSubset(record.representative_cards, record.scope?.card_ids)) {
+      pushIssue(errors, 'approval_record_representative_cards_outside_scope', { source });
     }
   }
 }
@@ -733,14 +834,28 @@ function validateEvalFixtures(errors) {
       if (testCase.golden_task_id !== 'GT-CARD-004') {
         pushIssue(errors, 'approval_fixture_wrong_golden_task', { fixture: testCase.id });
       }
-      if (testCase.approval_record?.validation?.agent_self_review !== '') {
-        pushIssue(errors, 'sample_gate_fixture_not_missing_self_review', { fixture: testCase.id });
-      }
-      if (!(expected.expected_gate_errors || []).includes('missing_agent_self_review_record')) {
-        pushIssue(errors, 'sample_gate_fixture_missing_expected_error', { fixture: testCase.id });
-      }
       if (expected.approval_status !== 'block') {
         pushIssue(errors, 'sample_gate_fixture_not_blocking_approval', { fixture: testCase.id });
+      }
+      const gateErrors = [];
+      validateApprovalRecord(testCase.approval_record || {}, gateErrors, `${testCase.id}.approval_record`);
+      const actualGateCodes = new Set(gateErrors.map(issue => issue.code));
+      for (const expectedGateError of expected.expected_gate_errors || []) {
+        if (!actualGateCodes.has(expectedGateError)) {
+          pushIssue(errors, 'sample_gate_fixture_expected_error_not_triggered', {
+            fixture: testCase.id,
+            expectedGateError,
+            actualGateErrors: [...actualGateCodes],
+          });
+        }
+      }
+      for (const actualGateCode of actualGateCodes) {
+        if (!(expected.expected_gate_errors || []).includes(actualGateCode)) {
+          pushIssue(errors, 'sample_gate_fixture_unexpected_gate_error', {
+            fixture: testCase.id,
+            actualGateCode,
+          });
+        }
       }
       continue;
     }

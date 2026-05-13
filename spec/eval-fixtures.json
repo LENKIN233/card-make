@@ -279,12 +279,17 @@
           "harness": "node scripts/validate_harness.mjs",
           "cards": "node scripts/validate_cards.mjs --write-report",
           "agent_self_review": ""
-        }
+        },
+        "approval_limits": [
+          "Only the listed scope is approved.",
+          "Approval does not authorize unrelated bulk generation.",
+          "Approval does not change softbook_cet product specs."
+        ]
       },
       "expected_outcome": {
         "approval_status": "block",
         "formal_use_claimed": false,
-        "expected_gate_errors": ["missing_agent_self_review_record"]
+        "expected_gate_errors": ["approval_record_missing_agent_self_review"]
       }
     }
   ]
