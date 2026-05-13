@@ -1237,6 +1237,10 @@
                         <input type="checkbox" value="swipe" class="typeFilter" checked />
                         <label>swipe 滑动判断</label>
                     </div>
+                    <div class="filter-checkbox">
+                        <input type="checkbox" value="__unsupported" class="typeFilter" checked />
+                        <label>unsupported / unknown</label>
+                    </div>
                 </div>
 
                 <div class="section" id="cardsSection" style="display: none;">
@@ -1285,6 +1289,7 @@
             elimination: 'elimination 消除',
             swipe: 'swipe 滑动判断'
         };
+        const UNSUPPORTED_INTERACTION_FILTER = '__unsupported';
 
         const LEGACY_TO_PRODUCT_INTERACTION = {
             0: 'flip',
@@ -1362,8 +1367,16 @@
             return PRODUCT_TO_RENDER_TYPE[productId] ?? -1;
         }
 
+        function isSupportedInteractionId(interactionId) {
+            return Object.prototype.hasOwnProperty.call(PRODUCT_INTERACTION_TYPES, interactionId);
+        }
+
         function matchesSelectedInteractions(card, selectedInteractionIds) {
-            return selectedInteractionIds.includes(getCardInteractionId(card));
+            const interactionId = getCardInteractionId(card);
+            if (isSupportedInteractionId(interactionId)) {
+                return selectedInteractionIds.includes(interactionId);
+            }
+            return selectedInteractionIds.includes(UNSUPPORTED_INTERACTION_FILTER);
         }
 
         function prepareCardForPreview(card) {
