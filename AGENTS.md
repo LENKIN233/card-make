@@ -86,11 +86,17 @@ Default branch policy:
   work is a separate review unit or would blur an existing PR.
 - Do not force-push shared base branches such as `main` or
   `fix/review-findings-card-contract`.
-- Do not merge harness or formal content PRs without explicit user
-  authorization.
+- The user has delegated automatic merge for validated harness/tooling PRs in
+  this workspace. After validation passes and GitHub reports the PR as
+  mergeable, merge the PR instead of stopping for another confirmation.
+- Do not auto-merge formal bulk content PRs unless the batch has user-confirmed
+  sample approval and the user has delegated merge authority for that content
+  scope.
 
 ## Delivery
 
 Harness changes require commit, push, and PR. Formal bulk card changes also
 require commit, push, and PR after user-confirmed samples. Small samples may be
-delivered locally for review. Do not auto-merge harness or formal content PRs.
+delivered locally for review. Validated harness/tooling PRs are auto-merged
+under the standing user delegation; formal content merge remains gated by
+content approval and scope-specific merge delegation.

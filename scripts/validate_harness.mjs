@@ -348,8 +348,8 @@ function validateWorkflow(errors) {
     'declare_final_formal_usability',
     'batch_generate_before_user_confirms_sample',
     'delete_cards_without_user_confirmation',
-    'auto_merge_harness_or_formal_content_PRs',
-    'auto_merge_without_user_authorization',
+    'auto_merge_formal_content_without_user_confirmed_sample_and_scope_delegation',
+    'auto_merge_without_standing_or_explicit_user_authorization',
     'force_push_main_or_shared_base_branches',
     'mix_harness_changes_with_bulk_card_content_changes',
   ]) {
@@ -360,6 +360,7 @@ function validateWorkflow(errors) {
   for (const allowed of [
     'manage_git_lifecycle_for_agent_authored_tracked_changes',
     'open_or_update_draft_PRs',
+    'auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation',
   ]) {
     if (!(workflow.agent_permissions?.may || []).includes(allowed)) {
       pushIssue(errors, 'agent_git_permission_missing', { allowed });
@@ -371,7 +372,7 @@ function validateWorkflow(errors) {
   if (workflow.git_policy?.pre_edit_status_check !== 'required') {
     pushIssue(errors, 'git_pre_edit_status_check_not_required', {});
   }
-  if (workflow.git_policy?.PR_merge !== 'manual_user_confirmation_required') {
+  if (workflow.git_policy?.PR_merge !== 'auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation') {
     pushIssue(errors, 'git_PR_merge_policy_drift', {});
   }
 }
@@ -701,12 +702,19 @@ function validateGitWorkflow(errors) {
     pushIssue(errors, 'agent_entry_missing_git_completion_rule', {});
   }
 
-  for (const owned of ['pre_edit_git_status_check', 'commit', 'push', 'open_or_update_draft_PR', 'publish_handoff']) {
+  for (const owned of [
+    'pre_edit_git_status_check',
+    'commit',
+    'push',
+    'open_or_update_draft_PR',
+    'publish_handoff',
+    'auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation',
+  ]) {
     if (!(gitWorkflow.authority_boundary?.agent_owns || []).includes(owned)) {
       pushIssue(errors, 'git_agent_owned_step_missing', { owned });
     }
   }
-  for (const reserved of ['formal_content_approval', 'harness_or_formal_content_PR_merge_unless_explicitly_delegated']) {
+  for (const reserved of ['formal_content_approval', 'formal_content_PR_merge_unless_scope_delegated']) {
     if (!(gitWorkflow.authority_boundary?.user_reserves || []).includes(reserved)) {
       pushIssue(errors, 'git_user_reserved_authority_missing', { reserved });
     }
@@ -756,8 +764,23 @@ function validateGitWorkflow(errors) {
       pushIssue(errors, 'git_local_only_exception_missing', { exception });
     }
   }
-  if (gitWorkflow.merge_policy?.default !== 'manual_user_confirmation_required') {
+  if (gitWorkflow.merge_policy?.default !== 'standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs') {
     pushIssue(errors, 'git_merge_default_drift', {});
+  }
+  const delegation = gitWorkflow.merge_policy?.standing_user_delegation || {};
+  if (!delegation.scope?.includes('harness_changes') || !delegation.scope?.includes('tooling_changes')) {
+    pushIssue(errors, 'git_auto_merge_delegation_scope_missing', {});
+  }
+  for (const requirement of [
+    'local_validation_passed',
+    'PR_ready_or_not_draft',
+    'GitHub_mergeable',
+    'no_bulk_card_content_changes',
+    'base_branch_or_target_clear',
+  ]) {
+    if (!(delegation.requires || []).includes(requirement)) {
+      pushIssue(errors, 'git_auto_merge_requirement_missing', { requirement });
+    }
   }
   for (const condition of ['formal_content_not_user_approved', 'validator_failing', 'PR_scope_mixes_harness_and_bulk_content']) {
     if (!(gitWorkflow.merge_policy?.never_merge_when || []).includes(condition)) {
@@ -776,7 +799,7 @@ function validateGitWorkflow(errors) {
       pushIssue(errors, 'git_handoff_template_field_missing', { field });
     }
   }
-  if (handoffTemplate.merge_authority !== 'manual_user_confirmation_required') {
+  if (handoffTemplate.merge_authority !== 'standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs') {
     pushIssue(errors, 'git_handoff_template_merge_authority_drift', {});
   }
 }

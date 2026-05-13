@@ -1,7 +1,7 @@
 {
   "version": "card-make-git-workflow-v1",
   "status": "active",
-  "purpose": "Make the agent responsible for the Git lifecycle of agent-authored tracked-file changes while preserving user authority over final content approval and PR merge.",
+  "purpose": "Make the agent responsible for the Git lifecycle of agent-authored tracked-file changes, including standing user-delegated auto-merge for validated harness/tooling PRs while preserving user authority over final content approval.",
   "authority_boundary": {
     "agent_owns": [
       "pre_edit_git_status_check",
@@ -10,11 +10,12 @@
       "commit",
       "push",
       "open_or_update_draft_PR",
-      "publish_handoff"
+      "publish_handoff",
+      "auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation"
     ],
     "user_reserves": [
       "formal_content_approval",
-      "harness_or_formal_content_PR_merge_unless_explicitly_delegated",
+      "formal_content_PR_merge_unless_scope_delegated",
       "approval_to_delete_cards",
       "approval_to_mark_content_formally_usable"
     ]
@@ -92,12 +93,35 @@
       "local_validation",
       "commit",
       "push",
-      "draft_PR"
+      "draft_PR",
+      "auto_merge_after_ready_and_mergeable"
+    ],
+    "tooling_changes_require": [
+      "local_validation",
+      "commit",
+      "push",
+      "draft_PR",
+      "auto_merge_after_ready_and_mergeable"
     ]
   },
   "merge_policy": {
-    "default": "manual_user_confirmation_required",
-    "agent_may_merge_only_when": "user_explicitly_delegates_merge_for_the_specific_PR_or_task_class",
+    "default": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs",
+    "standing_user_delegation": {
+      "granted_by_user_statement": "我要求自动合并",
+      "granted_at": "2026-05-13",
+      "scope": [
+        "harness_changes",
+        "tooling_changes"
+      ],
+      "requires": [
+        "local_validation_passed",
+        "PR_ready_or_not_draft",
+        "GitHub_mergeable",
+        "no_bulk_card_content_changes",
+        "base_branch_or_target_clear"
+      ]
+    },
+    "agent_may_merge_only_when": "standing_user_delegation_matches_scope_or_user_explicitly_delegates_merge_for_the_specific_PR_or_task_class",
     "never_merge_when": [
       "formal_content_not_user_approved",
       "validator_failing",
