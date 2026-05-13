@@ -1320,6 +1320,7 @@
             'analysis',
             'source_ref'
         ];
+        const SOURCE_REQUIRED_FIELDS = ['type', 'provenance_status'];
 
         const WARN_SOURCE_STATUSES = new Set(['unverified', 'synthetic', 'simulated', 'unknown']);
         const REVIEW_BLOCKING_FLAGS = new Set(['missing_front', 'missing_analysis', 'unsupported_interaction']);
@@ -1410,6 +1411,14 @@
             return typeof value === 'string' && value.trim().length > 0;
         }
 
+        function hasReviewValue(value) {
+            if (value === null || value === undefined) return false;
+            if (typeof value === 'string') return value.trim().length > 0;
+            if (Array.isArray(value)) return value.length > 0;
+            if (typeof value === 'object') return Object.keys(value).length > 0;
+            return true;
+        }
+
         function getKnowledgePath(card) {
             const ref = (card && card.knowledge_ref) || {};
             const track = ref.track || card.track || 'unknown';
@@ -1424,7 +1433,7 @@
             if (!card) return [{ severity: 'block', text: '未选择卡片。' }];
 
             const findings = [];
-            const missingFields = CONTRACT_REQUIRED_FIELDS.filter(field => !(field in card) || card[field] === null || card[field] === undefined);
+            const missingFields = CONTRACT_REQUIRED_FIELDS.filter(field => !hasReviewValue(card[field]));
             if (missingFields.length) {
                 findings.push({
                     severity: 'block',
@@ -1470,13 +1479,16 @@
 
             const source = getCardSource(card);
             const provenance = source.provenance_status || 'unknown';
-            if (!card.source_ref) {
+            const missingSourceFields = hasReviewValue(card.source_ref)
+                ? SOURCE_REQUIRED_FIELDS.filter(field => !hasReviewValue(source[field]))
+                : [];
+            if (missingSourceFields.length) {
                 findings.push({
                     severity: 'block',
-                    code: 'missing_source_ref',
-                    text: '缺少 source_ref，不能判断来源类型与可用边界。'
+                    code: 'missing_source_ref_fields',
+                    text: `source_ref 缺少必填字段：${missingSourceFields.join(', ')}。`
                 });
-            } else if (WARN_SOURCE_STATUSES.has(String(provenance).toLowerCase())) {
+            } else if (hasReviewValue(card.source_ref) && WARN_SOURCE_STATUSES.has(String(provenance).toLowerCase())) {
                 findings.push({
                     severity: 'warn',
                     code: 'source_not_verified',
