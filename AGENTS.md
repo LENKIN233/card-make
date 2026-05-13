@@ -71,6 +71,24 @@ After editing card JSON or the preview reader, also run:
 node scripts/validate_cards.mjs --write-report
 ```
 
+## Agent-Managed Git
+
+For tracked-file changes authored by an agent, the agent owns the Git lifecycle:
+inspect current branch/status before editing, keep branch scope narrow, validate,
+commit, push, and open or update a draft PR unless the user explicitly requests
+local-only work.
+
+Default branch policy:
+
+- Continue an existing open PR only when the new work belongs to the same
+  requirement domain and base branch.
+- Create a new `harness/`, `content/`, `fix/`, or `tooling/` branch when the
+  work is a separate review unit or would blur an existing PR.
+- Do not force-push shared base branches such as `main` or
+  `fix/review-findings-card-contract`.
+- Do not merge harness or formal content PRs without explicit user
+  authorization.
+
 ## Delivery
 
 Harness changes require commit, push, and PR. Formal bulk card changes also

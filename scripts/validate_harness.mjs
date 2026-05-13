@@ -27,6 +27,19 @@ const REQUIRED_METADATA_FIELDS = [
 
 const REQUIRED_CARD_FIELDS = ['card_id', 'track', 'knowledge_ref', 'interaction_id', 'front', 'analysis'];
 const REQUIRED_GOLDEN_TASKS = ['GT-CARD-001', 'GT-CARD-002', 'GT-CARD-003'];
+const REQUIRED_GIT_HANDOFF_FIELDS = [
+  'branch',
+  'base_branch',
+  'commit_sha',
+  'push_ref',
+  'PR_url',
+  'PR_state',
+  'is_draft',
+  'validation',
+  'local_status',
+  'remaining_risks',
+  'merge_authority',
+];
 
 function resolveWorkspacePath(specPath) {
   return path.resolve(ROOT, specPath);
@@ -34,6 +47,10 @@ function resolveWorkspacePath(specPath) {
 
 function readJson(specPath) {
   return JSON.parse(fs.readFileSync(resolveWorkspacePath(specPath), 'utf8'));
+}
+
+function readText(specPath) {
+  return fs.readFileSync(resolveWorkspacePath(specPath), 'utf8');
 }
 
 function exists(specPath) {
@@ -263,11 +280,30 @@ function validateWorkflow(errors) {
     'batch_generate_before_user_confirms_sample',
     'delete_cards_without_user_confirmation',
     'auto_merge_harness_or_formal_content_PRs',
+    'auto_merge_without_user_authorization',
+    'force_push_main_or_shared_base_branches',
     'mix_harness_changes_with_bulk_card_content_changes',
   ]) {
     if (!(workflow.agent_permissions?.must_not || []).includes(forbidden)) {
       pushIssue(errors, 'agent_forbidden_permission_missing', { forbidden });
     }
+  }
+  for (const allowed of [
+    'manage_git_lifecycle_for_agent_authored_tracked_changes',
+    'open_or_update_draft_PRs',
+  ]) {
+    if (!(workflow.agent_permissions?.may || []).includes(allowed)) {
+      pushIssue(errors, 'agent_git_permission_missing', { allowed });
+    }
+  }
+  if (workflow.git_policy?.contract !== 'spec/git-workflow.json') {
+    pushIssue(errors, 'git_policy_contract_missing', {});
+  }
+  if (workflow.git_policy?.pre_edit_status_check !== 'required') {
+    pushIssue(errors, 'git_pre_edit_status_check_not_required', {});
+  }
+  if (workflow.git_policy?.PR_merge !== 'manual_user_confirmation_required') {
+    pushIssue(errors, 'git_PR_merge_policy_drift', {});
   }
 }
 
@@ -276,11 +312,107 @@ function validateReviewDirs(errors) {
     'reviews/agent_self_review',
     'reviews/approved_batches',
     'reviews/drafts',
+    'reviews/git_handoffs',
   ]) {
     const full = resolveWorkspacePath(dir);
     if (!fs.existsSync(full) || !fs.statSync(full).isDirectory()) {
       pushIssue(errors, 'review_dir_missing', { dir });
     }
+  }
+}
+
+function validateGitWorkflow(errors) {
+  const gitWorkflow = readJson('spec/git-workflow.json');
+  const agentEntry = readText('AGENTS.md');
+  const handoffTemplate = readJson('reviews/git_handoffs/TEMPLATE.json');
+
+  if (gitWorkflow.status !== 'active') {
+    pushIssue(errors, 'git_workflow_not_active', { status: gitWorkflow.status });
+  }
+  if (!agentEntry.includes('## Agent-Managed Git')) {
+    pushIssue(errors, 'agent_entry_missing_git_section', {});
+  }
+  if (!agentEntry.includes('commit, push, and open or update a draft PR')) {
+    pushIssue(errors, 'agent_entry_missing_git_completion_rule', {});
+  }
+
+  for (const owned of ['pre_edit_git_status_check', 'commit', 'push', 'open_or_update_draft_PR', 'publish_handoff']) {
+    if (!(gitWorkflow.authority_boundary?.agent_owns || []).includes(owned)) {
+      pushIssue(errors, 'git_agent_owned_step_missing', { owned });
+    }
+  }
+  for (const reserved of ['formal_content_approval', 'harness_or_formal_content_PR_merge_unless_explicitly_delegated']) {
+    if (!(gitWorkflow.authority_boundary?.user_reserves || []).includes(reserved)) {
+      pushIssue(errors, 'git_user_reserved_authority_missing', { reserved });
+    }
+  }
+
+  if (gitWorkflow.pre_edit_check?.required !== true) {
+    pushIssue(errors, 'git_pre_edit_check_not_required', {});
+  }
+  if (!(gitWorkflow.pre_edit_check?.commands || []).includes('git status --short --branch')) {
+    pushIssue(errors, 'git_pre_edit_status_command_missing', {});
+  }
+
+  for (const prefix of ['harness/', 'content/', 'fix/', 'tooling/']) {
+    if (!(gitWorkflow.branch_policy?.preferred_prefixes || []).includes(prefix)) {
+      pushIssue(errors, 'git_branch_prefix_missing', { prefix });
+    }
+  }
+  if (gitWorkflow.branch_policy?.force_push_shared_base_branches !== 'forbidden') {
+    pushIssue(errors, 'git_force_push_shared_base_not_forbidden', {});
+  }
+  if (gitWorkflow.branch_policy?.stacked_PRs_allowed !== true) {
+    pushIssue(errors, 'git_stacked_PRs_not_allowed', {});
+  }
+
+  for (const condition of ['same_requirement_domain', 'same_base_branch', 'same_review_unit']) {
+    if (!(gitWorkflow.existing_PR_policy?.update_existing_when || []).includes(condition)) {
+      pushIssue(errors, 'git_existing_PR_update_condition_missing', { condition });
+    }
+  }
+  for (const condition of ['new_requirement_domain', 'different_base_branch', 'existing_PR_scope_would_blur']) {
+    if (!(gitWorkflow.existing_PR_policy?.create_new_when || []).includes(condition)) {
+      pushIssue(errors, 'git_new_PR_condition_missing', { condition });
+    }
+  }
+
+  const validationCommands = (gitWorkflow.validation_policy?.before_commit || []).map(entry => entry.command);
+  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_cards.mjs --write-report', 'git diff --check']) {
+    if (!validationCommands.includes(command)) {
+      pushIssue(errors, 'git_validation_command_missing', { command });
+    }
+  }
+  if (gitWorkflow.completion_policy?.agent_authored_tracked_changes_default !== 'validated_commit_push_draft_PR') {
+    pushIssue(errors, 'git_completion_default_drift', {});
+  }
+  for (const exception of ['small_samples_for_user_review', 'read_only_audits', 'explicit_user_local_only_request']) {
+    if (!(gitWorkflow.completion_policy?.local_only_exceptions || []).includes(exception)) {
+      pushIssue(errors, 'git_local_only_exception_missing', { exception });
+    }
+  }
+  if (gitWorkflow.merge_policy?.default !== 'manual_user_confirmation_required') {
+    pushIssue(errors, 'git_merge_default_drift', {});
+  }
+  for (const condition of ['formal_content_not_user_approved', 'validator_failing', 'PR_scope_mixes_harness_and_bulk_content']) {
+    if (!(gitWorkflow.merge_policy?.never_merge_when || []).includes(condition)) {
+      pushIssue(errors, 'git_never_merge_condition_missing', { condition });
+    }
+  }
+
+  if (gitWorkflow.handoff_policy?.directory !== 'reviews/git_handoffs/') {
+    pushIssue(errors, 'git_handoff_directory_drift', {});
+  }
+  for (const field of REQUIRED_GIT_HANDOFF_FIELDS) {
+    if (!(gitWorkflow.handoff_policy?.required_fields || []).includes(field)) {
+      pushIssue(errors, 'git_handoff_required_field_missing', { field });
+    }
+    if (!(field in handoffTemplate)) {
+      pushIssue(errors, 'git_handoff_template_field_missing', { field });
+    }
+  }
+  if (handoffTemplate.merge_authority !== 'manual_user_confirmation_required') {
+    pushIssue(errors, 'git_handoff_template_merge_authority_drift', {});
   }
 }
 
@@ -451,6 +583,7 @@ validateContentQuality(errors);
 validateMetadataSchema(errors);
 validateWorkflow(errors);
 validateReviewDirs(errors);
+validateGitWorkflow(errors);
 validateEvalsAndPerturbation(errors);
 validateEvalFixtures(errors);
 
