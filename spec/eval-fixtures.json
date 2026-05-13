@@ -257,6 +257,40 @@
           "reverse_engineered_front": true
         }
       }
+    },
+    {
+      "id": "FIX-GT-CARD-004-BLOCK-APPROVAL-WITHOUT-SELF-REVIEW",
+      "golden_task_id": "GT-CARD-004",
+      "type": "approval_record",
+      "approval_record": {
+        "approval_id": "fixture-missing-self-review",
+        "approved_by_user": true,
+        "approved_at": "2026-05-13T00:00:00+08:00",
+        "scope": {
+          "library": "听力",
+          "group": "细节捕捉",
+          "box": "数字类",
+          "box_prefixes": ["0031"],
+          "card_ids": ["003191", "003192", "003193"]
+        },
+        "summary": "Intentionally incomplete fixture: user approval exists without a linked agent self-review record.",
+        "representative_cards": ["003191", "003192", "003193"],
+        "validation": {
+          "harness": "node scripts/validate_harness.mjs",
+          "cards": "node scripts/validate_cards.mjs --write-report",
+          "agent_self_review": ""
+        },
+        "approval_limits": [
+          "Only the listed scope is approved.",
+          "Approval does not authorize unrelated bulk generation.",
+          "Approval does not change softbook_cet product specs."
+        ]
+      },
+      "expected_outcome": {
+        "approval_status": "block",
+        "formal_use_claimed": false,
+        "expected_gate_errors": ["approval_record_missing_agent_self_review"]
+      }
     }
   ]
 }

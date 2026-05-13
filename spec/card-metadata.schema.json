@@ -7,6 +7,7 @@
     "card_id",
     "track",
     "knowledge_ref",
+    "interaction_id",
     "quality_metadata"
   ],
   "properties": {
@@ -20,6 +21,9 @@
     "knowledge_ref": {
       "type": "object"
     },
+    "interaction_id": {
+      "enum": ["flip", "multiple_choice", "lock", "elimination", "swipe"]
+    },
     "quality_metadata": {
       "type": "object",
       "required": [
@@ -29,6 +33,7 @@
         "card_prototype",
         "material",
         "exam_value",
+        "box_progression_role",
         "review_status"
       ],
       "properties": {
@@ -114,7 +119,7 @@
           "enum": ["recognition", "application", "transfer", "mixed"]
         },
         "review_status": {
-          "enum": ["draft", "agent_pass", "revise", "block", "user_approved"]
+          "enum": ["draft", "agent_pass", "revise", "block"]
         }
       }
     }
