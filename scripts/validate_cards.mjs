@@ -7,7 +7,7 @@ const CARD_DIR = path.join(ROOT, 'card_boxes_json');
 const REPORT_PATH = path.join(ROOT, 'reports', 'card_validation_report.json');
 
 const REQUIRED_FIELDS = ['card_id', 'track', 'knowledge_ref', 'interaction_id', 'front', 'analysis'];
-const ALLOWED_INTERACTIONS = new Set(['flip', 'multiple_choice', 'lock', 'elimination', 'swipe', 'hint_layer']);
+const CORE_INTERACTIONS = new Set(['flip', 'multiple_choice', 'lock', 'elimination', 'swipe']);
 const TEMPLATE_LEAK_RE = /第\d+卡|当前素材中可优先关注|盒任务要求组织解析|CET[46]独立语料/;
 
 function readJson(filePath) {
@@ -77,7 +77,9 @@ function validate() {
       }
     }
 
-    if (!ALLOWED_INTERACTIONS.has(card.interaction_id)) {
+    if (card.interaction_id === 'hint_layer') {
+      errors.push({ file, card_id: card.card_id, code: 'hint_layer_as_standalone_interaction' });
+    } else if (!CORE_INTERACTIONS.has(card.interaction_id)) {
       errors.push({ file, card_id: card.card_id, code: 'invalid_interaction_id', interaction_id: card.interaction_id });
     }
 

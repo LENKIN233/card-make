@@ -36,6 +36,24 @@
     "purpose": "prove quality before batch expansion",
     "batch_generation_requires": "user_confirmation_of_sample"
   },
+  "sample_quality_gate": {
+    "quality_metadata_schema": "spec/card-metadata.schema.json",
+    "agent_self_review_directory": "reviews/agent_self_review/",
+    "approval_record_directory": "reviews/approved_batches/",
+    "required_before_user_confirmation": [
+      "quality_metadata_per_card",
+      "agent_self_review_record",
+      "blocker_scan_per_card",
+      "box_progression_roles",
+      "no_standalone_hint_layer_interaction"
+    ],
+    "approval_requires": [
+      "explicit_user_confirmation",
+      "linked_agent_self_review_record",
+      "harness_validation",
+      "card_validation"
+    ]
+  },
   "self_review_required_checks": [
     "single_card_quality",
     "front_back_relationship",
