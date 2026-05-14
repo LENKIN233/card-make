@@ -1,0 +1,223 @@
+{
+  "review_id": "20260514-cet4-listening-0002-existing-sample",
+  "created_at": "2026-05-14T12:38:37+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测信号词",
+    "box_prefixes": [
+      "0002"
+    ],
+    "card_ids": [
+      "000201",
+      "000202",
+      "000203"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "cards": [
+    {
+      "card_id": "000201",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "预测让步和原因信号词",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "音频文本有 although 和 because，但原卡没有让用户预测或识别这些信号词。",
+        "box_progression_role": "recognition",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "Front asks for a generic judgment and does not define which signal word pattern to identify.",
+        "The analysis does not connect to the actual although/because structure in the transcript.",
+        "The flip interaction does not support a concrete answer choice for this box's prediction task."
+      ],
+      "minor_issues": [
+        "TTS text and audio quality have not been reviewed separately."
+      ],
+      "recommendation": "Revise before user review; expose the signal-word pair and its logic."
+    },
+    {
+      "card_id": "000202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "识别转折信号词",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "多选形式适合信号词识别，但当前选项不是信号词或逻辑关系选项。",
+        "box_progression_role": "application",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": true,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "The correct option is a meta-strategy sentence rather than a signal word or relation.",
+        "The transcript contains however, but the learner is never asked to identify or use that signal.",
+        "The analysis is a reusable template and not grounded in the feedback/security-concern contrast."
+      ],
+      "minor_issues": [
+        "Distractors should be plausible signal words, not obviously bad study behaviors."
+      ],
+      "recommendation": "Block this sample; rewrite options as signal words or signal-word relations."
+    },
+    {
+      "card_id": "000203",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "识别因果信号词",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "音频文本有 since 引导的原因结构，但原卡没有让用户预测原因信号。",
+        "box_progression_role": "transfer",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": true,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "The card front is generic and does not expose the cause-effect signal task.",
+        "The analysis mentions click anchoring even though the interaction is flip.",
+        "The content repeats the same template rather than using since/weather/postponed survey as evidence."
+      ],
+      "minor_issues": [
+        "Interaction and answer form should be aligned before user review."
+      ],
+      "recommendation": "Block this sample; rewrite as a signal-word prediction multiple-choice card."
+    }
+  ],
+  "batch_review": {
+    "status": "blocked",
+    "box_progression": "The underlying transcripts can support concession/cause, contrast, and cause-effect signal-word training, but the existing cards hide those distinctions behind repeated generic prompts.",
+    "repetition_or_gap_risks": [
+      "All three fronts are nearly identical.",
+      "Only one card has choices, and those choices are not signal-word choices.",
+      "The analyses repeat the same mechanism paragraphs with only the box label changed.",
+      "TTS text and audio have not been reviewed as separate quality surfaces."
+    ],
+    "representative_cards": [
+      "000201",
+      "000202",
+      "000203"
+    ],
+    "next_step": "Do not ask for user confirmation on this sample. Draft a revised 3-card candidate sample focused on although/because, however, and since signal prediction."
+  }
+}
