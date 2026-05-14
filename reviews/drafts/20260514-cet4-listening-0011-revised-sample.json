@@ -1,0 +1,286 @@
+{
+  "draft_id": "20260514-cet4-listening-0011-revised-sample",
+  "created_at": "2026-05-14T16:31:10+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0011 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "语音现象",
+    "box": "弱读",
+    "box_prefix": "0011",
+    "candidate_for_existing_card_ids": [
+      "001101",
+      "001102",
+      "001103"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "001101",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "1",
+        "box_name": "弱读",
+        "box_prefix": "0011"
+      },
+      "front": {
+        "text": "播放音频后，选出最需要用“弱读”还原的片段。",
+        "task_prompt": "重点听 have to：to 很轻，不会像单独读单词时那么完整。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0011/001101.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "have to"
+          },
+          {
+            "key": "B",
+            "text": "finance office"
+          },
+          {
+            "key": "C",
+            "text": "data proposal"
+          },
+          {
+            "key": "D",
+            "text": "before midnight"
+          }
+        ],
+        "task_schema": {
+          "action": "定位弱读片段",
+          "focus": "识别 to 在 have to 中的弱读",
+          "success_criteria": "能听出 to 被弱化成 /tə/，而不是完整重读 /tu:/"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0011/001101.mp3",
+        "duration_ms": 5064,
+        "transcript": "We have to review the proposal before we send it to the finance office.",
+        "path": "ai_tts/cet4/0011/001101.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。have to 里的 to 是功能词，通常读得很轻，接近 /tə/，不需要听成一个完整、重读的 /tu:/。如果把每个小词都按字典音去等，反而会觉得音频里“少了一个词”。finance office 是实词组，听感更重；C 不是原句片段；before midnight 也不是这句音频的内容。",
+        "tips": [
+          "to 在动词短语里常弱读成 /tə/。",
+          "听不见完整小词时，先判断它是否是功能词弱读。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 have to 中 to 的弱读",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户接受功能词不会完整重读，减少听力中漏听小词造成的误判。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "001102",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "1",
+        "box_name": "弱读",
+        "box_prefix": "0011"
+      },
+      "front": {
+        "text": "这句话里哪一段最可能因为弱读变得不显眼？",
+        "task_prompt": "播放音频后，找出 to explain 里的弱读功能词。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0011/001102.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "to explain"
+          },
+          {
+            "key": "B",
+            "text": "first-year students"
+          },
+          {
+            "key": "C",
+            "text": "the model"
+          },
+          {
+            "key": "D",
+            "text": "easy"
+          }
+        ],
+        "task_schema": {
+          "action": "选择弱读功能词所在片段",
+          "focus": "识别 to 在不定式前的弱读",
+          "success_criteria": "能把轻读的 to 还原出来，理解 try to explain 的动作"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0011/001102.mp3",
+        "duration_ms": 4872,
+        "transcript": "Try to explain the model in a way that is easy for first-year students.",
+        "path": "ai_tts/cet4/0011/001102.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。try to explain 中的 to 是不定式标记，通常弱读成 /tə/，听感很短，真正的重心落在 explain。C 里的 the 也可能弱读，但本题最核心的训练点是 to explain：如果漏掉弱读的 to，用户可能会把 try 和 explain 的关系听散。B 是实词信息块，D 是重读形容词，不是弱读核心。",
+        "tips": [
+          "不定式 to 经常弱读，重心落在后面的动词。",
+          "先抓重读动词，再把轻读功能词补回句法关系。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 to explain 中 to 的弱读",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户从弱读功能词恢复句法关系，避免只听到实词后误解动作结构。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "001103",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "1",
+        "box_name": "弱读",
+        "box_prefix": "0011"
+      },
+      "front": {
+        "text": "听这句条件句，哪个词最可能被弱读成轻短音？",
+        "task_prompt": "重点听 could approve it，判断情态动词是否完整重读。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0011/001103.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "could"
+          },
+          {
+            "key": "B",
+            "text": "manager"
+          },
+          {
+            "key": "C",
+            "text": "approve"
+          },
+          {
+            "key": "D",
+            "text": "risk"
+          }
+        ],
+        "task_schema": {
+          "action": "选择弱读词",
+          "focus": "识别情态动词 could 的弱读",
+          "success_criteria": "能听出 could 在 approve 前读得轻，不抢主干动词重音"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0011/001103.mp3",
+        "duration_ms": 4440,
+        "transcript": "The manager said she could approve it if the risk remained low.",
+        "path": "ai_tts/cet4/0011/001103.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。could 在这里是情态动词，通常读得短而轻，接近 /kəd/，重心落在 approve。manager、approve、risk 都是实词，更容易承载句子信息。听条件句时，如果 could 读得轻，不代表它不存在；它告诉你后面的 approve 是可能性或条件下的动作。",
+        "tips": [
+          "情态动词常弱读，后面的实义动词更重。",
+          "弱读词负责语法关系，不能因为轻就忽略。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 could 的情态动词弱读",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在条件和建议类听力中识别轻读情态词，避免误判动作语气。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ],
+  "review_limits": [
+    "This is a local draft sample only.",
+    "It is not formal product content.",
+    "Audio file quality still needs separate review before formal approval.",
+    "User confirmation is required before any batch expansion or card_boxes_json replacement beyond this scoped candidate sample."
+  ]
+}
