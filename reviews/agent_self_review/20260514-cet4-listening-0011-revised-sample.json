@@ -1,18 +1,18 @@
 {
-  "review_id": "20260513-cet4-listening-0000-revised-sample",
-  "created_at": "2026-05-13T22:56:19+08:00",
+  "review_id": "20260514-cet4-listening-0011-revised-sample",
+  "created_at": "2026-05-14T16:31:10+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测话题",
+    "group": "语音现象",
+    "box": "弱读",
     "box_prefixes": [
-      "0000"
+      "0011"
     ],
     "card_ids": [
-      "000001",
-      "000002",
-      "000003"
+      "001101",
+      "001102",
+      "001103"
     ]
   },
   "specs_read": [
@@ -34,20 +34,20 @@
   },
   "cards": [
     {
-      "card_id": "000001",
+      "card_id": "001101",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "根据选项关键词组合预测听力主话题",
+        "main_training_goal": "识别 have to 中 to 的弱读",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +66,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "让用户练会从选项中先抓对象和角度，降低听力开头进入成本。",
+        "exam_value": "帮助用户接受功能词不会完整重读，减少听力中漏听小词造成的误判。",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -87,20 +87,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000002",
+      "card_id": "001102",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "听开头句识别主话题关系",
+        "main_training_goal": "识别 to explain 中 to 的弱读",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,7 +117,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户把开头句里的中心关系和背景词分开，避免听到熟词就误判。",
+        "exam_value": "训练用户从弱读功能词恢复句法关系，避免只听到实词后误解动作结构。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -138,20 +138,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000003",
+      "card_id": "001103",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "根据讲座开头预测后文展开方向",
+        "main_training_goal": "识别 could 的情态动词弱读",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,7 +170,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把讲座开头的结构词和评价词合并，提前建立后文听力预期。",
+        "exam_value": "帮助用户在条件和建议类听力中识别轻读情态词，避免误判动作语气。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -193,17 +193,17 @@
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample now moves from option-keyword recognition, to listening-opening application, to transfer prediction about lecture development.",
+    "box_progression": "The revised sample moves from recognizing a basic weak to in have to, to applying the same method to to explain, to transferring it to a weak modal could in a conditional sentence.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about option-based topic prediction.",
+      "All three cards use multiple_choice because this box is specifically about identifying weak-read function words or chunks.",
       "Formal approval still needs user confirmation and separate audio QA."
     ],
     "representative_cards": [
-      "000001",
-      "000002",
-      "000003"
+      "001101",
+      "001102",
+      "001103"
     ],
-    "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
+    "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
