@@ -1,0 +1,286 @@
+{
+  "draft_id": "20260513-cet4-listening-0000-revised-sample",
+  "created_at": "2026-05-13T22:56:19+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for user review after the existing 0000 sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测话题",
+    "box_prefix": "0000",
+    "candidate_for_existing_card_ids": [
+      "000001",
+      "000002",
+      "000003"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "000001",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "front": {
+        "text": "先看选项，不看解析：这段听力最可能围绕什么话题展开？",
+        "task_prompt": "根据选项中的关键词组合，先预测主话题，再播放音频验证。",
+        "display_mode": "options_then_audio",
+        "audio_first": false,
+        "audio_url": "ai_tts/cet4/0000/000001.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "电动公交与柴油车队的运营成本和排放对比"
+          },
+          {
+            "key": "B",
+            "text": "游客如何购买城市交通通票"
+          },
+          {
+            "key": "C",
+            "text": "学生使用校园咨询服务的原因"
+          },
+          {
+            "key": "D",
+            "text": "暴雨导致公交线路临时调整"
+          }
+        ],
+        "task_schema": {
+          "action": "选择最可能的主话题",
+          "focus": "用选项关键词预测话题范围",
+          "success_criteria": "能说出正确选项为什么同时覆盖对象和讨论角度"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0000/000001.mp3",
+        "duration_ms": 7608,
+        "transcript": "The speaker begins by comparing electric buses with diesel fleets in terms of operating cost and emissions.",
+        "path": "ai_tts/cet4/0000/000001.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。做听前预测时，不要只盯一个熟词，要看选项里有没有“对象 + 比较角度”的完整组合。A 同时给出 electric buses / diesel fleets 两类对象，以及 operating cost / emissions 两个比较维度，最像听力开头会展开的中心话题。B、D 只有交通场景，但没有成本和排放这组评价维度；C 的 counseling services 属于另一个校园心理话题。播放音频后，comparing、operating cost、emissions 会直接验证这个预测。",
+        "tips": [
+          "选项里两个名词阵营被放在一起时，优先预判为比较类话题。",
+          "预测主话题要同时抓对象和讨论角度。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据选项关键词组合预测听力主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "让用户练会从选项中先抓对象和角度，降低听力开头进入成本。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "000002",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "front": {
+        "text": "播放音频开头后，选出最贴近的主话题。",
+        "task_prompt": "不要被 exam season 单独带跑，听清 how A influences B 的关系。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0000/000002.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "校园咨询服务如何影响考试季学生压力"
+          },
+          {
+            "key": "B",
+            "text": "期末考试期间图书馆座位预约规则"
+          },
+          {
+            "key": "C",
+            "text": "学生如何申请延期参加考试"
+          },
+          {
+            "key": "D",
+            "text": "心理学课程对大学成绩的影响"
+          }
+        ],
+        "task_schema": {
+          "action": "听后选择主话题",
+          "focus": "识别 how A influences B 的话题框架",
+          "success_criteria": "能区分中心关系和背景词"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0000/000002.mp3",
+        "duration_ms": 7992,
+        "transcript": "Today's report focuses on how campus counseling services influence student stress levels during exam season.",
+        "path": "ai_tts/cet4/0000/000002.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。开头里的 focuses on how campus counseling services influence student stress levels 是主框架，exam season 只是限定场景。CET 听力里，how X influences Y 往往直接告诉你“这段要讲 X 对 Y 的影响”，后面细节会围绕影响方式、证据或结果展开。B、C 都抓住了 exam 这个背景词，但没有 counseling services 和 stress levels；D 有 psychology 的影子，却把服务影响压力偷换成课程影响成绩。",
+        "tips": [
+          "听到 focuses on how... 时，先把 X 和 Y 都记住。",
+          "背景词不能替代主话题关系。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "听开头句识别主话题关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把开头句里的中心关系和背景词分开，避免听到熟词就误判。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "000003",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "front": {
+        "text": "听到讲座开头后，预测后文最可能继续展开哪一类信息。",
+        "task_prompt": "先抓 introduces three models 和 evaluates feasibility，再判断后文方向。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0000/000003.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "三个城市水循环模式，以及它们长期是否可行"
+          },
+          {
+            "key": "B",
+            "text": "城市供水系统的历史发展顺序"
+          },
+          {
+            "key": "C",
+            "text": "家庭节约用水的日常技巧清单"
+          },
+          {
+            "key": "D",
+            "text": "某个水污染事件的新闻报道"
+          }
+        ],
+        "task_schema": {
+          "action": "预测后文展开方向",
+          "focus": "把主题对象和评价任务合并成主话题",
+          "success_criteria": "能预测后文会按 models 和 feasibility 展开"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0000/000003.mp3",
+        "duration_ms": 7440,
+        "transcript": "The lecture introduces three models of urban water recycling and evaluates their long-term feasibility.",
+        "path": "ai_tts/cet4/0000/000003.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。这句话有两个强信号：introduces three models 告诉你结构可能按三类模式展开，evaluates their long-term feasibility 告诉你不是单纯介绍概念，而是要判断长期可行性。B 只保留了 history，C 只保留了日常建议，D 变成事件报道，都没有覆盖 models + feasibility 这组核心信息。遇到讲座开头时，把“要介绍什么”和“要评价什么”合并，通常就能提前锁定主话题。",
+        "tips": [
+          "lecture introduces... 常常预告后文结构。",
+          "evaluate / feasibility 这类词会把话题从介绍推向判断。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据讲座开头预测后文展开方向",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把讲座开头的结构词和评价词合并，提前建立后文听力预期。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ],
+  "review_limits": [
+    "This is a local draft sample only.",
+    "It is not formal product content.",
+    "Audio file quality still needs separate review before formal approval.",
+    "User confirmation is required before any batch expansion or card_boxes_json replacement."
+  ]
+}
