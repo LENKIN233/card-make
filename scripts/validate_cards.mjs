@@ -50,7 +50,10 @@ function validate() {
     interactions: {},
     production_status: {},
     provenance_status: {},
+    source_type: {},
+    material_text_source_type: {},
     quality_flags: {},
+    derived_quality_flags: {},
   };
 
   const files = new Set();
@@ -116,8 +119,23 @@ function validate() {
     const provenance = card.source_ref?.provenance_status || 'missing';
     stats.provenance_status[provenance] = (stats.provenance_status[provenance] || 0) + 1;
 
+    const sourceType = card.source_ref?.type || 'missing';
+    stats.source_type[sourceType] = (stats.source_type[sourceType] || 0) + 1;
+
+    const materialSourceType = card.quality_metadata?.material?.text_source_type || 'missing';
+    stats.material_text_source_type[materialSourceType] = (stats.material_text_source_type[materialSourceType] || 0) + 1;
+
     for (const flag of card.quality_flags || []) {
       stats.quality_flags[flag] = (stats.quality_flags[flag] || 0) + 1;
+    }
+    if (provenance === 'missing' || provenance === 'unverified') {
+      stats.derived_quality_flags.unverified_source = (stats.derived_quality_flags.unverified_source || 0) + 1;
+    }
+    if (
+      /ai_generated|synthetic|simulation|simulated/.test(String(sourceType)) ||
+      /ai_generated|synthetic|simulation|simulated/.test(String(materialSourceType))
+    ) {
+      stats.derived_quality_flags.synthetic_source = (stats.derived_quality_flags.synthetic_source || 0) + 1;
     }
   }
 

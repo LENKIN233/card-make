@@ -90,14 +90,25 @@
     {
       "id": "synthetic_source",
       "severity": "source_risk",
-      "description": "The text source is AI-generated, simulated, or synthetic and must not be labeled as true exam content."
+      "description": "The source_ref.type or quality_metadata.material.text_source_type is AI-generated, simulated, or synthetic and must not be labeled as true exam content."
     }
   ],
+  "report_contract": {
+    "must_include": [
+      "corpus_fingerprint",
+      "summary",
+      "card_issue_index",
+      "hard_blocker_issues",
+      "examples"
+    ],
+    "card_issue_index_role": "Per-card counts by severity and rule. Review records must use this index to store a scoped summary for their own card_ids instead of relying only on corpus-level totals."
+  },
   "candidate_scope_policy": {
     "before_user_sample_review": [
       "run scripts/audit_card_quality.mjs --write-report",
       "report_must_match_current_card_corpus_fingerprint",
       "agent_self_review_must_link_current_quality_audit_report",
+      "agent_self_review_must_include_scoped_quality_audit_summary",
       "scope_must_have_no_hard_blocker_issues",
       "content_risk_examples_must_be reviewed_or_explicitly_accepted_as_known_legacy_risk"
     ],

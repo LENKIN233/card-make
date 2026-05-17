@@ -169,6 +169,15 @@ function increment(map, key, amount = 1) {
   map[key] = (map[key] || 0) + amount;
 }
 
+function emptySeverityCounts() {
+  return {
+    hard_blocker: 0,
+    content_risk: 0,
+    review_gap: 0,
+    source_risk: 0,
+  };
+}
+
 function ensureRuleCounts(summary, rulesById) {
   for (const ruleId of rulesById.keys()) {
     if (!summary.by_rule[ruleId]) {
@@ -191,6 +200,52 @@ function addIssue(issues, rulesById, row, ruleId, message, frontText, analysisTe
     front_excerpt: excerpt(frontText),
     analysis_excerpt: excerpt(analysisText),
   });
+}
+
+function sourceTypesOf(card) {
+  return [
+    card.source_ref?.type,
+    card.quality_metadata?.material?.text_source_type,
+  ]
+    .map(value => normalizeText(value))
+    .filter(Boolean);
+}
+
+function buildCardIssueIndex(rows, issues) {
+  const index = {};
+  for (const row of rows) {
+    const location = cardLocation(row.file, row.card);
+    index[location.card_id] = {
+      ...location,
+      issue_count: 0,
+      by_severity: emptySeverityCounts(),
+      by_rule: {},
+    };
+  }
+
+  for (const issue of issues) {
+    if (!index[issue.card_id]) {
+      index[issue.card_id] = {
+        file: issue.file,
+        card_id: issue.card_id,
+        track: issue.track,
+        library: issue.library,
+        group: issue.group,
+        box: issue.box,
+        box_prefix: issue.box_prefix,
+        interaction_id: issue.interaction_id,
+        issue_count: 0,
+        by_severity: emptySeverityCounts(),
+        by_rule: {},
+      };
+    }
+    const record = index[issue.card_id];
+    record.issue_count += 1;
+    increment(record.by_severity, issue.severity);
+    increment(record.by_rule, issue.rule_id);
+  }
+
+  return index;
 }
 
 function buildAudit({ maxExamples }) {
@@ -256,9 +311,10 @@ function buildAudit({ maxExamples }) {
       addIssue(issues, rulesById, row, 'unverified_source', `Source provenance status is ${provenanceStatus}.`, frontText, analysisText);
     }
 
-    const sourceType = card.source_ref?.type || card.quality_metadata?.material?.text_source_type || '';
-    if (/ai_generated|synthetic|simulation|simulated/.test(String(sourceType))) {
-      addIssue(issues, rulesById, row, 'synthetic_source', `Source type is ${sourceType}.`, frontText, analysisText);
+    const syntheticSourceTypes = sourceTypesOf(card)
+      .filter(sourceType => /ai_generated|synthetic|simulation|simulated/.test(sourceType));
+    if (syntheticSourceTypes.length > 0) {
+      addIssue(issues, rulesById, row, 'synthetic_source', `Source type includes ${syntheticSourceTypes.join(', ')}.`, frontText, analysisText);
     }
   }
 
@@ -352,6 +408,7 @@ function buildAudit({ maxExamples }) {
       cards: summary.total_cards,
     },
     summary,
+    card_issue_index: buildCardIssueIndex(rows, issues),
     hard_blocker_issues: issues.filter(issue => issue.severity === 'hard_blocker'),
     examples,
   };

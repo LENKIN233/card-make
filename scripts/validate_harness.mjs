@@ -74,6 +74,20 @@ const REQUIRED_APPROVAL_FIELDS = [
   'representative_cards',
   'validation',
 ];
+const REQUIRED_QUALITY_AUDIT_RECORD_FIELDS = [
+  'report',
+  'corpus_fingerprint',
+  'scope_has_no_hard_blockers',
+  'scope_summary',
+];
+const REQUIRED_QUALITY_AUDIT_SCOPE_SUMMARY_FIELDS = [
+  'card_ids',
+  'card_count',
+  'issue_count',
+  'by_severity',
+  'by_rule',
+];
+const QUALITY_AUDIT_SEVERITIES = ['hard_blocker', 'content_risk', 'review_gap', 'source_risk'];
 
 function resolveWorkspacePath(specPath) {
   return path.resolve(ROOT, specPath);
@@ -148,6 +162,48 @@ function setsEqual(leftValues, rightValues) {
     if (!right.has(value)) return false;
   }
   return true;
+}
+
+function sortedStrings(values) {
+  return [...stringSet(values)].sort();
+}
+
+function numericCount(value) {
+  return Number.isFinite(Number(value)) ? Number(value) : 0;
+}
+
+function emptySeverityCounts() {
+  return Object.fromEntries(QUALITY_AUDIT_SEVERITIES.map(severity => [severity, 0]));
+}
+
+function buildScopedAuditSummary(report, scopeCardIds) {
+  const ids = sortedStrings(scopeCardIds);
+  const summary = {
+    card_ids: ids,
+    card_count: ids.length,
+    issue_count: 0,
+    by_severity: emptySeverityCounts(),
+    by_rule: Object.fromEntries(REQUIRED_QUALITY_AUDIT_RULES.map(ruleId => [ruleId, 0])),
+  };
+  const missingCardIds = [];
+  const index = report.card_issue_index || {};
+
+  for (const cardId of ids) {
+    const record = index[cardId];
+    if (!record) {
+      missingCardIds.push(cardId);
+      continue;
+    }
+    summary.issue_count += numericCount(record.issue_count);
+    for (const severity of QUALITY_AUDIT_SEVERITIES) {
+      summary.by_severity[severity] += numericCount(record.by_severity?.[severity]);
+    }
+    for (const ruleId of REQUIRED_QUALITY_AUDIT_RULES) {
+      summary.by_rule[ruleId] += numericCount(record.by_rule?.[ruleId]);
+    }
+  }
+
+  return { summary, missingCardIds };
 }
 
 function isSubset(values, allowedValues) {
@@ -443,6 +499,7 @@ function validateCardQualityAudit(errors) {
   for (const requirement of [
     'report_must_match_current_card_corpus_fingerprint',
     'agent_self_review_must_link_current_quality_audit_report',
+    'agent_self_review_must_include_scoped_quality_audit_summary',
     'scope_must_have_no_hard_blocker_issues',
     'no_hard_blocker_issues',
     'linked_current_quality_audit_report',
@@ -508,6 +565,14 @@ function validateCardQualityAudit(errors) {
   }
   if (!Array.isArray(report.hard_blocker_issues)) {
     pushIssue(errors, 'card_quality_audit_hard_blocker_index_missing', {});
+  }
+  if (!report.card_issue_index || typeof report.card_issue_index !== 'object') {
+    pushIssue(errors, 'card_quality_audit_card_issue_index_missing', {});
+  } else if (Object.keys(report.card_issue_index).length !== report.summary?.total_cards) {
+    pushIssue(errors, 'card_quality_audit_card_issue_index_count_mismatch', {
+      expected: report.summary?.total_cards,
+      actual: Object.keys(report.card_issue_index).length,
+    });
   }
   for (const ruleId of REQUIRED_QUALITY_AUDIT_RULES) {
     if (!report.summary?.by_rule?.[ruleId]) {
@@ -652,9 +717,19 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
     pushIssue(errors, 'quality_audit_record_missing', { source });
     return;
   }
-  for (const field of ['report', 'corpus_fingerprint', 'scope_has_no_hard_blockers']) {
+  for (const field of REQUIRED_QUALITY_AUDIT_RECORD_FIELDS) {
     if (!hasOwn(auditRecord, field)) {
       pushIssue(errors, 'quality_audit_record_field_missing', { source, field });
+    }
+  }
+  const scopeSummary = auditRecord.scope_summary;
+  if (!scopeSummary || typeof scopeSummary !== 'object') {
+    pushIssue(errors, 'quality_audit_scope_summary_missing', { source });
+  } else {
+    for (const field of REQUIRED_QUALITY_AUDIT_SCOPE_SUMMARY_FIELDS) {
+      if (!hasOwn(scopeSummary, field)) {
+        pushIssue(errors, 'quality_audit_scope_summary_field_missing', { source, field });
+      }
     }
   }
   if (auditRecord.report !== 'reports/card_quality_audit_report.json') {
@@ -706,6 +781,65 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
     pushIssue(errors, 'quality_audit_scope_has_hard_blockers', {
       source,
       card_ids: scopedHardBlockers.map(issue => issue.card_id),
+    });
+  }
+  if (!report.card_issue_index || typeof report.card_issue_index !== 'object') {
+    pushIssue(errors, 'quality_audit_record_report_card_issue_index_missing', { source });
+    return;
+  }
+
+  const { summary: expectedSummary, missingCardIds } = buildScopedAuditSummary(report, scopeCardIds);
+  if (missingCardIds.length > 0) {
+    pushIssue(errors, 'quality_audit_scope_cards_missing_from_report_index', {
+      source,
+      card_ids: missingCardIds,
+    });
+    return;
+  }
+  if (!scopeSummary || typeof scopeSummary !== 'object') return;
+  if (!setsEqual(scopeSummary.card_ids, expectedSummary.card_ids)) {
+    pushIssue(errors, 'quality_audit_scope_summary_card_ids_mismatch', {
+      source,
+      expected: expectedSummary.card_ids,
+      actual: scopeSummary.card_ids,
+    });
+  }
+  for (const field of ['card_count', 'issue_count']) {
+    if (numericCount(scopeSummary[field]) !== expectedSummary[field]) {
+      pushIssue(errors, 'quality_audit_scope_summary_count_mismatch', {
+        source,
+        field,
+        expected: expectedSummary[field],
+        actual: scopeSummary[field],
+      });
+    }
+  }
+  for (const severity of QUALITY_AUDIT_SEVERITIES) {
+    if (numericCount(scopeSummary.by_severity?.[severity]) !== expectedSummary.by_severity[severity]) {
+      pushIssue(errors, 'quality_audit_scope_summary_severity_mismatch', {
+        source,
+        severity,
+        expected: expectedSummary.by_severity[severity],
+        actual: scopeSummary.by_severity?.[severity],
+      });
+    }
+  }
+  for (const ruleId of REQUIRED_QUALITY_AUDIT_RULES) {
+    if (numericCount(scopeSummary.by_rule?.[ruleId]) !== expectedSummary.by_rule[ruleId]) {
+      pushIssue(errors, 'quality_audit_scope_summary_rule_mismatch', {
+        source,
+        ruleId,
+        expected: expectedSummary.by_rule[ruleId],
+        actual: scopeSummary.by_rule?.[ruleId],
+      });
+    }
+  }
+  const scopeHasNoHardBlockers = expectedSummary.by_severity.hard_blocker === 0;
+  if (auditRecord.scope_has_no_hard_blockers !== scopeHasNoHardBlockers) {
+    pushIssue(errors, 'quality_audit_scope_flag_mismatch', {
+      source,
+      expected: scopeHasNoHardBlockers,
+      actual: auditRecord.scope_has_no_hard_blockers,
     });
   }
 }

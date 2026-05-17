@@ -31,6 +31,9 @@ The validator enforces the product contract fields required by `softbook_cet`:
 - `analysis`
 
 It also checks interaction IDs, audio file references, provenance status, and visible template leakage.
+The report keeps explicit legacy flags separate from derived source-risk counts so
+`quality_metadata.material.text_source_type` can expose simulated or AI-generated
+candidate material even when legacy `source_ref.type` is still `content_pool`.
 
 ## Migration
 
@@ -54,6 +57,16 @@ Run this after editing harness files:
 ```bash
 node scripts/validate_harness.mjs
 ```
+
+Run this after editing card JSON, review records, or the quality-audit harness:
+
+```bash
+node scripts/audit_card_quality.mjs --write-report
+```
+
+Agent self-review and approval records must link the current audit fingerprint
+and include a scoped audit summary for their own `card_ids`; corpus-level totals
+alone are not enough to support sample review.
 
 Formal content usability requires explicit user approval recorded under
 `reviews/approved_batches/`. Agent self-review records belong under
