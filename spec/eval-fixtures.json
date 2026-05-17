@@ -275,9 +275,16 @@
         },
         "summary": "Intentionally incomplete fixture: user approval exists without a linked agent self-review record.",
         "representative_cards": ["003191", "003192", "003193"],
+        "card_quality_audit": {
+          "report": "reports/card_quality_audit_report.json",
+          "corpus_fingerprint": "FIXTURE_CARD_CORPUS_SHA256",
+          "scope_has_no_hard_blockers": true
+        },
         "validation": {
           "harness": "node scripts/validate_harness.mjs",
           "cards": "node scripts/validate_cards.mjs --write-report",
+          "card_quality_audit": "node scripts/audit_card_quality.mjs --write-report",
+          "card_quality_audit_report": "reports/card_quality_audit_report.json",
           "agent_self_review": ""
         },
         "approval_limits": [
