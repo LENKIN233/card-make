@@ -1,0 +1,44 @@
+{
+  "handoff_id": "20260513-content-cet4-listening-0000-sample",
+  "created_at": "2026-05-13T23:06:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0000-sample",
+  "base_branch": "fix/review-findings-card-contract",
+  "commit_sha": "77a1080284d48c121e0fdb93ffb920330fd6d9e8",
+  "push_ref": "origin/content/cet4-listening-0000-sample",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/8",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0000.json",
+      "reports/card_validation_report.json",
+      "reviews/agent_self_review/20260513-cet4-listening-0000-existing-sample.json",
+      "reviews/agent_self_review/20260513-cet4-listening-0000-revised-sample.json",
+      "reviews/drafts/20260513-cet4-listening-0000-revised-sample.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "pass: ok true, 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "pass: ok true; warnings are recorded upstream group alignment issues"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass: no whitespace errors"
+    }
+  ],
+  "local_status": "clean before handoff record; handoff record added after PR creation",
+  "remaining_risks": [
+    "This is a candidate sample only and is not formal content approval.",
+    "No reviews/approved_batches record was created.",
+    "Audio file quality has not been separately reviewed for formal use.",
+    "PR #8 is stacked on fix/review-findings-card-contract, which is still represented by draft PR #7 into main."
+  ],
+  "merge_authority": "user_reserved_for_formal_content; no standing auto-merge for this content sample"
+}

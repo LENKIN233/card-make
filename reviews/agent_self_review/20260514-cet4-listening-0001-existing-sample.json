@@ -1,0 +1,229 @@
+{
+  "review_id": "20260514-cet4-listening-0001-existing-sample",
+  "created_at": "2026-05-14T10:58:39+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测考点",
+    "box_prefixes": [
+      "0001"
+    ],
+    "card_ids": [
+      "000101",
+      "000102",
+      "000103"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "spec/card-quality-audit.json"
+  ],
+  "sample_policy": {
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "cards": [
+    {
+      "card_id": "000101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "根据听力提示预测题目考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "目标方向符合考点预测，但 front 没有给出具体可选择的考点类型。",
+        "box_progression_role": "recognition",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "Front asks for a judgment but does not define what kind of test point the learner should identify.",
+        "The analysis is generic structure-signal guidance and is not grounded in the policy-revision reason signal.",
+        "No clear box progression is visible from the learner-facing content."
+      ],
+      "minor_issues": [
+        "TTS text and audio quality have not been reviewed separately."
+      ],
+      "recommendation": "Revise before user review; turn the item into a concrete test-point prediction task."
+    },
+    {
+      "card_id": "000102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "根据选项预测态度类考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "多选形式适合考点预测，但当前选项是策略口号，不能检验态度类考点识别。",
+        "box_progression_role": "application",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": true,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "The correct option can be selected without listening because it is the only positive strategy statement.",
+        "The options do not represent plausible test-point categories.",
+        "The analysis repeats a generic template instead of explaining the speaker-attitude signal."
+      ],
+      "minor_issues": [
+        "The answer and distractors need to be tied to the transcript, not to agent behavior."
+      ],
+      "recommendation": "Block this sample; rewrite options as question-focus categories such as attitude, reason, suggestion, or detail."
+    },
+    {
+      "card_id": "000103",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "根据听力开头预测建议类考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "音频文本有 should do before... 的建议类信号，但当前 front 和 back 不构成可执行任务。",
+        "box_progression_role": "transfer",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": true,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "The card asks for generic judging but does not make the advice/suggestion test point actionable.",
+        "The analysis mentions clicking near a trigger word even though the card is rendered as flip.",
+        "The item repeats the same template as the previous cards and does not demonstrate transfer."
+      ],
+      "minor_issues": [
+        "Interaction and answer form should be aligned before any user confirmation."
+      ],
+      "recommendation": "Block this sample; rewrite as a concrete multiple-choice test-point prediction card."
+    }
+  ],
+  "batch_review": {
+    "status": "blocked",
+    "box_progression": "The source transcripts point to reason, attitude, and suggestion test points, but the current cards hide those differences behind repeated generic fronts and analyses.",
+    "repetition_or_gap_risks": [
+      "Fronts are nearly identical across all three cards.",
+      "Only one card has choices, and those choices are not real exam-facing test-point choices.",
+      "The analyses reuse the same mechanism paragraphs with only the box label changed.",
+      "TTS text and audio have not been reviewed as separate quality surfaces."
+    ],
+    "representative_cards": [
+      "000101",
+      "000102",
+      "000103"
+    ],
+    "next_step": "Do not ask for user confirmation on this sample. Draft a revised 3-card candidate sample that exposes reason, attitude, and suggestion test-point prediction."
+  },
+  "quality_audit": {
+    "report": "reports/card_quality_audit_report.json",
+    "corpus_fingerprint": "a803abceba8c5b76e3f829ef9688f9f4861f13063a5a6be4b06987d084d06ffe",
+    "scope_has_no_hard_blockers": true
+  }
+}
