@@ -1,18 +1,18 @@
 {
-  "review_id": "20260513-cet4-listening-0000-revised-sample",
-  "created_at": "2026-05-13T22:56:19+08:00",
+  "review_id": "20260514-cet4-listening-0001-revised-sample",
+  "created_at": "2026-05-14T10:58:39+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
     "group": "听前预测",
-    "box": "根据选项预测话题",
+    "box": "根据选项预测考点",
     "box_prefixes": [
-      "0000"
+      "0001"
     ],
     "card_ids": [
-      "000001",
-      "000002",
-      "000003"
+      "000101",
+      "000102",
+      "000103"
     ]
   },
   "specs_read": [
@@ -34,20 +34,20 @@
   },
   "cards": [
     {
-      "card_id": "000001",
+      "card_id": "000101",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
         "group_id": "0",
         "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "0001"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "根据选项关键词组合预测听力主话题",
+        "main_training_goal": "识别原因类听力考点",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +66,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "让用户练会从选项中先抓对象和角度，降低听力开头进入成本。",
+        "exam_value": "帮助用户先锁定原因题，避免被 data 等局部词误导。",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -87,20 +87,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000002",
+      "card_id": "000102",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
         "group_id": "0",
         "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "0001"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "听开头句识别主话题关系",
+        "main_training_goal": "识别态度类听力考点",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,7 +117,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户把开头句里的中心关系和背景词分开，避免听到熟词就误判。",
+        "exam_value": "训练用户听出态度题信号，提前准备捕捉评价词和转折。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -138,20 +138,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000003",
+      "card_id": "000103",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
         "group_id": "0",
         "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "0001"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "根据讲座开头预测后文展开方向",
+        "main_training_goal": "识别建议类听力考点",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,7 +170,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把讲座开头的结构词和评价词合并，提前建立后文听力预期。",
+        "exam_value": "帮助用户把建议信号转化为答案预期，提升听后抓动作的效率。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -193,15 +193,15 @@
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample now moves from option-keyword recognition, to listening-opening application, to transfer prediction about lecture development.",
+    "box_progression": "The revised sample now moves from recognizing a reason test point, to applying attitude-question prediction, to transferring the same method to suggestion/action prediction.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about option-based topic prediction.",
+      "All three cards use multiple_choice because this box is specifically about predicting the likely test point from the listening cue.",
       "Formal approval still needs user confirmation and separate audio QA."
     ],
     "representative_cards": [
-      "000001",
-      "000002",
-      "000003"
+      "000101",
+      "000102",
+      "000103"
     ],
     "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
   },

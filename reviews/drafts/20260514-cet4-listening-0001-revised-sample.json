@@ -1,0 +1,286 @@
+{
+  "draft_id": "20260514-cet4-listening-0001-revised-sample",
+  "created_at": "2026-05-14T10:58:39+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0001 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测考点",
+    "box_prefix": "0001",
+    "candidate_for_existing_card_ids": [
+      "000101",
+      "000102",
+      "000103"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "000101",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "front": {
+        "text": "听到开头提示后，预测这题最可能考什么。",
+        "task_prompt": "重点听 why 和 after the pilot data were reviewed，判断题目会问哪类信息。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0001/000101.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "政策修改的原因"
+          },
+          {
+            "key": "B",
+            "text": "试点数据的具体百分比"
+          },
+          {
+            "key": "C",
+            "text": "政策发布的地点"
+          },
+          {
+            "key": "D",
+            "text": "报告人所在的部门"
+          }
+        ],
+        "task_schema": {
+          "action": "选择最可能被考的题点",
+          "focus": "识别 reason why 引出的原因类考点",
+          "success_criteria": "能解释 why 和 after...reviewed 如何共同指向原因题"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0001/000101.mp3",
+        "duration_ms": 5832,
+        "transcript": "Listen for the reason why the policy was revised after the pilot data were reviewed.",
+        "path": "ai_tts/cet4/0001/000101.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。reason why 直接把考点指向“原因”，was revised 说明对象是 policy，after the pilot data were reviewed 则提示原因可能来自试点数据复盘。B 看起来和 data 有关，但原句没有提示具体数值；C、D 都是外围信息。听前预测考点时，要先判断题目会问原因、态度、建议还是细节，再带着这个预期去听证据。",
+        "tips": [
+          "听到 reason why，优先预判原因题。",
+          "after...reviewed 常提示原因或依据，不等于一定考具体数字。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别原因类听力考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户先锁定原因题，避免被 data 等局部词误导。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "000102",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "front": {
+        "text": "播放音频后，判断这题最可能考哪种听力题点。",
+        "task_prompt": "听清 attitude toward...，不要把它误当成事实细节题。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0001/000102.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "说话人对项目制评估取代传统考试的态度"
+          },
+          {
+            "key": "B",
+            "text": "项目制评估的具体评分表"
+          },
+          {
+            "key": "C",
+            "text": "传统考试的历史起源"
+          },
+          {
+            "key": "D",
+            "text": "学生完成项目的人数"
+          }
+        ],
+        "task_schema": {
+          "action": "选择题目考点类型",
+          "focus": "识别 attitude toward 引出的态度类考点",
+          "success_criteria": "能区分态度题和事实细节题"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0001/000102.mp3",
+        "duration_ms": 7152,
+        "transcript": "Pay attention to the speaker's attitude toward replacing traditional exams with project-based assessment.",
+        "path": "ai_tts/cet4/0001/000102.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。attitude toward 是态度题的强信号，后面 replacing traditional exams with project-based assessment 是态度对象。这里的重点不是评分表、历史或人数，而是说话人赞成、担心、保留还是反对。听到 attitude / view / opinion 这类词，要马上把注意力从事实记忆切换到语气、评价词和让步转折。",
+        "tips": [
+          "attitude toward 后面接的是态度对象。",
+          "态度题要听评价方向，不只听名词主题。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别态度类听力考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户听出态度题信号，提前准备捕捉评价词和转折。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "000103",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "front": {
+        "text": "听到提示后，预测后面最可能要抓哪类答案。",
+        "task_prompt": "抓住 suggests students should do before...，判断它对应什么考点。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0001/000103.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "教授建议学生提交终稿前应该做什么"
+          },
+          {
+            "key": "B",
+            "text": "教授上课使用的教材名称"
+          },
+          {
+            "key": "C",
+            "text": "终稿要求的页数"
+          },
+          {
+            "key": "D",
+            "text": "课程开始的具体日期"
+          }
+        ],
+        "task_schema": {
+          "action": "预测答案类型",
+          "focus": "识别 suggest/should do 引出的建议类考点",
+          "success_criteria": "能预判要听一个可执行动作，而不是背景细节"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0001/000103.mp3",
+        "duration_ms": 6192,
+        "transcript": "Focus on what the professor suggests students should do before submitting the final draft.",
+        "path": "ai_tts/cet4/0001/000103.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。suggests students should do 是建议类考点的核心信号，before submitting the final draft 限定了动作发生的时间。真正要听的是“提交终稿前该做什么”，不是教材名、页数或日期。遇到 suggest / recommend / should 这类提示，先预判答案会是一个动作，再听后文是否给出 revise、check sources、ask for feedback 之类的可执行行为。",
+        "tips": [
+          "suggest / should do 往往指向建议类答案。",
+          "before... 是时间限定，不是主考点本身。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别建议类听力考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把建议信号转化为答案预期，提升听后抓动作的效率。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ],
+  "review_limits": [
+    "This is a local draft sample only.",
+    "It is not formal product content.",
+    "Audio file quality still needs separate review before formal approval.",
+    "User confirmation is required before any batch expansion or card_boxes_json replacement beyond this scoped candidate sample."
+  ]
+}

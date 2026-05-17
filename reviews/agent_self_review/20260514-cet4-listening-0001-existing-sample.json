@@ -1,18 +1,18 @@
 {
-  "review_id": "20260513-cet4-listening-0000-existing-sample",
-  "created_at": "2026-05-13T22:56:19+08:00",
+  "review_id": "20260514-cet4-listening-0001-existing-sample",
+  "created_at": "2026-05-14T10:58:39+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
     "group": "听前预测",
-    "box": "根据选项预测话题",
+    "box": "根据选项预测考点",
     "box_prefixes": [
-      "0000"
+      "0001"
     ],
     "card_ids": [
-      "000001",
-      "000002",
-      "000003"
+      "000101",
+      "000102",
+      "000103"
     ]
   },
   "specs_read": [
@@ -34,20 +34,20 @@
   },
   "cards": [
     {
-      "card_id": "000001",
+      "card_id": "000101",
       "interaction_id": "flip",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
         "group_id": "0",
         "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "0001"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "训练听前/听后用音频线索预测话题重心",
+        "main_training_goal": "根据听力提示预测题目考点",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +66,7 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "目标方向符合听力话题预测，但当前 front 没有给出可执行判断格式或选项，学习动作不成立。",
+        "exam_value": "目标方向符合考点预测，但 front 没有给出具体可选择的考点类型。",
         "box_progression_role": "recognition",
         "review_status": "block"
       },
@@ -81,30 +81,30 @@
         "low_quality_variation": true
       },
       "major_issues": [
-        "Front asks the learner to make a topic-prediction judgment but does not define the output expected from a flip card.",
-        "The analysis is mostly reusable generic strategy text rather than evidence tied to this audio transcript.",
-        "The card repeats the same front pattern used across the sample, so it does not yet prove box progression."
+        "Front asks for a judgment but does not define what kind of test point the learner should identify.",
+        "The analysis is generic structure-signal guidance and is not grounded in the policy-revision reason signal.",
+        "No clear box progression is visible from the learner-facing content."
       ],
       "minor_issues": [
-        "TTS text and audio quality have not been separately reviewed."
+        "TTS text and audio quality have not been reviewed separately."
       ],
-      "recommendation": "Revise before user review; keep the training goal but rewrite the front and analysis around the actual audio signal."
+      "recommendation": "Revise before user review; turn the item into a concrete test-point prediction task."
     },
     {
-      "card_id": "000002",
+      "card_id": "000102",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
         "group_id": "0",
         "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "0001"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "用听力开头信息判断报告或讲座的中心话题",
+        "main_training_goal": "根据选项预测态度类考点",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -123,7 +123,7 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "多选形式可以服务听前预测，但当前选项是策略口号，正确答案可不听音频直接选出。",
+        "exam_value": "多选形式适合考点预测，但当前选项是策略口号，不能检验态度类考点识别。",
         "box_progression_role": "application",
         "review_status": "block"
       },
@@ -138,30 +138,30 @@
         "low_quality_variation": true
       },
       "major_issues": [
-        "The correct option is a meta-strategy answer, not a content judgment grounded in the audio transcript.",
-        "Distractors are obviously bad behaviors, so the item does not test topic prediction.",
-        "Because the answer can be chosen without listening, the listening-card task fails its own success criteria."
+        "The correct option can be selected without listening because it is the only positive strategy statement.",
+        "The options do not represent plausible test-point categories.",
+        "The analysis repeats a generic template instead of explaining the speaker-attitude signal."
       ],
       "minor_issues": [
-        "The analysis repeats the same generic structure-signal text rather than explaining the counseling/exam-season topic signal."
+        "The answer and distractors need to be tied to the transcript, not to agent behavior."
       ],
-      "recommendation": "Block this sample; rewrite options as plausible topic choices tied to the audio content."
+      "recommendation": "Block this sample; rewrite options as question-focus categories such as attitude, reason, suggestion, or detail."
     },
     {
-      "card_id": "000003",
+      "card_id": "000103",
       "interaction_id": "flip",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
         "group_id": "0",
         "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "0001"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别讲座开头对话题范围的限定信号",
+        "main_training_goal": "根据听力开头预测建议类考点",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -180,7 +180,7 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "音频文本有话题信号，但当前交互与答案形式不一致，无法作为可执行卡片。",
+        "exam_value": "音频文本有 should do before... 的建议类信号，但当前 front 和 back 不构成可执行任务。",
         "box_progression_role": "transfer",
         "review_status": "block"
       },
@@ -195,31 +195,31 @@
         "low_quality_variation": true
       },
       "major_issues": [
-        "Back side gives an answer window and says the learner should click near a trigger word, but the card interaction is `flip` and the front does not ask for timestamp selection.",
-        "The front remains a generic topic-prediction prompt and does not expose a concrete transfer task.",
-        "The analysis is not sufficiently tied to the urban water recycling transcript."
+        "The card asks for generic judging but does not make the advice/suggestion test point actionable.",
+        "The analysis mentions clicking near a trigger word even though the card is rendered as flip.",
+        "The item repeats the same template as the previous cards and does not demonstrate transfer."
       ],
       "minor_issues": [
-        "If this is meant to train timestamp anchoring, the interaction contract and front task both need to change."
+        "Interaction and answer form should be aligned before any user confirmation."
       ],
-      "recommendation": "Block this sample; either convert the task to a matching interaction or rewrite it as a true flip card with a concrete topic-prediction answer."
+      "recommendation": "Block this sample; rewrite as a concrete multiple-choice test-point prediction card."
     }
   ],
   "batch_review": {
     "status": "blocked",
-    "box_progression": "The intended recognition/application/transfer spread is visible only in metadata. In the actual card content, the fronts and analyses are too repetitive to demonstrate progression.",
+    "box_progression": "The source transcripts point to reason, attitude, and suggestion test points, but the current cards hide those differences behind repeated generic fronts and analyses.",
     "repetition_or_gap_risks": [
-      "All three fronts use nearly identical wording.",
-      "Analyses reuse the same mechanism paragraphs with only small process substitutions.",
-      "No card yet forces a topic judgment grounded in the specific audio transcript.",
+      "Fronts are nearly identical across all three cards.",
+      "Only one card has choices, and those choices are not real exam-facing test-point choices.",
+      "The analyses reuse the same mechanism paragraphs with only the box label changed.",
       "TTS text and audio have not been reviewed as separate quality surfaces."
     ],
     "representative_cards": [
-      "000001",
-      "000002",
-      "000003"
+      "000101",
+      "000102",
+      "000103"
     ],
-    "next_step": "Do not ask for user confirmation on this sample. Revise the 0000 box by drafting a new 3-card candidate sample with concrete topic choices, transcript-grounded analysis, and matched interaction semantics."
+    "next_step": "Do not ask for user confirmation on this sample. Draft a revised 3-card candidate sample that exposes reason, attitude, and suggestion test-point prediction."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
