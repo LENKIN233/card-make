@@ -1,0 +1,109 @@
+{
+  "version": "card-make-quality-audit-v1",
+  "status": "active",
+  "purpose": "Read-only quality audit rules for existing and candidate card JSON. This audit surfaces mechanical blockers and content-risk signals; it is not formal release approval.",
+  "mode": "read_only_non_blocking_for_legacy_corpus",
+  "report_path": "reports/card_quality_audit_report.json",
+  "script_path": "scripts/audit_card_quality.mjs",
+  "approval_boundary": {
+    "does_not_replace": [
+      "explicit_user_confirmation",
+      "agent_self_review_record",
+      "card_validation",
+      "harness_validation"
+    ],
+    "legacy_status_fields_not_approval": [
+      "production_status",
+      "contract_ready",
+      "needs_review"
+    ]
+  },
+  "severity_levels": [
+    {
+      "id": "hard_blocker",
+      "meaning": "A mechanical card-shape issue that blocks candidate or formal batch scope until fixed."
+    },
+    {
+      "id": "content_risk",
+      "meaning": "A likely content-quality problem that requires agent or human review before sample approval."
+    },
+    {
+      "id": "review_gap",
+      "meaning": "Missing review evidence or quality metadata that prevents formal use claims."
+    },
+    {
+      "id": "source_risk",
+      "meaning": "Source provenance or generation status that must stay visible during review."
+    }
+  ],
+  "rules": [
+    {
+      "id": "multiple_choice_no_options",
+      "severity": "hard_blocker",
+      "description": "A multiple-choice card must expose at least two options."
+    },
+    {
+      "id": "multiple_choice_answer_not_in_options",
+      "severity": "hard_blocker",
+      "description": "A multiple-choice answer should match one of the visible option texts when an answer is present."
+    },
+    {
+      "id": "front_missing_or_too_short",
+      "severity": "content_risk",
+      "description": "The front side is missing or too short to stand as an independent learning task."
+    },
+    {
+      "id": "analysis_missing_or_too_short",
+      "severity": "content_risk",
+      "description": "The back-side explanation is missing or too short to support mechanism, transfer, and error handling."
+    },
+    {
+      "id": "generic_front_pattern",
+      "severity": "content_risk",
+      "description": "The front side matches broad template-like prompts that may not carry box-specific learning value."
+    },
+    {
+      "id": "template_analysis_pattern",
+      "severity": "content_risk",
+      "description": "The analysis matches repeated generic explanation patterns instead of card-specific reasoning."
+    },
+    {
+      "id": "exact_repeated_front",
+      "severity": "content_risk",
+      "description": "The same normalized front text appears on multiple cards."
+    },
+    {
+      "id": "exact_repeated_analysis",
+      "severity": "content_risk",
+      "description": "The same normalized analysis text appears on multiple cards."
+    },
+    {
+      "id": "missing_quality_metadata",
+      "severity": "review_gap",
+      "description": "The card has no quality_metadata block, so it cannot pass the sample quality workflow."
+    },
+    {
+      "id": "unverified_source",
+      "severity": "source_risk",
+      "description": "The source_ref provenance_status is unverified or missing."
+    },
+    {
+      "id": "synthetic_source",
+      "severity": "source_risk",
+      "description": "The text source is AI-generated, simulated, or synthetic and must not be labeled as true exam content."
+    }
+  ],
+  "candidate_scope_policy": {
+    "before_user_sample_review": [
+      "run scripts/audit_card_quality.mjs --write-report",
+      "scope_must_have_no_hard_blocker_issues",
+      "content_risk_examples_must_be reviewed_or_explicitly_accepted_as_known_legacy_risk"
+    ],
+    "formal_batch_scope": [
+      "no_hard_blocker_issues",
+      "no_unresolved_content_risk_without_user_authorized_exception",
+      "linked_agent_self_review_record",
+      "explicit_user_confirmation"
+    ]
+  }
+}
