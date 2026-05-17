@@ -45,7 +45,7 @@
     {
       "id": "multiple_choice_answer_not_in_options",
       "severity": "hard_blocker",
-      "description": "A multiple-choice answer should match one of the visible option texts when an answer is present."
+      "description": "A multiple-choice answer should match one of the visible option keys or option texts."
     },
     {
       "id": "front_missing_or_too_short",
@@ -96,6 +96,8 @@
   "candidate_scope_policy": {
     "before_user_sample_review": [
       "run scripts/audit_card_quality.mjs --write-report",
+      "report_must_match_current_card_corpus_fingerprint",
+      "agent_self_review_must_link_current_quality_audit_report",
       "scope_must_have_no_hard_blocker_issues",
       "content_risk_examples_must_be reviewed_or_explicitly_accepted_as_known_legacy_risk"
     ],
@@ -103,7 +105,14 @@
       "no_hard_blocker_issues",
       "no_unresolved_content_risk_without_user_authorized_exception",
       "linked_agent_self_review_record",
+      "linked_current_quality_audit_report",
       "explicit_user_confirmation"
     ]
+  },
+  "report_freshness_policy": {
+    "fingerprint_algorithm": "sha256",
+    "fingerprint_scope": "all JSON files under card_boxes_json/",
+    "validator_must_recompute_fingerprint": true,
+    "stale_report_is_harness_error": true
   }
 }

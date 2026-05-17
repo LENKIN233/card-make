@@ -1,8 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import crypto from 'node:crypto';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const CARD_DIR = path.join(ROOT, 'card_boxes_json');
 
 const REQUIRED_BLOCKERS = [
   'logic_error',
@@ -63,6 +65,15 @@ const REQUIRED_GIT_HANDOFF_FIELDS = [
   'remaining_risks',
   'merge_authority',
 ];
+const REQUIRED_APPROVAL_FIELDS = [
+  'approved_by_user',
+  'approved_at',
+  'scope',
+  'summary',
+  'card_quality_audit',
+  'representative_cards',
+  'validation',
+];
 
 function resolveWorkspacePath(specPath) {
   return path.resolve(ROOT, specPath);
@@ -78,6 +89,39 @@ function readText(specPath) {
 
 function exists(specPath) {
   return fs.existsSync(resolveWorkspacePath(specPath));
+}
+
+function listCardFiles() {
+  return fs.readdirSync(CARD_DIR)
+    .filter(file => file.endsWith('.json'))
+    .sort();
+}
+
+function countCards(files) {
+  let count = 0;
+  for (const file of files) {
+    const data = JSON.parse(fs.readFileSync(path.join(CARD_DIR, file), 'utf8'));
+    if (Array.isArray(data.cards)) count += data.cards.length;
+  }
+  return count;
+}
+
+function computeCardCorpusFingerprint() {
+  const files = listCardFiles();
+  const hash = crypto.createHash('sha256');
+  for (const file of files) {
+    hash.update(file);
+    hash.update('\0');
+    hash.update(fs.readFileSync(path.join(CARD_DIR, file)));
+    hash.update('\0');
+  }
+  return {
+    algorithm: 'sha256',
+    card_dir: path.relative(ROOT, CARD_DIR),
+    file_count: files.length,
+    card_count: countCards(files),
+    digest: hash.digest('hex'),
+  };
 }
 
 function pushIssue(list, code, details) {
@@ -396,10 +440,28 @@ function validateCardQualityAudit(errors) {
     ...(audit.candidate_scope_policy?.before_user_sample_review || []),
     ...(audit.candidate_scope_policy?.formal_batch_scope || []),
   ];
-  for (const requirement of ['scope_must_have_no_hard_blocker_issues', 'no_hard_blocker_issues', 'explicit_user_confirmation']) {
+  for (const requirement of [
+    'report_must_match_current_card_corpus_fingerprint',
+    'agent_self_review_must_link_current_quality_audit_report',
+    'scope_must_have_no_hard_blocker_issues',
+    'no_hard_blocker_issues',
+    'linked_current_quality_audit_report',
+    'explicit_user_confirmation',
+  ]) {
     if (!candidatePolicy.includes(requirement)) {
       pushIssue(errors, 'card_quality_audit_candidate_policy_missing', { requirement });
     }
+  }
+  if (audit.report_freshness_policy?.fingerprint_algorithm !== 'sha256') {
+    pushIssue(errors, 'card_quality_audit_fingerprint_algorithm_drift', {
+      algorithm: audit.report_freshness_policy?.fingerprint_algorithm,
+    });
+  }
+  if (audit.report_freshness_policy?.validator_must_recompute_fingerprint !== true) {
+    pushIssue(errors, 'card_quality_audit_recompute_policy_missing', {});
+  }
+  if (audit.report_freshness_policy?.stale_report_is_harness_error !== true) {
+    pushIssue(errors, 'card_quality_audit_stale_report_policy_missing', {});
   }
 
   const script = readText('scripts/audit_card_quality.mjs');
@@ -432,6 +494,20 @@ function validateCardQualityAudit(errors) {
   }
   if (!(report.summary?.total_cards > 0)) {
     pushIssue(errors, 'card_quality_audit_report_empty_scope', {});
+  }
+  const expectedFingerprint = computeCardCorpusFingerprint();
+  const actualFingerprint = report.corpus_fingerprint || {};
+  for (const field of ['algorithm', 'card_dir', 'file_count', 'card_count', 'digest']) {
+    if (actualFingerprint[field] !== expectedFingerprint[field]) {
+      pushIssue(errors, 'card_quality_audit_report_stale_or_mismatched', {
+        field,
+        expected: expectedFingerprint[field],
+        actual: actualFingerprint[field],
+      });
+    }
+  }
+  if (!Array.isArray(report.hard_blocker_issues)) {
+    pushIssue(errors, 'card_quality_audit_hard_blocker_index_missing', {});
   }
   for (const ruleId of REQUIRED_QUALITY_AUDIT_RULES) {
     if (!report.summary?.by_rule?.[ruleId]) {
@@ -477,6 +553,11 @@ function validateWorkflow(errors) {
   }
   if (workflow.approval_record_policy?.required_for_formal_use !== true) {
     pushIssue(errors, 'approval_record_not_required', {});
+  }
+  for (const field of REQUIRED_APPROVAL_FIELDS) {
+    if (!(workflow.approval_record_policy?.required_fields || []).includes(field)) {
+      pushIssue(errors, 'approval_record_policy_required_field_missing', { field });
+    }
   }
   for (const field of REQUIRED_SAMPLE_GATE_FIELDS) {
     if (!(workflow.sample_quality_gate?.required_before_user_confirmation || []).includes(field)) {
@@ -558,6 +639,74 @@ function validateBlockerScan(scan, errors, source, { template }) {
     } else if (typeof scan[blocker] !== 'boolean') {
       pushIssue(errors, 'review_record_blocker_scan_not_boolean', { source, blocker });
     }
+  }
+}
+
+function validateQualityAuditRecord(auditRecord, errors, source, {
+  template,
+  fixture = false,
+  scopeCardIds = [],
+  requiredForApproval = false,
+}) {
+  if (!auditRecord || typeof auditRecord !== 'object') {
+    pushIssue(errors, 'quality_audit_record_missing', { source });
+    return;
+  }
+  for (const field of ['report', 'corpus_fingerprint', 'scope_has_no_hard_blockers']) {
+    if (!hasOwn(auditRecord, field)) {
+      pushIssue(errors, 'quality_audit_record_field_missing', { source, field });
+    }
+  }
+  if (auditRecord.report !== 'reports/card_quality_audit_report.json') {
+    pushIssue(errors, 'quality_audit_record_report_path_drift', {
+      source,
+      report: auditRecord.report,
+    });
+  }
+  if (typeof auditRecord.scope_has_no_hard_blockers !== 'boolean') {
+    pushIssue(errors, 'quality_audit_record_scope_flag_not_boolean', { source });
+  }
+  if (requiredForApproval && auditRecord.scope_has_no_hard_blockers !== true) {
+    pushIssue(errors, 'quality_audit_scope_not_cleared_for_approval', { source });
+  }
+  if (template) return;
+
+  if (!hasText(auditRecord.corpus_fingerprint)) {
+    pushIssue(errors, 'quality_audit_record_fingerprint_empty', { source });
+  }
+  if (fixture) return;
+  if (!exists(auditRecord.report)) {
+    pushIssue(errors, 'quality_audit_record_report_missing_on_disk', {
+      source,
+      report: auditRecord.report,
+    });
+    return;
+  }
+
+  const report = readJson(auditRecord.report);
+  const currentFingerprint = computeCardCorpusFingerprint();
+  if (auditRecord.corpus_fingerprint !== currentFingerprint.digest) {
+    pushIssue(errors, 'quality_audit_record_fingerprint_mismatch', {
+      source,
+      expected: currentFingerprint.digest,
+      actual: auditRecord.corpus_fingerprint,
+    });
+  }
+  if (report.corpus_fingerprint?.digest !== currentFingerprint.digest) {
+    pushIssue(errors, 'quality_audit_record_links_stale_report', {
+      source,
+      expected: currentFingerprint.digest,
+      actual: report.corpus_fingerprint?.digest,
+    });
+  }
+
+  const scopedIds = stringSet(scopeCardIds);
+  const scopedHardBlockers = (report.hard_blocker_issues || []).filter(issue => scopedIds.has(issue.card_id));
+  if (scopedHardBlockers.length > 0) {
+    pushIssue(errors, 'quality_audit_scope_has_hard_blockers', {
+      source,
+      card_ids: scopedHardBlockers.map(issue => issue.card_id),
+    });
   }
 }
 
@@ -671,6 +820,11 @@ function validateSelfReviewRecord(record, errors, source, { template = false } =
   }
 
   for (const card of cards) validateSelfReviewCard(card, errors, source, { template });
+  validateQualityAuditRecord(record.quality_audit, errors, source, {
+    template,
+    scopeCardIds: record.scope?.card_ids || cards.map(card => card.card_id),
+    requiredForApproval: record.batch_review?.status === 'recommend_user_confirmation',
+  });
 
   if (!template) {
     const boxPrefixes = record.scope?.box_prefixes || [];
@@ -713,11 +867,11 @@ function validateSelfReviewRecord(record, errors, source, { template = false } =
   }
 }
 
-function validateApprovalRecord(record, errors, source, { template = false } = {}) {
+function validateApprovalRecord(record, errors, source, { template = false, fixture = false } = {}) {
   if (record.approved_by_user !== true) {
     pushIssue(errors, 'approval_record_not_user_approved', { source });
   }
-  for (const field of ['approved_at', 'scope', 'summary', 'representative_cards', 'validation']) {
+  for (const field of REQUIRED_APPROVAL_FIELDS) {
     if (!hasOwn(record, field)) {
       pushIssue(errors, 'approval_record_field_missing', { source, field });
     }
@@ -725,6 +879,12 @@ function validateApprovalRecord(record, errors, source, { template = false } = {
   if (!Array.isArray(record.approval_limits) || record.approval_limits.length < 3) {
     pushIssue(errors, 'approval_record_limits_missing', { source });
   }
+  validateQualityAuditRecord(record.card_quality_audit, errors, source, {
+    template,
+    fixture,
+    scopeCardIds: record.scope?.card_ids || [],
+    requiredForApproval: true,
+  });
   if (!template) {
     for (const field of ['library', 'group', 'box']) {
       if (!hasText(record.scope?.[field])) {
@@ -760,6 +920,12 @@ function validateApprovalRecord(record, errors, source, { template = false } = {
     }
     if (!hasText(record.validation?.cards)) {
       pushIssue(errors, 'approval_record_card_validation_missing', { source });
+    }
+    if (!hasText(record.validation?.card_quality_audit)) {
+      pushIssue(errors, 'approval_record_quality_audit_validation_missing', { source });
+    }
+    if (record.validation?.card_quality_audit_report !== 'reports/card_quality_audit_report.json') {
+      pushIssue(errors, 'approval_record_quality_audit_report_missing', { source });
     }
     if (selfReview) {
       if (selfReview.batch_review?.status !== 'recommend_user_confirmation') {
@@ -1014,7 +1180,9 @@ function validateEvalFixtures(errors) {
         pushIssue(errors, 'sample_gate_fixture_not_blocking_approval', { fixture: testCase.id });
       }
       const gateErrors = [];
-      validateApprovalRecord(testCase.approval_record || {}, gateErrors, `${testCase.id}.approval_record`);
+      validateApprovalRecord(testCase.approval_record || {}, gateErrors, `${testCase.id}.approval_record`, {
+        fixture: true,
+      });
       const actualGateCodes = new Set(gateErrors.map(issue => issue.code));
       for (const expectedGateError of expected.expected_gate_errors || []) {
         if (!actualGateCodes.has(expectedGateError)) {

@@ -1,12 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import crypto from 'node:crypto';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
 const SPEC_PATH = path.join(ROOT, 'spec', 'card-quality-audit.json');
 const REPORT_PATH = path.join(ROOT, 'reports', 'card_quality_audit_report.json');
 const DEFAULT_MAX_EXAMPLES = 5;
+const OPTION_KEYS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 const GENERIC_FRONT_PATTERNS = [
   /^任务：先听音频，完成.+训练。$/,
@@ -61,10 +63,10 @@ function extractAnalysisText(card) {
 
 function normalizeOption(option) {
   if (typeof option === 'string') return normalizeText(option);
-  return normalizeText(option?.text || option?.label || option?.value || option);
+  return normalizeText(option?.text || option?.form || option?.label || option?.value || option);
 }
 
-function extractOptions(card) {
+function extractOptionRecords(card) {
   const candidates = [
     card.front?.options,
     card.front_content?.options,
@@ -73,19 +75,40 @@ function extractOptions(card) {
   ];
   for (const value of candidates) {
     if (Array.isArray(value) && value.length > 0) {
-      return value.map(normalizeOption).filter(Boolean);
+      return value
+        .map((option, index) => ({
+          key: normalizeText(typeof option === 'object' ? option?.key ?? option?.option_key ?? OPTION_KEYS[index] : OPTION_KEYS[index]),
+          text: normalizeOption(option),
+          is_correct: typeof option === 'object' ? option?.is_correct === true : false,
+        }))
+        .filter(option => option.key || option.text);
     }
   }
   return [];
 }
 
-function extractAnswerText(card) {
-  const answer = card.analysis?.answer
+function extractAnswerRecord(card, optionRecords) {
+  const explicitAnswer = card.answer_key?.correct_option
     ?? card.answer_key?.answer
     ?? card.answer_key?.correct_answer
     ?? card.correct_answer
+    ?? card.analysis?.answer
     ?? card.back_content?.answer;
-  return normalizeText(answer);
+  const explicitText = normalizeText(explicitAnswer);
+  if (explicitText) return { text: explicitText, source: 'explicit' };
+
+  const correctOptions = optionRecords.filter(option => option.is_correct);
+  if (correctOptions.length === 1) {
+    return {
+      text: correctOptions[0].key || correctOptions[0].text,
+      source: 'option_is_correct',
+    };
+  }
+  return { text: '', source: 'missing' };
+}
+
+function answerMatchesOptions(answerText, optionRecords) {
+  return optionRecords.some(option => option.key === answerText || option.text === answerText);
 }
 
 function cardLocation(file, card) {
@@ -105,10 +128,14 @@ function cardLocation(file, card) {
   };
 }
 
-function walkCards() {
-  const files = fs.readdirSync(CARD_DIR)
+function listCardFiles() {
+  return fs.readdirSync(CARD_DIR)
     .filter(file => file.endsWith('.json'))
     .sort();
+}
+
+function walkCards() {
+  const files = listCardFiles();
 
   const rows = [];
   for (const file of files) {
@@ -118,7 +145,24 @@ function walkCards() {
       rows.push({ file, card });
     }
   }
-  return rows;
+  return { files, rows };
+}
+
+function computeCorpusFingerprint(files, cardCount) {
+  const hash = crypto.createHash('sha256');
+  for (const file of files) {
+    hash.update(file);
+    hash.update('\0');
+    hash.update(fs.readFileSync(path.join(CARD_DIR, file)));
+    hash.update('\0');
+  }
+  return {
+    algorithm: 'sha256',
+    card_dir: path.relative(ROOT, CARD_DIR),
+    file_count: files.length,
+    card_count: cardCount,
+    digest: hash.digest('hex'),
+  };
 }
 
 function increment(map, key, amount = 1) {
@@ -152,7 +196,7 @@ function addIssue(issues, rulesById, row, ruleId, message, frontText, analysisTe
 function buildAudit({ maxExamples }) {
   const spec = readJson(SPEC_PATH);
   const rulesById = new Map((spec.rules || []).map(rule => [rule.id, rule]));
-  const rows = walkCards();
+  const { files, rows } = walkCards();
   const frontCounts = new Map();
   const analysisCounts = new Map();
 
@@ -168,14 +212,14 @@ function buildAudit({ maxExamples }) {
     const { card } = row;
     const frontText = extractFrontText(card);
     const analysisText = extractAnalysisText(card);
-    const options = extractOptions(card);
-    const answerText = extractAnswerText(card);
+    const optionRecords = extractOptionRecords(card);
+    const answer = extractAnswerRecord(card, optionRecords);
 
     if (card.interaction_id === 'multiple_choice') {
-      if (options.length < 2) {
+      if (optionRecords.length < 2) {
         addIssue(issues, rulesById, row, 'multiple_choice_no_options', 'Multiple-choice card has fewer than two visible options.', frontText, analysisText);
-      } else if (answerText && !options.some(option => option === answerText)) {
-        addIssue(issues, rulesById, row, 'multiple_choice_answer_not_in_options', 'Multiple-choice answer is not one of the visible options.', frontText, analysisText);
+      } else if (!answer.text || !answerMatchesOptions(answer.text, optionRecords)) {
+        addIssue(issues, rulesById, row, 'multiple_choice_answer_not_in_options', 'Multiple-choice answer key does not match a visible option key or text.', frontText, analysisText);
       }
     }
 
@@ -301,12 +345,14 @@ function buildAudit({ maxExamples }) {
     audit_version: spec.version,
     mode: spec.mode,
     report_path: path.relative(ROOT, REPORT_PATH),
+    corpus_fingerprint: computeCorpusFingerprint(files, rows.length),
     scope: {
       card_dir: path.relative(ROOT, CARD_DIR),
       files: summary.total_files,
       cards: summary.total_cards,
     },
     summary,
+    hard_blocker_issues: issues.filter(issue => issue.severity === 'hard_blocker'),
     examples,
   };
 }
@@ -336,6 +382,7 @@ console.log(JSON.stringify({
   ok: audit.ok,
   mode: audit.mode,
   report_path: writeReport ? audit.report_path : null,
+  corpus_digest: audit.corpus_fingerprint.digest,
   cards: audit.summary.total_cards,
   total_issues: audit.summary.total_issues,
   by_severity: audit.summary.by_severity,
