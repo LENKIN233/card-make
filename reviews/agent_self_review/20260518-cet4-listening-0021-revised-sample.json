@@ -1,32 +1,31 @@
 {
-  "review_id": "20260514-cet4-listening-0001-revised-sample",
-  "created_at": "2026-05-14T10:58:39+08:00",
+  "review_id": "20260518-cet4-listening-0021-revised-sample",
+  "created_at": "2026-05-18T20:10:36+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测考点",
+    "group": "逻辑关系",
+    "box": "因果关系",
     "box_prefixes": [
-      "0001"
+      "0021"
     ],
     "card_ids": [
-      "000101",
-      "000102",
-      "000103"
+      "002101",
+      "002102",
+      "002103"
     ]
   },
   "specs_read": [
-    "AGENTS.md",
     "spec/doc-manifest.json",
     "spec/authority-map.json",
     "spec/workspace-contract.json",
     "spec/content-quality-contract.json",
     "spec/review-workflow.json",
-    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
-    "spec/card-quality-audit.json"
+    "../softbook_cet/spec/interactions.json"
   ],
   "sample_policy": {
     "is_three_card_sample_per_box": true,
@@ -34,20 +33,20 @@
   },
   "cards": [
     {
-      "card_id": "000101",
+      "card_id": "002101",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
+        "group_id": "2",
+        "group": "逻辑关系",
         "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "box": "因果关系",
+        "box_prefix": "0021"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别原因类听力考点",
+        "main_training_goal": "识别 because 后置原因",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +65,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户先锁定原因题，避免被 data 等局部词误导。",
+        "exam_value": "训练用户在听力里追到 because 后的真正原因，避免把表层现象误判为原因。",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -87,20 +86,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000102",
+      "card_id": "002102",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
+        "group_id": "2",
+        "group": "逻辑关系",
         "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "box": "因果关系",
+        "box_prefix": "0021"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别态度类听力考点",
+        "main_training_goal": "识别 led to 前后因果方向",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,7 +116,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户听出态度题信号，提前准备捕捉评价词和转折。",
+        "exam_value": "帮助用户把因果动词短语转成稳定箭头，减少对象词干扰造成的误选。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -138,20 +137,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000103",
+      "card_id": "002103",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
+        "group_id": "2",
+        "group": "逻辑关系",
         "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "box": "因果关系",
+        "box_prefix": "0021"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别建议类听力考点",
+        "main_training_goal": "识别 therefore 后的结果端",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,7 +169,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把建议信号转化为答案预期，提升听后抓动作的效率。",
+        "exam_value": "训练用户听到 therefore 后抓结果和决策动作，避免停留在前半句证据。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -193,17 +192,17 @@
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample now moves from recognizing a reason test point, to applying attitude-question prediction, to transferring the same method to suggestion/action prediction.",
+    "box_progression": "The revised sample moves from recognizing a because-clause cause, to applying led to arrow direction, to transferring the same cause-effect reading to therefore result-end structure.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about predicting the likely test point from the listening cue.",
+      "All three cards use multiple_choice because this box is specifically about choosing the correct cause/result role after a causal signal.",
       "Formal approval still needs user confirmation and separate audio QA."
     ],
     "representative_cards": [
-      "000101",
-      "000102",
-      "000103"
+      "002101",
+      "002102",
+      "002103"
     ],
-    "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
+    "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -211,9 +210,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "000101",
-        "000102",
-        "000103"
+        "002101",
+        "002102",
+        "002103"
       ],
       "card_count": 3,
       "issue_count": 6,
