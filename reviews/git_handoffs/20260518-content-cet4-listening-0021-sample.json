@@ -1,0 +1,86 @@
+{
+  "handoff_id": "20260518-content-cet4-listening-0021-sample",
+  "created_at": "2026-05-18T20:13:59+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0021-sample",
+  "base_branch": "fix/review-findings-card-contract",
+  "commit_sha": "efd77f3017641f719ff258007fcdf37c370e4a46",
+  "push_ref": "origin/content/cet4-listening-0021-sample",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/17",
+  "PR_number": 17,
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "track": "cet4",
+    "library": "听力",
+    "group": "逻辑关系",
+    "box": "因果关系",
+    "box_prefix": "0021",
+    "card_ids": [
+      "002101",
+      "002102",
+      "002103"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0021.json",
+      "reports/card_quality_audit_report.json",
+      "reports/card_validation_report.json",
+      "reviews/agent_self_review/20260518-cet4-listening-0021-existing-sample.json",
+      "reviews/agent_self_review/20260518-cet4-listening-0021-revised-sample.json",
+      "reviews/drafts/20260518-cet4-listening-0021-revised-sample.json"
+    ]
+  },
+  "summary": [
+    "Blocked the existing 0021 sample because two cards were not checkable under the product interaction contract and all three lacked reviewable quality metadata.",
+    "Added a revised 3-card candidate sample focused on because cause recognition, led to arrow direction, and therefore result-end transfer.",
+    "Synchronized the revised candidate sample into the first three cards of card_boxes_seed_cet4_listening_0021.json while keeping needs_review and unverified source boundaries.",
+    "Refreshed validation and quality audit reports; updated prior self-review records to the current audit digest."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/audit_card_quality.mjs --write-report",
+      "result": "passed; ok=true, cards=2414, hard_blocker=0, content_risk=2193, review_gap=2396, source_risk=2288"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed; ok=true, cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group alignment warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "gh pr view 17 --json number,url,state,isDraft,baseRefName,headRefName,mergeable,commits",
+      "result": "passed; draft PR #17 open and mergeable against fix/review-findings-card-contract"
+    }
+  ],
+  "scoped_quality_audit": {
+    "card_ids": [
+      "002101",
+      "002102",
+      "002103"
+    ],
+    "hard_blocker": 0,
+    "content_risk": 0,
+    "review_gap": 0,
+    "source_risk": 6,
+    "source_risk_rules": {
+      "unverified_source": 3,
+      "synthetic_source": 3
+    }
+  },
+  "local_status": "Handoff file added after opening draft PR; final validation should be rerun after this handoff commit.",
+  "remaining_risks": [
+    "Candidate sample only; it is not formal user-approved product content.",
+    "No reviews/approved_batches record was created.",
+    "Audio file quality was not separately reviewed for formal use.",
+    "This branch is based on fix/review-findings-card-contract / draft harness PR #7.",
+    "Sibling content PRs update reports/card_validation_report.json and reports/card_quality_audit_report.json; refresh report snapshots in actual merge order before merging any content sample sequence."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
