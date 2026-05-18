@@ -1,0 +1,86 @@
+{
+  "handoff_id": "20260518-content-cet4-listening-0020-sample",
+  "created_at": "2026-05-18T20:06:36+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0020-sample",
+  "base_branch": "fix/review-findings-card-contract",
+  "commit_sha": "9fff1fbfcdc2f3368c97f3a767e0e53672e5672b",
+  "push_ref": "origin/content/cet4-listening-0020-sample",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/16",
+  "PR_number": 16,
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "track": "cet4",
+    "library": "听力",
+    "group": "逻辑关系",
+    "box": "转折关系",
+    "box_prefix": "0020",
+    "card_ids": [
+      "002001",
+      "002002",
+      "002003"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0020.json",
+      "reports/card_quality_audit_report.json",
+      "reports/card_validation_report.json",
+      "reviews/agent_self_review/20260518-cet4-listening-0020-existing-sample.json",
+      "reviews/agent_self_review/20260518-cet4-listening-0020-revised-sample.json",
+      "reviews/drafts/20260518-cet4-listening-0020-revised-sample.json"
+    ]
+  },
+  "summary": [
+    "Blocked the existing 0020 sample where legacy flip/timing-like prompts were not consistently checkable and lacked card quality metadata.",
+    "Added a revised 3-card candidate sample focused on but-after-focus, not...but... denial-replacement, and however claim-versus-fact transfer.",
+    "Synchronized the revised candidate sample into the first three cards of card_boxes_seed_cet4_listening_0020.json while keeping needs_review and unverified source boundaries.",
+    "Refreshed validation and quality audit reports; updated prior self-review records to the current audit digest."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/audit_card_quality.mjs --write-report",
+      "result": "passed; ok=true, cards=2414, hard_blocker=0, content_risk=2193, review_gap=2396, source_risk=2288"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed; ok=true, cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group alignment warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "gh pr view 16 --json number,url,state,isDraft,baseRefName,headRefName,mergeable,commits",
+      "result": "passed; draft PR #16 open and mergeable against fix/review-findings-card-contract"
+    }
+  ],
+  "scoped_quality_audit": {
+    "card_ids": [
+      "002001",
+      "002002",
+      "002003"
+    ],
+    "hard_blocker": 0,
+    "content_risk": 0,
+    "review_gap": 0,
+    "source_risk": 6,
+    "source_risk_rules": {
+      "unverified_source": 3,
+      "synthetic_source": 3
+    }
+  },
+  "local_status": "Handoff file added after opening draft PR; final validation should be rerun after this handoff commit.",
+  "remaining_risks": [
+    "Candidate sample only; it is not formal user-approved product content.",
+    "No reviews/approved_batches record was created.",
+    "Audio file quality was not separately reviewed for formal use.",
+    "This branch is based on fix/review-findings-card-contract / draft harness PR #7.",
+    "Sibling content PRs update reports/card_validation_report.json and reports/card_quality_audit_report.json; refresh report snapshots in actual merge order before merging any content sample sequence."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
