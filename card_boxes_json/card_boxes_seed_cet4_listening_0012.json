@@ -16,34 +16,56 @@
       "box": 2,
       "card_no": 1,
       "card_box_code": "0012",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "播放音频后，选出最明显的失去爆破片段。",
+        "task_prompt": "重点听 kept profits：kept 末尾的 /t/ 在 profits 前通常不会完整爆破。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "定位失去爆破片段",
+          "focus": "识别 /t/ 遇到 /p/ 时的未完全爆破",
+          "success_criteria": "能听出 kept profits 中 kept 的末尾爆破被压住"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001201.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "结论：本题核心是失去爆破识别。\n\n关键点：优先抓结构信号，再做内容判断。",
-        "explanation": "语境揭示：The report showed rapid growth, but market pressure kept profits unstable."
+        "text": "答案：A\n\n解析：kept profits 是这段音频中最清楚的失去爆破训练点。",
+        "explanation": "正确答案是 A。kept 末尾有 /t/，后面的 profits 以 /p/ 开头，两个爆破音紧挨着时，前一个 /t/ 往往只做口型和停顿，不会像单独读 kept 那样完整爆出来。CET 听力里，这会让 kept profits 听起来更像一个压缩音块。如果你硬等一个清楚的 /t/，就容易漏掉“利润被保持不稳定”这组关键信息。B 的 rapid 前面不是本题目标，C 是语义转折位置但不是最典型的爆破音相邻，D 以 /s/ 接元音，不是失去爆破。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先概括主判断，再回看支持该判断的语义证据。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "正确答案是 A。kept 末尾有 /t/，后面的 profits 以 /p/ 开头，两个爆破音紧挨着时，前一个 /t/ 往往只做口型和停顿，不会像单独读 kept 那样完整爆出来。CET 听力里，这会让 kept profits 听起来更像一个压缩音块。如果你硬等一个清楚的 /t/，就容易漏掉“利润被保持不稳定”这组关键信息。B 的 rapid 前面不是本题目标，C 是语义转折位置但不是最典型的爆破音相邻，D 以 /s/ 接元音，不是失去爆破。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "爆破音后面又接辅音时，先判断前一个爆破是否被压住。",
+          "听不见完整 /t/ 不等于词不存在，要用词组结构把它补回去。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "kept profits",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "showed rapid",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "growth, but",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "profits unstable",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "url": "ai_tts/cet4/0012/001201.mp3",
@@ -71,31 +93,53 @@
         "box_name": "失去爆破",
         "box_prefix": "0012"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "播放音频后，选出最明显的失去爆破片段。",
+        "task_prompt": "重点听 kept profits：kept 末尾的 /t/ 在 profits 前通常不会完整爆破。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先概括主判断，再回看支持该判断的语义证据。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
-        "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "action": "定位失去爆破片段",
+          "focus": "识别 /t/ 遇到 /p/ 时的未完全爆破",
+          "success_criteria": "能听出 kept profits 中 kept 的末尾爆破被压住"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "kept profits",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "showed rapid",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "growth, but",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "profits unstable",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。kept 末尾有 /t/，后面的 profits 以 /p/ 开头，两个爆破音紧挨着时，前一个 /t/ 往往只做口型和停顿，不会像单独读 kept 那样完整爆出来。CET 听力里，这会让 kept profits 听起来更像一个压缩音块。如果你硬等一个清楚的 /t/，就容易漏掉“利润被保持不稳定”这组关键信息。B 的 rapid 前面不是本题目标，C 是语义转折位置但不是最典型的爆破音相邻，D 以 /s/ 接元音，不是失去爆破。",
+        "tips": [
+          "爆破音后面又接辅音时，先判断前一个爆破是否被压住。",
+          "听不见完整 /t/ 不等于词不存在，要用词组结构把它补回去。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
         "unverified_source"
@@ -103,6 +147,33 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 kept profits 中的 /t/ 失去爆破",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把听不完整的爆破音还原成真实词边界，减少短语漏听。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -117,48 +188,49 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "这句话里哪一段最容易因为失去爆破而听不完整？",
+        "task_prompt": "播放音频后，找出 stopped collecting 中 stopped 末尾被压住的爆破音。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "选择失去爆破音块",
+          "focus": "识别 stopped 后接 collecting 时的 /t/ 未完全释放",
+          "success_criteria": "能把压缩听感还原成 stopped collecting，而不是漏掉过去动作"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001202.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "答案：B\n\n解析：该卡训练目标是失去爆破识别，应优先使用结构信号完成判断。",
-        "explanation": "语境揭示：We stopped collecting paper forms because digital records were easier to track."
+        "text": "答案：A\n\n解析：stopped collecting 里的 stopped 末尾爆破音会在 collecting 前被压住。",
+        "explanation": "正确答案是 A。stopped 的结尾是 /pt/，后面的 collecting 以 /k/ 开头，连续辅音会让 /t/ 不完整释放，听感像 stopped 和 collecting 被压成一块。这里的考点不是 paper forms 或 digital records 这些名词信息，而是先把动作 stopped collecting 听准：他们停止收纸质表格，因为电子记录更容易追踪。D 里有 to 的弱读和 track 的重音，但不是本卡要练的失去爆破核心。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先排除与结构信号冲突的选项，再比较剩余项覆盖范围。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "正确答案是 A。stopped 的结尾是 /pt/，后面的 collecting 以 /k/ 开头，连续辅音会让 /t/ 不完整释放，听感像 stopped 和 collecting 被压成一块。这里的考点不是 paper forms 或 digital records 这些名词信息，而是先把动作 stopped collecting 听准：他们停止收纸质表格，因为电子记录更容易追踪。D 里有 to 的弱读和 track 的重音，但不是本卡要练的失去爆破核心。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "过去式 -ed 后接辅音时，末尾 /t/ 或 /d/ 常会被弱化或不完全爆破。",
+          "先还原动作短语，再理解 because 后面的原因。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "关注背景信息，不做结构判断",
-          "is_correct": false
-        },
-        {
-          "key": "B",
-          "text": "优先依据失去爆破识别完成判断",
+          "text": "stopped collecting",
           "is_correct": true
         },
         {
+          "key": "B",
+          "text": "paper forms",
+          "is_correct": false
+        },
+        {
           "key": "C",
-          "text": "忽略连接关系，只看名词",
+          "text": "digital records",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "等待全文结束再随机选择",
+          "text": "easier to track",
           "is_correct": false
         }
       ],
@@ -191,22 +263,44 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "这句话里哪一段最容易因为失去爆破而听不完整？",
+        "task_prompt": "播放音频后，找出 stopped collecting 中 stopped 末尾被压住的爆破音。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
-        }
+          "action": "选择失去爆破音块",
+          "focus": "识别 stopped 后接 collecting 时的 /t/ 未完全释放",
+          "success_criteria": "能把压缩听感还原成 stopped collecting，而不是漏掉过去动作"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "stopped collecting",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "paper forms",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "digital records",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "easier to track",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先排除与结构信号冲突的选项，再比较剩余项覆盖范围。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "正确答案是 A。stopped 的结尾是 /pt/，后面的 collecting 以 /k/ 开头，连续辅音会让 /t/ 不完整释放，听感像 stopped 和 collecting 被压成一块。这里的考点不是 paper forms 或 digital records 这些名词信息，而是先把动作 stopped collecting 听准：他们停止收纸质表格，因为电子记录更容易追踪。D 里有 to 的弱读和 track 的重音，但不是本卡要练的失去爆破核心。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "过去式 -ed 后接辅音时，末尾 /t/ 或 /d/ 常会被弱化或不完全爆破。",
+          "先还原动作短语，再理解 because 后面的原因。"
         ]
       },
       "auto_scoring": true,
@@ -223,7 +317,29 @@
         "version": "softbook-card-contract-2026-05-02"
       },
       "answer_key": {
-        "correct_option": "B"
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 stopped collecting 中的末尾爆破压缩",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把被压缩的过去式动作听完整，避免误解句子主动作。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -234,34 +350,56 @@
       "box": 2,
       "card_no": 3,
       "card_box_code": "0012",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "听这句安排说明，哪组片段最能体现连续失去爆破？",
+        "task_prompt": "重点比较 next task 和 strict timing：多个爆破音相邻时，前一个常被压住。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "选择连续失去爆破片段",
+          "focus": "识别任务说明中连续辅音造成的爆破压缩",
+          "success_criteria": "能在 next task / strict timing 中听出词边界，而不是把音块当陌生词"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001203.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "答案窗口：约第 2.8s - 4.6s\n\n解析：点击应落在结构触发词出现区间。",
-        "explanation": "语境揭示：The next task requires strict timing so that every step can be checked."
+        "text": "答案：A\n\n解析：next task / strict timing 连续出现爆破音相邻，是更适合作为迁移训练的失去爆破片段。",
+        "explanation": "正确答案是 A。next task 里 next 结尾的 /t/ 接 task 开头的 /t/，strict timing 里 strict 结尾的 /t/ 又接 timing 开头的 /t/，这些位置都不会像单词单独朗读时那样清楚爆出来。听力里遇到这种连续爆破音，不要把它当成陌生词，而要主动按常见词组还原：next task 是下一项任务，strict timing 是严格时间安排。B、D 主要不是爆破音相邻；C 的 step can 也有 /p/ 接 /k/ 的压缩可能，但本题问的是最能体现连续失去爆破的一组。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先找结构触发词，再把点击点锚定在触发词起始附近。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "正确答案是 A。next task 里 next 结尾的 /t/ 接 task 开头的 /t/，strict timing 里 strict 结尾的 /t/ 又接 timing 开头的 /t/，这些位置都不会像单词单独朗读时那样清楚爆出来。听力里遇到这种连续爆破音，不要把它当成陌生词，而要主动按常见词组还原：next task 是下一项任务，strict timing 是严格时间安排。B、D 主要不是爆破音相邻；C 的 step can 也有 /p/ 接 /k/ 的压缩可能，但本题问的是最能体现连续失去爆破的一组。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "同类爆破音连续出现时，听感会更像停顿或压缩，而不是两个清楚爆破。",
+          "先恢复常见词组 next task、strict timing，再处理句子含义。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "next task / strict timing",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "requires / so that",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "every step / checked",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "can be / timing",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "url": "ai_tts/cet4/0012/001203.mp3",
@@ -293,31 +431,53 @@
         "box_name": "失去爆破",
         "box_prefix": "0012"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "听这句安排说明，哪组片段最能体现连续失去爆破？",
+        "task_prompt": "重点比较 next task 和 strict timing：多个爆破音相邻时，前一个常被压住。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先找结构触发词，再把点击点锚定在触发词起始附近。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
-        "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "action": "选择连续失去爆破片段",
+          "focus": "识别任务说明中连续辅音造成的爆破压缩",
+          "success_criteria": "能在 next task / strict timing 中听出词边界，而不是把音块当陌生词"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "next task / strict timing",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "requires / so that",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "every step / checked",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "can be / timing",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。next task 里 next 结尾的 /t/ 接 task 开头的 /t/，strict timing 里 strict 结尾的 /t/ 又接 timing 开头的 /t/，这些位置都不会像单词单独朗读时那样清楚爆出来。听力里遇到这种连续爆破音，不要把它当成陌生词，而要主动按常见词组还原：next task 是下一项任务，strict timing 是严格时间安排。B、D 主要不是爆破音相邻；C 的 step can 也有 /p/ 接 /k/ 的压缩可能，但本题问的是最能体现连续失去爆破的一组。",
+        "tips": [
+          "同类爆破音连续出现时，听感会更像停顿或压缩，而不是两个清楚爆破。",
+          "先恢复常见词组 next task、strict timing，再处理句子含义。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
         "unverified_source"
@@ -325,6 +485,33 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 next task 和 strict timing 中连续失去爆破",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把连续辅音造成的压缩听感还原成常见任务说明词组。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {

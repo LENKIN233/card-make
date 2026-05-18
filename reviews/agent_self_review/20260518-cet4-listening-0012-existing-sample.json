@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0001-existing-sample",
-  "created_at": "2026-05-14T10:58:39+08:00",
+  "review_id": "20260518-cet4-listening-0012-existing-sample",
+  "created_at": "2026-05-18T16:56:27+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测考点",
+    "group": "语音现象",
+    "box": "失去爆破",
     "box_prefixes": [
-      "0001"
+      "0012"
     ],
     "card_ids": [
-      "000101",
-      "000102",
-      "000103"
+      "001201",
+      "001202",
+      "001203"
     ]
   },
   "specs_read": [
@@ -23,10 +23,11 @@
     "spec/content-quality-contract.json",
     "spec/review-workflow.json",
     "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
-    "../softbook_cet/spec/box-catalog.json",
-    "spec/card-quality-audit.json"
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
   ],
   "sample_policy": {
     "is_three_card_sample_per_box": true,
@@ -34,20 +35,11 @@
   },
   "cards": [
     {
-      "card_id": "000101",
+      "card_id": "001201",
       "interaction_id": "flip",
-      "knowledge_ref": {
-        "library_id": "0",
-        "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
-      },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "根据听力提示预测题目考点",
+        "main_training_goal": "识别失去爆破位置",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +58,7 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "目标方向符合考点预测，但 front 没有给出具体可选择的考点类型。",
+        "exam_value": "音频文本有 kept profits 等失去爆破位置，但原卡没有让用户定位具体音变。",
         "box_progression_role": "recognition",
         "review_status": "block"
       },
@@ -81,30 +73,30 @@
         "low_quality_variation": true
       },
       "major_issues": [
-        "Front asks for a judgment but does not define what kind of test point the learner should identify.",
-        "The analysis is generic structure-signal guidance and is not grounded in the policy-revision reason signal.",
-        "No clear box progression is visible from the learner-facing content."
+        "Front is a generic listening prompt and does not name a concrete stop-consonant loss target.",
+        "The analysis discusses logic and structure signals rather than unreleased plosive mechanics.",
+        "The flip interaction gives no checkable answer for the listening micro-skill."
       ],
       "minor_issues": [
         "TTS text and audio quality have not been reviewed separately."
       ],
-      "recommendation": "Revise before user review; turn the item into a concrete test-point prediction task."
-    },
-    {
-      "card_id": "000102",
-      "interaction_id": "multiple_choice",
+      "recommendation": "Block this sample; rewrite as a concrete lost-plosive identification task.",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
-      },
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "0012"
+      }
+    },
+    {
+      "card_id": "001202",
+      "interaction_id": "multiple_choice",
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "根据选项预测态度类考点",
+        "main_training_goal": "识别 stopped collecting 中的失去爆破",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -123,7 +115,7 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "多选形式适合考点预测，但当前选项是策略口号，不能检验态度类考点识别。",
+        "exam_value": "多选形式适合失去爆破定位，但当前选项是策略口号，不是可听辨片段。",
         "box_progression_role": "application",
         "review_status": "block"
       },
@@ -138,30 +130,30 @@
         "low_quality_variation": true
       },
       "major_issues": [
-        "The correct option can be selected without listening because it is the only positive strategy statement.",
-        "The options do not represent plausible test-point categories.",
-        "The analysis repeats a generic template instead of explaining the speaker-attitude signal."
+        "The correct option can be selected without listening because it is a meta-strategy statement.",
+        "Options do not represent possible lost-plosive chunks from the transcript.",
+        "The analysis does not explain stopped collecting or any stop-consonant contact."
       ],
       "minor_issues": [
-        "The answer and distractors need to be tied to the transcript, not to agent behavior."
+        "The card should test an audible phrase, not general study behavior."
       ],
-      "recommendation": "Block this sample; rewrite options as question-focus categories such as attitude, reason, suggestion, or detail."
-    },
-    {
-      "card_id": "000103",
-      "interaction_id": "flip",
+      "recommendation": "Block this sample; rewrite options as plausible phrase chunks from the audio.",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
-      },
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "0012"
+      }
+    },
+    {
+      "card_id": "001203",
+      "interaction_id": "flip",
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "根据听力开头预测建议类考点",
+        "main_training_goal": "识别 next task / strict timing 中的连续失去爆破",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -180,7 +172,7 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "音频文本有 should do before... 的建议类信号，但当前 front 和 back 不构成可执行任务。",
+        "exam_value": "音频文本有 next task / strict timing 等连续爆破音相邻，但原卡没有给出可执行判断。",
         "box_progression_role": "transfer",
         "review_status": "block"
       },
@@ -195,31 +187,40 @@
         "low_quality_variation": true
       },
       "major_issues": [
-        "The card asks for generic judging but does not make the advice/suggestion test point actionable.",
-        "The analysis mentions clicking near a trigger word even though the card is rendered as flip.",
-        "The item repeats the same template as the previous cards and does not demonstrate transfer."
+        "Front is generic and does not ask the learner to identify lost plosion.",
+        "The analysis repeats unrelated structure-signal wording instead of pronunciation explanation.",
+        "The card mentions click anchoring while rendering as a flip-style product card."
       ],
       "minor_issues": [
-        "Interaction and answer form should be aligned before any user confirmation."
+        "Interaction and answer form should be aligned before user review."
       ],
-      "recommendation": "Block this sample; rewrite as a concrete multiple-choice test-point prediction card."
+      "recommendation": "Block this sample; rewrite as a concrete multiple-choice card focused on repeated stop contacts.",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "0012"
+      }
     }
   ],
   "batch_review": {
     "status": "blocked",
-    "box_progression": "The source transcripts point to reason, attitude, and suggestion test points, but the current cards hide those differences behind repeated generic fronts and analyses.",
+    "box_progression": "The underlying transcripts can support lost-plosive training, but the existing cards do not expose actual stop-consonant loss or a checkable pronunciation mechanism.",
     "repetition_or_gap_risks": [
-      "Fronts are nearly identical across all three cards.",
-      "Only one card has choices, and those choices are not real exam-facing test-point choices.",
-      "The analyses reuse the same mechanism paragraphs with only the box label changed.",
-      "TTS text and audio have not been reviewed as separate quality surfaces."
+      "All three fronts are nearly identical generic audio prompts.",
+      "The existing analysis text discusses structure or logic signals, not lost plosion.",
+      "Only one card has choices, and those choices are not phrase chunks from the audio.",
+      "TTS text and audio have not been reviewed as separate formal-use surfaces."
     ],
     "representative_cards": [
-      "000101",
-      "000102",
-      "000103"
+      "001201",
+      "001202",
+      "001203"
     ],
-    "next_step": "Do not ask for user confirmation on this sample. Draft a revised 3-card candidate sample that exposes reason, attitude, and suggestion test-point prediction."
+    "next_step": "Do not ask for user confirmation on this sample. Draft a revised 3-card candidate sample focused on kept profits, stopped collecting, and next task / strict timing."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -227,9 +228,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "000101",
-        "000102",
-        "000103"
+        "001201",
+        "001202",
+        "001203"
       ],
       "card_count": 3,
       "issue_count": 6,

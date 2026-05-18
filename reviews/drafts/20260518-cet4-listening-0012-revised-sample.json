@@ -1,0 +1,286 @@
+{
+  "draft_id": "20260518-cet4-listening-0012-revised-sample",
+  "created_at": "2026-05-18T16:56:27+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0012 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "语音现象",
+    "box": "失去爆破",
+    "box_prefix": "0012",
+    "candidate_for_existing_card_ids": [
+      "001201",
+      "001202",
+      "001203"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "001201",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "front": {
+        "text": "播放音频后，选出最明显的失去爆破片段。",
+        "task_prompt": "重点听 kept profits：kept 末尾的 /t/ 在 profits 前通常不会完整爆破。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0012/001201.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "kept profits"
+          },
+          {
+            "key": "B",
+            "text": "showed rapid"
+          },
+          {
+            "key": "C",
+            "text": "growth, but"
+          },
+          {
+            "key": "D",
+            "text": "profits unstable"
+          }
+        ],
+        "task_schema": {
+          "action": "定位失去爆破片段",
+          "focus": "识别 /t/ 遇到 /p/ 时的未完全爆破",
+          "success_criteria": "能听出 kept profits 中 kept 的末尾爆破被压住"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0012/001201.mp3",
+        "duration_ms": 5760,
+        "transcript": "The report showed rapid growth, but market pressure kept profits unstable.",
+        "path": "ai_tts/cet4/0012/001201.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。kept 末尾有 /t/，后面的 profits 以 /p/ 开头，两个爆破音紧挨着时，前一个 /t/ 往往只做口型和停顿，不会像单独读 kept 那样完整爆出来。CET 听力里，这会让 kept profits 听起来更像一个压缩音块。如果你硬等一个清楚的 /t/，就容易漏掉“利润被保持不稳定”这组关键信息。B 的 rapid 前面不是本题目标，C 是语义转折位置但不是最典型的爆破音相邻，D 以 /s/ 接元音，不是失去爆破。",
+        "tips": [
+          "爆破音后面又接辅音时，先判断前一个爆破是否被压住。",
+          "听不见完整 /t/ 不等于词不存在，要用词组结构把它补回去。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 kept profits 中的 /t/ 失去爆破",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把听不完整的爆破音还原成真实词边界，减少短语漏听。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "001202",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "front": {
+        "text": "这句话里哪一段最容易因为失去爆破而听不完整？",
+        "task_prompt": "播放音频后，找出 stopped collecting 中 stopped 末尾被压住的爆破音。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0012/001202.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "stopped collecting"
+          },
+          {
+            "key": "B",
+            "text": "paper forms"
+          },
+          {
+            "key": "C",
+            "text": "digital records"
+          },
+          {
+            "key": "D",
+            "text": "easier to track"
+          }
+        ],
+        "task_schema": {
+          "action": "选择失去爆破音块",
+          "focus": "识别 stopped 后接 collecting 时的 /t/ 未完全释放",
+          "success_criteria": "能把压缩听感还原成 stopped collecting，而不是漏掉过去动作"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0012/001202.mp3",
+        "duration_ms": 5736,
+        "transcript": "We stopped collecting paper forms because digital records were easier to track.",
+        "path": "ai_tts/cet4/0012/001202.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。stopped 的结尾是 /pt/，后面的 collecting 以 /k/ 开头，连续辅音会让 /t/ 不完整释放，听感像 stopped 和 collecting 被压成一块。这里的考点不是 paper forms 或 digital records 这些名词信息，而是先把动作 stopped collecting 听准：他们停止收纸质表格，因为电子记录更容易追踪。D 里有 to 的弱读和 track 的重音，但不是本卡要练的失去爆破核心。",
+        "tips": [
+          "过去式 -ed 后接辅音时，末尾 /t/ 或 /d/ 常会被弱化或不完全爆破。",
+          "先还原动作短语，再理解 because 后面的原因。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 stopped collecting 中的末尾爆破压缩",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把被压缩的过去式动作听完整，避免误解句子主动作。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "001203",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "front": {
+        "text": "听这句安排说明，哪组片段最能体现连续失去爆破？",
+        "task_prompt": "重点比较 next task 和 strict timing：多个爆破音相邻时，前一个常被压住。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0012/001203.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "next task / strict timing"
+          },
+          {
+            "key": "B",
+            "text": "requires / so that"
+          },
+          {
+            "key": "C",
+            "text": "every step / checked"
+          },
+          {
+            "key": "D",
+            "text": "can be / timing"
+          }
+        ],
+        "task_schema": {
+          "action": "选择连续失去爆破片段",
+          "focus": "识别任务说明中连续辅音造成的爆破压缩",
+          "success_criteria": "能在 next task / strict timing 中听出词边界，而不是把音块当陌生词"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0012/001203.mp3",
+        "duration_ms": 5256,
+        "transcript": "The next task requires strict timing so that every step can be checked.",
+        "path": "ai_tts/cet4/0012/001203.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。next task 里 next 结尾的 /t/ 接 task 开头的 /t/，strict timing 里 strict 结尾的 /t/ 又接 timing 开头的 /t/，这些位置都不会像单词单独朗读时那样清楚爆出来。听力里遇到这种连续爆破音，不要把它当成陌生词，而要主动按常见词组还原：next task 是下一项任务，strict timing 是严格时间安排。B、D 主要不是爆破音相邻；C 的 step can 也有 /p/ 接 /k/ 的压缩可能，但本题问的是最能体现连续失去爆破的一组。",
+        "tips": [
+          "同类爆破音连续出现时，听感会更像停顿或压缩，而不是两个清楚爆破。",
+          "先恢复常见词组 next task、strict timing，再处理句子含义。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 next task 和 strict timing 中连续失去爆破",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把连续辅音造成的压缩听感还原成常见任务说明词组。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ],
+  "review_limits": [
+    "This is a local draft sample only.",
+    "It is not formal product content.",
+    "Audio file quality still needs separate review before formal approval.",
+    "User confirmation is required before any batch expansion or card_boxes_json replacement beyond this scoped candidate sample."
+  ]
+}
