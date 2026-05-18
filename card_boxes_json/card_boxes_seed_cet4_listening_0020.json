@@ -16,34 +16,56 @@
       "box": 0,
       "card_no": 1,
       "card_box_code": "0020",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断‘说话人真正要你带走的信息’在转折前还是转折后。",
-        "task_prompt": "先听音频，再判断‘说话人真正要你带走的信息’在转折前还是转折后。",
+        "text": "听完这句后，真正需要带走的信息在哪一边？",
+        "task_prompt": "抓住 but：前半句是“学生应该很会睡”的预设，后半句才是修正后的重点。",
         "task_schema": {
-          "action": "听完后判断信息重心位置",
-          "focus": "话语重心在转折前后如何迁移",
-          "success_criteria": "不仅选对，还能说出转折前句为何只算铺垫"
+          "action": "判断转折后的信息重心",
+          "focus": "识别 but 后的信息重心迁移",
+          "success_criteria": "能说明前半句只是预设，but 后才是可用于答题的结论"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0020/002001.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "结论：重心在转折后，前句是‘预设’，后句是‘修正’。",
-        "explanation": "语境揭示：You probably think college students are experts at sleeping, but parties, preparations for tests, personal problems, and general stress can wreck a student's sleep habits. 这类句型的功能不是并列信息，而是把听者从常识预设拉回到作者真正观点。"
+        "text": "答案：A\n\n解析：but 后的信息才是说话人修正常识预设后的重点。",
+        "explanation": "正确答案是 A。but 前的 you would probably think... 是先放出一个常识预设：你可能以为大学生很会睡。but 后才是说话人真正修正这个预设的重点：聚会、备考、个人问题和压力都会破坏睡眠习惯。CET 听力里，转折前常是铺垫或听者预期，转折后才更可能对应答案。B 把铺垫当成结论；C 忽略了 but 的重心切换；D 只抓到一个局部名词，没有抓住整句结论。"
       },
       "analysis_content": {
-        "text": "① 识别信号：句子先建立听者预期（you probably think...），随后用 but 触发立场迁移。\n\n② 核心规律：英语新闻/说明文中，转折结构常承担‘预设-修正（presupposition-revision）’功能。前半句用于降低后半句的信息阻力，后半句才是作者想让你记住的 proposition。\n\n③ 验证：本句前半句是‘大学生应该会睡’的常识框架，but 后明确给出实际结论‘多重压力破坏睡眠’，这才是可用于答题和复述的核心信息。",
+        "text": "正确答案是 A。but 前的 you would probably think... 是先放出一个常识预设：你可能以为大学生很会睡。but 后才是说话人真正修正这个预设的重点：聚会、备考、个人问题和压力都会破坏睡眠习惯。CET 听力里，转折前常是铺垫或听者预期，转折后才更可能对应答案。B 把铺垫当成结论；C 忽略了 but 的重心切换；D 只抓到一个局部名词，没有抓住整句结论。",
         "tips": [
-          "听到 but 不要只当连接词，要当成‘信息重心切换开关’。",
-          "如果你只能记一句，优先记转折后的命题。"
+          "听到 but，先问自己：前半句是不是只是铺垫？",
+          "如果只能记一句，优先记转折后的完整命题。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "转折后：压力和备考会破坏学生睡眠习惯",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "转折前：大学生通常很擅长睡觉",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "两边同等重要，只是列举两个事实",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "重点在 parties，因为它是第一个名词",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "url": "ai_tts/cet4/0020/002001.mp3",
@@ -71,31 +93,53 @@
         "box_name": "转折关系",
         "box_prefix": "0020"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断‘说话人真正要你带走的信息’在转折前还是转折后。",
-        "task_prompt": "先听音频，再判断‘说话人真正要你带走的信息’在转折前还是转折后。",
+        "text": "听完这句后，真正需要带走的信息在哪一边？",
+        "task_prompt": "抓住 but：前半句是“学生应该很会睡”的预设，后半句才是修正后的重点。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听完后判断信息重心位置",
-          "focus": "话语重心在转折前后如何迁移",
-          "success_criteria": "不仅选对，还能说出转折前句为何只算铺垫"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：句子先建立听者预期（you probably think...），随后用 but 触发立场迁移。\n\n② 核心规律：英语新闻/说明文中，转折结构常承担‘预设-修正（presupposition-revision）’功能。前半句用于降低后半句的信息阻力，后半句才是作者想让你记住的 proposition。\n\n③ 验证：本句前半句是‘大学生应该会睡’的常识框架，but 后明确给出实际结论‘多重压力破坏睡眠’，这才是可用于答题和复述的核心信息。",
-        "tips": [
-          "听到 but 不要只当连接词，要当成‘信息重心切换开关’。",
-          "如果你只能记一句，优先记转折后的命题。"
+          "action": "判断转折后的信息重心",
+          "focus": "识别 but 后的信息重心迁移",
+          "success_criteria": "能说明前半句只是预设，but 后才是可用于答题的结论"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "转折后：压力和备考会破坏学生睡眠习惯",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "转折前：大学生通常很擅长睡觉",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "两边同等重要，只是列举两个事实",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "重点在 parties，因为它是第一个名词",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。but 前的 you would probably think... 是先放出一个常识预设：你可能以为大学生很会睡。but 后才是说话人真正修正这个预设的重点：聚会、备考、个人问题和压力都会破坏睡眠习惯。CET 听力里，转折前常是铺垫或听者预期，转折后才更可能对应答案。B 把铺垫当成结论；C 忽略了 but 的重心切换；D 只抓到一个局部名词，没有抓住整句结论。",
+        "tips": [
+          "听到 but，先问自己：前半句是不是只是铺垫？",
+          "如果只能记一句，优先记转折后的完整命题。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
         "unverified_source"
@@ -103,6 +147,33 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 but 后的信息重心迁移",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把听力中的常识铺垫和真正结论分开，避免把转折前信息当答案。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -117,27 +188,28 @@
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：听到 not ... but ... 后，选出‘被作者最终采纳的解释’。",
-        "task_prompt": "听到 not ... but ... 后，选出‘被作者最终采纳的解释’。",
+        "text": "听到 not ... but ... 后，哪一个解释才被作者采纳？",
+        "task_prompt": "先把 not 后面的解释划掉，再把 but 后面的解释当作真正答案候选。",
         "task_schema": {
-          "action": "四选一作答",
-          "focus": "区分‘被排除解释’与‘被采纳解释’",
-          "success_criteria": "识别 not...but... 的逻辑方向，而非只抓关键词"
+          "action": "选择被采纳的解释",
+          "focus": "区分 not...but... 中被排除项和替代项",
+          "success_criteria": "能说明 ownership structure 被否定，capacity shortage 才是原因"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0020/002002.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "答案：被采纳解释在 but 后（容量不足），不是前面的所有权结构。",
-        "explanation": "语境揭示：... not the ownership structure, but a shortage of runway and terminal capacity. 这是典型的‘否定-替代（denial-replacement）’结构，前项不是候选答案，而是被明确剔除。"
+        "text": "答案：B\n\n解析：not 后的 ownership structure 被排除，but 后的 capacity shortage 才是根本原因。",
+        "explanation": "正确答案是 B。not A but B 的功能不是并列比较，而是先撤销 A，再把解释权交给 B。这里 root problem 不是 ownership structure，而是 runway and terminal capacity shortage。听到 not 后不要急着把它当关键词答案，因为它常常是被作者排除的干扰项。A 正好选了被否定的解释；C 没在句子里承担原因角色；D 是由 ownership structure 联想出来的干扰，不是 but 后的答案。"
       },
       "analysis_content": {
-        "text": "① 识别信号：出现 not A but B 时，要先建立‘A 已被排除’的逻辑边界。\n\n② 核心规律：not...but... 不是‘比较 A 和 B 哪个更好’，而是‘撤销 A 的解释资格，并把解释权转交给 B’。\n\n③ 验证：本句主题词是 root cause。作者先否定 ownership structure，再把因果归因交给 capacity shortage；因此正确答案必须映射 but 后语义。",
+        "text": "正确答案是 B。not A but B 的功能不是并列比较，而是先撤销 A，再把解释权交给 B。这里 root problem 不是 ownership structure，而是 runway and terminal capacity shortage。听到 not 后不要急着把它当关键词答案，因为它常常是被作者排除的干扰项。A 正好选了被否定的解释；C 没在句子里承担原因角色；D 是由 ownership structure 联想出来的干扰，不是 but 后的答案。",
         "tips": [
-          "遇到 not...but... 时，先确认说话人在撤销哪个解释，再看替代解释是什么。",
-          "不要被前半句术语吸走注意力，先判断它在句内的逻辑角色。"
+          "not...but... 先排除，再替代。",
+          "听原因题时，but 后的名词组往往比 not 后的名词组更接近答案。"
         ]
       },
       "options": [
@@ -191,22 +263,44 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：听到 not ... but ... 后，选出‘被作者最终采纳的解释’。",
-        "task_prompt": "听到 not ... but ... 后，选出‘被作者最终采纳的解释’。",
+        "text": "听到 not ... but ... 后，哪一个解释才被作者采纳？",
+        "task_prompt": "先把 not 后面的解释划掉，再把 but 后面的解释当作真正答案候选。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "四选一作答",
-          "focus": "区分‘被排除解释’与‘被采纳解释’",
-          "success_criteria": "识别 not...but... 的逻辑方向，而非只抓关键词"
-        }
+          "action": "选择被采纳的解释",
+          "focus": "区分 not...but... 中被排除项和替代项",
+          "success_criteria": "能说明 ownership structure 被否定，capacity shortage 才是原因"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Ownership structure is the root cause.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "Runway and terminal capacity shortage is the root cause.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "Foreign business visitors are the root cause.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Airport privatization is the root cause.",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：出现 not A but B 时，要先建立‘A 已被排除’的逻辑边界。\n\n② 核心规律：not...but... 不是‘比较 A 和 B 哪个更好’，而是‘撤销 A 的解释资格，并把解释权转交给 B’。\n\n③ 验证：本句主题词是 root cause。作者先否定 ownership structure，再把因果归因交给 capacity shortage；因此正确答案必须映射 but 后语义。",
+        "text": "正确答案是 B。not A but B 的功能不是并列比较，而是先撤销 A，再把解释权交给 B。这里 root problem 不是 ownership structure，而是 runway and terminal capacity shortage。听到 not 后不要急着把它当关键词答案，因为它常常是被作者排除的干扰项。A 正好选了被否定的解释；C 没在句子里承担原因角色；D 是由 ownership structure 联想出来的干扰，不是 but 后的答案。",
         "tips": [
-          "遇到 not...but... 时，先确认说话人在撤销哪个解释，再看替代解释是什么。",
-          "不要被前半句术语吸走注意力，先判断它在句内的逻辑角色。"
+          "not...but... 先排除，再替代。",
+          "听原因题时，but 后的名词组往往比 not 后的名词组更接近答案。"
         ]
       },
       "auto_scoring": true,
@@ -224,6 +318,28 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 not...but... 的否定替代关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在原因类听力中避开被 not 排除的关键词，抓住 but 后真正归因。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -234,39 +350,57 @@
       "box": 0,
       "card_no": 3,
       "card_box_code": "0020",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：播放后，在你第一次听到转折信号词时点击。",
-        "task_prompt": "播放后，在你第一次听到转折信号词时点击。",
+        "text": "听到 however 后，信息重心发生了什么变化？",
+        "task_prompt": "前句是公司自称坦诚，however 后转到“没人愿意评论研究”这个可验证事实。",
         "task_schema": {
-          "action": "在时间窗内点击",
-          "focus": "句间转折词 however 的入场时刻",
-          "success_criteria": "点击命中转折词时刻，并能解释其话语作用"
+          "action": "选择转折后的事实功能",
+          "focus": "识别 however 把口径切换到事实行为",
+          "success_criteria": "能说明 however 后的拒绝评论比前面的自我表态更有答题价值"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0020/002003.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "目标词：however，它把企业口径切到可验证事实。",
-        "explanation": "语境揭示：The big tobacco companies ... However, none of them were prepared to comment on this study. 前句是企业自述，后句是事实行为；however 的作用不是单纯换话题，而是把听者从“他们怎么说”推到“他们实际上怎么做”。"
+        "text": "答案：A\n\n解析：however 把听者从公司自称坦诚切到其拒绝评论研究的事实行为。",
+        "explanation": "正确答案是 A。前半句说 tobacco companies 一直声称自己对顾客坦诚，这是公司自己的口径；however 后接 none of them was prepared to comment on this study，直接转向可验证的行为事实：他们不愿评论这项研究。新闻听力里，however 常把“别人怎么说”切到“事实怎样显示”。B 把 however 后的事实说反了；C 无中生有；D 把逻辑关系误解成单纯发音题。"
       },
       "analysis_content": {
-        "text": "① 识别信号：however 常出现在句首，作用是把叙述从口头口径切到事实层。\n\n② 核心规律：新闻里常见‘claim → however → evidence’。claim 只告诉你对方怎么表态，evidence 才告诉你题目真正能用什么作答。\n\n③ 验证：本句先说烟草公司一贯宣称自己坦诚，随后用 however 接出“拒绝评论研究”。真正有答题价值的是后句事实，而不是前句公关口径。",
+        "text": "正确答案是 A。前半句说 tobacco companies 一直声称自己对顾客坦诚，这是公司自己的口径；however 后接 none of them was prepared to comment on this study，直接转向可验证的行为事实：他们不愿评论这项研究。新闻听力里，however 常把“别人怎么说”切到“事实怎样显示”。B 把 however 后的事实说反了；C 无中生有；D 把逻辑关系误解成单纯发音题。",
         "tips": [
-          "听到 however，不要只记词本身，要准备把注意力切到后面的事实句。",
+          "however 后常出现真正能支撑答案的事实句。",
           "当口径和行为冲突时，优先记行为。"
         ]
       },
-      "options": null,
-      "eliminable_items": null,
-      "time_window_ms": [
-        0,
-        5000
+      "options": [
+        {
+          "key": "A",
+          "text": "从公司自我表态，转到公司拒绝评论研究的事实",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "从吸烟危害，转到公司如何主动解释危害",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "从研究结论，转到顾客如何购买产品",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "从 however 这个词本身，转到发音重音练习",
+          "is_correct": false
+        }
       ],
+      "eliminable_items": null,
       "audio": {
         "url": "ai_tts/cet4/0020/002003.mp3",
         "duration_ms": 11280,
@@ -293,31 +427,53 @@
         "box_name": "转折关系",
         "box_prefix": "0020"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：播放后，在你第一次听到转折信号词时点击。",
-        "task_prompt": "播放后，在你第一次听到转折信号词时点击。",
+        "text": "听到 however 后，信息重心发生了什么变化？",
+        "task_prompt": "前句是公司自称坦诚，however 后转到“没人愿意评论研究”这个可验证事实。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "在时间窗内点击",
-          "focus": "句间转折词 however 的入场时刻",
-          "success_criteria": "点击命中转折词时刻，并能解释其话语作用"
-        }
+          "action": "选择转折后的事实功能",
+          "focus": "识别 however 把口径切换到事实行为",
+          "success_criteria": "能说明 however 后的拒绝评论比前面的自我表态更有答题价值"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "从公司自我表态，转到公司拒绝评论研究的事实",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "从吸烟危害，转到公司如何主动解释危害",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "从研究结论，转到顾客如何购买产品",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "从 however 这个词本身，转到发音重音练习",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：however 常出现在句首，作用是把叙述从口头口径切到事实层。\n\n② 核心规律：新闻里常见‘claim → however → evidence’。claim 只告诉你对方怎么表态，evidence 才告诉你题目真正能用什么作答。\n\n③ 验证：本句先说烟草公司一贯宣称自己坦诚，随后用 however 接出“拒绝评论研究”。真正有答题价值的是后句事实，而不是前句公关口径。",
+        "text": "正确答案是 A。前半句说 tobacco companies 一直声称自己对顾客坦诚，这是公司自己的口径；however 后接 none of them was prepared to comment on this study，直接转向可验证的行为事实：他们不愿评论这项研究。新闻听力里，however 常把“别人怎么说”切到“事实怎样显示”。B 把 however 后的事实说反了；C 无中生有；D 把逻辑关系误解成单纯发音题。",
         "tips": [
-          "听到 however，不要只记词本身，要准备把注意力切到后面的事实句。",
+          "however 后常出现真正能支撑答案的事实句。",
           "当口径和行为冲突时，优先记行为。"
         ]
       },
-      "auto_scoring": false,
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
         "unverified_source"
@@ -325,6 +481,33 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 however 后的事实转向",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在新闻式听力里把企业口径和后续事实区分开，优先抓可答题信息。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {

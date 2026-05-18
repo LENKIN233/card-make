@@ -1,0 +1,286 @@
+{
+  "draft_id": "20260518-cet4-listening-0020-revised-sample",
+  "created_at": "2026-05-18T20:02:26+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0020 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "逻辑关系",
+    "box": "转折关系",
+    "box_prefix": "0020",
+    "candidate_for_existing_card_ids": [
+      "002001",
+      "002002",
+      "002003"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "002001",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "front": {
+        "text": "听完这句后，真正需要带走的信息在哪一边？",
+        "task_prompt": "抓住 but：前半句是“学生应该很会睡”的预设，后半句才是修正后的重点。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0020/002001.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "转折后：压力和备考会破坏学生睡眠习惯"
+          },
+          {
+            "key": "B",
+            "text": "转折前：大学生通常很擅长睡觉"
+          },
+          {
+            "key": "C",
+            "text": "两边同等重要，只是列举两个事实"
+          },
+          {
+            "key": "D",
+            "text": "重点在 parties，因为它是第一个名词"
+          }
+        ],
+        "task_schema": {
+          "action": "判断转折后的信息重心",
+          "focus": "识别 but 后的信息重心迁移",
+          "success_criteria": "能说明前半句只是预设，but 后才是可用于答题的结论"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0020/002001.mp3",
+        "duration_ms": 10488,
+        "transcript": "You'd probably think college students are great at sleeping, but parties, test prep, personal issues, and general stress can really wreck their sleep habits.",
+        "path": "ai_tts/cet4/0020/002001.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。but 前的 you would probably think... 是先放出一个常识预设：你可能以为大学生很会睡。but 后才是说话人真正修正这个预设的重点：聚会、备考、个人问题和压力都会破坏睡眠习惯。CET 听力里，转折前常是铺垫或听者预期，转折后才更可能对应答案。B 把铺垫当成结论；C 忽略了 but 的重心切换；D 只抓到一个局部名词，没有抓住整句结论。",
+        "tips": [
+          "听到 but，先问自己：前半句是不是只是铺垫？",
+          "如果只能记一句，优先记转折后的完整命题。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 but 后的信息重心迁移",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把听力中的常识铺垫和真正结论分开，避免把转折前信息当答案。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "002002",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "front": {
+        "text": "听到 not ... but ... 后，哪一个解释才被作者采纳？",
+        "task_prompt": "先把 not 后面的解释划掉，再把 but 后面的解释当作真正答案候选。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0020/002002.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "Ownership structure is the root cause."
+          },
+          {
+            "key": "B",
+            "text": "Runway and terminal capacity shortage is the root cause."
+          },
+          {
+            "key": "C",
+            "text": "Foreign business visitors are the root cause."
+          },
+          {
+            "key": "D",
+            "text": "Airport privatization is the root cause."
+          }
+        ],
+        "task_schema": {
+          "action": "选择被采纳的解释",
+          "focus": "区分 not...but... 中被排除项和替代项",
+          "success_criteria": "能说明 ownership structure 被否定，capacity shortage 才是原因"
+        }
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0020/002002.mp3",
+        "duration_ms": 8304,
+        "transcript": "The British Airports Authority says the root problem isn't ownership structure, but a shortage of runway and terminal capacity.",
+        "path": "ai_tts/cet4/0020/002002.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 B。not A but B 的功能不是并列比较，而是先撤销 A，再把解释权交给 B。这里 root problem 不是 ownership structure，而是 runway and terminal capacity shortage。听到 not 后不要急着把它当关键词答案，因为它常常是被作者排除的干扰项。A 正好选了被否定的解释；C 没在句子里承担原因角色；D 是由 ownership structure 联想出来的干扰，不是 but 后的答案。",
+        "tips": [
+          "not...but... 先排除，再替代。",
+          "听原因题时，but 后的名词组往往比 not 后的名词组更接近答案。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 not...but... 的否定替代关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在原因类听力中避开被 not 排除的关键词，抓住 but 后真正归因。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "002003",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "front": {
+        "text": "听到 however 后，信息重心发生了什么变化？",
+        "task_prompt": "前句是公司自称坦诚，however 后转到“没人愿意评论研究”这个可验证事实。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0020/002003.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "从公司自我表态，转到公司拒绝评论研究的事实"
+          },
+          {
+            "key": "B",
+            "text": "从吸烟危害，转到公司如何主动解释危害"
+          },
+          {
+            "key": "C",
+            "text": "从研究结论，转到顾客如何购买产品"
+          },
+          {
+            "key": "D",
+            "text": "从 however 这个词本身，转到发音重音练习"
+          }
+        ],
+        "task_schema": {
+          "action": "选择转折后的事实功能",
+          "focus": "识别 however 把口径切换到事实行为",
+          "success_criteria": "能说明 however 后的拒绝评论比前面的自我表态更有答题价值"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0020/002003.mp3",
+        "duration_ms": 11280,
+        "transcript": "The big tobacco companies have always insisted they've been frank with customers about the dangers of smoking. However, none of them was prepared to comment on this study.",
+        "path": "ai_tts/cet4/0020/002003.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。前半句说 tobacco companies 一直声称自己对顾客坦诚，这是公司自己的口径；however 后接 none of them was prepared to comment on this study，直接转向可验证的行为事实：他们不愿评论这项研究。新闻听力里，however 常把“别人怎么说”切到“事实怎样显示”。B 把 however 后的事实说反了；C 无中生有；D 把逻辑关系误解成单纯发音题。",
+        "tips": [
+          "however 后常出现真正能支撑答案的事实句。",
+          "当口径和行为冲突时，优先记行为。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 however 后的事实转向",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在新闻式听力里把企业口径和后续事实区分开，优先抓可答题信息。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ],
+  "review_limits": [
+    "This is a local draft sample only.",
+    "It is not formal product content.",
+    "Audio file quality still needs separate review before formal approval.",
+    "User confirmation is required before any batch expansion or card_boxes_json replacement beyond this scoped candidate sample."
+  ]
+}
