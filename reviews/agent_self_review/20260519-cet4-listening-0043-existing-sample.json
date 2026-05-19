@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0001-revised-sample",
-  "created_at": "2026-05-14T10:58:39+08:00",
+  "review_id": "20260519-cet4-listening-0043-existing-sample",
+  "created_at": "2026-05-19T22:01:37+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测考点",
+    "group": "推理判断",
+    "box": "后续计划/可能",
     "box_prefixes": [
-      "0001"
+      "0043"
     ],
     "card_ids": [
-      "000101",
-      "000102",
-      "000103"
+      "004301",
+      "004302",
+      "004303"
     ]
   },
   "specs_read": [
@@ -23,10 +23,12 @@
     "spec/content-quality-contract.json",
     "spec/review-workflow.json",
     "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
-    "spec/card-quality-audit.json"
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/knowledge-map.json"
   ],
   "sample_policy": {
     "is_three_card_sample_per_box": true,
@@ -34,20 +36,20 @@
   },
   "cards": [
     {
-      "card_id": "000101",
+      "card_id": "004301",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "group_id": "4",
+        "group": "推理判断",
+        "box_id": "3",
+        "box": "后续计划/可能",
+        "box_prefix": "0043"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别原因类听力考点",
+        "main_training_goal": "识别 next step 引出的第一步计划",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,41 +68,45 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户先锁定原因题，避免被 data 等局部词误导。",
+        "exam_value": "训练用户在听力推理题中按动作顺序还原说话人的下一步计划。",
         "box_progression_role": "recognition",
-        "review_status": "agent_pass"
+        "review_status": "blocked_existing_sample"
       },
       "blocker_scan": {
         "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": false,
-        "not_meeting_requirement": false,
+        "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Existing flip card hides the checkable answer on the back instead of giving the learner an answerable front-side task.",
+        "The task asks for a plan summary but does not force the key order distinction between contact first and arrange later.",
+        "No quality_metadata is present, so source/audio and review status are not explicit."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Audio file quality is not formally reviewed; current review only covers text/task design."
+      ],
+      "recommendation": "Rewrite as an auto-scored multiple_choice card that tests the first next-step action."
     },
     {
-      "card_id": "000102",
+      "card_id": "004302",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "group_id": "4",
+        "group": "推理判断",
+        "box_id": "3",
+        "box": "后续计划/可能",
+        "box_prefix": "0043"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别态度类听力考点",
+        "main_training_goal": "根据 likely to 和 unless 判断可能后果",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,41 +123,45 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户听出态度题信号，提前准备捕捉评价词和转折。",
+        "exam_value": "帮助用户在后续可能题中保留语气强度和条件限制，避免把可能性听成绝对事实。",
         "box_progression_role": "application",
-        "review_status": "agent_pass"
+        "review_status": "blocked_existing_sample"
       },
       "blocker_scan": {
         "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": false,
-        "not_meeting_requirement": false,
+        "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Existing multiple_choice answer is directionally usable, but the analysis is template-heavy and does not teach likely to / unless clearly enough.",
+        "The card lacks quality_metadata, leaving simulated source and TTS boundaries implicit.",
+        "Distractor rationale should explicitly separate probability, cancellation, and condition errors."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Keep the core answer but rewrite prompt, analysis, and metadata for sample review."
+      ],
+      "recommendation": "Retain the transcript and answer direction, but make the inference rule and condition handling explicit."
     },
     {
-      "card_id": "000103",
+      "card_id": "004303",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "group_id": "4",
+        "group": "推理判断",
+        "box_id": "3",
+        "box": "后续计划/可能",
+        "box_prefix": "0043"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别建议类听力考点",
+        "main_training_goal": "区分已完成背景和 next thing 引出的下一步计划",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,40 +180,44 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把建议信号转化为答案预期，提升听后抓动作的效率。",
+        "exam_value": "训练用户从背景句切换到计划句，完整保留后续计划中的并列动作。",
         "box_progression_role": "transfer",
-        "review_status": "agent_pass"
+        "review_status": "blocked_existing_sample"
       },
       "blocker_scan": {
         "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": false,
-        "not_meeting_requirement": false,
+        "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Existing timing-click task is downcast to flip, so the front promises a click action the product contract does not actually expose here.",
+        "The back-side answer window cannot serve as a self-contained front-side learning task.",
+        "The card should test the plan introduced by The next thing we will do rather than timing-window behavior."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Original time_window_ms is unsuitable for this candidate sample branch because audio timing has not been formally reviewed."
+      ],
+      "recommendation": "Rewrite as multiple_choice to separate completed background from the next planned actions."
     }
   ],
   "batch_review": {
-    "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample now moves from recognizing a reason test point, to applying attitude-question prediction, to transferring the same method to suggestion/action prediction.",
+    "status": "blocked",
+    "box_progression": "The existing first three cards do not yet form a clean recognition -> application -> transfer progression for 后续计划/可能.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about predicting the likely test point from the listening cue.",
-      "Formal approval still needs user confirmation and separate audio QA."
+      "Two cards depend on back-side or timing-window answer revelation rather than front-side solvable choices.",
+      "Source and TTS status are not explicit in quality_metadata."
     ],
     "representative_cards": [
-      "000101",
-      "000102",
-      "000103"
+      "004301",
+      "004302",
+      "004303"
     ],
-    "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
+    "next_step": "Revise only the first three cards as a candidate sample and keep it out of approved_batches until explicit user confirmation."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -211,9 +225,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "000101",
-        "000102",
-        "000103"
+        "004301",
+        "004302",
+        "004303"
       ],
       "card_count": 3,
       "issue_count": 6,
