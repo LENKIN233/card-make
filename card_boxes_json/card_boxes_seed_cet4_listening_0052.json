@@ -16,35 +16,57 @@
       "box": 2,
       "card_no": 1,
       "card_box_code": "0052",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "重复重点",
       "card_group_name": "主旨大意",
       "front_content": {
-        "text": "任务：先听音频，再说出说话人反复强调的核心观点。",
-        "task_prompt": "先听音频，再提炼多次重复出现的重点信息。",
+        "text": "听完后，选出说话人反复强调的核心观点。",
+        "task_prompt": "注意 Let me repeat 和 This point is central：它们都在强化同一个 data sharing 观点。",
         "task_schema": {
-          "action": "听后重点提取",
-          "focus": "重复关键词识别",
-          "success_criteria": "能抓到被重复强化的主旨，不被个别例子干扰"
+          "action": "四选一：重复重点识别",
+          "focus": "Let me repeat / This point is central",
+          "success_criteria": "能把重复强化的总观点与前后铺垫信息区分开"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0052/005201.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "结论：反复强调的重点是“跨部门共享数据是提升决策质量的前提”。\\n\\n关键点：同一判断被不同句式重复时，通常就是说话人真正想让你记住的主旨。",
-        "explanation": "语境揭示：Without shared data, teams make isolated decisions. Let me repeat: data sharing across departments is the foundation of better decisions. This point is central to every improvement we discussed."
+        "text": "答案：A\n\n解析：Let me repeat 后面明确重复 data sharing across departments is the foundation of better decisions；This point is central 又再次强调这个观点。",
+        "explanation": "正确答案是 A。第一句 Without shared data, teams make isolated decisions 是反面铺垫；Let me repeat 后把核心观点正面说出：跨部门共享数据是 better decisions 的 foundation；This point is central 再次提示这是整段重点。B 与第一句相反，C 无关，D 把重点偷换成部门规模。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“重复重点”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：先用信号词或句法骨架定位信息重心，再根据上下文完成含义确认，避免只看单个词就下结论。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到本题可用“结论：反复强调的重点是“跨部门共享数据是提升决策质量的前提”。\\n\\n关...”进行结果核对。常见误判是把定义性描述当答案本身，忽略语境中真正限制条件。纠偏时先问“这句话在当前语境里解决了什么问题”。下次遇到同类题时，直接执行：先圈出触发信号，再用一句话复述该句对主题的贡献。",
+        "text": "正确答案是 A。第一句 Without shared data, teams make isolated decisions 是反面铺垫；Let me repeat 后把核心观点正面说出：跨部门共享数据是 better decisions 的 foundation；This point is central 再次提示这是整段重点。B 与第一句相反，C 无关，D 把重点偷换成部门规模。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "Let me repeat 通常提示后面是重点。",
+          "This point is central 会把某个观点提升为主旨。",
+          "重复重点题要抓重复出现的同义观点，不只抓某个单词。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "Data sharing across departments is the basis for better decisions.",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "Each team should make decisions without shared information.",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "Customer examples are more important than decision quality.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "Every improvement depends mainly on reducing department size.",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "url": "ai_tts/cet4/0052/005201.mp3",
@@ -72,32 +94,54 @@
         "box_name": "重复重点",
         "box_prefix": "0052"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再说出说话人反复强调的核心观点。",
-        "task_prompt": "先听音频，再提炼多次重复出现的重点信息。",
+        "text": "听完后，选出说话人反复强调的核心观点。",
+        "task_prompt": "注意 Let me repeat 和 This point is central：它们都在强化同一个 data sharing 观点。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后重点提取",
-          "focus": "重复关键词识别",
-          "success_criteria": "能抓到被重复强化的主旨，不被个别例子干扰"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡聚焦“重复重点”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：先用信号词或句法骨架定位信息重心，再根据上下文完成含义确认，避免只看单个词就下结论。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到本题可用“结论：反复强调的重点是“跨部门共享数据是提升决策质量的前提”。\\n\\n关...”进行结果核对。常见误判是把定义性描述当答案本身，忽略语境中真正限制条件。纠偏时先问“这句话在当前语境里解决了什么问题”。下次遇到同类题时，直接执行：先圈出触发信号，再用一句话复述该句对主题的贡献。",
-        "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "action": "四选一：重复重点识别",
+          "focus": "Let me repeat / This point is central",
+          "success_criteria": "能把重复强化的总观点与前后铺垫信息区分开"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Data sharing across departments is the basis for better decisions.",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "Each team should make decisions without shared information.",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "Customer examples are more important than decision quality.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Every improvement depends mainly on reducing department size.",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。第一句 Without shared data, teams make isolated decisions 是反面铺垫；Let me repeat 后把核心观点正面说出：跨部门共享数据是 better decisions 的 foundation；This point is central 再次提示这是整段重点。B 与第一句相反，C 无关，D 把重点偷换成部门规模。",
+        "tips": [
+          "Let me repeat 通常提示后面是重点。",
+          "This point is central 会把某个观点提升为主旨。",
+          "重复重点题要抓重复出现的同义观点，不只抓某个单词。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
         "type": 0,
         "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "product_mapping_reason": "sample revision uses auto-scored multiple_choice for user-reviewable repeated-emphasis practice"
       },
       "quality_flags": [
         "unverified_source"
@@ -105,6 +149,33 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 Let me repeat 和 central 强化的重复重点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在主旨听力中抓住说话人反复强化的核心观点，而不是被铺垫句或例子带偏。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -119,49 +190,50 @@
       "card_box_name": "重复重点",
       "card_group_name": "主旨大意",
       "front_content": {
-        "text": "任务：先听音频，再选出说话人反复强调的核心重点。",
-        "task_prompt": "先听音频，再选出被重复强化的主旨项。",
+        "text": "听完后，选出被 again 强化的写作提升重点。",
+        "task_prompt": "regularly 和 steady feedback loop 都指向同一重点：持续反馈比偶尔总评更关键。",
         "task_schema": {
-          "action": "四选一：重复重点判断",
-          "focus": "重复句与背景句区分",
-          "success_criteria": "选中被多次改写并强调的重要观点"
+          "action": "四选一：重复主旨概括",
+          "focus": "I want to stress this again / feedback loop",
+          "success_criteria": "能把重复表达合并成一个稳定主旨，而不是选局部干扰项"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0052/005202.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "答案：D. Frequent formative feedback is essential for sustained writing improvement\\n\\n解析：讲话中三次强调 feedback loop / regular comments / steady revision cycle，指向同一重点：持续反馈是写作进步关键。",
-        "explanation": "语境揭示：Students improve fastest when feedback comes regularly. I want to stress this again: a steady feedback loop matters more than occasional final scores."
+        "text": "答案：D\n\n解析：feedback comes regularly 和 steady feedback loop 是重复表达；I want to stress this again 明确提示这是说话人要强化的重点。",
+        "explanation": "正确答案是 D。第一句说 feedback comes regularly 时学生进步最快；第二句 I want to stress this again 直接标出重复重点，并把它改写为 a steady feedback loop matters more than occasional final scores。A 新增 longer essays，B 颠倒比较关系，C 无中生有。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“重复重点”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "正确答案是 D。第一句说 feedback comes regularly 时学生进步最快；第二句 I want to stress this again 直接标出重复重点，并把它改写为 a steady feedback loop matters more than occasional final scores。A 新增 longer essays，B 颠倒比较关系，C 无中生有。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "again、repeat、stress this 都是重复重点信号。",
+          "regular feedback 和 steady feedback loop 是同义强化。",
+          "比较句里 matters more than 后前后关系不能倒置。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "Students should write longer essays every week",
+          "text": "Students should only write longer essays every week.",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "Final exam scores are the best indicator of growth",
+          "text": "Occasional final scores matter more than a feedback loop.",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "Peer competition increases classroom motivation",
+          "text": "Peer competition is the main reason writing improves.",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "Frequent formative feedback is essential for sustained writing improvement",
+          "text": "Regular feedback is essential for sustained writing improvement.",
           "is_correct": true
         }
       ],
@@ -194,30 +266,52 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再选出说话人反复强调的核心重点。",
-        "task_prompt": "先听音频，再选出被重复强化的主旨项。",
+        "text": "听完后，选出被 again 强化的写作提升重点。",
+        "task_prompt": "regularly 和 steady feedback loop 都指向同一重点：持续反馈比偶尔总评更关键。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "四选一：重复重点判断",
-          "focus": "重复句与背景句区分",
-          "success_criteria": "选中被多次改写并强调的重要观点"
-        }
+          "action": "四选一：重复主旨概括",
+          "focus": "I want to stress this again / feedback loop",
+          "success_criteria": "能把重复表达合并成一个稳定主旨，而不是选局部干扰项"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Students should only write longer essays every week.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "Occasional final scores matter more than a feedback loop.",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "Peer competition is the main reason writing improves.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Regular feedback is essential for sustained writing improvement.",
+            "is_correct": true
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“重复重点”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "正确答案是 D。第一句说 feedback comes regularly 时学生进步最快；第二句 I want to stress this again 直接标出重复重点，并把它改写为 a steady feedback loop matters more than occasional final scores。A 新增 longer essays，B 颠倒比较关系，C 无中生有。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "again、repeat、stress this 都是重复重点信号。",
+          "regular feedback 和 steady feedback loop 是同义强化。",
+          "比较句里 matters more than 后前后关系不能倒置。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "sample revision uses auto-scored multiple_choice for user-reviewable repeated-emphasis practice"
       },
       "quality_flags": [
         "unverified_source"
@@ -228,6 +322,28 @@
       },
       "answer_key": {
         "correct_option": "D"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 again/stress 信号识别持续反馈这一重复重点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把多次改写的同一观点合并为主旨，减少被单一细节词误导。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -238,35 +354,57 @@
       "box": 2,
       "card_no": 3,
       "card_box_code": "0052",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "重复重点",
       "card_group_name": "主旨大意",
       "front_content": {
-        "text": "任务：先听音频，在说话人发出“重复强调”信号词时点击。",
-        "task_prompt": "先听音频，在 again / once more 等重复提示出现时点击。",
+        "text": "听完后，选出 Once more 后再次强调的客户信任重点。",
+        "task_prompt": "but 后先转到真正驱动因素；Once more 又重复强调 consistency 的作用。",
         "task_schema": {
-          "action": "时间窗口点击：重复信号词定位",
-          "focus": "once more",
-          "success_criteria": "准确点击重复强调触发点，而非普通连接词"
+          "action": "四选一：重复强调句匹配",
+          "focus": "but / Once more / consistency",
+          "success_criteria": "能从让步信息中切换到被重复强调的主旨"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0052/005203.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "答案窗口：once more（约第 4.4 秒）\\n\\n解析：once more 明确提示说话人要再次强调前述重点。",
-        "explanation": "语境揭示：Cost control is important, but service consistency is the real driver of customer trust. Once more, consistency is what keeps clients coming back."
+        "text": "答案：C\n\n解析：but 后说 service consistency is the real driver of customer trust；Once more 后又重复 consistency is what keeps clients coming back。",
+        "explanation": "正确答案是 C。Cost control is important 是让步背景；but 转向真正重点：service consistency drives customer trust。Once more 后再次强调 consistency keeps clients coming back，说明 consistency 才是被重复强化的主旨。A 把 cost control 误当唯一因素，B 无中生有，D 与原文相反。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“重复重点”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。信号词时点击。”。\n\n② 核心规律：时机点击题先定位“信息转折或答案触发点”，点击窗口应落在语义发生变化的时间段。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是按语速或节奏点点击，而不是按语义转折点击。纠偏时以“观点变化点”为唯一锚。下次遇到同类题时，直接执行：听到转折词或态度词后再点击，不要在铺垫句提前作答。",
+        "text": "正确答案是 C。Cost control is important 是让步背景；but 转向真正重点：service consistency drives customer trust。Once more 后再次强调 consistency keeps clients coming back，说明 consistency 才是被重复强化的主旨。A 把 cost control 误当唯一因素，B 无中生有，D 与原文相反。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "but 后常出现真正的信息重心。",
+          "Once more 后面的内容通常是重复强化点。",
+          "被重复的名词和同义动作要合并成完整主旨。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "Cost control is the only driver of customer trust.",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "Clients return mainly because prices change often.",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "Service consistency keeps customer trust and brings clients back.",
+          "is_correct": true
+        },
+        {
+          "key": "D",
+          "text": "Customer trust does not depend on service experience.",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "url": "ai_tts/cet4/0052/005203.mp3",
@@ -274,10 +412,6 @@
         "transcript": "Cost control is important, but service consistency is the real driver of customer trust. Once more, consistency is what keeps clients coming back.",
         "path": "ai_tts/cet4/0052/005203.mp3"
       },
-      "time_window_ms": [
-        4000,
-        5600
-      ],
       "source_ref": {
         "type": "content_pool",
         "paper_id": null,
@@ -298,32 +432,54 @@
         "box_name": "重复重点",
         "box_prefix": "0052"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，在说话人发出“重复强调”信号词时点击。",
-        "task_prompt": "先听音频，在 again / once more 等重复提示出现时点击。",
+        "text": "听完后，选出 Once more 后再次强调的客户信任重点。",
+        "task_prompt": "but 后先转到真正驱动因素；Once more 又重复强调 consistency 的作用。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "时间窗口点击：重复信号词定位",
-          "focus": "once more",
-          "success_criteria": "准确点击重复强调触发点，而非普通连接词"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡聚焦“重复重点”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。信号词时点击。”。\n\n② 核心规律：时机点击题先定位“信息转折或答案触发点”，点击窗口应落在语义发生变化的时间段。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是按语速或节奏点点击，而不是按语义转折点击。纠偏时以“观点变化点”为唯一锚。下次遇到同类题时，直接执行：听到转折词或态度词后再点击，不要在铺垫句提前作答。",
-        "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "action": "四选一：重复强调句匹配",
+          "focus": "but / Once more / consistency",
+          "success_criteria": "能从让步信息中切换到被重复强调的主旨"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Cost control is the only driver of customer trust.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "Clients return mainly because prices change often.",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "Service consistency keeps customer trust and brings clients back.",
+            "is_correct": true
+          },
+          {
+            "key": "D",
+            "text": "Customer trust does not depend on service experience.",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 C。Cost control is important 是让步背景；but 转向真正重点：service consistency drives customer trust。Once more 后再次强调 consistency keeps clients coming back，说明 consistency 才是被重复强化的主旨。A 把 cost control 误当唯一因素，B 无中生有，D 与原文相反。",
+        "tips": [
+          "but 后常出现真正的信息重心。",
+          "Once more 后面的内容通常是重复强化点。",
+          "被重复的名词和同义动作要合并成完整主旨。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
         "type": 2,
         "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "product_mapping_reason": "sample revision replaces legacy timing click with auto-scored multiple_choice for a self-contained repeated-emphasis task"
       },
       "quality_flags": [
         "unverified_source"
@@ -331,6 +487,33 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 Once more 重复强调的 service consistency 主旨",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在让步转折后继续捕捉重复强调点，完整保留主旨对象和作用。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {

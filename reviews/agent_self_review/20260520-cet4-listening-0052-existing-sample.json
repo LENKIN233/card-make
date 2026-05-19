@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0011-revised-sample",
-  "created_at": "2026-05-14T16:31:10+08:00",
+  "review_id": "20260520-cet4-listening-0052-existing-sample",
+  "created_at": "2026-05-20T01:08:51+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "语音现象",
-    "box": "弱读",
+    "group": "主旨大意",
+    "box": "重复重点",
     "box_prefixes": [
-      "0011"
+      "0052"
     ],
     "card_ids": [
-      "001101",
-      "001102",
-      "001103"
+      "005201",
+      "005202",
+      "005203"
     ]
   },
   "specs_read": [
@@ -23,10 +23,12 @@
     "spec/content-quality-contract.json",
     "spec/review-workflow.json",
     "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
-    "spec/card-quality-audit.json"
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/knowledge-map.json"
   ],
   "sample_policy": {
     "is_three_card_sample_per_box": true,
@@ -34,20 +36,20 @@
   },
   "cards": [
     {
-      "card_id": "001101",
+      "card_id": "005201",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "1",
-        "box": "弱读",
-        "box_prefix": "0011"
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "2",
+        "box": "重复重点",
+        "box_prefix": "0052"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别 have to 中 to 的弱读",
+        "main_training_goal": "识别 Let me repeat 和 central 强化的重复重点",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,41 +68,45 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户接受功能词不会完整重读，减少听力中漏听小词造成的误判。",
+        "exam_value": "训练用户在主旨听力中抓住说话人反复强化的核心观点，而不是被铺垫句或例子带偏。",
         "box_progression_role": "recognition",
-        "review_status": "agent_pass"
+        "review_status": "blocked_existing_sample"
       },
       "blocker_scan": {
         "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": false,
-        "not_meeting_requirement": false,
+        "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Existing flip card asks for a repeated key point but hides the checkable answer on the back.",
+        "The analysis is template-heavy and does not teach how Let me repeat and This point is central mark the repeated emphasis.",
+        "No quality_metadata is present, so source/audio and review status are not explicit."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Audio file quality is not formally reviewed; current review only covers text/task design."
+      ],
+      "recommendation": "Rewrite as an auto-scored multiple_choice card that tests the repeated data-sharing point."
     },
     {
-      "card_id": "001102",
+      "card_id": "005202",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "1",
-        "box": "弱读",
-        "box_prefix": "0011"
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "2",
+        "box": "重复重点",
+        "box_prefix": "0052"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别 to explain 中 to 的弱读",
+        "main_training_goal": "用 again/stress 信号识别持续反馈这一重复重点",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,41 +123,45 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户从弱读功能词恢复句法关系，避免只听到实词后误解动作结构。",
+        "exam_value": "帮助用户把多次改写的同一观点合并为主旨，减少被单一细节词误导。",
         "box_progression_role": "application",
-        "review_status": "agent_pass"
+        "review_status": "blocked_existing_sample"
       },
       "blocker_scan": {
         "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": false,
-        "not_meeting_requirement": false,
+        "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Existing multiple_choice answer direction is usable, but the analysis is template-heavy and does not explain regular feedback / steady feedback loop as repeated emphasis.",
+        "The back text overstates the repetition pattern compared with the transcript and should be made text-faithful.",
+        "The card lacks quality_metadata, leaving simulated source and TTS boundaries implicit."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Keep the core answer direction but rewrite prompt, options, analysis, and metadata for sample review."
+      ],
+      "recommendation": "Retain the transcript and answer direction, but make the repeated-feedback rule explicit."
     },
     {
-      "card_id": "001103",
+      "card_id": "005203",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "1",
-        "box": "弱读",
-        "box_prefix": "0011"
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "2",
+        "box": "重复重点",
+        "box_prefix": "0052"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别 could 的情态动词弱读",
+        "main_training_goal": "识别 Once more 重复强调的 service consistency 主旨",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,40 +180,44 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户在条件和建议类听力中识别轻读情态词，避免误判动作语气。",
+        "exam_value": "训练用户在让步转折后继续捕捉重复强调点，完整保留主旨对象和作用。",
         "box_progression_role": "transfer",
-        "review_status": "agent_pass"
+        "review_status": "blocked_existing_sample"
       },
       "blocker_scan": {
         "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": false,
-        "not_meeting_requirement": false,
+        "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Existing timing-click task is downcast to flip, so the front promises click behavior that is not exposed by the product contract here.",
+        "The answer-window back side cannot serve as a self-contained front-side learning task.",
+        "The card should test the repeated service-consistency point after Once more rather than unreviewed timing-window behavior."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Original time_window_ms is unsuitable for this candidate sample branch because audio timing has not been formally reviewed."
+      ],
+      "recommendation": "Rewrite as multiple_choice to separate cost-control setup from the repeated consistency point."
     }
   ],
   "batch_review": {
-    "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample moves from recognizing a basic weak to in have to, to applying the same method to to explain, to transferring it to a weak modal could in a conditional sentence.",
+    "status": "blocked",
+    "box_progression": "The existing first three cards do not yet form a clean recognition -> application -> transfer progression for 重复重点.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about identifying weak-read function words or chunks.",
-      "Formal approval still needs user confirmation and separate audio QA."
+      "Two cards depend on back-side or timing-window answer revelation rather than front-side solvable choices.",
+      "Source and TTS status are not explicit in quality_metadata."
     ],
     "representative_cards": [
-      "001101",
-      "001102",
-      "001103"
+      "005201",
+      "005202",
+      "005203"
     ],
-    "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
+    "next_step": "Revise only the first three cards as a candidate sample and keep it out of approved_batches until explicit user confirmation."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -211,9 +225,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "001101",
-        "001102",
-        "001103"
+        "005201",
+        "005202",
+        "005203"
       ],
       "card_count": 3,
       "issue_count": 6,
