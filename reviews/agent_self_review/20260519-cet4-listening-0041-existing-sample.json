@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0002-existing-sample",
-  "created_at": "2026-05-14T12:38:37+08:00",
+  "review_id": "20260519-cet4-listening-0041-existing-sample",
+  "created_at": "2026-05-19T18:13:26+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测信号词",
+    "group": "推理判断",
+    "box": "观点、态度",
     "box_prefixes": [
-      "0002"
+      "0041"
     ],
     "card_ids": [
-      "000201",
-      "000202",
-      "000203"
+      "004101",
+      "004102",
+      "004103"
     ]
   },
   "specs_read": [
@@ -26,6 +26,8 @@
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/knowledge-map.json",
     "spec/card-quality-audit.json"
   ],
   "sample_policy": {
@@ -34,20 +36,20 @@
   },
   "cards": [
     {
-      "card_id": "000201",
+      "card_id": "004101",
       "interaction_id": "flip",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "group_id": "4",
+        "group": "推理判断",
+        "box_id": "1",
+        "box": "观点、态度",
+        "box_prefix": "0041"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "预测让步和原因信号词",
+        "main_training_goal": "识别正向态度与保留条件并存",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -61,12 +63,12 @@
         "card_prototype": "integrated_micro_drill",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
           "audio_generation_method": "TTS_AI_generated",
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "音频文本有 although 和 because，但原卡没有让用户预测或识别这些信号词。",
+        "exam_value": "原音频适合训练 positive + although，但原卡用翻面自评，缺少可判定答案形态。",
         "box_progression_role": "recognition",
         "review_status": "block"
       },
@@ -78,148 +80,142 @@
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "Front asks for a generic judgment and does not define which signal word pattern to identify.",
-        "The analysis does not connect to the actual although/because structure in the transcript.",
-        "The flip interaction does not support a concrete answer choice for this box's prediction task."
+        "Flip self-assessment asks the learner to judge and explain attitude without a visible answer set, so it is not auto-checkable.",
+        "The analysis repeats generic structure-signal language instead of explaining positive direction plus reservation strength."
       ],
       "minor_issues": [
-        "TTS text and audio quality have not been reviewed separately."
+        "Audio file quality is not formally reviewed for release use."
       ],
-      "recommendation": "Revise before user review; expose the signal-word pair and its logic."
+      "recommendation": "Rewrite as a concrete multiple-choice attitude-direction card before user review."
     },
     {
-      "card_id": "000202",
+      "card_id": "004102",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "group_id": "4",
+        "group": "推理判断",
+        "box_id": "1",
+        "box": "观点、态度",
+        "box_prefix": "0041"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别转折信号词",
+        "main_training_goal": "识别 cautiously optimistic 的态度强度",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "foundation",
-          "secondary": [
-            "pass"
-          ]
+          "primary": "pass",
+          "secondary": []
         },
-        "card_prototype": "solving_action",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
           "audio_generation_method": "TTS_AI_generated",
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "多选形式适合信号词识别，但当前选项不是信号词或逻辑关系选项。",
+        "exam_value": "原答案方向可用，但解析没有讲清 cautiously 如何降低 optimistic 的强度。",
         "box_progression_role": "application",
         "review_status": "block"
       },
       "blocker_scan": {
-        "logic_error": true,
+        "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": true,
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "The correct option is a meta-strategy sentence rather than a signal word or relation.",
-        "The transcript contains however, but the learner is never asked to identify or use that signal.",
-        "The analysis is a reusable template and not grounded in the feedback/security-concern contrast."
+        "The correct option is plausible, but the explanation is template-like and does not teach attitude intensity.",
+        "The front does not explicitly warn against treating optimistic as completely enthusiastic."
       ],
       "minor_issues": [
-        "Distractors should be plausible signal words, not obviously bad study behaviors."
+        "Distractors should target strong support, opposition, and neutrality more cleanly."
       ],
-      "recommendation": "Block this sample; rewrite options as signal words or signal-word relations."
+      "recommendation": "Revise wording, options, and analysis before user review."
     },
     {
-      "card_id": "000203",
+      "card_id": "004103",
       "interaction_id": "flip",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "group_id": "4",
+        "group": "推理判断",
+        "box_id": "1",
+        "box": "观点、态度",
+        "box_prefix": "0041"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别因果信号词",
+        "main_training_goal": "区分事实铺垫和负向态度评价词",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "foundation",
+          "primary": "pass",
           "secondary": [
-            "pass"
+            "high_score"
           ]
         },
         "card_prototype": "integrated_micro_drill",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
           "audio_generation_method": "TTS_AI_generated",
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "音频文本有 since 引导的原因结构，但原卡没有让用户预测原因信号。",
+        "exam_value": "原音频有 frankly / disappointing 这种态度信号，但原卡依赖 unsupported timing-click 行为。",
         "box_progression_role": "transfer",
         "review_status": "block"
       },
       "blocker_scan": {
-        "logic_error": true,
+        "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": true,
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "The card front is generic and does not expose the cause-effect signal task.",
-        "The analysis mentions click anchoring even though the interaction is flip.",
-        "The content repeats the same template rather than using since/weather/postponed survey as evidence."
+        "The card depends on a legacy timing-click behavior that is downcast to flip and is not a supported core interaction for authoring.",
+        "It trains timing of the attitude word rather than a checkable attitude judgment."
       ],
       "minor_issues": [
-        "Interaction and answer form should be aligned before user review."
+        "The fact statement should become a distractor boundary, not a click window."
       ],
-      "recommendation": "Block this sample; rewrite as a signal-word prediction multiple-choice card."
+      "recommendation": "Rewrite as a multiple-choice card that separates fact background from negative attitude."
     }
   ],
   "batch_review": {
     "status": "blocked",
-    "box_progression": "The underlying transcripts can support concession/cause, contrast, and cause-effect signal-word training, but the existing cards hide those distinctions behind repeated generic prompts.",
+    "box_progression": "The existing sample has useful attitude transcripts, but it mixes uncheckable flip, generic template analysis, and unsupported timing-click behavior.",
     "repetition_or_gap_risks": [
-      "All three fronts are nearly identical.",
-      "Only one card has choices, and those choices are not signal-word choices.",
-      "The analyses repeat the same mechanism paragraphs with only the box label changed.",
-      "TTS text and audio have not been reviewed as separate quality surfaces."
+      "The first card has no answer set for attitude direction and strength.",
+      "The second card has a plausible answer but does not teach the attitude-strength mechanism.",
+      "The third card asks for a click timing window instead of a supported attitude judgment."
     ],
     "representative_cards": [
-      "000201",
-      "000202",
-      "000203"
+      "004101",
+      "004102",
+      "004103"
     ],
-    "next_step": "Do not ask for user confirmation on this sample. Draft a revised 3-card candidate sample focused on although/because, however, and since signal prediction."
+    "next_step": "Do not ask for user confirmation on this existing sample. Draft a revised 3-card candidate sample using supported multiple_choice interactions."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -227,9 +223,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "000201",
-        "000202",
-        "000203"
+        "004101",
+        "004102",
+        "004103"
       ],
       "card_count": 3,
       "issue_count": 6,
