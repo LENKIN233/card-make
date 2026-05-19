@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0010-existing-sample",
-  "created_at": "2026-05-14T13:20:42+08:00",
+  "review_id": "20260519-cet4-listening-0031-existing-sample",
+  "created_at": "2026-05-19T13:04:59+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "语音现象",
-    "box": "连读",
+    "group": "细节捕捉",
+    "box": "数字类",
     "box_prefixes": [
-      "0010"
+      "0031"
     ],
     "card_ids": [
-      "001001",
-      "001002",
-      "001003"
+      "003101",
+      "003102",
+      "003103"
     ]
   },
   "specs_read": [
@@ -26,6 +26,7 @@
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json",
     "spec/card-quality-audit.json"
   ],
   "sample_policy": {
@@ -34,20 +35,20 @@
   },
   "cards": [
     {
-      "card_id": "001001",
+      "card_id": "003101",
       "interaction_id": "flip",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "1",
+        "box": "数字类",
+        "box_prefix": "0031"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别 consonant-vowel 连读",
+        "main_training_goal": "绑定数字 twelve 与其后置单位对象",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +67,7 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "音频文本有 turn off 这类连读点，但原卡没有让用户定位具体连读位置。",
+        "exam_value": "原音频适合训练数字-单位绑定，但原卡只是泛泛问数字类别，无法自动检查用户是否绑到 schools。",
         "box_progression_role": "recognition",
         "review_status": "block"
       },
@@ -78,42 +79,40 @@
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "Front asks for a generic judgment and does not name a concrete connected-speech target.",
-        "The analysis incorrectly talks about structure signals rather than pronunciation linkage.",
-        "The flip interaction does not provide a checkable answer for the listening micro-skill."
+        "Front is a generic flip judgment and does not expose a checkable answer choice.",
+        "The task asks broad category recognition but does not force the learner to bind twelve to schools.",
+        "No quality_metadata is present in the actual card JSON, so the sample cannot pass the current review gate as-is."
       ],
       "minor_issues": [
-        "TTS text and audio quality have not been reviewed separately."
+        "TTS text and audio quality have not been reviewed separately for formal use."
       ],
-      "recommendation": "Revise before user review; expose a concrete connected-speech location and explanation."
+      "recommendation": "Revise into a multiple_choice card that asks what twelve counts."
     },
     {
-      "card_id": "001002",
+      "card_id": "003102",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "1",
+        "box": "数字类",
+        "box_prefix": "0031"
       },
-      "status": "block",
+      "status": "revise",
       "quality_metadata": {
-        "main_training_goal": "识别连续短词中的连读",
+        "main_training_goal": "区分预估数字和最终登记数字",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "foundation",
-          "secondary": [
-            "pass"
-          ]
+          "primary": "pass",
+          "secondary": []
         },
         "card_prototype": "solving_action",
         "material": {
@@ -123,53 +122,53 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "多选形式适合定位连读，但当前选项是策略口号，不是音频片段。",
+        "exam_value": "原卡方向接近数字修正关系，但 wording 偏抽象，且缺少正式候选元数据。",
         "box_progression_role": "application",
-        "review_status": "block"
+        "review_status": "revise"
       },
       "blocker_scan": {
-        "logic_error": true,
+        "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
-        "low_knowledge_density": true,
+        "low_knowledge_density": false,
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "The correct option can be selected without listening because it is a meta-strategy statement.",
-        "The options do not represent possible connected-speech chunks.",
-        "The analysis does not explain pick it up / up at style linking."
+        "The answer logic is usable, but the prompt remains meta-level instead of naming the final registration count task.",
+        "The actual card JSON lacks quality_metadata required for candidate sample review.",
+        "The explanation should explicitly teach final/actual style correction signals."
       ],
       "minor_issues": [
-        "The card should test sound-to-text decoding, not general learning behavior."
+        "Options are structurally valid but the card should be synchronized to the box progression language."
       ],
-      "recommendation": "Block this sample; rewrite options as plausible heard chunks."
+      "recommendation": "Keep the core answer, but revise wording, analysis, and metadata before user review."
     },
     {
-      "card_id": "001003",
+      "card_id": "003103",
       "interaction_id": "flip",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "1",
+        "box": "数字类",
+        "box_prefix": "0031"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别问句中的连读位置",
+        "main_training_goal": "绑定 three hundred dollars 与维修费用语义",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "foundation",
+          "primary": "pass",
           "secondary": [
-            "pass"
+            "high_score"
           ]
         },
         "card_prototype": "integrated_micro_drill",
@@ -180,7 +179,7 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "音频文本有 ask about 这类可训练连读点，但原卡没有给出可执行判断。",
+        "exam_value": "原音频适合金额单位绑定，但原卡要求点击数字时刻，和当前 product core interaction contract 不一致。",
         "box_progression_role": "transfer",
         "review_status": "block"
       },
@@ -188,38 +187,37 @@
         "logic_error": true,
         "language_error": false,
         "inappropriate_wording": false,
-        "low_knowledge_density": true,
+        "low_knowledge_density": false,
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "Front is generic and does not ask the learner to identify a connected-speech chunk.",
-        "The analysis again uses structure-signal template text instead of pronunciation explanation.",
-        "The card mentions click anchoring in analysis while rendering as flip."
+        "Front asks for a timing click, but the product contract does not keep timing click as a core interaction.",
+        "The card renders as flip after legacy downcast, so the interaction and answer behavior are not aligned.",
+        "The useful learning target is unit binding to dollars/cost, not click timing."
       ],
       "minor_issues": [
-        "Interaction and answer form should be aligned before user review."
+        "The time_window_ms field is a legacy residue and should not drive the candidate sample."
       ],
-      "recommendation": "Block this sample; rewrite as a concrete connected-speech multiple-choice card."
+      "recommendation": "Rewrite as a multiple_choice unit-binding card for three hundred dollars."
     }
   ],
   "batch_review": {
     "status": "blocked",
-    "box_progression": "The underlying transcripts can support connected-speech training, but the existing cards do not expose actual linked chunks or pronunciation mechanisms.",
+    "box_progression": "The transcripts can support 数字类 training, but the existing sample does not consistently make number-unit binding auto-checkable or metadata-complete.",
     "repetition_or_gap_risks": [
-      "All three fronts are nearly identical.",
-      "Only one card has choices, and those choices are not audio chunks.",
-      "The analyses repeat logic-signal paragraphs from unrelated listening boxes.",
-      "TTS text and audio have not been reviewed as separate quality surfaces."
+      "Only the second existing card is close to an auto-checkable number-detail task.",
+      "The first card is a generic flip prompt; the third asks for unsupported timing-click behavior.",
+      "All three cards need explicit candidate metadata and source boundaries before user review."
     ],
     "representative_cards": [
-      "001001",
-      "001002",
-      "001003"
+      "003101",
+      "003102",
+      "003103"
     ],
-    "next_step": "Do not ask for user confirmation on this sample. Draft a revised 3-card candidate sample focused on turn off, pick it up at, and ask about connected speech."
+    "next_step": "Do not ask for approval on the existing sample. Draft a revised 3-card candidate sample focused on number-unit and final-value binding."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -227,9 +225,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "001001",
-        "001002",
-        "001003"
+        "003101",
+        "003102",
+        "003103"
       ],
       "card_count": 3,
       "issue_count": 6,

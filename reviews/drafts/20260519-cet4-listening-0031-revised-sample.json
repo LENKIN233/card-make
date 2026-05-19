@@ -1,0 +1,280 @@
+{
+  "draft_id": "20260519-cet4-listening-0031-revised-sample",
+  "created_at": "2026-05-19T13:04:59+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0031 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "细节捕捉",
+    "box": "数字类",
+    "box_prefix": "0031",
+    "candidate_for_existing_card_ids": [
+      "003101",
+      "003102",
+      "003103"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "003101",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "front": {
+        "text": "听完后，选出 twelve 对应的对象。",
+        "task_prompt": "数字题不要只记 12；听到数字后立刻抓后面的单位或对象。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0031/003101.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "Twelve schools in the first phase."
+          },
+          {
+            "key": "B",
+            "text": "Twelve months of extra funding."
+          },
+          {
+            "key": "C",
+            "text": "Twelve teachers on the project team."
+          },
+          {
+            "key": "D",
+            "text": "Twelve dollars from the grant."
+          }
+        ],
+        "task_schema": {
+          "action": "选择数字对应对象",
+          "focus": "twelve 与 schools 的单位绑定",
+          "success_criteria": "能说明 twelve 表示 first phase 支持的学校数量，而不是时间、人员或金额"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0031/003101.mp3",
+        "duration_ms": 5448,
+        "transcript": "The grant will support twelve schools in the first phase of the literacy project.",
+        "path": "ai_tts/cet4/0031/003101.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。The grant will support twelve schools 中，twelve 后面直接接 schools，所以这个数字表示第一阶段支持的学校数量。数字类细节题的关键不是单独记住 12，而是把数字和后面的单位或对象一起打包。B 把数字误听成月份，C 把对象换成教师，D 把它误当成金额，都没有原句依据。",
+        "tips": [
+          "数字后面的名词通常就是答题单位。",
+          "听数字时按“数字 + 对象”一起记，不要只记裸数字。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "绑定数字与后置单位对象",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户听到数字后继续追单位，避免把同一个数字错绑到时间、金额或人数。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "003102",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "front": {
+        "text": "听完后，选出最终有效的登记人数。",
+        "task_prompt": "一句里有两个数字时，先判断哪个是预估，哪个才是 final count。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0031/003102.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "60 attendees."
+          },
+          {
+            "key": "B",
+            "text": "48 attendees."
+          },
+          {
+            "key": "C",
+            "text": "18 attendees."
+          },
+          {
+            "key": "D",
+            "text": "84 attendees."
+          }
+        ],
+        "task_schema": {
+          "action": "选择最终有效数字",
+          "focus": "expected sixty 与 final forty-eight 的切换",
+          "success_criteria": "能排除最先出现的预估值，锁定 final registration count"
+        }
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0031/003102.mp3",
+        "duration_ms": 6360,
+        "transcript": "We expected about sixty attendees, but the final registration count was forty-eight.",
+        "path": "ai_tts/cet4/0031/003102.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 B。We expected about sixty attendees 只是预估人数；but the final registration count was forty-eight 才给出最终有效登记数。数字题常用 but、final、actual 这类词把前面的数字推翻或降级。A 是被更新掉的预估值；C、D 是把 60 和 48 做了错误运算，原句没有支持。",
+        "tips": [
+          "两个数字同句出现时，先标出“旧值”和“生效值”。",
+          "final/actual 后面的数字通常更接近答案。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分预估数字和最终有效数字",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在多数字句里识别修正关系，避免被先出现的整数或预估值带偏。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "003103",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "front": {
+        "text": "听完后，选出 three hundred 表示的内容。",
+        "task_prompt": "金额题要追 dollars；数字本身不是完整答案，单位才决定它在说什么。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0031/003103.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "The cost of the emergency repair."
+          },
+          {
+            "key": "B",
+            "text": "The number of workers at the site."
+          },
+          {
+            "key": "C",
+            "text": "The number of hours needed for repairs."
+          },
+          {
+            "key": "D",
+            "text": "The distance from the repair site."
+          }
+        ],
+        "task_schema": {
+          "action": "选择数字语义类别",
+          "focus": "three hundred dollars 与 repair cost 的绑定",
+          "success_criteria": "能说明 three hundred 是维修费用金额，而不是人数、时长或距离"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0031/003103.mp3",
+        "duration_ms": 6216,
+        "transcript": "The emergency repair cost nearly three hundred dollars, according to the site report.",
+        "path": "ai_tts/cet4/0031/003103.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。The emergency repair cost nearly three hundred dollars 中，cost 和 dollars 一起把 three hundred 锁定为维修费用。数字听力里，three hundred 这种数值很容易被单独记住，但真正能答题的是“nearly three hundred dollars = repair cost”。B、C、D 都偷换了单位。",
+        "tips": [
+          "听到大数字后，立刻追 dollars/hours/people 这类单位词。",
+          "金额、时间、人数不要混记，单位错了数字就失效。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "绑定金额数字与费用语义",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把金额数字和费用场景绑定起来，减少把数字误判成人数、时长或距离的细节题错误。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ]
+}

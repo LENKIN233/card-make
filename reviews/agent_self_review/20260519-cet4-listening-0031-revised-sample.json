@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0010-revised-sample",
-  "created_at": "2026-05-14T13:20:42+08:00",
+  "review_id": "20260519-cet4-listening-0031-revised-sample",
+  "created_at": "2026-05-19T13:04:59+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "语音现象",
-    "box": "连读",
+    "group": "细节捕捉",
+    "box": "数字类",
     "box_prefixes": [
-      "0010"
+      "0031"
     ],
     "card_ids": [
-      "001001",
-      "001002",
-      "001003"
+      "003101",
+      "003102",
+      "003103"
     ]
   },
   "specs_read": [
@@ -26,6 +26,7 @@
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json",
     "spec/card-quality-audit.json"
   ],
   "sample_policy": {
@@ -34,20 +35,20 @@
   },
   "cards": [
     {
-      "card_id": "001001",
+      "card_id": "003101",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "1",
+        "box": "数字类",
+        "box_prefix": "0031"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 turn off 中的辅音加元音连读",
+        "main_training_goal": "绑定数字与后置单位对象",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +67,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把听不清的短语还原成词边界，提升短句理解速度。",
+        "exam_value": "训练用户听到数字后继续追单位，避免把同一个数字错绑到时间、金额或人数。",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -87,20 +88,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "001002",
+      "card_id": "003102",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "1",
+        "box": "数字类",
+        "box_prefix": "0031"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 pick it up at 的连续短词连读",
+        "main_training_goal": "区分预估数字和最终有效数字",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,7 +118,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户把连续短词音块拆回可理解的动作和介词结构。",
+        "exam_value": "训练用户在多数字句里识别修正关系，避免被先出现的整数或预估值带偏。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -138,20 +139,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "001003",
+      "card_id": "003103",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "1",
+        "box": "数字类",
+        "box_prefix": "0031"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 ask about 的辅音加元音连读",
+        "main_training_goal": "绑定金额数字与费用语义",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,7 +171,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把连读听感还原成词边界，避免把常见短语误听成陌生表达。",
+        "exam_value": "训练用户把金额数字和费用场景绑定起来，减少把数字误判成人数、时长或距离的细节题错误。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -193,17 +194,17 @@
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample now moves from recognizing a simple turn off connection, to applying the same logic to a compressed multi-word chunk, to transferring it to ask about in a longer question.",
+    "box_progression": "The revised sample moves from recognizing a number-object pair, to applying final-value correction, to transferring unit binding to a cost/amount sentence.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about identifying the connected-speech location.",
+      "All three cards use multiple_choice because this box needs explicit answerability for number detail capture.",
       "Formal approval still needs user confirmation and separate audio QA."
     ],
     "representative_cards": [
-      "001001",
-      "001002",
-      "001003"
+      "003101",
+      "003102",
+      "003103"
     ],
-    "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
+    "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -211,9 +212,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "001001",
-        "001002",
-        "001003"
+        "003101",
+        "003102",
+        "003103"
       ],
       "card_count": 3,
       "issue_count": 6,
