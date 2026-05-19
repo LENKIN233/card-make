@@ -16,34 +16,56 @@
       "box": 3,
       "card_no": 1,
       "card_box_code": "0023",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "对比/比较关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断说话人是在做普通比较，还是借对比表达立场偏向。",
-        "task_prompt": "先听音频，再判断说话人是在做普通比较，还是借对比表达立场偏向。",
+        "text": "听完后，选出说话人真正强调的优势。",
+        "task_prompt": "but 后面常把比较重心切到另一侧；这句更看重 online version 的覆盖范围。",
         "task_schema": {
-          "action": "听后判断比较用途",
-          "focus": "客观比较 与 带立场的对比",
-          "success_criteria": "能说出哪一侧被说话人真正看重"
+          "action": "选择比较后被凸显的优势",
+          "focus": "but 后的对比重心切换",
+          "success_criteria": "能区分 lively 是线下优点，reaches far more teachers 是说话人强调的线上优势"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0023/002301.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "结论：这不是中性比较，而是在对比中明显偏向线上方案。",
-        "explanation": "语境揭示：The in-person workshop feels lively, but the online version reaches far more teachers across the region. 这里不是把两者并列陈述完就结束，but 后把评价标准切到了覆盖范围，因此立场重心偏向后者。"
+        "text": "答案：B\n\n解析：正确答案是 B。",
+        "explanation": "正确答案是 B。前半句承认 in-person workshop feels lively，这是线下版的优点；but 后面把比较重心转到 online version reaches far more teachers across the region。比较题里先出现的优点不一定是最终立场，转折后的标准常更接近说话人的判断。A 是被让步承认的优点，C 没有提到，D 与 online reaches far more teachers 冲突。"
       },
       "analysis_content": {
-        "text": "① 识别信号：句子同时出现两个对象时，不要只看表面比较项，还要看转折或评价标准落在哪一侧。\n\n② 核心规律：比较句不一定中立。说话人常先承认 A 的优点，再把真正决策标准交给 B。听力题若问更被支持的选项，答案通常不取决于谁先出现，而取决于最后哪个维度被抬成关键标准。\n\n③ 验证：本句先说 in-person lively，后句强调 online reaches far more teachers。覆盖更多教师是更高层的决策标准，因此立场偏向线上版。",
+        "text": "正确答案是 B。前半句承认 in-person workshop feels lively，这是线下版的优点；but 后面把比较重心转到 online version reaches far more teachers across the region。比较题里先出现的优点不一定是最终立场，转折后的标准常更接近说话人的判断。A 是被让步承认的优点，C 没有提到，D 与 online reaches far more teachers 冲突。",
         "tips": [
-          "比较题先问自己：说话人最后拿什么标准做判断？",
-          "先出现的优点不一定是最终支持点，尤其当前后标准不同层时。"
+          "比较句里听到 but，要重新判断说话人真正支持哪一侧。",
+          "优点不等于立场，最后被抬成标准的优势才更可能是答案。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "The in-person workshop feels lively.",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "The online version reaches far more teachers.",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "Both versions cost exactly the same.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "Teachers across the region prefer only in-person workshops.",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "url": "ai_tts/cet4/0023/002301.mp3",
@@ -71,31 +93,53 @@
         "box_name": "对比/比较关系",
         "box_prefix": "0023"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断说话人是在做普通比较，还是借对比表达立场偏向。",
-        "task_prompt": "先听音频，再判断说话人是在做普通比较，还是借对比表达立场偏向。",
+        "text": "听完后，选出说话人真正强调的优势。",
+        "task_prompt": "but 后面常把比较重心切到另一侧；这句更看重 online version 的覆盖范围。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断比较用途",
-          "focus": "客观比较 与 带立场的对比",
-          "success_criteria": "能说出哪一侧被说话人真正看重"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：句子同时出现两个对象时，不要只看表面比较项，还要看转折或评价标准落在哪一侧。\n\n② 核心规律：比较句不一定中立。说话人常先承认 A 的优点，再把真正决策标准交给 B。听力题若问更被支持的选项，答案通常不取决于谁先出现，而取决于最后哪个维度被抬成关键标准。\n\n③ 验证：本句先说 in-person lively，后句强调 online reaches far more teachers。覆盖更多教师是更高层的决策标准，因此立场偏向线上版。",
-        "tips": [
-          "比较题先问自己：说话人最后拿什么标准做判断？",
-          "先出现的优点不一定是最终支持点，尤其当前后标准不同层时。"
+          "action": "选择比较后被凸显的优势",
+          "focus": "but 后的对比重心切换",
+          "success_criteria": "能区分 lively 是线下优点，reaches far more teachers 是说话人强调的线上优势"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "The in-person workshop feels lively.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "The online version reaches far more teachers.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "Both versions cost exactly the same.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Teachers across the region prefer only in-person workshops.",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 B。前半句承认 in-person workshop feels lively，这是线下版的优点；but 后面把比较重心转到 online version reaches far more teachers across the region。比较题里先出现的优点不一定是最终立场，转折后的标准常更接近说话人的判断。A 是被让步承认的优点，C 没有提到，D 与 online reaches far more teachers 冲突。",
+        "tips": [
+          "比较句里听到 but，要重新判断说话人真正支持哪一侧。",
+          "优点不等于立场，最后被抬成标准的优势才更可能是答案。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice to make comparison relation checks explicit"
       },
       "quality_flags": [
         "unverified_source"
@@ -103,6 +147,34 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "time_window_ms": null,
+      "quality_metadata": {
+        "main_training_goal": "识别 but 后的比较重心切换",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在比较句中抓转折后的真正判断标准，避免只记住先出现的表层优点。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -117,27 +189,28 @@
       "card_box_name": "对比/比较关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：听完后选出‘比较中真正被凸显出来的优势’。",
-        "task_prompt": "听完后选出‘比较中真正被凸显出来的优势’。",
+        "text": "听完后，选出新系统真正被凸显的优势。",
+        "task_prompt": "whereas 后面给对照标准；这句不是在选便宜，而是在选低错误率。",
         "task_schema": {
-          "action": "四选一作答",
-          "focus": "找出比较句中的核心优势项",
-          "success_criteria": "区分一般特点与决定性优势"
+          "action": "选择比较中的决定性优势",
+          "focus": "whereas 后的质量指标",
+          "success_criteria": "能区分 cheaper at first 是旧系统优势，fewer processing errors 是新系统优势"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0023/002302.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "答案：新系统的优势在于错误率显著更低。",
-        "explanation": "语境揭示：The old system was cheaper at first, whereas the new one made far fewer processing errors. 便宜只是初始印象，whereas 后真正凸显的是处理准确度。"
+        "text": "答案：B\n\n解析：正确答案是 B。",
+        "explanation": "正确答案是 B。old system was cheaper at first 是旧系统的初始价格优势；whereas 后的 the new one made far fewer processing errors 才是新系统被凸显的质量优势。C 与 fewer errors 的方向不一致，D 没有出现在音频里。听力比较题不要只抓 cheaper 这种醒目词，要看题目问的是哪一侧、哪一个评价指标。"
       },
       "analysis_content": {
-        "text": "① 识别信号：whereas, by contrast, compared with 之后常出现真正用于区分优劣的对照指标。\n\n② 核心规律：比较题喜欢把“价格、外观、速度”这种易记信息做成干扰项，但说话人真正看重的往往是更能决定结果的指标，如 accuracy, reliability, access。要区分“能被记住”与“能决定判断”。\n\n③ 验证：本句 old system cheaper at first 只是一个表层优势；new one made fewer processing errors 直接指向质量与稳定性，因此正确答案应选低错误率。",
+        "text": "正确答案是 B。old system was cheaper at first 是旧系统的初始价格优势；whereas 后的 the new one made far fewer processing errors 才是新系统被凸显的质量优势。C 与 fewer errors 的方向不一致，D 没有出现在音频里。听力比较题不要只抓 cheaper 这种醒目词，要看题目问的是哪一侧、哪一个评价指标。",
         "tips": [
-          "比较句里若出现 fewer/more/less + 问题词，通常是在提示关键判断标准。",
-          "先看哪个指标更接近任务结果，而不是哪个词听起来更显眼。"
+          "whereas 常把两个对象的核心差异并排放出来。",
+          "价格词很显眼，但题目若问新系统优势，要回到新系统那半句。"
         ]
       },
       "options": [
@@ -191,29 +264,51 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：听完后选出‘比较中真正被凸显出来的优势’。",
-        "task_prompt": "听完后选出‘比较中真正被凸显出来的优势’。",
+        "text": "听完后，选出新系统真正被凸显的优势。",
+        "task_prompt": "whereas 后面给对照标准；这句不是在选便宜，而是在选低错误率。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "四选一作答",
-          "focus": "找出比较句中的核心优势项",
-          "success_criteria": "区分一般特点与决定性优势"
-        }
+          "action": "选择比较中的决定性优势",
+          "focus": "whereas 后的质量指标",
+          "success_criteria": "能区分 cheaper at first 是旧系统优势，fewer processing errors 是新系统优势"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "It had a lower starting price.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "It produced far fewer processing errors.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "It required more manual checks.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "It looked more familiar to staff.",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：whereas, by contrast, compared with 之后常出现真正用于区分优劣的对照指标。\n\n② 核心规律：比较题喜欢把“价格、外观、速度”这种易记信息做成干扰项，但说话人真正看重的往往是更能决定结果的指标，如 accuracy, reliability, access。要区分“能被记住”与“能决定判断”。\n\n③ 验证：本句 old system cheaper at first 只是一个表层优势；new one made fewer processing errors 直接指向质量与稳定性，因此正确答案应选低错误率。",
+        "text": "正确答案是 B。old system was cheaper at first 是旧系统的初始价格优势；whereas 后的 the new one made far fewer processing errors 才是新系统被凸显的质量优势。C 与 fewer errors 的方向不一致，D 没有出现在音频里。听力比较题不要只抓 cheaper 这种醒目词，要看题目问的是哪一侧、哪一个评价指标。",
         "tips": [
-          "比较句里若出现 fewer/more/less + 问题词，通常是在提示关键判断标准。",
-          "先看哪个指标更接近任务结果，而不是哪个词听起来更显眼。"
+          "whereas 常把两个对象的核心差异并排放出来。",
+          "价格词很显眼，但题目若问新系统优势，要回到新系统那半句。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "candidate sample uses multiple_choice to make comparison relation checks explicit"
       },
       "quality_flags": [
         "unverified_source"
@@ -224,6 +319,29 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "time_window_ms": null,
+      "quality_metadata": {
+        "main_training_goal": "识别 whereas 后的对比优势指标",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在价格与质量对比中锁定题目真正询问的评价指标，减少显眼词误选。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -234,39 +352,58 @@
       "box": 3,
       "card_no": 3,
       "card_box_code": "0023",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "对比/比较关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：播放后，在你第一次听到比较触发词 unlike 时点击。",
-        "task_prompt": "播放后，在你第一次听到比较触发词 unlike 时点击。",
+        "text": "听到 unlike 后，选出 public center 的对比优势。",
+        "task_prompt": "unlike 先给参照对象 private studios；后半句才说明 public center 的差异优势。",
         "task_schema": {
-          "action": "时间窗点击",
-          "focus": "unlike 触发对照对象切换",
-          "success_criteria": "点击命中 unlike 附近，并能复述其后的差异"
+          "action": "选择参照对比后的优势",
+          "focus": "unlike 引出的参照系和当前对象优势",
+          "success_criteria": "能说明 private studios 是参照，public center 的优势是 evening classes affordable"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0023/002303.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "目标词：unlike，它把听者拉到对照对象上。",
-        "explanation": "语境揭示：Unlike private studios, the public center keeps evening classes affordable for local families. 听到 unlike 后，真正要比较的不是单个事实，而是两类机构在可负担性上的差异。"
+        "text": "答案：B\n\n解析：正确答案是 B。",
+        "explanation": "正确答案是 B。Unlike private studios 先建立参照对象，后半句 the public center keeps evening classes affordable for local families 才给出当前对象的差异优势。比较题里 unlike 后的对象不一定是答案，它常只是参照系；真正要选的是后半句当前对象的特征。A、D 都把参照对象关系说反，C 与 keeps affordable 冲突。"
       },
       "analysis_content": {
-        "text": "① 识别信号：unlike 常直接把参照对象放在句首，先建立对照框架，再陈述当前对象的特点。\n\n② 核心规律：句首比较词的作用是“先给参照系”。如果没抓住参照对象，后半句的优势或限制会变成孤立信息，无法回答“相比谁更怎样”。比较题不仅要记事实，还要记 比较参照系。\n\n③ 验证：本句 unlike private studios 先建立私营机构作为参照，后句说明 public center 更 affordable。因此题目若问比较对象之间的差异，答案必须同时包含参照系与优势点。",
+        "text": "正确答案是 B。Unlike private studios 先建立参照对象，后半句 the public center keeps evening classes affordable for local families 才给出当前对象的差异优势。比较题里 unlike 后的对象不一定是答案，它常只是参照系；真正要选的是后半句当前对象的特征。A、D 都把参照对象关系说反，C 与 keeps affordable 冲突。",
         "tips": [
-          "比较词一出现，先在脑中记下“参照是谁”。",
-          "没有 参照系，就不算真正听懂比较句。"
+          "听到 unlike，先标记“相比谁”。",
+          "答案通常要同时站对对象和差异方向。"
         ]
       },
-      "options": null,
-      "eliminable_items": null,
-      "time_window_ms": [
-        0,
-        5000
+      "options": [
+        {
+          "key": "A",
+          "text": "Private studios offer cheaper evening classes.",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "The public center keeps evening classes affordable.",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "The public center cancels evening classes for families.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "Private studios and the public center charge the same fees.",
+          "is_correct": false
+        }
       ],
+      "eliminable_items": null,
+      "time_window_ms": null,
       "audio": {
         "url": "ai_tts/cet4/0023/002303.mp3",
         "duration_ms": 6984,
@@ -293,31 +430,53 @@
         "box_name": "对比/比较关系",
         "box_prefix": "0023"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：播放后，在你第一次听到比较触发词 unlike 时点击。",
-        "task_prompt": "播放后，在你第一次听到比较触发词 unlike 时点击。",
+        "text": "听到 unlike 后，选出 public center 的对比优势。",
+        "task_prompt": "unlike 先给参照对象 private studios；后半句才说明 public center 的差异优势。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "时间窗点击",
-          "focus": "unlike 触发对照对象切换",
-          "success_criteria": "点击命中 unlike 附近，并能复述其后的差异"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：unlike 常直接把参照对象放在句首，先建立对照框架，再陈述当前对象的特点。\n\n② 核心规律：句首比较词的作用是“先给参照系”。如果没抓住参照对象，后半句的优势或限制会变成孤立信息，无法回答“相比谁更怎样”。比较题不仅要记事实，还要记 比较参照系。\n\n③ 验证：本句 unlike private studios 先建立私营机构作为参照，后句说明 public center 更 affordable。因此题目若问比较对象之间的差异，答案必须同时包含参照系与优势点。",
-        "tips": [
-          "比较词一出现，先在脑中记下“参照是谁”。",
-          "没有 参照系，就不算真正听懂比较句。"
+          "action": "选择参照对比后的优势",
+          "focus": "unlike 引出的参照系和当前对象优势",
+          "success_criteria": "能说明 private studios 是参照，public center 的优势是 evening classes affordable"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Private studios offer cheaper evening classes.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "The public center keeps evening classes affordable.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "The public center cancels evening classes for families.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Private studios and the public center charge the same fees.",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 B。Unlike private studios 先建立参照对象，后半句 the public center keeps evening classes affordable for local families 才给出当前对象的差异优势。比较题里 unlike 后的对象不一定是答案，它常只是参照系；真正要选的是后半句当前对象的特征。A、D 都把参照对象关系说反，C 与 keeps affordable 冲突。",
+        "tips": [
+          "听到 unlike，先标记“相比谁”。",
+          "答案通常要同时站对对象和差异方向。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice to make comparison relation checks explicit"
       },
       "quality_flags": [
         "unverified_source"
@@ -325,6 +484,33 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 unlike 引出的参照系和当前对象优势",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在 unlike 结构中先确定参照系，再选择当前对象的差异优势，避免对象方向倒置。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
