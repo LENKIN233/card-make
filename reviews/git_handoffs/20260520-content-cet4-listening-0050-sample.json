@@ -1,0 +1,64 @@
+{
+  "handoff_id": "20260520-content-cet4-listening-0050-sample",
+  "created_at": "2026-05-20T00:50:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0050-sample",
+  "base_branch": "fix/review-findings-card-contract",
+  "commit_sha": "fae26e5ef000c3b394e2378543d3a1d5f0d0268f",
+  "push_ref": "origin/content/cet4-listening-0050-sample",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/30",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate_sample",
+    "track": "cet4",
+    "library": "听力",
+    "group": "主旨大意",
+    "box": "开头点题",
+    "box_prefix": "0050",
+    "card_ids": [
+      "005001",
+      "005002",
+      "005003"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0050.json",
+      "reviews/drafts/20260520-cet4-listening-0050-revised-sample.json",
+      "reviews/agent_self_review/20260520-cet4-listening-0050-existing-sample.json",
+      "reviews/agent_self_review/20260520-cet4-listening-0050-revised-sample.json",
+      "reviews/agent_self_review/*.json",
+      "reports/card_quality_audit_report.json",
+      "reports/card_validation_report.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/audit_card_quality.mjs --write-report",
+      "result": "passed; corpus_digest=d4e1081671788c674ce7fbd8241db8a30afafc3ee457867c472dcad3ec6c1dda; scoped 005001-005003 issues are source_risk only"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed; cards=2414; errors=0; warnings=0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group alignment warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "git diff -- reviews/approved_batches",
+      "result": "passed; no approved batch records changed"
+    }
+  ],
+  "local_status": "clean before handoff file creation; handoff is committed separately after validation",
+  "remaining_risks": [
+    "This is a candidate-only 3-card sample for user review, not formal product approval.",
+    "The text source remains simulated/unverified legacy content_pool material and must not be labeled true exam content.",
+    "TTS text was reviewed for sample design, but TTS audio was not formally reviewed.",
+    "No reviews/approved_batches record was created; user confirmation is required before batch expansion or formal approval."
+  ],
+  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample"
+}
