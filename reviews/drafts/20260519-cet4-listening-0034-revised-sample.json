@@ -1,0 +1,280 @@
+{
+  "draft_id": "20260519-cet4-listening-0034-revised-sample",
+  "created_at": "2026-05-19T13:31:18+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0034 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "细节捕捉",
+    "box": "时间因果",
+    "box_prefix": "0034",
+    "candidate_for_existing_card_ids": [
+      "003401",
+      "003402",
+      "003403"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "003401",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "front": {
+        "text": "听完后，选出她没参加 morning session 的原因。",
+        "task_prompt": "because 后面才是原因；不要把 could not attend 这个结果当成原因。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0034/003401.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "Her doctor's appointment ran longer than expected."
+          },
+          {
+            "key": "B",
+            "text": "The morning session was moved to another room."
+          },
+          {
+            "key": "C",
+            "text": "She forgot the time of the morning session."
+          },
+          {
+            "key": "D",
+            "text": "She had already attended the session earlier."
+          }
+        ],
+        "task_schema": {
+          "action": "选择结果对应原因",
+          "focus": "because 从句中的 doctor appointment ran longer",
+          "success_criteria": "能区分 she could not attend 是结果，because 后的 appointment ran longer 是原因"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0034/003401.mp3",
+        "duration_ms": 6720,
+        "transcript": "She couldn't attend the morning session because she had a doctor's appointment that ran longer than expected.",
+        "path": "ai_tts/cet4/0034/003401.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。She couldn't attend the morning session 是结果；because she had a doctor's appointment that ran longer than expected 才是原因。时间因果题最容易把主句结果和从句原因混在一起，尤其是结果先出现时。B、C、D 都没有音频依据，也没有被 because 引出。",
+        "tips": [
+          "because/since/as 后面通常才是原因内容。",
+          "先标记“发生了什么”，再标记“为什么”。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 because 引出的具体原因",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把结果和 because 后的具体原因分开，避免听到第一个事件就误选。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "003402",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "front": {
+        "text": "听完后，选出男生去图书馆的最初目的。",
+        "task_prompt": "题目问 purpose，就抓 went to ... to return；ended up 后面是最后发生的事。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0034/003402.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "To study for his finals."
+          },
+          {
+            "key": "B",
+            "text": "To return some books."
+          },
+          {
+            "key": "C",
+            "text": "To meet a classmate."
+          },
+          {
+            "key": "D",
+            "text": "To borrow new textbooks."
+          }
+        ],
+        "task_schema": {
+          "action": "选择最初目的",
+          "focus": "to return some books 与 ended up studying 的目的/结果区分",
+          "success_criteria": "能说明 return books 是去图书馆的目的，studying for finals 是最终行为"
+        }
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0034/003402.mp3",
+        "duration_ms": 7488,
+        "transcript": "He went to the library to return some books and ended up spending the whole afternoon studying for his finals.",
+        "path": "ai_tts/cet4/0034/003402.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 B。He went to the library to return some books 中，to return some books 表示最初目的；ended up spending the whole afternoon studying for his finals 是后来实际发生的结果。时间因果题常把目的和最终结果放在同一句里，最后听到的动作不一定是题目要的答案。A 是最终行为，C、D 没有音频依据。",
+        "tips": [
+          "go/head/come + to do 往往表示目的。",
+          "ended up/eventually 后面常是结果，不要自动当成原因或目的。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分最初目的和最终行为",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户按题目角度区分 purpose 和 result，避免被最后出现的信息带偏。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "003403",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "front": {
+        "text": "听完后，选出演唱会被取消的原因。",
+        "task_prompt": "due to 后面是名词短语型原因；next month 的 reschedule 不是取消原因。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0034/003403.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "A severe weather forecast."
+          },
+          {
+            "key": "B",
+            "text": "A delay in selling enough tickets."
+          },
+          {
+            "key": "C",
+            "text": "A request from the organizers."
+          },
+          {
+            "key": "D",
+            "text": "The plan to reschedule it for next month."
+          }
+        ],
+        "task_schema": {
+          "action": "选择 due to 引出的原因",
+          "focus": "cancelled due to severe weather forecast 的因果绑定",
+          "success_criteria": "能说明 severe weather forecast 是取消原因，reschedule next month 只是后续安排"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0034/003403.mp3",
+        "duration_ms": 12648,
+        "transcript": "The outdoor concert was cancelled due to the severe weather forecast issued by the meteorological bureau. Organizers apologized and promised to reschedule the event for next month.",
+        "path": "ai_tts/cet4/0034/003403.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。The outdoor concert was cancelled due to the severe weather forecast 中，due to 引出取消原因，核心名词是 severe weather forecast。Organizers apologized and promised to reschedule the event for next month 是后续处理，不是原因。时间因果题里，due to/because of 后面的名词短语很短，必须马上抓核心名词。B、C、D 都没有形成正确因果关系。",
+        "tips": [
+          "due to/because of 后面常接名词短语型原因。",
+          "后续安排、道歉、改期通常是结果或处理，不是取消原因。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 due to 引出的名词短语原因",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户快速识别短而密的 due to 原因短语，并把后续处理信息排除出原因答案。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ]
+}
