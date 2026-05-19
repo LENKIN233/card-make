@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0002-revised-sample",
-  "created_at": "2026-05-14T12:38:37+08:00",
+  "review_id": "20260519-cet4-listening-0032-revised-sample",
+  "created_at": "2026-05-19T13:16:26+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测信号词",
+    "group": "细节捕捉",
+    "box": "时间",
     "box_prefixes": [
-      "0002"
+      "0032"
     ],
     "card_ids": [
-      "000201",
-      "000202",
-      "000203"
+      "003201",
+      "003202",
+      "003203"
     ]
   },
   "specs_read": [
@@ -26,6 +26,7 @@
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json",
     "spec/card-quality-audit.json"
   ],
   "sample_policy": {
@@ -34,20 +35,20 @@
   },
   "cards": [
     {
-      "card_id": "000201",
+      "card_id": "003201",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
+        "group_id": "3",
+        "group": "细节捕捉",
         "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "box": "时间",
+        "box_prefix": "0032"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "预测让步加原因信号词组合",
+        "main_training_goal": "识别 by 引出的时间截止点",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +67,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户在听前预判反预期和原因结构，降低听到长句时的处理负担。",
+        "exam_value": "训练用户把时间和事件动作绑定，避免把截止时间错当开始时间或复习时间。",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -87,20 +88,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000202",
+      "card_id": "003202",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
+        "group_id": "3",
+        "group": "细节捕捉",
         "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "box": "时间",
+        "box_prefix": "0032"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别转折信号词 however",
+        "main_training_goal": "区分原计划时间和更新后时间",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,7 +118,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户把 however 后的信息当成听力判断的高权重点。",
+        "exam_value": "训练用户识别时间修正信号，避免被最先出现的旧时间带偏。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -138,20 +139,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000203",
+      "card_id": "003203",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
+        "group_id": "3",
+        "group": "细节捕捉",
         "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "box": "时间",
+        "box_prefix": "0032"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别句首原因信号词 since",
+        "main_training_goal": "绑定具体时点与发生事件",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,7 +171,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把原因信号词和结果动作绑定，避免只记 isolated words。",
+        "exam_value": "训练用户把时间和动作事件绑定，减少把出发、到达、开放、关闭等相邻事件混淆的错误。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -193,17 +194,17 @@
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample now moves from recognizing a combined although/because structure, to applying however contrast detection, to transferring the method to since cause-effect prediction.",
+    "box_progression": "The revised sample moves from recognizing a deadline marker, to applying old/new time correction, to transferring time-event binding to a shuttle departure sentence.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about predicting or identifying signal words from listening cues.",
+      "All three cards use multiple_choice because this box needs explicit answerability for time detail capture.",
       "Formal approval still needs user confirmation and separate audio QA."
     ],
     "representative_cards": [
-      "000201",
-      "000202",
-      "000203"
+      "003201",
+      "003202",
+      "003203"
     ],
-    "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
+    "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -211,9 +212,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "000201",
-        "000202",
-        "000203"
+        "003201",
+        "003202",
+        "003203"
       ],
       "card_count": 3,
       "issue_count": 6,

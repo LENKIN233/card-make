@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0011-existing-sample",
-  "created_at": "2026-05-14T16:31:10+08:00",
+  "review_id": "20260519-cet4-listening-0032-existing-sample",
+  "created_at": "2026-05-19T13:16:26+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "语音现象",
-    "box": "弱读",
+    "group": "细节捕捉",
+    "box": "时间",
     "box_prefixes": [
-      "0011"
+      "0032"
     ],
     "card_ids": [
-      "001101",
-      "001102",
-      "001103"
+      "003201",
+      "003202",
+      "003203"
     ]
   },
   "specs_read": [
@@ -26,6 +26,7 @@
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json",
     "spec/card-quality-audit.json"
   ],
   "sample_policy": {
@@ -34,20 +35,20 @@
   },
   "cards": [
     {
-      "card_id": "001101",
+      "card_id": "003201",
       "interaction_id": "flip",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "1",
-        "box": "弱读",
-        "box_prefix": "0011"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "2",
+        "box": "时间",
+        "box_prefix": "0032"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别 to/the 等功能词弱读",
+        "main_training_goal": "识别 by 引出的截止时间",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +67,7 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "音频文本有 have to / to the 等弱读位置，但原卡没有让用户定位具体弱读词。",
+        "exam_value": "原音频适合训练 by Friday noon 的截止语义，但原卡只是泛泛判断类别，无法自动检查是否绑定到 submitted。",
         "box_progression_role": "recognition",
         "review_status": "block"
       },
@@ -78,42 +79,40 @@
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "Front asks for a generic judgment and does not name a concrete weak-form target.",
-        "The analysis discusses structure signals rather than reduced function words.",
-        "The flip interaction does not provide a checkable answer for the listening micro-skill."
+        "Front is a generic flip judgment and does not expose a checkable answer choice.",
+        "The task asks broad time-role recognition but does not force the learner to bind Friday noon to submitted.",
+        "No quality_metadata is present in the actual card JSON, so the sample cannot pass the current review gate as-is."
       ],
       "minor_issues": [
-        "TTS text and audio quality have not been reviewed separately."
+        "TTS text and audio quality have not been reviewed separately for formal use."
       ],
-      "recommendation": "Revise before user review; expose a concrete weak-read word or phrase and explain the reduced sound."
+      "recommendation": "Revise into a multiple_choice card that asks what Friday noon controls."
     },
     {
-      "card_id": "001102",
+      "card_id": "003202",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "1",
-        "box": "弱读",
-        "box_prefix": "0011"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "2",
+        "box": "时间",
+        "box_prefix": "0032"
       },
-      "status": "block",
+      "status": "revise",
       "quality_metadata": {
-        "main_training_goal": "识别句中 to / the / a 的弱读",
+        "main_training_goal": "区分原计划时间和更新后时间",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "foundation",
-          "secondary": [
-            "pass"
-          ]
+          "primary": "pass",
+          "secondary": []
         },
         "card_prototype": "solving_action",
         "material": {
@@ -123,53 +122,53 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "多选形式适合弱读定位，但当前选项是策略口号，不是可听辨词组。",
+        "exam_value": "原卡方向接近时间修正关系，但 prompt 偏抽象，且缺少正式候选元数据。",
         "box_progression_role": "application",
-        "review_status": "block"
+        "review_status": "revise"
       },
       "blocker_scan": {
-        "logic_error": true,
+        "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
-        "low_knowledge_density": true,
+        "low_knowledge_density": false,
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "The correct option can be selected without listening because it is a meta-strategy statement.",
-        "The options do not represent possible weak-read function words or chunks.",
-        "The analysis does not explain to explain / the model / in a way style weak forms."
+        "The answer logic is usable, but the prompt should name the concrete briefing start-time task.",
+        "The actual card JSON lacks quality_metadata required for candidate sample review.",
+        "The explanation should explicitly teach supposed to versus moved to as old/new time markers."
       ],
       "minor_issues": [
-        "The card should test reduced function-word decoding, not general study behavior."
+        "Options are structurally valid but the card should be synchronized to the box progression language."
       ],
-      "recommendation": "Block this sample; rewrite options as plausible weak-read chunks."
+      "recommendation": "Keep the core answer, but revise wording, analysis, and metadata before user review."
     },
     {
-      "card_id": "001103",
+      "card_id": "003203",
       "interaction_id": "flip",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "1",
-        "box": "弱读",
-        "box_prefix": "0011"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "2",
+        "box": "时间",
+        "box_prefix": "0032"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别 could / the 等弱读功能词",
+        "main_training_goal": "绑定 8:15 与 shuttle leaves 事件",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "foundation",
+          "primary": "pass",
           "secondary": [
-            "pass"
+            "high_score"
           ]
         },
         "card_prototype": "integrated_micro_drill",
@@ -180,7 +179,7 @@
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "音频文本有 could approve it / if the risk 的弱读点，但原卡没有给出可执行判断。",
+        "exam_value": "原音频适合时间-事件绑定，但原卡要求点击时间点，和当前 product core interaction contract 不一致。",
         "box_progression_role": "transfer",
         "review_status": "block"
       },
@@ -188,38 +187,37 @@
         "logic_error": true,
         "language_error": false,
         "inappropriate_wording": false,
-        "low_knowledge_density": true,
+        "low_knowledge_density": false,
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "Front is generic and does not ask the learner to identify a weak form.",
-        "The analysis again uses structure-signal template text instead of pronunciation explanation.",
-        "The card mentions click anchoring in analysis while rendering as flip."
+        "Front asks for a timing click, but the product contract does not keep timing click as a core interaction.",
+        "The card renders as flip after legacy downcast, so the interaction and answer behavior are not aligned.",
+        "The useful learning target is binding eight-fifteen to shuttle leaves, not click timing."
       ],
       "minor_issues": [
-        "Interaction and answer form should be aligned before user review."
+        "The time_window_ms field is a legacy residue and should not drive the candidate sample."
       ],
-      "recommendation": "Block this sample; rewrite as a concrete weak-form multiple-choice card."
+      "recommendation": "Rewrite as a multiple_choice time-event binding card for eight-fifteen."
     }
   ],
   "batch_review": {
     "status": "blocked",
-    "box_progression": "The underlying transcripts can support weak-form training, but the existing cards do not expose actual reduced function words or pronunciation mechanisms.",
+    "box_progression": "The transcripts can support 时间 training, but the existing sample does not consistently make time-event binding auto-checkable or metadata-complete.",
     "repetition_or_gap_risks": [
-      "All three fronts are nearly identical.",
-      "Only one card has choices, and those choices are not weak-form chunks.",
-      "The analyses repeat logic-signal paragraphs from unrelated listening boxes.",
-      "TTS text and audio have not been reviewed as separate quality surfaces."
+      "Only the second existing card is close to an auto-checkable time-detail task.",
+      "The first card is a generic flip prompt; the third asks for unsupported timing-click behavior.",
+      "All three cards need explicit candidate metadata and source boundaries before user review."
     ],
     "representative_cards": [
-      "001101",
-      "001102",
-      "001103"
+      "003201",
+      "003202",
+      "003203"
     ],
-    "next_step": "Do not ask for user confirmation on this sample. Draft a revised 3-card candidate sample focused on to/the/could weak forms."
+    "next_step": "Do not ask for approval on the existing sample. Draft a revised 3-card candidate sample focused on deadline, reschedule, and event-time binding."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -227,9 +225,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "001101",
-        "001102",
-        "001103"
+        "003201",
+        "003202",
+        "003203"
       ],
       "card_count": 3,
       "issue_count": 6,

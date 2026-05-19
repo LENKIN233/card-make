@@ -16,34 +16,56 @@
       "box": 2,
       "card_no": 1,
       "card_box_code": "0032",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "时间",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "任务：先听音频，再判断这个时间是在说开始、结束，还是截止点。",
-        "task_prompt": "先听音频，再判断这个时间是在说开始、结束，还是截止点。",
+        "text": "听完后，选出 Friday noon 的作用。",
+        "task_prompt": "看到 by 要先想到截止点；时间要和 submitted 这个动作一起记。",
         "task_schema": {
-          "action": "听后判断时间语义角色",
-          "focus": "开始时点、结束时点与截止时点区分",
-          "success_criteria": "不仅记住时间，还能说出它控制什么事件"
+          "action": "选择时间语义角色",
+          "focus": "by Friday noon 与 submitted 的截止关系",
+          "success_criteria": "能说明 Friday noon 是预算表提交截止点，而不是 review 开始或其他事件时间"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0032/003201.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "结论：这里的 Friday noon 是材料提交的截止点，不是会议开始时间。",
-        "explanation": "语境揭示：All budget forms must be submitted by Friday noon for review. 时间类题最容易错的不是没听见时间，而是把时间绑错到事件上。"
+        "text": "答案：A\n\n解析：正确答案是 A。",
+        "explanation": "正确答案是 A。All budget forms must be submitted by Friday noon 中，by 和 must be submitted 一起把 Friday noon 锁定为提交截止点。时间类细节题不能只记一个时点，要把它和控制的动作绑定。B 把 for review 误读成 review 开始时间；C、D 都没有原句依据。"
       },
       "analysis_content": {
-        "text": "① 识别信号：时间出现后，要立刻看它和哪个动词或事件短语绑定，如 submitted, starts, ends, arrives。\n\n② 核心规律：时间细节题的核心不是抄一个时点，而是确定这个时点在流程中的功能。相同的 Friday noon 可以表示开会、截稿、出发或到站。若不把时间和事件绑定，信息价值几乎为零。\n\n③ 验证：本句 by Friday noon 直接挂在 must be submitted 上，说明它是提交截止点。题目若问 forms due when，答案就必须是 Friday noon，而不是把它错当 review 开始时间。",
+        "text": "正确答案是 A。All budget forms must be submitted by Friday noon 中，by 和 must be submitted 一起把 Friday noon 锁定为提交截止点。时间类细节题不能只记一个时点，要把它和控制的动作绑定。B 把 for review 误读成 review 开始时间；C、D 都没有原句依据。",
         "tips": [
-          "时间要和动词一起记，不能单独记。",
-          "看到 by 时，优先考虑“截止”，不是“开始”。"
+          "by + 时间通常表示截止点。",
+          "时间答案最好记成“什么时候 + 做什么”。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "It is the deadline for submitting the budget forms.",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "It is when the review meeting begins.",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "It is when the forms will be printed.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "It is when the budget will be announced.",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "url": "ai_tts/cet4/0032/003201.mp3",
@@ -71,31 +93,53 @@
         "box_name": "时间",
         "box_prefix": "0032"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断这个时间是在说开始、结束，还是截止点。",
-        "task_prompt": "先听音频，再判断这个时间是在说开始、结束，还是截止点。",
+        "text": "听完后，选出 Friday noon 的作用。",
+        "task_prompt": "看到 by 要先想到截止点；时间要和 submitted 这个动作一起记。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断时间语义角色",
-          "focus": "开始时点、结束时点与截止时点区分",
-          "success_criteria": "不仅记住时间，还能说出它控制什么事件"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：时间出现后，要立刻看它和哪个动词或事件短语绑定，如 submitted, starts, ends, arrives。\n\n② 核心规律：时间细节题的核心不是抄一个时点，而是确定这个时点在流程中的功能。相同的 Friday noon 可以表示开会、截稿、出发或到站。若不把时间和事件绑定，信息价值几乎为零。\n\n③ 验证：本句 by Friday noon 直接挂在 must be submitted 上，说明它是提交截止点。题目若问 forms due when，答案就必须是 Friday noon，而不是把它错当 review 开始时间。",
-        "tips": [
-          "时间要和动词一起记，不能单独记。",
-          "看到 by 时，优先考虑“截止”，不是“开始”。"
+          "action": "选择时间语义角色",
+          "focus": "by Friday noon 与 submitted 的截止关系",
+          "success_criteria": "能说明 Friday noon 是预算表提交截止点，而不是 review 开始或其他事件时间"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "It is the deadline for submitting the budget forms.",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "It is when the review meeting begins.",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "It is when the forms will be printed.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "It is when the budget will be announced.",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。All budget forms must be submitted by Friday noon 中，by 和 must be submitted 一起把 Friday noon 锁定为提交截止点。时间类细节题不能只记一个时点，要把它和控制的动作绑定。B 把 for review 误读成 review 开始时间；C、D 都没有原句依据。",
+        "tips": [
+          "by + 时间通常表示截止点。",
+          "时间答案最好记成“什么时候 + 做什么”。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice to make time-event detail checks explicit"
       },
       "quality_flags": [
         "unverified_source"
@@ -103,6 +147,34 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "time_window_ms": null,
+      "quality_metadata": {
+        "main_training_goal": "识别 by 引出的时间截止点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把时间和事件动作绑定，避免把截止时间错当开始时间或复习时间。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -117,27 +189,28 @@
       "card_box_name": "时间",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "任务：听完后，选出‘真正生效的时间安排’。",
-        "task_prompt": "听完后，选出‘真正生效的时间安排’。",
+        "text": "听完后，选出 briefing 最终开始时间。",
+        "task_prompt": "一句里有两个时间时，先判断哪个是旧计划，哪个是 moved to 后的新安排。",
         "task_schema": {
-          "action": "四选一作答",
-          "focus": "原计划时间与更新后时间区分",
-          "success_criteria": "锁定最终安排，而不是前面被改掉的时间"
+          "action": "选择更新后的最终时间",
+          "focus": "supposed to start at six 与 moved to six-thirty 的切换",
+          "success_criteria": "能排除原计划 6 点，锁定 moved to 后的 6:30"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0032/003202.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "答案：真正生效的是 6:30 开始，不是原来通知里的 6 点。",
-        "explanation": "语境揭示：The briefing was supposed to start at six, but it has been moved to six-thirty because the inspection team is running late. 时间题很常见的坑就是“先报旧时间，再给新时间”。"
+        "text": "答案：B\n\n解析：正确答案是 B。",
+        "explanation": "正确答案是 B。was supposed to start at six 表示原计划时间；but it has been moved to six-thirty 才是更新后的生效时间。时间题里，supposed to、originally、planned 往往标记旧安排，moved to、delayed until、rescheduled for 后面才是新答案。A 是旧计划，C、D 是无依据干扰项。"
       },
       "analysis_content": {
-        "text": "① 识别信号：一句里出现两个时间时，要先判断它们是“原计划 vs 更新后”还是“开始 vs 结束”。\n\n② 核心规律：时间题的高频陷阱是旧时间更简短、更容易记住，但真正有效的安排通常在后半句被更新。听到 moved to, delayed until, rescheduled for 时，必须立刻把前一个时间降级为失效信息。\n\n③ 验证：本句 six 是 supposed to start 的旧计划；six-thirty 是 has been moved to 的生效时间。因此正确答案必须选 6:30。",
+        "text": "正确答案是 B。was supposed to start at six 表示原计划时间；but it has been moved to six-thirty 才是更新后的生效时间。时间题里，supposed to、originally、planned 往往标记旧安排，moved to、delayed until、rescheduled for 后面才是新答案。A 是旧计划，C、D 是无依据干扰项。",
         "tips": [
-          "听到 moved to / delayed until，说明前一个时间多数已经失效。",
-          "双时间句先给每个时间贴状态：旧的还是新的。"
+          "听到 moved to，前一个时间通常要降级为旧安排。",
+          "双时间句先贴状态：原计划 / 新安排。"
         ]
       },
       "options": [
@@ -191,29 +264,51 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：听完后，选出‘真正生效的时间安排’。",
-        "task_prompt": "听完后，选出‘真正生效的时间安排’。",
+        "text": "听完后，选出 briefing 最终开始时间。",
+        "task_prompt": "一句里有两个时间时，先判断哪个是旧计划，哪个是 moved to 后的新安排。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "四选一作答",
-          "focus": "原计划时间与更新后时间区分",
-          "success_criteria": "锁定最终安排，而不是前面被改掉的时间"
-        }
+          "action": "选择更新后的最终时间",
+          "focus": "supposed to start at six 与 moved to six-thirty 的切换",
+          "success_criteria": "能排除原计划 6 点，锁定 moved to 后的 6:30"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "6:00 p.m.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "6:30 p.m.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "5:30 p.m.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "7:00 p.m.",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：一句里出现两个时间时，要先判断它们是“原计划 vs 更新后”还是“开始 vs 结束”。\n\n② 核心规律：时间题的高频陷阱是旧时间更简短、更容易记住，但真正有效的安排通常在后半句被更新。听到 moved to, delayed until, rescheduled for 时，必须立刻把前一个时间降级为失效信息。\n\n③ 验证：本句 six 是 supposed to start 的旧计划；six-thirty 是 has been moved to 的生效时间。因此正确答案必须选 6:30。",
+        "text": "正确答案是 B。was supposed to start at six 表示原计划时间；but it has been moved to six-thirty 才是更新后的生效时间。时间题里，supposed to、originally、planned 往往标记旧安排，moved to、delayed until、rescheduled for 后面才是新答案。A 是旧计划，C、D 是无依据干扰项。",
         "tips": [
-          "听到 moved to / delayed until，说明前一个时间多数已经失效。",
-          "双时间句先给每个时间贴状态：旧的还是新的。"
+          "听到 moved to，前一个时间通常要降级为旧安排。",
+          "双时间句先贴状态：原计划 / 新安排。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "candidate sample uses multiple_choice to make time-event detail checks explicit"
       },
       "quality_flags": [
         "unverified_source"
@@ -224,6 +319,29 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "time_window_ms": null,
+      "quality_metadata": {
+        "main_training_goal": "区分原计划时间和更新后时间",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户识别时间修正信号，避免被最先出现的旧时间带偏。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -234,39 +352,58 @@
       "box": 2,
       "card_no": 3,
       "card_box_code": "0032",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "时间",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "任务：播放后，在你第一次听到关键时间时点击。",
-        "task_prompt": "播放后，在你第一次听到关键时间时点击。",
+        "text": "听完后，选出 8:15 发生的事。",
+        "task_prompt": "时间出现后继续追动词：eight-fifteen 要和 leaves 绑定。",
         "task_schema": {
-          "action": "时间窗点击",
-          "focus": "关键时点入场定位",
-          "success_criteria": "点击命中时间词附近，并能说出这个时点控制什么"
+          "action": "选择时间绑定事件",
+          "focus": "eight-fifteen 与 shuttle leaves 的绑定",
+          "success_criteria": "能说明 8:15 是 visiting students shuttle 从 east gate 发车的时间"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0032/003203.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "目标时间：8:15，它对应的是校车发车时点。",
-        "explanation": "语境揭示：The shuttle for visiting students leaves at eight-fifteen from the east gate. 这张卡训练的是“时间 + 事件”成对抓取。"
+        "text": "答案：A\n\n解析：正确答案是 A。",
+        "explanation": "正确答案是 A。The shuttle for visiting students leaves at eight-fifteen from the east gate 中，eight-fifteen 绑定的是 leaves，因此它是班车发车时间。时间题经常把 arrives、opens、closes 这类相近事件做干扰；如果只记 8:15，不记 leaves，就会丢掉可作答信息。B、C、D 都偷换了事件动作。"
       },
       "analysis_content": {
-        "text": "① 识别信号：时间词一出现，后面通常紧跟动作动词或地点补充，是最关键的信息窗口。\n\n② 核心规律：时间题不只考“几点”，更考“几点发生什么”。学生常能听到 eight-fifteen，却忘了它对应 leaves 而不是 arrives 或 opens。真正有用的记忆单位应该是“8:15 发车”。\n\n③ 验证：本句 eight-fifteen 与 leaves directly 绑定，说明它是发车时间。若题目问 departure time，就必须把 8:15 和 shuttle leaves 一起提取。",
+        "text": "正确答案是 A。The shuttle for visiting students leaves at eight-fifteen from the east gate 中，eight-fifteen 绑定的是 leaves，因此它是班车发车时间。时间题经常把 arrives、opens、closes 这类相近事件做干扰；如果只记 8:15，不记 leaves，就会丢掉可作答信息。B、C、D 都偷换了事件动作。",
         "tips": [
-          "听到时间后，至少再追一个动词。",
-          "时间答案最好复述成“几点 + 做什么”。"
+          "时间后至少再追一个动作动词。",
+          "把答案复述成“8:15 发车”，比只记“8:15”更稳。"
         ]
       },
-      "options": null,
-      "eliminable_items": null,
-      "time_window_ms": [
-        0,
-        5000
+      "options": [
+        {
+          "key": "A",
+          "text": "The shuttle leaves from the east gate.",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "The shuttle arrives at the east gate.",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "Visiting students start registration.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "The east gate closes to visitors.",
+          "is_correct": false
+        }
       ],
+      "eliminable_items": null,
+      "time_window_ms": null,
       "audio": {
         "url": "ai_tts/cet4/0032/003203.mp3",
         "duration_ms": 5112,
@@ -293,31 +430,53 @@
         "box_name": "时间",
         "box_prefix": "0032"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：播放后，在你第一次听到关键时间时点击。",
-        "task_prompt": "播放后，在你第一次听到关键时间时点击。",
+        "text": "听完后，选出 8:15 发生的事。",
+        "task_prompt": "时间出现后继续追动词：eight-fifteen 要和 leaves 绑定。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "时间窗点击",
-          "focus": "关键时点入场定位",
-          "success_criteria": "点击命中时间词附近，并能说出这个时点控制什么"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：时间词一出现，后面通常紧跟动作动词或地点补充，是最关键的信息窗口。\n\n② 核心规律：时间题不只考“几点”，更考“几点发生什么”。学生常能听到 eight-fifteen，却忘了它对应 leaves 而不是 arrives 或 opens。真正有用的记忆单位应该是“8:15 发车”。\n\n③ 验证：本句 eight-fifteen 与 leaves directly 绑定，说明它是发车时间。若题目问 departure time，就必须把 8:15 和 shuttle leaves 一起提取。",
-        "tips": [
-          "听到时间后，至少再追一个动词。",
-          "时间答案最好复述成“几点 + 做什么”。"
+          "action": "选择时间绑定事件",
+          "focus": "eight-fifteen 与 shuttle leaves 的绑定",
+          "success_criteria": "能说明 8:15 是 visiting students shuttle 从 east gate 发车的时间"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "The shuttle leaves from the east gate.",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "The shuttle arrives at the east gate.",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "Visiting students start registration.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "The east gate closes to visitors.",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。The shuttle for visiting students leaves at eight-fifteen from the east gate 中，eight-fifteen 绑定的是 leaves，因此它是班车发车时间。时间题经常把 arrives、opens、closes 这类相近事件做干扰；如果只记 8:15，不记 leaves，就会丢掉可作答信息。B、C、D 都偷换了事件动作。",
+        "tips": [
+          "时间后至少再追一个动作动词。",
+          "把答案复述成“8:15 发车”，比只记“8:15”更稳。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice to make time-event detail checks explicit"
       },
       "quality_flags": [
         "unverified_source"
@@ -325,6 +484,33 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "绑定具体时点与发生事件",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把时间和动作事件绑定，减少把出发、到达、开放、关闭等相邻事件混淆的错误。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {

@@ -1,0 +1,280 @@
+{
+  "draft_id": "20260519-cet4-listening-0032-revised-sample",
+  "created_at": "2026-05-19T13:16:26+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0032 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "细节捕捉",
+    "box": "时间",
+    "box_prefix": "0032",
+    "candidate_for_existing_card_ids": [
+      "003201",
+      "003202",
+      "003203"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "003201",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "front": {
+        "text": "听完后，选出 Friday noon 的作用。",
+        "task_prompt": "看到 by 要先想到截止点；时间要和 submitted 这个动作一起记。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0032/003201.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "It is the deadline for submitting the budget forms."
+          },
+          {
+            "key": "B",
+            "text": "It is when the review meeting begins."
+          },
+          {
+            "key": "C",
+            "text": "It is when the forms will be printed."
+          },
+          {
+            "key": "D",
+            "text": "It is when the budget will be announced."
+          }
+        ],
+        "task_schema": {
+          "action": "选择时间语义角色",
+          "focus": "by Friday noon 与 submitted 的截止关系",
+          "success_criteria": "能说明 Friday noon 是预算表提交截止点，而不是 review 开始或其他事件时间"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0032/003201.mp3",
+        "duration_ms": 4848,
+        "transcript": "All budget forms must be submitted by Friday noon for review.",
+        "path": "ai_tts/cet4/0032/003201.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。All budget forms must be submitted by Friday noon 中，by 和 must be submitted 一起把 Friday noon 锁定为提交截止点。时间类细节题不能只记一个时点，要把它和控制的动作绑定。B 把 for review 误读成 review 开始时间；C、D 都没有原句依据。",
+        "tips": [
+          "by + 时间通常表示截止点。",
+          "时间答案最好记成“什么时候 + 做什么”。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 by 引出的时间截止点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把时间和事件动作绑定，避免把截止时间错当开始时间或复习时间。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "003202",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "front": {
+        "text": "听完后，选出 briefing 最终开始时间。",
+        "task_prompt": "一句里有两个时间时，先判断哪个是旧计划，哪个是 moved to 后的新安排。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0032/003202.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "6:00 p.m."
+          },
+          {
+            "key": "B",
+            "text": "6:30 p.m."
+          },
+          {
+            "key": "C",
+            "text": "5:30 p.m."
+          },
+          {
+            "key": "D",
+            "text": "7:00 p.m."
+          }
+        ],
+        "task_schema": {
+          "action": "选择更新后的最终时间",
+          "focus": "supposed to start at six 与 moved to six-thirty 的切换",
+          "success_criteria": "能排除原计划 6 点，锁定 moved to 后的 6:30"
+        }
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0032/003202.mp3",
+        "duration_ms": 7656,
+        "transcript": "The briefing was supposed to start at six, but it has been moved to six-thirty because the inspection team is running late.",
+        "path": "ai_tts/cet4/0032/003202.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 B。was supposed to start at six 表示原计划时间；but it has been moved to six-thirty 才是更新后的生效时间。时间题里，supposed to、originally、planned 往往标记旧安排，moved to、delayed until、rescheduled for 后面才是新答案。A 是旧计划，C、D 是无依据干扰项。",
+        "tips": [
+          "听到 moved to，前一个时间通常要降级为旧安排。",
+          "双时间句先贴状态：原计划 / 新安排。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分原计划时间和更新后时间",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户识别时间修正信号，避免被最先出现的旧时间带偏。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "003203",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "front": {
+        "text": "听完后，选出 8:15 发生的事。",
+        "task_prompt": "时间出现后继续追动词：eight-fifteen 要和 leaves 绑定。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0032/003203.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "The shuttle leaves from the east gate."
+          },
+          {
+            "key": "B",
+            "text": "The shuttle arrives at the east gate."
+          },
+          {
+            "key": "C",
+            "text": "Visiting students start registration."
+          },
+          {
+            "key": "D",
+            "text": "The east gate closes to visitors."
+          }
+        ],
+        "task_schema": {
+          "action": "选择时间绑定事件",
+          "focus": "eight-fifteen 与 shuttle leaves 的绑定",
+          "success_criteria": "能说明 8:15 是 visiting students shuttle 从 east gate 发车的时间"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0032/003203.mp3",
+        "duration_ms": 5112,
+        "transcript": "The shuttle for visiting students leaves at eight-fifteen from the east gate.",
+        "path": "ai_tts/cet4/0032/003203.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。The shuttle for visiting students leaves at eight-fifteen from the east gate 中，eight-fifteen 绑定的是 leaves，因此它是班车发车时间。时间题经常把 arrives、opens、closes 这类相近事件做干扰；如果只记 8:15，不记 leaves，就会丢掉可作答信息。B、C、D 都偷换了事件动作。",
+        "tips": [
+          "时间后至少再追一个动作动词。",
+          "把答案复述成“8:15 发车”，比只记“8:15”更稳。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "绑定具体时点与发生事件",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把时间和动作事件绑定，减少把出发、到达、开放、关闭等相邻事件混淆的错误。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ]
+}
