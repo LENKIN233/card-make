@@ -1,32 +1,31 @@
 {
-  "review_id": "20260514-cet4-listening-0011-revised-sample",
-  "created_at": "2026-05-14T16:31:10+08:00",
+  "review_id": "20260519-cet4-listening-0030-revised-sample",
+  "created_at": "2026-05-19T12:50:45+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "语音现象",
-    "box": "弱读",
+    "group": "细节捕捉",
+    "box": "人物类",
     "box_prefixes": [
-      "0011"
+      "0030"
     ],
     "card_ids": [
-      "001101",
-      "001102",
-      "001103"
+      "003001",
+      "003002",
+      "003003"
     ]
   },
   "specs_read": [
-    "AGENTS.md",
     "spec/doc-manifest.json",
     "spec/authority-map.json",
     "spec/workspace-contract.json",
     "spec/content-quality-contract.json",
     "spec/review-workflow.json",
-    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
-    "spec/card-quality-audit.json"
+    "../softbook_cet/spec/interactions.json"
   ],
   "sample_policy": {
     "is_three_card_sample_per_box": true,
@@ -34,20 +33,20 @@
   },
   "cards": [
     {
-      "card_id": "001101",
+      "card_id": "003001",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "1",
-        "box": "弱读",
-        "box_prefix": "0011"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "0",
+        "box": "人物类",
+        "box_prefix": "0030"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 have to 中 to 的弱读",
+        "main_training_goal": "绑定人物姓名与职责动作",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +65,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户接受功能词不会完整重读，减少听力中漏听小词造成的误判。",
+        "exam_value": "训练用户把人名、身份和职责绑定起来，避免只记住名字却漏掉可作答信息。",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -87,20 +86,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "001102",
+      "card_id": "003002",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "1",
-        "box": "弱读",
-        "box_prefix": "0011"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "0",
+        "box": "人物类",
+        "box_prefix": "0030"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 to explain 中 to 的弱读",
+        "main_training_goal": "绑定人物与观点或方案来源",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,7 +116,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户从弱读功能词恢复句法关系，避免只听到实词后误解动作结构。",
+        "exam_value": "帮助用户在多人物句中按动作归属作答，减少把第一个人物误选为答案的错误。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -138,20 +137,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "001103",
+      "card_id": "003003",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "1",
-        "box": "弱读",
-        "box_prefix": "0011"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "0",
+        "box": "人物类",
+        "box_prefix": "0030"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 could 的情态动词弱读",
+        "main_training_goal": "区分目标人物任务和其他人物任务",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,7 +169,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户在条件和建议类听力中识别轻读情态词，避免误判动作语气。",
+        "exam_value": "训练用户在同句多人物分工中保持人物-动作匹配，避免把另一组人的任务错配给目标人物。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -193,15 +192,15 @@
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample moves from recognizing a basic weak to in have to, to applying the same method to to explain, to transferring it to a weak modal could in a conditional sentence.",
+    "box_progression": "The revised sample moves from recognizing a single person-role binding, to applying action ownership in a multi-person sentence, to transferring the same binding logic when another group action appears in the same sentence.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about identifying weak-read function words or chunks.",
+      "All three cards use multiple_choice because this box is specifically about choosing the correct person-role or person-action detail after listening.",
       "Formal approval still needs user confirmation and separate audio QA."
     ],
     "representative_cards": [
-      "001101",
-      "001102",
-      "001103"
+      "003001",
+      "003002",
+      "003003"
     ],
     "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
   },
@@ -211,9 +210,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "001101",
-        "001102",
-        "001103"
+        "003001",
+        "003002",
+        "003003"
       ],
       "card_count": 3,
       "issue_count": 6,
