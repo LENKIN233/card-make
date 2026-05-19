@@ -1,0 +1,253 @@
+{
+  "review_id": "20260519-cet4-listening-0022-existing-sample",
+  "created_at": "2026-05-19T12:23:36+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "逻辑关系",
+    "box": "并列/递进关系",
+    "box_prefixes": [
+      "0022"
+    ],
+    "card_ids": [
+      "002201",
+      "002202",
+      "002203"
+    ]
+  },
+  "specs_read": [
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "sample_policy": {
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "cards": [
+    {
+      "card_id": "002201",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "2",
+        "group": "逻辑关系",
+        "box_id": "2",
+        "box": "并列/递进关系",
+        "box_prefix": "0022"
+      },
+      "status": "block",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The old flip prompt asked the learner to judge parallel versus progressive relation but did not expose a checkable answer surface.",
+        "The card lacked quality_metadata, so source, difficulty, and progression boundaries were not reviewable.",
+        "The front relied on back-side explanation to prove the relation type instead of making the learner choose it directly."
+      ],
+      "minor_issues": [
+        "TTS audio quality was not separately reviewed for formal use."
+      ],
+      "recommendation": "Rewrite as a multiple-choice relation-role card around more importantly.",
+      "quality_metadata": {
+        "main_training_goal": "识别 more importantly 引出的递进加码",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "原音频有清楚的 more importantly 递进信号，但旧卡没有可评分动作。",
+        "box_progression_role": "recognition",
+        "review_status": "block"
+      }
+    },
+    {
+      "card_id": "002202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "2",
+        "group": "逻辑关系",
+        "box_id": "2",
+        "box": "并列/递进关系",
+        "box_prefix": "0022"
+      },
+      "status": "revise",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The old multiple-choice idea was usable, but quality_metadata was missing.",
+        "The modern front surface did not carry the options explicitly, making preview/review less direct than the product contract expects."
+      ],
+      "minor_issues": [
+        "The task wording should be tightened around besides as a new-information signal."
+      ],
+      "recommendation": "Keep the transcript and answer logic, but revise the prompt, options surface, analysis, and metadata.",
+      "quality_metadata": {
+        "main_training_goal": "识别 besides 后的新增量化信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "原卡已经触及 besides 后的新增指标，但缺少完整 sample-review 证据。",
+        "box_progression_role": "application",
+        "review_status": "revise"
+      }
+    },
+    {
+      "card_id": "002203",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "2",
+        "group": "逻辑关系",
+        "box_id": "2",
+        "box": "并列/递进关系",
+        "box_prefix": "0022"
+      },
+      "status": "block",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The old prompt described timing-click behavior, but the product contract downcast it to flip.",
+        "The analysis was template-like and did not explain the specific moreover sentence clearly enough.",
+        "The card lacked quality_metadata and did not expose a stable answer under the current card contract."
+      ],
+      "minor_issues": [
+        "TTS audio quality was not separately reviewed for formal use."
+      ],
+      "recommendation": "Rewrite as a multiple-choice card selecting the benefit added after moreover.",
+      "quality_metadata": {
+        "main_training_goal": "识别 moreover 后的新增收益维度",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "音频文本有清楚的 moreover 新增信息，但旧卡用 unsupported timing-click wording 且解析泛化。",
+        "box_progression_role": "transfer",
+        "review_status": "block"
+      }
+    }
+  ],
+  "batch_review": {
+    "status": "blocked",
+    "box_progression": "The transcripts can support parallel/progressive listening training, but the existing sample does not consistently expose a checkable front-side decision or metadata for the first three cards.",
+    "repetition_or_gap_risks": [
+      "002201 and 002203 rendered as flip while asking for decisions that should be checkable.",
+      "002203 used unsupported timing-click wording and generic analysis under the current product contract.",
+      "All three old cards lacked quality_metadata, so source and progression boundaries were not reviewable.",
+      "TTS text and audio have not been reviewed as formal audio assets."
+    ],
+    "representative_cards": [
+      "002201",
+      "002202",
+      "002203"
+    ],
+    "next_step": "Do not ask for user confirmation on the old sample. Draft a revised 3-card candidate sample focused on more importantly, besides, and moreover."
+  },
+  "quality_audit": {
+    "report": "reports/card_quality_audit_report.json",
+    "corpus_fingerprint": "5c0efe125896fb2ece911dcf95c6e50956cd70a950e76d08d7d53edad82933b8",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "002201",
+        "002202",
+        "002203"
+      ],
+      "card_count": 3,
+      "issue_count": 6,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 6
+      },
+      "by_rule": {
+        "multiple_choice_no_options": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "front_missing_or_too_short": 0,
+        "analysis_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "template_analysis_pattern": 0,
+        "exact_repeated_front": 0,
+        "exact_repeated_analysis": 0,
+        "missing_quality_metadata": 0,
+        "unverified_source": 3,
+        "synthetic_source": 3
+      }
+    }
+  }
+}

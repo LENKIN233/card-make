@@ -1,32 +1,31 @@
 {
-  "review_id": "20260514-cet4-listening-0002-revised-sample",
-  "created_at": "2026-05-14T12:38:37+08:00",
+  "review_id": "20260519-cet4-listening-0022-revised-sample",
+  "created_at": "2026-05-19T12:23:36+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测信号词",
+    "group": "逻辑关系",
+    "box": "并列/递进关系",
     "box_prefixes": [
-      "0002"
+      "0022"
     ],
     "card_ids": [
-      "000201",
-      "000202",
-      "000203"
+      "002201",
+      "002202",
+      "002203"
     ]
   },
   "specs_read": [
-    "AGENTS.md",
     "spec/doc-manifest.json",
     "spec/authority-map.json",
     "spec/workspace-contract.json",
     "spec/content-quality-contract.json",
     "spec/review-workflow.json",
-    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
-    "spec/card-quality-audit.json"
+    "../softbook_cet/spec/interactions.json"
   ],
   "sample_policy": {
     "is_three_card_sample_per_box": true,
@@ -34,20 +33,20 @@
   },
   "cards": [
     {
-      "card_id": "000201",
+      "card_id": "002201",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
+        "group_id": "2",
+        "group": "逻辑关系",
         "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "box": "并列/递进关系",
+        "box_prefix": "0022"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "预测让步加原因信号词组合",
+        "main_training_goal": "识别 more importantly 引出的递进加码",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +65,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户在听前预判反预期和原因结构，降低听到长句时的处理负担。",
+        "exam_value": "训练用户在听力里识别递进标记后的高权重信息，避免把 more importantly 当作普通补充。",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -87,20 +86,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000202",
+      "card_id": "002202",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
+        "group_id": "2",
+        "group": "逻辑关系",
         "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "box": "并列/递进关系",
+        "box_prefix": "0022"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别转折信号词 however",
+        "main_training_goal": "识别 besides 后的新增量化信息",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,7 +116,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户把 however 后的信息当成听力判断的高权重点。",
+        "exam_value": "帮助用户把递进后的数字和范围变化识别为真正新增证据，而不是停留在前句泛化收益。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -138,20 +137,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000203",
+      "card_id": "002203",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
+        "group_id": "2",
+        "group": "逻辑关系",
         "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "box": "并列/递进关系",
+        "box_prefix": "0022"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别句首原因信号词 since",
+        "main_training_goal": "识别 moreover 后的新增收益维度",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,7 +169,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把原因信号词和结果动作绑定，避免只记 isolated words。",
+        "exam_value": "训练用户听到 moreover 后抓新增维度，避免被前句 already-mentioned benefit 带回去。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -193,17 +192,17 @@
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample now moves from recognizing a combined although/because structure, to applying however contrast detection, to transferring the method to since cause-effect prediction.",
+    "box_progression": "The revised sample moves from recognizing more importantly as high-weight progression, to applying besides as a quantitative new-information signal, to transferring the same added-information reading to moreover.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about predicting or identifying signal words from listening cues.",
+      "All three cards use multiple_choice because this box is specifically about choosing the correct parallel/progressive information role after a listening signal.",
       "Formal approval still needs user confirmation and separate audio QA."
     ],
     "representative_cards": [
-      "000201",
-      "000202",
-      "000203"
+      "002201",
+      "002202",
+      "002203"
     ],
-    "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
+    "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -211,9 +210,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "000201",
-        "000202",
-        "000203"
+        "002201",
+        "002202",
+        "002203"
       ],
       "card_count": 3,
       "issue_count": 6,
