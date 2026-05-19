@@ -1,18 +1,18 @@
 {
-  "review_id": "20260513-cet4-listening-0000-revised-sample",
-  "created_at": "2026-05-13T22:56:19+08:00",
+  "review_id": "20260520-cet4-listening-0051-revised-sample",
+  "created_at": "2026-05-20T01:02:03+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测话题",
+    "group": "主旨大意",
+    "box": "结尾总结",
     "box_prefixes": [
-      "0000"
+      "0051"
     ],
     "card_ids": [
-      "000001",
-      "000002",
-      "000003"
+      "005101",
+      "005102",
+      "005103"
     ]
   },
   "specs_read": [
@@ -23,10 +23,12 @@
     "spec/content-quality-contract.json",
     "spec/review-workflow.json",
     "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
-    "spec/card-quality-audit.json"
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/knowledge-map.json"
   ],
   "sample_policy": {
     "is_three_card_sample_per_box": true,
@@ -34,20 +36,20 @@
   },
   "cards": [
     {
-      "card_id": "000001",
+      "card_id": "005101",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "1",
+        "box": "结尾总结",
+        "box_prefix": "0051"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "根据选项关键词组合预测听力主话题",
+        "main_training_goal": "识别 In summary 后的结尾总括结论",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +68,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "让用户练会从选项中先抓对象和角度，降低听力开头进入成本。",
+        "exam_value": "训练用户在听力结尾处快速抓住总结信号，避免把前文分点误当主旨。",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -87,20 +89,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000002",
+      "card_id": "005102",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "1",
+        "box": "结尾总结",
+        "box_prefix": "0051"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "听开头句识别主话题关系",
+        "main_training_goal": "根据 Overall 和 most effective way 概括结尾主旨",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,7 +119,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户把开头句里的中心关系和背景词分开，避免听到熟词就误判。",
+        "exam_value": "帮助用户把结尾总结句中的评价强度和对象关系转化为稳定的主旨选择。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -138,20 +140,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000003",
+      "card_id": "005103",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "1",
+        "box": "结尾总结",
+        "box_prefix": "0051"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "根据讲座开头预测后文展开方向",
+        "main_training_goal": "识别 To sum up 后的长期总括结论",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,7 +172,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把讲座开头的结构词和评价词合并，提前建立后文听力预期。",
+        "exam_value": "训练用户在结尾处从短期铺垫切换到长期总括，避免把局部困难误判为主旨。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -193,17 +195,17 @@
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample now moves from option-keyword recognition, to listening-opening application, to transfer prediction about lecture development.",
+    "box_progression": "The revised sample moves from recognizing an In summary conclusion, to applying Overall / most effective way for a final judgment, to transferring the rule by filtering short-term setup before To sum up.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about option-based topic prediction.",
-      "Formal approval still needs user confirmation and separate audio QA."
+      "All three cards use multiple_choice to keep the first candidate sample checkable and user-reviewable.",
+      "Formal approval still requires user confirmation and separate audio QA."
     ],
     "representative_cards": [
-      "000001",
-      "000002",
-      "000003"
+      "005101",
+      "005102",
+      "005103"
     ],
-    "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
+    "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -211,9 +213,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "000001",
-        "000002",
-        "000003"
+        "005101",
+        "005102",
+        "005103"
       ],
       "card_count": 3,
       "issue_count": 6,
