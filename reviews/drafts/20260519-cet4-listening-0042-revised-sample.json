@@ -1,0 +1,297 @@
+{
+  "draft_id": "20260519-cet4-listening-0042-revised-sample",
+  "created_at": "2026-05-19T18:21:14+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0042 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "推理判断",
+    "box": "因果逻辑",
+    "box_prefix": "0042",
+    "candidate_for_existing_card_ids": [
+      "004201",
+      "004202",
+      "004203"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "004201",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "2",
+        "box_name": "因果逻辑",
+        "box_prefix": "0042"
+      },
+      "front": {
+        "text": "听完后，选出导致 response time 下降的原因。",
+        "task_prompt": "Because 后面是原因；dropped by 20 percent 是结果，不要把方向倒过来。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一：因果方向判断",
+          "focus": "Because 引出的原因与 dropped 引出的结果",
+          "success_criteria": "能把 weekly practice sessions 判断为原因，把 response time dropped 判断为结果"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "The support team received weekly practice sessions.",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "Average response time dropped by nearly 20 percent.",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "The support team hired more employees.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Customers stopped asking for support.",
+            "is_correct": false
+          }
+        ]
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0042/004201.mp3",
+        "duration_ms": 7992,
+        "transcript": "Because the support team received weekly practice sessions, average response time dropped by nearly 20 percent.",
+        "path": "ai_tts/cet4/0042/004201.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。因果逻辑题先看连接词给出的方向：Because 后面不是结果，而是导致结果的原因。这里 weekly practice sessions 解释了为什么 response time dropped。B 是结果本身，C 和 D 都没有文本依据。做类似题时，先把句子改写成“因为 A，所以 B”，再去选项里找 A 或 B。",
+        "tips": [
+          "Because 后面通常是原因，不是结论。",
+          "看到 dropped / rose 这类变化词，要问“是什么导致变化”。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 because 引出的原因与结果方向",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在 CET4 听力因果推断中先定方向，避免把结果当成原因。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "004202",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "2",
+        "box_name": "因果逻辑",
+        "box_prefix": "0042"
+      },
+      "front": {
+        "text": "听完后，选出 deadline reminders 带来的直接结果。",
+        "task_prompt": "After 引出措施，fell from 22% to 11% 才是直接变化。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一：措施与结果匹配",
+          "focus": "After...introduced + late submissions fell",
+          "success_criteria": "能选出由提醒措施直接导向的结果，不做跳跃推断"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Students became more interested in all courses.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "Teachers reduced assignment difficulty.",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "Fewer late submissions occurred.",
+            "is_correct": true
+          },
+          {
+            "key": "D",
+            "text": "The school cancelled all penalties.",
+            "is_correct": false
+          }
+        ]
+      },
+      "answer_key": {
+        "correct_option": "C"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0042/004202.mp3",
+        "duration_ms": 8880,
+        "transcript": "After the deadline reminders were introduced, the share of late submissions fell from 22 percent to 11 percent in one month.",
+        "path": "ai_tts/cet4/0042/004202.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 C。这里的因果不是“所有学习态度变好”，而是很窄的措施-结果关系：引入 deadline reminders 后，late submissions 的比例下降。A 把范围扩大到所有课程兴趣，B 改成教师降低难度，D 无中生有。因果推断题要守住文本给出的直接结果，不能把合理联想当答案。",
+        "tips": [
+          "After...introduced 常提示“措施出现后发生的变化”。",
+          "比例下降时，优先选直接变化，不要选更大的背景推论。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "匹配措施后的直接因果结果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在数据变化类听力中选择文本直接支持的因果结果，避免跳跃推断。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "004203",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "2",
+        "box_name": "因果逻辑",
+        "box_prefix": "0042"
+      },
+      "front": {
+        "text": "听完后，选出 as a result 后面的结果。",
+        "task_prompt": "suppliers delayed shipment 是原因；as a result 后面才是导致出的结果。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一：因果触发词后的结果识别",
+          "focus": "as a result 后的结果边界",
+          "success_criteria": "能把 delayed shipment 与 production targets not met 的因果关系分开"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Several suppliers delayed shipment this month.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "Production targets were not met on schedule.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "The company changed all suppliers.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Shipment delays were solved ahead of time.",
+            "is_correct": false
+          }
+        ]
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0042/004203.mp3",
+        "duration_ms": 7512,
+        "transcript": "Several suppliers delayed shipment this month; as a result, production targets were not met on schedule.",
+        "path": "ai_tts/cet4/0042/004203.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 B。as a result 是很明确的结果触发词，后面通常跟“所以发生了什么”。这里 suppliers delayed shipment 是原因，production targets were not met on schedule 才是结果。A 是原因，不是结果；C 没有说；D 与未按时完成相反。遇到 as a result，要把触发词前后切开，后半句优先当结果。",
+        "tips": [
+          "as a result 后面通常是结果。",
+          "不要把触发词前的背景原因误选成结果。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 as a result 后的结果并排除原因项",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在推理判断中按因果触发词切分前因后果，减少方向倒置。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ],
+  "review_limits": [
+    "Candidate sample only; this draft is not formal user-approved product content.",
+    "No reviews/approved_batches record is created by this draft.",
+    "Audio text was reviewed for task fit, but audio file quality still needs separate QA before formal use."
+  ]
+}
