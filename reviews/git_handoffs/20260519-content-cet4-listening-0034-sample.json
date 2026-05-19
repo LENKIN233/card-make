@@ -1,0 +1,81 @@
+{
+  "handoff_id": "20260519-content-cet4-listening-0034-sample",
+  "created_at": "2026-05-19T13:34:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0034-sample",
+  "base_branch": "fix/review-findings-card-contract",
+  "commit_sha": "8ac387e69b5eae493a71f6211a20323459ffe1a6",
+  "push_ref": "origin/content/cet4-listening-0034-sample",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/25",
+  "PR_number": 25,
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "track": "cet4",
+    "library": "听力",
+    "group": "细节捕捉",
+    "box": "时间因果",
+    "box_prefix": "0034",
+    "card_ids": [
+      "003401",
+      "003402",
+      "003403"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0034.json",
+      "reports/card_quality_audit_report.json",
+      "reports/card_validation_report.json",
+      "reviews/drafts/20260519-cet4-listening-0034-revised-sample.json",
+      "reviews/agent_self_review/20260519-cet4-listening-0034-existing-sample.json",
+      "reviews/agent_self_review/20260519-cet4-listening-0034-revised-sample.json",
+      "reviews/agent_self_review/20260513-cet4-listening-0000-existing-sample.json",
+      "reviews/agent_self_review/20260513-cet4-listening-0000-revised-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0001-existing-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0001-revised-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0002-existing-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0002-revised-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0010-existing-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0010-revised-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0011-existing-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0011-revised-sample.json"
+    ]
+  },
+  "summary": [
+    "Blocked the existing 0034 sample because the first card was an open flip reason-retelling task, the second needed lower-burden purpose/result wording and metadata, and the third relied on unsupported timing-click behavior.",
+    "Added a revised 3-card candidate sample focused on a because-clause reason, a purpose-versus-result distinction, and a due to noun-phrase cause.",
+    "Synchronized the revised candidate sample into the first three cards of card_boxes_seed_cet4_listening_0034.json as multiple_choice tasks while keeping needs_review and candidate-only boundaries.",
+    "Refreshed card validation, card quality audit, and scoped self-review audit fingerprints after the 0034 card edits."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/audit_card_quality.mjs --write-report",
+      "result": "passed; ok=true, corpus_digest=35d91675d8809f14ce030ca8c78d8d5f996e1279a4e5b26212155448671b3de6, cards=2414, hard_blocker=0"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed; ok=true, cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group alignment warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "gh pr view 25 --json number,url,state,isDraft,mergeStateStatus,headRefName,baseRefName,commits",
+      "result": "passed; draft PR #25 open and mergeStateStatus=CLEAN against fix/review-findings-card-contract"
+    }
+  ],
+  "local_status": "Rechecked after handoff commit in final validation.",
+  "remaining_risks": [
+    "Candidate sample only; it is not formal user-approved product content.",
+    "No reviews/approved_batches record was created.",
+    "Audio file quality was not separately reviewed for formal use.",
+    "This branch is based on fix/review-findings-card-contract / draft harness PR #7.",
+    "Sibling candidate content PRs also refresh reports/card_quality_audit_report.json and reports/card_validation_report.json; refresh reports after selecting an actual merge order."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
