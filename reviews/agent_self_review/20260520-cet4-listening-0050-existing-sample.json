@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0001-revised-sample",
-  "created_at": "2026-05-14T10:58:39+08:00",
+  "review_id": "20260520-cet4-listening-0050-existing-sample",
+  "created_at": "2026-05-20T00:47:08+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测考点",
+    "group": "主旨大意",
+    "box": "开头点题",
     "box_prefixes": [
-      "0001"
+      "0050"
     ],
     "card_ids": [
-      "000101",
-      "000102",
-      "000103"
+      "005001",
+      "005002",
+      "005003"
     ]
   },
   "specs_read": [
@@ -23,10 +23,12 @@
     "spec/content-quality-contract.json",
     "spec/review-workflow.json",
     "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
-    "spec/card-quality-audit.json"
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/knowledge-map.json"
   ],
   "sample_policy": {
     "is_three_card_sample_per_box": true,
@@ -34,20 +36,20 @@
   },
   "cards": [
     {
-      "card_id": "000101",
+      "card_id": "005001",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "0",
+        "box": "开头点题",
+        "box_prefix": "0050"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别原因类听力考点",
+        "main_training_goal": "识别开头第一句直接给出的主旨",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,41 +68,45 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户先锁定原因题，避免被 data 等局部词误导。",
+        "exam_value": "训练用户在听力开头快速锁定主题句，避免被后续分点细节带偏。",
         "box_progression_role": "recognition",
-        "review_status": "agent_pass"
+        "review_status": "blocked_existing_sample"
       },
       "blocker_scan": {
         "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": false,
-        "not_meeting_requirement": false,
+        "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Existing flip card asks for a one-sentence summary but hides the checkable answer on the back.",
+        "The front does not force the learner to distinguish the first topic sentence from the following detail-preview sentence.",
+        "No quality_metadata is present, so source/audio and review status are not explicit."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Audio file quality is not formally reviewed; current review only covers text/task design."
+      ],
+      "recommendation": "Rewrite as an auto-scored multiple_choice card that tests the opening topic sentence."
     },
     {
-      "card_id": "000102",
+      "card_id": "005002",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "0",
+        "box": "开头点题",
+        "box_prefix": "0050"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别态度类听力考点",
+        "main_training_goal": "用 central role 信号概括开头主题",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,41 +123,45 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户听出态度题信号，提前准备捕捉评价词和转折。",
+        "exam_value": "帮助用户从开头总述句中提炼完整主题，而不是被例证细节或相邻话题干扰。",
         "box_progression_role": "application",
-        "review_status": "agent_pass"
+        "review_status": "blocked_existing_sample"
       },
       "blocker_scan": {
         "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": false,
-        "not_meeting_requirement": false,
+        "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Existing multiple_choice direction is usable, but the analysis is template-heavy and does not teach central role as the topic signal.",
+        "The card lacks quality_metadata, leaving simulated source and TTS boundaries implicit.",
+        "Distractor rationale should separate theme coverage from detail-only or unrelated options."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Keep the core answer direction but rewrite prompt, analysis, options, and metadata for sample review."
+      ],
+      "recommendation": "Retain the transcript and main answer, but make the opening-topic rule explicit."
     },
     {
-      "card_id": "000103",
+      "card_id": "005003",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "0",
+        "box": "开头点题",
+        "box_prefix": "0050"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别建议类听力考点",
+        "main_training_goal": "过滤寒暄并识别 focus on 后的开头主题",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,40 +180,44 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把建议信号转化为答案预期，提升听后抓动作的效率。",
+        "exam_value": "训练用户在讲座或说明类听力中抓住议程宣告句，稳定定位主旨。",
         "box_progression_role": "transfer",
-        "review_status": "agent_pass"
+        "review_status": "blocked_existing_sample"
       },
       "blocker_scan": {
         "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": false,
-        "not_meeting_requirement": false,
+        "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Existing timing-click task is downcast to flip, so the front promises click behavior that is not exposed by the product contract here.",
+        "The answer-window back side cannot serve as a self-contained front-side learning task.",
+        "The card should test the theme announced after Today we will focus on rather than unreviewed timing-window behavior."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Original time_window_ms is unsuitable for this candidate sample branch because audio timing has not been formally reviewed."
+      ],
+      "recommendation": "Rewrite as multiple_choice to filter greeting language and select the announced theme."
     }
   ],
   "batch_review": {
-    "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample now moves from recognizing a reason test point, to applying attitude-question prediction, to transferring the same method to suggestion/action prediction.",
+    "status": "blocked",
+    "box_progression": "The existing first three cards do not yet form a clean recognition -> application -> transfer progression for 开头点题.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about predicting the likely test point from the listening cue.",
-      "Formal approval still needs user confirmation and separate audio QA."
+      "Two cards depend on back-side or timing-window answer revelation rather than front-side solvable choices.",
+      "Source and TTS status are not explicit in quality_metadata."
     ],
     "representative_cards": [
-      "000101",
-      "000102",
-      "000103"
+      "005001",
+      "005002",
+      "005003"
     ],
-    "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
+    "next_step": "Revise only the first three cards as a candidate sample and keep it out of approved_batches until explicit user confirmation."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -211,9 +225,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "000101",
-        "000102",
-        "000103"
+        "005001",
+        "005002",
+        "005003"
       ],
       "card_count": 3,
       "issue_count": 6,

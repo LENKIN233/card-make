@@ -16,34 +16,57 @@
       "box": 0,
       "card_no": 1,
       "card_box_code": "0050",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "开头点题",
       "card_group_name": "主旨大意",
       "front_content": {
-        "text": "任务：先听音频，再用一句话说出开头一句点出的主题。",
-        "task_prompt": "先听音频，再判断开头句想让听众关注的核心主题。",
+        "text": "听完开头两句，选出第一句点出的整段主题。",
+        "task_prompt": "先抓第一句 Remote work is reshaping...；第二句只是说明将展开哪些方面。",
         "task_schema": {
-          "action": "听后主旨提取",
-          "focus": "开头主题句识别",
-          "success_criteria": "能从开场句直接提炼出主题，不被后续细节带偏"
+          "action": "四选一：开头主题句识别",
+          "focus": "opening topic sentence / reshaping",
+          "success_criteria": "能把第一句的总主题与第二句的分点展开区分开"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0050/005001.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "结论：主题是“远程办公正在改变企业的团队协作方式”。\n\n关键点：开头第一句通常已经给出整段中心，不必等到末尾才找主题。",
-        "explanation": "语境揭示：Remote work is reshaping how companies collaborate across teams. In today's session, we'll examine the biggest changes in communication and project management."
+        "text": "答案：A\n\n解析：第一句 Remote work is reshaping how companies collaborate across teams 直接点出主题；第二句里的 communication 和 project management 是后续展开的两个方面。",
+        "explanation": "正确答案是 A。开头第一句用 is reshaping 给出总判断：remote work 正在改变跨团队协作方式。In today's session 后面说明会讨论 communication 和 project management，这是分点预告，不是另起主题。B、C、D 都改变或缩小了原句范围。"
       },
       "analysis_content": {
-        "text": "① 识别信号：is reshaping、today's topic is、we'll discuss 这类开场动词常直接引出主题。\n\n② 核心规律：主旨题里的“开头点题”通常在前 1-2 句完成框定，后文只是在展开子点。若开头已出现抽象总述句，优先把它当候选主旨。\n\n③ 验证：第一句 reshaping how companies collaborate 是总述，第二句说明将谈 communication 和 project management，属于分点展开，验证第一句就是主题句。",
+        "text": "正确答案是 A。开头第一句用 is reshaping 给出总判断：remote work 正在改变跨团队协作方式。In today's session 后面说明会讨论 communication 和 project management，这是分点预告，不是另起主题。B、C、D 都改变或缩小了原句范围。",
         "tips": [
-          "开头出现抽象总述句时，先暂存为主旨候选，再用后文分点验证。",
-          "主旨是“整段在讲什么”，不是后文某个具体例子。"
+          "开头第一句若是抽象总述，先把它当主旨候选。",
+          "we will examine 后面常是展开维度，不一定是主旨本身。",
+          "主旨选项要覆盖整段范围，不能只抓一个细节词。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "Remote work is changing how companies collaborate across teams.",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "Companies have stopped using project management tools.",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "The session is mainly about office building design.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "Communication changes will be ignored in the session.",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "url": "ai_tts/cet4/0050/005001.mp3",
@@ -71,31 +94,54 @@
         "box_name": "开头点题",
         "box_prefix": "0050"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再用一句话说出开头一句点出的主题。",
-        "task_prompt": "先听音频，再判断开头句想让听众关注的核心主题。",
+        "text": "听完开头两句，选出第一句点出的整段主题。",
+        "task_prompt": "先抓第一句 Remote work is reshaping...；第二句只是说明将展开哪些方面。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后主旨提取",
-          "focus": "开头主题句识别",
-          "success_criteria": "能从开场句直接提炼出主题，不被后续细节带偏"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：is reshaping、today's topic is、we'll discuss 这类开场动词常直接引出主题。\n\n② 核心规律：主旨题里的“开头点题”通常在前 1-2 句完成框定，后文只是在展开子点。若开头已出现抽象总述句，优先把它当候选主旨。\n\n③ 验证：第一句 reshaping how companies collaborate 是总述，第二句说明将谈 communication 和 project management，属于分点展开，验证第一句就是主题句。",
-        "tips": [
-          "开头出现抽象总述句时，先暂存为主旨候选，再用后文分点验证。",
-          "主旨是“整段在讲什么”，不是后文某个具体例子。"
+          "action": "四选一：开头主题句识别",
+          "focus": "opening topic sentence / reshaping",
+          "success_criteria": "能把第一句的总主题与第二句的分点展开区分开"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Remote work is changing how companies collaborate across teams.",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "Companies have stopped using project management tools.",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "The session is mainly about office building design.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Communication changes will be ignored in the session.",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。开头第一句用 is reshaping 给出总判断：remote work 正在改变跨团队协作方式。In today's session 后面说明会讨论 communication 和 project management，这是分点预告，不是另起主题。B、C、D 都改变或缩小了原句范围。",
+        "tips": [
+          "开头第一句若是抽象总述，先把它当主旨候选。",
+          "we will examine 后面常是展开维度，不一定是主旨本身。",
+          "主旨选项要覆盖整段范围，不能只抓一个细节词。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
         "type": 0,
         "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "product_mapping_reason": "sample revision uses auto-scored multiple_choice for user-reviewable opening-topic practice"
       },
       "quality_flags": [
         "unverified_source"
@@ -103,6 +149,33 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别开头第一句直接给出的主旨",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在听力开头快速锁定主题句，避免被后续分点细节带偏。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -117,49 +190,50 @@
       "card_box_name": "开头点题",
       "card_group_name": "主旨大意",
       "front_content": {
-        "text": "任务：先听音频，再选出最符合开头点题句的主旨。",
-        "task_prompt": "先听音频，再选出与开场句最匹配的主题概括。",
+        "text": "听完后，选出最符合开头点题句的主题概括。",
+        "task_prompt": "central role 是主题信号；poor sleep 的影响是用来验证主题的细节。",
         "task_schema": {
           "action": "四选一：主旨概括",
-          "focus": "主题句与细节句区分",
-          "success_criteria": "选中覆盖范围最大且与开头总述一致的选项"
+          "focus": "central role / learning and memory",
+          "success_criteria": "能选择覆盖 sleep quality 与 learning/memory 关系的概括项"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0050/005002.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "答案：B. Why sleep quality is critical for learning and memory\n\n解析：开头句直接说 Sleep quality plays a central role in how effectively we learn and retain information，主旨是“睡眠质量与学习记忆关系”。A/C/D 都是展开细节或无关推断。",
-        "explanation": "语境揭示：Sleep quality plays a central role in how effectively we learn and retain information. Researchers have found that poor sleep weakens both concentration and long-term recall."
+        "text": "答案：B\n\n解析：Sleep quality plays a central role in how effectively we learn and retain information 直接说明主题是睡眠质量与学习、记忆的关系。",
+        "explanation": "正确答案是 B。central role 提示这是总述句，核心对象是 sleep quality，作用对象是 learn and retain information。第二句 poor sleep weakens concentration and long-term recall 是对主题的具体支撑。A 只谈起床时间，C 换成教学形式，D 过度扩大到医学研究史，均不符合开头点题句。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“开头点题”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "正确答案是 B。central role 提示这是总述句，核心对象是 sleep quality，作用对象是 learn and retain information。第二句 poor sleep weakens concentration and long-term recall 是对主题的具体支撑。A 只谈起床时间，C 换成教学形式，D 过度扩大到医学研究史，均不符合开头点题句。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "central role、main reason、key factor 常提示主旨框架。",
+          "第二句若是在解释第一句，优先用第一句定主题。",
+          "主旨概括要同时保留对象和作用关系。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "How students can wake up earlier every morning",
+          "text": "How students can wake up earlier every morning.",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "Why sleep quality is critical for learning and memory",
+          "text": "Why sleep quality matters for learning and memory.",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "A comparison of classroom and online teaching",
+          "text": "Whether online teaching can replace classroom teaching.",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "The history of medical research in universities",
+          "text": "The history of medical research at universities.",
           "is_correct": false
         }
       ],
@@ -192,30 +266,52 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再选出最符合开头点题句的主旨。",
-        "task_prompt": "先听音频，再选出与开场句最匹配的主题概括。",
+        "text": "听完后，选出最符合开头点题句的主题概括。",
+        "task_prompt": "central role 是主题信号；poor sleep 的影响是用来验证主题的细节。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
           "action": "四选一：主旨概括",
-          "focus": "主题句与细节句区分",
-          "success_criteria": "选中覆盖范围最大且与开头总述一致的选项"
-        }
+          "focus": "central role / learning and memory",
+          "success_criteria": "能选择覆盖 sleep quality 与 learning/memory 关系的概括项"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "How students can wake up earlier every morning.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "Why sleep quality matters for learning and memory.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "Whether online teaching can replace classroom teaching.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "The history of medical research at universities.",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“开头点题”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "正确答案是 B。central role 提示这是总述句，核心对象是 sleep quality，作用对象是 learn and retain information。第二句 poor sleep weakens concentration and long-term recall 是对主题的具体支撑。A 只谈起床时间，C 换成教学形式，D 过度扩大到医学研究史，均不符合开头点题句。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "central role、main reason、key factor 常提示主旨框架。",
+          "第二句若是在解释第一句，优先用第一句定主题。",
+          "主旨概括要同时保留对象和作用关系。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "sample revision uses auto-scored multiple_choice for user-reviewable opening-topic practice"
       },
       "quality_flags": [
         "unverified_source"
@@ -226,6 +322,28 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 central role 信号概括开头主题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户从开头总述句中提炼完整主题，而不是被例证细节或相邻话题干扰。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -236,39 +354,58 @@
       "box": 0,
       "card_no": 3,
       "card_box_code": "0050",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "开头点题",
       "card_group_name": "主旨大意",
       "front_content": {
-        "text": "任务：先听音频，在开头点题触发词出现时点击。",
-        "task_prompt": "先听音频，在说话人明确宣布主题的触发词出现时点击。",
+        "text": "听完后，选出 Today we will focus on 后面宣布的主题。",
+        "task_prompt": "Good morning everyone 是寒暄；focus on 后面的 how... 才是本段主旨。",
         "task_schema": {
-          "action": "时间窗口点击：点题触发词定位",
-          "focus": "today we will focus on",
-          "success_criteria": "在点题触发词出现时点击，而非在背景寒暄时点击"
+          "action": "四选一：点题触发句匹配",
+          "focus": "Today we will focus on",
+          "success_criteria": "能过滤开场寒暄，并选出议程宣告句后的主题内容"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0050/005003.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "答案窗口：today we will focus on（约第 2.7 秒）\n\n解析：Good morning everyone 是寒暄，不是主题。today we will focus on 才是开场点题切换点。",
-        "explanation": "语境揭示：Good morning everyone. Today we will focus on how small pricing changes influence consumer decisions in online stores."
+        "text": "答案：B\n\n解析：Today we will focus on 后面直接宣布主题：how small pricing changes influence consumer decisions in online stores。Good morning everyone 只是寒暄。",
+        "explanation": "正确答案是 B。开头先出现 Good morning everyone，这是场景寒暄；真正的点题触发句是 Today we will focus on。focus on 后面完整说明主题：small pricing changes 如何影响 online stores 中的 consumer decisions。A 停在寒暄，C 把 influence 改成 stop changing prices，D 把 online stores 换成 physical stores。"
       },
       "analysis_content": {
-        "text": "① 识别信号：today we will focus on、today's topic is、what I want to discuss today is 都是高频点题触发词。\n\n② 核心规律：听力开头常先寒暄再点题，真正主旨出现在“议程宣告句”里，不在问候句里。\n\n③ 验证：Good morning 仅建立场景；focus on 后才出现主题内容 pricing changes influence decisions，因此触发词窗口应落在 focus on 开始处。",
+        "text": "正确答案是 B。开头先出现 Good morning everyone，这是场景寒暄；真正的点题触发句是 Today we will focus on。focus on 后面完整说明主题：small pricing changes 如何影响 online stores 中的 consumer decisions。A 停在寒暄，C 把 influence 改成 stop changing prices，D 把 online stores 换成 physical stores。",
         "tips": [
-          "先把问候句过滤掉，再捕捉议程宣告词。",
-          "focus on 后面紧跟的名词短语通常就是主旨核心。"
+          "听到 Today we will focus on，要马上准备接主题。",
+          "寒暄句不承担主旨信息。",
+          "主旨选项不能改换场景或把影响关系改成建议。"
         ]
       },
-      "options": null,
-      "eliminable_items": null,
-      "time_window_ms": [
-        2300,
-        4200
+      "options": [
+        {
+          "key": "A",
+          "text": "The speaker only greets the audience.",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "How small pricing changes affect online consumer decisions.",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "Why online stores should stop changing prices completely.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "How customers choose physical stores near home.",
+          "is_correct": false
+        }
       ],
+      "eliminable_items": null,
       "audio": {
         "url": "ai_tts/cet4/0050/005003.mp3",
         "duration_ms": 9528,
@@ -295,31 +432,54 @@
         "box_name": "开头点题",
         "box_prefix": "0050"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，在开头点题触发词出现时点击。",
-        "task_prompt": "先听音频，在说话人明确宣布主题的触发词出现时点击。",
+        "text": "听完后，选出 Today we will focus on 后面宣布的主题。",
+        "task_prompt": "Good morning everyone 是寒暄；focus on 后面的 how... 才是本段主旨。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "时间窗口点击：点题触发词定位",
-          "focus": "today we will focus on",
-          "success_criteria": "在点题触发词出现时点击，而非在背景寒暄时点击"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：today we will focus on、today's topic is、what I want to discuss today is 都是高频点题触发词。\n\n② 核心规律：听力开头常先寒暄再点题，真正主旨出现在“议程宣告句”里，不在问候句里。\n\n③ 验证：Good morning 仅建立场景；focus on 后才出现主题内容 pricing changes influence decisions，因此触发词窗口应落在 focus on 开始处。",
-        "tips": [
-          "先把问候句过滤掉，再捕捉议程宣告词。",
-          "focus on 后面紧跟的名词短语通常就是主旨核心。"
+          "action": "四选一：点题触发句匹配",
+          "focus": "Today we will focus on",
+          "success_criteria": "能过滤开场寒暄，并选出议程宣告句后的主题内容"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "The speaker only greets the audience.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "How small pricing changes affect online consumer decisions.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "Why online stores should stop changing prices completely.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "How customers choose physical stores near home.",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 B。开头先出现 Good morning everyone，这是场景寒暄；真正的点题触发句是 Today we will focus on。focus on 后面完整说明主题：small pricing changes 如何影响 online stores 中的 consumer decisions。A 停在寒暄，C 把 influence 改成 stop changing prices，D 把 online stores 换成 physical stores。",
+        "tips": [
+          "听到 Today we will focus on，要马上准备接主题。",
+          "寒暄句不承担主旨信息。",
+          "主旨选项不能改换场景或把影响关系改成建议。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
         "type": 2,
         "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "product_mapping_reason": "sample revision replaces legacy timing click with auto-scored multiple_choice for a self-contained opening-topic task"
       },
       "quality_flags": [
         "unverified_source"
@@ -327,6 +487,33 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "过滤寒暄并识别 focus on 后的开头主题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在讲座或说明类听力中抓住议程宣告句，稳定定位主旨。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
