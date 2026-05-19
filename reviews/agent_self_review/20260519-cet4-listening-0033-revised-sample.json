@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0001-revised-sample",
-  "created_at": "2026-05-14T10:58:39+08:00",
+  "review_id": "20260519-cet4-listening-0033-revised-sample",
+  "created_at": "2026-05-19T13:23:44+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测考点",
+    "group": "细节捕捉",
+    "box": "地点",
     "box_prefixes": [
-      "0001"
+      "0033"
     ],
     "card_ids": [
-      "000101",
-      "000102",
-      "000103"
+      "003301",
+      "003302",
+      "003303"
     ]
   },
   "specs_read": [
@@ -26,6 +26,7 @@
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json",
     "spec/card-quality-audit.json"
   ],
   "sample_policy": {
@@ -34,20 +35,20 @@
   },
   "cards": [
     {
-      "card_id": "000101",
+      "card_id": "003301",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "3",
+        "box": "地点",
+        "box_prefix": "0033"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别原因类听力考点",
+        "main_training_goal": "绑定地点与集合功能",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +67,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户先锁定原因题，避免被 data 等局部词误导。",
+        "exam_value": "训练用户把地点和流程动作绑定，避免把集合点误判为正式活动地点。",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -87,20 +88,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000102",
+      "card_id": "003302",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "3",
+        "box": "地点",
+        "box_prefix": "0033"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别态度类听力考点",
+        "main_training_goal": "区分经过地点和办理地点",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,7 +118,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户听出态度题信号，提前准备捕捉评价词和转折。",
+        "exam_value": "训练用户在路线型听力中区分路标和真正目的地，避免被先出现的地点带偏。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -138,20 +139,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000103",
+      "card_id": "003303",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "1",
-        "box": "根据选项预测考点",
-        "box_prefix": "0001"
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "3",
+        "box": "地点",
+        "box_prefix": "0033"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别建议类听力考点",
+        "main_training_goal": "绑定人群、地点和等候动作",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,7 +171,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把建议信号转化为答案预期，提升听后抓动作的效率。",
+        "exam_value": "训练用户在交通或通知场景中绑定人群、地点和行动要求，减少只记地点但忘记适用对象的错误。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -193,17 +194,17 @@
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample now moves from recognizing a reason test point, to applying attitude-question prediction, to transferring the same method to suggestion/action prediction.",
+    "box_progression": "The revised sample moves from recognizing a meeting point, to applying route-versus-registration-place distinction, to transferring location-action binding to a platform waiting instruction.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about predicting the likely test point from the listening cue.",
+      "All three cards use multiple_choice because this box needs explicit answerability for location detail capture.",
       "Formal approval still needs user confirmation and separate audio QA."
     ],
     "representative_cards": [
-      "000101",
-      "000102",
-      "000103"
+      "003301",
+      "003302",
+      "003303"
     ],
-    "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
+    "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -211,9 +212,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "000101",
-        "000102",
-        "000103"
+        "003301",
+        "003302",
+        "003303"
       ],
       "card_count": 3,
       "issue_count": 6,

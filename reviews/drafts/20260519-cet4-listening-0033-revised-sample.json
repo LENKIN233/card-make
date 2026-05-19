@@ -1,0 +1,280 @@
+{
+  "draft_id": "20260519-cet4-listening-0033-revised-sample",
+  "created_at": "2026-05-19T13:23:44+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0033 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "细节捕捉",
+    "box": "地点",
+    "box_prefix": "0033",
+    "candidate_for_existing_card_ids": [
+      "003301",
+      "003302",
+      "003303"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "003301",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "3",
+        "box_name": "地点",
+        "box_prefix": "0033"
+      },
+      "front": {
+        "text": "听完后，选出 west lobby 的作用。",
+        "task_prompt": "地点题不要只记地名；听到 west lobby 后继续抓 meet。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0033/003301.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "It is where visitors should meet first."
+          },
+          {
+            "key": "B",
+            "text": "It is the main auditorium for the event."
+          },
+          {
+            "key": "C",
+            "text": "It is the office where visitors register."
+          },
+          {
+            "key": "D",
+            "text": "It is the exit visitors use after the event."
+          }
+        ],
+        "task_schema": {
+          "action": "选择地点功能",
+          "focus": "west lobby 与 meet 的集合点绑定",
+          "success_criteria": "能说明 west lobby 是 visitors 先集合的地点，而不是 main auditorium"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0033/003301.mp3",
+        "duration_ms": 5712,
+        "transcript": "Visitors should meet in the west lobby before being guided into the main auditorium.",
+        "path": "ai_tts/cet4/0033/003301.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。Visitors should meet in the west lobby 直接把 west lobby 和 meet 绑定，说明它是先集合的地点；before being guided into the main auditorium 才说明之后会进入主礼堂。地点题经常同句给出两个场所，一个是流程起点，一个是正式场地。B 把 main auditorium 偷换成 west lobby；C、D 没有原句依据。",
+        "tips": [
+          "地点后要追动作动词：meet/register/wait/enter。",
+          "同句多个地点时，先判断每个地点在流程中的功能。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "绑定地点与集合功能",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把地点和流程动作绑定，避免把集合点误判为正式活动地点。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "003302",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "3",
+        "box_name": "地点",
+        "box_prefix": "0033"
+      },
+      "front": {
+        "text": "听完后，选出真正办理登记的地点。",
+        "task_prompt": "路线里的第一个地点不一定是答案；题目问 register，就找 at 后面的办理点。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0033/003302.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "The exhibition hall."
+          },
+          {
+            "key": "B",
+            "text": "The second-floor service desk."
+          },
+          {
+            "key": "C",
+            "text": "The underground parking area."
+          },
+          {
+            "key": "D",
+            "text": "The outdoor ticket gate."
+          }
+        ],
+        "task_schema": {
+          "action": "选择业务动作地点",
+          "focus": "register at the second-floor service desk 的动作地点绑定",
+          "success_criteria": "能排除路过点 exhibition hall，锁定 register 对应的 service desk"
+        }
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0033/003302.mp3",
+        "duration_ms": 5352,
+        "transcript": "Go past the exhibition hall and register at the second-floor service desk.",
+        "path": "ai_tts/cet4/0033/003302.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 B。Go past the exhibition hall 只是路线提示，说明先经过展厅；register at the second-floor service desk 才是办理登记的动作地点。地点题很容易用第一个出现的场所做干扰，真正答案要看 register、collect、submit 这类核心动作后接的地点。A 是经过点，C、D 没有音频依据。",
+        "tips": [
+          "先出现的地点可能只是路标，不一定是目的地。",
+          "业务类地点题要抓 register/check in/submit 后面的 at/in。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分经过地点和办理地点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在路线型听力中区分路标和真正目的地，避免被先出现的地点带偏。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "003303",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "3",
+        "box_name": "地点",
+        "box_prefix": "0033"
+      },
+      "front": {
+        "text": "听完后，选出 coastal line 乘客应该等候的地点。",
+        "task_prompt": "地点题要把人群、地点和动作三者绑住：coastal line passengers + wait + platform 4。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0033/003303.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "On platform 4."
+          },
+          {
+            "key": "B",
+            "text": "At the replacement train office."
+          },
+          {
+            "key": "C",
+            "text": "At the coastal line ticket gate."
+          },
+          {
+            "key": "D",
+            "text": "In the station waiting room."
+          }
+        ],
+        "task_schema": {
+          "action": "选择指定人群的等候地点",
+          "focus": "coastal line passengers 与 wait on platform 4 的绑定",
+          "success_criteria": "能说明 coastal line 乘客应在 platform 4 等 replacement train"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0033/003303.mp3",
+        "duration_ms": 6624,
+        "transcript": "Passengers for the coastal line should wait on platform 4 until the replacement train arrives.",
+        "path": "ai_tts/cet4/0033/003303.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。Passengers for the coastal line should wait on platform 4 中，coastal line passengers 是人群，should wait 是动作，platform 4 是地点，三者必须一起绑定。until the replacement train arrives 只是补充等候原因和时间边界，不改变地点答案。B、C、D 都把地点换成了音频里没有说的场所。",
+        "tips": [
+          "地点细节题常要绑定“谁 + 在哪里 + 做什么”。",
+          "听到 platform/gate/desk 后，继续确认它对应 wait、board 还是 register。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "绑定人群、地点和等候动作",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在交通或通知场景中绑定人群、地点和行动要求，减少只记地点但忘记适用对象的错误。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ]
+}
