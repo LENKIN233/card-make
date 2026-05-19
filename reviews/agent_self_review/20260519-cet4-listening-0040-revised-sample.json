@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0002-revised-sample",
-  "created_at": "2026-05-14T12:38:37+08:00",
+  "review_id": "20260519-cet4-listening-0040-revised-sample",
+  "created_at": "2026-05-19T17:39:05+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测信号词",
+    "group": "推理判断",
+    "box": "说话意图",
     "box_prefixes": [
-      "0002"
+      "0040"
     ],
     "card_ids": [
-      "000201",
-      "000202",
-      "000203"
+      "004001",
+      "004002",
+      "004003"
     ]
   },
   "specs_read": [
@@ -26,6 +26,8 @@
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/knowledge-map.json",
     "spec/card-quality-audit.json"
   ],
   "sample_policy": {
@@ -34,20 +36,20 @@
   },
   "cards": [
     {
-      "card_id": "000201",
+      "card_id": "004001",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "group_id": "4",
+        "group": "推理判断",
+        "box_id": "0",
+        "box": "说话意图",
+        "box_prefix": "0040"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "预测让步加原因信号词组合",
+        "main_training_goal": "从礼貌问句中推断真实请求动作",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -66,7 +68,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户在听前预判反预期和原因结构，降低听到长句时的处理负担。",
+        "exam_value": "训练用户在 CET4 听力中把礼貌表达还原成真实行动要求，避免把问句当普通提问。",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -87,20 +89,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000202",
+      "card_id": "004002",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "group_id": "4",
+        "group": "推理判断",
+        "box_id": "0",
+        "box": "说话意图",
+        "box_prefix": "0040"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别转折信号词 however",
+        "main_training_goal": "区分抱怨铺垫和推动决策的真实意图",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -117,7 +119,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户把 however 后的信息当成听力判断的高权重点。",
+        "exam_value": "帮助用户在会议/讨论类听力中抓住说话人真正想推进的动作，而不是被负面铺垫带偏。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -138,20 +140,20 @@
       "recommendation": "Candidate sample can be shown for user confirmation of content direction."
     },
     {
-      "card_id": "000203",
+      "card_id": "004003",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "0",
-        "group": "听前预测",
-        "box_id": "2",
-        "box": "根据选项预测信号词",
-        "box_prefix": "0002"
+        "group_id": "4",
+        "group": "推理判断",
+        "box_id": "0",
+        "box": "说话意图",
+        "box_prefix": "0040"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别句首原因信号词 since",
+        "main_training_goal": "识别直接要求中的动作、截止时间和目的边界",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -170,7 +172,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把原因信号词和结果动作绑定，避免只记 isolated words。",
+        "exam_value": "训练用户在任务安排类听力中区分要求、截止时间和目的，减少把目的从句误选为任务的错误。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -193,17 +195,17 @@
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample now moves from recognizing a combined although/because structure, to applying however contrast detection, to transferring the method to since cause-effect prediction.",
+    "box_progression": "The revised sample moves from recognizing a polite request, to applying intention reasoning after a complaint, to transferring the method to a direct request with a purpose clause.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about predicting or identifying signal words from listening cues.",
+      "All three cards use multiple_choice intentionally because speaker intention requires a checkable selected action in this sample.",
       "Formal approval still needs user confirmation and separate audio QA."
     ],
     "representative_cards": [
-      "000201",
-      "000202",
-      "000203"
+      "004001",
+      "004002",
+      "004003"
     ],
-    "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
+    "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -211,9 +213,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "000201",
-        "000202",
-        "000203"
+        "004001",
+        "004002",
+        "004003"
       ],
       "card_count": 3,
       "issue_count": 6,

@@ -1,0 +1,297 @@
+{
+  "draft_id": "20260519-cet4-listening-0040-revised-sample",
+  "created_at": "2026-05-19T17:39:05+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0040 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "推理判断",
+    "box": "说话意图",
+    "box_prefix": "0040",
+    "candidate_for_existing_card_ids": [
+      "004001",
+      "004002",
+      "004003"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "004001",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "0",
+        "box_name": "说话意图",
+        "box_prefix": "0040"
+      },
+      "front": {
+        "text": "听完后，选出说话人真正想让对方做的事。",
+        "task_prompt": "表面是 Could you possibly...?，但后面的 street noise 说明这是一个请求。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一：礼貌问句意图识别",
+          "focus": "从礼貌问句推断真实请求",
+          "success_criteria": "能把 Could you possibly...? 还原成具体行动要求"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Close the window.",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "Start the recording again.",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "Move the microphone outside.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Speak more loudly near the window.",
+            "is_correct": false
+          }
+        ]
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0040/004001.mp3",
+        "duration_ms": 6816,
+        "transcript": "Could you possibly close the window? The recording is picking up too much street noise.",
+        "path": "ai_tts/cet4/0040/004001.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。说话意图题不要只看句子形式：Could you possibly...? 在听力里常常不是询问能力，而是礼貌请求。后一句 The recording is picking up too much street noise 解释了为什么要关窗，所以真实行动目标是 close the window。B 把后果扩大成重录，C 改变了设备位置，D 与 street noise 的问题方向相反。",
+        "tips": [
+          "礼貌问句后面接原因时，优先还原成“希望对方做什么”。",
+          "意图题要选可执行动作，不选背景原因本身。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "从礼貌问句中推断真实请求动作",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在 CET4 听力中把礼貌表达还原成真实行动要求，避免把问句当普通提问。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "004002",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "0",
+        "box_name": "说话意图",
+        "box_prefix": "0040"
+      },
+      "front": {
+        "text": "听完后，选出说话人想推动团队做什么。",
+        "task_prompt": "不要只抓 repeating the same points；真正意图在 should decide and move forward。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一：从抱怨推断行动目标",
+          "focus": "区分重复讨论的抱怨和推动决策的意图",
+          "success_criteria": "能选出说话人希望团队立刻推进的行为"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Collect more information before the meeting.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "Stop repeating points and choose an option.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "Postpone the decision until next week.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Ask one member to leave the discussion.",
+            "is_correct": false
+          }
+        ]
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0040/004002.mp3",
+        "duration_ms": 7272,
+        "transcript": "Let's not spend another hour repeating the same points; we should decide on one option and move forward.",
+        "path": "ai_tts/cet4/0040/004002.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 B。这类意图题常先给出不满，再给出真正目标。not spend another hour repeating the same points 只是排除旧做法；we should decide on one option and move forward 才是可执行意图。A 无中生有，C 与 move forward 相反，D 偷换成让某个人离开。做同类题时，把“不要继续做什么”和“现在应该做什么”分开听。",
+        "tips": [
+          "听到 not...; we should...，后半句通常更接近真实意图。",
+          "选项必须对应行动目标，不能只复述抱怨。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分抱怨铺垫和推动决策的真实意图",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在会议/讨论类听力中抓住说话人真正想推进的动作，而不是被负面铺垫带偏。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "004003",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "0",
+        "box_name": "说话意图",
+        "box_prefix": "0040"
+      },
+      "front": {
+        "text": "听完后，选出说话人对对方提出的直接要求。",
+        "task_prompt": "I need you to 后面是要求；so we can 后面是目的，不要把目的当成对方要做的事。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一：直接要求与目的边界",
+          "focus": "识别 I need you to 的行动要求",
+          "success_criteria": "能区分 listener 要做的动作和说话人说明的目的"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Brief the client before noon.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "Send the revised slides before noon.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "Ask the client to delay the briefing.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Prepare a new topic for the meeting.",
+            "is_correct": false
+          }
+        ]
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0040/004003.mp3",
+        "duration_ms": 5880,
+        "transcript": "I need you to send the revised slides before noon so we can brief the client in time.",
+        "path": "ai_tts/cet4/0040/004003.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 B。I need you to... 是很强的意图触发结构，后面紧跟对听者的具体任务：send the revised slides before noon。so we can brief the client in time 解释为什么要在中午前完成，但不是听者被要求执行的动作。A 把目的错当任务，C 与 in time 相反，D 没有文本依据。遇到直接要求题，先抓 I need you to 后面的动词短语，再看时间限制。",
+        "tips": [
+          "I need you to 后面通常就是对方要做的动作。",
+          "so we can 常说明目的，不能自动当成正确行动选项。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别直接要求中的动作、截止时间和目的边界",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在任务安排类听力中区分要求、截止时间和目的，减少把目的从句误选为任务的错误。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ],
+  "review_limits": [
+    "Candidate sample only; this draft is not formal user-approved product content.",
+    "No reviews/approved_batches record is created by this draft.",
+    "Audio text was reviewed for task fit, but audio file quality still needs separate QA before formal use."
+  ]
+}

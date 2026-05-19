@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0010-existing-sample",
-  "created_at": "2026-05-14T13:20:42+08:00",
+  "review_id": "20260519-cet4-listening-0040-existing-sample",
+  "created_at": "2026-05-19T17:39:05+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
-    "group": "语音现象",
-    "box": "连读",
+    "group": "推理判断",
+    "box": "说话意图",
     "box_prefixes": [
-      "0010"
+      "0040"
     ],
     "card_ids": [
-      "001001",
-      "001002",
-      "001003"
+      "004001",
+      "004002",
+      "004003"
     ]
   },
   "specs_read": [
@@ -26,6 +26,8 @@
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/knowledge-map.json",
     "spec/card-quality-audit.json"
   ],
   "sample_policy": {
@@ -34,20 +36,20 @@
   },
   "cards": [
     {
-      "card_id": "001001",
+      "card_id": "004001",
       "interaction_id": "flip",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
+        "group_id": "4",
+        "group": "推理判断",
         "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
+        "box": "说话意图",
+        "box_prefix": "0040"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别 consonant-vowel 连读",
+        "main_training_goal": "从礼貌问句中推断真实请求动作",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -61,12 +63,12 @@
         "card_prototype": "integrated_micro_drill",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
           "audio_generation_method": "TTS_AI_generated",
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "音频文本有 turn off 这类连读点，但原卡没有让用户定位具体连读位置。",
+        "exam_value": "原音频适合训练礼貌请求识别，但原卡没有可判定答案形态。",
         "box_progression_role": "recognition",
         "review_status": "block"
       },
@@ -78,148 +80,142 @@
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "Front asks for a generic judgment and does not name a concrete connected-speech target.",
-        "The analysis incorrectly talks about structure signals rather than pronunciation linkage.",
-        "The flip interaction does not provide a checkable answer for the listening micro-skill."
+        "Flip self-assessment asks for a broad intention judgment without a visible answer set, so the task is not auto-checkable.",
+        "Analysis repeats generic structure-signal language instead of explaining polite-question-as-request reasoning."
       ],
       "minor_issues": [
-        "TTS text and audio quality have not been reviewed separately."
+        "Audio file quality is not formally reviewed for release use."
       ],
-      "recommendation": "Revise before user review; expose a concrete connected-speech location and explanation."
+      "recommendation": "Rewrite as a concrete multiple-choice request-intention card before user review."
     },
     {
-      "card_id": "001002",
+      "card_id": "004002",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
+        "group_id": "4",
+        "group": "推理判断",
         "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
+        "box": "说话意图",
+        "box_prefix": "0040"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别连续短词中的连读",
+        "main_training_goal": "区分抱怨铺垫和推动决策的真实意图",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "foundation",
-          "secondary": [
-            "pass"
-          ]
+          "primary": "pass",
+          "secondary": []
         },
-        "card_prototype": "solving_action",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
           "audio_generation_method": "TTS_AI_generated",
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "多选形式适合定位连读，但当前选项是策略口号，不是音频片段。",
+        "exam_value": "原选项方向基本可用，但解析和任务说明仍停留在模板层，不能证明 box 质量。",
         "box_progression_role": "application",
         "review_status": "block"
       },
       "blocker_scan": {
-        "logic_error": true,
+        "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": true,
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "The correct option can be selected without listening because it is a meta-strategy statement.",
-        "The options do not represent possible connected-speech chunks.",
-        "The analysis does not explain pick it up / up at style linking."
+        "The answer direction is plausible, but the explanation is generic and does not teach the not...; we should... intention pattern.",
+        "The front does not explicitly warn against choosing the complaint itself rather than the intended action."
       ],
       "minor_issues": [
-        "The card should test sound-to-text decoding, not general learning behavior."
+        "Distractors need tighter alignment with common intention-question mistakes."
       ],
-      "recommendation": "Block this sample; rewrite options as plausible heard chunks."
+      "recommendation": "Revise wording and analysis instead of treating the current card as a user-ready sample."
     },
     {
-      "card_id": "001003",
+      "card_id": "004003",
       "interaction_id": "flip",
       "knowledge_ref": {
         "library_id": "0",
         "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
+        "group_id": "4",
+        "group": "推理判断",
         "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
+        "box": "说话意图",
+        "box_prefix": "0040"
       },
       "status": "block",
       "quality_metadata": {
-        "main_training_goal": "识别问句中的连读位置",
+        "main_training_goal": "识别直接要求中的动作、截止时间和目的边界",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "foundation",
+          "primary": "pass",
           "secondary": [
-            "pass"
+            "high_score"
           ]
         },
         "card_prototype": "integrated_micro_drill",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
           "audio_generation_method": "TTS_AI_generated",
           "tts_text_reviewed": false,
           "tts_audio_reviewed": false
         },
-        "exam_value": "音频文本有 ask about 这类可训练连读点，但原卡没有给出可执行判断。",
+        "exam_value": "原音频有 I need you to 这种强意图触发结构，但原卡依赖 unsupported timing-click 行为。",
         "box_progression_role": "transfer",
         "review_status": "block"
       },
       "blocker_scan": {
-        "logic_error": true,
+        "logic_error": false,
         "language_error": false,
         "inappropriate_wording": false,
         "low_knowledge_density": true,
         "not_meeting_requirement": true,
         "reverse_engineered_front": false,
         "fake_source_claim": false,
-        "low_quality_variation": true
+        "low_quality_variation": false
       },
       "major_issues": [
-        "Front is generic and does not ask the learner to identify a connected-speech chunk.",
-        "The analysis again uses structure-signal template text instead of pronunciation explanation.",
-        "The card mentions click anchoring in analysis while rendering as flip."
+        "The card depends on a legacy timing-click behavior that is downcast to flip and is not a supported core interaction for authoring.",
+        "It asks for trigger-word timing rather than the actual speaker intention, which weakens the 0040 box fit."
       ],
       "minor_issues": [
-        "Interaction and answer form should be aligned before user review."
+        "The purpose clause should be used as a distractor boundary, not as a click window."
       ],
-      "recommendation": "Block this sample; rewrite as a concrete connected-speech multiple-choice card."
+      "recommendation": "Rewrite as a multiple-choice card that distinguishes request action from purpose clause."
     }
   ],
   "batch_review": {
     "status": "blocked",
-    "box_progression": "The underlying transcripts can support connected-speech training, but the existing cards do not expose actual linked chunks or pronunciation mechanisms.",
+    "box_progression": "The existing sample has usable source transcripts for speaker-intention training, but it mixes uncheckable flip, generic template analysis, and unsupported timing-click behavior.",
     "repetition_or_gap_risks": [
-      "All three fronts are nearly identical.",
-      "Only one card has choices, and those choices are not audio chunks.",
-      "The analyses repeat logic-signal paragraphs from unrelated listening boxes.",
-      "TTS text and audio have not been reviewed as separate quality surfaces."
+      "The first card does not provide an answer set for a checkable intention task.",
+      "The second card has a plausible answer but does not teach the intention mechanism clearly enough.",
+      "The third card trains trigger timing rather than speaker intention and relies on a non-core interaction."
     ],
     "representative_cards": [
-      "001001",
-      "001002",
-      "001003"
+      "004001",
+      "004002",
+      "004003"
     ],
-    "next_step": "Do not ask for user confirmation on this sample. Draft a revised 3-card candidate sample focused on turn off, pick it up at, and ask about connected speech."
+    "next_step": "Do not ask for user confirmation on this existing sample. Draft a revised 3-card candidate sample using supported multiple_choice interactions."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
@@ -227,9 +223,9 @@
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "001001",
-        "001002",
-        "001003"
+        "004001",
+        "004002",
+        "004003"
       ],
       "card_count": 3,
       "issue_count": 6,
