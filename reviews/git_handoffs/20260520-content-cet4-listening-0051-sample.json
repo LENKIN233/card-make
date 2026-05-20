@@ -4,7 +4,7 @@
   "agent": "codex",
   "branch": "content/cet4-listening-0051-sample",
   "base_branch": "fix/review-findings-card-contract",
-  "commit_sha": "9693e78ee2f5398e21b94022b4bdb1d158f6a6e9",
+  "commit_sha": "76df1ca363a25bb60452cb0c88d7af8d83e7eef4",
   "push_ref": "origin/content/cet4-listening-0051-sample",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/31",
   "PR_state": "OPEN",
@@ -23,41 +23,50 @@
     ],
     "touched_paths": [
       "card_boxes_json/card_boxes_seed_cet4_listening_0051.json",
-      "reviews/drafts/20260520-cet4-listening-0051-revised-sample.json",
       "reviews/agent_self_review/20260520-cet4-listening-0051-existing-sample.json",
       "reviews/agent_self_review/20260520-cet4-listening-0051-revised-sample.json",
-      "reviews/agent_self_review/*.json",
-      "reports/card_quality_audit_report.json",
-      "reports/card_validation_report.json"
+      "reviews/audit_scopes/20260520-cet4-listening-0051-scope-audit.json",
+      "reviews/drafts/20260520-cet4-listening-0051-revised-sample.json",
+      "reviews/git_handoffs/20260520-content-cet4-listening-0051-review-evidence-fix.json",
+      "reviews/git_handoffs/20260520-content-cet4-listening-0051-sample.json"
     ]
   },
   "validation": [
     {
-      "command": "node scripts/audit_card_quality.mjs --write-report",
-      "result": "passed; corpus_digest=4f1fca463145de35114dac86cdc930d8d0eb1cdcc53dc92dd3f3da898d0fbdce; scoped 005101-005103 issues are source_risk only"
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 005101,005102,005103 --write-scope-report reviews/audit_scopes/20260520-cet4-listening-0051-scope-audit.json",
+      "result": "passed; corpus_digest=4f1fca463145de35114dac86cdc930d8d0eb1cdcc53dc92dd3f3da898d0fbdce; scoped 005101-005103 issues are source_risk only; hard_blocker=0"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
-      "result": "passed; cards=2414; errors=0; warnings=0"
+      "result": "passed; cards=2414; errors=0; warnings=0; global report restored to base before commit to keep content PR scoped"
     },
     {
       "command": "node scripts/validate_harness.mjs",
-      "result": "passed; only recorded upstream group alignment warnings"
+      "result": "passed; recorded upstream group alignment warnings plus allowed stale global audit warning backed by scoped audit evidence"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract",
+      "result": "passed; primary_scope_prefixes=[0051]; no global report or non-scope review churn in PR diff"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "passed; cards=2414; errors=0; warnings=0"
     },
     {
       "command": "git diff --check",
       "result": "passed"
     },
     {
-      "command": "git diff -- reviews/approved_batches",
+      "command": "git diff --name-status origin/fix/review-findings-card-contract -- reviews/approved_batches",
       "result": "passed; no approved batch records changed"
     }
   ],
-  "local_status": "clean before handoff file creation; handoff is committed separately after validation",
+  "local_status": "clean after scoped audit cleanup commit 76df1ca; this handoff JSON is refreshed in a follow-up evidence commit",
   "remaining_risks": [
     "This is a candidate-only 3-card sample for user review, not formal product approval.",
     "The text source remains simulated/unverified legacy content_pool material and must not be labeled true exam content.",
-    "TTS text was reviewed for sample design, but TTS audio was not formally reviewed.",
+    "The scoped audit intentionally reports source_risk for all three cards; there are no hard_blocker/content_risk/review_gap issues in this sample scope.",
+    "The global audit and card validation reports were restored to base so this content PR does not carry merge-order-dependent report churn.",
     "No reviews/approved_batches record was created; user confirmation is required before batch expansion or formal approval."
   ],
   "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample"
