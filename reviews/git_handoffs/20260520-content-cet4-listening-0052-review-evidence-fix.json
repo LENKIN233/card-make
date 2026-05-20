@@ -1,0 +1,52 @@
+{
+  "handoff_id": "20260520-content-cet4-listening-0052-review-evidence-fix",
+  "created_at": "2026-05-20T14:46:58+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0052-sample",
+  "base_branch": "fix/review-findings-card-contract",
+  "commit_sha": "66a2c3b5bd560d78aa828860aaa379fae95846e2",
+  "push_ref": "origin/content/cet4-listening-0052-sample",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/32",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_review_evidence_fix",
+    "track": "cet4",
+    "library": "听力",
+    "group": "主旨大意",
+    "box": "重复重点",
+    "box_prefix": "0052",
+    "card_ids": [
+      "005201",
+      "005203"
+    ],
+    "touched_paths": [
+      "reviews/agent_self_review/20260520-cet4-listening-0052-existing-sample.json"
+    ]
+  },
+  "issue_fixed": {
+    "review_finding": "The existing-sample review record captured revised multiple_choice interactions for cards that were flip interactions in the base branch.",
+    "resolution": "Changed the existing-sample interaction_id values for 005201 and 005203 back to flip so the blocked-existing evidence matches origin/fix/review-findings-card-contract."
+  },
+  "validation": [
+    {
+      "command": "node -e '<compare 0052 existing-sample interaction_id values with origin/fix/review-findings-card-contract base card JSON>'",
+      "result": "passed; existing-sample interactions match base for 005201, 005202, 005203"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group alignment warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "review evidence fix committed separately after validation; handoff is committed after the fix commit",
+  "remaining_risks": [
+    "This is a candidate-only review-artifact fix and does not approve formal content.",
+    "The branch remains a draft content sample for user review.",
+    "No reviews/approved_batches record was created."
+  ],
+  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample"
+}
