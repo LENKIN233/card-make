@@ -88,6 +88,7 @@ const REQUIRED_QUALITY_AUDIT_SCOPE_SUMMARY_FIELDS = [
   'by_rule',
 ];
 const QUALITY_AUDIT_SEVERITIES = ['hard_blocker', 'content_risk', 'review_gap', 'source_risk'];
+const PR_SCOPE_VALIDATION_COMMAND = 'node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract';
 
 function resolveWorkspacePath(specPath) {
   return path.resolve(ROOT, specPath);
@@ -1137,10 +1138,42 @@ function validateInteractionPolicy(errors) {
 function validateGitWorkflow(errors) {
   const gitWorkflow = readJson('spec/git-workflow.json');
   const agentEntry = readText('AGENTS.md');
+  const agentHarness = readJson('spec/agent-harness.json');
+  const authorityMap = readJson('spec/authority-map.json');
+  const manifest = readJson('spec/doc-manifest.json');
+  const activePaths = new Set((manifest.active_docs || []).map(doc => doc.path));
   const handoffTemplate = readJson('reviews/git_handoffs/TEMPLATE.json');
 
   if (gitWorkflow.status !== 'active') {
     pushIssue(errors, 'git_workflow_not_active', { status: gitWorkflow.status });
+  }
+  if (!activePaths.has('scripts/validate_pr_scope.mjs')) {
+    pushIssue(errors, 'pr_scope_validator_manifest_entry_missing', {});
+  }
+  if (authorityMap.owners?.content_pr_scope_gate !== 'scripts/validate_pr_scope.mjs') {
+    pushIssue(errors, 'pr_scope_validator_owner_drift', {
+      owner: authorityMap.owners?.content_pr_scope_gate,
+    });
+  }
+  if (!exists('scripts/validate_pr_scope.mjs')) {
+    pushIssue(errors, 'pr_scope_validator_missing', {});
+  } else {
+    const prScopeValidator = readText('scripts/validate_pr_scope.mjs');
+    for (const token of [
+      'content_sample_global_report_changed',
+      'content_sample_non_scope_self_review_changed',
+      'reports/card_quality_audit_report.json',
+      'reports/card_validation_report.json',
+    ]) {
+      if (!prScopeValidator.includes(token)) {
+        pushIssue(errors, 'pr_scope_validator_guard_missing', { token });
+      }
+    }
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('global report refreshes') && guardrail.includes('non-scope self-review')
+  )) {
+    pushIssue(errors, 'agent_harness_pr_scope_guardrail_missing', {});
   }
   if (!agentEntry.includes('## Agent-Managed Git')) {
     pushIssue(errors, 'agent_entry_missing_git_section', {});
@@ -1198,7 +1231,7 @@ function validateGitWorkflow(errors) {
   }
 
   const validationCommands = (gitWorkflow.validation_policy?.before_commit || []).map(entry => entry.command);
-  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_cards.mjs --write-report', 'git diff --check']) {
+  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_cards.mjs --write-report', PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
     if (!validationCommands.includes(command)) {
       pushIssue(errors, 'git_validation_command_missing', { command });
     }
