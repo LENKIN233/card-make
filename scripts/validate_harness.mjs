@@ -153,6 +153,43 @@ function computeCardCorpusFingerprint() {
   };
 }
 
+let cachedCurrentFingerprint = null;
+let cachedCurrentScopedAuditFiles = null;
+
+function currentCardCorpusFingerprint() {
+  if (!cachedCurrentFingerprint) cachedCurrentFingerprint = computeCardCorpusFingerprint();
+  return cachedCurrentFingerprint;
+}
+
+function listScopedAuditReportFiles() {
+  const full = resolveWorkspacePath(SCOPED_AUDIT_REPORT_DIR);
+  if (!fs.existsSync(full) || !fs.statSync(full).isDirectory()) return [];
+  return fs.readdirSync(full)
+    .filter(file => file.endsWith('.json'))
+    .sort()
+    .map(file => `${SCOPED_AUDIT_REPORT_DIR}${file}`);
+}
+
+function currentScopedAuditReportFiles() {
+  if (cachedCurrentScopedAuditFiles) return cachedCurrentScopedAuditFiles;
+
+  const currentDigest = currentCardCorpusFingerprint().digest;
+  cachedCurrentScopedAuditFiles = listScopedAuditReportFiles().filter(file => {
+    const report = readJson(file);
+    return report.report_type === 'scoped_card_quality_audit' &&
+      report.corpus_fingerprint?.digest === currentDigest &&
+      Array.isArray(report.scope?.card_ids) &&
+      report.scope.card_ids.length > 0 &&
+      report.scoped_card_issue_index &&
+      typeof report.scoped_card_issue_index === 'object';
+  });
+  return cachedCurrentScopedAuditFiles;
+}
+
+function allowsStaleGlobalAuditReportForScopedCandidate() {
+  return currentScopedAuditReportFiles().length > 0;
+}
+
 function pushIssue(list, code, details) {
   list.push({ code, ...details });
 }
@@ -440,7 +477,7 @@ function validateContentQuality(errors) {
   }
 }
 
-function validateCardQualityAudit(errors) {
+function validateCardQualityAudit(errors, warnings) {
   const manifest = readJson('spec/doc-manifest.json');
   const activePaths = new Set((manifest.active_docs || []).map(doc => doc.path));
   for (const path of ['spec/card-quality-audit.json', 'scripts/audit_card_quality.mjs']) {
@@ -548,6 +585,10 @@ function validateCardQualityAudit(errors) {
   if (audit.report_freshness_policy?.stale_report_is_harness_error !== true) {
     pushIssue(errors, 'card_quality_audit_stale_report_policy_missing', {});
   }
+  const scopedCandidateException = audit.report_freshness_policy?.candidate_scoped_evidence_exception || '';
+  if (!scopedCandidateException.includes('current scoped audit report') || !scopedCandidateException.includes('validate_pr_scope')) {
+    pushIssue(errors, 'card_quality_audit_scoped_candidate_exception_missing', {});
+  }
 
   const script = readText('scripts/audit_card_quality.mjs');
   for (const ruleId of REQUIRED_QUALITY_AUDIT_RULES) {
@@ -583,15 +624,24 @@ function validateCardQualityAudit(errors) {
   if (!(report.summary?.total_cards > 0)) {
     pushIssue(errors, 'card_quality_audit_report_empty_scope', {});
   }
-  const expectedFingerprint = computeCardCorpusFingerprint();
+  const expectedFingerprint = currentCardCorpusFingerprint();
   const actualFingerprint = report.corpus_fingerprint || {};
+  const allowStaleGlobalReport = allowsStaleGlobalAuditReportForScopedCandidate();
   for (const field of ['algorithm', 'card_dir', 'file_count', 'card_count', 'digest']) {
     if (actualFingerprint[field] !== expectedFingerprint[field]) {
-      pushIssue(errors, 'card_quality_audit_report_stale_or_mismatched', {
+      const details = {
         field,
         expected: expectedFingerprint[field],
         actual: actualFingerprint[field],
-      });
+      };
+      if (allowStaleGlobalReport) {
+        pushIssue(warnings, 'card_quality_audit_global_report_stale_allowed_by_scoped_evidence', {
+          ...details,
+          scoped_reports: currentScopedAuditReportFiles(),
+        });
+      } else {
+        pushIssue(errors, 'card_quality_audit_report_stale_or_mismatched', details);
+      }
     }
   }
   if (!Array.isArray(report.hard_blocker_issues)) {
@@ -793,11 +843,14 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
   }
 
   const report = readJson(auditRecord.report);
-  const currentFingerprint = computeCardCorpusFingerprint();
-  if (auditRecord.corpus_fingerprint !== currentFingerprint.digest) {
+  const currentFingerprint = currentCardCorpusFingerprint();
+  const reportDigest = report.corpus_fingerprint?.digest;
+  const allowStaleGlobalReport = usesGlobalReport && allowsStaleGlobalAuditReportForScopedCandidate();
+  const expectedRecordFingerprint = allowStaleGlobalReport ? reportDigest : currentFingerprint.digest;
+  if (auditRecord.corpus_fingerprint !== expectedRecordFingerprint) {
     pushIssue(errors, 'quality_audit_record_fingerprint_mismatch', {
       source,
-      expected: currentFingerprint.digest,
+      expected: expectedRecordFingerprint,
       actual: auditRecord.corpus_fingerprint,
     });
   }
@@ -808,11 +861,11 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
       report_type: report.report_type,
     });
   }
-  if (report.corpus_fingerprint?.digest !== currentFingerprint.digest) {
+  if (reportDigest !== currentFingerprint.digest && !allowStaleGlobalReport) {
     pushIssue(errors, 'quality_audit_record_links_stale_report', {
       source,
       expected: currentFingerprint.digest,
-      actual: report.corpus_fingerprint?.digest,
+      actual: reportDigest,
     });
   }
 
@@ -1547,7 +1600,7 @@ validateAuthorityMap(errors);
 validateSoftbookRefs(errors, warnings);
 validateUpstreamAlignment(errors, warnings);
 validateContentQuality(errors);
-validateCardQualityAudit(errors);
+validateCardQualityAudit(errors, warnings);
 validateMetadataSchema(errors);
 validateWorkflow(errors);
 validateReviewDirs(errors);
