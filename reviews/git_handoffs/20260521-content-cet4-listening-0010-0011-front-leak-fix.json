@@ -1,0 +1,94 @@
+{
+  "handoff_id": "20260521-content-cet4-listening-0010-0011-front-leak-fix",
+  "created_at": "2026-05-21T02:42:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0010-0011-front-leak-fix",
+  "base_branch": "main",
+  "commit_sha": "3f1b27881df6cdc1091ecba181ec2e31fc1944a8",
+  "push_ref": "origin/content/cet4-listening-0010-0011-front-leak-fix",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/40",
+  "PR_number": 40,
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "track": "cet4",
+    "library": "听力",
+    "group": "语音现象",
+    "boxes": [
+      {
+        "box": "连读",
+        "box_prefix": "0010",
+        "card_ids": [
+          "001001",
+          "001002",
+          "001003"
+        ]
+      },
+      {
+        "box": "弱读",
+        "box_prefix": "0011",
+        "card_ids": [
+          "001101",
+          "001102",
+          "001103"
+        ]
+      }
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0010.json",
+      "card_boxes_json/card_boxes_seed_cet4_listening_0011.json",
+      "reviews/drafts/20260514-cet4-listening-0010-revised-sample.json",
+      "reviews/drafts/20260514-cet4-listening-0011-revised-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0010-revised-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0011-revised-sample.json",
+      "reviews/audit_scopes/20260521-cet4-listening-0010-front-leak-fix-scope-audit.json",
+      "reviews/audit_scopes/20260521-cet4-listening-0011-front-leak-fix-scope-audit.json"
+    ]
+  },
+  "summary": [
+    "Rewrote the first three 0010 连读 fronts so they ask the learner to identify connected-speech positions from audio without naming the correct option in the prompt.",
+    "Rewrote the first three 0011 弱读 fronts so they ask the learner to identify weak-form chunks from audio without naming the correct option in the prompt.",
+    "Kept options, answer keys, back-side explanations, audio bindings, and source-risk boundaries intact.",
+    "Updated draft copies, self-review records, and scoped audit reports; both scopes now have hard_blocker=0 and front_leaks_correct_answer=0."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 001001,001002,001003 --write-scope-report reviews/audit_scopes/20260521-cet4-listening-0010-front-leak-fix-scope-audit.json",
+      "result": "passed; scoped summary hard_blocker=0, front_leaks_correct_answer=0, source_risk=6"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 001101,001102,001103 --write-scope-report reviews/audit_scopes/20260521-cet4-listening-0011-front-leak-fix-scope-audit.json",
+      "result": "passed; scoped summary hard_blocker=0, front_leaks_correct_answer=0, source_risk=6"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed; ok=true, cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group-alignment warnings plus expected stale-global-report warning allowed by current scoped audit evidence"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main",
+      "result": "passed; warning only because this intentional candidate PR touches two adjacent box prefixes: 0010 and 0011"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "gh pr view 40 --json number,url,state,isDraft,mergeable,mergeStateStatus,baseRefName,headRefName,commits",
+      "result": "passed; draft PR #40 open, mergeable, and CLEAN against main"
+    }
+  ],
+  "local_status": "Handoff record added after initial draft PR creation; final branch status was rechecked before delivery.",
+  "remaining_risks": [
+    "Candidate sample only; it is not formal user-approved product content.",
+    "No reviews/approved_batches record was created.",
+    "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+    "TTS audio quality was not separately reviewed for formal use.",
+    "User confirmation is still required before any formal batch approval, content expansion, or merge-to-formal workflow."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
