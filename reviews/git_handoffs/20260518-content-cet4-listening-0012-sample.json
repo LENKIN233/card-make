@@ -4,14 +4,14 @@
   "agent": "codex",
   "branch": "content/cet4-listening-0012-sample",
   "base_branch": "fix/review-findings-card-contract",
-  "commit_sha": "bb03e64e5ea6d284d56bd6b7381e3a814d71a7b9",
+  "commit_sha": "9e129ee7338028dc0e95643ae3c5968e93d49c63",
   "push_ref": "origin/content/cet4-listening-0012-sample",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/15",
   "PR_number": 15,
   "PR_state": "OPEN",
   "is_draft": true,
   "scope": {
-    "change_type": "content_sample",
+    "change_type": "content_candidate_sample",
     "track": "cet4",
     "library": "听力",
     "group": "语音现象",
@@ -24,47 +24,57 @@
     ],
     "touched_paths": [
       "card_boxes_json/card_boxes_seed_cet4_listening_0012.json",
-      "reports/card_quality_audit_report.json",
-      "reports/card_validation_report.json",
       "reviews/agent_self_review/20260518-cet4-listening-0012-existing-sample.json",
+      "reviews/agent_self_review/20260518-cet4-listening-0012-revised-sample.json",
+      "reviews/audit_scopes/20260518-cet4-listening-0012-scope-audit.json",
       "reviews/drafts/20260518-cet4-listening-0012-revised-sample.json",
-      "reviews/agent_self_review/20260518-cet4-listening-0012-revised-sample.json"
+      "reviews/git_handoffs/20260518-content-cet4-listening-0012-sample.json"
     ]
   },
   "summary": [
     "Blocked the existing 0012 sample because fronts were generic and analysis reused unrelated structure-signal wording instead of lost-plosive pronunciation explanation.",
     "Added a revised 3-card candidate sample focused on kept profits, stopped collecting, and next task / strict timing.",
-    "Synchronized the revised candidate sample into the first three cards of card_boxes_seed_cet4_listening_0012.json while keeping needs_review and unverified/simulation source boundaries."
+    "Synchronized the revised candidate sample into the first three cards of card_boxes_seed_cet4_listening_0012.json while keeping needs_review and unverified/simulation source boundaries.",
+    "Refreshed scoped audit evidence and restored global report output to base so this PR only carries the 0012 candidate sample."
   ],
   "validation": [
     {
-      "command": "node scripts/audit_card_quality.mjs --write-report",
-      "result": "passed; ok=true, cards=2414, hard_blocker=0, content_risk=2183, review_gap=2396, source_risk=2288"
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 001201,001202,001203 --write-scope-report reviews/audit_scopes/20260518-cet4-listening-0012-scope-audit.json",
+      "result": "passed; scoped report ok=true, corpus_digest=c78e565e1cbf7003f72a53a8076aeee8c23505408475313de37aeee4eb69efb5, hard_blocker=0, content_risk=0, review_gap=0, source_risk=6"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
-      "result": "passed; ok=true, cards=2414, errors=0, warnings=0"
+      "result": "passed; ok=true, cards=2414, errors=0, warnings=0; global report output restored to base before commit"
     },
     {
       "command": "node scripts/validate_harness.mjs",
-      "result": "passed; only recorded upstream group alignment warnings"
+      "result": "passed; only recorded upstream group alignment warnings plus scoped-evidence warning for stale global audit report"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract",
+      "result": "passed; primary_scope_prefixes=[\"0012\"] and no non-scope report churn retained"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "passed; ok=true, cards=2414, errors=0, warnings=0"
     },
     {
       "command": "git diff --check",
       "result": "passed"
     },
     {
-      "command": "gh pr view 15 --json number,title,state,isDraft,mergeable,baseRefName,headRefName,url,commits",
-      "result": "passed; draft PR #15 open and mergeable against fix/review-findings-card-contract"
+      "command": "git diff --name-status origin/fix/review-findings-card-contract -- reviews/approved_batches",
+      "result": "passed; empty diff, no approved batch was created"
     }
   ],
-  "local_status": "Clean after handoff commit is expected after final validation and push.",
+  "local_status": "clean after scoped audit cleanup commit 9e129ee; this handoff JSON is refreshed in a follow-up evidence commit",
   "remaining_risks": [
     "Candidate sample only; it is not formal user-approved product content.",
+    "Source text remains simulated/unverified legacy content_pool material.",
+    "Scoped audit still reports source_risk for all three cards, with no hard_blocker/content_risk/review_gap issues in the sample scope.",
+    "Global reports were restored to base and are not part of this content PR diff.",
     "No reviews/approved_batches record was created.",
-    "Audio file quality was not separately reviewed for formal use.",
-    "This branch is based on fix/review-findings-card-contract / draft harness PR #7.",
-    "Sibling content sample PRs update report snapshots; refresh validation reports in actual merge order before any integration merge."
+    "TTS text is reviewed for the sample, but TTS audio is not formally reviewed."
   ],
-  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample"
 }
