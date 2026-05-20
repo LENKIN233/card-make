@@ -242,13 +242,37 @@ function extractOptionAnswerHead(optionText) {
   return withoutPickPrefix;
 }
 
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function flexibleTextPattern(value) {
+  return normalizeText(value)
+    .split(/\s+/)
+    .map(escapeRegExp)
+    .join('\\s+');
+}
+
 function isExplanatoryOptionText(optionText) {
   return /[\u4e00-\u9fff]/.test(optionText) &&
     /[，。；;]|空格|主语|谓语|应|需|需要|说明|优先|判断|搭配|后接|修饰|表示/.test(optionText);
 }
 
-function stripVisibleChoiceLists(frontText) {
-  return normalizeText(frontText)
+function stripVisibleChoiceLists(frontText, optionRecords = []) {
+  let text = normalizeText(frontText);
+  for (const option of optionRecords) {
+    const key = normalizeText(option.key);
+    const optionText = normalizeText(option.text);
+    if (!key || !optionText) continue;
+    const optionPattern = flexibleTextPattern(optionText);
+    if (!optionPattern) continue;
+    const visibleOptionPattern = new RegExp(
+      `(^|\\s)${escapeRegExp(key)}\\s*[\\).．、]\\s*${optionPattern}(?=\\s+[A-Z]\\s*[\\).．、]|\\s*$)`,
+      'giu'
+    );
+    text = text.replace(visibleOptionPattern, ' ');
+  }
+  return normalizeText(text)
     .replace(/(?:word bank|词库|[\u4e00-\u9fff]*候选)[^。！？!?]*(?:[。！？!?]|$)/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
@@ -264,7 +288,7 @@ function optionLeakCandidateTexts(optionText) {
 }
 
 function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
-  const normalizedFront = normalizeForSearch(stripVisibleChoiceLists(frontText));
+  const normalizedFront = normalizeForSearch(stripVisibleChoiceLists(frontText, optionRecords));
   if (!normalizedFront) return [];
 
   const fragments = new Set();
@@ -293,6 +317,61 @@ function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
     }
   }
   return [...fragments];
+}
+
+function assertSelfTest(condition, message) {
+  if (!condition) throw new Error(message);
+}
+
+function runSelfTest() {
+  const visibleOptionList = {
+    frontText: '句子填空：The committee has yet to decide _____ the project should be scaled down or completely restructured. 选择正确的连接词： A. that B. what C. whether D. which',
+    optionRecords: [
+      { key: 'A', text: 'that' },
+      { key: 'B', text: 'what' },
+      { key: 'C', text: 'whether' },
+      { key: 'D', text: 'which' },
+    ],
+    answer: { text: 'C' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(visibleOptionList.frontText, visibleOptionList.optionRecords, visibleOptionList.answer).length === 0,
+    'Visible A/B/C/D option lists must not be treated as front-answer leakage.'
+  );
+
+  const leakedPrompt = {
+    frontText: '播放音频后，选出最需要用弱读还原的片段。重点听 have to：to 很轻，不会像单独读单词时那么完整。',
+    optionRecords: [
+      { key: 'A', text: 'have to' },
+      { key: 'B', text: 'finance office' },
+      { key: 'C', text: 'data proposal' },
+      { key: 'D', text: 'before midnight' },
+    ],
+    answer: { text: 'A' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(leakedPrompt.frontText, leakedPrompt.optionRecords, leakedPrompt.answer).includes('have to'),
+    'Prompt text outside the visible option list must still trigger front-answer leakage.'
+  );
+
+  const visibleListAndLeak = {
+    frontText: '重点听 have to 的弱读。 A. have to B. finance office C. data proposal D. before midnight',
+    optionRecords: leakedPrompt.optionRecords,
+    answer: { text: 'A' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(visibleListAndLeak.frontText, visibleListAndLeak.optionRecords, visibleListAndLeak.answer).includes('have to'),
+    'Stripping a visible option row must not hide the same answer leaked elsewhere in the prompt.'
+  );
+
+  return {
+    ok: true,
+    cases: [
+      'visible_option_list_only_is_not_leak',
+      'prompt_answer_text_is_leak',
+      'visible_option_list_does_not_mask_prompt_leak',
+    ],
+  };
 }
 
 function cardLocation(file, card) {
@@ -688,6 +767,11 @@ function readCsvOption(name) {
     .split(',')
     .map(item => item.trim())
     .filter(Boolean);
+}
+
+if (process.argv.includes('--self-test')) {
+  console.log(JSON.stringify(runSelfTest(), null, 2));
+  process.exit(0);
 }
 
 const writeReport = process.argv.includes('--write-report');

@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
@@ -603,6 +604,25 @@ function validateCardQualityAudit(errors, warnings) {
   }
   if (!script.includes('--write-scope-report') || !script.includes('scoped_card_quality_audit')) {
     pushIssue(errors, 'card_quality_audit_script_scoped_report_missing', {});
+  }
+  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak')) {
+    pushIssue(errors, 'card_quality_audit_self_test_missing', {});
+  } else {
+    try {
+      const output = execFileSync(process.execPath, ['scripts/audit_card_quality.mjs', '--self-test'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+      });
+      const selfTest = JSON.parse(output);
+      if (selfTest.ok !== true) {
+        pushIssue(errors, 'card_quality_audit_self_test_failed', { output: selfTest });
+      }
+    } catch (error) {
+      pushIssue(errors, 'card_quality_audit_self_test_failed', {
+        message: error.message,
+        output: String(error.stdout || error.stderr || '').slice(0, 1000),
+      });
+    }
   }
 
   if (!exists('reports/card_quality_audit_report.json')) {
