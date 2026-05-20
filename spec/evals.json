@@ -49,6 +49,16 @@
         "requires_agent_self_review_record",
         "prevents_user_approval_without_record"
       ]
+    },
+    {
+      "id": "GT-CARD-005",
+      "name": "reject_front_answer_leakage",
+      "prompt": "Review a multiple-choice card whose front-side task prompt names the correct option text before the learner chooses.",
+      "expected": [
+        "marks_front_answer_leak_as_hard_blocker",
+        "checks_prompt_text_outside_visible_options",
+        "does_not_salvage_by_adding_more_explanation"
+      ]
     }
   ],
   "scorecard": {

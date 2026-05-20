@@ -25,6 +25,40 @@ const TEMPLATE_ANALYSIS_PATTERNS = [
   /先判断信息结构，再做答案选择，避免词面匹配先行/,
 ];
 
+const ANSWER_LEAK_STOPWORDS = new Set([
+  'a',
+  'an',
+  'and',
+  'are',
+  'as',
+  'at',
+  'be',
+  'because',
+  'been',
+  'being',
+  'between',
+  'by',
+  'for',
+  'from',
+  'in',
+  'into',
+  'is',
+  'it',
+  'its',
+  'of',
+  'or',
+  'that',
+  'the',
+  'these',
+  'this',
+  'those',
+  'to',
+  'was',
+  'were',
+  'with',
+  'without',
+]);
+
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -50,7 +84,20 @@ function textOf(...values) {
 }
 
 function extractFrontText(card) {
-  return textOf(card.front?.text, card.front?.prompt, card.front_content?.text, card.front_content?.task_prompt);
+  return textOf(
+    card.front?.text,
+    card.front?.prompt,
+    card.front?.task_prompt,
+    card.front?.instruction,
+    card.front?.question,
+    card.front?.stem,
+    card.front_content?.text,
+    card.front_content?.prompt,
+    card.front_content?.task_prompt,
+    card.front_content?.instruction,
+    card.front_content?.question,
+    card.front_content?.stem
+  );
 }
 
 function extractAnalysisText(card) {
@@ -110,6 +157,142 @@ function extractAnswerRecord(card, optionRecords) {
 
 function answerMatchesOptions(answerText, optionRecords) {
   return optionRecords.some(option => option.key === answerText || option.text === answerText);
+}
+
+function normalizeForSearch(value) {
+  return normalizeText(value)
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/[’‘]/g, "'")
+    .replace(/[\u2010-\u2015]/g, '-')
+    .replace(/[^a-z0-9\u4e00-\u9fff]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function searchTokens(value) {
+  return normalizeForSearch(value).split(' ').filter(Boolean);
+}
+
+function tokenAppears(normalizedText, token) {
+  if (!normalizedText || !token) return false;
+  if (/[\u4e00-\u9fff]/.test(token)) return normalizedText.includes(token);
+  return normalizedText.split(' ').includes(token);
+}
+
+function containsSearchPhrase(normalizedText, normalizedPhrase) {
+  if (!normalizedText || !normalizedPhrase) return false;
+  if (normalizedPhrase.includes(' ')) {
+    return normalizedText === normalizedPhrase ||
+      normalizedText.startsWith(`${normalizedPhrase} `) ||
+      normalizedText.endsWith(` ${normalizedPhrase}`) ||
+      normalizedText.includes(` ${normalizedPhrase} `);
+  }
+  return tokenAppears(normalizedText, normalizedPhrase);
+}
+
+function isDistinctiveAnswerToken(token) {
+  if (!token) return false;
+  if (/^\d+$/.test(token)) return true;
+  if (/[\u4e00-\u9fff]/.test(token)) return token.length >= 2;
+  return token.length >= 3 && !ANSWER_LEAK_STOPWORDS.has(token);
+}
+
+function dedupeOptionRecords(records) {
+  const seen = new Set();
+  const result = [];
+  for (const record of records) {
+    const key = `${record.key}\0${record.text}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    result.push(record);
+  }
+  return result;
+}
+
+function extractCorrectOptionRecords(optionRecords, answer) {
+  const answerText = normalizeText(answer.text);
+  const normalizedAnswerText = normalizeForSearch(answerText);
+  const byAnswer = answerText
+    ? optionRecords.filter(option =>
+      option.key === answerText ||
+      option.text === answerText ||
+      normalizeForSearch(option.text) === normalizedAnswerText
+    )
+    : [];
+  const byFlag = optionRecords.filter(option => option.is_correct);
+  return dedupeOptionRecords([...byAnswer, ...byFlag]);
+}
+
+function extractOptionAnswerHead(optionText) {
+  const raw = normalizeText(optionText);
+  if (!raw) return '';
+
+  const hasPickPrefix = /^选\s+/.test(raw);
+  const withoutPickPrefix = raw.replace(/^选\s+/, '').trim();
+  const delimiterIndexes = ['：', ':', '（', '(']
+    .map(delimiter => withoutPickPrefix.indexOf(delimiter))
+    .filter(index => index > 0);
+  if (delimiterIndexes.length > 0) {
+    const head = withoutPickPrefix.slice(0, Math.min(...delimiterIndexes)).trim();
+    if (hasPickPrefix || (head.length <= 30 && searchTokens(head).length <= 5 && !/[，。；;]/.test(head))) {
+      return head;
+    }
+  }
+  return withoutPickPrefix;
+}
+
+function isExplanatoryOptionText(optionText) {
+  return /[\u4e00-\u9fff]/.test(optionText) &&
+    /[，。；;]|空格|主语|谓语|应|需|需要|说明|优先|判断|搭配|后接|修饰|表示/.test(optionText);
+}
+
+function stripVisibleChoiceLists(frontText) {
+  return normalizeText(frontText)
+    .replace(/(?:word bank|词库|[\u4e00-\u9fff]*候选)[^。！？!?]*(?:[。！？!?]|$)/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function optionLeakCandidateTexts(optionText) {
+  const raw = normalizeText(optionText);
+  const head = extractOptionAnswerHead(raw);
+  if (head && head !== raw) return [head];
+  if (isExplanatoryOptionText(raw)) return [];
+  if (raw.length > 40 || searchTokens(raw).length > 8) return [];
+  return raw ? [raw] : [];
+}
+
+function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
+  const normalizedFront = normalizeForSearch(stripVisibleChoiceLists(frontText));
+  if (!normalizedFront) return [];
+
+  const fragments = new Set();
+  for (const option of extractCorrectOptionRecords(optionRecords, answer)) {
+    for (const optionText of optionLeakCandidateTexts(option.text)) {
+      const normalizedOptionText = normalizeForSearch(optionText);
+      if (!optionText || !normalizedOptionText) continue;
+
+      if (
+        (normalizedOptionText.length >= 3 || /[\u4e00-\u9fff]/.test(normalizedOptionText)) &&
+        containsSearchPhrase(normalizedFront, normalizedOptionText)
+      ) {
+        fragments.add(optionText);
+      }
+
+      const tokens = searchTokens(optionText).filter(isDistinctiveAnswerToken);
+      if (tokens.length === 1 && containsSearchPhrase(normalizedFront, tokens[0])) {
+        fragments.add(tokens[0]);
+      }
+      for (let index = 0; index < tokens.length - 1; index += 1) {
+        const phrase = `${tokens[index]} ${tokens[index + 1]}`;
+        if (containsSearchPhrase(normalizedFront, phrase)) {
+          fragments.add(phrase);
+        }
+      }
+    }
+  }
+  return [...fragments];
 }
 
 function cardLocation(file, card) {
@@ -334,6 +517,19 @@ function buildAudit({ maxExamples }) {
         addIssue(issues, rulesById, row, 'multiple_choice_no_options', 'Multiple-choice card has fewer than two visible options.', frontText, analysisText);
       } else if (!answer.text || !answerMatchesOptions(answer.text, optionRecords)) {
         addIssue(issues, rulesById, row, 'multiple_choice_answer_not_in_options', 'Multiple-choice answer key does not match a visible option key or text.', frontText, analysisText);
+      } else {
+        const leakedFragments = findFrontAnswerLeakFragments(frontText, optionRecords, answer);
+        if (leakedFragments.length > 0) {
+          addIssue(
+            issues,
+            rulesById,
+            row,
+            'front_leaks_correct_answer',
+            `Front-side prompt names the correct option outside the visible option list: ${leakedFragments.slice(0, 3).join(', ')}.`,
+            frontText,
+            analysisText
+          );
+        }
       }
     }
 
