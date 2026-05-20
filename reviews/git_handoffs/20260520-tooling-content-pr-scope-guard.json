@@ -1,0 +1,51 @@
+{
+  "handoff_id": "20260520-tooling-content-pr-scope-guard",
+  "created_at": "2026-05-20T15:39:07+08:00",
+  "agent": "codex",
+  "branch": "tooling/content-pr-scope-guard",
+  "base_branch": "fix/review-findings-card-contract",
+  "commit_sha": "7f2ed31bcdbc92b9a4c140121d26025996b4fe37",
+  "push_ref": "origin/tooling/content-pr-scope-guard",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/33",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "tooling",
+    "touched_paths": [
+      "scripts/validate_pr_scope.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/agent-harness.json",
+      "spec/authority-map.json",
+      "spec/doc-manifest.json",
+      "spec/git-workflow.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract",
+      "result": "passed; tooling branch is not a content candidate diff and has no scope issues"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract --head origin/content/cet4-listening-0052-sample",
+      "result": "expected failure; reports content_sample_global_report_changed and content_sample_non_scope_self_review_changed for the known P2 pattern"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group alignment warnings"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "passed; cards=2414; errors=0; warnings=0"
+    },
+    {
+      "command": "git diff --check --cached",
+      "result": "passed"
+    }
+  ],
+  "local_status": "handoff record added after PR creation; PR remains tooling-only and ready for standing-delegation auto-merge",
+  "remaining_risks": [
+    "Existing open content sample PRs still need report/fingerprint churn removed or refreshed in merge order.",
+    "GitHub reports no checks for this repository; local validation and mergeability are the completion evidence."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
