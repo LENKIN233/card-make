@@ -1,6 +1,6 @@
 {
   "version": "seed-v1-cet4-vocabulary-0503",
-  "track": 0,
+  "track": "cet4",
   "library": 5,
   "group": 0,
   "box": 3,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "050301",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -53,12 +53,54 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "句式替换不是单词替换，而是同一意思换一种句法骨架。\n\n常见改写：\n1. not ... until ... -> only when ...\n2. X has never been helpful -> X contributes little to ...\n3. is difficult if not impossible to ... -> is almost impossible to ...\n\n为什么同一题里词几乎都变了，仍能判定为同义？你要先检查哪三项？",
+        "task_prompt": "句式替换不是单词替换，而是同一意思换一种句法骨架。\n\n常见改写：\n1. not ... until ... -> only when ...\n2. X has never been helpful -> X contributes little to ...\n3. is difficult if not impossible to ... -> is almost impossible to ...\n\n为什么同一题里词几乎都变了，仍能判定为同义？你要先检查哪三项？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：题干与原文在关键词上不重合，但信息角色和因果关系高度重合；尤其当出现 only when / not until / contributes little / turn out 这类结构词时，常是句式改写。\n\n② 核心规律：句式替换本质是\"结构变，语义核不变\"。可改位置（主语前后移）、改连接（because -> since）、改否定方式（not ... until -> only when），但不能改主体、极性、范围。\n\n③ 验证：not until she was older did she become interested = only when she was older did she become interested。结构不同，但时间触发条件与结果完全一致，因此替换成立。",
+        "tips": [
+          "先画语义骨架：主体-动作-对象-限定条件，再看句式变化。",
+          "遇到 only / not until / little / almost impossible 这类词，优先检查是否偷改了程度或极性。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "050302",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -122,12 +164,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原文：\n\"the concept of balance has never been helpful, because it's too limiting\"\n\n改写：\n\"the concept of work-life balance contributes little to a fulfilling life\"\n\n这组替换成立的关键是什么？",
+        "task_prompt": "原文：\n\"the concept of balance has never been helpful, because it's too limiting\"\n\n改写：\n\"the concept of work-life balance contributes little to a fulfilling life\"\n\n这组替换成立的关键是什么？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：原句核心为\"X has never been helpful\"，题干改为\"X contributes little\"，二者都落在\"低效评价\"语义域。\n\n② 核心规律：评价句式替换常用\"绝对否定\"与\"低程度肯定\"互换（never helpful <-> contributes little），只要评价方向一致且主体一致，通常构成有效替换。\n\n③ 验证：balance concept 在两句都作为被评价对象，结论都是否定其效用，未改主体、未反转态度、未扩张范围 -> 成立。",
+        "tips": [
+          "评价类替换先看方向（有效/无效），再看强度（完全无效/贡献很小）。",
+          "contributes little 不等于 contributes a lot；看到 little 要立刻锁定低效语义。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "050303",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -191,12 +278,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原文：\n\"the lack of knowledge is difficult if not impossible to compensate for later on\"\n\n改写：\n\"it is almost impossible to make up for that knowledge gap later\"\n\n哪项解释最准确？",
+        "task_prompt": "原文：\n\"the lack of knowledge is difficult if not impossible to compensate for later on\"\n\n改写：\n\"it is almost impossible to make up for that knowledge gap later\"\n\n哪项解释最准确？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：原句包含强度阶梯\"difficult if not impossible\"，改写使用\"almost impossible\"，属于语义强度压缩。\n\n② 核心规律：句式替换允许把复合强度表达压成单一副词+形容词结构（very hard / almost impossible），但不能改时间和对象。later on 与 knowledge gap 必须被保留。\n\n③ 验证：两句都表达\"知识缺口在后期极难补上\"，强度方向一致、时间一致、对象一致 -> 成立。",
+        "tips": [
+          "if not impossible 常可改写为 almost impossible；记住这对强度替换。",
+          "强度替换成立不代表可改时间状语，later on 不能丢。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "050304",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -260,12 +392,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原文：\n\"it was not until she was much older that she became keenly interested\"\n\n改写：\n\"only when she was much older did she become deeply interested\"\n\n这组替换为什么成立？",
+        "task_prompt": "原文：\n\"it was not until she was much older that she became keenly interested\"\n\n改写：\n\"only when she was much older did she become deeply interested\"\n\n这组替换为什么成立？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：原句和改写都包含\"年龄更大\"这个触发条件；差别只在否定句式与倒装句式。\n\n② 核心规律：not until A did B 与 only when A did B 常可互换。判断是否等值，关键看 A（触发条件）和 B（结果事件）是否都保留。\n\n③ 验证：A= she was much older，B= she became deeply interested，两句完全对应，未改时间方向和结果事件 -> 成立。",
+        "tips": [
+          "遇到 not until，优先在选项中找 only when 同义骨架。",
+          "句式倒装不是新语义，先还原成正常语序再比对。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "C"
       }
     },
     {
       "card_id": "050305",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -329,12 +506,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原文：\n\"Older midcareer workers make up the bulk of the long-term unemployed\"\n\n改写：\n\"Older midcareer workers constitute the majority of the long-term unemployed\"\n\n这组替换最关键的判定点是：",
+        "task_prompt": "原文：\n\"Older midcareer workers make up the bulk of the long-term unemployed\"\n\n改写：\n\"Older midcareer workers constitute the majority of the long-term unemployed\"\n\n这组替换最关键的判定点是：",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：原句\"make up the bulk of\"与改写\"constitute the majority of\"在数量关系上同向，都指\"超过一半的主体占比\"。\n\n② 核心规律：数量关系词（bulk / majority / most）之间可替换，但 all / minority 不可。句式变化允许从\"短语动词+名词\"转为\"单动词+名词\"，前提是比例关系不变。\n\n③ 验证：主体都是 older midcareer workers，对象都是 long-term unemployed，占比都为多数 -> 成立。",
+        "tips": [
+          "bulk of 在考试里通常接近 majority of，而不是 all of。",
+          "看到数量词改写先比比例，再比主体；比例一变，替换就失效。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "D"
       }
     },
     {
       "card_id": "050306",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -386,12 +608,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "用词库填空，使改写句与原句语义等值。\n\n原句：It was not until she was much older that she became interested in knitting therapy.\n改写：{{blank}} she was much older did she become interested in knitting therapy.\n\n词库：Only when / Even though / As soon as / Unless / Since / Before",
+        "task_prompt": "用词库填空，使改写句与原句语义等值。\n\n原句：It was not until she was much older that she became interested in knitting therapy.\n改写：{{blank}} she was much older did she become interested in knitting therapy.\n\n词库：Only when / Even though / As soon as / Unless / Since / Before",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：原句含 not until，改写句倒装 did she become，说明目标是同一触发逻辑的句式替换。\n\n② 核心规律：not until A ... that B 与 only when A ... B 共享\"条件后置触发\"关系；其余连词（even though/unless/as soon as）改变逻辑类型，不能替换。\n\n③ 验证：Only when she was much older did she become interested 与原句条件和结果完全一致 -> 成立。",
+        "tips": [
+          "看见 did she 这类倒装，先找 only when / not until 触发结构。",
+          "不要把时间触发误判成因果或让步关系。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "Only when"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "Only when"
+        }
+      ]
     },
     {
       "card_id": "050307",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -444,12 +719,66 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "用词库填空，使改写句与原句语义等值。\n\n原句：The concept of balance has never been helpful.\n改写：The concept of balance {{blank}} to a fulfilling life.\n\n词库：contributes little / contributes greatly / is essential / leads directly / has no relation / is central",
+        "task_prompt": "用词库填空，使改写句与原句语义等值。\n\n原句：The concept of balance has never been helpful.\n改写：The concept of balance {{blank}} to a fulfilling life.\n\n词库：contributes little / contributes greatly / is essential / leads directly / has no relation / is central",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“句式替换”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：填空题先判空格语法角色，再判语义方向，最后在词库中做形式匹配（词性/搭配/逻辑关系）。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只按词义熟悉度选词，忽略搭配和句法位置。纠偏时先做词性过滤，再做语义验证。下次遇到同类题时，直接执行：固定流程：语法定位→候选过滤→代回通读。",
+        "tips": [
+          "先判断信息结构，再做答案选择，避免词面匹配先行。",
+          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
+          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "contributes little"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "contributes little"
+        }
+      ]
     },
     {
       "card_id": "050308",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -502,12 +831,66 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "用词库填空，使改写句与原句语义等值。\n\n原句：The lack of knowledge is difficult if not impossible to compensate for later on.\n改写：The knowledge gap is {{blank}} to make up for later.\n\n词库：almost impossible / easy enough / immediately solvable / entirely avoidable / generally minor / barely relevant",
+        "task_prompt": "用词库填空，使改写句与原句语义等值。\n\n原句：The lack of knowledge is difficult if not impossible to compensate for later on.\n改写：The knowledge gap is {{blank}} to make up for later.\n\n词库：almost impossible / easy enough / immediately solvable / entirely avoidable / generally minor / barely relevant",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“句式替换”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：填空题先判空格语法角色，再判语义方向，最后在词库中做形式匹配（词性/搭配/逻辑关系）。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只按词义熟悉度选词，忽略搭配和句法位置。纠偏时先做词性过滤，再做语义验证。下次遇到同类题时，直接执行：固定流程：语法定位→候选过滤→代回通读。",
+        "tips": [
+          "先判断信息结构，再做答案选择，避免词面匹配先行。",
+          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
+          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "almost impossible"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "almost impossible"
+        }
+      ]
     },
     {
       "card_id": "050309",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -560,12 +943,66 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "用词库填空，使改写句与原句语义等值。\n\n原句：Older midcareer workers make up the bulk of the long-term unemployed.\n改写：Older midcareer workers {{blank}} the majority of the long-term unemployed.\n\n词库：constitute / avoid / reduce / replace / challenge / follow",
+        "task_prompt": "用词库填空，使改写句与原句语义等值。\n\n原句：Older midcareer workers make up the bulk of the long-term unemployed.\n改写：Older midcareer workers {{blank}} the majority of the long-term unemployed.\n\n词库：constitute / avoid / reduce / replace / challenge / follow",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“句式替换”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：填空题先判空格语法角色，再判语义方向，最后在词库中做形式匹配（词性/搭配/逻辑关系）。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只按词义熟悉度选词，忽略搭配和句法位置。纠偏时先做词性过滤，再做语义验证。下次遇到同类题时，直接执行：固定流程：语法定位→候选过滤→代回通读。",
+        "tips": [
+          "先判断信息结构，再做答案选择，避免词面匹配先行。",
+          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
+          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "constitute"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "constitute"
+        }
+      ]
     },
     {
       "card_id": "050310",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -630,12 +1067,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "综合辨析：下面哪一组不是有效句式替换？\n\nA. not until she was older ... -> only when she was older ...\nB. has never been helpful -> contributes little to ...\nC. difficult if not impossible -> almost impossible\nD. make up the bulk of -> account for only a small share of",
+        "task_prompt": "综合辨析：下面哪一组不是有效句式替换？\n\nA. not until she was older ... -> only when she was older ...\nB. has never been helpful -> contributes little to ...\nC. difficult if not impossible -> almost impossible\nD. make up the bulk of -> account for only a small share of",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“句式替换”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "tips": [
+          "先判断信息结构，再做答案选择，避免词面匹配先行。",
+          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
+          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "D"
       }
     },
     {
       "card_id": "050311",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -686,12 +1169,66 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "【CET4补充｜句式替换】\n在task-oriented clarity语境中，将最合适词汇填入 {{blank}}：\nThe paragraph can remain formal if the writer {{blank}} a cause-effect relation explicitly.",
+        "task_prompt": "【CET4补充｜句式替换】\n在task-oriented clarity语境中，将最合适词汇填入 {{blank}}：\nThe paragraph can remain formal if the writer {{blank}} a cause-effect relation explicitly.",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“句式替换”，先判断空格位置需要的语义方向与句法功能。\n② 核心规律：先核对搭配自然度，再判断语体层级，最后比较语义边界。\n③ 验证：将候选项逐一回填原句，确认正确项在意义、搭配和逻辑上同时成立。\n【CET4提示】强调任务语境下的稳定用法与清晰表达。",
+        "tips": [
+          "句式替换题先看功能，再看词面。",
+          "回填验证比直觉选词更稳。",
+          "CET4先锁定基础搭配，再检查语义通顺。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "states"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "states"
+        }
+      ]
     },
     {
       "card_id": "050312",
-      "track": 0,
+      "track": "cet4",
       "library": 5,
       "group": 0,
       "box": 3,
@@ -756,8 +1293,59 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "【CET4补充｜句式替换】\n原句：Not until the final section did the author reveal the main claim.\n哪项改写最等值？",
+        "task_prompt": "【CET4补充｜句式替换】\n原句：Not until the final section did the author reveal the main claim.\n哪项改写最等值？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：先抓题干中的核心表达，判断其在“句式替换”中的功能定位。\n② 核心规律：等值判断要同时满足对象一致、方向一致、语体一致。\n③ 验证：逐项对照原句，排除范围漂移、语义反转和逻辑错位。\n【CET4提示】强调任务语境下的稳定用法与清晰表达。",
+        "tips": [
+          "先排除语义方向错误项，再比语体与范围。",
+          "四选一不要只看词面近似。",
+          "CET4先锁定基础搭配，再检查语义通顺。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     }
-  ]
+  ],
+  "track_index": 0,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

@@ -1,6 +1,6 @@
 {
   "version": "seed-v1-cet4-translation-0421",
-  "track": 0,
+  "track": "cet4",
   "library": 4,
   "group": 2,
   "box": 1,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "042101",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -49,12 +49,55 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "原句：截至2025年3月底，全国民营企业数量超过5700万家，占企业总量的92.3%。\n\n任务：先汉译英，再检查你是否把“截至时间”和“占比修饰”压成介词短语，而不是拆成多句。必要时可先偷看提示。",
+        "task_prompt": "原句：截至2025年3月底，全国民营企业数量超过5700万家，占企业总量的92.3%。\n\n任务：先汉译英，再检查你是否把“截至时间”和“占比修饰”压成介词短语，而不是拆成多句。必要时可先偷看提示。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：原句有两块明显的修饰信息需要压缩：一块是“截至2025年3月底”的时间框架，另一块是“占企业总量的92.3%”的比例补充。两者都不该挤进主干里。\n\n② 核心规律：翻译这类统计句时，主干先保留“数量超过5700万家”，时间边界可前置为 as of ...，比例信息可后置为 accounting for ...。这样主句只承担核心事实，修饰层则通过介词和分词短语分流。\n\n③ 验证与纠偏：判断译文是否稳，不看它是不是逐词对应，而看信息层级是否清楚。As of the end of March 2025 先给统计时间，accounting for 92.3% 再补充占比，整句就比拆成两句或硬塞从句更像数据报道语体。",
+        "tips": [
+          "统计句先分清主干、时间框架、比例补充三层。",
+          "as of 常用来压缩“截至某时”。",
+          "accounting for 很适合后置补充占比类信息。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "042102",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -114,12 +157,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原句：都江堰坐落在成都平原西部的岷江上，距成都市约50公里。\n\n任务：先做汉译英，再选出最自然地把方位修饰压成介词短语的译文。",
+        "task_prompt": "原句：都江堰坐落在成都平原西部的岷江上，距成都市约50公里。\n\n任务：先做汉译英，再选出最自然地把方位修饰压成介词短语的译文。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：这句难点在于有三层地点修饰：在岷江上、在成都平原西部、距成都约50公里。翻译时不能把三层位置关系平铺成中文语序的硬拷贝。\n\n② 核心规律：英语里可用 on / in / from 逐层挂接空间信息。on the Minjiang River 先落到具体河流，in the western part of the Chengdu Plain 再交代区域，about 50 kilometers from Chengdu City 最后补充相对距离。层级越清楚，句子越自然。\n\n③ 验证与纠偏：正确选项不一定最短，但一定是空间关系最稳定的。A 的三个介词各司其职；B、C 把 in/on/of/to 混用；D 则直接把地点碎成了中文式堆砌，失去英语主句结构。",
+        "tips": [
+          "地点信息多时，先排层级，再给每层选介词。",
+          "on 表依附具体水体，in 表区域范围，from 表距离参照点。",
+          "空间修饰不要照搬中文顺序，要按英语可读性重排。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "042103",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -165,12 +254,66 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "原句：民营企业的研发投入不断增加，在新一代信息技术、人工智能等领域发展迅速。\n\n先做汉译英，再补全介词结构：\nPrivate enterprises are increasing their R&D investment and developing rapidly {{blank}} fields such as new-generation information technology and artificial intelligence.",
+        "task_prompt": "原句：民营企业的研发投入不断增加，在新一代信息技术、人工智能等领域发展迅速。\n\n先做汉译英，再补全介词结构：\nPrivate enterprises are increasing their R&D investment and developing rapidly {{blank}} fields such as new-generation information technology and artificial intelligence.",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：空格前面已经有 developing rapidly，后面紧跟 fields such as ...，因此这里缺的不是实义动词，而是把“在哪些领域”接出来的介词。\n\n② 核心规律：谈“在某些领域发展迅速”时，英语最稳的表达通常是 develop rapidly in fields such as ...。in 负责标出发展发生的范围，fields such as... 负责展开列举。\n\n③ 验证与纠偏：把选项代回去看语法链。in fields such as... 完整自然；at/on/for 都不能稳定表达“领域范围”。这类题目不是在考词义猜测，而是在考修饰信息能否被合适的介词收住。",
+        "tips": [
+          "看到 fields / areas / sectors，优先考虑 in。",
+          "such as 常用来展开领域列举，前面要先有可承接范围的介词。",
+          "介词填空先看后面的名词类型，再决定空间、范围还是目的关系。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "in"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "in"
+        }
+      ]
     },
     {
       "card_id": "042104",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -229,12 +372,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原句：通过大力提倡健康饮食，人们对合理营养增进健康的重要性有了更加深刻的认识。\n\n任务：先写汉译英，再选出最自然的“修饰信息转介词短语”表达。",
+        "task_prompt": "原句：通过大力提倡健康饮食，人们对合理营养增进健康的重要性有了更加深刻的认识。\n\n任务：先写汉译英，再选出最自然的“修饰信息转介词短语”表达。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：原句含“通过手段”与“对……重要性”的双修饰层。\n\n② 核心规律：手段层常用 by 介词短语；认知对象层可用 understanding of ...；功能指向可再用 for ...。多层介词短语可分级承载信息。\n\n③ 验证：A 的 By ... / of ... / for ... 三层修饰对应原句三层信息，其余选项不是搭配错误就是层级混乱。",
+        "tips": [
+          "遇到多层修饰信息时，可先画层级再匹配介词。",
+          "understanding of 与 awareness of 都可用，但语义强度略有差别。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "042105",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -273,12 +461,55 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "原句：长江上还坐落着世界最大的水电站。\n\n任务：先汉译英，再检查你是否将地点修饰信息精准转为介词短语，而不是语序错位。必要时可先偷看提示。",
+        "task_prompt": "原句：长江上还坐落着世界最大的水电站。\n\n任务：先汉译英，再检查你是否将地点修饰信息精准转为介词短语，而不是语序错位。必要时可先偷看提示。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：原句真正要翻的不是“坐落着”这个动作本身，而是“在长江上”这一地点修饰层。英语若处理得稳，主句可以先交代实体，再用地点介词短语收住位置。\n\n② 核心规律：像水电站、城市、遗址这类实体介绍句，常用 be located on/in...。这样地点信息被压到后置介词短语里，主句焦点保持在实体本身，不会出现中文式倒装。\n\n③ 验证与纠偏：The world's largest hydropower station is also located on the Yangtze River 的顺序是“对象 -> 系动词 -> 地点层”，非常稳定。若把地点硬前置或拆成残缺短语，英语句法就会松散。",
+        "tips": [
+          "实体介绍句里，be located on/in 是比中文式倒装更稳的选择。",
+          "地点是修饰层，不一定非要抢到句首。",
+          "翻译“坐落于”时，先想 located，再选 on/in/at。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "042106",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -325,12 +556,71 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "原句：修建之初是为了运输粮食，后来也用于运输其他商品。\n\n先做汉译英，再补全骨架：\nAt first, it was built {{blank}} transporting grain, and later it was also used {{blank}} transporting other goods.",
+        "task_prompt": "原句：修建之初是为了运输粮食，后来也用于运输其他商品。\n\n先做汉译英，再补全骨架：\nAt first, it was built {{blank}} transporting grain, and later it was also used {{blank}} transporting other goods.",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：骨架里同时出现 was built {{blank}} transporting grain 和 was also used {{blank}} transporting other goods，说明两个空都要填能和 transporting 构成“用途”关系的介词。\n\n② 核心规律：表示“为了……而建”“用于……”时，英语常用 for doing。这里更重要的是两处保持并列对称：built for transporting ... / used for transporting ...。一旦介词统一，句子的历史用途变化就很清晰。\n\n③ 验证与纠偏：代回时先看并列是否工整。for / for 让两个谓语后的用途层完全对称；to 会把结构带向目的不定式，of 和 with 则都不承担这里的用途关系。",
+        "tips": [
+          "表示用途时，for doing 是高频稳搭配。",
+          "并列结构里，两个空通常优先检查是否需要同一个介词。",
+          "题干里有“为了”“用于”时，可先把用途关系单独圈出来。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "for",
+          "for"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "for"
+        },
+        {
+          "id": "slot_2",
+          "expected": "for"
+        }
+      ]
     },
     {
       "card_id": "042107",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -368,12 +658,54 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "【补充卡｜修饰信息变介词短语】\n当中文句子里同时有时间、范围、对象、背景等多层修饰信息时，为什么常要把它们拆成不同的介词短语，而不是硬按原顺序平铺？",
+        "task_prompt": "【补充卡｜修饰信息变介词短语】\n当中文句子里同时有时间、范围、对象、背景等多层修饰信息时，为什么常要把它们拆成不同的介词短语，而不是硬按原顺序平铺？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：一旦中文里同时出现时间、地点、背景、范围、对象这几类信息，就要警惕不能按原顺序直排。\n\n② 核心规律：英语更依赖清楚的挂接关系，因此常需用不同介词短语把不同修饰层分别安放。\n\n③ 验证与纠偏：回看译文时，把所有介词短语圈出来，逐个问它修饰谁；若某个短语归属不清，说明层级还没排好。",
+        "tips": [
+          "先排层级，再决定介词。",
+          "修饰层越多，越不能照中文顺序硬铺。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "042108",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -432,12 +764,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "【补充卡｜修饰信息变介词短语】\n原句：来自偏远山区的孩子们通过刻苦学习改变了自己的命运。\n\n下列哪项译文最能把两处修饰（来源和手段）转为准确的介词短语？",
+        "task_prompt": "【补充卡｜修饰信息变介词短语】\n原句：来自偏远山区的孩子们通过刻苦学习改变了自己的命运。\n\n下列哪项译文最能把两处修饰（来源和手段）转为准确的介词短语？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：「来自X的」是来源定语，英文后置为 from X；「通过X」是手段状语，英文用 through/by + 名词。\n② 核心规律：多层修饰信息（来源+手段）在英文中同样使用后置介词短语，不宜转为完整定语从句（尤其短修饰）。\n③ 迁移方法：先识别修饰层类型（来源->from，手段->through/by），再选择对应介词后置附着于中心词。",
+        "tips": [
+          "「来自X的N」-> N from X（后置短语），不用 who came from X 定语从句",
+          "hard work（刻苦努力）vs hardly work（几乎不工作）——hard 作方式副词，hardly 作频率副词"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "042109",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -483,12 +860,70 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "【补充卡｜修饰信息变介词短语】\n先做汉译英，再补全骨架：\n中文原句：来自农村学校的同学们在比赛中表现出了令人印象深刻的创造力。\n\nStudents {{blank}} rural schools demonstrated impressive creativity {{blank}} the competition.",
+        "task_prompt": "【补充卡｜修饰信息变介词短语】\n先做汉译英，再补全骨架：\n中文原句：来自农村学校的同学们在比赛中表现出了令人印象深刻的创造力。\n\nStudents {{blank}} rural schools demonstrated impressive creativity {{blank}} the competition.",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：「来自X的」-> from X（来源介词）；「在X中表现」-> in the X（活动场景介词）。\n② 核心规律：介词短语的选择取决于修饰语的语义角色，不能统一用 in 或 at 代替。\n③ 迁移方法：先识别每个介词短语的语义角色（来源/场景/时间/方式），再选择对应介词。",
+        "tips": [
+          "「来自X的」-> from X（来源），不用 of X / belonging to X",
+          "「在比赛/活动中」-> in the competition/event（表参与场景），不用 at"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "from",
+          "in"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "from"
+        },
+        {
+          "id": "slot_2",
+          "expected": "in"
+        }
+      ]
     },
     {
       "card_id": "042110",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -548,12 +983,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "【补充卡｜修饰信息变介词短语】\n原句：在绿色转型背景下，这座城市在公共交通、电力供应和垃圾分类方面都取得了明显进展。\n\n下列哪项译文最能把三层领域修饰稳当地压成介词短语？",
+        "task_prompt": "【补充卡｜修饰信息变介词短语】\n原句：在绿色转型背景下，这座城市在公共交通、电力供应和垃圾分类方面都取得了明显进展。\n\n下列哪项译文最能把三层领域修饰稳当地压成介词短语？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：原句有一个背景修饰层“在绿色转型背景下”，还有一个领域修饰层“在……方面”。这类句子若不靠介词短语分层，英文会很容易拥堵。\n② 核心规律：背景层常用 under / amid / against the backdrop of...；领域层常用 in... 或 in terms of...。先把修饰层压稳，再让主句表达“取得进展”即可。\n③ 验证：A 的结构顺序是背景 -> 主干 -> 领域补充，最清晰；B、C、D 都在介词选择或层级挂接上失衡，因此读起来不像成熟书面译文。",
+        "tips": [
+          "背景层和领域层是两种不同修饰信息，不要混成一个介词。",
+          "修饰信息多时，先问自己：哪层应该前置，哪层应该后置。",
+          "介词短语的价值是分层，而不只是换一个词。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "042111",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -592,12 +1073,55 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "【补充卡｜修饰信息变介词短语】\n当一句中文同时带时间、地点、范围、目的等修饰层时，翻译前最先要做的结构判断是什么？",
+        "task_prompt": "【补充卡｜修饰信息变介词短语】\n当一句中文同时带时间、地点、范围、目的等修饰层时，翻译前最先要做的结构判断是什么？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：这张卡考查的是“修饰层级排序能力”。只要中文里同时出现时间、地点、方式、范围、目的等元素，就要预警：不能按原顺序硬排到英文里。\n② 核心规律：介词短语翻译的关键是让主干先稳定成立，再把修饰层按重要性挂接。时间框架和背景层更容易前置；距离、占比、范围等补充层常适合后置。\n③ 验证：回看译文时，先把所有介词短语圈出来，检查它们分别修饰谁、挂得是否清楚。如果某个介词短语找不到明确归属，通常就是层级没排好。",
+        "tips": [
+          "修饰层多时，先决定顺序，再决定具体介词。",
+          "不是所有中文修饰都要前置，后置往往更自然。",
+          "圈主干、圈修饰、再挂接，是这类题最稳的流程。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "042112",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 2,
       "box": 1,
@@ -643,8 +1167,67 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "2",
+        "group_name": "介词短语",
+        "box_id": "1",
+        "box_name": "修饰信息变介词短语",
+        "box_prefix": "0421"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "【补充卡｜修饰信息变介词短语】\n先做汉译英主干，再补全英文骨架：\nThe region has made visible progress {{blank}} ecological restoration and industrial upgrading.",
+        "task_prompt": "【补充卡｜修饰信息变介词短语】\n先做汉译英主干，再补全英文骨架：\nThe region has made visible progress {{blank}} ecological restoration and industrial upgrading.",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：空格前面是 made visible progress，后面跟的是两个并列名词短语 ecological restoration and industrial upgrading，因此这里缺的是连接“进展”与“方面范围”的介词。\n② 核心规律：表达“在某方面取得进展”时，英语最稳的结构通常是 make progress in...。in 不是地点义，而是范围义，负责把结果和具体领域绑定起来。\n③ 验证与纠偏：代回后看搭配是否成立。make progress in... 是稳定搭配；at/on/for 都不能自然表达这里的“方面范围”。这类题目要先识别搭配，再做介词选择。",
+        "tips": [
+          "make progress in 是高频固定搭配。",
+          "介词题先看前面的谓语搭配，再看后面的名词类型。",
+          "生态修复、产业升级这类词常作为“范围层”后置。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "in"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "in"
+        }
+      ]
     }
-  ]
+  ],
+  "track_index": 0,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

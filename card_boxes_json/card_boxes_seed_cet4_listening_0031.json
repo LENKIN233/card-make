@@ -1,6 +1,6 @@
 {
   "version": "seed-v2-listening-audio-first",
-  "track": 0,
+  "track": "cet4",
   "library": 0,
   "group": 3,
   "box": 1,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "003101",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -56,12 +56,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，再判断这个数字是在表示预算、人数，还是时间安排。",
+        "task_prompt": "先听音频，再判断这个数字是在表示预算、人数，还是时间安排。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后判断数字语义类别",
+          "focus": "数字值与语义单位绑定",
+          "success_criteria": "不仅记住数字，还能记住它到底在算什么"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：数字出现后，后面常紧跟名词单位，是判断数字语义的关键。\n\n② 核心规律：数字题最常见的错误不是“没听到数”，而是“听到了数却绑错对象”。同一个 twelve 可以表示学校数、月份、工作人员或箱子数。听力里真正要抓的是“数字 + 单位/对象”的成对信息。\n\n③ 验证：本句 twelve 后直接跟 schools，因此该数字对应参与学校数量。若只记 12 而不记 schools，题目一换问法就很容易错。",
+        "tips": [
+          "数字要连同单位一起记，不能只记裸数字。",
+          "听到数字后立刻找后面的名词，看它在数什么。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "003102",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -128,12 +174,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "任务：听完后，选出‘真正被更新后的数字结果’。",
+        "task_prompt": "听完后，选出‘真正被更新后的数字结果’。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一作答",
+          "focus": "原始数字与修正后数字区分",
+          "success_criteria": "锁定最终有效数值，而不是前面被推翻的估计"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：一句话里出现两个数字时，要先判断它们是否处在“预估 vs 最终”“计划 vs 实际”的关系中。\n\n② 核心规律：数字题的常见陷阱是先报一个更显眼、更整的数字，再在后半句给出最终有效数字。学生若只记最先听到的数，往往会被带偏。真正该答的数字，通常是被 final, actual, end-of-day 之类词标记过的。\n\n③ 验证：本句 sixty 是 expected about sixty attendees 的预估值；forty-eight 才是 final registration count，因此正确答案必须是 48。",
+        "tips": [
+          "两个数字同句出现时，先判断哪个是“旧值”，哪个是“生效值”。",
+          "越靠后的 final/actual 数字，越可能是真正答案。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "003103",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -183,12 +278,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：播放后，在你第一次听到关键数字时点击。",
+        "task_prompt": "播放后，在你第一次听到关键数字时点击。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "时间窗点击",
+          "focus": "关键数字入场时刻定位",
+          "success_criteria": "点击命中数字时刻，并能说出该数字对应的单位"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：金额数字后常跟 dollars, yuan, percent, hours 等单位词。\n\n② 核心规律：数字类题要防止“只记声音轮廓”。three hundred 听清了还不够，你还得知道它是钱、时间还是人数。单位一丢，数字就失去答题价值。\n\n③ 验证：本句 three hundred 后面接 dollars，因此这个数字对应维修成本金额，而不是工时或人数。题目若问 cost，就必须把数字和 dollars 一起提取。",
+        "tips": [
+          "点击数字后，马上再追一个单位词。",
+          "数字本身只是半条信息，单位补上才完整。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "003104",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -235,12 +376,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：按住开始听，在句子真正切到‘最终数字答案’时松手。",
+        "task_prompt": "按住开始听，在句子真正切到‘最终数字答案’时松手。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "按住并择机松手",
+          "focus": "从背景说明切到最终数值",
+          "success_criteria": "在最终数字起点附近松手"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：数字前若出现 final, actual, took, lasted, ended up 等词，通常是在引出有效结果值。\n\n② 核心规律：数字题并不总是“听到第一个数字就作答”。很多时候前半句只是描述感受、估计或外观印象，真正能回答题目的数值会在后半句出现。你要从语义上区分背景和结果。\n\n③ 验证：本句 route looked longer on the map 是背景；took just under twenty minutes 才给出实际时长。松手点应放在 twenty minutes 这一最终数字段落。",
+        "tips": [
+          "涉及时间题时，took/lasted 后面的数字优先级很高。",
+          "数字前面的动词常能告诉你这个数值是不是最终答案。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "003105",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -307,12 +494,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "任务：听完后，选出‘真正构成比较差距的数字’。",
+        "task_prompt": "听完后，选出‘真正构成比较差距的数字’。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一作答",
+          "focus": "比较中的关键数值差",
+          "success_criteria": "不是只记两个数字，而是抓住题目真正问的那个数"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：数字多于两个时，要先按功能分类：原始值、结果值、差值。\n\n② 核心规律：数字题的高频误判是“哪个数字大就记哪个”。但很多题真正问的是 reduction, increase, difference 这类差值。若不先判断数字在句中的功能，只会记一堆数，却答不到题眼。\n\n③ 验证：本句 fifty-five 是原始值，forty 是结果值，fifteen hours a month 是差值。题目问 saved how much time，正确答案必须是 15。",
+        "tips": [
+          "多数字句先分角色：原值、结果值、差值。",
+          "题目问 saved/reduced by/how much less 时，优先找差值。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "C"
       }
     },
     {
       "card_id": "003106",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -358,12 +594,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：听完后，用一句话复述“数字是多少，以及它对应什么对象/单位”。",
+        "task_prompt": "听完后，用一句话复述“数字是多少，以及它对应什么对象/单位”。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "口头复述数字绑定",
+          "focus": "数字、单位、对象三点成对记忆",
+          "success_criteria": "复述不能只报数值，必须带出对象和单位"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：一段里有多个数字时，往往分别服务于不同维度，如日期、持续时间、人数。\n\n② 核心规律：高质量数字理解不是抄录数字串，而是建立多个“数字 -> 语义槽位”的绑定。如果你不能区分哪个数是日期、哪个数是天数、哪个数是人数，那么一旦题目换成 paraphrase，你就会全部混淆。\n\n③ 验证：本句 July eighteenth 是日期，three days 是时长，twenty-four delegates 是人数。复述时必须把三种语义槽位分别说清，而不是简单报出三个数字。",
+        "tips": [
+          "多数字句要给每个数字分配槽位：日期、时长、人数、金额等。",
+          "复述数字时，数字后面最好永远带上单位或对象。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "003107",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -411,16 +693,62 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "time_window_ms": [
         3500,
         5100
-      ]
+      ],
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "点击数字类细节被精确报出的瞬间。",
+        "task_prompt": "先听音频，再完成数字类细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练数字类细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：时机点击应落在信息被唯一限定的位置，避免在背景描述提前操作。\n\n③ 验证与迁移：回听“The report includes several distractions, but numerical detail capture reveals the exact 数字类细节 needed for the answer.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "003108",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -468,13 +796,59 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
-      "target_duration_ms": 4120
+      "target_duration_ms": 4120,
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "长按覆盖数字类细节完整语义段，避免漏听限定词。",
+        "task_prompt": "先听音频，再完成数字类细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练数字类细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：长按要覆盖完整限定结构，尤其注意数字、时间或地点前后的修饰词。\n\n③ 验证与迁移：回听“In this section, listeners must rely on numerical detail capture because the tested 数字类细节 appears only once.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "003109",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -522,12 +896,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "翻面前先复述你抓到的数字类细节，再核对答案。",
+        "task_prompt": "先听音频，再完成数字类细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练数字类细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：翻面卡先做自我复述，重点检查是否遗漏限定条件。\n\n③ 验证与迁移：回听“The speaker repeats background points, yet numerical detail capture identifies the precise 数字类细节 that should be selected.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "003110",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -596,12 +1016,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "四选一：根据音频锁定最准确的数字类细节。",
+        "task_prompt": "先听音频，再完成数字类细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练数字类细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：四选一先比较限定词一致性，再看核心名词是否匹配。\n\n③ 验证与迁移：回听“After a broad introduction, the host uses numerical detail capture to highlight the core 数字类细节 detail in one short clause.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "003111",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -649,16 +1118,62 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "time_window_ms": [
         3980,
         5580
-      ]
+      ],
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "点击数字类细节被精确报出的瞬间。",
+        "task_prompt": "先听音频，再完成数字类细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练数字类细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：时机点击应落在信息被唯一限定的位置，避免在背景描述提前操作。\n\n③ 验证与迁移：回听“Although multiple facts are mentioned, numerical detail capture guides listeners to the most testable 数字类细节 evidence.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "003112",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -706,9 +1221,60 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
-      "target_duration_ms": 4600
+      "target_duration_ms": 4600,
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "1",
+        "box_name": "数字类",
+        "box_prefix": "0031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "长按覆盖数字类细节完整语义段，避免漏听限定词。",
+        "task_prompt": "先听音频，再完成数字类细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练数字类细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：长按要覆盖完整限定结构，尤其注意数字、时间或地点前后的修饰词。\n\n③ 验证与迁移：回听“The final sentence confirms the conclusion, and numerical detail capture helps isolate the correct 数字类细节 information.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     }
-  ]
+  ],
+  "track_index": 0,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

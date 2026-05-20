@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "card-quality-metadata.schema.json",
+  "title": "Card Quality Metadata",
+  "type": "object",
+  "required": [
+    "card_id",
+    "track",
+    "knowledge_ref",
+    "interaction_id",
+    "quality_metadata"
+  ],
+  "properties": {
+    "card_id": {
+      "type": "string",
+      "pattern": "^[0-9]{6}$"
+    },
+    "track": {
+      "enum": ["cet4", "cet6"]
+    },
+    "knowledge_ref": {
+      "type": "object"
+    },
+    "interaction_id": {
+      "enum": ["flip", "multiple_choice", "lock", "elimination", "swipe"]
+    },
+    "quality_metadata": {
+      "type": "object",
+      "required": [
+        "main_training_goal",
+        "weak_point_tags",
+        "difficulty",
+        "card_prototype",
+        "material",
+        "exam_value",
+        "box_progression_role",
+        "review_status"
+      ],
+      "properties": {
+        "main_training_goal": {
+          "type": "string",
+          "minLength": 4
+        },
+        "secondary_training_goals": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "weak_point_tags": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "vocabulary_weak",
+              "grammar_weak",
+              "listening_weak",
+              "reading_slow",
+              "writing_output_weak",
+              "translation_output_weak",
+              "motivation_low",
+              "exam_strategy_weak"
+            ]
+          }
+        },
+        "difficulty": {
+          "type": "object",
+          "required": ["primary"],
+          "properties": {
+            "primary": {
+              "enum": ["foundation", "pass", "high_score"]
+            },
+            "secondary": {
+              "type": "array",
+              "items": {
+                "enum": ["foundation", "pass", "high_score"]
+              }
+            },
+            "advanced_in_foundation_reason": {
+              "type": "string"
+            }
+          }
+        },
+        "card_prototype": {
+          "enum": [
+            "knowledge_explanation",
+            "solving_action",
+            "error_correction",
+            "context_input",
+            "output_imitation",
+            "exam_strategy",
+            "integrated_micro_drill"
+          ]
+        },
+        "material": {
+          "type": "object",
+          "required": ["text_source_type"],
+          "properties": {
+            "text_source_type": {
+              "enum": [
+                "true_exam",
+                "exam_rewrite",
+                "simulation",
+                "ai_generated",
+                "human_original"
+              ]
+            },
+            "source_note": { "type": "string" },
+            "audio_generation_method": {
+              "enum": ["none", "TTS_AI_generated"]
+            },
+            "tts_text_reviewed": { "type": "boolean" },
+            "tts_audio_reviewed": { "type": "boolean" }
+          }
+        },
+        "exam_value": {
+          "type": "string",
+          "minLength": 8
+        },
+        "box_progression_role": {
+          "enum": ["recognition", "application", "transfer", "mixed"]
+        },
+        "review_status": {
+          "enum": ["draft", "agent_pass", "revise", "block"]
+        }
+      }
+    }
+  }
+}

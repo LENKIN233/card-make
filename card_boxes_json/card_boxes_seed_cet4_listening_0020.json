@@ -1,6 +1,6 @@
 {
   "version": "seed-v2-listening-audio-first",
-  "track": 0,
+  "track": "cet4",
   "library": 0,
   "group": 2,
   "box": 0,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "002001",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -56,12 +56,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，再判断‘说话人真正要你带走的信息’在转折前还是转折后。",
+        "task_prompt": "先听音频，再判断‘说话人真正要你带走的信息’在转折前还是转折后。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听完后判断信息重心位置",
+          "focus": "话语重心在转折前后如何迁移",
+          "success_criteria": "不仅选对，还能说出转折前句为何只算铺垫"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：句子先建立听者预期（you probably think...），随后用 but 触发立场迁移。\n\n② 核心规律：英语新闻/说明文中，转折结构常承担‘预设-修正（presupposition-revision）’功能。前半句用于降低后半句的信息阻力，后半句才是作者想让你记住的 proposition。\n\n③ 验证：本句前半句是‘大学生应该会睡’的常识框架，but 后明确给出实际结论‘多重压力破坏睡眠’，这才是可用于答题和复述的核心信息。",
+        "tips": [
+          "听到 but 不要只当连接词，要当成‘信息重心切换开关’。",
+          "如果你只能记一句，优先记转折后的命题。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "002002",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -128,12 +174,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "任务：听到 not ... but ... 后，选出‘被作者最终采纳的解释’。",
+        "task_prompt": "听到 not ... but ... 后，选出‘被作者最终采纳的解释’。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一作答",
+          "focus": "区分‘被排除解释’与‘被采纳解释’",
+          "success_criteria": "识别 not...but... 的逻辑方向，而非只抓关键词"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：出现 not A but B 时，要先建立‘A 已被排除’的逻辑边界。\n\n② 核心规律：not...but... 不是‘比较 A 和 B 哪个更好’，而是‘撤销 A 的解释资格，并把解释权转交给 B’。\n\n③ 验证：本句主题词是 root cause。作者先否定 ownership structure，再把因果归因交给 capacity shortage；因此正确答案必须映射 but 后语义。",
+        "tips": [
+          "遇到 not...but... 时，先确认说话人在撤销哪个解释，再看替代解释是什么。",
+          "不要被前半句术语吸走注意力，先判断它在句内的逻辑角色。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "002003",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -183,12 +278,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：播放后，在你第一次听到转折信号词时点击。",
+        "task_prompt": "播放后，在你第一次听到转折信号词时点击。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "在时间窗内点击",
+          "focus": "句间转折词 however 的入场时刻",
+          "success_criteria": "点击命中转折词时刻，并能解释其话语作用"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：however 常出现在句首，作用是把叙述从口头口径切到事实层。\n\n② 核心规律：新闻里常见‘claim → however → evidence’。claim 只告诉你对方怎么表态，evidence 才告诉你题目真正能用什么作答。\n\n③ 验证：本句先说烟草公司一贯宣称自己坦诚，随后用 however 接出“拒绝评论研究”。真正有答题价值的是后句事实，而不是前句公关口径。",
+        "tips": [
+          "听到 however，不要只记词本身，要准备把注意力切到后面的事实句。",
+          "当口径和行为冲突时，优先记行为。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "002004",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -235,12 +376,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：按住开始听，听到观点真正起始处时松手。",
+        "task_prompt": "按住开始听，听到 but 后真正观点起点时松手。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "按住并在目标时机松手",
+          "focus": "口语中‘背景信息 → 立场信息’的切换时刻",
+          "success_criteria": "在 but 后立场句起点附近松手（容差内）"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：口语里常先给位置、身份、经历，再用 but 把信息重心切到真正可判断的立场。\n\n② 核心规律：背景句回答“人在哪里”，立场句回答“人实际怎么做”。听力题通常考后者，因为它直接决定判断。\n\n③ 验证：本句 live in Holland 只是环境背景；真正能回答社交状态的是 don't really socialize much。松手点应该压在 but 后立场句刚起步的位置。",
+        "tips": [
+          "把 but 前句当镜头铺垫，把 but 后句当镜头对焦。",
+          "一旦定位到立场句，再回头补背景，不要反过来。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "002005",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -307,12 +494,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "任务：听完后判断，哪一半信息真正决定‘是否可执行’。",
+        "task_prompt": "听完后判断，真正决定“能不能落地”的是哪一半信息。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一作答",
+          "focus": "区分‘纸面可行’与‘现实约束’两层语义",
+          "success_criteria": "选择能解释决策边界的那一侧信息"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：on paper 和 in real classrooms 形成了“纸面判断 vs 现场约束”的对撞。\n\n② 核心规律：凡是讨论实施，time、cost、capacity 这类约束词通常比 efficient、promising 这类乐观词更有决策权。\n\n③ 验证：本句前半句只说明方案看起来高效，后半句则给出真正会卡住执行的成本：准备时间远超预期。答题时应以后句约束为核心证据。",
+        "tips": [
+          "当一句话出现“设想层”和“执行层”两组信息时，先分层再判断主次。",
+          "涉及落地问题时，优先追踪可执行条件（时间、成本、资源）。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "002006",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -358,12 +594,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：听完后，复述说话人的最终立场（不是中间立场）。",
+        "task_prompt": "听完后，用一句话复述最后留下来的立场，不要停在中间转折上。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "口头复述最终立场",
+          "focus": "多次转折中的立场收束",
+          "success_criteria": "复述需体现‘最后一次有效转折’后的观点"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：同一段里连续出现 but 和 so，说明说话人不是一次说完，而是在不断修正、最后收束。\n\n② 核心规律：多转折语篇要按“版本更新”来听：V1 提话题，V2 做修正，V3 才给最终立场。真正该复述的是最后一个语义完整、能独立成立的判断句。\n\n③ 验证：本段先提德国不限速，再补“快但仍谨慎”，最后才落到“限制有时反而制造危险”。因此答题不能停在中间句，必须跟到末尾收束句。",
+        "tips": [
+          "遇到连续转折时，不要抢答，先等最后的收束句。",
+          "So、therefore、that means 往往是在提示“可以定稿了”。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "002007",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -411,16 +693,62 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "time_window_ms": [
         3400,
         5000
-      ]
+      ],
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "点击转折点后“真正决策”出现的时刻。",
+        "task_prompt": "先听音频，再完成转折关系训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The city planned to expand parking lots, however the final decision prioritized bike lanes for safety.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "tips": [
+          "转折后信息权重通常更高。",
+          "先定位转折词再听细节。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "002008",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -468,13 +796,59 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
-      "target_duration_ms": 4150
+      "target_duration_ms": 4150,
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "长按覆盖 but 后的决策句段。",
+        "task_prompt": "先听音频，再完成转折关系训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“Many students wanted longer lectures, but the department shortened sessions to increase discussion time.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "tips": [
+          "前句常是观点铺垫。",
+          "but 后常承载可考动作。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "002009",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -522,12 +896,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "翻面前先判断：真正可考信息在前半句还是后半句？",
+        "task_prompt": "先听音频，再完成转折关系训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：翻面前先自述判断路径，翻面后只核验证据链是否闭合。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The report sounds optimistic at first; nevertheless, it warns that staffing shortages may delay implementation.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "tips": [
+          "让步转折后常出现限制条件。",
+          "态度词变化是判断锚点。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "002010",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -596,12 +1016,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "四选一：依据 yet 后内容确定最终立场。",
+        "task_prompt": "先听音频，再完成转折关系训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：四选一先判关系类型，再排除对象错位和范围错位选项。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The speaker praises online meetings, yet she admits that complex negotiations still require face-to-face interaction.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "tips": [
+          "yet 与 but 功能相近，后句更关键。",
+          "别被前句褒义评价误导。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "D"
       }
     },
     {
       "card_id": "002011",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -649,16 +1118,62 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "time_window_ms": [
         3700,
         5300
-      ]
+      ],
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "在 recommendation 改变的触发句点击。",
+        "task_prompt": "先听音频，再完成转折关系训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“At first the plan looked affordable, but hidden maintenance costs changed the recommendation entirely.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "tips": [
+          "转折词后要抓“变化原因”。",
+          "recommendation changed 是高价值信号。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "002012",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 2,
       "box": 0,
@@ -706,9 +1221,60 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
-      "target_duration_ms": 4200
+      "target_duration_ms": 4200,
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "长按覆盖“同意原则但否决时间表”的转折段。",
+        "task_prompt": "先听音频，再完成转折关系训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The manager agreed with the proposal in principle, however he rejected the timeline as unrealistic.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "tips": [
+          "同意原则不等于批准执行。",
+          "转折后否定项常是题目落点。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     }
-  ]
+  ],
+  "track_index": 0,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

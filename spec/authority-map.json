@@ -1,0 +1,35 @@
+{
+  "version": "card-make-harness-v1",
+  "status": "active",
+  "owners": {
+    "workspace_role": "spec/workspace-contract.json",
+    "softbook_product_boundary": "../softbook_cet/spec/product-core.json",
+    "softbook_card_minimums": "../softbook_cet/spec/card-system.json",
+    "softbook_interaction_semantics": "../softbook_cet/spec/interactions.json",
+    "softbook_box_catalog": "../softbook_cet/spec/box-catalog.json",
+    "softbook_knowledge_hierarchy": "../softbook_cet/spec/knowledge-map.json",
+    "card_content_quality": "spec/content-quality-contract.json",
+    "card_quality_audit_rules": "spec/card-quality-audit.json",
+    "card_quality_audit_tool": "scripts/audit_card_quality.mjs",
+    "candidate_sample_audit_evidence": "reviews/audit_scopes/README.md",
+    "tts_text_and_audio_policy": "spec/content-quality-contract.json",
+    "agent_permissions": "spec/review-workflow.json",
+    "sample_then_batch_flow": "spec/review-workflow.json",
+    "agent_managed_git_lifecycle": "spec/git-workflow.json",
+    "content_pr_scope_gate": "scripts/validate_pr_scope.mjs",
+    "candidate_metadata": "spec/card-metadata.schema.json",
+    "agent_operating_model": "spec/agent-harness.json",
+    "golden_tasks": "spec/evals.json",
+    "golden_task_regression_fixtures": "spec/eval-fixtures.json",
+    "anti_drift": "spec/perturbation-audit.json",
+    "harness_validation": "scripts/validate_harness.mjs",
+    "user_approval_records": "reviews/approved_batches/TEMPLATE.json",
+    "agent_git_completion_records": "reviews/git_handoffs/TEMPLATE.json"
+  },
+  "conflict_policy": {
+    "product_boundary_conflict": "The softbook_cet product specs win unless the user explicitly authorizes a separate spec-change task.",
+    "content_quality_conflict": "The interview-confirmed card make harness can be stricter than softbook_cet, but it must not redefine product truth.",
+    "box_catalog_conflict": "Use ../softbook_cet/spec/box-catalog.json first, record the conflict, and ask the user before changing box structure.",
+    "approval_conflict": "No agent, script, legacy field, or PR status can override explicit user approval for formal usable content."
+  }
+}

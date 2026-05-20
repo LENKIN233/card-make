@@ -1,6 +1,6 @@
 {
   "version": "seed-v2-listening-audio-first",
-  "track": 0,
+  "track": "cet4",
   "library": 0,
   "group": 3,
   "box": 2,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "003201",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -56,12 +56,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，再判断这个时间是在说开始、结束，还是截止点。",
+        "task_prompt": "先听音频，再判断这个时间是在说开始、结束，还是截止点。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后判断时间语义角色",
+          "focus": "开始时点、结束时点与截止时点区分",
+          "success_criteria": "不仅记住时间，还能说出它控制什么事件"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：时间出现后，要立刻看它和哪个动词或事件短语绑定，如 submitted, starts, ends, arrives。\n\n② 核心规律：时间细节题的核心不是抄一个时点，而是确定这个时点在流程中的功能。相同的 Friday noon 可以表示开会、截稿、出发或到站。若不把时间和事件绑定，信息价值几乎为零。\n\n③ 验证：本句 by Friday noon 直接挂在 must be submitted 上，说明它是提交截止点。题目若问 forms due when，答案就必须是 Friday noon，而不是把它错当 review 开始时间。",
+        "tips": [
+          "时间要和动词一起记，不能单独记。",
+          "看到 by 时，优先考虑“截止”，不是“开始”。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "003202",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -128,12 +174,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "任务：听完后，选出‘真正生效的时间安排’。",
+        "task_prompt": "听完后，选出‘真正生效的时间安排’。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一作答",
+          "focus": "原计划时间与更新后时间区分",
+          "success_criteria": "锁定最终安排，而不是前面被改掉的时间"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：一句里出现两个时间时，要先判断它们是“原计划 vs 更新后”还是“开始 vs 结束”。\n\n② 核心规律：时间题的高频陷阱是旧时间更简短、更容易记住，但真正有效的安排通常在后半句被更新。听到 moved to, delayed until, rescheduled for 时，必须立刻把前一个时间降级为失效信息。\n\n③ 验证：本句 six 是 supposed to start 的旧计划；six-thirty 是 has been moved to 的生效时间。因此正确答案必须选 6:30。",
+        "tips": [
+          "听到 moved to / delayed until，说明前一个时间多数已经失效。",
+          "双时间句先给每个时间贴状态：旧的还是新的。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "003203",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -183,12 +278,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：播放后，在你第一次听到关键时间时点击。",
+        "task_prompt": "播放后，在你第一次听到关键时间时点击。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "时间窗点击",
+          "focus": "关键时点入场定位",
+          "success_criteria": "点击命中时间词附近，并能说出这个时点控制什么"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：时间词一出现，后面通常紧跟动作动词或地点补充，是最关键的信息窗口。\n\n② 核心规律：时间题不只考“几点”，更考“几点发生什么”。学生常能听到 eight-fifteen，却忘了它对应 leaves 而不是 arrives 或 opens。真正有用的记忆单位应该是“8:15 发车”。\n\n③ 验证：本句 eight-fifteen 与 leaves directly 绑定，说明它是发车时间。若题目问 departure time，就必须把 8:15 和 shuttle leaves 一起提取。",
+        "tips": [
+          "听到时间后，至少再追一个动词。",
+          "时间答案最好复述成“几点 + 做什么”。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "003204",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -235,12 +376,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：按住开始听，在句子真正切到‘最终可答时间’时松手。",
+        "task_prompt": "按住开始听，在句子真正切到‘最终可答时间’时松手。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "按住并择机松手",
+          "focus": "从背景说明切到最终答题时间",
+          "success_criteria": "在有效时间起点附近松手"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：一段里出现“常规时间 + 具体业务时间”时，真正题眼常落在后者。\n\n② 核心规律：时间题的难点之一，是把“泛化背景”误听成“可答时间”。比如 opens earlier in summer 只告诉你趋势，不提供精确时点；guided tours begin shortly after nine-thirty 才给出能直接作答的时间。\n\n③ 验证：本句 earlier in summer 是背景，shortly after nine-thirty 才是导览开始时间。松手点应压在 nine-thirty 这个最终可答时间段。",
+        "tips": [
+          "时间类背景信息不等于时间答案。",
+          "题目能直接落选项的时间，通常比背景描述更具体。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "003205",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -307,12 +494,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "任务：听完后，选出‘真正代表持续时长’的时间信息。",
+        "task_prompt": "听完后，选出‘真正代表持续时长’的时间信息。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一作答",
+          "focus": "时点与持续时长区分",
+          "success_criteria": "分清“几点”和“多久”这两类时间信息"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：时间表达要分成至少两类：clock time（几点）和 duration（多久）。\n\n② 核心规律：学生常会因为先听到 one o'clock 就误把它当答案，但很多题实际问的是持续时间。时间细节题的关键是先判断题目要的是时点还是时长，再去句子里找对应类型。\n\n③ 验证：本句 starts at one 是时点；runs for about two and a half hours 是持续时长。题目若问 how long，正确答案只能是 two and a half hours。",
+        "tips": [
+          "听时间前先问自己：题目要的是几点，还是多久。",
+          "runs for / lasts / takes 往往在提示“时长”。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "003206",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -358,12 +594,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：听完后，用一句话复述“时间是多少，以及它对应哪个事件”。",
+        "task_prompt": "听完后，用一句话复述“时间是多少，以及它对应哪个事件”。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "口头复述时间绑定",
+          "focus": "时间 + 事件配对",
+          "success_criteria": "复述不能只剩时间词，必须带出事件动作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：多时间句里，不同时间往往分别控制不同事件。\n\n② 核心规律：时间复述不应简化成“7:45 和 8:00”。真正有用的理解是“7:45 到站”“8:00 前转乘”。同一段里的多个时间如果不分配给具体事件，就会在题目换问法时全部混淆。\n\n③ 验证：本句 seven-forty-five 对应 train arrives；before eight 对应 board the connector bus。完整复述必须把两个时间各自挂回对应事件。",
+        "tips": [
+          "时间复述模板：几点做什么。",
+          "多时间句里，每个时间都要单独找它的事件归属。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "003207",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -411,16 +693,62 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "time_window_ms": [
         3500,
         5100
-      ]
+      ],
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "点击时间细节被精确报出的瞬间。",
+        "task_prompt": "先听音频，再完成时间细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练时间细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：时机点击应落在信息被唯一限定的位置，避免在背景描述提前操作。\n\n③ 验证与迁移：回听“The report includes several distractions, but time-point capture reveals the exact 时间细节 needed for the answer.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "003208",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -468,13 +796,59 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
-      "target_duration_ms": 4120
+      "target_duration_ms": 4120,
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "长按覆盖时间细节完整语义段，避免漏听限定词。",
+        "task_prompt": "先听音频，再完成时间细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练时间细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：长按要覆盖完整限定结构，尤其注意数字、时间或地点前后的修饰词。\n\n③ 验证与迁移：回听“In this section, listeners must rely on time-point capture because the tested 时间细节 appears only once.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "003209",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -522,12 +896,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "翻面前先复述你抓到的时间细节，再核对答案。",
+        "task_prompt": "先听音频，再完成时间细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练时间细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：翻面卡先做自我复述，重点检查是否遗漏限定条件。\n\n③ 验证与迁移：回听“The speaker repeats background points, yet time-point capture identifies the precise 时间细节 that should be selected.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "003210",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -596,12 +1016,61 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "四选一：根据音频锁定最准确的时间细节。",
+        "task_prompt": "先听音频，再完成时间细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练时间细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：四选一先比较限定词一致性，再看核心名词是否匹配。\n\n③ 验证与迁移：回听“After a broad introduction, the host uses time-point capture to highlight the core 时间细节 detail in one short clause.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "003211",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -649,16 +1118,62 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "time_window_ms": [
         3980,
         5580
-      ]
+      ],
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "点击时间细节被精确报出的瞬间。",
+        "task_prompt": "先听音频，再完成时间细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练时间细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：时机点击应落在信息被唯一限定的位置，避免在背景描述提前操作。\n\n③ 验证与迁移：回听“Although multiple facts are mentioned, time-point capture guides listeners to the most testable 时间细节 evidence.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "003212",
-      "track": 0,
+      "track": "cet4",
       "library": 0,
       "group": 3,
       "box": 2,
@@ -706,9 +1221,60 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
-      "target_duration_ms": 4600
+      "target_duration_ms": 4600,
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "长按覆盖时间细节完整语义段，避免漏听限定词。",
+        "task_prompt": "先听音频，再完成时间细节定位训练。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "听觉识别",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡训练时间细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：长按要覆盖完整限定结构，尤其注意数字、时间或地点前后的修饰词。\n\n③ 验证与迁移：回听“The final sentence confirms the conclusion, and time-point capture helps isolate the correct 时间细节 information.”，确认你的答案能被原句逐项对应。",
+        "tips": [
+          "先标限定词，再核对核心名词。",
+          "每题做一次原句回听，避免凭印象作答。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     }
-  ]
+  ],
+  "track_index": 0,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

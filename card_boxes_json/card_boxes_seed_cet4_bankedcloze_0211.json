@@ -1,6 +1,6 @@
 {
   "version": "seed-v1-cet4-bankedcloze",
-  "track": 0,
+  "track": "cet4",
   "library": 2,
   "group": 1,
   "box": 1,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "021101",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 1,
@@ -47,12 +47,54 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "1",
+        "box_name": "形容词",
+        "box_prefix": "0211"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "空格语法预判里，什么结构最容易判定‘形容词位’？\n\n请你先总结 4 个信号：\n1) 冠词 + 空格 + 名词\n2) be/系动词 + 空格\n3) 程度副词 + 空格\n4) and 并列形容词结构",
+        "task_prompt": "空格语法预判里，什么结构最容易判定‘形容词位’？\n\n请你先总结 4 个信号：\n1) 冠词 + 空格 + 名词\n2) be/系动词 + 空格\n3) 程度副词 + 空格\n4) and 并列形容词结构",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：先找名词和系动词。空格如果在名词前，常是定语形容词；空格若在 be/become/seem 后，多为表语形容词。\n\n② 核心规律：形容词常被程度副词修饰（very/quite/highly/somewhat），这是词性判断的强线索。若空格两侧有这种修饰关系，优先排除名词和动词。\n\n③ 验证：例如 ‘an important distinction’（定语位）与 ‘become confused’（表语位）都可在不看词义时先锁定形容词。",
+        "tips": [
+          "先用句法信号锁定空格角色，再做语义核验，避免只看词面相似度。",
+          "本题线索是并列结构：优先用“并列项词性一致”反推空格。 题面片段：空格语法预判里，什么结构最容易判定‘形容词位’？ 请你先总结 4 个信号..."
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "021102",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 1,
@@ -110,12 +152,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "1",
+        "box_name": "形容词",
+        "box_prefix": "0211"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "句子：\"People can become ___ and avoid making a decision altogether.\"\n\n为什么这里先判形容词位最稳？",
+        "task_prompt": "句子：\"People can become ___ and avoid making a decision altogether.\"\n\n为什么这里先判形容词位最稳？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“形容词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次同类题按“三步法”处理：先定语法位，再比关键差异，最后代回原句通读确认。",
+        "tips": [
+          "先看四个选项的词性与句法位置，再比搭配与语义方向，最后确认唯一正确项。",
+          "本题线索是并列结构：优先用“并列项词性一致”反推空格。 题面片段：句子：\"People can become ___ and avoid ..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "021103",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 1,
@@ -161,12 +248,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "1",
+        "box_name": "形容词",
+        "box_prefix": "0211"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"...making the right decision begins to feel more {{blank}} and more difficult to do.\"\n\n【提示】并列结构中，右侧是已知形容词 difficult。",
+        "task_prompt": "\"...making the right decision begins to feel more {{blank}} and more difficult to do.\"\n\n【提示】并列结构中，右侧是已知形容词 difficult。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“形容词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：填空题先判空格语法角色，再判语义方向，最后在词库中做形式匹配（词性/搭配/逻辑关系）。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只按词义熟悉度选词，忽略搭配和句法位置。纠偏时先做词性过滤，再做语义验证。下次同类题按“语法定位→候选过滤→代回通读”完成，避免直接凭词感作答。",
+        "tips": [
+          "先判空格词性并筛掉不合格词，再代回检查搭配自然度和整句逻辑。",
+          "本题线索是并列结构：优先用“并列项词性一致”反推空格。 题面片段：\"...making the right decision begins..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "crucial"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "crucial"
+        }
+      ]
     },
     {
       "card_id": "021104",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 1,
@@ -224,12 +364,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "1",
+        "box_name": "形容词",
+        "box_prefix": "0211"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "句子：\"Yet many studies still produce ___ findings across different groups.\"\n\n空格为什么先判形容词，而不是名词？",
+        "task_prompt": "句子：\"Yet many studies still produce ___ findings across different groups.\"\n\n空格为什么先判形容词，而不是名词？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“形容词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次同类题按“三步法”处理：先定语法位，再比关键差异，最后代回原句通读确认。",
+        "tips": [
+          "先看四个选项的词性与句法位置，再比搭配与语义方向，最后确认唯一正确项。",
+          "本题线索在空格前后搭配：先锁定句法位，再验证语义一致性。 题面片段：句子：\"Yet many studies still produce _..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "C"
       }
     },
     {
       "card_id": "021105",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 1,
@@ -275,12 +460,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "1",
+        "box_name": "形容词",
+        "box_prefix": "0211"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"The report offers a {{blank}} explanation for why exercise affects mood.\"\n\n【提示】a + 空格 + explanation",
+        "task_prompt": "\"The report offers a {{blank}} explanation for why exercise affects mood.\"\n\n【提示】a + 空格 + explanation",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“形容词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：填空题先判空格语法角色，再判语义方向，最后在词库中做形式匹配（词性/搭配/逻辑关系）。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只按词义熟悉度选词，忽略搭配和句法位置。纠偏时先做词性过滤，再做语义验证。下次同类题按“语法定位→候选过滤→代回通读”完成，避免直接凭词感作答。",
+        "tips": [
+          "先判空格词性并筛掉不合格词，再代回检查搭配自然度和整句逻辑。",
+          "本题线索含限定词：先判断是否为名词核心位。 题面片段：\"The report offers a {{blank}} expla..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "detailed"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "detailed"
+        }
+      ]
     },
     {
       "card_id": "021106",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 1,
@@ -338,12 +576,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "1",
+        "box_name": "形容词",
+        "box_prefix": "0211"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "句子：\"The pattern looks ___ at first, but the data are actually unstable.\"\n\n为什么这里优先填形容词而不是副词？",
+        "task_prompt": "句子：\"The pattern looks ___ at first, but the data are actually unstable.\"\n\n为什么这里优先填形容词而不是副词？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“形容词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次同类题按“三步法”处理：先定语法位，再比关键差异，最后代回原句通读确认。",
+        "tips": [
+          "先看四个选项的词性与句法位置，再比搭配与语义方向，最后确认唯一正确项。",
+          "本题线索是系表结构：连系动词后优先考虑表语位。 题面片段：句子：\"The pattern looks ___ at first, ..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "021107",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 1,
@@ -389,12 +672,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "1",
+        "box_name": "形容词",
+        "box_prefix": "0211"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"For many first-year students, the transition feels {{blank}} at the beginning.\"\n\n【提示】feels + 空格",
+        "task_prompt": "\"For many first-year students, the transition feels {{blank}} at the beginning.\"\n\n【提示】feels + 空格",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“形容词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：填空题先判空格语法角色，再判语义方向，最后在词库中做形式匹配（词性/搭配/逻辑关系）。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只按词义熟悉度选词，忽略搭配和句法位置。纠偏时先做词性过滤，再做语义验证。下次同类题按“语法定位→候选过滤→代回通读”完成，避免直接凭词感作答。",
+        "tips": [
+          "先判空格词性并筛掉不合格词，再代回检查搭配自然度和整句逻辑。",
+          "本题线索是系表结构：连系动词后优先考虑表语位。 题面片段：\"For many first-year students, the t..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "overwhelming"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "overwhelming"
+        }
+      ]
     },
     {
       "card_id": "021108",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 1,
@@ -452,12 +788,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "1",
+        "box_name": "形容词",
+        "box_prefix": "0211"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "句子：\"The model is still too ___ to explain real-life decisions.\"\n\n空格应优先判什么词性？",
+        "task_prompt": "句子：\"The model is still too ___ to explain real-life decisions.\"\n\n空格应优先判什么词性？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“形容词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次同类题按“三步法”处理：先定语法位，再比关键差异，最后代回原句通读确认。",
+        "tips": [
+          "先看四个选项的词性与句法位置，再比搭配与语义方向，最后确认唯一正确项。",
+          "本题线索是系表结构：连系动词后优先考虑表语位。 题面片段：句子：\"The model is still too ___ to ex..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "D"
       }
     },
     {
       "card_id": "021109",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 1,
@@ -503,12 +884,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "1",
+        "box_name": "形容词",
+        "box_prefix": "0211"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"With too many options available, people often feel {{blank}} before they even compare details.\"\n\n【提示】feel + 空格",
+        "task_prompt": "\"With too many options available, people often feel {{blank}} before they even compare details.\"\n\n【提示】feel + 空格",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“形容词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：填空题先判空格语法角色，再判语义方向，最后在词库中做形式匹配（词性/搭配/逻辑关系）。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只按词义熟悉度选词，忽略搭配和句法位置。纠偏时先做词性过滤，再做语义验证。下次同类题按“语法定位→候选过滤→代回通读”完成，避免直接凭词感作答。",
+        "tips": [
+          "先判空格词性并筛掉不合格词，再代回检查搭配自然度和整句逻辑。",
+          "本题线索是系表结构：连系动词后优先考虑表语位。 题面片段：\"With too many options available, pe..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "confused"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "confused"
+        }
+      ]
     },
     {
       "card_id": "021110",
-      "track": 0,
+      "track": "cet4",
       "library": 2,
       "group": 1,
       "box": 1,
@@ -566,8 +1000,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "1",
+        "group_name": "空格语法预判",
+        "box_id": "1",
+        "box_name": "形容词",
+        "box_prefix": "0211"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "句子：\"A clear and ___ framework can reduce unnecessary decision stress.\"\n\n为什么空格先判形容词而不是名词？",
+        "task_prompt": "句子：\"A clear and ___ framework can reduce unnecessary decision stress.\"\n\n为什么空格先判形容词而不是名词？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“形容词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次同类题按“三步法”处理：先定语法位，再比关键差异，最后代回原句通读确认。",
+        "tips": [
+          "先看四个选项的词性与句法位置，再比搭配与语义方向，最后确认唯一正确项。",
+          "本题线索是并列结构：优先用“并列项词性一致”反推空格。 题面片段：句子：\"A clear and ___ framework can re..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     }
-  ]
+  ],
+  "track_index": 0,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

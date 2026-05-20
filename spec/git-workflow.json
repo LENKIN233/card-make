@@ -1,0 +1,157 @@
+{
+  "version": "card-make-git-workflow-v1",
+  "status": "active",
+  "purpose": "Make the agent responsible for the Git lifecycle of agent-authored tracked-file changes, including standing user-delegated auto-merge for validated harness/tooling PRs while preserving user authority over final content approval.",
+  "authority_boundary": {
+    "agent_owns": [
+      "pre_edit_git_status_check",
+      "branch_scope_decision",
+      "local_validation",
+      "commit",
+      "push",
+      "open_or_update_draft_PR",
+      "publish_handoff",
+      "auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation"
+    ],
+    "user_reserves": [
+      "formal_content_approval",
+      "formal_content_PR_merge_unless_scope_delegated",
+      "approval_to_delete_cards",
+      "approval_to_mark_content_formally_usable"
+    ]
+  },
+  "pre_edit_check": {
+    "required": true,
+    "commands": [
+      "git status --short --branch",
+      "git log --oneline --decorate -5"
+    ],
+    "dirty_worktree_policy": "Do not overwrite unrelated user changes. If dirty files affect the task, inspect and work with them; if unrelated, leave them alone."
+  },
+  "branch_policy": {
+    "preferred_prefixes": [
+      "harness/",
+      "content/",
+      "fix/",
+      "tooling/"
+    ],
+    "scope_rule": "Choose branch names by requirement domain and module boundary, not generic git-flow stages.",
+    "shared_base_branches": [
+      "main",
+      "fix/review-findings-card-contract",
+      "harness/card-content-control"
+    ],
+    "force_push_shared_base_branches": "forbidden",
+    "stacked_PRs_allowed": true
+  },
+  "existing_PR_policy": {
+    "update_existing_when": [
+      "same_requirement_domain",
+      "same_base_branch",
+      "same_review_unit"
+    ],
+    "create_new_when": [
+      "new_requirement_domain",
+      "different_base_branch",
+      "existing_PR_scope_would_blur",
+      "user_requests_separate_review"
+    ],
+    "default_for_harness_followups": "use_existing_PR_for_same_harness_domain; create_stacked_PR_for_distinct_git_workflow_or_quality_gate_domains"
+  },
+  "validation_policy": {
+    "before_commit": [
+      {
+        "scope": "harness_files",
+        "command": "node scripts/validate_harness.mjs"
+      },
+      {
+        "scope": "card_json_or_preview_reader",
+        "command": "node scripts/validate_cards.mjs --write-report"
+      },
+      {
+        "scope": "candidate_sample_scoped_audit",
+        "command": "node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json"
+      },
+      {
+        "scope": "content_sample_pr_scope",
+        "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract"
+      },
+      {
+        "scope": "all_tracked_changes",
+        "command": "git diff --check"
+      }
+    ],
+    "no_remote_checks_policy": "If GitHub reports no checks, local validation plus PR metadata is the evidence of completion."
+  },
+  "completion_policy": {
+    "agent_authored_tracked_changes_default": "validated_commit_push_draft_PR",
+    "local_only_exceptions": [
+      "small_samples_for_user_review",
+      "read_only_audits",
+      "explicit_user_local_only_request"
+    ],
+    "formal_bulk_card_changes_require": [
+      "user_confirmed_sample",
+      "local_validation",
+      "commit",
+      "push",
+      "draft_PR"
+    ],
+    "harness_changes_require": [
+      "local_validation",
+      "commit",
+      "push",
+      "draft_PR",
+      "auto_merge_after_ready_and_mergeable"
+    ],
+    "tooling_changes_require": [
+      "local_validation",
+      "commit",
+      "push",
+      "draft_PR",
+      "auto_merge_after_ready_and_mergeable"
+    ]
+  },
+  "merge_policy": {
+    "default": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs",
+    "standing_user_delegation": {
+      "granted_by_user_statement": "我要求自动合并",
+      "granted_at": "2026-05-13",
+      "scope": [
+        "harness_changes",
+        "tooling_changes"
+      ],
+      "requires": [
+        "local_validation_passed",
+        "PR_ready_or_not_draft",
+        "GitHub_mergeable",
+        "no_bulk_card_content_changes",
+        "base_branch_or_target_clear"
+      ]
+    },
+    "agent_may_merge_only_when": "standing_user_delegation_matches_scope_or_user_explicitly_delegates_merge_for_the_specific_PR_or_task_class",
+    "never_merge_when": [
+      "formal_content_not_user_approved",
+      "validator_failing",
+      "PR_scope_mixes_harness_and_bulk_content",
+      "base_branch_or_target_unclear"
+    ]
+  },
+  "handoff_policy": {
+    "directory": "reviews/git_handoffs/",
+    "record_required_when": "agent_publishes_tracked_file_changes",
+    "required_fields": [
+      "branch",
+      "base_branch",
+      "commit_sha",
+      "push_ref",
+      "PR_url",
+      "PR_state",
+      "is_draft",
+      "validation",
+      "local_status",
+      "remaining_risks",
+      "merge_authority"
+    ]
+  }
+}

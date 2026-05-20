@@ -1,6 +1,6 @@
 {
   "version": "seed-v1-cet4-translation-0404",
-  "track": 0,
+  "track": "cet4",
   "library": 4,
   "group": 0,
   "box": 4,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "040401",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -48,12 +48,54 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "原句：许多城市为了鼓励更多人乘坐公交车出行，一直在努力改善公交车的服务质量。\n\n任务：先汉译英，再检查你是否把「为了……」压缩成 to do 目的结构，而不是拆成拖沓从句。必要时可先偷看提示。",
+        "task_prompt": "原句：许多城市为了鼓励更多人乘坐公交车出行，一直在努力改善公交车的服务质量。\n\n任务：先汉译英，再检查你是否把「为了……」压缩成 to do 目的结构，而不是拆成拖沓从句。必要时可先偷看提示。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：句中出现「为了 + 行为目标」时，优先考虑 to do 目的状语，而不是先写完整目的从句。\n\n② 核心规律：to do 用来交代目的，通常比 so that 更紧凑。翻译时先写主动作，再把目的动作压成非谓语，可显著减少中文式长从句。\n\n③ 验证：To encourage more people to take buses 对应「为了鼓励更多人乘公交」，主句 many cities have been making efforts ... 对应「一直在努力……」，信息完整且结构紧凑。",
+        "tips": [
+          "看到「为了」先试 to do，除非必须强调结果或条件关系才用从句。",
+          "非谓语不等于省信息，而是把次级信息压缩到更高密度的结构里。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "040402",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -112,12 +154,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原句：通过这些努力，他们期望孩子健康成长，为国家的发展和繁荣作出贡献。\n\n任务：先做汉译英，再选出最自然地使用非谓语表达「成长 + 贡献」动作链的译文。",
+        "task_prompt": "原句：通过这些努力，他们期望孩子健康成长，为国家的发展和繁荣作出贡献。\n\n任务：先做汉译英，再选出最自然地使用非谓语表达「成长 + 贡献」动作链的译文。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：中文里有「期望某人……并……」时，常见两个后续动作，适合套 expect sb to do 的非谓语框架。\n\n② 核心规律：动词后接宾语补足语时，to do 结构可以承载连续动作链。若写成 expect that their children can ... and can ...，语义虽对，但表达更口语、层次更散。\n\n③ 验证：A 用 expect their children to grow up ... and make contributions ...，一次性承载两个目标动作；B 缺 to；C 把 contributes 放成三单；D 用 for growing up 破坏了期望动作结构。",
+        "tips": [
+          "expect, encourage, allow, enable 等动词后常接 sb to do，是翻译压缩动作链的高频入口。",
+          "并列动词共享一个 to 时，后项通常不重复 to，更自然。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "040403",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -162,12 +249,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "原句：中国政府通过加大资金投入和政策引导，鼓励新能源汽车企业进行技术创新，不断提高产品在市场上的竞争力。\n\n先做汉译英，再补全非谓语骨架：\nBy increasing capital investment and providing policy guidance, the Chinese government encourages new energy vehicle enterprises to carry out technological innovation, {{blank}} product competitiveness in the market.",
+        "task_prompt": "原句：中国政府通过加大资金投入和政策引导，鼓励新能源汽车企业进行技术创新，不断提高产品在市场上的竞争力。\n\n先做汉译英，再补全非谓语骨架：\nBy increasing capital investment and providing policy guidance, the Chinese government encourages new energy vehicle enterprises to carry out technological innovation, {{blank}} product competitiveness in the market.",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：中文主句后面出现「不断……」这类持续过程信息时，常可用 doing 非谓语补充结果或伴随状态。\n\n② 核心规律：主干动作已完整时，可用现在分词在句尾追加过程性结果，如 ..., continuously improving ...。若改成 and continuously improves，会引入并列谓语，句子变硬。\n\n③ 验证：填 improving 后，前半句保留政府鼓励创新的主干，句尾分词短语补充竞争力提升的持续过程，与中文「不断提高」语义一致。",
+        "tips": [
+          "句尾 doing 常用于补充结果、伴随或方式，是减少中式并列句的有效手段。",
+          "分词短语的逻辑主语默认接主句主语，写作时要检查主语是否一致。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "continuously improving"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "continuously improving"
+        }
+      ]
     },
     {
       "card_id": "040404",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -226,12 +366,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原句：大量移动应用程序的开发使人们能用手机读小说和其他形式的文学作品。\n\n任务：先汉译英，再选出最自然的 enable + 非谓语结构译文。",
+        "task_prompt": "原句：大量移动应用程序的开发使人们能用手机读小说和其他形式的文学作品。\n\n任务：先汉译英，再选出最自然的 enable + 非谓语结构译文。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：当中文出现「使某人能够……」时，优先匹配英语高频结构 enable sb to do。\n\n② 核心规律：enable 后必须接宾语再接 to do，不能直接接 doing，也不能漏掉 to。该结构能把「赋能关系 + 行为结果」一次性表达清楚。\n\n③ 验证：A 用 enables people to read ... 完整匹配结构；B 漏 to；C 用 enable people reading 搭配错误；D 的 enables that people can ... 赘余且不地道。",
+        "tips": [
+          "遇到「使某人能」可快速映射为 enable sb to do。",
+          "非谓语固定搭配先保证结构正确，再追求句式变化。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "040405",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -269,12 +454,54 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "原句：近年来，由于私家车数量不断增多，城市交通问题越来越严重。\n\n任务：先汉译英，再检查你是否把原因背景压成 with 结构或分词结构，避免中文式直译堆叠。必要时可先偷看提示。",
+        "task_prompt": "原句：近年来，由于私家车数量不断增多，城市交通问题越来越严重。\n\n任务：先汉译英，再检查你是否把原因背景压成 with 结构或分词结构，避免中文式直译堆叠。必要时可先偷看提示。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：中文常见「由于……，主句……」结构，若原因是持续背景变化，可考虑 with 复合结构。\n\n② 核心规律：with + 名词 + doing 表示伴随状态或背景进展，常用于书面翻译压缩从句。它不是万能替代；当因果逻辑特别强时，due to 仍可用。但在连续叙述中，with 结构更紧凑。\n\n③ 验证：with the number of private cars continuously increasing 对应持续增长背景，主句 urban traffic problems have become increasingly serious 承载核心结论，层次清楚。",
+        "tips": [
+          "背景信息用 with 结构，核心判断留在主句，是翻译提密度的实用手法。",
+          "with 结构中的 doing 表示主动进行中的变化，和被动 done 不可混。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "040406",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -319,12 +546,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "原句：据说他的风筝用木头和竹子制作，飞了三天后才落地。\n\n先做汉译英，再补全非谓语骨架：\nIt is said that his kite, made of wood and bamboo, stayed in the air for three days before {{blank}}.",
+        "task_prompt": "原句：据说他的风筝用木头和竹子制作，飞了三天后才落地。\n\n先做汉译英，再补全非谓语骨架：\nIt is said that his kite, made of wood and bamboo, stayed in the air for three days before {{blank}}.",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：句中同时出现「由……制作」和「在……后才……」时，往往可以叠加使用 done 与 doing 两类非谓语。\n\n② 核心规律：be made of 可压缩成过去分词短语 made of ... 修饰名词；时间介词 before 后常接 doing，表示动作发生前的时间界点。\n\n③ 验证：填 landing 后，before landing 与前文 stayed in the air for three days 逻辑顺承；若填 landed 则需要完整从句 before it landed。当前骨架要求的是介词后非谓语。",
+        "tips": [
+          "过去分词短语常用于压缩被动含义的定语信息，如 made of..., located in...。",
+          "介词后优先接名词或 doing；看到 before/after/without 时先排查是否该用动名词。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "landing"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "landing"
+        }
+      ]
     },
     {
       "card_id": "040407",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -362,12 +642,54 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "【补充卡｜增加非谓语】\n什么时候值得主动把中文小句压成非谓语，而不是保留成完整从句？请用一句话说出你的判断标准。",
+        "task_prompt": "【补充卡｜增加非谓语】\n什么时候值得主动把中文小句压成非谓语，而不是保留成完整从句？请用一句话说出你的判断标准。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：若中文里出现“为了……、从而……、并且……、在……过程中”等从属性较强的小句，可以优先考虑非谓语压缩。\n\n② 核心规律：非谓语最适合承接目的、结果、伴随和背景层，不适合承载需要单独断言的核心动作。\n\n③ 验证与纠偏：改写后回看句子，若主干更清楚且逻辑没丢，说明压缩成功；若主语悬空或关系变糊，就说明压得过头。",
+        "tips": [
+          "非谓语优先处理从属层，不要拿它替代主干。",
+          "主语关系不清时，宁可保留从句。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "040408",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -426,12 +748,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "【补充卡｜增加非谓语】\n原句：科研团队历时三年完成了这项实验，证明了该理论的实际可行性。\n\n下列哪项译文最能把“历时三年”压成非谓语式修饰而不单独成句？",
+        "task_prompt": "【补充卡｜增加非谓语】\n原句：科研团队历时三年完成了这项实验，证明了该理论的实际可行性。\n\n下列哪项译文最能把“历时三年”压成非谓语式修饰而不单独成句？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：「历时X」表示完成某件事耗费的时间，英文优先压缩为 having spent/taken X 的完成时分词短语。\n② 核心规律：当一个小句是背景过程、另一个是主要结论时，将前者压为分词短语，突出结论。\n③ 迁移方法：先判断哪个小句是「背景/过程」，再将其转为完成时分词 having done，主句保留核心结论。",
+        "tips": [
+          "「历时/花了X时间」首选 having spent/taken X 完成时分词，不单独成句",
+          "分词短语的逻辑主语须与主句主语一致，否则构成悬挂修饰"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "040409",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -476,12 +843,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "原句：在推进老旧小区改造过程中，许多城市同步完善了公共无障碍设施。\n\n先做汉译英，再补全骨架：\nMany cities have, while advancing old residential community renovation, simultaneously improved public barrier-free facilities {{blank}} residents with special mobility needs.",
+        "task_prompt": "原句：在推进老旧小区改造过程中，许多城市同步完善了公共无障碍设施。\n\n先做汉译英，再补全骨架：\nMany cities have, while advancing old residential community renovation, simultaneously improved public barrier-free facilities {{blank}} residents with special mobility needs.",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：主句后半需要补全“服务对象”而非动作本身。\n\n② 核心规律：表示“为某类人群提供设施/服务”时，常用 for 引出对象。\n\n③ 验证与纠偏：填 for 后，句意完整且搭配自然。",
+        "tips": [
+          "设施服务对象常用 for 引导。",
+          "非谓语结构后常补目的或对象信息。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "for"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "for"
+        }
+      ]
     },
     {
       "card_id": "040410",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -540,12 +960,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "原句：通过优化政务流程并引入智能审核系统，审批效率显著提升。\n\n任务：先汉译英，再选出非谓语压缩最自然的一项。",
+        "task_prompt": "原句：通过优化政务流程并引入智能审核系统，审批效率显著提升。\n\n任务：先汉译英，再选出非谓语压缩最自然的一项。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：句子包含两项并列手段“优化流程+引入系统”。\n\n② 核心规律：手段并列可写成 By doing A and doing B，主句承载结果。\n\n③ 验证与纠偏：A 结构最紧凑；其余项存在并列不平衡或词形错误。",
+        "tips": [
+          "手段并列宜统一为 doing 结构。",
+          "审批效率常写为 approval efficiency。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "040411",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -583,12 +1048,54 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "原句：完善社区托育服务网络，能够有效减轻年轻家庭的照护压力。\n\n任务：先汉译英，再检查你是否使用非谓语目的结构表达“减轻压力”结果。",
+        "task_prompt": "原句：完善社区托育服务网络，能够有效减轻年轻家庭的照护压力。\n\n任务：先汉译英，再检查你是否使用非谓语目的结构表达“减轻压力”结果。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：句子是“治理动作—社会结果”链条。\n\n② 核心规律：可用动名词短语作主语压缩“完善……”这一动作。\n\n③ 验证与纠偏：Improving ... can ease ... 结构简洁且逻辑完整。",
+        "tips": [
+          "动名词主语适合政策措施句。",
+          "ease pressure on ... 是高频搭配。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "040412",
-      "track": 0,
+      "track": "cet4",
       "library": 4,
       "group": 0,
       "box": 4,
@@ -633,8 +1140,66 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "4",
+        "box_name": "增加非谓语",
+        "box_prefix": "0404"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "原句：推动公共交通一体化建设，为城市低碳转型提供了长期支撑。\n\n先做汉译英，再补全骨架：\nPromoting integrated public transportation development has provided long-term support {{blank}} urban low-carbon transformation.",
+        "task_prompt": "原句：推动公共交通一体化建设，为城市低碳转型提供了长期支撑。\n\n先做汉译英，再补全骨架：\nPromoting integrated public transportation development has provided long-term support {{blank}} urban low-carbon transformation.",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：句末是“为……提供支撑”结构。\n\n② 核心规律：support 后常用 for 引出被支持对象。\n\n③ 验证与纠偏：填 for 后搭配自然、语义闭合。",
+        "tips": [
+          "support for ... 是稳定搭配。",
+          "低碳转型可译为 low-carbon transformation。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "for"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "for"
+        }
+      ]
     }
-  ]
+  ],
+  "track_index": 0,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

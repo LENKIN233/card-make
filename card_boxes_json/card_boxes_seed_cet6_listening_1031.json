@@ -1,6 +1,6 @@
 {
   "version": "seed-v2-migrated-1031",
-  "track": 1,
+  "track": "cet6",
   "library": 0,
   "group": 3,
   "box": 1,
@@ -11,7 +11,7 @@
   "cards": [
     {
       "card_id": "103101",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -49,7 +49,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "audio": {
         "url": "ai_tts/cet6/1031/103101.mp3",
@@ -59,11 +60,56 @@
         "rate": "-8%",
         "transcript": "The committee submitted its final report last week. It concluded that further investment in renewable energy is essential for achieving carbon neutrality by 2050.",
         "path": "ai_tts/cet6/1031/103101.mp3"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，了解本节训练重点：代词指代（it / they / this / which 指向判断）。",
+        "task_prompt": "任务：先听音频，了解本节训练重点：代词指代（it / they / this / which 指向判断）。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：\"It\" = 回指上文主语 \"The committee\"，代词 it 指代整个委员会行为（提交报告这件事或委员会本身）。② 核心规律：代词指代三步法：1）找代词，2）向前搜索最近同性同数名词/概念，3）代入验证语义通顺。③ 验证与迁移：it 通常指单数名词；they 指复数；this / that 指代前文提到的事件或概念。",
+        "tips": [
+          "代词指代：it / they / this / which 向前搜索最近名词进行匹配。",
+          "验证方法：把找到的名词代回原句，检查语义是否自然流畅。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "103102",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -101,7 +147,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "audio": {
         "url": "ai_tts/cet6/1031/103102.mp3",
@@ -133,11 +180,59 @@
           "text": "Government officials",
           "is_correct": false
         }
-      ]
+      ],
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "任务：先听音频，再判断\"they\"指代的是哪个群体。",
+        "task_prompt": "任务：先听音频，再判断\"they\"指代的是哪个群体。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：\"They\" 出现在 local residents 之后，是最近的复数名词，语义代入验证：residents argued... 通顺。② 核心规律：指代题找最近的同性数名词：they → local residents（复数，人）；city planners 也是复数人，但距离远，语义逻辑也不符合。③ 验证与迁移：排除法：city planners 不会反对自己的提案；they = residents 语义合理。",
+        "tips": [
+          "they 指代人时，优先选最近的复数人称名词；但要验证语义逻辑（谁更可能做这件事）。",
+          "排除法：主语做某事是否符合逻辑？逻辑+位置双重验证=高准确率。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
+      }
     },
     {
       "card_id": "103103",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -175,7 +270,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "audio": {
         "url": "ai_tts/cet6/1031/103103.mp3",
@@ -189,11 +285,56 @@
       "time_window_ms": [
         4200,
         5800
-      ]
+      ],
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，再在规定时间内复述：\"this\"指代的具体内容是什么。",
+        "task_prompt": "任务：先听音频，再在规定时间内复述：\"this\"指代的具体内容是什么。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：\"This discovery\" = this 指代前一句的整个事件（检测到液态水），discovery 是指代锚定词（概括指代）。② 核心规律：this + 概括名词（discovery / finding / development）= 指代前文整个事件，不是单个词。③ 验证与迁移：复述时先说\"this指代什么\"（前句核心事件），再说结果（引发什么反应）。",
+        "tips": [
+          "this discovery / this finding / this result = 概括指代前文整个事件，常用于学术听力。",
+          "复述策略：先还原指代内容（= 前句事件），再说后续影响。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "103104",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -231,7 +372,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "audio": {
         "url": "ai_tts/cet6/1031/103104.mp3",
@@ -242,11 +384,56 @@
         "transcript": "The university launched a new scholarship program for international students, and it has already attracted hundreds of applications from over thirty countries.",
         "path": "ai_tts/cet6/1031/103104.mp3"
       },
-      "target_duration_ms": 5200
+      "target_duration_ms": 5200,
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，再进行影子跟读，注意代词的轻读和指代词前后的语调变化。",
+        "task_prompt": "任务：先听音频，再进行影子跟读，注意代词的轻读和指代词前后的语调变化。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：\"it\" 指代 \"the scholarship program\"，跟读时 it 轻读，program 重读（第一次出现）。② 核心规律：代词（it/they/this）在英语口语中通常轻读，因为是已知信息（given information）；新信息（如 hundreds / thirty countries）重读。③ 验证与迁移：跟读时感受：代词轻→新信息重，是英语信息结构（given/new）的语音体现。",
+        "tips": [
+          "代词（it/they/this）= 已知信息 → 轻读；新名词/数字 = 新信息 → 重读。",
+          "跟读中模仿这种轻重节奏，有助于听力时自动过滤已知信息，捕捉新信息。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      }
     },
     {
       "card_id": "103105",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -284,7 +471,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "audio": {
         "url": "ai_tts/cet6/1031/103105.mp3",
@@ -316,11 +504,59 @@
           "text": "The company's presence in Hong Kong",
           "is_correct": false
         }
-      ]
+      ],
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "任务：先听音频，再判断\"which\"指代的是什么内容。",
+        "task_prompt": "任务：先听音频，再判断\"which\"指代的是什么内容。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：which = 关系代词，指代前句整个命题（公司迁总部计划），而非单个名词。② 核心规律：which 引导非限制性定语从句时，常指代前句整个事件/决定；而非从句中最近的名词（Singapore）。③ 验证与迁移：代入验证：the relocation surprised analysts = 逻辑通顺；Singapore surprised analysts = 不通顺。",
+        "tips": [
+          "which 引导非限制性定语从句时，优先考虑指代前句整个事件，而非单个名词。",
+          "验证步骤：把找到的指代内容代回从句，检查语义是否合理。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
+      }
     },
     {
       "card_id": "103106",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -358,7 +594,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "time_window_ms": [
         2800,
@@ -372,11 +609,56 @@
         "rate": "-8%",
         "transcript": "The committee issued its final report last Tuesday. It contained several recommendations that experts consider groundbreaking, particularly regarding the decentralization of public services.",
         "path": "ai_tts/cet6/1031/103106.mp3"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，再判断 It 指代的是什么。",
+        "task_prompt": "任务：先听音频，再判断 It 指代的是什么。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：It 在第二句开头 = 指代前句的名词主语，最近的名词主语 = the final report。② 核心规律：CET6 代词指代：句首的 it/they/this/that = 多指代上文最近出现的名词或名词短语。③ 验证与迁移：区分代词指代范围：\"it\" 可指物，\"they\" 指复数名词，\"this/that\" 可指事件/概念。",
+        "tips": [
+          "句首代词指代 = 多指代紧邻前句的主语或宾语名词，同性同数原则。",
+          "如果上下文有多个名词，优先选语义上合理的（report 包含 recommendations，合理）。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "103107",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -414,7 +696,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "target_duration_ms": 5200,
       "audio": {
@@ -425,11 +708,56 @@
         "rate": "-8%",
         "transcript": "The negotiations stalled because both sides refused to compromise on the issue of intellectual property rights. This proved to be the decisive obstacle that ultimately derailed the entire deal.",
         "path": "ai_tts/cet6/1031/103107.mp3"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，再判断 This 指代的内容。",
+        "task_prompt": "任务：先听音频，再判断 This 指代的内容。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：This（指示代词）后接 proved to be = 指代上文描述的某个事件或状况。② 核心规律：CET6 this/that 的宽指功能：this 可指代整个从句所描述的情况（不只是某个名词）。③ 验证与迁移：答案含义：both sides' refusal to compromise = the decisive obstacle；不能选 the negotiations（主语，被说明的对象，不是 this 的指代）。",
+        "tips": [
+          "this/that 可作情况指代（situation pronoun），指上文整件事，而非单一名词。",
+          "下文对 this 描述的评价（decisive obstacle）= 就是对上文那件事的定性。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "103108",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -467,7 +795,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "audio": {
         "url": "ai_tts/cet6/1031/103108.mp3",
@@ -477,11 +806,56 @@
         "rate": "-8%",
         "transcript": "Researchers at the institute developed a novel algorithm that could detect anomalies in real time. They later licensed it to three major tech companies, generating substantial revenue.",
         "path": "ai_tts/cet6/1031/103108.mp3"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，再判断 it 在第二句中指代的内容。",
+        "task_prompt": "任务：先听音频，再判断 it 在第二句中指代的内容。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：They = researchers，it = 紧邻前句宾语 a novel algorithm（被开发的直接对象）。② 核心规律：主宾指代律：前句主语 they → 本句主语 they 一致；前句宾语 the algorithm → it。③ 验证与迁移：licensed it to tech companies = 算法被授权给科技公司，而非 anomalies（这是算法检测的对象）。",
+        "tips": [
+          "前句宾语（直接对象）是后句 it 最常见的指代对象，尤其当动作 + object 发生后。",
+          "generated substantial revenue = 收入来源是算法授权，答案验证 it = algorithm。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "103109",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -519,7 +893,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "options": [
         {
@@ -551,11 +926,59 @@
         "rate": "-8%",
         "transcript": "The new immigration policy drew criticism from civil rights organizations. They argued that it disproportionately affected minority communities and failed to account for humanitarian considerations.",
         "path": "ai_tts/cet6/1031/103109.mp3"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "任务：先听音频，再判断第二句中两个代词（They / it）各自的指代对象。",
+        "task_prompt": "任务：先听音频，再判断第二句中两个代词（They / it）各自的指代对象。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：They 在宾语从句之前 = 指代句子主语（organizations）；it 是 affected 的主语 = 指代 the policy（批评对象）。② 核心规律：CET6 同句双代词：they 通常重述本句主语；it 通常引入前句主题名词。③ 验证与迁移：答案两个指代均须正确：they = organizations, it = policy；混淆任一方向 = 错误。",
+        "tips": [
+          "同段双代词题：先确认 they/it 各自的语法角色，再追溯前文最近匹配名词。",
+          "\"argue + that + subject + verb\" 中 it/they 是论证对象，务必区分主语代词和宾语代词。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "103110",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -593,7 +1016,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "time_window_ms": [
         3200,
@@ -607,11 +1031,56 @@
         "rate": "-8%",
         "transcript": "The university launched a new interdisciplinary center dedicated to climate resilience research. Its founding director emphasized that it would collaborate closely with governmental and non-governmental partners globally.",
         "path": "ai_tts/cet6/1031/103110.mp3"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，再判断 Its 和 it 分别指代的内容。",
+        "task_prompt": "任务：先听音频，再判断 Its 和 it 分别指代的内容。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：Its（所有格代词）+ founding director = \"该机构的\" 创始主任 = the center's；it 在动词 would collaborate 之前 = 主语。② 核心规律：所有格 its = 所属对象（名词）；主格 it = 行为主体（名词/机构）。③ 验证与迁移：两个代词均指 the center；founding director 不能被指代为 it（人 → they/he/she，不用 it）。",
+        "tips": [
+          "its = 所有格，意为 \"该...的\"，指代前文名词，后接名词；it = 主格/宾格，指代物/机构。",
+          "机构/组织 = 用 it，不用 they；人 = 用 they/he/she，不用 it。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 2,
+        "label": "T2",
+        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "103111",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -649,7 +1118,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "target_duration_ms": 5600,
       "audio": {
@@ -660,11 +1130,56 @@
         "rate": "-8%",
         "transcript": "Scientists proposed a new model that could explain the observed acceleration in the expansion of the universe. However, this has yet to be validated through independent empirical testing and peer review.",
         "path": "ai_tts/cet6/1031/103111.mp3"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，再判断 this 指代的具体内容。",
+        "task_prompt": "任务：先听音频，再判断 this 指代的具体内容。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：this 在 however 之后 = 指代前句的核心名词（评价对象）；has yet to be validated = 尚待验证（否定当前状态）。② 核心规律：however 之后的 this = 通常指代前句刚介绍的主体，然后以 however 引入它的局限。③ 验证与迁移：答案：the model has not yet been independently verified；\"this\" 不等于 \"the acceleration\" 或 \"the universe\"（都不是被验证的对象）。",
+        "tips": [
+          "however + this/it = 转折后对前文主体的反驳或补充，this 指代对象 = 前句主体名词。",
+          "\"has yet to be\" = 尚未，是对 this 所指对象的否定当前状态，答案含 \"not yet confirmed\"。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 3,
+        "label": "T3",
+        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "103112",
-      "track": 1,
+      "track": "cet6",
       "library": 0,
       "group": 3,
       "box": 1,
@@ -702,7 +1217,8 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
       },
       "audio": {
         "url": "ai_tts/cet6/1031/103112.mp3",
@@ -712,7 +1228,57 @@
         "rate": "-8%",
         "transcript": "The study identified three key risk factors for cardiovascular disease. These are modifiable through lifestyle changes, including dietary adjustments, regular physical exercise, and smoking cessation.",
         "path": "ai_tts/cet6/1031/103112.mp3"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "1",
+        "box_name": "识别指代关系",
+        "box_prefix": "1031"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "任务：先听音频，再判断 These 指代的内容及其语义含义。",
+        "task_prompt": "任务：先听音频，再判断 These 指代的内容及其语义含义。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后操作",
+          "focus": "识别指代关系",
+          "success_criteria": "准确完成交互操作"
+        }
+      },
+      "analysis": {
+        "text": "① 识别信号：These（指示代词复数）= 上文 three key risk factors（复数名词），语法数一致。② 核心规律：these/those = 复数指示代词，指代前文复数名词（列举物/多个对象）。③ 验证与迁移：答案：the risk factors can be modified through lifestyle changes；修正手段包括饮食、运动、戒烟。",
+        "tips": [
+          "these/those = 复数代词，指代时确认前文有哪些复数名词，通常选最近且语义匹配的。",
+          "modifiable = 可修正的，等同 can be changed/adjusted；lifestyle changes = 生活方式干预。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     }
-  ]
+  ],
+  "track_index": 1,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

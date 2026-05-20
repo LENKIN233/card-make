@@ -1,6 +1,6 @@
 {
   "version": "seed-v1-cet6-bankedcloze",
-  "track": 1,
+  "track": "cet6",
   "library": 2,
   "group": 0,
   "box": 0,
@@ -10,7 +10,7 @@
   "cards": [
     {
       "card_id": "120001",
-      "track": 1,
+      "track": "cet6",
       "library": 2,
       "group": 0,
       "box": 0,
@@ -47,12 +47,54 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "\"In volatile markets, strategic patience can increase a firm's ___ of avoiding costly overreactions.\"\n\nword bank：likelihood / reactive / swiftly / recalibrate / prudent / fragile\n\n不看语义，你如何先把词性锁定为名词？",
+        "task_prompt": "\"In volatile markets, strategic patience can increase a firm's ___ of avoiding costly overreactions.\"\n\nword bank：likelihood / reactive / swiftly / recalibrate / prudent / fragile\n\n不看语义，你如何先把词性锁定为名词？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：a firm's 后接空格，这是所有格名词位。空格后又接 of avoiding，形成典型的名词+of结构。\n\n② 核心规律：限定词（a/the/this）或所有格（my, firm's, policy's）之后，若紧跟空格，优先判断为空格承担名词短语核心。先排词性错误项，能显著降低决策负担。\n\n③ 验证：likelihood of doing sth. 是高频学术搭配，表示事件发生概率。句意为“战略耐心能提高企业避免过度反应的概率”，语义与结构双重成立。",
+        "tips": [
+          "先抓空格前后语法信号，再据此确定词性与句法角色。",
+          "本题可用规则：情态动词或不定式标记后优先检查动词原形位。 题面片段：\"In volatile markets, strategic patience..."
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
       }
     },
     {
       "card_id": "120002",
-      "track": 1,
+      "track": "cet6",
       "library": 2,
       "group": 0,
       "box": 0,
@@ -110,12 +152,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "\"The report offers an insightful ___ of how fragmented incentives distort long-term planning.\"\n\n哪项是判断该空格词性的正确逻辑？",
+        "task_prompt": "\"The report offers an insightful ___ of how fragmented incentives distort long-term planning.\"\n\n哪项是判断该空格词性的正确逻辑？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：本卡聚焦“名词”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次同类题按“三步法”处理：先定语法位，再比关键差异，最后代回原句通读确认。",
+        "tips": [
+          "先定位空格句法功能，再逐项排除不合词性和搭配的干扰项。",
+          "本题可用规则：限定词后多为名词核心位，可先完成词性过滤。 题面片段：\"The report offers an insightful ___ of ..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     },
     {
       "card_id": "120003",
-      "track": 1,
+      "track": "cet6",
       "library": 2,
       "group": 0,
       "box": 0,
@@ -173,12 +260,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "\"Sustained innovation requires institutional ___ and fiscal discipline, not one-off publicity campaigns.\"\n\n为什么这里可以利用并列结构判断词性？",
+        "task_prompt": "\"Sustained innovation requires institutional ___ and fiscal discipline, not one-off publicity campaigns.\"\n\n为什么这里可以利用并列结构判断词性？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：___ and fiscal discipline，and 前后并列。\n\n② 核心规律：英语并列强调对等，连接项要保持同词性、同句法功能。已知 discipline 为名词，则空格应是名词。\n\n③ 验证：institutional coherence and fiscal discipline 语义自然，表示制度连贯性与财政纪律共同支撑创新，不是短期宣传能替代。",
+        "tips": [
+          "先定位空格句法功能，再逐项排除不合词性和搭配的干扰项。",
+          "本题可用规则：并列结构通常要求两侧词性和句法功能对齐。 题面片段：\"Sustained innovation requires instituti..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "C"
       }
     },
     {
       "card_id": "120004",
-      "track": 1,
+      "track": "cet6",
       "library": 2,
       "group": 0,
       "box": 0,
@@ -224,12 +356,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"Independent media play a critical {{blank}} in reducing information asymmetry during crises.\"\n\n先判断词性，再选最合适词。",
+        "task_prompt": "\"Independent media play a critical {{blank}} in reducing information asymmetry during crises.\"\n\n先判断词性，再选最合适词。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：play a critical ___ in ...。冠词+形容词后是名词位。\n\n② 核心规律：动词与名词搭配强约束。play 与 role/part 连用高频且稳定；play an impact 是低频且不自然。\n\n③ 验证：play a critical role in reducing ... 结构完整，in 后动名词进一步说明作用场景。",
+        "tips": [
+          "先按词性过滤词库，再代回原句检查搭配自然度与语义一致性。",
+          "本题可用规则：限定词后多为名词核心位，可先完成词性过滤。 题面片段：\"Independent media play a critical {{bla..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "role"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "role"
+        }
+      ]
     },
     {
       "card_id": "120005",
-      "track": 1,
+      "track": "cet6",
       "library": 2,
       "group": 0,
       "box": 0,
@@ -287,12 +472,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "\"A key ___ of credible policy communication is consistency across agencies.\"\n\n哪一项最准确说明此处为何必须填名词？",
+        "task_prompt": "\"A key ___ of credible policy communication is consistency across agencies.\"\n\n哪一项最准确说明此处为何必须填名词？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：A key ___ of ...。冠词+形容词+空格+of，典型名词位。\n\n② 核心规律：of 结构常做后置定语，修饰前面的抽象名词（element, feature, driver）。若空格不是名词，整段结构会失去中心词。\n\n③ 验证：A key element of credible policy communication is ... 句子主语完整，谓语 is 可正常对应。",
+        "tips": [
+          "先定位空格句法功能，再逐项排除不合词性和搭配的干扰项。",
+          "本题可用规则：连系动词后优先考虑表语位（常见为形容词或名词性成分）。 题面片段：\"A key ___ of credible policy communicat..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "120006",
-      "track": 1,
+      "track": "cet6",
       "library": 2,
       "group": 0,
       "box": 0,
@@ -338,12 +568,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"Policymakers underestimated the sheer {{blank}} of data required for real-time supervision.\"\n\n提示：先看 the sheer ___ of data 这个框架。",
+        "task_prompt": "\"Policymakers underestimated the sheer {{blank}} of data required for real-time supervision.\"\n\n提示：先看 the sheer ___ of data 这个框架。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：the sheer ___ of data，限定词+强调形容词+空格+of，名词位清晰。\n\n② 核心规律：某些名词与 of 搭配形成语域稳定短语，如 volume of data, level of risk, pace of change。优先识别这些模板能快速定位答案。\n\n③ 验证：volume 与 data 的语义兼容度最高；density 虽可与 data 连用，但这里语境强调总量需求而非密度。",
+        "tips": [
+          "先按词性过滤词库，再代回原句检查搭配自然度与语义一致性。",
+          "本题可用规则：限定词后多为名词核心位，可先完成词性过滤。 题面片段：\"Policymakers underestimated the sheer {..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "volume"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "volume"
+        }
+      ]
     },
     {
       "card_id": "120007",
-      "track": 1,
+      "track": "cet6",
       "library": 2,
       "group": 0,
       "box": 0,
@@ -401,12 +684,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "\"There is a growing ___ among regulators that delayed disclosure can amplify systemic risk.\"\n\n为何此处应选名词而不是形容词？",
+        "task_prompt": "\"There is a growing ___ among regulators that delayed disclosure can amplify systemic risk.\"\n\n为何此处应选名词而不是形容词？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：there is a growing ___ that ...，空格位于冠词与形容词之后。\n\n② 核心规律：that 从句可作同位语，常解释前面的抽象名词（consensus, belief, assumption）。若空格填形容词，that 从句会失去依附对象。\n\n③ 验证：a growing consensus that delayed disclosure can amplify systemic risk 语义和句法都成立。",
+        "tips": [
+          "先定位空格句法功能，再逐项排除不合词性和搭配的干扰项。",
+          "本题可用规则：连系动词后优先考虑表语位（常见为形容词或名词性成分）。 题面片段：\"There is a growing ___ among regulators..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "D"
       }
     },
     {
       "card_id": "120008",
-      "track": 1,
+      "track": "cet6",
       "library": 2,
       "group": 0,
       "box": 0,
@@ -452,12 +780,65 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
-      }
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "interaction_id": "lock",
+      "front": {
+        "text": "\"Under mounting {{blank}} from long-term investors, firms began disclosing transition risks in greater detail.\"\n\n先做词性判断，再选搭配。",
+        "task_prompt": "\"Under mounting {{blank}} from long-term investors, firms began disclosing transition risks in greater detail.\"\n\n先做词性判断，再选搭配。",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：under mounting ___ from ...，介词后接名词短语，空格需为名词。\n\n② 核心规律：under + 名词 是稳定框架，如 under pressure, under scrutiny, under constraints。再结合 from long-term investors，优先选择能与 from 构成来源关系的名词。\n\n③ 验证：pressure from investors 为常见搭配，逻辑完整；若填 momentum 或 clarity，语义与“外部施压”不匹配。",
+        "tips": [
+          "先按词性过滤词库，再代回原句检查搭配自然度与语义一致性。",
+          "本题可用规则：限定词后多为名词核心位，可先完成词性过滤。 题面片段：\"Under mounting {{blank}} from long-term..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 6,
+        "label": "T6",
+        "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "lock_pattern": [
+          "pressure"
+        ]
+      },
+      "lock_slots": [
+        {
+          "id": "slot_1",
+          "expected": "pressure"
+        }
+      ]
     },
     {
       "card_id": "120009",
-      "track": 1,
+      "track": "cet6",
       "library": 2,
       "group": 0,
       "box": 0,
@@ -515,12 +896,57 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "\"Scenario planning reduced the ___ of systemic failure by forcing institutions to test extreme assumptions.\"\n\n下列哪项最能解释为什么应选 probability？",
+        "task_prompt": "\"Scenario planning reduced the ___ of systemic failure by forcing institutions to test extreme assumptions.\"\n\n下列哪项最能解释为什么应选 probability？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：reduced the ___ of systemic failure，the 后空格为名词位。\n\n② 核心规律：动词 reduce 常与可量化目标搭配（risk, probability, volatility）。当 of 后接负面事件时，优先选择“发生概率”类名词。\n\n③ 验证：reduced the probability of systemic failure 语义精确；reduced the architecture of failure 或 reduced the narrative of failure 均不符合量化逻辑。",
+        "tips": [
+          "先定位空格句法功能，再逐项排除不合词性和搭配的干扰项。",
+          "本题可用规则：情态动词或不定式标记后优先检查动词原形位。 题面片段：\"Scenario planning reduced the ___ of sy..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
       }
     },
     {
       "card_id": "120010",
-      "track": 1,
+      "track": "cet6",
       "library": 2,
       "group": 0,
       "box": 0,
@@ -578,8 +1004,58 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": null
+        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "provenance_status": "unverified"
+      },
+      "track_index": 1,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "\"Cross-sectional data cannot establish causality; they can only reveal ___.\"\n\n哪项最符合前后逻辑关系？",
+        "task_prompt": "\"Cross-sectional data cannot establish causality; they can only reveal ___.\"\n\n哪项最符合前后逻辑关系？",
+        "audio_first": false,
+        "display_mode": "text_first",
+        "highlight_ranges": [],
+        "task_schema": null
+      },
+      "analysis": {
+        "text": "① 识别信号：reveal 后空格是宾语位，需名词。\n\n② 核心规律：分号前后形成限制性对比。既然不能 establish causality，后半句通常表达只能发现相关性、趋势或模式。\n\n③ 验证：reveal patterns 与 cross-sectional data 语境高度一致；reveal prescriptions（处方）或 reveal authorities（权威）都偏离研究方法语义。",
+        "tips": [
+          "先定位空格句法功能，再逐项排除不合词性和搭配的干扰项。",
+          "本题可用规则：情态动词或不定式标记后优先检查动词原形位。 题面片段：\"Cross-sectional data cannot establish c..."
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "unverified_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
       }
     }
-  ]
+  ],
+  "track_index": 1,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  }
 }

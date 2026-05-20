@@ -1,0 +1,65 @@
+{
+  "handoff_id": "20260514-content-cet4-listening-0011-sample",
+  "created_at": "2026-05-14T19:28:22+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0011-sample",
+  "base_branch": "fix/review-findings-card-contract",
+  "commit_sha": "b97cdfba12ddcbdf4d26c68b0ae45a4864d031f5",
+  "push_ref": "origin/content/cet4-listening-0011-sample",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/12",
+  "PR_number": 12,
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "track": "cet4",
+    "library": "听力",
+    "group": "语音现象",
+    "box": "弱读",
+    "box_prefix": "0011",
+    "card_ids": [
+      "001101",
+      "001102",
+      "001103"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0011.json",
+      "reports/card_validation_report.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0011-existing-sample.json",
+      "reviews/drafts/20260514-cet4-listening-0011-revised-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0011-revised-sample.json"
+    ]
+  },
+  "summary": [
+    "Blocked the existing 0011 sample because the fronts were generic and the analysis reused unrelated structure-signal wording instead of weak-form pronunciation explanation.",
+    "Added a revised 3-card candidate sample focused on have to, to explain, and could weak forms.",
+    "Synchronized the revised candidate sample into the first three cards of card_boxes_seed_cet4_listening_0011.json while keeping needs_review and unverified source boundaries."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed; ok=true, cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group alignment warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "gh pr view 12 --json number,title,state,isDraft,mergeable,baseRefName,headRefName,url,commits",
+      "result": "passed; draft PR #12 open and mergeable against fix/review-findings-card-contract"
+    }
+  ],
+  "local_status": "Rechecked after handoff commit in final validation.",
+  "remaining_risks": [
+    "Candidate sample only; it is not formal user-approved product content.",
+    "No reviews/approved_batches record was created.",
+    "Audio file quality was not separately reviewed for formal use.",
+    "This branch is based on fix/review-findings-card-contract / draft harness PR #7.",
+    "Sibling content PRs #8, #9, #10, #11, and #12 all update reports/card_validation_report.json; refresh validation report counts before any actual content merge sequence."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
