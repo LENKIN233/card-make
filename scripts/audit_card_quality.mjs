@@ -7,6 +7,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
 const SPEC_PATH = path.join(ROOT, 'spec', 'card-quality-audit.json');
 const REPORT_PATH = path.join(ROOT, 'reports', 'card_quality_audit_report.json');
+const SCOPED_REPORT_DIR = path.join(ROOT, 'reviews', 'audit_scopes');
 const DEFAULT_MAX_EXAMPLES = 5;
 const OPTION_KEYS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
@@ -187,6 +188,64 @@ function ensureRuleCounts(summary, rulesById) {
       };
     }
   }
+}
+
+function numericCount(value) {
+  return Number.isFinite(Number(value)) ? Number(value) : 0;
+}
+
+function sortedUnique(values) {
+  return [...new Set(values.map(value => String(value).trim()).filter(Boolean))].sort();
+}
+
+function buildScopedAuditReport(audit, scopeCardIds) {
+  const cardIds = sortedUnique(scopeCardIds);
+  const ruleIds = Object.keys(audit.summary.by_rule || {}).sort();
+  const scopedCardIssueIndex = {};
+  const missingCardIds = [];
+  const scopedIds = new Set(cardIds);
+  const scopeSummary = {
+    card_ids: cardIds,
+    card_count: cardIds.length,
+    issue_count: 0,
+    by_severity: emptySeverityCounts(),
+    by_rule: Object.fromEntries(ruleIds.map(ruleId => [ruleId, 0])),
+  };
+
+  for (const cardId of cardIds) {
+    const record = audit.card_issue_index?.[cardId];
+    if (!record) {
+      missingCardIds.push(cardId);
+      continue;
+    }
+    scopedCardIssueIndex[cardId] = record;
+    scopeSummary.issue_count += numericCount(record.issue_count);
+    for (const severity of Object.keys(scopeSummary.by_severity)) {
+      scopeSummary.by_severity[severity] += numericCount(record.by_severity?.[severity]);
+    }
+    for (const ruleId of ruleIds) {
+      scopeSummary.by_rule[ruleId] += numericCount(record.by_rule?.[ruleId]);
+    }
+  }
+
+  const scopedHardBlockers = (audit.hard_blocker_issues || [])
+    .filter(issue => scopedIds.has(issue.card_id));
+
+  return {
+    ok: missingCardIds.length === 0,
+    audit_version: audit.audit_version,
+    mode: audit.mode,
+    report_type: 'scoped_card_quality_audit',
+    corpus_fingerprint: audit.corpus_fingerprint,
+    scope: {
+      card_dir: audit.scope.card_dir,
+      card_ids: cardIds,
+      missing_card_ids: missingCardIds,
+    },
+    scope_summary: scopeSummary,
+    scoped_card_issue_index: scopedCardIssueIndex,
+    scoped_hard_blocker_issues: scopedHardBlockers,
+  };
 }
 
 function addIssue(issues, rulesById, row, ruleId, message, frontText, analysisText) {
@@ -421,13 +480,47 @@ function readOptionValue(name, fallback) {
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : fallback;
 }
 
+function readOption(name, fallback = null) {
+  const index = process.argv.indexOf(name);
+  if (index === -1 || !process.argv[index + 1]) return fallback;
+  return process.argv[index + 1];
+}
+
+function readCsvOption(name) {
+  const value = readOption(name, '');
+  return value
+    .split(',')
+    .map(item => item.trim())
+    .filter(Boolean);
+}
+
 const writeReport = process.argv.includes('--write-report');
+const scopeCardIds = readCsvOption('--scope-card-ids');
+const scopedReportPath = readOption('--write-scope-report');
 const maxExamples = readOptionValue('--max-examples', DEFAULT_MAX_EXAMPLES);
 const audit = buildAudit({ maxExamples });
 
 if (writeReport) {
   fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
   fs.writeFileSync(REPORT_PATH, `${JSON.stringify(audit, null, 2)}\n`);
+}
+
+let scopedReport = null;
+let scopedReportRelativePath = null;
+if (scopedReportPath) {
+  if (scopeCardIds.length === 0) {
+    throw new Error('--write-scope-report requires --scope-card-ids');
+  }
+  const fullScopedReportPath = path.resolve(ROOT, scopedReportPath);
+  const relativeScopedReportPath = path.relative(ROOT, fullScopedReportPath);
+  const scopedReportDir = path.relative(ROOT, SCOPED_REPORT_DIR);
+  if (relativeScopedReportPath !== scopedReportDir && !relativeScopedReportPath.startsWith(`${scopedReportDir}${path.sep}`)) {
+    throw new Error('--write-scope-report must be under reviews/audit_scopes/');
+  }
+  scopedReport = buildScopedAuditReport(audit, scopeCardIds);
+  scopedReportRelativePath = relativeScopedReportPath;
+  fs.mkdirSync(path.dirname(fullScopedReportPath), { recursive: true });
+  fs.writeFileSync(fullScopedReportPath, `${JSON.stringify(scopedReport, null, 2)}\n`);
 }
 
 const topRules = Object.entries(audit.summary.by_rule)
@@ -439,9 +532,13 @@ console.log(JSON.stringify({
   ok: audit.ok,
   mode: audit.mode,
   report_path: writeReport ? audit.report_path : null,
+  scoped_report_path: scopedReportRelativePath,
   corpus_digest: audit.corpus_fingerprint.digest,
   cards: audit.summary.total_cards,
   total_issues: audit.summary.total_issues,
   by_severity: audit.summary.by_severity,
+  scope_summary: scopedReport?.scope_summary || null,
   top_rules: topRules,
 }, null, 2));
+
+if (scopedReport && !scopedReport.ok) process.exit(1);
