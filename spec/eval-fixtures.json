@@ -322,6 +322,83 @@
         "formal_use_claimed": false,
         "expected_gate_errors": ["approval_record_missing_agent_self_review"]
       }
+    },
+    {
+      "id": "FIX-GT-CARD-005-BLOCK-FRONT-ANSWER-LEAK",
+      "golden_task_id": "GT-CARD-005",
+      "type": "single_card",
+      "cards": [
+        {
+          "card_id": "001199",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "1",
+            "group": "语音现象",
+            "box_id": "1",
+            "box": "弱读",
+            "box_prefix": "0011"
+          },
+          "interaction_id": "multiple_choice",
+          "front": {
+            "text": "播放音频后，选择最需要用弱读还原的片段。",
+            "task_prompt": "重点听 have to：to 很轻，不会像单独读单词时那么完整。",
+            "options": [
+              {
+                "key": "A",
+                "text": "have to"
+              },
+              {
+                "key": "B",
+                "text": "finance office"
+              },
+              {
+                "key": "C",
+                "text": "data proposal"
+              },
+              {
+                "key": "D",
+                "text": "before midnight"
+              }
+            ]
+          },
+          "answer_key": {
+            "correct_option": "A"
+          },
+          "analysis": {
+            "text": "This card is intentionally bad: the front-side task prompt already names the correct option text have to, so the learner can answer from the prompt instead of doing the listening task.",
+            "answer": "A"
+          },
+          "quality_metadata": {
+            "main_training_goal": "Reject a multiple-choice prompt that leaks its correct option.",
+            "secondary_training_goals": [],
+            "weak_point_tags": ["listening_weak", "exam_strategy_weak"],
+            "difficulty": {
+              "primary": "foundation",
+              "secondary": []
+            },
+            "card_prototype": "solving_action",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only bad card, not true exam content.",
+              "audio_generation_method": "none"
+            },
+            "exam_value": "The fixture protects the front side as a real learning task instead of a disguised answer key.",
+            "box_progression_role": "recognition",
+            "review_status": "block"
+          }
+        }
+      ],
+      "fixture_flags": {
+        "front_contains_correct_option_text": true
+      },
+      "expected_outcome": {
+        "card_status": "block",
+        "formal_use_claimed": false,
+        "expected_audit_rules": ["front_leaks_correct_answer"],
+        "expected_hard_blocker_rules": ["front_leaks_correct_answer"]
+      }
     }
   ]
 }

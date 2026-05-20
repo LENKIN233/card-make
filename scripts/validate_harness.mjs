@@ -31,10 +31,11 @@ const REQUIRED_METADATA_FIELDS = [
 
 const REQUIRED_CARD_FIELDS = ['card_id', 'track', 'knowledge_ref', 'interaction_id', 'front', 'analysis'];
 const CORE_INTERACTION_IDS = ['flip', 'multiple_choice', 'lock', 'elimination', 'swipe'];
-const REQUIRED_GOLDEN_TASKS = ['GT-CARD-001', 'GT-CARD-002', 'GT-CARD-003', 'GT-CARD-004'];
+const REQUIRED_GOLDEN_TASKS = ['GT-CARD-001', 'GT-CARD-002', 'GT-CARD-003', 'GT-CARD-004', 'GT-CARD-005'];
 const REQUIRED_QUALITY_AUDIT_RULES = [
   'multiple_choice_no_options',
   'multiple_choice_answer_not_in_options',
+  'front_leaks_correct_answer',
   'front_missing_or_too_short',
   'analysis_missing_or_too_short',
   'generic_front_pattern',
@@ -532,6 +533,7 @@ function validateCardQualityAudit(errors, warnings) {
   const expectedRuleSeverity = {
     multiple_choice_no_options: 'hard_blocker',
     multiple_choice_answer_not_in_options: 'hard_blocker',
+    front_leaks_correct_answer: 'hard_blocker',
     front_missing_or_too_short: 'content_risk',
     analysis_missing_or_too_short: 'content_risk',
     generic_front_pattern: 'content_risk',
@@ -873,7 +875,7 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
   const scopedHardBlockers = usesScopedReport
     ? (report.scoped_hard_blocker_issues || []).filter(issue => scopedIds.has(issue.card_id))
     : (report.hard_blocker_issues || []).filter(issue => scopedIds.has(issue.card_id));
-  if (scopedHardBlockers.length > 0) {
+  if (scopedHardBlockers.length > 0 && (requiredForApproval || auditRecord.scope_has_no_hard_blockers === true)) {
     pushIssue(errors, 'quality_audit_scope_has_hard_blockers', {
       source,
       card_ids: scopedHardBlockers.map(issue => issue.card_id),
@@ -1437,6 +1439,7 @@ function validateEvalFixtures(errors) {
   const allowedPrototypes = new Set(quality.allowed_card_prototypes || []);
   const allowedSourceTypes = new Set(quality.source_policy?.allowed_text_source_types || []);
   const blockers = new Set((quality.blockers || []).map(blocker => blocker.id));
+  const auditRules = new Map((readJson('spec/card-quality-audit.json').rules || []).map(rule => [rule.id, rule]));
   const cases = fixtures.fixture_cases || [];
   const caseTasks = new Set(cases.map(testCase => testCase.golden_task_id));
 
@@ -1517,6 +1520,25 @@ function validateEvalFixtures(errors) {
         pushIssue(errors, 'fixture_expected_blocker_not_marked', { fixture: testCase.id, blocker });
       }
     }
+    const expectedAuditRules = expected.expected_audit_rules || [];
+    for (const ruleId of expectedAuditRules) {
+      if (!auditRules.has(ruleId)) {
+        pushIssue(errors, 'fixture_unknown_expected_audit_rule', { fixture: testCase.id, ruleId });
+      }
+    }
+    const expectedHardBlockerRules = expected.expected_hard_blocker_rules || [];
+    for (const ruleId of expectedHardBlockerRules) {
+      const rule = auditRules.get(ruleId);
+      if (!rule) {
+        pushIssue(errors, 'fixture_unknown_expected_hard_blocker_rule', { fixture: testCase.id, ruleId });
+      } else if (rule.severity !== 'hard_blocker') {
+        pushIssue(errors, 'fixture_expected_rule_not_hard_blocker', {
+          fixture: testCase.id,
+          ruleId,
+          severity: rule.severity,
+        });
+      }
+    }
 
     if (testCase.golden_task_id === 'GT-CARD-002') {
       const material = cards[0]?.quality_metadata?.material || {};
@@ -1537,6 +1559,36 @@ function validateEvalFixtures(errors) {
       }
       if (!expectedBlockers.includes('reverse_engineered_front')) {
         pushIssue(errors, 'reverse_front_fixture_missing_blocker', { fixture: testCase.id });
+      }
+    }
+
+    if (testCase.golden_task_id === 'GT-CARD-005') {
+      const card = cards[0] || {};
+      const answerKey = card.answer_key?.correct_option;
+      const options = card.front?.options || card.front_content?.options || [];
+      const correctOption = options.find(option => option.key === answerKey);
+      const frontPrompt = [
+        card.front?.text,
+        card.front?.prompt,
+        card.front?.task_prompt,
+        card.front_content?.text,
+        card.front_content?.prompt,
+        card.front_content?.task_prompt,
+      ].filter(Boolean).join(' ');
+      if (testCase.fixture_flags?.front_contains_correct_option_text !== true) {
+        pushIssue(errors, 'front_answer_leak_fixture_missing_flag', { fixture: testCase.id });
+      }
+      if (!expectedAuditRules.includes('front_leaks_correct_answer')) {
+        pushIssue(errors, 'front_answer_leak_fixture_missing_audit_rule', { fixture: testCase.id });
+      }
+      if (!expectedHardBlockerRules.includes('front_leaks_correct_answer')) {
+        pushIssue(errors, 'front_answer_leak_fixture_missing_hard_blocker_rule', { fixture: testCase.id });
+      }
+      if (!correctOption?.text || !frontPrompt.includes(correctOption.text)) {
+        pushIssue(errors, 'front_answer_leak_fixture_does_not_name_correct_option', {
+          fixture: testCase.id,
+          card_id: card.card_id,
+        });
       }
     }
 
