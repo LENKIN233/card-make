@@ -16,31 +16,32 @@
       "box": 0,
       "card_no": 1,
       "card_box_code": "1000",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "根据选项预测话题",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，判断这段信息最可能属于哪个话题领域。",
-        "task_prompt": "任务：先听音频，判断这段信息最可能属于哪个话题领域。",
+        "text": "先看选项，预测这段 CET6 听力最可能围绕哪个校园话题展开。",
+        "task_prompt": "抓 library / shuttle / exam week 这组对象和服务词，再播放音频验证。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测话题",
-          "success_criteria": "准确完成交互操作"
+          "action": "选择最可能的主话题",
+          "focus": "用选项中的场景名词和服务动作预测话题范围",
+          "success_criteria": "能说明正确选项同时覆盖校园场景、考试周和服务升级"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1000/100001.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "结论：话题锁定为校园服务升级。",
-        "explanation": "语境揭示：Beginning next Monday, the university will keep the main library open until midnight and add two late shuttle routes so that students living off campus can study safely during exam week."
+        "text": "答案：A\n\n解析：考试周校方延长图书馆开放并增加夜间通勤服务 最完整覆盖音频开头给出的主话题线索。",
+        "explanation": "正确答案是 A。CET6 听前预测不能只抓 library 或 shuttle 这一个熟词，要把 university、main library open until midnight、late shuttle routes、exam week 连成一个服务场景。A 同时覆盖校园、考试周和服务升级三层信息，最像后文要说明的中心话题。B 只借用了 off campus，但没有住房补贴；C 把 safely 错扩成志愿巡逻；D 反向说成取消线路，和 add two late shuttle routes 相反。"
       },
       "analysis_content": {
-        "text": "① 识别信号：library open until midnight、late shuttle routes、exam week 三组名词共同指向校园服务场景。② 核心规律：听前预测话题时，优先抓高频名词簇而不是单个关键词；地点、服务对象和时间节点一起出现时，最能锁定主题范围。③ 验证与迁移：下次遇到选项预测题，先把名词分成“地点/人群/动作”三类，再看哪一类组合最集中。",
+        "text": "正确答案是 A。CET6 听前预测不能只抓 library 或 shuttle 这一个熟词，要把 university、main library open until midnight、late shuttle routes、exam week 连成一个服务场景。A 同时覆盖校园、考试周和服务升级三层信息，最像后文要说明的中心话题。B 只借用了 off campus，但没有住房补贴；C 把 safely 错扩成志愿巡逻；D 反向说成取消线路，和 add two late shuttle routes 相反。",
         "tips": [
-          "campus / library / shuttle / exam week 这类词同时出现时，优先考虑校园服务或学习支持场景。",
-          "不要被 safely 这类修饰信息带偏，真正决定话题的是服务对象和场景名词。"
+          "CET6 预测题要优先合并多个线索，而不是被单个熟词牵走。",
+          "动作词 add / keep open 往往决定主题是服务升级还是问题通知。"
         ]
       },
       "source_ref": {
@@ -72,31 +73,53 @@
         "box_name": "根据选项预测话题",
         "box_prefix": "1000"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，判断这段信息最可能属于哪个话题领域。",
-        "task_prompt": "任务：先听音频，判断这段信息最可能属于哪个话题领域。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看选项，预测这段 CET6 听力最可能围绕哪个校园话题展开。",
+        "task_prompt": "抓 library / shuttle / exam week 这组对象和服务词，再播放音频验证。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测话题",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：library open until midnight、late shuttle routes、exam week 三组名词共同指向校园服务场景。② 核心规律：听前预测话题时，优先抓高频名词簇而不是单个关键词；地点、服务对象和时间节点一起出现时，最能锁定主题范围。③ 验证与迁移：下次遇到选项预测题，先把名词分成“地点/人群/动作”三类，再看哪一类组合最集中。",
-        "tips": [
-          "campus / library / shuttle / exam week 这类词同时出现时，优先考虑校园服务或学习支持场景。",
-          "不要被 safely 这类修饰信息带偏，真正决定话题的是服务对象和场景名词。"
+          "action": "选择最可能的主话题",
+          "focus": "用选项中的场景名词和服务动作预测话题范围",
+          "success_criteria": "能说明正确选项同时覆盖校园场景、考试周和服务升级"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "考试周校方延长图书馆开放并增加夜间通勤服务",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "学校宣布新的校外住宿租金补贴政策",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "学生会组织期末周志愿者安全巡逻",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "校园巴士因施工临时取消夜间线路",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。CET6 听前预测不能只抓 library 或 shuttle 这一个熟词，要把 university、main library open until midnight、late shuttle routes、exam week 连成一个服务场景。A 同时覆盖校园、考试周和服务升级三层信息，最像后文要说明的中心话题。B 只借用了 off campus，但没有住房补贴；C 把 safely 错扩成志愿巡逻；D 反向说成取消线路，和 add two late shuttle routes 相反。",
+        "tips": [
+          "CET6 预测题要优先合并多个线索，而不是被单个熟词牵走。",
+          "动作词 add / keep open 往往决定主题是服务升级还是问题通知。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice because topic prediction needs a checkable option judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -104,6 +127,56 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "考试周校方延长图书馆开放并增加夜间通勤服务",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "学校宣布新的校外住宿租金补贴政策",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "学生会组织期末周志愿者安全巡逻",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "校园巴士因施工临时取消夜间线路",
+          "is_correct": false
+        }
+      ],
+      "eliminable_items": null,
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据选项中的场景名词和动作词预测 CET6 听力主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把选项中的校园场景、服务动作和时间条件合并，减少 CET6 开头信息密度带来的误判。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -118,27 +191,28 @@
       "card_box_name": "根据选项预测话题",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，再判断这段内容最可能讨论哪个主题。",
-        "task_prompt": "任务：先听音频，再判断这段内容最可能讨论哪个主题。",
+        "text": "播放音频后，选择最贴近这段内容的主话题。",
+        "task_prompt": "不要只听到 museum；还要把 digital archive、old photographs、interactive touch screens 合并。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测话题",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后选择主话题",
+          "focus": "把场所、材料和展示方式合并成话题判断",
+          "success_criteria": "能区分博物馆数字展陈和开放时间、课程招募、旅游地图等干扰话题"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1000/100002.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "结论：答案是 B，主题是博物馆数字展览与档案开放。",
-        "explanation": "语境揭示：This weekend, the city museum is launching a digital archive that lets visitors explore old photographs, oral histories, and restored maps on interactive touch screens throughout the exhibition hall."
+        "text": "答案：B\n\n解析：博物馆上线数字档案并用互动屏展示历史资料 最完整覆盖音频开头给出的主话题线索。",
+        "explanation": "正确答案是 B。音频里的 city museum 是场所锚点，digital archive 是核心动作，old photographs、oral histories、restored maps 和 interactive touch screens 共同说明这是数字化展陈项目。A 只保留 museum 但偷换成开放时间；C 抓住 oral histories 却换成高校课程；D 抓住 maps，却丢掉 archive 和 exhibition hall。CET6 主题题常用同域干扰项，必须把“场所 + 材料 + 呈现方式”一起核对。"
       },
       "analysis_content": {
-        "text": "① 识别信号：museum、digital archive、photographs、exhibition hall 构成稳定的话题场景链。② 核心规律：主题题优先锁定场所名词，再看核心活动动词；museum + archive + exhibition 明确指向文化展陈，而非旅游交通或教育招生。③ 验证与迁移：选项对比时，先排掉场景错位项，再排掉对象错位项，最后验证活动是否一致。",
+        "text": "正确答案是 B。音频里的 city museum 是场所锚点，digital archive 是核心动作，old photographs、oral histories、restored maps 和 interactive touch screens 共同说明这是数字化展陈项目。A 只保留 museum 但偷换成开放时间；C 抓住 oral histories 却换成高校课程；D 抓住 maps，却丢掉 archive 和 exhibition hall。CET6 主题题常用同域干扰项，必须把“场所 + 材料 + 呈现方式”一起核对。",
         "tips": [
-          "launching a digital archive 不等于开学活动或城市交通通知，场所词 museum 是第一锚点。",
-          "old photographs / oral histories / maps 属于展陈材料，不是公共服务或招聘语境。"
+          "同域词不等于同主题，必须看核心动作是不是一致。",
+          "archive / exhibition hall / touch screens 组合起来，主题通常是数字展陈或资料展示。"
         ]
       },
       "source_ref": {
@@ -152,22 +226,22 @@
       "options": [
         {
           "key": "A",
-          "text": "A traffic update for weekend commuters.",
+          "text": "城市博物馆调整周末开放时间",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "A museum exhibition built around a digital archive.",
+          "text": "博物馆上线数字档案并用互动屏展示历史资料",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "A training session for new tour guides.",
+          "text": "高校历史系招募口述史课程助教",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "A school campaign to collect old books.",
+          "text": "旅游部门发布旧城区步行地图",
           "is_correct": false
         }
       ],
@@ -194,29 +268,51 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断这段内容最可能讨论哪个主题。",
-        "task_prompt": "任务：先听音频，再判断这段内容最可能讨论哪个主题。",
+        "text": "播放音频后，选择最贴近这段内容的主话题。",
+        "task_prompt": "不要只听到 museum；还要把 digital archive、old photographs、interactive touch screens 合并。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测话题",
-          "success_criteria": "准确完成交互操作"
-        }
+          "action": "听后选择主话题",
+          "focus": "把场所、材料和展示方式合并成话题判断",
+          "success_criteria": "能区分博物馆数字展陈和开放时间、课程招募、旅游地图等干扰话题"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "城市博物馆调整周末开放时间",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "博物馆上线数字档案并用互动屏展示历史资料",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "高校历史系招募口述史课程助教",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "旅游部门发布旧城区步行地图",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：museum、digital archive、photographs、exhibition hall 构成稳定的话题场景链。② 核心规律：主题题优先锁定场所名词，再看核心活动动词；museum + archive + exhibition 明确指向文化展陈，而非旅游交通或教育招生。③ 验证与迁移：选项对比时，先排掉场景错位项，再排掉对象错位项，最后验证活动是否一致。",
+        "text": "正确答案是 B。音频里的 city museum 是场所锚点，digital archive 是核心动作，old photographs、oral histories、restored maps 和 interactive touch screens 共同说明这是数字化展陈项目。A 只保留 museum 但偷换成开放时间；C 抓住 oral histories 却换成高校课程；D 抓住 maps，却丢掉 archive 和 exhibition hall。CET6 主题题常用同域干扰项，必须把“场所 + 材料 + 呈现方式”一起核对。",
         "tips": [
-          "launching a digital archive 不等于开学活动或城市交通通知，场所词 museum 是第一锚点。",
-          "old photographs / oral histories / maps 属于展陈材料，不是公共服务或招聘语境。"
+          "同域词不等于同主题，必须看核心动作是不是一致。",
+          "archive / exhibition hall / touch screens 组合起来，主题通常是数字展陈或资料展示。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "candidate sample uses multiple_choice because topic prediction needs a checkable option judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -227,6 +323,31 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "eliminable_items": null,
+      "quality_metadata": {
+        "main_training_goal": "听开头材料后合并场所、材料和展示方式判断主题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户处理 CET6 中常见的同域干扰项，避免只听到 museum、map、oral history 就选错主题。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -237,31 +358,32 @@
       "box": 0,
       "card_no": 3,
       "card_box_code": "1000",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "根据选项预测话题",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，再在时限内复述你判断出的主题和两条线索。",
-        "task_prompt": "任务：先听音频，再在时限内复述你判断出的主题和两条线索。",
+        "text": "听完开头，预测后文最可能围绕哪类政策展开。",
+        "task_prompt": "把 cut heating costs、grants to homeowners、insulation/windows 三类线索合并。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测话题",
-          "success_criteria": "准确完成交互操作"
+          "action": "预测后文展开方向",
+          "focus": "根据目的、受益对象和具体措施锁定政策主题",
+          "success_criteria": "能说明政策服务谁、解决什么问题、采取什么改造措施"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1000/100003.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_then_options"
       },
       "back_content": {
-        "text": "结论：主题是居民住房节能改造补贴。",
-        "explanation": "语境揭示：To cut winter heating costs, the city council will offer small grants to homeowners who install better insulation, replace old windows, and complete the upgrades before the first week of November."
+        "text": "答案：B\n\n解析：面向房主的住房节能改造补助 最完整覆盖音频开头给出的主话题线索。",
+        "explanation": "正确答案是 B。这里要把目的、对象和措施三件事合并：to cut winter heating costs 是目的，small grants to homeowners 是受益对象，install better insulation / replace old windows 是具体措施。B 完整覆盖“房主 + 节能改造 + 补助”。A 把 homeowners 换成 small businesses；C 把改造补助偷换成临时取暖补贴；D 只借用了 November，却和 heating costs、insulation 无关。CET6 后文预测题通常要求你用三类线索推断政策框架。"
       },
       "analysis_content": {
-        "text": "① 识别信号：heating costs、small grants、homeowners、insulation 共同限定为住房节能补贴话题。② 核心规律：复述题不要泛泛说“政府政策”，要把对象 homeowner 和动作 install insulation 说出来，主题才算落地。③ 验证与迁移：如果你的复述里没有说出资助对象和改造内容，说明主题判断还停留在大类层面。",
+        "text": "正确答案是 B。这里要把目的、对象和措施三件事合并：to cut winter heating costs 是目的，small grants to homeowners 是受益对象，install better insulation / replace old windows 是具体措施。B 完整覆盖“房主 + 节能改造 + 补助”。A 把 homeowners 换成 small businesses；C 把改造补助偷换成临时取暖补贴；D 只借用了 November，却和 heating costs、insulation 无关。CET6 后文预测题通常要求你用三类线索推断政策框架。",
         "tips": [
-          "grant to homeowners 比 grant to companies 更能限定到居民住房政策。",
-          "时间限制 before the first week of November 是附加线索，不是核心主题本身。"
+          "政策类主题先抓 purpose、target group、measure 三项。",
+          "时间限制 before November 常是补充条件，不能替代政策主题。"
         ]
       },
       "source_ref": {
@@ -297,31 +419,53 @@
         "box_name": "根据选项预测话题",
         "box_prefix": "1000"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再在时限内复述你判断出的主题和两条线索。",
-        "task_prompt": "任务：先听音频，再在时限内复述你判断出的主题和两条线索。",
+        "text": "听完开头，预测后文最可能围绕哪类政策展开。",
+        "task_prompt": "把 cut heating costs、grants to homeowners、insulation/windows 三类线索合并。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测话题",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：heating costs、small grants、homeowners、insulation 共同限定为住房节能补贴话题。② 核心规律：复述题不要泛泛说“政府政策”，要把对象 homeowner 和动作 install insulation 说出来，主题才算落地。③ 验证与迁移：如果你的复述里没有说出资助对象和改造内容，说明主题判断还停留在大类层面。",
-        "tips": [
-          "grant to homeowners 比 grant to companies 更能限定到居民住房政策。",
-          "时间限制 before the first week of November 是附加线索，不是核心主题本身。"
+          "action": "预测后文展开方向",
+          "focus": "根据目的、受益对象和具体措施锁定政策主题",
+          "success_criteria": "能说明政策服务谁、解决什么问题、采取什么改造措施"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "市政府为小企业提供冬季能源贷款",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "面向房主的住房节能改造补助",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "公共住房租户申请临时取暖补贴",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "环保组织宣传十一月社区回收活动",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 B。这里要把目的、对象和措施三件事合并：to cut winter heating costs 是目的，small grants to homeowners 是受益对象，install better insulation / replace old windows 是具体措施。B 完整覆盖“房主 + 节能改造 + 补助”。A 把 homeowners 换成 small businesses；C 把改造补助偷换成临时取暖补贴；D 只借用了 November，却和 heating costs、insulation 无关。CET6 后文预测题通常要求你用三类线索推断政策框架。",
+        "tips": [
+          "政策类主题先抓 purpose、target group、measure 三项。",
+          "时间限制 before November 常是补充条件，不能替代政策主题。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice because topic prediction needs a checkable option judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -329,6 +473,56 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "市政府为小企业提供冬季能源贷款",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "面向房主的住房节能改造补助",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "公共住房租户申请临时取暖补贴",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "环保组织宣传十一月社区回收活动",
+          "is_correct": false
+        }
+      ],
+      "eliminable_items": null,
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据目的、对象和措施预测政策类听力后文方向",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在 CET6 信息密集开头中用目的、对象和措施建立后文预期，而不是被时间词或单个政策词干扰。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {

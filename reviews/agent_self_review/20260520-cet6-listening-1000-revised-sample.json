@@ -1,0 +1,248 @@
+{
+  "review_id": "20260520-cet6-listening-1000-revised-sample",
+  "created_at": "2026-05-20T18:26:30+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测话题",
+    "box_prefixes": [
+      "1000"
+    ],
+    "card_ids": [
+      "100001",
+      "100002",
+      "100003"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json",
+    "reviews/agent_self_review/TEMPLATE.json"
+  ],
+  "sample_policy": {
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260520-cet6-listening-1000-scope-audit.json",
+    "corpus_fingerprint": "1648a243da9ec820b126275337f99c49264e788658efb5cb64f65e49405cf765",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "100001",
+        "100002",
+        "100003"
+      ],
+      "card_count": 3,
+      "issue_count": 6,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 6
+      },
+      "by_rule": {
+        "multiple_choice_no_options": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "front_missing_or_too_short": 0,
+        "analysis_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "template_analysis_pattern": 0,
+        "exact_repeated_front": 0,
+        "exact_repeated_analysis": 0,
+        "missing_quality_metadata": 0,
+        "unverified_source": 3,
+        "synthetic_source": 3
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "100001",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "0",
+        "box": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项中的场景名词和动作词预测 CET6 听力主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把选项中的校园场景、服务动作和时间条件合并，减少 CET6 开头信息密度带来的误判。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Audio file quality is not formally reviewed; current pass is for text/task design only.",
+        "Source remains a simulated legacy content_pool transcript with unverified provenance."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    },
+    {
+      "card_id": "100002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "0",
+        "box": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "听开头材料后合并场所、材料和展示方式判断主题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户处理 CET6 中常见的同域干扰项，避免只听到 museum、map、oral history 就选错主题。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Audio file quality is not formally reviewed; current pass is for text/task design only.",
+        "Source remains a simulated legacy content_pool transcript with unverified provenance."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    },
+    {
+      "card_id": "100003",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "0",
+        "box": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据政策类听力开头中的目的、对象和措施预测后文方向",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把目的、受益对象和措施三类信息合并，避免把住房节能补助误判为泛泛能源或环保主题。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Audio file quality is not formally reviewed; current pass is for text/task design only.",
+        "Source remains a simulated legacy content_pool transcript with unverified provenance."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The revised sample moves from recognizing campus-service topic cues before audio, to applying topic selection after audio with same-domain distractors, to transferring the method to a policy topic that requires purpose, beneficiary, and measure alignment.",
+    "repetition_or_gap_risks": [
+      "All three cards use multiple_choice because this box needs checkable option-based topic prediction.",
+      "Formal approval still requires user confirmation and separate audio QA.",
+      "The scoped audit intentionally leaves source_risk visible because the material remains simulated and unverified."
+    ],
+    "representative_cards": [
+      "100001",
+      "100002",
+      "100003"
+    ],
+    "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
+  }
+}

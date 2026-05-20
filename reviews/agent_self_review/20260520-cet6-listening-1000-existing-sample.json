@@ -1,0 +1,256 @@
+{
+  "review_id": "20260520-cet6-listening-1000-existing-sample",
+  "created_at": "2026-05-20T18:26:30+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测话题",
+    "box_prefixes": [
+      "1000"
+    ],
+    "card_ids": [
+      "100001",
+      "100002",
+      "100003"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json",
+    "reviews/agent_self_review/TEMPLATE.json"
+  ],
+  "sample_policy": {
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260520-cet6-listening-1000-scope-audit.json",
+    "corpus_fingerprint": "1648a243da9ec820b126275337f99c49264e788658efb5cb64f65e49405cf765",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "100001",
+        "100002",
+        "100003"
+      ],
+      "card_count": 3,
+      "issue_count": 6,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 6
+      },
+      "by_rule": {
+        "multiple_choice_no_options": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "front_missing_or_too_short": 0,
+        "analysis_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "template_analysis_pattern": 0,
+        "exact_repeated_front": 0,
+        "exact_repeated_analysis": 0,
+        "missing_quality_metadata": 0,
+        "unverified_source": 3,
+        "synthetic_source": 3
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "100001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "0",
+        "box": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "根据听力开头判断话题领域",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "音频文本可支持校园服务话题判断，但原卡没有提供可检查的选项或答案形态。",
+        "box_progression_role": "recognition",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "Front asks the learner to judge a topic field but does not provide a checkable response format.",
+        "Flip interaction hides the answer on the back instead of letting the learner choose among topic hypotheses.",
+        "The card does not carry quality_metadata, so source and TTS limits are not visible inside the card record."
+      ],
+      "minor_issues": [
+        "TTS text and audio were not formally reviewed as separate quality surfaces."
+      ],
+      "recommendation": "Block this existing sample; revise into a checkable topic-prediction multiple-choice task."
+    },
+    {
+      "card_id": "100002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "0",
+        "box": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "根据听力开头判断博物馆数字展陈主题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "主题判断方向成立，但原卡只有 answer_key，没有可呈现的选项集合。",
+        "box_progression_role": "application",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": true,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "Card is marked multiple_choice and has answer_key B, but the legacy record does not expose usable options in the product-facing front structure.",
+        "The learner cannot complete a valid choice interaction from the front side alone.",
+        "The card does not carry quality_metadata, so source and TTS limits are not visible inside the card record."
+      ],
+      "minor_issues": [
+        "Original English options exist only in the legacy surface and need to be rewritten as product-facing topic choices."
+      ],
+      "recommendation": "Block this existing sample; rebuild the options and keep the answer key checkable from the front."
+    },
+    {
+      "card_id": "100003",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "0",
+        "box": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "根据政策类听力开头预测后文主题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool item with unverified provenance; not treated as true exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "音频文本可训练政策主题预测，但原卡让用户限时复述，不符合本盒子的选项预测任务。",
+        "box_progression_role": "transfer",
+        "review_status": "block"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": true,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": true
+      },
+      "major_issues": [
+        "Front asks for timed retelling instead of choosing or predicting among topic options.",
+        "Interaction was downcast to flip, so the user action is not aligned with the box requirement.",
+        "The card does not carry quality_metadata, so source and TTS limits are not visible inside the card record."
+      ],
+      "minor_issues": [
+        "TTS text and audio were not formally reviewed as separate quality surfaces."
+      ],
+      "recommendation": "Block this existing sample; revise as a policy-topic prediction multiple-choice card."
+    }
+  ],
+  "batch_review": {
+    "status": "blocked",
+    "box_progression": "The underlying transcripts can support topic prediction, but the existing first-three-card sample does not present a consistent checkable option-prediction path.",
+    "repetition_or_gap_risks": [
+      "Two of three cards render as flip even though the box is about predicting a topic from options.",
+      "One multiple-choice card has an answer key but lacks a complete product-facing option set.",
+      "The cards do not expose quality_metadata, source limits, or TTS review limits in the card records.",
+      "Front prompts are generic or mismatched to the requested box behavior."
+    ],
+    "representative_cards": [
+      "100001",
+      "100002",
+      "100003"
+    ],
+    "next_step": "Do not ask for approval on this existing sample. Draft a revised 3-card candidate sample with checkable topic-prediction choices and explicit source/TTS limits."
+  }
+}
