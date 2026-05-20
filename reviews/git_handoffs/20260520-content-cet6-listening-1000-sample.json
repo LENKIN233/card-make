@@ -1,0 +1,81 @@
+{
+  "handoff_id": "20260520-content-cet6-listening-1000-sample",
+  "created_at": "2026-05-20T18:40:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-listening-1000-sample",
+  "base_branch": "main",
+  "commit_sha": "bfcca094175ea17c411a9cf723b54bdef9768c39",
+  "push_ref": "origin/content/cet6-listening-1000-sample",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/36",
+  "PR_number": 36,
+  "PR_state": "OPEN",
+  "PR_merge_state": "CLEAN",
+  "PR_mergeable": "MERGEABLE",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate_sample",
+    "track": "cet6",
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测话题",
+    "box_prefix": "1000",
+    "card_ids": [
+      "100001",
+      "100002",
+      "100003"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_listening_1000.json",
+      "reviews/agent_self_review/20260520-cet6-listening-1000-existing-sample.json",
+      "reviews/agent_self_review/20260520-cet6-listening-1000-revised-sample.json",
+      "reviews/audit_scopes/20260520-cet6-listening-1000-scope-audit.json",
+      "reviews/drafts/20260520-cet6-listening-1000-revised-sample.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 100001,100002,100003 --write-scope-report reviews/audit_scopes/20260520-cet6-listening-1000-scope-audit.json",
+      "result": "pass; scoped audit has 0 hard_blocker, 0 content_risk, 0 review_gap, and 6 source_risk issues"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "pass; only existing recorded upstream alignment warnings plus stale global audit warning covered by scoped evidence"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "pass; global report output restored to origin/main before commit"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main",
+      "result": "pass; single content prefix 1000"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "pass; single content prefix 1000"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    },
+    {
+      "command": "git diff --name-status origin/main -- reviews/approved_batches",
+      "result": "pass; no approved batch files changed"
+    },
+    {
+      "command": "gh pr view 36 --json number,state,isDraft,mergeStateStatus,mergeable,url,headRefName,baseRefName",
+      "result": "OPEN draft PR, CLEAN, MERGEABLE, base main"
+    }
+  ],
+  "local_status": "clean before writing this handoff; handoff committed in a follow-up commit on the same branch",
+  "remaining_risks": [
+    "Candidate content uses simulated legacy content_pool transcripts with unverified provenance; do not label as true exam content.",
+    "Scoped audit intentionally retains source_risk for all three cards.",
+    "TTS text is reviewed for this sample, but TTS audio is not formally reviewed.",
+    "User confirmation is required before any batch expansion, approved_batches record, or formal product-content claim."
+  ],
+  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample"
+}
