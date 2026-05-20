@@ -71,6 +71,14 @@ After editing card JSON or the preview reader, also run:
 node scripts/validate_cards.mjs --write-report
 ```
 
+For candidate sample PRs, do not commit global report refreshes from
+`reports/`. Commit a scoped audit report instead:
+
+```bash
+node scripts/audit_card_quality.mjs --scope-card-ids <comma-separated-card-ids> --write-scope-report reviews/audit_scopes/<review-id>-scope-audit.json
+node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract
+```
+
 ## Agent-Managed Git
 
 For tracked-file changes authored by an agent, the agent owns the Git lifecycle:
