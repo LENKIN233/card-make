@@ -80,7 +80,16 @@ function excerpt(value, maxLength = 120) {
 }
 
 function textOf(...values) {
-  return normalizeText(values.filter(value => value !== null && value !== undefined));
+  const seen = new Set();
+  const uniqueValues = [];
+  for (const value of values) {
+    if (value === null || value === undefined) continue;
+    const text = normalizeText(value);
+    if (!text || seen.has(text)) continue;
+    seen.add(text);
+    uniqueValues.push(text);
+  }
+  return normalizeText(uniqueValues);
 }
 
 function extractFrontText(card) {
@@ -235,6 +244,8 @@ function extractOptionAnswerHead(optionText) {
     .filter(index => index > 0);
   if (delimiterIndexes.length > 0) {
     const head = withoutPickPrefix.slice(0, Math.min(...delimiterIndexes)).trim();
+    const hasMultipleRoleLabels = /^[\u4e00-\u9fff]{1,8}$/.test(head) && /[；;].*[:：]/.test(withoutPickPrefix);
+    if (hasMultipleRoleLabels) return '';
     if (hasPickPrefix || (head.length <= 30 && searchTokens(head).length <= 5 && !/[，。；;]/.test(head))) {
       return head;
     }
@@ -258,16 +269,28 @@ function isExplanatoryOptionText(optionText) {
     /[，。；;]|空格|主语|谓语|应|需|需要|说明|优先|判断|搭配|后接|修饰|表示/.test(optionText);
 }
 
+function visibleOptionRowPattern(option) {
+  const key = normalizeText(option.key);
+  const optionText = normalizeText(option.text);
+  if (!key || !optionText) return '';
+  return `${escapeRegExp(key)}\\s*[\\).．、]\\s*${flexibleTextPattern(optionText)}`;
+}
+
 function stripVisibleChoiceLists(frontText, optionRecords = []) {
   let text = normalizeText(frontText);
+  const optionRowPatterns = optionRecords.map(visibleOptionRowPattern).filter(Boolean);
+  if (optionRowPatterns.length >= 2) {
+    const visibleOptionListPattern = new RegExp(
+      `(^|\\s)${optionRowPatterns.join('\\s+')}(?=\\s|$)`,
+      'giu'
+    );
+    text = text.replace(visibleOptionListPattern, ' ');
+  }
   for (const option of optionRecords) {
-    const key = normalizeText(option.key);
-    const optionText = normalizeText(option.text);
-    if (!key || !optionText) continue;
-    const optionPattern = flexibleTextPattern(optionText);
-    if (!optionPattern) continue;
+    const rowPattern = visibleOptionRowPattern(option);
+    if (!rowPattern) continue;
     const visibleOptionPattern = new RegExp(
-      `(^|\\s)${escapeRegExp(key)}\\s*[\\).．、]\\s*${optionPattern}(?=\\s+[A-Z]\\s*[\\).．、]|\\s*$)`,
+      `(^|\\s)${rowPattern}(?=\\s+[A-Z]\\s*[\\).．、]|\\s*$)`,
       'giu'
     );
     text = text.replace(visibleOptionPattern, ' ');
@@ -276,6 +299,95 @@ function stripVisibleChoiceLists(frontText, optionRecords = []) {
     .replace(/(?:word bank|词库|[\u4e00-\u9fff]*候选)[^。！？!?]*(?:[。！？!?]|$)/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function stripLabeledMaterialSegments(frontText) {
+  let text = normalizeText(frontText);
+  const promptBoundaries = [
+    '改写',
+    '题干',
+    '问题',
+    '以下',
+    '下列',
+    '哪一项',
+    '哪项',
+    '哪个',
+    '哪一个',
+    '这里',
+    '这组',
+    '为什么',
+    '请选择',
+    '判断',
+    '回答',
+    '本题',
+  ].join('|');
+  const materialLabels = [
+    '阅读片段',
+    '对话片段',
+    '原文片段',
+    '原文',
+    '改写',
+    '材料',
+    '语境',
+    '句子',
+    '例句',
+  ].join('|');
+
+  const materialSegmentPattern = new RegExp(
+    `(^|\\s)(?:${materialLabels})\\s*[:：]\\s*.*?(?=\\s*(?:${promptBoundaries})\\s*[:：]?)`,
+    'giu'
+  );
+  text = text.replace(materialSegmentPattern, ' ');
+
+  const quotedMaterialPattern = new RegExp(
+    `(^|\\s)(?:${materialLabels})\\s*[:：]\\s*[\"“][^\"”]+[\"”]`,
+    'giu'
+  );
+  text = text.replace(quotedMaterialPattern, ' ');
+
+  text = text.replace(
+    /(^|\s)["“][^"”]*_{2,}[^"”]*["”]/giu,
+    ' '
+  );
+  text = text.replace(
+    /(^|\s)[^。！？!?]*_{2,}[^。！？!?]*(?=\s*(?:空格|哪|为何|为什么|这里|下列|以下|请选择|判断|回答|本题))/giu,
+    ' '
+  );
+
+  return normalizeText(text);
+}
+
+function optionTextAppearsInSetHint(normalizedSetHint, optionText) {
+  const normalizedOptionText = normalizeForSearch(optionText);
+  if (containsSearchPhrase(normalizedSetHint, normalizedOptionText)) return true;
+  const distinctiveTokens = searchTokens(optionText).filter(isDistinctiveAnswerToken);
+  return distinctiveTokens.length > 0 &&
+    distinctiveTokens.every(token => containsSearchPhrase(normalizedSetHint, token));
+}
+
+function stripOptionSetHints(frontText, optionRecords = []) {
+  const optionTexts = optionRecords
+    .map(option => normalizeText(option.text))
+    .filter(Boolean);
+  if (optionTexts.length < 2) return normalizeText(frontText);
+
+  return normalizeText(frontText).replace(
+    /[a-z][a-z\s]*(?:\s*(?:\/|vs\.?|versus)\s*[a-z][a-z\s]*)+/giu,
+    match => {
+      const normalizedMatch = normalizeForSearch(match);
+      const matchedOptions = optionTexts.filter(optionText =>
+        optionTextAppearsInSetHint(normalizedMatch, optionText)
+      );
+      return matchedOptions.length >= 2 ? ' ' : match;
+    }
+  );
+}
+
+function stripNonPromptAnswerLeakText(frontText, optionRecords = []) {
+  return stripOptionSetHints(
+    stripLabeledMaterialSegments(stripVisibleChoiceLists(frontText, optionRecords)),
+    optionRecords
+  );
 }
 
 function optionLeakCandidateTexts(optionText) {
@@ -288,7 +400,7 @@ function optionLeakCandidateTexts(optionText) {
 }
 
 function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
-  const normalizedFront = normalizeForSearch(stripVisibleChoiceLists(frontText, optionRecords));
+  const normalizedFront = normalizeForSearch(stripNonPromptAnswerLeakText(frontText, optionRecords));
   if (!normalizedFront) return [];
 
   const fragments = new Set();
@@ -364,12 +476,156 @@ function runSelfTest() {
     'Stripping a visible option row must not hide the same answer leaked elsewhere in the prompt.'
   );
 
+  const duplicatedVisibleList = {
+    frontText: '综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing 综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing',
+    optionRecords: [
+      { key: 'A', text: 'ask for an extension' },
+      { key: 'B', text: 'over my budget' },
+      { key: 'C', text: 'make an appointment' },
+      { key: 'D', text: 'do a schedule change thing' },
+    ],
+    answer: { text: 'D' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(duplicatedVisibleList.frontText, duplicatedVisibleList.optionRecords, duplicatedVisibleList.answer).length === 0,
+    'A duplicated migrated front with a visible option list must not be treated as front-answer leakage.'
+  );
+
+  const sourceMaterialOnly = {
+    frontText: '阅读片段：I am a historian who surveyed women engineers in the 1970s. 问题：如果只保留这句的主干，下列哪项最准确？',
+    optionRecords: [
+      { key: 'A', text: 'I am a historian.' },
+      { key: 'B', text: 'I surveyed women engineers.' },
+      { key: 'C', text: 'Women engineers were historians.' },
+      { key: 'D', text: 'My colleagues graduated.' },
+    ],
+    answer: { text: 'A' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(sourceMaterialOnly.frontText, sourceMaterialOnly.optionRecords, sourceMaterialOnly.answer).length === 0,
+    'Source material on the front side is task input, not prompt-side answer leakage.'
+  );
+
+  const materialAndLeakedPrompt = {
+    frontText: '句子："Most learners are familiar ___ the basic pattern but ignore exceptions." 这里为什么填 with？',
+    optionRecords: [
+      { key: 'A', text: 'on' },
+      { key: 'B', text: 'for' },
+      { key: 'C', text: 'at' },
+      { key: 'D', text: 'with' },
+    ],
+    answer: { text: 'D' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(materialAndLeakedPrompt.frontText, materialAndLeakedPrompt.optionRecords, materialAndLeakedPrompt.answer).includes('with'),
+    'Removing source material must not hide a prompt that names the correct option.'
+  );
+
+  const dialogueMaterialOnly = {
+    frontText: "对话片段：M: I'd love to join the trip, but it's over my budget. W: You can apply for a student discount. 这里最应优先识别的高频词是：",
+    optionRecords: [
+      { key: 'A', text: 'available' },
+      { key: 'B', text: 'budget' },
+      { key: 'C', text: 'recommend' },
+      { key: 'D', text: 'deadline' },
+    ],
+    answer: { text: 'B' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(dialogueMaterialOnly.frontText, dialogueMaterialOnly.optionRecords, dialogueMaterialOnly.answer).length === 0,
+    'Dialogue material on the front side is task input, not prompt-side answer leakage.'
+  );
+
+  const clozeMaterialOnly = {
+    frontText: 'After the downgrade, portfolio managers turned cautious despite otherwise ___ market sentiment in equity benchmarks. 哪组形容词+名词搭配更自然？',
+    optionRecords: [
+      { key: 'A', text: 'positive market sentiment' },
+      { key: 'B', text: 'goodly market sentiment' },
+      { key: 'C', text: 'happy market sentiment' },
+      { key: 'D', text: 'simple market sentiment' },
+    ],
+    answer: { text: 'A' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(clozeMaterialOnly.frontText, clozeMaterialOnly.optionRecords, clozeMaterialOnly.answer).length === 0,
+    'Cloze context around a blank is task input, not prompt-side answer leakage.'
+  );
+
+  const roleLabelOption = {
+    frontText: '阅读片段：The impact of social media on adolescent mental health has become one of the most debated topics in public health circles. 问题：该句的系动词和表语分别是什么？',
+    optionRecords: [
+      { key: 'A', text: '系动词：has become；表语：over the past decade' },
+      { key: 'B', text: '系动词：is；表语：the most debated' },
+      { key: 'C', text: '系动词：has become；表语：one of the most debated topics in public health circles' },
+      { key: 'D', text: '系动词：has；表语：become one of the most debated topics' },
+    ],
+    answer: { text: 'C' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(roleLabelOption.frontText, roleLabelOption.optionRecords, roleLabelOption.answer).length === 0,
+    'A grammatical role label in an explanatory option must not be treated as the answer head.'
+  );
+
+  const optionSetTopicHint = {
+    frontText: '【状语从句 T1】because / since / as 的语气强弱 句子：_____ the equipment had failed twice, the director stopped the experiment. 哪项最合适？',
+    optionRecords: [
+      { key: 'A', text: 'Because' },
+      { key: 'B', text: 'Since' },
+      { key: 'C', text: 'As' },
+      { key: 'D', text: 'Lest' },
+    ],
+    answer: { text: 'A' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(optionSetTopicHint.frontText, optionSetTopicHint.optionRecords, optionSetTopicHint.answer).length === 0,
+    'A topic label listing multiple answer candidates must not be treated as naming the correct option.'
+  );
+
+  const compressedOptionSetTopicHint = {
+    frontText: '[定语从句 T8] quantifier + of which/whom The committee reviewed ten proposals, three _____ were selected for further evaluation.',
+    optionRecords: [
+      { key: 'A', text: 'of which' },
+      { key: 'B', text: 'of whom' },
+      { key: 'C', text: 'in which' },
+      { key: 'D', text: 'for which' },
+    ],
+    answer: { text: 'A' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(compressedOptionSetTopicHint.frontText, compressedOptionSetTopicHint.optionRecords, compressedOptionSetTopicHint.answer).length === 0,
+    'A compressed slash topic label that lists multiple answer candidates must not be treated as naming the correct option.'
+  );
+
+  const constructionTitleLeak = {
+    frontText: '【固定句型 T8】would rather ... than ... The editor would rather postpone publication _____ release weak conclusions.',
+    optionRecords: [
+      { key: 'A', text: 'than' },
+      { key: 'B', text: 'instead' },
+      { key: 'C', text: 'but' },
+      { key: 'D', text: 'while' },
+    ],
+    answer: { text: 'A' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(constructionTitleLeak.frontText, constructionTitleLeak.optionRecords, constructionTitleLeak.answer).includes('than'),
+    'A construction title that uniquely names the correct completion must remain a front-answer leak.'
+  );
+
   return {
     ok: true,
     cases: [
       'visible_option_list_only_is_not_leak',
       'prompt_answer_text_is_leak',
       'visible_option_list_does_not_mask_prompt_leak',
+      'duplicated_visible_option_list_only_is_not_leak',
+      'source_material_only_is_not_leak',
+      'material_strip_does_not_mask_prompt_leak',
+      'dialogue_material_only_is_not_leak',
+      'cloze_material_only_is_not_leak',
+      'role_label_option_head_is_not_leak',
+      'option_set_topic_hint_is_not_leak',
+      'compressed_option_set_topic_hint_is_not_leak',
+      'construction_title_still_leaks_answer',
     ],
   };
 }
