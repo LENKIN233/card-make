@@ -88,7 +88,8 @@ function isHandoffPath(filePath) {
 }
 
 function isContentReviewPath(filePath) {
-  return isDraftPath(filePath) || isSelfReviewPath(filePath) || isHandoffPath(filePath);
+  return Boolean(pathPrefix(filePath)) &&
+    (isDraftPath(filePath) || isSelfReviewPath(filePath) || isHandoffPath(filePath));
 }
 
 function isContentCandidateDiff(entries) {
