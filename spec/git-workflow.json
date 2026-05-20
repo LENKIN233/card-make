@@ -69,6 +69,14 @@
         "command": "node scripts/validate_cards.mjs --write-report"
       },
       {
+        "scope": "candidate_sample_scoped_audit",
+        "command": "node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json"
+      },
+      {
+        "scope": "content_sample_pr_scope",
+        "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract"
+      },
+      {
         "scope": "all_tracked_changes",
         "command": "git diff --check"
       }
