@@ -87,9 +87,13 @@ function isHandoffPath(filePath) {
     !filePath.endsWith('/TEMPLATE.json');
 }
 
+function isScopedAuditPath(filePath) {
+  return /^reviews\/audit_scopes\/.+\.json$/.test(filePath);
+}
+
 function isContentReviewPath(filePath) {
   return Boolean(pathPrefix(filePath)) &&
-    (isDraftPath(filePath) || isSelfReviewPath(filePath) || isHandoffPath(filePath));
+    (isDraftPath(filePath) || isSelfReviewPath(filePath) || isHandoffPath(filePath) || isScopedAuditPath(filePath));
 }
 
 function isContentCandidateDiff(entries) {
@@ -110,6 +114,7 @@ function primaryScopePrefixes(entries) {
         isCardBoxPath(filePath) ||
         isDraftPath(filePath) ||
         isHandoffPath(filePath) ||
+        isScopedAuditPath(filePath) ||
         (isSelfReviewPath(filePath) && statusType === 'A')
       ) {
         prefixes.add(prefix);
@@ -154,11 +159,13 @@ function validate({ base, head }) {
 
     for (const entry of entries) {
       for (const filePath of entry.paths) {
-        if (!isSelfReviewPath(filePath)) continue;
+        if (!isSelfReviewPath(filePath) && !isScopedAuditPath(filePath)) continue;
         const prefix = pathPrefix(filePath);
         if (prefix && primaryPrefixes.size > 0 && !primaryPrefixes.has(prefix)) {
           issues.push({
-            code: 'content_sample_non_scope_self_review_changed',
+            code: isScopedAuditPath(filePath)
+              ? 'content_sample_non_scope_scoped_audit_changed'
+              : 'content_sample_non_scope_self_review_changed',
             path: filePath,
             status: entry.status,
             prefix,
