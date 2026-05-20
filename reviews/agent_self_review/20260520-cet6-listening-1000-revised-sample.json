@@ -35,7 +35,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260520-cet6-listening-1000-scope-audit.json",
-    "corpus_fingerprint": "1648a243da9ec820b126275337f99c49264e788658efb5cb64f65e49405cf765",
+    "corpus_fingerprint": "a7bb465ccc86823f67a369139b4a8cb8f3567c567f5ad9ec2072789c8f736040",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -135,7 +135,7 @@
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "听开头材料后合并场所、材料和展示方式判断主题",
+        "main_training_goal": "根据选项中的场所、材料和展示方式预测 CET6 听力主话题",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -154,7 +154,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户处理 CET6 中常见的同域干扰项，避免只听到 museum、map、oral history 就选错主题。",
+        "exam_value": "帮助用户先用选项建立主题假设，再处理 CET6 中常见的同域干扰项，避免只听到 museum、map、oral history 就选错主题。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -208,7 +208,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户把目的、受益对象和措施三类信息合并，避免把住房节能补助误判为泛泛能源或环保主题。",
+        "exam_value": "训练用户先用选项中的目的、对象和措施建立政策主题假设，再听音频验证，而不是被时间词或单个政策词干扰。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -232,9 +232,9 @@
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample moves from recognizing campus-service topic cues before audio, to applying topic selection after audio with same-domain distractors, to transferring the method to a policy topic that requires purpose, beneficiary, and measure alignment.",
+    "box_progression": "The revised sample moves from recognizing campus-service topic cues before audio, to applying option-first topic prediction with same-domain public-culture distractors, to transferring the same option-first method to a policy topic that requires purpose, beneficiary, and measure alignment.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box needs checkable option-based topic prediction.",
+      "All three cards use multiple_choice and options_then_audio because this box needs checkable option-based topic prediction before audio validation.",
       "Formal approval still requires user confirmation and separate audio QA.",
       "The scoped audit intentionally leaves source_risk visible because the material remains simulated and unverified."
     ],

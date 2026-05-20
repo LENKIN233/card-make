@@ -127,15 +127,15 @@
         "box_prefix": "1000"
       },
       "front": {
-        "text": "播放音频后，选择最贴近这段内容的主话题。",
-        "task_prompt": "不要只听到 museum；还要把 digital archive、old photographs、interactive touch screens 合并。",
-        "audio_first": true,
-        "display_mode": "audio_then_options",
+        "text": "先看选项，预测这段 CET6 听力最可能围绕哪类公共文化话题展开。",
+        "task_prompt": "先拆分每个选项的场所、材料和动作，再播放音频验证核心动作是否一致。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后选择主话题",
-          "focus": "把场所、材料和展示方式合并成话题判断",
-          "success_criteria": "能区分博物馆数字展陈和开放时间、课程招募、旅游地图等干扰话题"
+          "action": "先预测主话题，再播放音频验证",
+          "focus": "从选项中的博物馆、历史材料、地图等同域线索里区分真正中心动作",
+          "success_criteria": "能说明正确选项为什么同时覆盖场所、材料和展示方式，而干扰项只抓住单个同域词"
         },
         "options": [
           {
@@ -177,7 +177,7 @@
         ]
       },
       "quality_metadata": {
-        "main_training_goal": "听开头材料后合并场所、材料和展示方式判断主题",
+        "main_training_goal": "根据选项中的场所、材料和展示方式预测 CET6 听力主话题",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -196,7 +196,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户处理 CET6 中常见的同域干扰项，避免只听到 museum、map、oral history 就选错主题。",
+        "exam_value": "帮助用户先用选项建立主题假设，再处理 CET6 中常见的同域干扰项，避免只听到 museum、map、oral history 就选错主题。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -216,15 +216,15 @@
         "box_prefix": "1000"
       },
       "front": {
-        "text": "听完开头，预测后文最可能围绕哪类政策展开。",
-        "task_prompt": "把 cut heating costs、grants to homeowners、insulation/windows 三类线索合并。",
-        "audio_first": true,
-        "display_mode": "audio_then_options",
+        "text": "先看选项，预测这段 CET6 听力最可能围绕哪类政策展开。",
+        "task_prompt": "先拆分每个选项的对象、目的和措施，再播放音频验证哪一项三类线索同时命中。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "预测后文展开方向",
-          "focus": "根据目的、受益对象和具体措施锁定政策主题",
-          "success_criteria": "能说明政策服务谁、解决什么问题、采取什么改造措施"
+          "action": "先预测政策主题，再播放音频验证",
+          "focus": "根据选项中的对象、目的和措施建立政策主题假设",
+          "success_criteria": "能说明正确选项为什么同时覆盖政策服务谁、解决什么问题、采取什么改造措施"
         },
         "options": [
           {
@@ -285,7 +285,7 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户在 CET6 信息密集开头中用目的、对象和措施建立后文预期，而不是被时间词或单个政策词干扰。",
+        "exam_value": "训练用户先用选项中的目的、对象和措施建立政策主题假设，再听音频验证，而不是被时间词或单个政策词干扰。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       }
