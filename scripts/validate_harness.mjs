@@ -5,6 +5,7 @@ import crypto from 'node:crypto';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
+const SCOPED_AUDIT_REPORT_DIR = 'reviews/audit_scopes/';
 
 const REQUIRED_BLOCKERS = [
   'logic_error',
@@ -49,6 +50,7 @@ const REQUIRED_SAMPLE_GATE_FIELDS = [
   'agent_self_review_record',
   'blocker_scan_per_card',
   'card_quality_audit_no_hard_blockers',
+  'scoped_card_quality_audit_report',
   'box_progression_roles',
   'no_standalone_hint_layer_interaction',
 ];
@@ -88,6 +90,8 @@ const REQUIRED_QUALITY_AUDIT_SCOPE_SUMMARY_FIELDS = [
   'by_rule',
 ];
 const QUALITY_AUDIT_SEVERITIES = ['hard_blocker', 'content_risk', 'review_gap', 'source_risk'];
+const PR_SCOPE_VALIDATION_COMMAND = 'node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract';
+const SCOPED_AUDIT_VALIDATION_COMMAND = 'node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json';
 
 function resolveWorkspacePath(specPath) {
   return path.resolve(ROOT, specPath);
@@ -103,6 +107,17 @@ function readText(specPath) {
 
 function exists(specPath) {
   return fs.existsSync(resolveWorkspacePath(specPath));
+}
+
+function isGlobalQualityAuditReport(reportPath) {
+  return reportPath === 'reports/card_quality_audit_report.json';
+}
+
+function isScopedQualityAuditReport(reportPath) {
+  return typeof reportPath === 'string' &&
+    reportPath.startsWith(SCOPED_AUDIT_REPORT_DIR) &&
+    reportPath.endsWith('.json') &&
+    !reportPath.slice(SCOPED_AUDIT_REPORT_DIR.length).includes('/');
 }
 
 function listCardFiles() {
@@ -452,6 +467,19 @@ function validateCardQualityAudit(errors) {
   if (audit.report_path !== 'reports/card_quality_audit_report.json') {
     pushIssue(errors, 'card_quality_audit_report_path_drift', { report_path: audit.report_path });
   }
+  if (audit.scoped_report_dir !== SCOPED_AUDIT_REPORT_DIR) {
+    pushIssue(errors, 'card_quality_audit_scoped_report_dir_drift', {
+      scoped_report_dir: audit.scoped_report_dir,
+    });
+  }
+  if (audit.scoped_report_contract?.report_type !== 'scoped_card_quality_audit') {
+    pushIssue(errors, 'card_quality_audit_scoped_report_contract_missing', {});
+  }
+  for (const field of ['report_type', 'corpus_fingerprint', 'scope', 'scope_summary', 'scoped_card_issue_index', 'scoped_hard_blocker_issues']) {
+    if (!(audit.scoped_report_contract?.must_include || []).includes(field)) {
+      pushIssue(errors, 'card_quality_audit_scoped_report_field_missing', { field });
+    }
+  }
   if (audit.script_path !== 'scripts/audit_card_quality.mjs') {
     pushIssue(errors, 'card_quality_audit_script_path_drift', { script_path: audit.script_path });
   }
@@ -497,8 +525,8 @@ function validateCardQualityAudit(errors) {
     ...(audit.candidate_scope_policy?.formal_batch_scope || []),
   ];
   for (const requirement of [
-    'report_must_match_current_card_corpus_fingerprint',
-    'agent_self_review_must_link_current_quality_audit_report',
+    'scoped_report_must_match_current_card_corpus_fingerprint',
+    'agent_self_review_must_link_current_scoped_or_global_quality_audit_report',
     'agent_self_review_must_include_scoped_quality_audit_summary',
     'scope_must_have_no_hard_blocker_issues',
     'no_hard_blocker_issues',
@@ -529,6 +557,9 @@ function validateCardQualityAudit(errors) {
   }
   if (!script.includes('reports/card_quality_audit_report.json') && !script.includes('card_quality_audit_report.json')) {
     pushIssue(errors, 'card_quality_audit_script_report_path_missing', {});
+  }
+  if (!script.includes('--write-scope-report') || !script.includes('scoped_card_quality_audit')) {
+    pushIssue(errors, 'card_quality_audit_script_scoped_report_missing', {});
   }
 
   if (!exists('reports/card_quality_audit_report.json')) {
@@ -674,6 +705,7 @@ function validateReviewDirs(errors) {
   for (const dir of [
     'reviews/agent_self_review',
     'reviews/approved_batches',
+    'reviews/audit_scopes',
     'reviews/drafts',
     'reviews/git_handoffs',
   ]) {
@@ -732,7 +764,9 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
       }
     }
   }
-  if (auditRecord.report !== 'reports/card_quality_audit_report.json') {
+  const usesGlobalReport = isGlobalQualityAuditReport(auditRecord.report);
+  const usesScopedReport = isScopedQualityAuditReport(auditRecord.report);
+  if (!usesGlobalReport && !usesScopedReport) {
     pushIssue(errors, 'quality_audit_record_report_path_drift', {
       source,
       report: auditRecord.report,
@@ -767,6 +801,13 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
       actual: auditRecord.corpus_fingerprint,
     });
   }
+  if (usesScopedReport && report.report_type !== 'scoped_card_quality_audit') {
+    pushIssue(errors, 'quality_audit_scoped_report_type_invalid', {
+      source,
+      report: auditRecord.report,
+      report_type: report.report_type,
+    });
+  }
   if (report.corpus_fingerprint?.digest !== currentFingerprint.digest) {
     pushIssue(errors, 'quality_audit_record_links_stale_report', {
       source,
@@ -776,19 +817,39 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
   }
 
   const scopedIds = stringSet(scopeCardIds);
-  const scopedHardBlockers = (report.hard_blocker_issues || []).filter(issue => scopedIds.has(issue.card_id));
+  const scopedHardBlockers = usesScopedReport
+    ? (report.scoped_hard_blocker_issues || []).filter(issue => scopedIds.has(issue.card_id))
+    : (report.hard_blocker_issues || []).filter(issue => scopedIds.has(issue.card_id));
   if (scopedHardBlockers.length > 0) {
     pushIssue(errors, 'quality_audit_scope_has_hard_blockers', {
       source,
       card_ids: scopedHardBlockers.map(issue => issue.card_id),
     });
   }
-  if (!report.card_issue_index || typeof report.card_issue_index !== 'object') {
-    pushIssue(errors, 'quality_audit_record_report_card_issue_index_missing', { source });
-    return;
+  let expectedSummary;
+  let missingCardIds;
+  if (usesScopedReport) {
+    expectedSummary = report.scope_summary;
+    missingCardIds = report.scope?.missing_card_ids || [];
+    if (!expectedSummary || typeof expectedSummary !== 'object') {
+      pushIssue(errors, 'quality_audit_scoped_report_summary_missing', { source, report: auditRecord.report });
+      return;
+    }
+    if (!setsEqual(report.scope?.card_ids || [], scopeCardIds)) {
+      pushIssue(errors, 'quality_audit_scoped_report_scope_mismatch', {
+        source,
+        report: auditRecord.report,
+        expected: sortedStrings(scopeCardIds),
+        actual: sortedStrings(report.scope?.card_ids || []),
+      });
+    }
+  } else {
+    if (!report.card_issue_index || typeof report.card_issue_index !== 'object') {
+      pushIssue(errors, 'quality_audit_record_report_card_issue_index_missing', { source });
+      return;
+    }
+    ({ summary: expectedSummary, missingCardIds } = buildScopedAuditSummary(report, scopeCardIds));
   }
-
-  const { summary: expectedSummary, missingCardIds } = buildScopedAuditSummary(report, scopeCardIds);
   if (missingCardIds.length > 0) {
     pushIssue(errors, 'quality_audit_scope_cards_missing_from_report_index', {
       source,
@@ -1137,10 +1198,43 @@ function validateInteractionPolicy(errors) {
 function validateGitWorkflow(errors) {
   const gitWorkflow = readJson('spec/git-workflow.json');
   const agentEntry = readText('AGENTS.md');
+  const agentHarness = readJson('spec/agent-harness.json');
+  const authorityMap = readJson('spec/authority-map.json');
+  const manifest = readJson('spec/doc-manifest.json');
+  const activePaths = new Set((manifest.active_docs || []).map(doc => doc.path));
   const handoffTemplate = readJson('reviews/git_handoffs/TEMPLATE.json');
 
   if (gitWorkflow.status !== 'active') {
     pushIssue(errors, 'git_workflow_not_active', { status: gitWorkflow.status });
+  }
+  if (!activePaths.has('scripts/validate_pr_scope.mjs')) {
+    pushIssue(errors, 'pr_scope_validator_manifest_entry_missing', {});
+  }
+  if (authorityMap.owners?.content_pr_scope_gate !== 'scripts/validate_pr_scope.mjs') {
+    pushIssue(errors, 'pr_scope_validator_owner_drift', {
+      owner: authorityMap.owners?.content_pr_scope_gate,
+    });
+  }
+  if (!exists('scripts/validate_pr_scope.mjs')) {
+    pushIssue(errors, 'pr_scope_validator_missing', {});
+  } else {
+    const prScopeValidator = readText('scripts/validate_pr_scope.mjs');
+    for (const token of [
+      'content_sample_global_report_changed',
+      'content_sample_non_scope_self_review_changed',
+      'content_sample_non_scope_scoped_audit_changed',
+      'reports/card_quality_audit_report.json',
+      'reports/card_validation_report.json',
+    ]) {
+      if (!prScopeValidator.includes(token)) {
+        pushIssue(errors, 'pr_scope_validator_guard_missing', { token });
+      }
+    }
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('global report refreshes') && guardrail.includes('non-scope self-review')
+  )) {
+    pushIssue(errors, 'agent_harness_pr_scope_guardrail_missing', {});
   }
   if (!agentEntry.includes('## Agent-Managed Git')) {
     pushIssue(errors, 'agent_entry_missing_git_section', {});
@@ -1198,7 +1292,7 @@ function validateGitWorkflow(errors) {
   }
 
   const validationCommands = (gitWorkflow.validation_policy?.before_commit || []).map(entry => entry.command);
-  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_cards.mjs --write-report', 'git diff --check']) {
+  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_cards.mjs --write-report', SCOPED_AUDIT_VALIDATION_COMMAND, PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
     if (!validationCommands.includes(command)) {
       pushIssue(errors, 'git_validation_command_missing', { command });
     }
