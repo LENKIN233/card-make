@@ -4,6 +4,7 @@
   "purpose": "Read-only quality audit rules for existing and candidate card JSON. This audit surfaces mechanical blockers and content-risk signals; it is not formal release approval.",
   "mode": "read_only_non_blocking_for_legacy_corpus",
   "report_path": "reports/card_quality_audit_report.json",
+  "scoped_report_dir": "reviews/audit_scopes/",
   "script_path": "scripts/audit_card_quality.mjs",
   "approval_boundary": {
     "does_not_replace": [
@@ -103,11 +104,24 @@
     ],
     "card_issue_index_role": "Per-card counts by severity and rule. Review records must use this index to store a scoped summary for their own card_ids instead of relying only on corpus-level totals."
   },
+  "scoped_report_contract": {
+    "purpose": "Per-sample audit evidence that can be committed with a content sample PR without refreshing global reports.",
+    "path_pattern": "reviews/audit_scopes/YYYYMMDD-box-prefix-scope-audit.json",
+    "must_include": [
+      "report_type",
+      "corpus_fingerprint",
+      "scope",
+      "scope_summary",
+      "scoped_card_issue_index",
+      "scoped_hard_blocker_issues"
+    ],
+    "report_type": "scoped_card_quality_audit"
+  },
   "candidate_scope_policy": {
     "before_user_sample_review": [
-      "run scripts/audit_card_quality.mjs --write-report",
-      "report_must_match_current_card_corpus_fingerprint",
-      "agent_self_review_must_link_current_quality_audit_report",
+      "run scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json",
+      "scoped_report_must_match_current_card_corpus_fingerprint",
+      "agent_self_review_must_link_current_scoped_or_global_quality_audit_report",
       "agent_self_review_must_include_scoped_quality_audit_summary",
       "scope_must_have_no_hard_blocker_issues",
       "content_risk_examples_must_be reviewed_or_explicitly_accepted_as_known_legacy_risk"
