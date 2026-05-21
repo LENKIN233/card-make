@@ -4,7 +4,7 @@
   "agent": "codex",
   "branch": "content/cet4-listening-0012-front-leak-fix",
   "base_branch": "main",
-  "commit_sha": "0254b53017f0f43c2a1aec3c2be3cb6398426cf5",
+  "commit_sha": "888b4b5c451cb50c71ead68614c39819c5ea7ef5",
   "push_ref": "origin/content/cet4-listening-0012-front-leak-fix",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/45",
   "PR_number": 45,
@@ -25,15 +25,21 @@
     "touched_paths": [
       "card_boxes_json/card_boxes_seed_cet4_listening_0012.json",
       "reviews/agent_self_review/20260521-cet4-listening-0012-front-leak-fix-sample.json",
-      "reviews/audit_scopes/20260521-cet4-listening-0012-front-leak-fix-scope-audit.json"
+      "reviews/audit_scopes/20260521-cet4-listening-0012-front-leak-fix-scope-audit.json",
+      "reviews/audio_qc/20260521-cet4-listening-0012-candidate-audio-qc.json"
     ]
   },
   "summary": [
     "Revised the 0012 three-card candidate sample so front text and task prompts describe the audible consonant-release feature without naming the target answer label outside the visible option list.",
     "Added scoped quality metadata for cards 001208, 001209, and 001210, with progression from locating the audible feature to boundary reasoning to category selection.",
-    "Added agent self-review and current scoped audit evidence while keeping the sample candidate-only and excluding global report refreshes."
+    "Added agent self-review and current scoped audit evidence while keeping the sample candidate-only and excluding global report refreshes.",
+    "Added candidate audio QC evidence after the audio-generation contract landed: existing ai_tts files may remain candidate references, but formal audio readiness is false until acoustic target-signal QA is completed."
   ],
   "validation": [
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed; records_checked=1 and 0012 candidate audio record keeps formal_audio_ready=false"
+    },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
       "result": "passed; ok=true, cards=2414, errors=0, warnings=0; generated reports/card_validation_report.json was restored and not committed"
@@ -59,11 +65,12 @@
       "result": "passed; draft PR #45 created"
     }
   ],
-  "local_status": "Draft PR #45 is open. Final validation should be rerun after this handoff commit is pushed.",
+  "local_status": "Draft PR #45 is open and updated onto current main with audio QC contract support. Final validation should be rerun after this handoff update is pushed.",
   "remaining_risks": [
     "Candidate sample only; it is not formal user-approved product content.",
     "No reviews/approved_batches record was created.",
     "Source-risk findings remain for legacy TTS/simulation provenance and are recorded in scoped audit/self-review.",
+    "Existing ai_tts files are candidate references only; formal audio readiness is blocked until manual or acoustic listening review confirms audio/text match and the target lost-plosive signals are audible.",
     "Content PR must not be auto-merged until user confirmation of this sample direction."
   ],
   "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
