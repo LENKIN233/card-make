@@ -105,6 +105,9 @@ const REQUIRED_QUALITY_AUDIT_SCOPE_SUMMARY_FIELDS = [
   'by_rule',
 ];
 const QUALITY_AUDIT_SEVERITIES = ['hard_blocker', 'content_risk', 'review_gap', 'source_risk'];
+const SELF_REVIEW_SCOPE_TYPES = ['three_card_sample_per_box', 'residual_blocker_closure'];
+const STANDARD_SELF_REVIEW_BATCH_STATUSES = ['recommend_user_confirmation', 'revise_before_user_review', 'blocked'];
+const RESIDUAL_BLOCKER_CLOSURE_STATUS = 'documented_residual_closure';
 const PR_SCOPE_VALIDATION_COMMAND = 'node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract';
 const SCOPED_AUDIT_VALIDATION_COMMAND = 'node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json';
 
@@ -215,6 +218,10 @@ function hasOwn(object, key) {
 
 function hasText(value) {
   return typeof value === 'string' && value.trim().length > 0;
+}
+
+function hasNonEmptyTextArray(value) {
+  return Array.isArray(value) && value.length > 0 && value.every(hasText);
 }
 
 function stringSet(values) {
@@ -963,6 +970,15 @@ function validateWorkflow(errors) {
   if (workflow.sample_quality_gate?.quality_metadata_schema !== 'spec/card-metadata.schema.json') {
     pushIssue(errors, 'sample_quality_gate_schema_drift', {});
   }
+  if (workflow.residual_blocker_closure_review_policy?.review_scope_type !== 'residual_blocker_closure') {
+    pushIssue(errors, 'residual_blocker_closure_policy_missing', {});
+  }
+  if (workflow.residual_blocker_closure_review_policy?.not_sample_approval !== true) {
+    pushIssue(errors, 'residual_blocker_closure_must_not_be_sample_approval', {});
+  }
+  if (!(workflow.self_review_output?.batch_status || []).includes(RESIDUAL_BLOCKER_CLOSURE_STATUS)) {
+    pushIssue(errors, 'residual_blocker_closure_status_missing', {});
+  }
   for (const forbidden of [
     'declare_final_formal_usability',
     'batch_generate_before_user_confirms_sample',
@@ -1299,8 +1315,32 @@ function validateSelfReviewCard(card, errors, source, { template }) {
   }
 }
 
-function validateSelfReviewRecord(record, errors, source, { template = false } = {}) {
-  if (record.sample_policy?.is_three_card_sample_per_box !== true) {
+function selfReviewScopeType(record) {
+  const explicitType = record.sample_policy?.review_scope_type;
+  if (hasText(explicitType)) return explicitType;
+  if (record.sample_policy?.residual_blocker_closure === true) return 'residual_blocker_closure';
+  return 'three_card_sample_per_box';
+}
+
+function validateSelfReviewRecord(record, errors, source, { template = false, fixture = false } = {}) {
+  const reviewScopeType = selfReviewScopeType(record);
+  const isResidualBlockerClosure = reviewScopeType === 'residual_blocker_closure';
+
+  if (!SELF_REVIEW_SCOPE_TYPES.includes(reviewScopeType)) {
+    pushIssue(errors, 'self_review_unknown_scope_type', { source, reviewScopeType });
+  }
+
+  if (isResidualBlockerClosure) {
+    if (record.sample_policy?.is_three_card_sample_per_box !== false) {
+      pushIssue(errors, 'residual_self_review_must_not_claim_three_card_sample', { source });
+    }
+    if (record.sample_policy?.residual_blocker_closure !== true) {
+      pushIssue(errors, 'residual_self_review_policy_flag_missing', { source });
+    }
+    if (record.sample_policy?.not_sample_approval !== true) {
+      pushIssue(errors, 'residual_self_review_not_sample_approval_missing', { source });
+    }
+  } else if (record.sample_policy?.is_three_card_sample_per_box !== true) {
     pushIssue(errors, 'self_review_sample_policy_not_three_card', { source });
   }
   if (record.sample_policy?.batch_generation_requires_user_confirmation !== true) {
@@ -1316,19 +1356,15 @@ function validateSelfReviewRecord(record, errors, source, { template = false } =
   for (const card of cards) validateSelfReviewCard(card, errors, source, { template });
   validateQualityAuditRecord(record.quality_audit, errors, source, {
     template,
+    fixture,
     scopeCardIds: record.scope?.card_ids || cards.map(card => card.card_id),
-    requiredForApproval: record.batch_review?.status === 'recommend_user_confirmation',
+    requiredForApproval: !isResidualBlockerClosure && record.batch_review?.status === 'recommend_user_confirmation',
   });
 
   if (!template) {
     const boxPrefixes = record.scope?.box_prefixes || [];
     const scopeCardIds = record.scope?.card_ids || [];
     const expectedCards = Math.max(1, boxPrefixes.length) * 3;
-    for (const field of ['library', 'group', 'box']) {
-      if (!hasText(record.scope?.[field])) {
-        pushIssue(errors, 'self_review_scope_field_missing', { source, field });
-      }
-    }
     if (!Array.isArray(boxPrefixes) || boxPrefixes.length === 0) {
       pushIssue(errors, 'self_review_scope_box_prefixes_missing', { source });
     }
@@ -1341,22 +1377,52 @@ function validateSelfReviewRecord(record, errors, source, { template = false } =
         actualCardIds: cards.map(card => card.card_id),
       });
     }
-    if (cards.length !== expectedCards) {
-      pushIssue(errors, 'self_review_sample_card_count_not_three_per_box', {
-        source,
-        expectedCards,
-        actualCards: cards.length,
-      });
-    }
     if (!Array.isArray(record.specs_read) || record.specs_read.length === 0) {
       pushIssue(errors, 'self_review_specs_read_missing', { source });
     }
-    if (!record.batch_review || !['recommend_user_confirmation', 'revise_before_user_review', 'blocked'].includes(record.batch_review.status)) {
-      pushIssue(errors, 'self_review_batch_status_invalid', { source, status: record.batch_review?.status });
-    }
-    if (record.batch_review?.status === 'recommend_user_confirmation') {
-      const anyBlocked = cards.some(card => card.status !== 'pass' || Object.values(card.blocker_scan || {}).some(Boolean));
-      if (anyBlocked) pushIssue(errors, 'self_review_recommends_confirmation_with_blocked_card', { source });
+
+    if (isResidualBlockerClosure) {
+      if (!hasText(record.scope?.closure_reason)) {
+        pushIssue(errors, 'residual_self_review_closure_reason_missing', { source });
+      }
+      if (!hasNonEmptyTextArray(record.scope?.source_issue_refs)) {
+        pushIssue(errors, 'residual_self_review_source_issue_refs_missing', { source });
+      }
+      if (cards.length !== scopeCardIds.length) {
+        pushIssue(errors, 'residual_self_review_scope_card_count_mismatch', {
+          source,
+          scopeCards: scopeCardIds.length,
+          actualCards: cards.length,
+        });
+      }
+      if (record.batch_review?.status === 'recommend_user_confirmation') {
+        pushIssue(errors, 'residual_self_review_must_not_recommend_confirmation', { source });
+      } else if (record.batch_review?.status !== RESIDUAL_BLOCKER_CLOSURE_STATUS) {
+        pushIssue(errors, 'residual_self_review_batch_status_invalid', {
+          source,
+          status: record.batch_review?.status,
+        });
+      }
+    } else {
+      for (const field of ['library', 'group', 'box']) {
+        if (!hasText(record.scope?.[field])) {
+          pushIssue(errors, 'self_review_scope_field_missing', { source, field });
+        }
+      }
+      if (cards.length !== expectedCards) {
+        pushIssue(errors, 'self_review_sample_card_count_not_three_per_box', {
+          source,
+          expectedCards,
+          actualCards: cards.length,
+        });
+      }
+      if (!record.batch_review || !STANDARD_SELF_REVIEW_BATCH_STATUSES.includes(record.batch_review.status)) {
+        pushIssue(errors, 'self_review_batch_status_invalid', { source, status: record.batch_review?.status });
+      }
+      if (record.batch_review?.status === 'recommend_user_confirmation') {
+        const anyBlocked = cards.some(card => card.status !== 'pass' || Object.values(card.blocker_scan || {}).some(Boolean));
+        if (anyBlocked) pushIssue(errors, 'self_review_recommends_confirmation_with_blocked_card', { source });
+      }
     }
   }
 }
@@ -1724,6 +1790,38 @@ function validateEvalFixtures(errors) {
       for (const actualGateCode of actualGateCodes) {
         if (!(expected.expected_gate_errors || []).includes(actualGateCode)) {
           pushIssue(errors, 'sample_gate_fixture_unexpected_gate_error', {
+            fixture: testCase.id,
+            actualGateCode,
+          });
+        }
+      }
+      continue;
+    }
+
+    if (testCase.type === 'self_review_record') {
+      if (testCase.golden_task_id !== 'GT-CARD-004') {
+        pushIssue(errors, 'self_review_fixture_wrong_golden_task', { fixture: testCase.id });
+      }
+      if (expected.self_review_status !== 'block') {
+        pushIssue(errors, 'self_review_fixture_not_blocking_bad_record', { fixture: testCase.id });
+      }
+      const gateErrors = [];
+      validateSelfReviewRecord(testCase.self_review_record || {}, gateErrors, `${testCase.id}.self_review_record`, {
+        fixture: true,
+      });
+      const actualGateCodes = new Set(gateErrors.map(issue => issue.code));
+      for (const expectedGateError of expected.expected_gate_errors || []) {
+        if (!actualGateCodes.has(expectedGateError)) {
+          pushIssue(errors, 'self_review_fixture_expected_error_not_triggered', {
+            fixture: testCase.id,
+            expectedGateError,
+            actualGateErrors: [...actualGateCodes],
+          });
+        }
+      }
+      for (const actualGateCode of actualGateCodes) {
+        if (!(expected.expected_gate_errors || []).includes(actualGateCode)) {
+          pushIssue(errors, 'self_review_fixture_unexpected_gate_error', {
             fixture: testCase.id,
             actualGateCode,
           });
