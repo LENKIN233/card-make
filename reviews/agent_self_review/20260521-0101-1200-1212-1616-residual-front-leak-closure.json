@@ -1,0 +1,297 @@
+{
+  "review_id": "20260521-0101-1200-1212-1616-residual-front-leak-closure",
+  "created_at": "2026-05-21T22:51:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "box_prefixes": [
+      "0101",
+      "1200",
+      "1212",
+      "1616"
+    ],
+    "card_ids": [
+      "010102",
+      "120009",
+      "121204",
+      "161603"
+    ],
+    "closure_reason": "Residual front-answer-leak blocker closure for four cards that were not covered by the earlier 3-card-per-box sample PRs.",
+    "source_issue_refs": [
+      "PR #47: https://github.com/LENKIN233/card-make/pull/47",
+      "reviews/audit_scopes/20260521-uncovered-front-leak-fix-scope-audit.json",
+      "reviews/git_handoffs/20260521-content-uncovered-front-leak-fix.json"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "spec/card-quality-audit.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260521-uncovered-front-leak-fix-scope-audit.json",
+    "corpus_fingerprint": "ba995cf97b6edb169a60d0f6cb185a99149b2b0b511d904586c7e580677802d0",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "010102",
+        "120009",
+        "121204",
+        "161603"
+      ],
+      "card_count": 4,
+      "issue_count": 8,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 8
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 4,
+        "template_analysis_pattern": 0,
+        "unverified_source": 4
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "010102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "0",
+        "group": "定位词抓取",
+        "box_id": "1",
+        "box": "实义名词",
+        "box_prefix": "0101"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用实义名词短语的稀有度和题干绑定强度选择定位锚点",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; residual closure evidence only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户避免用 genetic tests 这类全文高频词定位，改用更能锁定答案段的具体名词短语。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "120009",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "1200"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 reduce 和 of 结构判断名词空格的语义类别",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; residual closure evidence only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在六级选词填空中先锁定名词位，再用动词搭配和 of 后对象判断抽象名词是否自然。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "121204",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "1",
+        "group": "空格语法预判",
+        "box_id": "2",
+        "box": "空格语法预判-动词",
+        "box_prefix": "1212"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用主语、频度副词和宾语结构预判动词空格",
+        "weak_point_tags": [
+          "grammar_weak",
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; residual closure evidence only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在六级选词填空中先用句法位置排除非动词选项，再用 exposure 搭配确认答案。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "161603",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "6",
+        "library": "语法",
+        "group_id": "1",
+        "group": "复杂句",
+        "box_id": "6",
+        "box": "其他固定句型",
+        "box_prefix": "1616"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据 would rather 后的并行动作补全偏好选择固定句型",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; residual closure evidence only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户从句意和动词平行结构识别 would rather A than B，而不是靠题面标题直接抄答案。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "not_applicable_residual_multi_prefix_closure",
+    "repetition_or_gap_risks": [
+      "This record spans four unrelated box prefixes and is not evidence of per-box sample readiness.",
+      "Source-risk findings remain because the underlying legacy/simulated provenance is not verified."
+    ],
+    "representative_cards": [
+      "010102",
+      "120009",
+      "121204",
+      "161603"
+    ],
+    "next_step": "Keep #50 as candidate-only content for user review; do not create approved batch records from this residual closure evidence."
+  }
+}

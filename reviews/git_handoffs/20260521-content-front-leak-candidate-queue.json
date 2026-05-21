@@ -67,12 +67,13 @@
         "1616"
       ],
       "supporting_evidence": [
+        "reviews/agent_self_review/20260521-0101-1200-1212-1616-residual-front-leak-closure.json",
         "reviews/audit_scopes/20260521-uncovered-front-leak-fix-scope-audit.json",
         "reviews/git_handoffs/20260521-content-uncovered-front-leak-fix.json"
       ],
-      "agent_self_review_record": null,
-      "reason": "The current agent self-review record model represents 3-card-per-box sample scopes; PR #47 repaired one residual blocker card in each of four prefixes, so creating a normal self-review record would overstate the review scope.",
-      "follow_up": "If residual multi-prefix blocker closures need first-class self-review records, add that review type in a separate harness/tooling PR before treating them as sample-equivalent."
+      "agent_self_review_record": "reviews/agent_self_review/20260521-0101-1200-1212-1616-residual-front-leak-closure.json",
+      "reason": "The residual closure record uses review_scope_type=residual_blocker_closure and batch_review.status=documented_residual_closure because PR #47 repaired one blocker card in each of four prefixes; it is not a normal 3-card-per-box sample review.",
+      "follow_up": "Do not treat residual multi-prefix blocker closures as sample-equivalent unless a separate user-confirmed sample approval flow is completed."
     }
   ],
   "validation": [
@@ -119,7 +120,7 @@
     "No reviews/approved_batches record was created.",
     "Source-risk findings remain for legacy unverified/simulation provenance and are recorded in scoped audit evidence.",
     "The branch intentionally spans multiple box prefixes because it consolidates existing front-answer-leak blocker fixes for review.",
-    "PR #47 has no normal agent self-review record by design; do not treat its scoped audit plus handoff evidence as sample approval.",
+    "PR #47 has a residual closure self-review record, not a normal 3-card-per-box sample record; do not treat it as sample approval.",
     "User confirmation and explicit content merge delegation are still required before any formal content merge."
   ],
   "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
