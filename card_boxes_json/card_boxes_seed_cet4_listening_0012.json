@@ -758,12 +758,12 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "长按覆盖“词尾塞音+后续辅音”处没有完全释放的片段。",
-        "task_prompt": "先听音频，再定位词尾辅音释放变弱的片段。",
+        "text": "翻面前先判断：这段音频里哪个词尾塞音在后续辅音前没有完全释放？",
+        "task_prompt": "先听音频，再用“前一词词尾+后一词开头”的边界判断发音变化。",
         "task_schema": {
-          "action": "听后操作",
+          "action": "听后判断",
           "focus": "词尾辅音释放变化听辨",
-          "success_criteria": "能把长按范围覆盖到前一词词尾辅音与后一词起始辅音的衔接处"
+          "success_criteria": "能在翻面前判断发生不完全释放的位置，并在翻面后核验证据"
         },
         "audio_first": true,
         "image_url": null,
@@ -775,7 +775,7 @@
         "explanation": "语境揭示：The phrase good boy may sound like goo boy, because the final d is not fully released before b."
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The phrase good boy may sound like goo boy, because the final d is not fully released before b.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① 识别信号：本卡训练词尾塞音在后续辅音前的“不完全释放”。听到 good boy 时，不要等一个完整爆破的 /d/，要注意 good 末尾和 boy 开头之间的短促衔接。\n\n② 核心规律：/d/ 后面紧接 /b/ 时，舌位和气流释放会被后一辅音接管，听感可能像 good 少了结尾，只剩 goo boy。判断时先锁定前一词词尾，再确认后一词是否也是辅音开头。\n\n③ 验证与迁移：回听“The phrase good boy may sound like goo boy, because the final d is not fully released before b.”。能说明 good 的 d 为什么弱化，才说明你抓住了失去爆破，而不是只凭拼写猜答案。",
         "tips": [
           "词尾 d/t/p/k/g/b 常见失爆。",
           "听辨时关注前后辅音组合。"
@@ -814,19 +814,19 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "长按覆盖“词尾塞音+后续辅音”处没有完全释放的片段。",
-        "task_prompt": "先听音频，再定位词尾辅音释放变弱的片段。",
+        "text": "翻面前先判断：这段音频里哪个词尾塞音在后续辅音前没有完全释放？",
+        "task_prompt": "先听音频，再用“前一词词尾+后一词开头”的边界判断发音变化。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
+          "action": "听后判断",
           "focus": "词尾辅音释放变化听辨",
-          "success_criteria": "能把长按范围覆盖到前一词词尾辅音与后一词起始辅音的衔接处"
+          "success_criteria": "能在翻面前判断发生不完全释放的位置，并在翻面后核验证据"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The phrase good boy may sound like goo boy, because the final d is not fully released before b.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① 识别信号：本卡训练词尾塞音在后续辅音前的“不完全释放”。听到 good boy 时，不要等一个完整爆破的 /d/，要注意 good 末尾和 boy 开头之间的短促衔接。\n\n② 核心规律：/d/ 后面紧接 /b/ 时，舌位和气流释放会被后一辅音接管，听感可能像 good 少了结尾，只剩 goo boy。判断时先锁定前一词词尾，再确认后一词是否也是辅音开头。\n\n③ 验证与迁移：回听“The phrase good boy may sound like goo boy, because the final d is not fully released before b.”。能说明 good 的 d 为什么弱化，才说明你抓住了失去爆破，而不是只凭拼写猜答案。",
         "tips": [
           "词尾 d/t/p/k/g/b 常见失爆。",
           "听辨时关注前后辅音组合。"
@@ -859,7 +859,7 @@
         "material": {
           "text_source_type": "simulation",
           "source_note": "AI TTS generated from legacy sample transcript; sample only.",
-          "audio_generation_method": "tts"
+          "audio_generation_method": "TTS_AI_generated"
         },
         "exam_value": "训练用户把听到的短促衔接定位到词尾辅音与后续辅音之间，而不是只按单词拼写判断。",
         "box_progression_role": "recognition",
@@ -895,7 +895,7 @@
         "explanation": "语境揭示：At last minute, the t in last is unreleased before m, but minute remains clear and carries timing detail."
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：翻面前先自述判断路径，翻面后只核验证据链是否闭合。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“At last minute, the t in last is unreleased before m, but minute remains clear and carries timing detail.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① 识别信号：本卡训练 last minute 中词尾 /t/ 在 /m/ 前的不完全释放。听的时候重点不是 minute 本身，而是 last 结尾有没有被完整爆破出来。\n\n② 核心规律：/t/ 后面接 /m/ 时，爆破动作常被压住，last minute 的边界会变短促。翻面前先判断“哪一个词尾辅音变弱”，翻面后再用 t before m 的证据验证。\n\n③ 验证与迁移：回听“At last minute, the t in last is unreleased before m, but minute remains clear and carries timing detail.”。如果你能把弱化位置说成 last 的 t，而不是泛泛说整句话变快，就抓住了这张卡的训练点。",
         "tips": [
           "失爆位置多在词尾辅音。",
           "核心信息仍由后续实词承载。"
@@ -945,7 +945,7 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：翻面前先自述判断路径，翻面后只核验证据链是否闭合。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“At last minute, the t in last is unreleased before m, but minute remains clear and carries timing detail.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① 识别信号：本卡训练 last minute 中词尾 /t/ 在 /m/ 前的不完全释放。听的时候重点不是 minute 本身，而是 last 结尾有没有被完整爆破出来。\n\n② 核心规律：/t/ 后面接 /m/ 时，爆破动作常被压住，last minute 的边界会变短促。翻面前先判断“哪一个词尾辅音变弱”，翻面后再用 t before m 的证据验证。\n\n③ 验证与迁移：回听“At last minute, the t in last is unreleased before m, but minute remains clear and carries timing detail.”。如果你能把弱化位置说成 last 的 t，而不是泛泛说整句话变快，就抓住了这张卡的训练点。",
         "tips": [
           "失爆位置多在词尾辅音。",
           "核心信息仍由后续实词承载。"
@@ -980,7 +980,7 @@
         "material": {
           "text_source_type": "simulation",
           "source_note": "AI TTS generated from legacy sample transcript; sample only.",
-          "audio_generation_method": "tts"
+          "audio_generation_method": "TTS_AI_generated"
         },
         "exam_value": "帮助用户在听力中把短促边界还原到具体词组，降低把音变误听成漏词或断句的风险。",
         "box_progression_role": "application",
@@ -1016,7 +1016,7 @@
         "explanation": "语境揭示：In kept quiet, the p in kept is lightly released before q, creating a clipped transition in fast speech."
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：四选一先判关系类型，再排除对象错位和范围错位选项。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“In kept quiet, the p in kept is lightly released before q, creating a clipped transition in fast speech.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① 识别信号：本卡让你在弱读、连读、失去爆破、吞音省略之间分类。听 kept quiet 时，关键不是功能词被弱化，而是 kept 末尾 /p/ 在 quiet 的 /k/ 前释放很轻。\n\n② 核心规律：失去爆破的判断依据是“词尾塞音 + 后续辅音”的衔接被压缩。连读通常是辅音接元音，弱读通常发生在功能词上；这两点都和 kept quiet 的证据不匹配。\n\n③ 验证与迁移：回听“In kept quiet, the p in kept is lightly released before q, creating a clipped transition in fast speech.”。能把 p before q 作为证据，才不是只看见题面里的现象名后记忆匹配。",
         "tips": [
           "失爆常让语流听起来更“短促”。",
           "不要把短促误判为断句。"
@@ -1087,7 +1087,7 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：四选一先判关系类型，再排除对象错位和范围错位选项。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“In kept quiet, the p in kept is lightly released before q, creating a clipped transition in fast speech.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① 识别信号：本卡让你在弱读、连读、失去爆破、吞音省略之间分类。听 kept quiet 时，关键不是功能词被弱化，而是 kept 末尾 /p/ 在 quiet 的 /k/ 前释放很轻。\n\n② 核心规律：失去爆破的判断依据是“词尾塞音 + 后续辅音”的衔接被压缩。连读通常是辅音接元音，弱读通常发生在功能词上；这两点都和 kept quiet 的证据不匹配。\n\n③ 验证与迁移：回听“In kept quiet, the p in kept is lightly released before q, creating a clipped transition in fast speech.”。能把 p before q 作为证据，才不是只看见题面里的现象名后记忆匹配。",
         "tips": [
           "失爆常让语流听起来更“短促”。",
           "不要把短促误判为断句。"
@@ -1125,7 +1125,7 @@
         "material": {
           "text_source_type": "simulation",
           "source_note": "AI TTS generated from legacy sample transcript; sample only.",
-          "audio_generation_method": "tts"
+          "audio_generation_method": "TTS_AI_generated"
         },
         "exam_value": "训练用户从具体听感判断音变类别，避免题干提前暴露标签后只做记忆匹配。",
         "box_progression_role": "transfer",
