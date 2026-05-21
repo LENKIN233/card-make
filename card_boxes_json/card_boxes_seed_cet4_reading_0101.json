@@ -102,10 +102,15 @@
       "card_box_name": "实义名词",
       "card_group_name": "定位词抓取",
       "front_content": {
-        "text": "原文片段：Genetic tests for multi-factorial traits are often very tricky to interpret. Height, for example, depends on hundreds of genes, each contributing a little to the outcome, together with a bunch of environmental factors.\n\n题干：What makes genetic tests for multi-factorial traits tricky to interpret?\n\n以下哪个词组是回文定位的「最佳实义名词锚点」？",
+        "text": "原文片段：Genetic tests for multi-factorial traits are often very tricky to interpret. Height, for example, depends on hundreds of genes, each contributing a little to the outcome, together with a bunch of environmental factors.\n\n题干：What makes these genetic tests tricky to interpret?\n\n以下哪个词组最适合作为回文定位的实义名词锚点？",
         "image_url": null,
         "audio_url": null,
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "选择定位锚点",
+          "focus": "比较候选名词短语的稀有度与答案段绑定强度",
+          "success_criteria": "能选出最能把题干带回答案段的实义名词短语，而不是只选全文高频词"
+        }
       },
       "back_content": {
         "text": "正确答案：B. multi-factorial traits\n\n它是题干中唯一高度专属于答案段落的名词短语，原文一字不差地出现在那一段开头，精准导航。其余三项都属于全文高频词，用它们定位会搜到多处无关句子。",
@@ -165,12 +170,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "原文片段：Genetic tests for multi-factorial traits are often very tricky to interpret. Height, for example, depends on hundreds of genes, each contributing a little to the outcome, together with a bunch of environmental factors.\n\n题干：What makes genetic tests for multi-factorial traits tricky to interpret?\n\n以下哪个词组是回文定位的「最佳实义名词锚点」？",
-        "task_prompt": "原文片段：Genetic tests for multi-factorial traits are often very tricky to interpret. Height, for example, depends on hundreds of genes, each contributing a little to the outcome, together with a bunch of environmental factors.\n\n题干：What makes genetic tests for multi-factorial traits tricky to interpret?\n\n以下哪个词组是回文定位的「最佳实义名词锚点」？",
+        "text": "原文片段：Genetic tests for multi-factorial traits are often very tricky to interpret. Height, for example, depends on hundreds of genes, each contributing a little to the outcome, together with a bunch of environmental factors.\n\n题干：What makes these genetic tests tricky to interpret?\n\n以下哪个词组最适合作为回文定位的实义名词锚点？",
+        "task_prompt": "原文片段：Genetic tests for multi-factorial traits are often very tricky to interpret. Height, for example, depends on hundreds of genes, each contributing a little to the outcome, together with a bunch of environmental factors.\n\n题干：What makes these genetic tests tricky to interpret?\n\n以下哪个词组最适合作为回文定位的实义名词锚点？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "选择定位锚点",
+          "focus": "比较候选名词短语的稀有度与答案段绑定强度",
+          "success_criteria": "能选出最能把题干带回答案段的实义名词短语，而不是只选全文高频词"
+        }
       },
       "analysis": {
         "text": "① 识别信号：四个选项中，A/C/D 都是通篇高频词；B 的修饰语 multi-factorial 是技术形容词，出现次数极少，唯一锁定答案段。\n\n② 核心规律：定位词的价值 = 在文中出现的稀有度 × 与答案的绑定强度。multi-factorial traits 满足\"原文唯一段落出现\"这一最高规格，是最强锚点。如果选了 genetic tests（A），搜索结果太多，需要额外过滤。\n\n③ 验证：原文第5段开头即为该短语，定位后直接读该段答题，无需继续扫描。",
@@ -194,6 +203,29 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用实义名词短语的稀有度和题干绑定强度选择定位锚点",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户避免用 genetic tests 这类全文高频词定位，改用更能锁定答案段的具体名词短语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
