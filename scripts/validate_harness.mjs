@@ -32,7 +32,19 @@ const REQUIRED_METADATA_FIELDS = [
 
 const REQUIRED_CARD_FIELDS = ['card_id', 'track', 'knowledge_ref', 'interaction_id', 'front', 'analysis'];
 const CORE_INTERACTION_IDS = ['flip', 'multiple_choice', 'lock', 'elimination', 'swipe'];
-const REQUIRED_GOLDEN_TASKS = ['GT-CARD-001', 'GT-CARD-002', 'GT-CARD-003', 'GT-CARD-004', 'GT-CARD-005'];
+const REQUIRED_GOLDEN_TASKS = ['GT-CARD-001', 'GT-CARD-002', 'GT-CARD-003', 'GT-CARD-004', 'GT-CARD-005', 'GT-CARD-006'];
+const REQUIRED_AUDIO_QC_CHECKS = [
+  'audio_matches_text',
+  'target_signal_audible',
+  'accurate_pronunciation',
+  'suitable_speed',
+  'natural_rhythm',
+  'stress_and_pauses_do_not_mislead',
+  'no_unwanted_noise_or_clipping',
+  'no_autoplay_assumption',
+  'front_side_no_required_subtitles',
+  'tts_audio_not_used_as_source_authenticity',
+];
 const REQUIRED_QUALITY_AUDIT_RULES = [
   'multiple_choice_no_options',
   'multiple_choice_answer_not_in_options',
@@ -54,6 +66,7 @@ const REQUIRED_SAMPLE_GATE_FIELDS = [
   'card_quality_audit_no_hard_blockers',
   'scoped_card_quality_audit_report',
   'box_progression_roles',
+  'TTS_audio_QC_plan_when_audio_exists',
   'no_standalone_hint_layer_interaction',
 ];
 const REQUIRED_GIT_HANDOFF_FIELDS = [
@@ -460,8 +473,19 @@ function validateContentQuality(errors) {
   if (quality.tts_policy?.audio_generation_method !== 'TTS_AI_generated_by_default') {
     pushIssue(errors, 'tts_generation_policy_drift', {});
   }
+  if (quality.tts_policy?.audio_generation_contract !== 'spec/audio-generation-contract.json') {
+    pushIssue(errors, 'tts_audio_generation_contract_missing', {});
+  }
   if (quality.tts_policy?.audio_source_type_is_separate_from_text_source_type !== true) {
     pushIssue(errors, 'tts_text_audio_separation_missing', {});
+  }
+  if (quality.tts_policy?.formal_audio_use_requires_audio_qc_record !== true) {
+    pushIssue(errors, 'tts_formal_audio_qc_policy_missing', {});
+  }
+  for (const check of ['audio_matches_text', 'target_signal_audible_when_card_trains_pronunciation_or_listening_signal']) {
+    if (!(quality.tts_policy?.tts_audio_quality_checks || []).includes(check)) {
+      pushIssue(errors, 'tts_audio_quality_check_missing', { check });
+    }
   }
 
   for (const prototype of [
@@ -475,6 +499,205 @@ function validateContentQuality(errors) {
   ]) {
     if (!(quality.allowed_card_prototypes || []).includes(prototype)) {
       pushIssue(errors, 'card_prototype_missing', { prototype });
+    }
+  }
+}
+
+function validateAudioGenerationContract(errors) {
+  const manifest = readJson('spec/doc-manifest.json');
+  const activePaths = new Set((manifest.active_docs || []).map(doc => doc.path));
+  for (const path of [
+    'spec/audio-generation-contract.json',
+    'scripts/validate_audio_qc.mjs',
+    'reviews/audio_qc/README.md',
+    'reviews/audio_qc/TEMPLATE.json',
+  ]) {
+    if (!activePaths.has(path)) {
+      pushIssue(errors, 'audio_generation_manifest_entry_missing', { path });
+    }
+  }
+
+  const authorityMap = readJson('spec/authority-map.json');
+  if (authorityMap.owners?.audio_generation_and_qc !== 'spec/audio-generation-contract.json') {
+    pushIssue(errors, 'audio_generation_owner_drift', {
+      owner: authorityMap.owners?.audio_generation_and_qc,
+    });
+  }
+  if (authorityMap.owners?.audio_qc_records !== 'reviews/audio_qc/TEMPLATE.json') {
+    pushIssue(errors, 'audio_qc_records_owner_drift', {
+      owner: authorityMap.owners?.audio_qc_records,
+    });
+  }
+
+  const contract = readJson('spec/audio-generation-contract.json');
+  if (contract.status !== 'active') {
+    pushIssue(errors, 'audio_generation_contract_not_active', { status: contract.status });
+  }
+  if (contract.asset_policy?.asset_dir !== 'ai_tts/') {
+    pushIssue(errors, 'audio_asset_dir_drift', { asset_dir: contract.asset_policy?.asset_dir });
+  }
+  for (const field of [
+    'audio_is_content_medium_not_interaction_family',
+    'tts_audio_never_proves_source_authenticity',
+    'no_autoplay',
+    'front_side_subtitles_not_required',
+  ]) {
+    if (contract.asset_policy?.[field] !== true) {
+      pushIssue(errors, 'audio_asset_policy_flag_missing', { field });
+    }
+  }
+  for (const field of [
+    'existing_tts_assets_allowed_for_candidate_samples',
+    'must_mark_sample_only_when_audio_unreviewed',
+    'must_not_claim_formal_audio_quality',
+    'candidate_metadata_must_keep_text_source_type_separate_from_audio_generation_method',
+  ]) {
+    if (contract.candidate_policy?.[field] !== true) {
+      pushIssue(errors, 'audio_candidate_policy_flag_missing', { field });
+    }
+  }
+  if (contract.text_gate_before_generation?.required !== true) {
+    pushIssue(errors, 'audio_text_gate_not_required', {});
+  }
+  for (const check of readJson('spec/content-quality-contract.json').tts_policy?.tts_text_quality_checks || []) {
+    if (!(contract.text_gate_before_generation?.required_checks || []).includes(check)) {
+      pushIssue(errors, 'audio_text_gate_check_missing', { check });
+    }
+  }
+  for (const field of [
+    'card_id',
+    'transcript',
+    'target_signal',
+    'pronunciation_notes',
+    'method',
+    'voice_or_speaker',
+    'speed',
+    'style_notes',
+    'output_path',
+    'provenance_note',
+  ]) {
+    if (!(contract.generation_plan_required_fields || []).includes(field)) {
+      pushIssue(errors, 'audio_generation_plan_field_missing', { field });
+    }
+  }
+  for (const method of ['TTS_AI_generated', 'human_recorded', 'none']) {
+    if (!(contract.allowed_generation_methods || []).includes(method)) {
+      pushIssue(errors, 'audio_generation_method_missing', { method });
+    }
+  }
+  if (!(contract.legacy_generation_method_aliases || []).includes('tts')) {
+    pushIssue(errors, 'audio_legacy_tts_alias_missing', {});
+  }
+  if (contract.pronunciation_target_policy?.required_for_listening_pronunciation_boxes !== true) {
+    pushIssue(errors, 'audio_pronunciation_target_policy_missing', {});
+  }
+  if (contract.pronunciation_target_policy?.target_signal_must_be_audible_in_generated_audio !== true) {
+    pushIssue(errors, 'audio_target_signal_policy_missing', {});
+  }
+  if (contract.formal_audio_qc?.record_dir !== 'reviews/audio_qc/') {
+    pushIssue(errors, 'audio_qc_record_dir_drift', { record_dir: contract.formal_audio_qc?.record_dir });
+  }
+  if (contract.formal_audio_qc?.template !== 'reviews/audio_qc/TEMPLATE.json') {
+    pushIssue(errors, 'audio_qc_template_path_drift', { template: contract.formal_audio_qc?.template });
+  }
+  if (contract.formal_audio_qc?.validator !== 'scripts/validate_audio_qc.mjs') {
+    pushIssue(errors, 'audio_qc_validator_path_drift', { validator: contract.formal_audio_qc?.validator });
+  }
+  if (contract.formal_audio_qc?.required_before_formal_audio_use !== true) {
+    pushIssue(errors, 'formal_audio_qc_not_required', {});
+  }
+  for (const check of REQUIRED_AUDIO_QC_CHECKS) {
+    if (!(contract.formal_audio_qc?.required_checks || []).includes(check)) {
+      pushIssue(errors, 'audio_qc_required_check_missing', { check });
+    }
+  }
+  for (const failure of [
+    'target_signal_missing_or_misleading',
+    'source_authenticity_claim_from_tts',
+    'formal_audio_ready_without_user_content_approval_boundary',
+  ]) {
+    if (!(contract.formal_audio_qc?.blocking_failures || []).includes(failure)) {
+      pushIssue(errors, 'audio_qc_blocking_failure_missing', { failure });
+    }
+  }
+  for (const field of [
+    'do_not_replace_audio_in_content_sample_PRs',
+    'audio_asset_changes_belong_in_audio_or_tooling_branch',
+    'replacement_requires_audio_qc_record',
+    'bulk_generation_requires_user_confirmed_sample_scope',
+  ]) {
+    if (contract.asset_change_policy?.[field] !== true) {
+      pushIssue(errors, 'audio_asset_change_policy_missing', { field });
+    }
+  }
+  for (const command of ['node scripts/validate_audio_qc.mjs', 'node scripts/validate_harness.mjs']) {
+    if (!(contract.validation_commands || []).includes(command)) {
+      pushIssue(errors, 'audio_validation_command_missing', { command });
+    }
+  }
+
+  if (!exists('reviews/audio_qc/TEMPLATE.json')) {
+    pushIssue(errors, 'audio_qc_template_missing', {});
+  } else {
+    const template = readJson('reviews/audio_qc/TEMPLATE.json');
+    for (const field of [
+      'audio_qc_id',
+      'scope',
+      'source_records',
+      'text_gate',
+      'generation_plan',
+      'generated_assets',
+      'qa_checks',
+      'per_card_qc',
+      'verdict',
+      'approval_boundary',
+      'validation',
+    ]) {
+      if (!hasOwn(template, field)) {
+        pushIssue(errors, 'audio_qc_template_field_missing', { field });
+      }
+    }
+    for (const check of REQUIRED_AUDIO_QC_CHECKS) {
+      if (typeof template.qa_checks?.[check] !== 'boolean') {
+        pushIssue(errors, 'audio_qc_template_check_missing', { check });
+      }
+    }
+    if (template.approval_boundary?.tts_audio_is_not_source_authenticity_evidence !== true) {
+      pushIssue(errors, 'audio_qc_template_tts_boundary_missing', {});
+    }
+    if (template.approval_boundary?.formal_content_approval_still_requires_user !== true) {
+      pushIssue(errors, 'audio_qc_template_user_approval_boundary_missing', {});
+    }
+  }
+
+  if (!exists('scripts/validate_audio_qc.mjs')) {
+    pushIssue(errors, 'audio_qc_validator_missing', {});
+  } else {
+    const script = readText('scripts/validate_audio_qc.mjs');
+    for (const token of [
+      'audio_qc_formal_ready_with_failed_check',
+      'audio_qc_source_authenticity_boundary_missing',
+      'target_signal_audible',
+      'ai_tts/',
+    ]) {
+      if (!script.includes(token)) {
+        pushIssue(errors, 'audio_qc_validator_guard_missing', { token });
+      }
+    }
+    try {
+      const output = execFileSync(process.execPath, ['scripts/validate_audio_qc.mjs'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+      });
+      const validation = JSON.parse(output);
+      if (validation.ok !== true) {
+        pushIssue(errors, 'audio_qc_validator_failed', { output: validation });
+      }
+    } catch (error) {
+      pushIssue(errors, 'audio_qc_validator_failed', {
+        message: error.message,
+        output: String(error.stdout || error.stderr || '').slice(0, 1000),
+      });
     }
   }
 }
@@ -778,6 +1001,7 @@ function validateReviewDirs(errors) {
     'reviews/agent_self_review',
     'reviews/approved_batches',
     'reviews/audit_scopes',
+    'reviews/audio_qc',
     'reviews/drafts',
     'reviews/git_handoffs',
   ]) {
@@ -1367,7 +1591,7 @@ function validateGitWorkflow(errors) {
   }
 
   const validationCommands = (gitWorkflow.validation_policy?.before_commit || []).map(entry => entry.command);
-  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_cards.mjs --write-report', SCOPED_AUDIT_VALIDATION_COMMAND, PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
+  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_audio_qc.mjs', 'node scripts/validate_cards.mjs --write-report', SCOPED_AUDIT_VALIDATION_COMMAND, PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
     if (!validationCommands.includes(command)) {
       pushIssue(errors, 'git_validation_command_missing', { command });
     }
@@ -1440,7 +1664,7 @@ function validateEvalsAndPerturbation(errors) {
 
   const perturbation = readJson('spec/perturbation-audit.json');
   const guards = new Set((perturbation.anti_drift_guards || []).map(guard => guard.id));
-  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008']) {
+  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009']) {
     if (!guards.has(id)) {
       pushIssue(errors, 'anti_drift_guard_missing', { id });
     }
@@ -1612,6 +1836,26 @@ function validateEvalFixtures(errors) {
       }
     }
 
+    if (testCase.golden_task_id === 'GT-CARD-006') {
+      const audioRecord = testCase.audio_qc_record || {};
+      const expectedGateErrors = expected.expected_gate_errors || [];
+      if (testCase.fixture_flags?.existing_ai_tts_path_only !== true) {
+        pushIssue(errors, 'formal_audio_fixture_missing_existing_path_flag', { fixture: testCase.id });
+      }
+      if (testCase.fixture_flags?.target_signal_unreviewed !== true) {
+        pushIssue(errors, 'formal_audio_fixture_missing_target_signal_flag', { fixture: testCase.id });
+      }
+      if (audioRecord.verdict?.formal_audio_ready !== true) {
+        pushIssue(errors, 'formal_audio_fixture_does_not_claim_ready', { fixture: testCase.id });
+      }
+      if (audioRecord.qa_checks?.target_signal_audible !== false) {
+        pushIssue(errors, 'formal_audio_fixture_target_signal_not_failed', { fixture: testCase.id });
+      }
+      if (!expectedGateErrors.includes('target_signal_audible_required_for_formal_audio')) {
+        pushIssue(errors, 'formal_audio_fixture_expected_gate_missing', { fixture: testCase.id });
+      }
+    }
+
     for (const card of cards) {
       hasRequiredFixtureMetadata(card, errors, testCase.id);
       const metadata = card.quality_metadata || {};
@@ -1672,6 +1916,7 @@ validateAuthorityMap(errors);
 validateSoftbookRefs(errors, warnings);
 validateUpstreamAlignment(errors, warnings);
 validateContentQuality(errors);
+validateAudioGenerationContract(errors);
 validateCardQualityAudit(errors, warnings);
 validateMetadataSchema(errors);
 validateWorkflow(errors);
