@@ -1,0 +1,85 @@
+{
+  "handoff_id": "20260521-content-uncovered-front-leak-fix",
+  "created_at": "2026-05-21T21:35:00+08:00",
+  "agent": "codex",
+  "branch": "content/front-leak-uncovered-0101-1200-1212-1616",
+  "base_branch": "main",
+  "commit_sha": "d6cbecfe36771d250694d212a8fb079fbd8d3991",
+  "push_ref": "origin/content/front-leak-uncovered-0101-1200-1212-1616",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/47",
+  "PR_number": 47,
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate_residual_blocker_closure",
+    "card_ids": [
+      "010102",
+      "120009",
+      "121204",
+      "161603"
+    ],
+    "box_prefixes": [
+      "0101",
+      "1200",
+      "1212",
+      "1616"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_reading_0101.json",
+      "card_boxes_json/card_boxes_seed_cet6_bankedcloze_1200.json",
+      "card_boxes_json/card_boxes_seed_cet6_bankedcloze_1212.json",
+      "card_boxes_json/card_boxes_seed_cet6_grammar_1616.json",
+      "reviews/audit_scopes/20260521-uncovered-front-leak-fix-scope-audit.json"
+    ],
+    "scope_reason": "One residual blocker-closure PR for four uncovered front-answer leak findings that had no existing draft PR coverage."
+  },
+  "summary": [
+    "Revised four remaining uncovered cards so front prompts no longer name the correct answer outside visible answer surfaces.",
+    "Kept each card as candidate content with no approved batch record and no global report refresh committed.",
+    "Added quality metadata to the four repaired cards and a scoped audit report for the exact residual blocker scope.",
+    "Also corrected local generic or mismatched analysis in 120009 and 121204 where the front-leak inspection exposed weak guidance."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 010102,120009,121204,161603 --write-scope-report reviews/audit_scopes/20260521-uncovered-front-leak-fix-scope-audit.json",
+      "result": "passed; scoped summary hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=8"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed; ok=true, cards=2414, errors=0, warnings=0; generated global report was restored and not committed"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "passed; ok=true, cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by scoped audit evidence"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; issues=[]; warning content_sample_multiple_scope_prefixes is intentional for this residual blocker-closure PR"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed"
+    },
+    {
+      "command": "gh pr create --draft --base main --head content/front-leak-uncovered-0101-1200-1212-1616",
+      "result": "passed; draft PR #47 created"
+    },
+    {
+      "command": "gh pr view 47 --json number,url,state,isDraft,mergeable,mergeStateStatus,baseRefName,headRefName",
+      "result": "passed; draft PR #47 open, mergeable, and CLEAN against main"
+    }
+  ],
+  "local_status": "Draft PR #47 is open and mergeable. This is candidate-only residual blocker closure; it must not be auto-merged as formal content.",
+  "remaining_risks": [
+    "Candidate content only; it is not formal user-approved product content.",
+    "No reviews/approved_batches record was created.",
+    "Source-risk findings remain for legacy unverified/simulation provenance and are recorded in the scoped audit.",
+    "The PR intentionally spans four box prefixes because these were residual front-answer leak blockers not covered by existing draft PRs.",
+    "User confirmation is still required before any formal content approval, content expansion, or merge-to-formal workflow."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}

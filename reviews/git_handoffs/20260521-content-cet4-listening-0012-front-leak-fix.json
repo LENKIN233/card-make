@@ -1,0 +1,77 @@
+{
+  "handoff_id": "20260521-content-cet4-listening-0012-front-leak-fix",
+  "created_at": "2026-05-21T19:53:46+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0012-front-leak-fix",
+  "base_branch": "main",
+  "commit_sha": "258753a4501d4128c20ab3020a35879bd5948590",
+  "push_ref": "origin/content/cet4-listening-0012-front-leak-fix",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/45",
+  "PR_number": 45,
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "track": "cet4",
+    "library": "听力",
+    "group": "语音现象",
+    "box": "失去爆破",
+    "box_prefix": "0012",
+    "card_ids": [
+      "001208",
+      "001209",
+      "001210"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0012.json",
+      "reviews/agent_self_review/20260521-cet4-listening-0012-front-leak-fix-sample.json",
+      "reviews/audit_scopes/20260521-cet4-listening-0012-front-leak-fix-scope-audit.json",
+      "reviews/audio_qc/20260521-cet4-listening-0012-candidate-audio-qc.json"
+    ]
+  },
+  "summary": [
+    "Revised the 0012 three-card candidate sample so front text and task prompts describe the audible consonant-release feature without naming the target answer label outside the visible option list.",
+    "Added scoped quality metadata for cards 001208, 001209, and 001210, with progression from locating the audible feature to boundary reasoning to category selection.",
+    "Added agent self-review and current scoped audit evidence while keeping the sample candidate-only and excluding global report refreshes.",
+    "Added candidate audio QC evidence after the audio-generation contract landed: existing ai_tts files may remain candidate references, but formal audio readiness is false until acoustic target-signal QA is completed."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed; records_checked=1 and 0012 candidate audio record keeps formal_audio_ready=false"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed; ok=true, cards=2414, errors=0, warnings=0; generated reports/card_validation_report.json was restored and not committed"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 001208,001209,001210 --write-scope-report reviews/audit_scopes/20260521-cet4-listening-0012-front-leak-fix-scope-audit.json",
+      "result": "passed; scoped summary has hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group alignment warnings plus allowed stale global report warning backed by scoped evidence"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main",
+      "result": "passed; changed paths limited to 0012 content sample, agent self-review, and scoped audit evidence"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "gh pr create --draft --base main --head content/cet4-listening-0012-front-leak-fix",
+      "result": "passed; draft PR #45 created"
+    }
+  ],
+  "local_status": "Draft PR #45 is open, synchronized to origin/content/cet4-listening-0012-front-leak-fix, and mergeable against current main. Final post-audio-QC validation was rerun after the handoff update; the PR remains candidate-only.",
+  "remaining_risks": [
+    "Candidate sample only; it is not formal user-approved product content.",
+    "No reviews/approved_batches record was created.",
+    "Source-risk findings remain for legacy TTS/simulation provenance and are recorded in scoped audit/self-review.",
+    "Existing ai_tts files are candidate references only; formal audio readiness is blocked until manual or acoustic listening review confirms audio/text match and the target lost-plosive signals are audible.",
+    "Content PR must not be auto-merged until user confirmation of this sample direction."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}

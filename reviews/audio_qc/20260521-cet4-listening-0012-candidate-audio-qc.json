@@ -1,0 +1,138 @@
+{
+  "audio_qc_id": "20260521-cet4-listening-0012-candidate-audio-qc",
+  "created_at": "2026-05-21T20:36:25+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "语音现象",
+    "box": "失去爆破",
+    "box_prefixes": [
+      "0012"
+    ],
+    "card_ids": [
+      "001208",
+      "001209",
+      "001210"
+    ]
+  },
+  "source_records": {
+    "card_files": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0012.json"
+    ],
+    "linked_agent_self_review": "reviews/agent_self_review/20260521-cet4-listening-0012-front-leak-fix-sample.json",
+    "linked_approved_batch": ""
+  },
+  "text_gate": {
+    "tts_text_reviewed": true,
+    "text_source_type": "simulation",
+    "transcripts": [
+      {
+        "card_id": "001208",
+        "transcript": "The phrase good boy may sound like goo boy, because the final d is not fully released before b.",
+        "target_signal": "unreleased_final_stop_before_following_consonant",
+        "pronunciation_notes": "Target is final d in good before b in boy; the audio should make the d incomplete or lightly released rather than a fully exploded stop.",
+        "text_review_result": "pass_for_candidate_sample"
+      },
+      {
+        "card_id": "001209",
+        "transcript": "At last minute, the t in last is unreleased before m, but minute remains clear and carries timing detail.",
+        "target_signal": "unreleased_final_stop_before_following_consonant",
+        "pronunciation_notes": "Target is final t in last before m in minute; the t should be unreleased while minute remains intelligible.",
+        "text_review_result": "pass_for_candidate_sample"
+      },
+      {
+        "card_id": "001210",
+        "transcript": "In kept quiet, the p in kept is lightly released before q, creating a clipped transition in fast speech.",
+        "target_signal": "unreleased_or_lightly_released_final_stop_before_following_consonant",
+        "pronunciation_notes": "Target is final p in kept before q in quiet; the transition should sound clipped enough to support the lost-plosive classification task.",
+        "text_review_result": "pass_for_candidate_sample"
+      }
+    ]
+  },
+  "generation_plan": {
+    "method": "TTS_AI_generated",
+    "provider": "legacy imported TTS asset; exact provider unknown",
+    "voice_or_speaker": "legacy imported voice; exact speaker unknown",
+    "speed": "legacy imported speed; not remeasured in this record",
+    "style_notes": "Existing assets are retained only as candidate sample references. Formal use requires listening QA for the target signal.",
+    "output_dir": "ai_tts/",
+    "overwrite_existing_assets": false,
+    "replacement_reason": ""
+  },
+  "generated_assets": [
+    {
+      "card_id": "001208",
+      "path": "ai_tts/cet4/0012/001208.mp3",
+      "transcript_sha256": "52c57d4d24a19439f9d4a0a77e4d2ae37ea60336e3ced06e3004745e5dfc157b",
+      "generated_at": "legacy_import_before_2026-05-02",
+      "generator_version": "unknown",
+      "provenance_note": "Existing repository TTS asset; not true exam audio."
+    },
+    {
+      "card_id": "001209",
+      "path": "ai_tts/cet4/0012/001209.mp3",
+      "transcript_sha256": "73a750a5730bfb7d656be679033a193dc1b5d1e687028d9912b0789fc8151b68",
+      "generated_at": "legacy_import_before_2026-05-02",
+      "generator_version": "unknown",
+      "provenance_note": "Existing repository TTS asset; not true exam audio."
+    },
+    {
+      "card_id": "001210",
+      "path": "ai_tts/cet4/0012/001210.mp3",
+      "transcript_sha256": "d1e91e926ea056af5ba2f5676b5d179ad637484da1c0e9f50be07baeb52a114d",
+      "generated_at": "legacy_import_before_2026-05-02",
+      "generator_version": "unknown",
+      "provenance_note": "Existing repository TTS asset; not true exam audio."
+    }
+  ],
+  "qa_checks": {
+    "audio_matches_text": false,
+    "target_signal_audible": false,
+    "accurate_pronunciation": false,
+    "suitable_speed": false,
+    "natural_rhythm": false,
+    "stress_and_pauses_do_not_mislead": false,
+    "no_unwanted_noise_or_clipping": false,
+    "no_autoplay_assumption": true,
+    "front_side_no_required_subtitles": true,
+    "tts_audio_not_used_as_source_authenticity": true
+  },
+  "per_card_qc": [
+    {
+      "card_id": "001208",
+      "asset_path": "ai_tts/cet4/0012/001208.mp3",
+      "audio_matches_text": false,
+      "target_signal_audible": false,
+      "notes": "File exists and transcript/task alignment is reviewed. Acoustic listening QA was not performed, so formal audio readiness remains blocked."
+    },
+    {
+      "card_id": "001209",
+      "asset_path": "ai_tts/cet4/0012/001209.mp3",
+      "audio_matches_text": false,
+      "target_signal_audible": false,
+      "notes": "File exists and transcript/task alignment is reviewed. Acoustic listening QA was not performed, so formal audio readiness remains blocked."
+    },
+    {
+      "card_id": "001210",
+      "asset_path": "ai_tts/cet4/0012/001210.mp3",
+      "audio_matches_text": false,
+      "target_signal_audible": false,
+      "notes": "File exists and transcript/task alignment is reviewed. Acoustic listening QA was not performed, so formal audio readiness remains blocked."
+    }
+  ],
+  "verdict": {
+    "candidate_audio_ok": true,
+    "formal_audio_ready": false,
+    "requires_regeneration": false,
+    "reason": "Candidate-only: transcript/task alignment and file existence are reviewed, but acoustic target-signal QA is not complete. Regeneration decision is pending manual or acoustic listening review."
+  },
+  "approval_boundary": {
+    "tts_audio_is_not_source_authenticity_evidence": true,
+    "formal_content_approval_still_requires_user": true,
+    "content_approval_record_required_for_formal_use": true
+  },
+  "validation": {
+    "audio_qc": "node scripts/validate_audio_qc.mjs",
+    "harness": "node scripts/validate_harness.mjs"
+  }
+}

@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0010-revised-sample",
-  "created_at": "2026-05-14T13:20:42+08:00",
+  "review_id": "20260521-cet4-bankedcloze-0223-front-leak-fix-sample",
+  "created_at": "2026-05-21T16:33:50+08:00",
   "agent": "codex",
   "scope": {
-    "library": "听力",
-    "group": "语音现象",
-    "box": "连读",
+    "library": "选词填空",
+    "group": "固定搭配",
+    "box": "be动词+形容词/分词+介词",
     "box_prefixes": [
-      "0010"
+      "0223"
     ],
     "card_ids": [
-      "001001",
-      "001002",
-      "001003"
+      "022302",
+      "022304",
+      "022306"
     ]
   },
   "specs_read": [
@@ -22,7 +22,6 @@
     "spec/workspace-contract.json",
     "spec/content-quality-contract.json",
     "spec/review-workflow.json",
-    "spec/card-metadata.schema.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
@@ -32,192 +31,15 @@
     "is_three_card_sample_per_box": true,
     "batch_generation_requires_user_confirmation": true
   },
-  "cards": [
-    {
-      "card_id": "001001",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "library_id": "0",
-        "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别 turn off 中的辅音加元音连读",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "foundation",
-          "secondary": [
-            "pass"
-          ]
-        },
-        "card_prototype": "solving_action",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-        "exam_value": "帮助用户把听不清的短语还原成词边界，提升短句理解速度。",
-        "box_progression_role": "recognition",
-        "review_status": "agent_pass"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only.",
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
-      ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
-    },
-    {
-      "card_id": "001002",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "library_id": "0",
-        "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别 pick it up at 的连续短词连读",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": []
-        },
-        "card_prototype": "context_input",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-        "exam_value": "训练用户把连续短词音块拆回可理解的动作和介词结构。",
-        "box_progression_role": "application",
-        "review_status": "agent_pass"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only.",
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
-      ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
-    },
-    {
-      "card_id": "001003",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "library_id": "0",
-        "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别 ask about 的辅音加元音连读",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": [
-            "high_score"
-          ]
-        },
-        "card_prototype": "integrated_micro_drill",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-        "exam_value": "帮助用户把连读听感还原成词边界，避免把常见短语误听成陌生表达。",
-        "box_progression_role": "transfer",
-        "review_status": "agent_pass"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only.",
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
-      ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
-    }
-  ],
-  "batch_review": {
-    "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample keeps a clear progression from recognizing a simple consonant-to-vowel link, to applying the same idea to a compressed multi-word chunk, to transferring it to a longer question without naming the correct option in the front prompt.",
-    "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about identifying the connected-speech location from audio.",
-      "The previous front-answer leak blocker has been cleared by the scoped audit; options remain visible only as answer choices.",
-      "Formal approval still needs explicit user confirmation and separate audio QA."
-    ],
-    "representative_cards": [
-      "001001",
-      "001002",
-      "001003"
-    ],
-    "next_step": "Show this revised candidate sample to the user for content-direction confirmation; do not expand the box or mark it formal until explicit user approval is recorded."
-  },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260521-cet4-listening-0010-front-leak-fix-scope-audit.json",
-    "corpus_fingerprint": "95913fe17dca09f1812d99236345cfe85142a0c37021d445049dbd3fde242f41",
+    "report": "reviews/audit_scopes/20260521-cet4-bankedcloze-0223-front-leak-fix-scope-audit.json",
+    "corpus_fingerprint": "066a6df0d30e2e75812cc43867a93d025a8da61c234a874c97c566ceb86084d8",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "001001",
-        "001002",
-        "001003"
+        "022302",
+        "022304",
+        "022306"
       ],
       "card_count": 3,
       "issue_count": 6,
@@ -243,5 +65,175 @@
       }
     }
   },
-  "updated_at": "2026-05-21T02:38:18+08:00"
+  "cards": [
+    {
+      "card_id": "022302",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "3",
+        "box": "be动词+形容词/分词+介词",
+        "box_prefix": "0223"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 familiar with 表示熟悉对象的形容词介词搭配",
+        "weak_point_tags": [
+          "grammar_weak",
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在选词填空中把形容词后的名词短语识别为搭配对象，而不是凭中文直觉乱配介词。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    },
+    {
+      "card_id": "022304",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "3",
+        "box": "be动词+形容词/分词+介词",
+        "box_prefix": "0223"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分 responsible for doing 和 responsible to sb 的搭配语义",
+        "weak_point_tags": [
+          "grammar_weak",
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在选词填空中根据后接成分判断固定搭配，避免把 responsible to 和 responsible for 机械混淆。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    },
+    {
+      "card_id": "022306",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "3",
+        "box": "be动词+形容词/分词+介词",
+        "box_prefix": "0223"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 satisfied with 表示满意对象的形容词介词搭配",
+        "weak_point_tags": [
+          "grammar_weak",
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户把形容词后的介词选择从中文直译转为语义角色判断，提高固定搭配题的稳定性。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The revised sample moves from recognizing familiar + object, to applying responsible + duty content, to transferring the same semantic-role method to satisfied + satisfaction object.",
+    "repetition_or_gap_risks": [
+      "All three cards use multiple_choice because this box trains fixed adjective/preposition selection inside a sentence gap.",
+      "The previous front-answer leak blocker has been cleared by the scoped audit; the correct preposition appears only as a visible option and back-side answer.",
+      "Formal approval still needs explicit user confirmation."
+    ],
+    "representative_cards": [
+      "022302",
+      "022304",
+      "022306"
+    ],
+    "next_step": "Show this revised candidate sample to the user for content-direction confirmation; do not expand the box or mark it formal until explicit user approval is recorded."
+  }
 }

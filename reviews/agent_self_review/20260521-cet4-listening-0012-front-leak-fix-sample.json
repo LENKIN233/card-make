@@ -1,18 +1,18 @@
 {
-  "review_id": "20260514-cet4-listening-0010-revised-sample",
-  "created_at": "2026-05-14T13:20:42+08:00",
+  "review_id": "20260521-cet4-listening-0012-front-leak-fix-sample",
+  "created_at": "2026-05-21T19:48:25+08:00",
   "agent": "codex",
   "scope": {
     "library": "听力",
     "group": "语音现象",
-    "box": "连读",
+    "box": "失去爆破",
     "box_prefixes": [
-      "0010"
+      "0012"
     ],
     "card_ids": [
-      "001001",
-      "001002",
-      "001003"
+      "001208",
+      "001209",
+      "001210"
     ]
   },
   "specs_read": [
@@ -22,7 +22,6 @@
     "spec/workspace-contract.json",
     "spec/content-quality-contract.json",
     "spec/review-workflow.json",
-    "spec/card-metadata.schema.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json",
@@ -32,192 +31,15 @@
     "is_three_card_sample_per_box": true,
     "batch_generation_requires_user_confirmation": true
   },
-  "cards": [
-    {
-      "card_id": "001001",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "library_id": "0",
-        "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别 turn off 中的辅音加元音连读",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "foundation",
-          "secondary": [
-            "pass"
-          ]
-        },
-        "card_prototype": "solving_action",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-        "exam_value": "帮助用户把听不清的短语还原成词边界，提升短句理解速度。",
-        "box_progression_role": "recognition",
-        "review_status": "agent_pass"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only.",
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
-      ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
-    },
-    {
-      "card_id": "001002",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "library_id": "0",
-        "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别 pick it up at 的连续短词连读",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": []
-        },
-        "card_prototype": "context_input",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-        "exam_value": "训练用户把连续短词音块拆回可理解的动作和介词结构。",
-        "box_progression_role": "application",
-        "review_status": "agent_pass"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only.",
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
-      ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
-    },
-    {
-      "card_id": "001003",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "library_id": "0",
-        "library": "听力",
-        "group_id": "1",
-        "group": "语音现象",
-        "box_id": "0",
-        "box": "连读",
-        "box_prefix": "0010"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别 ask about 的辅音加元音连读",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": [
-            "high_score"
-          ]
-        },
-        "card_prototype": "integrated_micro_drill",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-        "exam_value": "帮助用户把连读听感还原成词边界，避免把常见短语误听成陌生表达。",
-        "box_progression_role": "transfer",
-        "review_status": "agent_pass"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only.",
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
-      ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
-    }
-  ],
-  "batch_review": {
-    "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample keeps a clear progression from recognizing a simple consonant-to-vowel link, to applying the same idea to a compressed multi-word chunk, to transferring it to a longer question without naming the correct option in the front prompt.",
-    "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box is specifically about identifying the connected-speech location from audio.",
-      "The previous front-answer leak blocker has been cleared by the scoped audit; options remain visible only as answer choices.",
-      "Formal approval still needs explicit user confirmation and separate audio QA."
-    ],
-    "representative_cards": [
-      "001001",
-      "001002",
-      "001003"
-    ],
-    "next_step": "Show this revised candidate sample to the user for content-direction confirmation; do not expand the box or mark it formal until explicit user approval is recorded."
-  },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260521-cet4-listening-0010-front-leak-fix-scope-audit.json",
-    "corpus_fingerprint": "95913fe17dca09f1812d99236345cfe85142a0c37021d445049dbd3fde242f41",
+    "report": "reviews/audit_scopes/20260521-cet4-listening-0012-front-leak-fix-scope-audit.json",
+    "corpus_fingerprint": "c77344478a67e149ad6b491c01b95e81b89466a5a67289d4a422eaa9af2d4c8e",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "001001",
-        "001002",
-        "001003"
+        "001208",
+        "001209",
+        "001210"
       ],
       "card_count": 3,
       "issue_count": 6,
@@ -243,5 +65,172 @@
       }
     }
   },
-  "updated_at": "2026-05-21T02:38:18+08:00"
+  "cards": [
+    {
+      "card_id": "001208",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "定位词尾塞音在后续辅音前不完全释放的听觉片段",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "AI TTS generated from legacy sample transcript; sample only.",
+          "audio_generation_method": "tts"
+        },
+        "exam_value": "训练用户把听到的短促衔接定位到词尾辅音与后续辅音之间，而不是只按单词拼写判断。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    },
+    {
+      "card_id": "001209",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "判断词尾辅音在后续辅音前不完全释放的位置",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "AI TTS generated from legacy sample transcript; sample only.",
+          "audio_generation_method": "tts"
+        },
+        "exam_value": "帮助用户在听力中把短促边界还原到具体词组，降低把音变误听成漏词或断句的风险。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    },
+    {
+      "card_id": "001210",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分词尾辅音释放变弱与弱读、连读、吞音省略",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "AI TTS generated from legacy sample transcript; sample only.",
+          "audio_generation_method": "tts"
+        },
+        "exam_value": "训练用户从具体听感判断音变类别，避免题干提前暴露标签后只做记忆匹配。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The revised sample moves from locating a weakly released word-final stop segment, to explaining the word boundary, to classifying the same listening phenomenon without the front prompt naming the answer.",
+    "repetition_or_gap_risks": [
+      "The sample keeps audio-first behavior and does not claim the TTS audio proves source authenticity.",
+      "The visible front no longer names the target phenomenon outside the option list for the multiple-choice card.",
+      "Formal approval still needs explicit user confirmation."
+    ],
+    "representative_cards": [
+      "001208",
+      "001209",
+      "001210"
+    ],
+    "next_step": "Show this revised candidate sample to the user for content-direction confirmation; do not expand the box or mark it formal until explicit user approval is recorded."
+  }
 }
