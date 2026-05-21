@@ -758,12 +758,12 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "长按覆盖“词尾爆破音+后续辅音”片段。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "长按覆盖“词尾塞音+后续辅音”处没有完全释放的片段。",
+        "task_prompt": "先听音频，再定位词尾辅音释放变弱的片段。",
         "task_schema": {
           "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "focus": "词尾辅音释放变化听辨",
+          "success_criteria": "能把长按范围覆盖到前一词词尾辅音与后一词起始辅音的衔接处"
         },
         "audio_first": true,
         "image_url": null,
@@ -814,15 +814,15 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "长按覆盖“词尾爆破音+后续辅音”片段。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "长按覆盖“词尾塞音+后续辅音”处没有完全释放的片段。",
+        "task_prompt": "先听音频，再定位词尾辅音释放变弱的片段。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
           "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "focus": "词尾辅音释放变化听辨",
+          "success_criteria": "能把长按范围覆盖到前一词词尾辅音与后一词起始辅音的衔接处"
         }
       },
       "analysis": {
@@ -844,6 +844,26 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "定位词尾塞音在后续辅音前不完全释放的听觉片段",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "AI TTS generated from legacy sample transcript; sample only.",
+          "audio_generation_method": "tts"
+        },
+        "exam_value": "训练用户把听到的短促衔接定位到词尾辅音与后续辅音之间，而不是只按单词拼写判断。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -858,12 +878,12 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "翻面前先判断：失爆发生在哪个位置？",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "翻面前先判断：哪个词尾辅音在后续辅音前没有完全释放？",
+        "task_prompt": "先听音频，再用“前一词词尾+后一词开头”的边界定位发音变化。",
         "task_schema": {
           "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "focus": "词尾辅音与后续辅音的衔接听辨",
+          "success_criteria": "能指出发生释放变弱的位置，并说明前后辅音衔接关系"
         },
         "audio_first": true,
         "image_url": null,
@@ -913,15 +933,15 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "翻面前先判断：失爆发生在哪个位置？",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "翻面前先判断：哪个词尾辅音在后续辅音前没有完全释放？",
+        "task_prompt": "先听音频，再用“前一词词尾+后一词开头”的边界定位发音变化。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
           "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "focus": "词尾辅音与后续辅音的衔接听辨",
+          "success_criteria": "能指出发生释放变弱的位置，并说明前后辅音衔接关系"
         }
       },
       "analysis": {
@@ -943,6 +963,28 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "判断词尾辅音在后续辅音前不完全释放的位置",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "AI TTS generated from legacy sample transcript; sample only.",
+          "audio_generation_method": "tts"
+        },
+        "exam_value": "帮助用户在听力中把短促边界还原到具体词组，降低把音变误听成漏词或断句的风险。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -957,12 +999,12 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "四选一：识别这段发音变化属于哪类现象。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "四选一：识别这段快速语流里的词尾辅音释放变化属于哪类现象。",
+        "task_prompt": "先听音频，再根据词尾辅音在后续辅音前的释放方式选择现象类别。",
         "task_schema": {
           "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "focus": "词尾辅音释放变化分类",
+          "success_criteria": "能根据 kept quiet 中 p 与 q 的衔接听感选择正确现象类别"
         },
         "audio_first": true,
         "image_url": null,
@@ -1033,15 +1075,15 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "四选一：识别这段发音变化属于哪类现象。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "四选一：识别这段快速语流里的词尾辅音释放变化属于哪类现象。",
+        "task_prompt": "先听音频，再根据词尾辅音在后续辅音前的释放方式选择现象类别。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
           "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "focus": "词尾辅音释放变化分类",
+          "success_criteria": "能根据 kept quiet 中 p 与 q 的衔接听感选择正确现象类别"
         }
       },
       "analysis": {
@@ -1066,6 +1108,28 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分词尾辅音释放变弱与弱读、连读、吞音省略",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "AI TTS generated from legacy sample transcript; sample only.",
+          "audio_generation_method": "tts"
+        },
+        "exam_value": "训练用户从具体听感判断音变类别，避免题干提前暴露标签后只做记忆匹配。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
