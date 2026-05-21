@@ -399,6 +399,78 @@
         "expected_audit_rules": ["front_leaks_correct_answer"],
         "expected_hard_blocker_rules": ["front_leaks_correct_answer"]
       }
+    },
+    {
+      "id": "FIX-GT-CARD-006-BLOCK-FORMAL-AUDIO-BY-PATH-ONLY",
+      "golden_task_id": "GT-CARD-006",
+      "type": "audio_qc_record",
+      "cards": [
+        {
+          "card_id": "001299",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "1",
+            "group": "语音现象",
+            "box_id": "2",
+            "box": "失去爆破",
+            "box_prefix": "0012"
+          },
+          "interaction_id": "flip",
+          "front": {
+            "text": "Listen and decide whether the final stop is unreleased before the next consonant."
+          },
+          "audio": {
+            "path": "ai_tts/cet4/0012/001299.mp3",
+            "transcript": "Fixture audio path only; no actual target-signal QC has been completed."
+          },
+          "analysis": {
+            "text": "This fixture is intentionally bad: it tries to mark generated audio formal by path presence without proving the target signal is audible."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Reject formal audio readiness when only an ai_tts path exists.",
+            "secondary_training_goals": [],
+            "weak_point_tags": ["listening_weak", "exam_strategy_weak"],
+            "difficulty": {
+              "primary": "pass",
+              "secondary": []
+            },
+            "card_prototype": "context_input",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only bad audio readiness claim, not true exam content.",
+              "audio_generation_method": "TTS_AI_generated"
+            },
+            "exam_value": "The fixture protects pronunciation/listening cards from shipping audio that never proved the audible signal.",
+            "box_progression_role": "recognition",
+            "review_status": "block"
+          }
+        }
+      ],
+      "audio_qc_record": {
+        "qa_checks": {
+          "target_signal_audible": false,
+          "tts_audio_not_used_as_source_authenticity": true
+        },
+        "verdict": {
+          "formal_audio_ready": true,
+          "requires_regeneration": false
+        },
+        "approval_boundary": {
+          "tts_audio_is_not_source_authenticity_evidence": true,
+          "formal_content_approval_still_requires_user": true
+        }
+      },
+      "fixture_flags": {
+        "existing_ai_tts_path_only": true,
+        "target_signal_unreviewed": true
+      },
+      "expected_outcome": {
+        "audio_qc_status": "block",
+        "formal_use_claimed": false,
+        "expected_gate_errors": ["target_signal_audible_required_for_formal_audio"]
+      }
     }
   ]
 }
