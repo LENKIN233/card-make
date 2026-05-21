@@ -1,0 +1,239 @@
+{
+  "review_id": "20260521-cet4-bankedcloze-0221-front-leak-fix-sample",
+  "created_at": "2026-05-21T18:13:37+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "选词填空",
+    "group": "固定搭配",
+    "box": "形容词+名词",
+    "box_prefixes": [
+      "0221"
+    ],
+    "card_ids": [
+      "022102",
+      "022104",
+      "022106"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "spec/card-quality-audit.json"
+  ],
+  "sample_policy": {
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260521-cet4-bankedcloze-0221-front-leak-fix-scope-audit.json",
+    "corpus_fingerprint": "cfda497fcd19ac1354da460d0ab930f65ce1d9821499347d8120df10b26af7af",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "022102",
+        "022104",
+        "022106"
+      ],
+      "card_count": 3,
+      "issue_count": 6,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 6
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 3
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "022102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "1",
+        "box": "形容词+名词",
+        "box_prefix": "0221"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 strong evidence 表示有力证据的形容词名词搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在选词填空中根据名词语域和句内对比关系选择稳定形容词搭配。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    },
+    {
+      "card_id": "022104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "1",
+        "box": "形容词+名词",
+        "box_prefix": "0221"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 practical solution 表示可执行方案的形容词名词搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户先用词性过滤排除不合格选项，再根据句子语义选择自然形容词搭配。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    },
+    {
+      "card_id": "022106",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "1",
+        "box": "形容词+名词",
+        "box_prefix": "0221"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 timely decisions 并结合主谓一致判断形容词名词结构",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户把形容词+名词搭配、词性过滤和主谓一致合并检查，避免只凭词面熟悉度作答。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The revised sample moves from recognizing evidence + stable academic modifier, to applying adjective/noun grammar filtering for solution, to transferring the same method to timely + plural noun with subject-verb agreement.",
+    "repetition_or_gap_risks": [
+      "All three cards use multiple_choice because this box trains fixed adjective/noun selection inside sentence gaps.",
+      "The visible front no longer names the correct option outside the option list.",
+      "Formal approval still needs explicit user confirmation."
+    ],
+    "representative_cards": [
+      "022102",
+      "022104",
+      "022106"
+    ],
+    "next_step": "Show this revised candidate sample to the user for content-direction confirmation; do not expand the box or mark it formal until explicit user approval is recorded."
+  }
+}
