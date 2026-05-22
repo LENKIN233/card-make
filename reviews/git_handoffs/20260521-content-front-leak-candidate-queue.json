@@ -48,14 +48,15 @@
   },
   "summary": [
     "Merged the seven draft front-answer-leak content branches into one candidate review queue branch.",
-    "Refreshed ten scoped audit reports to the combined queue corpus fingerprint.",
-    "Updated linked agent self-review quality_audit summaries for the ten linked scoped reports.",
+    "Refreshed eleven scoped audit reports to the combined queue corpus fingerprint.",
+    "Updated linked agent self-review quality_audit summaries for the eleven linked scoped reports.",
     "Recorded the evidence boundary for PR #47: the residual four-card multi-prefix closure is backed by scoped audit and git handoff evidence, not by a normal 3-card-per-box agent self-review record.",
     "Follow-up strict spot-check repaired 001208-001210: removed a legacy long-press instruction from a flip card, replaced template-like analysis with lost-plosive evidence, and normalized candidate TTS metadata to TTS_AI_generated.",
     "After PR #52 made task_schema guide text part of visible front-leak auditing, repaired 000201-000202 by removing direct answer tokens from success_criteria and refreshed the 0002 scoped audit evidence.",
     "After PR #53 made correct-option example text auditable, repaired 121204 by removing reduce from visible success_criteria and repaired 020207 by removing the v-ing answer clue from the front prompt while preserving back-side explanation and answer logic.",
     "After PR #54 made answer semantic glosses auditable, repaired 120009 by removing the visible occurrence-probability gloss from success_criteria while preserving the back-side probability explanation.",
     "After PR #55 made adjective answer semantic glosses auditable, repaired 022102 and 022104 by removing evidence-strength and practicality glosses from visible front guide text while preserving options, answers, and back-side explanations.",
+    "After PR #56 made research account-for semantic glosses auditable, repaired 020210 by removing the visible variable-control gloss from the front prompt while preserving options, answer, and back-side explanation.",
     "Kept the queue candidate-only: no reviews/approved_batches records and no committed global report refreshes."
   ],
   "review_evidence_boundaries": [
@@ -119,12 +120,29 @@
       "agent_self_review_record": "reviews/agent_self_review/20260522-020207-visible-option-example-front-leak-closure.json",
       "reason": "PR #53 made correct-option example text part of visible front-leak auditing. 020207 exposed the correct option's v-ing clue in the front prompt outside the option list, so the prompt now asks for sentence-function and collocation judgment without naming the answer form.",
       "follow_up": "Residual closure evidence only; user confirmation is still required before any approval or formal content merge."
+    },
+    {
+      "source_PR": 56,
+      "scope": "CET4 banked cloze 0202 research account-for semantic-gloss front leak closure",
+      "card_ids": [
+        "020210"
+      ],
+      "box_prefixes": [
+        "0202"
+      ],
+      "supporting_evidence": [
+        "reviews/agent_self_review/20260522-020210-research-account-gloss-front-leak-closure.json",
+        "reviews/audit_scopes/20260522-cet4-bankedcloze-0202-research-account-front-leak-fix-scope-audit.json"
+      ],
+      "agent_self_review_record": "reviews/agent_self_review/20260522-020210-research-account-gloss-front-leak-closure.json",
+      "reason": "PR #56 made research account-for semantic glosses mechanically visible to front-leak auditing. 020210 exposed the correct option's variable-control meaning in the front prompt outside the option list, so the prompt now asks for fixed-collocation and research-limitation judgment without naming the semantic answer.",
+      "follow_up": "Residual closure evidence only; user confirmation is still required before any approval or formal content merge."
     }
   ],
   "validation": [
     {
       "command": "node scripts/audit_card_quality.mjs --max-examples 0",
-      "result": "passed after PR #55 merge and 0221 repair; corpus_digest=37dff3239735e065e03a27eedb83162e688f2256a154ac87c4320c1380f3014c, hard_blocker=0, front_leaks_correct_answer=0"
+      "result": "passed after PR #56 merge and 020210 repair; corpus_digest=bcca31d736d0b06675ccb06546b247f43dc35da6a66d09423aec334836518d18, hard_blocker=0, front_leaks_correct_answer=0"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
@@ -140,7 +158,7 @@
     },
     {
       "command": "node scripts/validate_harness.mjs",
-      "result": "passed after PR #55 merge; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by ten current scoped reports"
+      "result": "passed after PR #56 merge; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by eleven current scoped reports"
     },
     {
       "command": "node scripts/validate_pr_scope.mjs --base origin/main",
@@ -159,14 +177,14 @@
       "result": "pending rerun after push"
     }
   ],
-  "local_status": "Draft PR #50 is open for user review. Local branch has PR #55 follow-up content and scoped evidence validated locally and pending commit/push; the branch remains candidate-only and must not be auto-merged as formal content.",
+  "local_status": "Draft PR #50 is open for user review. Local branch has PR #56 follow-up content and scoped evidence validated locally and pending commit/push; the branch remains candidate-only and must not be auto-merged as formal content.",
   "remaining_risks": [
     "Candidate content only; this branch does not mark any card formally usable.",
     "No reviews/approved_batches record was created.",
     "Source-risk findings remain for legacy unverified/simulation provenance and are recorded in scoped audit evidence.",
     "The branch intentionally spans multiple box prefixes because it consolidates existing front-answer-leak blocker fixes for review.",
     "0002 is included only to close the newly visible task_schema guide leakage exposed by PR #52; it is not formal approval of the old 0002 sample.",
-    "PR #47 and the 020207 follow-up have residual closure self-review records, not normal 3-card-per-box sample records; do not treat them as sample approval.",
+    "PR #47, the 020207 follow-up, and the 020210 follow-up have residual closure self-review records, not normal 3-card-per-box sample records; do not treat them as sample approval.",
     "User confirmation and explicit content merge delegation are still required before any formal content merge."
   ],
   "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"

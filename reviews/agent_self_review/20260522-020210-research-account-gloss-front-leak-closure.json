@@ -1,6 +1,6 @@
 {
-  "review_id": "20260522-020207-visible-option-example-front-leak-closure",
-  "created_at": "2026-05-22T18:20:27+08:00",
+  "review_id": "20260522-020210-research-account-gloss-front-leak-closure",
+  "created_at": "2026-05-22T19:46:08+08:00",
   "agent": "codex",
   "scope": {
     "library": "选词填空",
@@ -10,12 +10,12 @@
       "0202"
     ],
     "card_ids": [
-      "020207"
+      "020210"
     ],
-    "closure_reason": "Residual visible front-answer leak closure for one card exposed after PR #53 made correct-option example text auditable.",
+    "closure_reason": "Residual visible front-answer leak closure for one card exposed after PR #56 made research account-for semantic gloss text auditable.",
     "source_issue_refs": [
-      "PR #53: https://github.com/LENKIN233/card-make/pull/53",
-      "reviews/audit_scopes/20260522-cet4-bankedcloze-0202-visible-option-example-front-leak-fix-scope-audit.json"
+      "PR #56: https://github.com/LENKIN233/card-make/pull/56",
+      "reviews/audit_scopes/20260522-cet4-bankedcloze-0202-research-account-front-leak-fix-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -38,12 +38,12 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260522-cet4-bankedcloze-0202-visible-option-example-front-leak-fix-scope-audit.json",
+    "report": "reviews/audit_scopes/20260522-cet4-bankedcloze-0202-research-account-front-leak-fix-scope-audit.json",
     "corpus_fingerprint": "bcca31d736d0b06675ccb06546b247f43dc35da6a66d09423aec334836518d18",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "020207"
+        "020210"
       ],
       "card_count": 1,
       "issue_count": 2,
@@ -71,7 +71,7 @@
   },
   "cards": [
     {
-      "card_id": "020207",
+      "card_id": "020210",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "2",
@@ -84,24 +84,26 @@
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "用介词 Before 后的空格位置判断动名词结构，并用 into 搭配确认动词选择",
+        "main_training_goal": "识别 account for 在研究语境中的动词搭配，并区分 adjust for 与 alter for",
         "weak_point_tags": [
-          "grammar_weak",
           "vocabulary_weak",
+          "grammar_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
-          "secondary": []
+          "secondary": [
+            "high_score"
+          ]
         },
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool sentence with unverified provenance; residual closure evidence only.",
+          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在选词填空中先判断介词后成分的语法形式，再比较 dip into 与 fall into 的语义搭配。",
-        "box_progression_role": "application",
+        "exam_value": "训练用户在选词填空中同时检查 to 后动词原形、动词后介词搭配和研究语境的局限性表达。",
+        "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
       "blocker_scan": {
@@ -129,7 +131,7 @@
       "Source-risk findings remain because the underlying legacy/simulated provenance is not verified."
     ],
     "representative_cards": [
-      "020207"
+      "020210"
     ],
     "next_step": "Keep #50 as candidate-only content for user review; do not create approved batch records from this residual closure evidence."
   }
