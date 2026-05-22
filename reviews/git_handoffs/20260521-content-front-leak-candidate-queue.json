@@ -26,7 +26,8 @@
       54,
       55,
       56,
-      57
+      57,
+      58
     ],
     "box_prefixes": [
       "0002",
@@ -66,6 +67,7 @@
     "After PR #55 made adjective answer semantic glosses auditable, repaired 022102 and 022104 by removing evidence-strength and practicality glosses from visible front guide text while preserving options, answers, and back-side explanations.",
     "After PR #56 made research account-for semantic glosses auditable, repaired 020210 by removing the visible variable-control gloss from the front prompt while preserving options, answer, and back-side explanation.",
     "After PR #57 made short preposition answer text and preposition semantic-role guide text auditable, repaired 022008, 022010, 022202, 022204, 022206, 022210, 022302, 022304, 022306, 022308, 022310, and 022410; the six older direct-answer cards also received card-specific analysis and missing candidate-only quality_metadata.",
+    "After PR #58 made front-side analysis-conclusion wording auditable, repaired 020008 by replacing “破解答案的关键” guide text with a task prompt that asks the learner to judge the noun by begin/continue compatibility.",
     "Kept the queue candidate-only: no reviews/approved_batches records and no committed global report refreshes."
   ],
   "review_evidence_boundaries": [
@@ -177,47 +179,64 @@
       "agent_self_review_record": "reviews/agent_self_review/20260522-cet4-bankedcloze-preposition-guide-front-leak-closure.json",
       "reason": "PR #57 made short preposition answer text and preposition semantic-role guide text mechanically visible to front-leak auditing. The affected cards either named the correct short answer in the front prompt or exposed the semantic role that selected the correct preposition, so the front prompts and visible task_schema guide text were rewritten without changing option keys or answer keys. Six legacy direct-answer cards also had repeated/template analysis in the audited scope, so their analysis was rewritten to card-specific explanations.",
       "follow_up": "Residual closure evidence only; user confirmation is still required before any approval or formal content merge."
+    },
+    {
+      "source_PR": 58,
+      "scope": "CET4 banked cloze 0200 analysis-conclusion front leak closure",
+      "card_ids": [
+        "020008"
+      ],
+      "box_prefixes": [
+        "0200"
+      ],
+      "supporting_evidence": [
+        "reviews/agent_self_review/20260521-cet4-bankedcloze-0200-front-leak-fix-sample.json",
+        "reviews/audit_scopes/20260521-cet4-bankedcloze-0200-front-leak-fix-scope-audit.json"
+      ],
+      "agent_self_review_record": "reviews/agent_self_review/20260521-cet4-bankedcloze-0200-front-leak-fix-sample.json",
+      "reason": "PR #58 made front-side analysis-conclusion wording mechanically visible to quality auditing. 020008 exposed the conclusion that the relative clause was the key to cracking the answer; the front now keeps the sentence and required learner action while moving the conclusion back to the analysis side.",
+      "follow_up": "Candidate sample evidence only; user confirmation is still required before any approval or formal content merge."
     }
   ],
   "validation": [
     {
       "command": "node scripts/audit_card_quality.mjs --max-examples 0",
-      "result": "passed after PR #57 merge and preposition/direct-answer repairs; corpus_digest=9296725c1570b80b826bb432a8f4bd3a28aed17038778179b065d592e7d23467, hard_blocker=0, front_leaks_correct_answer=0"
+      "result": "passed after PR #58 merge and 020008 repair; corpus_digest=7a4074c40dfc34b0296243876cf058824241dce1765e3919d3a973cda3f10907, hard_blocker=0, front_leaks_correct_answer=0, front_leaks_analysis_conclusion=0"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
-      "result": "passed; report restored before commit; errors=0 and warnings=0"
+      "result": "passed after PR #58 follow-up; report restored before commit; errors=0 and warnings=0"
     },
     {
       "command": "node scripts/validate_cards.mjs",
-      "result": "passed; errors=0 and warnings=0"
+      "result": "passed after PR #58 follow-up; errors=0 and warnings=0"
     },
     {
       "command": "node scripts/validate_audio_qc.mjs",
-      "result": "passed; records_checked=1"
+      "result": "passed after PR #58 follow-up; records_checked=1"
     },
     {
       "command": "node scripts/validate_harness.mjs",
-      "result": "passed after PR #57 merge; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by twelve current scoped reports"
+      "result": "passed after PR #58 follow-up; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by twelve current scoped reports"
     },
     {
       "command": "node scripts/validate_pr_scope.mjs --base origin/main",
-      "result": "passed on worktree; issues=[]; content_sample_multiple_scope_prefixes warning is intentional for this candidate queue and now includes 0220/0224 PR #57 follow-up scope"
+      "result": "passed on worktree after PR #58 follow-up; issues=[]; content_sample_multiple_scope_prefixes warning is intentional for this candidate queue"
     },
     {
       "command": "git diff --check",
-      "result": "passed"
+      "result": "passed after PR #58 follow-up; git diff --check and git diff --cached --check both clean"
     },
     {
       "command": "node scripts/audit_front_leak_queue.mjs --base origin/main --branches origin/content/front-leak-candidate-queue --refresh-scoped-evidence --require-harness",
-      "result": "passed after push; front_answer_leaks=0, corpus_digest=9296725c1570b80b826bb432a8f4bd3a28aed17038778179b065d592e7d23467, scoped evidence refresh changed_review_records=[]"
+      "result": "pending rerun after push"
     },
     {
       "command": "gh pr view 50 --json number,state,isDraft,mergeable,headRefOid,url,statusCheckRollup",
-      "result": "passed after push; PR #50 open draft on origin/content/front-leak-candidate-queue, statusCheckRollup=[]; mergeable reported UNKNOWN immediately after push"
+      "result": "pending rerun after push"
     }
   ],
-  "local_status": "Draft PR #50 is open for user review on origin/content/front-leak-candidate-queue. The branch includes PR #57 follow-up content and scoped evidence, remains candidate-only, and must not be auto-merged as formal content.",
+  "local_status": "Draft PR #50 is open for user review. The branch includes PR #58 follow-up content and scoped evidence, remains candidate-only, and must not be auto-merged as formal content.",
   "remaining_risks": [
     "Candidate content only; this branch does not mark any card formally usable.",
     "No reviews/approved_batches record was created.",
@@ -225,6 +244,7 @@
     "The branch intentionally spans multiple box prefixes because it consolidates existing front-answer-leak blocker fixes for review.",
     "0002 is included only to close the newly visible task_schema guide leakage exposed by PR #52; it is not formal approval of the old 0002 sample.",
     "PR #47, the 020207 follow-up, the 020210 follow-up, and the PR #57 preposition/direct-answer follow-up have residual closure self-review records, not normal 3-card-per-box sample records; do not treat them as sample approval.",
+    "PR #58 follow-up repairs one visible analysis-conclusion leak inside the existing 0200 candidate sample; it is still not user approval.",
     "User confirmation and explicit content merge delegation are still required before any formal content merge."
   ],
   "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"

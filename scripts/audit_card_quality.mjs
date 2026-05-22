@@ -611,6 +611,26 @@ function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
   return [...fragments];
 }
 
+const FRONT_ANALYSIS_CONCLUSION_PATTERNS = [
+  /(?:破解|解出|锁定|确定|判断|选择)答案的?关键/gu,
+  /(?:解题|破题)关键(?:是|在于|[:：])/gu,
+];
+
+function findFrontAnalysisConclusionLeakFragments(frontText) {
+  const promptText = stripLabeledMaterialSegments(frontText);
+  if (!promptText) return [];
+
+  const fragments = new Set();
+  for (const pattern of FRONT_ANALYSIS_CONCLUSION_PATTERNS) {
+    pattern.lastIndex = 0;
+    for (const match of promptText.matchAll(pattern)) {
+      const fragment = normalizeText(match[0]);
+      if (fragment) fragments.add(fragment);
+    }
+  }
+  return [...fragments];
+}
+
 function assertSelfTest(condition, message) {
   if (!condition) throw new Error(message);
 }
@@ -897,6 +917,22 @@ function runSelfTest() {
     'A prompt that directly names a short preposition answer must trigger front-answer leakage.'
   );
 
+  const analysisConclusionGuideLeak = {
+    frontText: '句子："...language mastery is a ___ that we begin as infants." 【分析提示】空格所在的是 "a ___ that we begin as infants"——这个定语从句是破解答案的关键。',
+  };
+  assertSelfTest(
+    findFrontAnalysisConclusionLeakFragments(analysisConclusionGuideLeak.frontText).some(fragment => fragment.includes('破解答案的关键')),
+    'A front-side prompt that names a clue as the key to cracking the answer must trigger analysis-conclusion leakage.'
+  );
+
+  const ordinaryReadingAnchorPrompt = {
+    frontText: '原文片段：Genetic tests for multi-factorial traits are often very tricky to interpret. 题干：What makes these genetic tests tricky to interpret? 以下哪个词组最适合作为回文定位的实义名词锚点？',
+  };
+  assertSelfTest(
+    findFrontAnalysisConclusionLeakFragments(ordinaryReadingAnchorPrompt.frontText).length === 0,
+    'A normal reading anchor prompt must not be treated as analysis-conclusion leakage.'
+  );
+
   const duplicatedVisibleList = {
     frontText: '综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing 综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing',
     optionRecords: [
@@ -1047,6 +1083,7 @@ function runSelfTest() {
       'research_account_gloss_guide_leak_is_audited',
       'preposition_semantic_role_gloss_guide_leak_is_audited',
       'short_preposition_answer_text_is_audited',
+      'analysis_conclusion_guide_leak_is_audited',
       'duplicated_visible_option_list_only_is_not_leak',
       'source_material_only_is_not_leak',
       'material_strip_does_not_mask_prompt_leak',
@@ -1296,6 +1333,19 @@ function buildAudit({ maxExamples }) {
           );
         }
       }
+    }
+
+    const analysisConclusionFragments = findFrontAnalysisConclusionLeakFragments(frontText);
+    if (analysisConclusionFragments.length > 0) {
+      addIssue(
+        issues,
+        rulesById,
+        row,
+        'front_leaks_analysis_conclusion',
+        `Front-side prompt exposes analysis conclusion wording: ${analysisConclusionFragments.slice(0, 3).join(', ')}.`,
+        frontText,
+        analysisText
+      );
     }
 
     if (frontText.length < 12) {
