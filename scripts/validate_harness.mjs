@@ -835,7 +835,7 @@ function validateCardQualityAudit(errors, warnings) {
   if (!script.includes('--write-scope-report') || !script.includes('scoped_card_quality_audit')) {
     pushIssue(errors, 'card_quality_audit_script_scoped_report_missing', {});
   }
-  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak')) {
+  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak') || !script.includes('visible_task_schema_guide_is_audited')) {
     pushIssue(errors, 'card_quality_audit_self_test_missing', {});
   } else {
     try {
@@ -1913,9 +1913,15 @@ function validateEvalFixtures(errors) {
         card.front?.text,
         card.front?.prompt,
         card.front?.task_prompt,
+        card.front?.task_schema?.action,
+        card.front?.task_schema?.focus,
+        card.front?.task_schema?.success_criteria,
         card.front_content?.text,
         card.front_content?.prompt,
         card.front_content?.task_prompt,
+        card.front_content?.task_schema?.action,
+        card.front_content?.task_schema?.focus,
+        card.front_content?.task_schema?.success_criteria,
       ].filter(Boolean).join(' ');
       if (testCase.fixture_flags?.front_contains_correct_option_text !== true) {
         pushIssue(errors, 'front_answer_leak_fixture_missing_flag', { fixture: testCase.id });
