@@ -54,6 +54,7 @@
     "Follow-up strict spot-check repaired 001208-001210: removed a legacy long-press instruction from a flip card, replaced template-like analysis with lost-plosive evidence, and normalized candidate TTS metadata to TTS_AI_generated.",
     "After PR #52 made task_schema guide text part of visible front-leak auditing, repaired 000201-000202 by removing direct answer tokens from success_criteria and refreshed the 0002 scoped audit evidence.",
     "After PR #53 made correct-option example text auditable, repaired 121204 by removing reduce from visible success_criteria and repaired 020207 by removing the v-ing answer clue from the front prompt while preserving back-side explanation and answer logic.",
+    "After PR #54 made answer semantic glosses auditable, repaired 120009 by removing the visible occurrence-probability gloss from success_criteria while preserving the back-side probability explanation.",
     "Kept the queue candidate-only: no reviews/approved_batches records and no committed global report refreshes."
   ],
   "review_evidence_boundaries": [
@@ -98,7 +99,7 @@
         "reviews/git_handoffs/20260521-content-uncovered-front-leak-fix.json"
       ],
       "agent_self_review_record": "reviews/agent_self_review/20260521-0101-1200-1212-1616-residual-front-leak-closure.json",
-      "reason": "The residual closure record uses review_scope_type=residual_blocker_closure and batch_review.status=documented_residual_closure because PR #47 repaired one blocker card in each of four prefixes; it is not a normal 3-card-per-box sample review. PR #53 follow-up also removed a visible reduce example from 121204 success_criteria without changing the answer or back-side analysis.",
+      "reason": "The residual closure record uses review_scope_type=residual_blocker_closure and batch_review.status=documented_residual_closure because PR #47 repaired one blocker card in each of four prefixes; it is not a normal 3-card-per-box sample review. PR #53 follow-up also removed a visible reduce example from 121204 success_criteria without changing the answer or back-side analysis. PR #54 follow-up also removed a visible occurrence-probability semantic gloss from 120009 success_criteria without changing the answer or back-side analysis.",
       "follow_up": "Do not treat residual multi-prefix blocker closures as sample-equivalent unless a separate user-confirmed sample approval flow is completed."
     },
     {
@@ -122,7 +123,7 @@
   "validation": [
     {
       "command": "node scripts/audit_card_quality.mjs --max-examples 0",
-      "result": "passed; corpus_digest=5cb85a9295801e39442c50f64aaf045735a5b2142cc7da203a6e387e3a4add80, hard_blocker=0, front_leaks_correct_answer=0"
+      "result": "passed; corpus_digest=2323173b6a0fbae036b9fbf483f6e89184e3d36d573dbf50076a3647cbe65bbb, hard_blocker=0, front_leaks_correct_answer=0"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
@@ -138,7 +139,7 @@
     },
     {
       "command": "node scripts/validate_harness.mjs",
-      "result": "passed; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by ten current scoped reports"
+      "result": "passed after PR #54 merge; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by ten current scoped reports"
     },
     {
       "command": "node scripts/validate_pr_scope.mjs --base origin/main",
@@ -150,14 +151,14 @@
     },
     {
       "command": "node scripts/audit_front_leak_queue.mjs --base origin/main --branches origin/content/front-leak-candidate-queue --refresh-scoped-evidence --require-harness",
-      "result": "pending rerun after push; previous queue run is superseded by PR #53 follow-up fixes"
+      "result": "pending rerun after push"
     },
     {
       "command": "gh pr view 50 --json number,state,isDraft,mergeable,headRefOid,url,statusCheckRollup",
       "result": "pending rerun after push"
     }
   ],
-  "local_status": "Draft PR #50 is open for user review. Local branch has PR #53 follow-up content and scoped evidence pending commit/push; the branch remains candidate-only and must not be auto-merged as formal content.",
+  "local_status": "Draft PR #50 is open for user review. Local branch has PR #54 follow-up content and scoped evidence validated locally and pending commit/push; the branch remains candidate-only and must not be auto-merged as formal content.",
   "remaining_risks": [
     "Candidate content only; this branch does not mark any card formally usable.",
     "No reviews/approved_batches record was created.",
