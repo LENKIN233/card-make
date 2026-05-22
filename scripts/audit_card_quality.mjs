@@ -136,6 +136,44 @@ const SEMANTIC_ANSWER_GLOSS_GROUPS = [
       '无法控制这些',
     ],
   },
+  {
+    id: 'preposition_on_impact_object_class',
+    triggers: [
+      'on',
+    ],
+    leak_texts: [
+      '影响对象',
+    ],
+  },
+  {
+    id: 'preposition_for_reason_responsibility_class',
+    triggers: [
+      'for',
+    ],
+    leak_texts: [
+      '被解释的现象',
+      '职责内容',
+    ],
+  },
+  {
+    id: 'preposition_of_result_cause_class',
+    triggers: [
+      'of',
+    ],
+    leak_texts: [
+      '成因',
+    ],
+  },
+  {
+    id: 'preposition_with_object_class',
+    triggers: [
+      'with',
+    ],
+    leak_texts: [
+      '熟悉对象',
+      '满意对象',
+    ],
+  },
 ];
 
 function readJson(filePath) {
@@ -525,6 +563,18 @@ function optionLeakCandidateTexts(optionText) {
   return raw ? [...new Set([raw, ...exampleTexts, ...semanticGlossTexts])] : [...new Set([...exampleTexts, ...semanticGlossTexts])];
 }
 
+function isShortAlphabeticAnswerText(value) {
+  return /^[a-z]{1,2}$/.test(normalizeForSearch(value));
+}
+
+function promptNamesShortAnswer(normalizedFront, optionText) {
+  const normalizedOptionText = normalizeForSearch(optionText);
+  if (!isShortAlphabeticAnswerText(normalizedOptionText)) return false;
+  const escaped = escapeRegExp(normalizedOptionText);
+  return new RegExp(`(?:选|填|应选|应填|答案是|答案为|answer is|choose|fill)\\s+${escaped}(?:\\s|$)`, 'iu')
+    .test(normalizedFront);
+}
+
 function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
   const normalizedFront = normalizeForSearch(stripNonPromptAnswerLeakText(frontText, optionRecords));
   if (!normalizedFront) return [];
@@ -534,6 +584,10 @@ function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
     for (const optionText of optionLeakCandidateTexts(option.text)) {
       const normalizedOptionText = normalizeForSearch(optionText);
       if (!optionText || !normalizedOptionText) continue;
+
+      if (promptNamesShortAnswer(normalizedFront, optionText)) {
+        fragments.add(optionText);
+      }
 
       if (
         (normalizedOptionText.length >= 3 || /[\u4e00-\u9fff]/.test(normalizedOptionText)) &&
@@ -793,6 +847,56 @@ function runSelfTest() {
     'A research/account-for semantic gloss leaked through visible guide text must trigger front-answer leakage.'
   );
 
+  const prepositionRoleGlossLeakedGuide = {
+    front_content: {
+      text: '"The policy had a clear impact ___ student motivation." 从四个介词中选出最自然的一项。',
+      task_schema: {
+        action: '选择名词后介词',
+        focus: '判断 impact 后面接影响对象时的介词搭配',
+        success_criteria: '能根据 impact 与后接名词短语的语义关系选出自然介词',
+      },
+      options: [
+        { key: 'A', text: 'for' },
+        { key: 'B', text: 'to' },
+        { key: 'C', text: 'on' },
+        { key: 'D', text: 'with' },
+      ],
+    },
+    answer_key: { correct_option: 'C' },
+  };
+  const prepositionRoleGlossLeakedGuideOptions = extractOptionRecords(prepositionRoleGlossLeakedGuide);
+  const prepositionRoleGlossLeakedGuideAnswer = extractAnswerRecord(
+    prepositionRoleGlossLeakedGuide,
+    prepositionRoleGlossLeakedGuideOptions
+  );
+  assertSelfTest(
+    findFrontAnswerLeakFragments(
+      extractFrontText(prepositionRoleGlossLeakedGuide),
+      prepositionRoleGlossLeakedGuideOptions,
+      prepositionRoleGlossLeakedGuideAnswer
+    ).includes('影响对象'),
+    'A preposition semantic-role gloss leaked through task_schema guide text must trigger front-answer leakage.'
+  );
+
+  const shortPrepositionAnswerLeak = {
+    frontText: '句子："Without enough data, any estimate remains a matter ___ guesswork." 这里为什么选 of？',
+    optionRecords: [
+      { key: 'A', text: 'of' },
+      { key: 'B', text: 'for' },
+      { key: 'C', text: 'to' },
+      { key: 'D', text: 'with' },
+    ],
+    answer: { text: 'A' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(
+      shortPrepositionAnswerLeak.frontText,
+      shortPrepositionAnswerLeak.optionRecords,
+      shortPrepositionAnswerLeak.answer
+    ).includes('of'),
+    'A prompt that directly names a short preposition answer must trigger front-answer leakage.'
+  );
+
   const duplicatedVisibleList = {
     frontText: '综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing 综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing',
     optionRecords: [
@@ -941,6 +1045,8 @@ function runSelfTest() {
       'strong_evidence_gloss_guide_leak_is_audited',
       'practical_gloss_guide_leak_is_audited',
       'research_account_gloss_guide_leak_is_audited',
+      'preposition_semantic_role_gloss_guide_leak_is_audited',
+      'short_preposition_answer_text_is_audited',
       'duplicated_visible_option_list_only_is_not_leak',
       'source_material_only_is_not_leak',
       'material_strip_does_not_mask_prompt_leak',
