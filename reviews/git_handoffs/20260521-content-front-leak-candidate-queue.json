@@ -55,6 +55,7 @@
     "After PR #52 made task_schema guide text part of visible front-leak auditing, repaired 000201-000202 by removing direct answer tokens from success_criteria and refreshed the 0002 scoped audit evidence.",
     "After PR #53 made correct-option example text auditable, repaired 121204 by removing reduce from visible success_criteria and repaired 020207 by removing the v-ing answer clue from the front prompt while preserving back-side explanation and answer logic.",
     "After PR #54 made answer semantic glosses auditable, repaired 120009 by removing the visible occurrence-probability gloss from success_criteria while preserving the back-side probability explanation.",
+    "After PR #55 made adjective answer semantic glosses auditable, repaired 022102 and 022104 by removing evidence-strength and practicality glosses from visible front guide text while preserving options, answers, and back-side explanations.",
     "Kept the queue candidate-only: no reviews/approved_batches records and no committed global report refreshes."
   ],
   "review_evidence_boundaries": [
@@ -123,7 +124,7 @@
   "validation": [
     {
       "command": "node scripts/audit_card_quality.mjs --max-examples 0",
-      "result": "passed; corpus_digest=2323173b6a0fbae036b9fbf483f6e89184e3d36d573dbf50076a3647cbe65bbb, hard_blocker=0, front_leaks_correct_answer=0"
+      "result": "passed after PR #55 merge and 0221 repair; corpus_digest=37dff3239735e065e03a27eedb83162e688f2256a154ac87c4320c1380f3014c, hard_blocker=0, front_leaks_correct_answer=0"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
@@ -139,7 +140,7 @@
     },
     {
       "command": "node scripts/validate_harness.mjs",
-      "result": "passed after PR #54 merge; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by ten current scoped reports"
+      "result": "passed after PR #55 merge; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by ten current scoped reports"
     },
     {
       "command": "node scripts/validate_pr_scope.mjs --base origin/main",
@@ -158,7 +159,7 @@
       "result": "pending rerun after push"
     }
   ],
-  "local_status": "Draft PR #50 is open for user review. Local branch has PR #54 follow-up content and scoped evidence validated locally and pending commit/push; the branch remains candidate-only and must not be auto-merged as formal content.",
+  "local_status": "Draft PR #50 is open for user review. Local branch has PR #55 follow-up content and scoped evidence validated locally and pending commit/push; the branch remains candidate-only and must not be auto-merged as formal content.",
   "remaining_risks": [
     "Candidate content only; this branch does not mark any card formally usable.",
     "No reviews/approved_batches record was created.",
