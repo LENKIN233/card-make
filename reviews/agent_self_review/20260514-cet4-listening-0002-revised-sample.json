@@ -196,6 +196,7 @@
     "box_progression": "The revised sample now moves from recognizing a combined although/because structure, to applying however contrast detection, to transferring the method to since cause-effect prediction.",
     "repetition_or_gap_risks": [
       "All three cards use multiple_choice because this box is specifically about predicting or identifying signal words from listening cues.",
+      "Follow-up visible-guide audit removed direct answer tokens from task_schema.success_criteria on 000201 and 000202.",
       "Formal approval still needs user confirmation and separate audio QA."
     ],
     "representative_cards": [
@@ -203,11 +204,11 @@
       "000202",
       "000203"
     ],
-    "next_step": "Show the revised draft sample to the user. If confirmed, update the real card JSON in a scoped content branch and produce an approval record before any batch expansion."
+    "next_step": "Keep this as candidate-only sample evidence for user confirmation; do not create an approved batch or expand the box without explicit user approval."
   },
   "quality_audit": {
-    "report": "reports/card_quality_audit_report.json",
-    "corpus_fingerprint": "d23ec6bd2b8184c11fff57677e97f6e684a98f0726312284b2dbe6246984c522",
+    "report": "reviews/audit_scopes/20260522-cet4-listening-0002-visible-guide-front-leak-fix-scope-audit.json",
+    "corpus_fingerprint": "071e9ad6a55b1bc75839c5ffd1e7ddb937d2f2c62e05c8825ee6625698c8debf",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -224,17 +225,18 @@
         "source_risk": 6
       },
       "by_rule": {
-        "multiple_choice_no_options": 0,
-        "multiple_choice_answer_not_in_options": 0,
-        "front_missing_or_too_short": 0,
         "analysis_missing_or_too_short": 0,
-        "generic_front_pattern": 0,
-        "template_analysis_pattern": 0,
-        "exact_repeated_front": 0,
         "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
         "missing_quality_metadata": 0,
-        "unverified_source": 3,
-        "synthetic_source": 3
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 3
       }
     }
   }
