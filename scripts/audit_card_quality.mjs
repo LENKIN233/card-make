@@ -59,6 +59,31 @@ const ANSWER_LEAK_STOPWORDS = new Set([
   'without',
 ]);
 
+const SEMANTIC_ANSWER_GLOSS_GROUPS = [
+  {
+    id: 'probability_class',
+    triggers: [
+      'probability',
+      'probabilities',
+      'likelihood',
+      'likelihoods',
+      'risk',
+      'risks',
+      '概率',
+      '可能性',
+      '风险',
+    ],
+    leak_texts: [
+      '发生可能性',
+      '发生概率',
+      '发生风险',
+      '可能性类',
+      '概率类',
+      '风险程度',
+    ],
+  },
+];
+
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -299,6 +324,21 @@ function extractOptionExampleTexts(optionText) {
   return [...new Set(examples)];
 }
 
+function extractSemanticAnswerGlossTexts(optionText) {
+  const raw = normalizeText(optionText);
+  if (!raw) return [];
+
+  const normalizedRaw = normalizeForSearch(raw);
+  const leakTexts = [];
+  for (const group of SEMANTIC_ANSWER_GLOSS_GROUPS) {
+    const matched = group.triggers.some(trigger =>
+      containsSearchPhrase(normalizedRaw, normalizeForSearch(trigger))
+    );
+    if (matched) leakTexts.push(...group.leak_texts);
+  }
+  return [...new Set(leakTexts)];
+}
+
 function visibleOptionRowPattern(option) {
   const key = normalizeText(option.key);
   const optionText = normalizeText(option.text);
@@ -423,11 +463,12 @@ function stripNonPromptAnswerLeakText(frontText, optionRecords = []) {
 function optionLeakCandidateTexts(optionText) {
   const raw = normalizeText(optionText);
   const exampleTexts = extractOptionExampleTexts(raw);
+  const semanticGlossTexts = extractSemanticAnswerGlossTexts(raw);
   const head = extractOptionAnswerHead(raw);
-  if (head && head !== raw) return [...new Set([head, ...exampleTexts])];
-  if (isExplanatoryOptionText(raw)) return exampleTexts;
+  if (head && head !== raw) return [...new Set([head, ...exampleTexts, ...semanticGlossTexts])];
+  if (isExplanatoryOptionText(raw)) return [...new Set([...exampleTexts, ...semanticGlossTexts])];
   if (raw.length > 40 || searchTokens(raw).length > 8) return [];
-  return raw ? [...new Set([raw, ...exampleTexts])] : exampleTexts;
+  return raw ? [...new Set([raw, ...exampleTexts, ...semanticGlossTexts])] : [...new Set([...exampleTexts, ...semanticGlossTexts])];
 }
 
 function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
@@ -577,6 +618,34 @@ function runSelfTest() {
     'A correct option example word leaked through task_schema guide text must trigger front-answer leakage.'
   );
 
+  const semanticGlossLeakedGuideCard = {
+    front_content: {
+      text: '"Scenario planning reduced the ___ of systemic failure by forcing institutions to test extreme assumptions." 先判断空格名词要表达哪类可量化对象。',
+      task_schema: {
+        action: '选择名词位答案',
+        focus: '用 reduce 和 of systemic failure 判断空格名词的语义类型',
+        success_criteria: '能说明空格需要可量化的发生可能性类名词，而不是抽象叙事或形容词',
+      },
+      options: [
+        { key: 'A', text: 'architecture' },
+        { key: 'B', text: '选 probability：与 reduce 搭配自然，且可直接接 of systemic failure 表示发生概率' },
+        { key: 'C', text: 'narrative' },
+        { key: 'D', text: 'adaptable' },
+      ],
+    },
+    answer_key: { correct_option: 'B' },
+  };
+  const semanticGlossLeakedGuideOptions = extractOptionRecords(semanticGlossLeakedGuideCard);
+  const semanticGlossLeakedGuideAnswer = extractAnswerRecord(semanticGlossLeakedGuideCard, semanticGlossLeakedGuideOptions);
+  assertSelfTest(
+    findFrontAnswerLeakFragments(
+      extractFrontText(semanticGlossLeakedGuideCard),
+      semanticGlossLeakedGuideOptions,
+      semanticGlossLeakedGuideAnswer
+    ).includes('发生可能性'),
+    'A correct option semantic gloss leaked through task_schema guide text must trigger front-answer leakage.'
+  );
+
   const duplicatedVisibleList = {
     frontText: '综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing 综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing',
     optionRecords: [
@@ -721,6 +790,7 @@ function runSelfTest() {
       'visible_task_schema_guide_is_audited',
       'visible_option_example_list_only_is_not_leak',
       'visible_option_example_guide_leak_is_audited',
+      'semantic_answer_gloss_guide_leak_is_audited',
       'duplicated_visible_option_list_only_is_not_leak',
       'source_material_only_is_not_leak',
       'material_strip_does_not_mask_prompt_leak',
