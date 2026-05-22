@@ -116,6 +116,26 @@ const SEMANTIC_ANSWER_GLOSS_GROUPS = [
       '切实可行',
     ],
   },
+  {
+    id: 'research_account_for_class',
+    triggers: [
+      'account',
+      'accounts',
+      'accounted',
+      'accounting',
+      'account for',
+      'accounted for',
+    ],
+    leak_texts: [
+      '纳入考量',
+      '纳入分析考量',
+      '纳入分析',
+      '控制变量',
+      '控制某变量',
+      '控制这些变量',
+      '无法控制这些',
+    ],
+  },
 ];
 
 function readJson(filePath) {
@@ -746,6 +766,33 @@ function runSelfTest() {
     'A practicality semantic gloss leaked through task_schema guide text must trigger front-answer leakage.'
   );
 
+  const researchAccountGlossLeakedGuide = {
+    front_content: {
+      text: '"The researchers were not able to ___ for lifestyle factors." 这个动词必须与 for 形成固定搭配，表示在研究中将某因素纳入考量/控制某变量。',
+      options: [
+        { key: 'A', text: 'adjust' },
+        { key: 'B', text: 'alter' },
+        { key: 'C', text: '选 account：account for 在研究语境中意为将某变量纳入分析考量' },
+        { key: 'D', text: '三个动词都可以' },
+      ],
+    },
+    answer_key: { correct_option: 'C' },
+  };
+  const researchAccountGlossLeakedGuideOptions = extractOptionRecords(researchAccountGlossLeakedGuide);
+  const researchAccountGlossLeakedGuideAnswer = extractAnswerRecord(
+    researchAccountGlossLeakedGuide,
+    researchAccountGlossLeakedGuideOptions
+  );
+  const researchAccountGlossFragments = findFrontAnswerLeakFragments(
+    extractFrontText(researchAccountGlossLeakedGuide),
+    researchAccountGlossLeakedGuideOptions,
+    researchAccountGlossLeakedGuideAnswer
+  );
+  assertSelfTest(
+    researchAccountGlossFragments.includes('纳入考量') && researchAccountGlossFragments.includes('控制某变量'),
+    'A research/account-for semantic gloss leaked through visible guide text must trigger front-answer leakage.'
+  );
+
   const duplicatedVisibleList = {
     frontText: '综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing 综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing',
     optionRecords: [
@@ -893,6 +940,7 @@ function runSelfTest() {
       'semantic_answer_gloss_guide_leak_is_audited',
       'strong_evidence_gloss_guide_leak_is_audited',
       'practical_gloss_guide_leak_is_audited',
+      'research_account_gloss_guide_leak_is_audited',
       'duplicated_visible_option_list_only_is_not_leak',
       'source_material_only_is_not_leak',
       'material_strip_does_not_mask_prompt_leak',
