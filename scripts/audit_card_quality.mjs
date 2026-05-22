@@ -100,12 +100,18 @@ function extractFrontText(card) {
     card.front?.instruction,
     card.front?.question,
     card.front?.stem,
+    card.front?.task_schema?.action,
+    card.front?.task_schema?.focus,
+    card.front?.task_schema?.success_criteria,
     card.front_content?.text,
     card.front_content?.prompt,
     card.front_content?.task_prompt,
     card.front_content?.instruction,
     card.front_content?.question,
-    card.front_content?.stem
+    card.front_content?.stem,
+    card.front_content?.task_schema?.action,
+    card.front_content?.task_schema?.focus,
+    card.front_content?.task_schema?.success_criteria
   );
 }
 
@@ -476,6 +482,34 @@ function runSelfTest() {
     'Stripping a visible option row must not hide the same answer leaked elsewhere in the prompt.'
   );
 
+  const visibleTaskSchemaGuideLeakCard = {
+    front_content: {
+      text: '播放音频后，选出最需要用弱读还原的片段。',
+      task_schema: {
+        action: '定位弱读片段',
+        focus: 'have to 的弱读',
+        success_criteria: '能根据听感判断弱读功能词',
+      },
+      options: [
+        { key: 'A', text: 'have to' },
+        { key: 'B', text: 'finance office' },
+        { key: 'C', text: 'data proposal' },
+        { key: 'D', text: 'before midnight' },
+      ],
+    },
+    answer_key: { correct_option: 'A' },
+  };
+  const visibleTaskSchemaGuideLeakOptions = extractOptionRecords(visibleTaskSchemaGuideLeakCard);
+  const visibleTaskSchemaGuideLeakAnswer = extractAnswerRecord(visibleTaskSchemaGuideLeakCard, visibleTaskSchemaGuideLeakOptions);
+  assertSelfTest(
+    findFrontAnswerLeakFragments(
+      extractFrontText(visibleTaskSchemaGuideLeakCard),
+      visibleTaskSchemaGuideLeakOptions,
+      visibleTaskSchemaGuideLeakAnswer
+    ).includes('have to'),
+    'Preview-rendered task_schema guide text must be audited as visible front-side prompt text.'
+  );
+
   const duplicatedVisibleList = {
     frontText: '综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing 综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing',
     optionRecords: [
@@ -617,6 +651,7 @@ function runSelfTest() {
       'visible_option_list_only_is_not_leak',
       'prompt_answer_text_is_leak',
       'visible_option_list_does_not_mask_prompt_leak',
+      'visible_task_schema_guide_is_audited',
       'duplicated_visible_option_list_only_is_not_leak',
       'source_material_only_is_not_leak',
       'material_strip_does_not_mask_prompt_leak',
