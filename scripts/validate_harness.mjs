@@ -49,6 +49,7 @@ const REQUIRED_QUALITY_AUDIT_RULES = [
   'multiple_choice_no_options',
   'multiple_choice_answer_not_in_options',
   'front_leaks_correct_answer',
+  'front_leaks_analysis_conclusion',
   'front_missing_or_too_short',
   'analysis_missing_or_too_short',
   'generic_front_pattern',
@@ -765,6 +766,7 @@ function validateCardQualityAudit(errors, warnings) {
     multiple_choice_no_options: 'hard_blocker',
     multiple_choice_answer_not_in_options: 'hard_blocker',
     front_leaks_correct_answer: 'hard_blocker',
+    front_leaks_analysis_conclusion: 'hard_blocker',
     front_missing_or_too_short: 'content_risk',
     analysis_missing_or_too_short: 'content_risk',
     generic_front_pattern: 'content_risk',
@@ -835,7 +837,7 @@ function validateCardQualityAudit(errors, warnings) {
   if (!script.includes('--write-scope-report') || !script.includes('scoped_card_quality_audit')) {
     pushIssue(errors, 'card_quality_audit_script_scoped_report_missing', {});
   }
-  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak') || !script.includes('visible_task_schema_guide_is_audited') || !script.includes('visible_option_example_guide_leak_is_audited') || !script.includes('semantic_answer_gloss_guide_leak_is_audited') || !script.includes('strong_evidence_gloss_guide_leak_is_audited') || !script.includes('practical_gloss_guide_leak_is_audited') || !script.includes('research_account_gloss_guide_leak_is_audited') || !script.includes('preposition_semantic_role_gloss_guide_leak_is_audited') || !script.includes('short_preposition_answer_text_is_audited')) {
+  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak') || !script.includes('visible_task_schema_guide_is_audited') || !script.includes('visible_option_example_guide_leak_is_audited') || !script.includes('semantic_answer_gloss_guide_leak_is_audited') || !script.includes('strong_evidence_gloss_guide_leak_is_audited') || !script.includes('practical_gloss_guide_leak_is_audited') || !script.includes('research_account_gloss_guide_leak_is_audited') || !script.includes('preposition_semantic_role_gloss_guide_leak_is_audited') || !script.includes('short_preposition_answer_text_is_audited') || !script.includes('analysis_conclusion_guide_leak_is_audited')) {
     pushIssue(errors, 'card_quality_audit_self_test_missing', {});
   } else {
     try {
