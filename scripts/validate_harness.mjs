@@ -835,7 +835,7 @@ function validateCardQualityAudit(errors, warnings) {
   if (!script.includes('--write-scope-report') || !script.includes('scoped_card_quality_audit')) {
     pushIssue(errors, 'card_quality_audit_script_scoped_report_missing', {});
   }
-  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak') || !script.includes('visible_task_schema_guide_is_audited') || !script.includes('visible_option_example_guide_leak_is_audited') || !script.includes('semantic_answer_gloss_guide_leak_is_audited')) {
+  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak') || !script.includes('visible_task_schema_guide_is_audited') || !script.includes('visible_option_example_guide_leak_is_audited') || !script.includes('semantic_answer_gloss_guide_leak_is_audited') || !script.includes('strong_evidence_gloss_guide_leak_is_audited') || !script.includes('practical_gloss_guide_leak_is_audited')) {
     pushIssue(errors, 'card_quality_audit_self_test_missing', {});
   } else {
     try {

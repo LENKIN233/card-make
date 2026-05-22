@@ -82,6 +82,40 @@ const SEMANTIC_ANSWER_GLOSS_GROUPS = [
       '风险程度',
     ],
   },
+  {
+    id: 'strong_evidence_class',
+    triggers: [
+      'strong',
+      'compelling',
+      'forceful',
+      '有力',
+    ],
+    leak_texts: [
+      '证据强度',
+      '有力证据',
+      '有力的证据',
+      '足以支撑',
+      '支撑结论',
+      '支撑论点',
+    ],
+  },
+  {
+    id: 'practical_class',
+    triggers: [
+      'practical',
+      'practicable',
+      'feasible',
+      'viable',
+      '可行',
+    ],
+    leak_texts: [
+      '可执行',
+      '可落地',
+      '落地性',
+      '实用方案',
+      '切实可行',
+    ],
+  },
 ];
 
 function readJson(filePath) {
@@ -646,6 +680,72 @@ function runSelfTest() {
     'A correct option semantic gloss leaked through task_schema guide text must trigger front-answer leakage.'
   );
 
+  const strongEvidenceGlossLeakedGuide = {
+    front_content: {
+      text: '"The conclusion should be based on ___ evidence rather than personal preference." 从四个选项中选择最自然修饰 evidence 的词。',
+      task_schema: {
+        action: '选择形容词+名词搭配',
+        focus: '判断 evidence 前的形容词是否表达足以支撑结论的证据强度',
+        success_criteria: '能根据 evidence 的语域和句内对比关系选出自然修饰词',
+      },
+      options: [
+        { key: 'A', text: 'powerful' },
+        { key: 'B', text: 'strong' },
+        { key: 'C', text: 'hard' },
+        { key: 'D', text: 'solidly' },
+      ],
+    },
+    answer_key: { correct_option: 'B' },
+  };
+  const strongEvidenceGlossLeakedGuideOptions = extractOptionRecords(strongEvidenceGlossLeakedGuide);
+  const strongEvidenceGlossLeakedGuideAnswer = extractAnswerRecord(
+    strongEvidenceGlossLeakedGuide,
+    strongEvidenceGlossLeakedGuideOptions
+  );
+  const strongEvidenceGlossFragments = findFrontAnswerLeakFragments(
+    extractFrontText(strongEvidenceGlossLeakedGuide),
+    strongEvidenceGlossLeakedGuideOptions,
+    strongEvidenceGlossLeakedGuideAnswer
+  );
+  assertSelfTest(
+    strongEvidenceGlossFragments.includes('证据强度') &&
+      strongEvidenceGlossFragments.includes('足以支撑') &&
+      strongEvidenceGlossFragments.includes('支撑结论'),
+    'A strength/evidence semantic gloss leaked through task_schema guide text must trigger front-answer leakage.'
+  );
+
+  const practicalGlossLeakedGuide = {
+    front_content: {
+      text: '"A ___ solution should reduce confusion without adding extra steps." 从四个选项中选择最自然修饰 solution 的词。',
+      task_schema: {
+        action: '选择形容词+名词搭配',
+        focus: '判断 solution 前的修饰词是否表达可执行、可落地的方案性质',
+        success_criteria: '能区分形容词、名词和副词选项，并选择自然搭配',
+      },
+      options: [
+        { key: 'A', text: 'practical' },
+        { key: 'B', text: 'comfort' },
+        { key: 'C', text: 'conveniently' },
+        { key: 'D', text: 'practically' },
+      ],
+    },
+    answer_key: { correct_option: 'A' },
+  };
+  const practicalGlossLeakedGuideOptions = extractOptionRecords(practicalGlossLeakedGuide);
+  const practicalGlossLeakedGuideAnswer = extractAnswerRecord(
+    practicalGlossLeakedGuide,
+    practicalGlossLeakedGuideOptions
+  );
+  const practicalGlossFragments = findFrontAnswerLeakFragments(
+    extractFrontText(practicalGlossLeakedGuide),
+    practicalGlossLeakedGuideOptions,
+    practicalGlossLeakedGuideAnswer
+  );
+  assertSelfTest(
+    practicalGlossFragments.includes('可执行') && practicalGlossFragments.includes('可落地'),
+    'A practicality semantic gloss leaked through task_schema guide text must trigger front-answer leakage.'
+  );
+
   const duplicatedVisibleList = {
     frontText: '综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing 综合辨析：哪一项最可能是中文直译导致的不规范听力词汇表达？ A. ask for an extension B. over my budget C. make an appointment D. do a schedule change thing',
     optionRecords: [
@@ -791,6 +891,8 @@ function runSelfTest() {
       'visible_option_example_list_only_is_not_leak',
       'visible_option_example_guide_leak_is_audited',
       'semantic_answer_gloss_guide_leak_is_audited',
+      'strong_evidence_gloss_guide_leak_is_audited',
+      'practical_gloss_guide_leak_is_audited',
       'duplicated_visible_option_list_only_is_not_leak',
       'source_material_only_is_not_leak',
       'material_strip_does_not_mask_prompt_leak',
