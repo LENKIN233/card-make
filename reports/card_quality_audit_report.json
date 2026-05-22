@@ -18,10 +18,10 @@
   "summary": {
     "total_files": 218,
     "total_cards": 2414,
-    "total_issues": 6968,
+    "total_issues": 6969,
     "cards_with_issues": 2414,
     "by_severity": {
-      "hard_blocker": 29,
+      "hard_blocker": 30,
       "content_risk": 2255,
       "review_gap": 2399,
       "source_risk": 2285
@@ -36,7 +36,7 @@
         "severity": "source_risk"
       },
       "front_leaks_analysis_conclusion": {
-        "count": 1,
+        "count": 2,
         "severity": "hard_blocker"
       },
       "front_leaks_correct_answer": {
@@ -83,8 +83,8 @@
     "by_library": {
       "选词填空": {
         "cards": 260,
-        "issues": 787,
-        "hard_blocker": 18,
+        "issues": 788,
+        "hard_blocker": 19,
         "content_risk": 249,
         "review_gap": 260,
         "source_risk": 260
@@ -27991,15 +27991,16 @@
       "box": "动词",
       "box_prefix": "0202",
       "interaction_id": "multiple_choice",
-      "issue_count": 3,
+      "issue_count": 4,
       "by_severity": {
-        "hard_blocker": 1,
+        "hard_blocker": 2,
         "content_risk": 0,
         "review_gap": 1,
         "source_risk": 1
       },
       "by_rule": {
         "front_leaks_correct_answer": 1,
+        "front_leaks_analysis_conclusion": 1,
         "missing_quality_metadata": 1,
         "unverified_source": 1
       }
@@ -53119,6 +53120,21 @@
       "analysis_excerpt": "① 识别信号：\"not able to ___ for\"——to 后接动词原形，且动词后强制跟 for（介词）。这表明空格处需要一个「与 for 形成固定搭配」的动词。 ② 核心规律：在英语中，很多动词与特定介词形成固定搭配（phrasa..."
     },
     {
+      "rule_id": "front_leaks_analysis_conclusion",
+      "severity": "hard_blocker",
+      "message": "Front-side prompt exposes analysis conclusion wording: 提示：\"___ for\" 是关键.",
+      "file": "card_boxes_seed_cet4_bankedcloze_0202.json",
+      "card_id": "020210",
+      "track": "cet4",
+      "library": "选词填空",
+      "group": "词性判断",
+      "box": "动词",
+      "box_prefix": "0202",
+      "interaction_id": "multiple_choice",
+      "front_excerpt": "\"The researchers also were not able to ___ for certain lifestyle factors that could affect lifespan, including dietary ...",
+      "analysis_excerpt": "① 识别信号：\"not able to ___ for\"——to 后接动词原形，且动词后强制跟 for（介词）。这表明空格处需要一个「与 for 形成固定搭配」的动词。 ② 核心规律：在英语中，很多动词与特定介词形成固定搭配（phrasa..."
+    },
+    {
       "rule_id": "front_leaks_correct_answer",
       "severity": "hard_blocker",
       "message": "Front-side prompt names the correct option outside the visible option list: up.",
@@ -53814,6 +53830,21 @@
         "interaction_id": "lock",
         "front_excerpt": "\"...the latest research shows that language mastery is a {{blank}} that we begin as infants and continue on for the res...",
         "analysis_excerpt": "① 识别信号：\"a ___ that we begin as infants and continue on for the rest of our lives\" → 冠词 a + 空格 + 定语从句。空格是名词，同时定语从句内容限定了这..."
+      },
+      {
+        "rule_id": "front_leaks_analysis_conclusion",
+        "severity": "hard_blocker",
+        "message": "Front-side prompt exposes analysis conclusion wording: 提示：\"___ for\" 是关键.",
+        "file": "card_boxes_seed_cet4_bankedcloze_0202.json",
+        "card_id": "020210",
+        "track": "cet4",
+        "library": "选词填空",
+        "group": "词性判断",
+        "box": "动词",
+        "box_prefix": "0202",
+        "interaction_id": "multiple_choice",
+        "front_excerpt": "\"The researchers also were not able to ___ for certain lifestyle factors that could affect lifespan, including dietary ...",
+        "analysis_excerpt": "① 识别信号：\"not able to ___ for\"——to 后接动词原形，且动词后强制跟 for（介词）。这表明空格处需要一个「与 for 形成固定搭配」的动词。 ② 核心规律：在英语中，很多动词与特定介词形成固定搭配（phrasa..."
       }
     ],
     "front_leaks_correct_answer": [
