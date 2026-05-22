@@ -275,6 +275,30 @@ function isExplanatoryOptionText(optionText) {
     /[，。；;]|空格|主语|谓语|应|需|需要|说明|优先|判断|搭配|后接|修饰|表示/.test(optionText);
 }
 
+function extractOptionExampleTexts(optionText) {
+  const raw = normalizeText(optionText);
+  if (!raw) return [];
+
+  const examples = [];
+  const addExample = value => {
+    const cleaned = normalizeText(value)
+      .replace(/^如\s*/u, '')
+      .replace(/^(?:e\.g\.|for example)\s*/iu, '')
+      .trim();
+    if (!/^[A-Za-z][A-Za-z0-9 -]{2,40}$/.test(cleaned)) return;
+    if (searchTokens(cleaned).some(isDistinctiveAnswerToken)) examples.push(cleaned);
+  };
+
+  for (const match of raw.matchAll(/[（(]([^）)]*[A-Za-z][^）)]*)[）)]/gu)) {
+    addExample(match[1]);
+  }
+  for (const match of raw.matchAll(/(?:^|[\s，,；;])(?:如|e\.g\.|for example)\s+([A-Za-z][A-Za-z0-9 -]{2,40})/giu)) {
+    addExample(match[1]);
+  }
+
+  return [...new Set(examples)];
+}
+
 function visibleOptionRowPattern(option) {
   const key = normalizeText(option.key);
   const optionText = normalizeText(option.text);
@@ -398,11 +422,12 @@ function stripNonPromptAnswerLeakText(frontText, optionRecords = []) {
 
 function optionLeakCandidateTexts(optionText) {
   const raw = normalizeText(optionText);
+  const exampleTexts = extractOptionExampleTexts(raw);
   const head = extractOptionAnswerHead(raw);
-  if (head && head !== raw) return [head];
-  if (isExplanatoryOptionText(raw)) return [];
+  if (head && head !== raw) return [...new Set([head, ...exampleTexts])];
+  if (isExplanatoryOptionText(raw)) return exampleTexts;
   if (raw.length > 40 || searchTokens(raw).length > 8) return [];
-  return raw ? [raw] : [];
+  return raw ? [...new Set([raw, ...exampleTexts])] : exampleTexts;
 }
 
 function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
@@ -508,6 +533,48 @@ function runSelfTest() {
       visibleTaskSchemaGuideLeakAnswer
     ).includes('have to'),
     'Preview-rendered task_schema guide text must be audited as visible front-side prompt text.'
+  );
+
+  const visibleOptionExampleListOnly = {
+    frontText: 'When bond yields rise abruptly, investors usually ___ their exposure to long-duration assets. 空格处应先判断哪种词性？ A. 动词（如 reduce） B. 名词（如 reduction） C. 形容词（如 reduced） D. 介词（如 despite）',
+    optionRecords: [
+      { key: 'A', text: '动词（如 reduce）' },
+      { key: 'B', text: '名词（如 reduction）' },
+      { key: 'C', text: '形容词（如 reduced）' },
+      { key: 'D', text: '介词（如 despite）' },
+    ],
+    answer: { text: 'A' },
+  };
+  assertSelfTest(
+    findFrontAnswerLeakFragments(
+      visibleOptionExampleListOnly.frontText,
+      visibleOptionExampleListOnly.optionRecords,
+      visibleOptionExampleListOnly.answer
+    ).length === 0,
+    'Example words inside the visible option list itself must not be treated as prompt leakage.'
+  );
+
+  const optionExampleLeakedGuideCard = {
+    front_content: {
+      text: 'When bond yields rise abruptly, investors usually ___ their exposure to long-duration assets. 空格处应先判断哪种词性？',
+      task_schema: {
+        action: '判断空格词性',
+        focus: '用主语 investors、频度副词 usually 和宾语 exposure 判断谓语位置',
+        success_criteria: '能先判定空格需要谓语动作词，再代回检查搭配 reduce exposure to 是否成立',
+      },
+      options: visibleOptionExampleListOnly.optionRecords,
+    },
+    answer_key: { correct_option: 'A' },
+  };
+  const optionExampleLeakedGuideOptions = extractOptionRecords(optionExampleLeakedGuideCard);
+  const optionExampleLeakedGuideAnswer = extractAnswerRecord(optionExampleLeakedGuideCard, optionExampleLeakedGuideOptions);
+  assertSelfTest(
+    findFrontAnswerLeakFragments(
+      extractFrontText(optionExampleLeakedGuideCard),
+      optionExampleLeakedGuideOptions,
+      optionExampleLeakedGuideAnswer
+    ).includes('reduce'),
+    'A correct option example word leaked through task_schema guide text must trigger front-answer leakage.'
   );
 
   const duplicatedVisibleList = {
@@ -652,6 +719,8 @@ function runSelfTest() {
       'prompt_answer_text_is_leak',
       'visible_option_list_does_not_mask_prompt_leak',
       'visible_task_schema_guide_is_audited',
+      'visible_option_example_list_only_is_not_leak',
+      'visible_option_example_guide_leak_is_audited',
       'duplicated_visible_option_list_only_is_not_leak',
       'source_material_only_is_not_leak',
       'material_strip_does_not_mask_prompt_leak',
