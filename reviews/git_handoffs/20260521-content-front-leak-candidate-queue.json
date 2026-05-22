@@ -210,14 +210,14 @@
     },
     {
       "command": "node scripts/audit_front_leak_queue.mjs --base origin/main --branches origin/content/front-leak-candidate-queue --refresh-scoped-evidence --require-harness",
-      "result": "pending rerun after push"
+      "result": "passed after push; front_answer_leaks=0, corpus_digest=9296725c1570b80b826bb432a8f4bd3a28aed17038778179b065d592e7d23467, scoped evidence refresh changed_review_records=[]"
     },
     {
       "command": "gh pr view 50 --json number,state,isDraft,mergeable,headRefOid,url,statusCheckRollup",
-      "result": "pending rerun after push"
+      "result": "passed after push; PR #50 open draft at head 0ae34f14a9262547cf1b36cef2abc5ad53c0c265, statusCheckRollup=[]; mergeable reported UNKNOWN immediately after push"
     }
   ],
-  "local_status": "Draft PR #50 is open for user review. The branch includes PR #57 follow-up content and scoped evidence, remains candidate-only, and must not be auto-merged as formal content.",
+  "local_status": "Draft PR #50 is open for user review at pushed head 0ae34f14a9262547cf1b36cef2abc5ad53c0c265. The branch includes PR #57 follow-up content and scoped evidence, remains candidate-only, and must not be auto-merged as formal content.",
   "remaining_risks": [
     "Candidate content only; this branch does not mark any card formally usable.",
     "No reviews/approved_batches record was created.",
