@@ -125,7 +125,7 @@
       },
       "front": {
         "text": "听完后，选出 Overall 后给出的最终主旨。",
-        "task_prompt": "salary、workload、support 是回顾项；Overall 后的 mentoring 才是结论中心。",
+        "task_prompt": "先把 salary、workload、support 识别为前文回顾项，再听 Overall 后说话人怎样给出最终评价结论。",
         "display_mode": "audio_then_options",
         "audio_first": true,
         "audio_url": "ai_tts/cet4/0051/005102.mp3",
@@ -149,7 +149,7 @@
         ],
         "task_schema": {
           "action": "四选一：结尾主旨概括",
-          "focus": "Overall / most effective way",
+          "focus": "Overall / final evaluative conclusion",
           "success_criteria": "能选出覆盖结尾总判断的主题项，而不是局部回顾项"
         }
       },
@@ -171,7 +171,7 @@
         ]
       },
       "quality_metadata": {
-        "main_training_goal": "根据 Overall 和 most effective way 概括结尾主旨",
+        "main_training_goal": "根据 Overall 识别结尾总括评价结论",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
