@@ -1590,6 +1590,11 @@ function validateGitWorkflow(errors) {
       'content_sample_global_report_changed',
       'content_sample_non_scope_self_review_changed',
       'content_sample_non_scope_scoped_audit_changed',
+      'content_sample_multiple_scope_prefixes_missing_evidence',
+      'content_candidate_front_answer_leak_queue',
+      'content_candidate_residual_blocker_closure',
+      'multi_prefix_review_unit',
+      'no_auto_merge_content_candidate_user_confirmation_required',
       'reports/card_quality_audit_report.json',
       'reports/card_validation_report.json',
     ]) {
@@ -1602,6 +1607,11 @@ function validateGitWorkflow(errors) {
     guardrail.includes('global report refreshes') && guardrail.includes('non-scope self-review')
   )) {
     pushIssue(errors, 'agent_harness_pr_scope_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('multi-prefix content') && guardrail.includes('explicit handoff')
+  )) {
+    pushIssue(errors, 'agent_harness_multi_prefix_guardrail_missing', {});
   }
   if (!agentEntry.includes('## Agent-Managed Git')) {
     pushIssue(errors, 'agent_entry_missing_git_section', {});
