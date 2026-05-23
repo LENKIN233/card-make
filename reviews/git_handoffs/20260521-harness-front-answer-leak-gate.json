@@ -1,0 +1,68 @@
+{
+  "handoff_id": "20260521-harness-front-answer-leak-gate",
+  "created_at": "2026-05-21T02:06:21+08:00",
+  "agent": "codex",
+  "branch": "harness/front-answer-leak-gate",
+  "base_branch": "main",
+  "commit_sha": "35adc433399c71ba2040017ade8ce9f65a4276e6",
+  "push_ref": "origin/harness/front-answer-leak-gate",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/37",
+  "PR_number": 37,
+  "PR_state": "MERGED",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      "reports/card_quality_audit_report.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0010-existing-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0010-revised-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0011-existing-sample.json",
+      "reviews/agent_self_review/20260514-cet4-listening-0011-revised-sample.json",
+      "reviews/audit_scopes/20260521-front-answer-leak-proof-scope-audit.json",
+      "scripts/audit_card_quality.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/card-quality-audit.json",
+      "spec/eval-fixtures.json",
+      "spec/evals.json"
+    ]
+  },
+  "summary": [
+    "Added front_leaks_correct_answer as a hard-blocker card quality audit rule for multiple-choice fronts that name the correct option before the learner chooses.",
+    "Extended the golden-task harness with GT-CARD-005 and a bad fixture for front answer leakage.",
+    "Refreshed quality audit evidence and changed the affected 0010/0011 self-review records from confirmation-ready to blocked under the new rule."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/audit_card_quality.mjs --write-report",
+      "result": "passed; report now surfaces 58 front_leaks_correct_answer hard blockers in the legacy corpus"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 001101,001102,001103 --write-scope-report reviews/audit_scopes/20260521-front-answer-leak-proof-scope-audit.json",
+      "result": "passed; scoped summary has hard_blocker=3 and front_leaks_correct_answer=3"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group alignment warnings"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed; cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "gh pr view 37 --json number,title,state,isDraft,mergeable,baseRefName,headRefName,url,commits,statusCheckRollup",
+      "result": "passed; ready PR #37 was mergeable and then merged into main with merge commit 7df3bd920b650ec4632f777a2bbfd15112de0dbf"
+    }
+  ],
+  "local_status": "PR #37 merged into main; this handoff was updated in the follow-up review-fix session to reflect final PR state and final branch head.",
+  "remaining_risks": [
+    "The new audit rule surfaces existing legacy corpus blockers; this PR rejects them mechanically but does not rewrite card content.",
+    "GitHub reports no checks for this repository; local validation and mergeability are the completion evidence."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs",
+  "updated_at": "2026-05-21T02:16:00+08:00",
+  "merge_commit_sha": "7df3bd920b650ec4632f777a2bbfd15112de0dbf"
+}

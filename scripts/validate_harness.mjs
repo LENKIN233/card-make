@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
@@ -31,10 +32,24 @@ const REQUIRED_METADATA_FIELDS = [
 
 const REQUIRED_CARD_FIELDS = ['card_id', 'track', 'knowledge_ref', 'interaction_id', 'front', 'analysis'];
 const CORE_INTERACTION_IDS = ['flip', 'multiple_choice', 'lock', 'elimination', 'swipe'];
-const REQUIRED_GOLDEN_TASKS = ['GT-CARD-001', 'GT-CARD-002', 'GT-CARD-003', 'GT-CARD-004'];
+const REQUIRED_GOLDEN_TASKS = ['GT-CARD-001', 'GT-CARD-002', 'GT-CARD-003', 'GT-CARD-004', 'GT-CARD-005', 'GT-CARD-006'];
+const REQUIRED_AUDIO_QC_CHECKS = [
+  'audio_matches_text',
+  'target_signal_audible',
+  'accurate_pronunciation',
+  'suitable_speed',
+  'natural_rhythm',
+  'stress_and_pauses_do_not_mislead',
+  'no_unwanted_noise_or_clipping',
+  'no_autoplay_assumption',
+  'front_side_no_required_subtitles',
+  'tts_audio_not_used_as_source_authenticity',
+];
 const REQUIRED_QUALITY_AUDIT_RULES = [
   'multiple_choice_no_options',
   'multiple_choice_answer_not_in_options',
+  'front_leaks_correct_answer',
+  'front_leaks_analysis_conclusion',
   'front_missing_or_too_short',
   'analysis_missing_or_too_short',
   'generic_front_pattern',
@@ -52,6 +67,7 @@ const REQUIRED_SAMPLE_GATE_FIELDS = [
   'card_quality_audit_no_hard_blockers',
   'scoped_card_quality_audit_report',
   'box_progression_roles',
+  'TTS_audio_QC_plan_when_audio_exists',
   'no_standalone_hint_layer_interaction',
 ];
 const REQUIRED_GIT_HANDOFF_FIELDS = [
@@ -90,6 +106,9 @@ const REQUIRED_QUALITY_AUDIT_SCOPE_SUMMARY_FIELDS = [
   'by_rule',
 ];
 const QUALITY_AUDIT_SEVERITIES = ['hard_blocker', 'content_risk', 'review_gap', 'source_risk'];
+const SELF_REVIEW_SCOPE_TYPES = ['three_card_sample_per_box', 'residual_blocker_closure'];
+const STANDARD_SELF_REVIEW_BATCH_STATUSES = ['recommend_user_confirmation', 'revise_before_user_review', 'blocked'];
+const RESIDUAL_BLOCKER_CLOSURE_STATUS = 'documented_residual_closure';
 const PR_SCOPE_VALIDATION_COMMAND = 'node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract';
 const SCOPED_AUDIT_VALIDATION_COMMAND = 'node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json';
 
@@ -200,6 +219,10 @@ function hasOwn(object, key) {
 
 function hasText(value) {
   return typeof value === 'string' && value.trim().length > 0;
+}
+
+function hasNonEmptyTextArray(value) {
+  return Array.isArray(value) && value.length > 0 && value.every(hasText);
 }
 
 function stringSet(values) {
@@ -458,8 +481,19 @@ function validateContentQuality(errors) {
   if (quality.tts_policy?.audio_generation_method !== 'TTS_AI_generated_by_default') {
     pushIssue(errors, 'tts_generation_policy_drift', {});
   }
+  if (quality.tts_policy?.audio_generation_contract !== 'spec/audio-generation-contract.json') {
+    pushIssue(errors, 'tts_audio_generation_contract_missing', {});
+  }
   if (quality.tts_policy?.audio_source_type_is_separate_from_text_source_type !== true) {
     pushIssue(errors, 'tts_text_audio_separation_missing', {});
+  }
+  if (quality.tts_policy?.formal_audio_use_requires_audio_qc_record !== true) {
+    pushIssue(errors, 'tts_formal_audio_qc_policy_missing', {});
+  }
+  for (const check of ['audio_matches_text', 'target_signal_audible_when_card_trains_pronunciation_or_listening_signal']) {
+    if (!(quality.tts_policy?.tts_audio_quality_checks || []).includes(check)) {
+      pushIssue(errors, 'tts_audio_quality_check_missing', { check });
+    }
   }
 
   for (const prototype of [
@@ -473,6 +507,205 @@ function validateContentQuality(errors) {
   ]) {
     if (!(quality.allowed_card_prototypes || []).includes(prototype)) {
       pushIssue(errors, 'card_prototype_missing', { prototype });
+    }
+  }
+}
+
+function validateAudioGenerationContract(errors) {
+  const manifest = readJson('spec/doc-manifest.json');
+  const activePaths = new Set((manifest.active_docs || []).map(doc => doc.path));
+  for (const path of [
+    'spec/audio-generation-contract.json',
+    'scripts/validate_audio_qc.mjs',
+    'reviews/audio_qc/README.md',
+    'reviews/audio_qc/TEMPLATE.json',
+  ]) {
+    if (!activePaths.has(path)) {
+      pushIssue(errors, 'audio_generation_manifest_entry_missing', { path });
+    }
+  }
+
+  const authorityMap = readJson('spec/authority-map.json');
+  if (authorityMap.owners?.audio_generation_and_qc !== 'spec/audio-generation-contract.json') {
+    pushIssue(errors, 'audio_generation_owner_drift', {
+      owner: authorityMap.owners?.audio_generation_and_qc,
+    });
+  }
+  if (authorityMap.owners?.audio_qc_records !== 'reviews/audio_qc/TEMPLATE.json') {
+    pushIssue(errors, 'audio_qc_records_owner_drift', {
+      owner: authorityMap.owners?.audio_qc_records,
+    });
+  }
+
+  const contract = readJson('spec/audio-generation-contract.json');
+  if (contract.status !== 'active') {
+    pushIssue(errors, 'audio_generation_contract_not_active', { status: contract.status });
+  }
+  if (contract.asset_policy?.asset_dir !== 'ai_tts/') {
+    pushIssue(errors, 'audio_asset_dir_drift', { asset_dir: contract.asset_policy?.asset_dir });
+  }
+  for (const field of [
+    'audio_is_content_medium_not_interaction_family',
+    'tts_audio_never_proves_source_authenticity',
+    'no_autoplay',
+    'front_side_subtitles_not_required',
+  ]) {
+    if (contract.asset_policy?.[field] !== true) {
+      pushIssue(errors, 'audio_asset_policy_flag_missing', { field });
+    }
+  }
+  for (const field of [
+    'existing_tts_assets_allowed_for_candidate_samples',
+    'must_mark_sample_only_when_audio_unreviewed',
+    'must_not_claim_formal_audio_quality',
+    'candidate_metadata_must_keep_text_source_type_separate_from_audio_generation_method',
+  ]) {
+    if (contract.candidate_policy?.[field] !== true) {
+      pushIssue(errors, 'audio_candidate_policy_flag_missing', { field });
+    }
+  }
+  if (contract.text_gate_before_generation?.required !== true) {
+    pushIssue(errors, 'audio_text_gate_not_required', {});
+  }
+  for (const check of readJson('spec/content-quality-contract.json').tts_policy?.tts_text_quality_checks || []) {
+    if (!(contract.text_gate_before_generation?.required_checks || []).includes(check)) {
+      pushIssue(errors, 'audio_text_gate_check_missing', { check });
+    }
+  }
+  for (const field of [
+    'card_id',
+    'transcript',
+    'target_signal',
+    'pronunciation_notes',
+    'method',
+    'voice_or_speaker',
+    'speed',
+    'style_notes',
+    'output_path',
+    'provenance_note',
+  ]) {
+    if (!(contract.generation_plan_required_fields || []).includes(field)) {
+      pushIssue(errors, 'audio_generation_plan_field_missing', { field });
+    }
+  }
+  for (const method of ['TTS_AI_generated', 'human_recorded', 'none']) {
+    if (!(contract.allowed_generation_methods || []).includes(method)) {
+      pushIssue(errors, 'audio_generation_method_missing', { method });
+    }
+  }
+  if (!(contract.legacy_generation_method_aliases || []).includes('tts')) {
+    pushIssue(errors, 'audio_legacy_tts_alias_missing', {});
+  }
+  if (contract.pronunciation_target_policy?.required_for_listening_pronunciation_boxes !== true) {
+    pushIssue(errors, 'audio_pronunciation_target_policy_missing', {});
+  }
+  if (contract.pronunciation_target_policy?.target_signal_must_be_audible_in_generated_audio !== true) {
+    pushIssue(errors, 'audio_target_signal_policy_missing', {});
+  }
+  if (contract.formal_audio_qc?.record_dir !== 'reviews/audio_qc/') {
+    pushIssue(errors, 'audio_qc_record_dir_drift', { record_dir: contract.formal_audio_qc?.record_dir });
+  }
+  if (contract.formal_audio_qc?.template !== 'reviews/audio_qc/TEMPLATE.json') {
+    pushIssue(errors, 'audio_qc_template_path_drift', { template: contract.formal_audio_qc?.template });
+  }
+  if (contract.formal_audio_qc?.validator !== 'scripts/validate_audio_qc.mjs') {
+    pushIssue(errors, 'audio_qc_validator_path_drift', { validator: contract.formal_audio_qc?.validator });
+  }
+  if (contract.formal_audio_qc?.required_before_formal_audio_use !== true) {
+    pushIssue(errors, 'formal_audio_qc_not_required', {});
+  }
+  for (const check of REQUIRED_AUDIO_QC_CHECKS) {
+    if (!(contract.formal_audio_qc?.required_checks || []).includes(check)) {
+      pushIssue(errors, 'audio_qc_required_check_missing', { check });
+    }
+  }
+  for (const failure of [
+    'target_signal_missing_or_misleading',
+    'source_authenticity_claim_from_tts',
+    'formal_audio_ready_without_user_content_approval_boundary',
+  ]) {
+    if (!(contract.formal_audio_qc?.blocking_failures || []).includes(failure)) {
+      pushIssue(errors, 'audio_qc_blocking_failure_missing', { failure });
+    }
+  }
+  for (const field of [
+    'do_not_replace_audio_in_content_sample_PRs',
+    'audio_asset_changes_belong_in_audio_or_tooling_branch',
+    'replacement_requires_audio_qc_record',
+    'bulk_generation_requires_user_confirmed_sample_scope',
+  ]) {
+    if (contract.asset_change_policy?.[field] !== true) {
+      pushIssue(errors, 'audio_asset_change_policy_missing', { field });
+    }
+  }
+  for (const command of ['node scripts/validate_audio_qc.mjs', 'node scripts/validate_harness.mjs']) {
+    if (!(contract.validation_commands || []).includes(command)) {
+      pushIssue(errors, 'audio_validation_command_missing', { command });
+    }
+  }
+
+  if (!exists('reviews/audio_qc/TEMPLATE.json')) {
+    pushIssue(errors, 'audio_qc_template_missing', {});
+  } else {
+    const template = readJson('reviews/audio_qc/TEMPLATE.json');
+    for (const field of [
+      'audio_qc_id',
+      'scope',
+      'source_records',
+      'text_gate',
+      'generation_plan',
+      'generated_assets',
+      'qa_checks',
+      'per_card_qc',
+      'verdict',
+      'approval_boundary',
+      'validation',
+    ]) {
+      if (!hasOwn(template, field)) {
+        pushIssue(errors, 'audio_qc_template_field_missing', { field });
+      }
+    }
+    for (const check of REQUIRED_AUDIO_QC_CHECKS) {
+      if (typeof template.qa_checks?.[check] !== 'boolean') {
+        pushIssue(errors, 'audio_qc_template_check_missing', { check });
+      }
+    }
+    if (template.approval_boundary?.tts_audio_is_not_source_authenticity_evidence !== true) {
+      pushIssue(errors, 'audio_qc_template_tts_boundary_missing', {});
+    }
+    if (template.approval_boundary?.formal_content_approval_still_requires_user !== true) {
+      pushIssue(errors, 'audio_qc_template_user_approval_boundary_missing', {});
+    }
+  }
+
+  if (!exists('scripts/validate_audio_qc.mjs')) {
+    pushIssue(errors, 'audio_qc_validator_missing', {});
+  } else {
+    const script = readText('scripts/validate_audio_qc.mjs');
+    for (const token of [
+      'audio_qc_formal_ready_with_failed_check',
+      'audio_qc_source_authenticity_boundary_missing',
+      'target_signal_audible',
+      'ai_tts/',
+    ]) {
+      if (!script.includes(token)) {
+        pushIssue(errors, 'audio_qc_validator_guard_missing', { token });
+      }
+    }
+    try {
+      const output = execFileSync(process.execPath, ['scripts/validate_audio_qc.mjs'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+      });
+      const validation = JSON.parse(output);
+      if (validation.ok !== true) {
+        pushIssue(errors, 'audio_qc_validator_failed', { output: validation });
+      }
+    } catch (error) {
+      pushIssue(errors, 'audio_qc_validator_failed', {
+        message: error.message,
+        output: String(error.stdout || error.stderr || '').slice(0, 1000),
+      });
     }
   }
 }
@@ -532,6 +765,8 @@ function validateCardQualityAudit(errors, warnings) {
   const expectedRuleSeverity = {
     multiple_choice_no_options: 'hard_blocker',
     multiple_choice_answer_not_in_options: 'hard_blocker',
+    front_leaks_correct_answer: 'hard_blocker',
+    front_leaks_analysis_conclusion: 'hard_blocker',
     front_missing_or_too_short: 'content_risk',
     analysis_missing_or_too_short: 'content_risk',
     generic_front_pattern: 'content_risk',
@@ -601,6 +836,25 @@ function validateCardQualityAudit(errors, warnings) {
   }
   if (!script.includes('--write-scope-report') || !script.includes('scoped_card_quality_audit')) {
     pushIssue(errors, 'card_quality_audit_script_scoped_report_missing', {});
+  }
+  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak') || !script.includes('visible_task_schema_guide_is_audited') || !script.includes('visible_option_example_guide_leak_is_audited') || !script.includes('semantic_answer_gloss_guide_leak_is_audited') || !script.includes('strong_evidence_gloss_guide_leak_is_audited') || !script.includes('practical_gloss_guide_leak_is_audited') || !script.includes('research_account_gloss_guide_leak_is_audited') || !script.includes('preposition_semantic_role_gloss_guide_leak_is_audited') || !script.includes('short_preposition_answer_text_is_audited') || !script.includes('analysis_conclusion_guide_leak_is_audited') || !script.includes('quoted_clue_key_guide_leak_is_audited') || !script.includes('long_correct_option_phrase_guide_leak_is_audited') || !script.includes('long_correct_option_summary_token_guide_leak_is_audited') || !script.includes('long_correct_option_driver_token_guide_leak_is_audited') || !script.includes('long_option_shared_topic_context_is_not_leak')) {
+    pushIssue(errors, 'card_quality_audit_self_test_missing', {});
+  } else {
+    try {
+      const output = execFileSync(process.execPath, ['scripts/audit_card_quality.mjs', '--self-test'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+      });
+      const selfTest = JSON.parse(output);
+      if (selfTest.ok !== true) {
+        pushIssue(errors, 'card_quality_audit_self_test_failed', { output: selfTest });
+      }
+    } catch (error) {
+      pushIssue(errors, 'card_quality_audit_self_test_failed', {
+        message: error.message,
+        output: String(error.stdout || error.stderr || '').slice(0, 1000),
+      });
+    }
   }
 
   if (!exists('reports/card_quality_audit_report.json')) {
@@ -718,6 +972,15 @@ function validateWorkflow(errors) {
   if (workflow.sample_quality_gate?.quality_metadata_schema !== 'spec/card-metadata.schema.json') {
     pushIssue(errors, 'sample_quality_gate_schema_drift', {});
   }
+  if (workflow.residual_blocker_closure_review_policy?.review_scope_type !== 'residual_blocker_closure') {
+    pushIssue(errors, 'residual_blocker_closure_policy_missing', {});
+  }
+  if (workflow.residual_blocker_closure_review_policy?.not_sample_approval !== true) {
+    pushIssue(errors, 'residual_blocker_closure_must_not_be_sample_approval', {});
+  }
+  if (!(workflow.self_review_output?.batch_status || []).includes(RESIDUAL_BLOCKER_CLOSURE_STATUS)) {
+    pushIssue(errors, 'residual_blocker_closure_status_missing', {});
+  }
   for (const forbidden of [
     'declare_final_formal_usability',
     'batch_generate_before_user_confirms_sample',
@@ -756,6 +1019,7 @@ function validateReviewDirs(errors) {
     'reviews/agent_self_review',
     'reviews/approved_batches',
     'reviews/audit_scopes',
+    'reviews/audio_qc',
     'reviews/drafts',
     'reviews/git_handoffs',
   ]) {
@@ -873,7 +1137,7 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
   const scopedHardBlockers = usesScopedReport
     ? (report.scoped_hard_blocker_issues || []).filter(issue => scopedIds.has(issue.card_id))
     : (report.hard_blocker_issues || []).filter(issue => scopedIds.has(issue.card_id));
-  if (scopedHardBlockers.length > 0) {
+  if (scopedHardBlockers.length > 0 && (requiredForApproval || auditRecord.scope_has_no_hard_blockers === true)) {
     pushIssue(errors, 'quality_audit_scope_has_hard_blockers', {
       source,
       card_ids: scopedHardBlockers.map(issue => issue.card_id),
@@ -1053,8 +1317,32 @@ function validateSelfReviewCard(card, errors, source, { template }) {
   }
 }
 
-function validateSelfReviewRecord(record, errors, source, { template = false } = {}) {
-  if (record.sample_policy?.is_three_card_sample_per_box !== true) {
+function selfReviewScopeType(record) {
+  const explicitType = record.sample_policy?.review_scope_type;
+  if (hasText(explicitType)) return explicitType;
+  if (record.sample_policy?.residual_blocker_closure === true) return 'residual_blocker_closure';
+  return 'three_card_sample_per_box';
+}
+
+function validateSelfReviewRecord(record, errors, source, { template = false, fixture = false } = {}) {
+  const reviewScopeType = selfReviewScopeType(record);
+  const isResidualBlockerClosure = reviewScopeType === 'residual_blocker_closure';
+
+  if (!SELF_REVIEW_SCOPE_TYPES.includes(reviewScopeType)) {
+    pushIssue(errors, 'self_review_unknown_scope_type', { source, reviewScopeType });
+  }
+
+  if (isResidualBlockerClosure) {
+    if (record.sample_policy?.is_three_card_sample_per_box !== false) {
+      pushIssue(errors, 'residual_self_review_must_not_claim_three_card_sample', { source });
+    }
+    if (record.sample_policy?.residual_blocker_closure !== true) {
+      pushIssue(errors, 'residual_self_review_policy_flag_missing', { source });
+    }
+    if (record.sample_policy?.not_sample_approval !== true) {
+      pushIssue(errors, 'residual_self_review_not_sample_approval_missing', { source });
+    }
+  } else if (record.sample_policy?.is_three_card_sample_per_box !== true) {
     pushIssue(errors, 'self_review_sample_policy_not_three_card', { source });
   }
   if (record.sample_policy?.batch_generation_requires_user_confirmation !== true) {
@@ -1070,19 +1358,15 @@ function validateSelfReviewRecord(record, errors, source, { template = false } =
   for (const card of cards) validateSelfReviewCard(card, errors, source, { template });
   validateQualityAuditRecord(record.quality_audit, errors, source, {
     template,
+    fixture,
     scopeCardIds: record.scope?.card_ids || cards.map(card => card.card_id),
-    requiredForApproval: record.batch_review?.status === 'recommend_user_confirmation',
+    requiredForApproval: !isResidualBlockerClosure && record.batch_review?.status === 'recommend_user_confirmation',
   });
 
   if (!template) {
     const boxPrefixes = record.scope?.box_prefixes || [];
     const scopeCardIds = record.scope?.card_ids || [];
     const expectedCards = Math.max(1, boxPrefixes.length) * 3;
-    for (const field of ['library', 'group', 'box']) {
-      if (!hasText(record.scope?.[field])) {
-        pushIssue(errors, 'self_review_scope_field_missing', { source, field });
-      }
-    }
     if (!Array.isArray(boxPrefixes) || boxPrefixes.length === 0) {
       pushIssue(errors, 'self_review_scope_box_prefixes_missing', { source });
     }
@@ -1095,22 +1379,52 @@ function validateSelfReviewRecord(record, errors, source, { template = false } =
         actualCardIds: cards.map(card => card.card_id),
       });
     }
-    if (cards.length !== expectedCards) {
-      pushIssue(errors, 'self_review_sample_card_count_not_three_per_box', {
-        source,
-        expectedCards,
-        actualCards: cards.length,
-      });
-    }
     if (!Array.isArray(record.specs_read) || record.specs_read.length === 0) {
       pushIssue(errors, 'self_review_specs_read_missing', { source });
     }
-    if (!record.batch_review || !['recommend_user_confirmation', 'revise_before_user_review', 'blocked'].includes(record.batch_review.status)) {
-      pushIssue(errors, 'self_review_batch_status_invalid', { source, status: record.batch_review?.status });
-    }
-    if (record.batch_review?.status === 'recommend_user_confirmation') {
-      const anyBlocked = cards.some(card => card.status !== 'pass' || Object.values(card.blocker_scan || {}).some(Boolean));
-      if (anyBlocked) pushIssue(errors, 'self_review_recommends_confirmation_with_blocked_card', { source });
+
+    if (isResidualBlockerClosure) {
+      if (!hasText(record.scope?.closure_reason)) {
+        pushIssue(errors, 'residual_self_review_closure_reason_missing', { source });
+      }
+      if (!hasNonEmptyTextArray(record.scope?.source_issue_refs)) {
+        pushIssue(errors, 'residual_self_review_source_issue_refs_missing', { source });
+      }
+      if (cards.length !== scopeCardIds.length) {
+        pushIssue(errors, 'residual_self_review_scope_card_count_mismatch', {
+          source,
+          scopeCards: scopeCardIds.length,
+          actualCards: cards.length,
+        });
+      }
+      if (record.batch_review?.status === 'recommend_user_confirmation') {
+        pushIssue(errors, 'residual_self_review_must_not_recommend_confirmation', { source });
+      } else if (record.batch_review?.status !== RESIDUAL_BLOCKER_CLOSURE_STATUS) {
+        pushIssue(errors, 'residual_self_review_batch_status_invalid', {
+          source,
+          status: record.batch_review?.status,
+        });
+      }
+    } else {
+      for (const field of ['library', 'group', 'box']) {
+        if (!hasText(record.scope?.[field])) {
+          pushIssue(errors, 'self_review_scope_field_missing', { source, field });
+        }
+      }
+      if (cards.length !== expectedCards) {
+        pushIssue(errors, 'self_review_sample_card_count_not_three_per_box', {
+          source,
+          expectedCards,
+          actualCards: cards.length,
+        });
+      }
+      if (!record.batch_review || !STANDARD_SELF_REVIEW_BATCH_STATUSES.includes(record.batch_review.status)) {
+        pushIssue(errors, 'self_review_batch_status_invalid', { source, status: record.batch_review?.status });
+      }
+      if (record.batch_review?.status === 'recommend_user_confirmation') {
+        const anyBlocked = cards.some(card => card.status !== 'pass' || Object.values(card.blocker_scan || {}).some(Boolean));
+        if (anyBlocked) pushIssue(errors, 'self_review_recommends_confirmation_with_blocked_card', { source });
+      }
     }
   }
 }
@@ -1276,6 +1590,13 @@ function validateGitWorkflow(errors) {
       'content_sample_global_report_changed',
       'content_sample_non_scope_self_review_changed',
       'content_sample_non_scope_scoped_audit_changed',
+      'content_sample_multiple_scope_prefixes_missing_evidence',
+      'content_sample_current_audit_scope_hard_blockers',
+      'content_candidate_front_answer_leak_queue',
+      'content_candidate_residual_blocker_closure',
+      'multi_prefix_review_unit',
+      'no_auto_merge_content_candidate_user_confirmation_required',
+      'scripts/audit_card_quality.mjs',
       'reports/card_quality_audit_report.json',
       'reports/card_validation_report.json',
     ]) {
@@ -1288,6 +1609,11 @@ function validateGitWorkflow(errors) {
     guardrail.includes('global report refreshes') && guardrail.includes('non-scope self-review')
   )) {
     pushIssue(errors, 'agent_harness_pr_scope_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('multi-prefix content') && guardrail.includes('explicit handoff')
+  )) {
+    pushIssue(errors, 'agent_harness_multi_prefix_guardrail_missing', {});
   }
   if (!agentEntry.includes('## Agent-Managed Git')) {
     pushIssue(errors, 'agent_entry_missing_git_section', {});
@@ -1345,7 +1671,7 @@ function validateGitWorkflow(errors) {
   }
 
   const validationCommands = (gitWorkflow.validation_policy?.before_commit || []).map(entry => entry.command);
-  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_cards.mjs --write-report', SCOPED_AUDIT_VALIDATION_COMMAND, PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
+  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_audio_qc.mjs', 'node scripts/validate_cards.mjs --write-report', SCOPED_AUDIT_VALIDATION_COMMAND, PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
     if (!validationCommands.includes(command)) {
       pushIssue(errors, 'git_validation_command_missing', { command });
     }
@@ -1418,7 +1744,7 @@ function validateEvalsAndPerturbation(errors) {
 
   const perturbation = readJson('spec/perturbation-audit.json');
   const guards = new Set((perturbation.anti_drift_guards || []).map(guard => guard.id));
-  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008']) {
+  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009']) {
     if (!guards.has(id)) {
       pushIssue(errors, 'anti_drift_guard_missing', { id });
     }
@@ -1437,6 +1763,7 @@ function validateEvalFixtures(errors) {
   const allowedPrototypes = new Set(quality.allowed_card_prototypes || []);
   const allowedSourceTypes = new Set(quality.source_policy?.allowed_text_source_types || []);
   const blockers = new Set((quality.blockers || []).map(blocker => blocker.id));
+  const auditRules = new Map((readJson('spec/card-quality-audit.json').rules || []).map(rule => [rule.id, rule]));
   const cases = fixtures.fixture_cases || [];
   const caseTasks = new Set(cases.map(testCase => testCase.golden_task_id));
 
@@ -1485,6 +1812,38 @@ function validateEvalFixtures(errors) {
       continue;
     }
 
+    if (testCase.type === 'self_review_record') {
+      if (testCase.golden_task_id !== 'GT-CARD-004') {
+        pushIssue(errors, 'self_review_fixture_wrong_golden_task', { fixture: testCase.id });
+      }
+      if (expected.self_review_status !== 'block') {
+        pushIssue(errors, 'self_review_fixture_not_blocking_bad_record', { fixture: testCase.id });
+      }
+      const gateErrors = [];
+      validateSelfReviewRecord(testCase.self_review_record || {}, gateErrors, `${testCase.id}.self_review_record`, {
+        fixture: true,
+      });
+      const actualGateCodes = new Set(gateErrors.map(issue => issue.code));
+      for (const expectedGateError of expected.expected_gate_errors || []) {
+        if (!actualGateCodes.has(expectedGateError)) {
+          pushIssue(errors, 'self_review_fixture_expected_error_not_triggered', {
+            fixture: testCase.id,
+            expectedGateError,
+            actualGateErrors: [...actualGateCodes],
+          });
+        }
+      }
+      for (const actualGateCode of actualGateCodes) {
+        if (!(expected.expected_gate_errors || []).includes(actualGateCode)) {
+          pushIssue(errors, 'self_review_fixture_unexpected_gate_error', {
+            fixture: testCase.id,
+            actualGateCode,
+          });
+        }
+      }
+      continue;
+    }
+
     if (testCase.type === 'sample_batch') {
       if (cards.length !== 3) {
         pushIssue(errors, 'sample_fixture_not_three_cards', { fixture: testCase.id, count: cards.length });
@@ -1517,6 +1876,25 @@ function validateEvalFixtures(errors) {
         pushIssue(errors, 'fixture_expected_blocker_not_marked', { fixture: testCase.id, blocker });
       }
     }
+    const expectedAuditRules = expected.expected_audit_rules || [];
+    for (const ruleId of expectedAuditRules) {
+      if (!auditRules.has(ruleId)) {
+        pushIssue(errors, 'fixture_unknown_expected_audit_rule', { fixture: testCase.id, ruleId });
+      }
+    }
+    const expectedHardBlockerRules = expected.expected_hard_blocker_rules || [];
+    for (const ruleId of expectedHardBlockerRules) {
+      const rule = auditRules.get(ruleId);
+      if (!rule) {
+        pushIssue(errors, 'fixture_unknown_expected_hard_blocker_rule', { fixture: testCase.id, ruleId });
+      } else if (rule.severity !== 'hard_blocker') {
+        pushIssue(errors, 'fixture_expected_rule_not_hard_blocker', {
+          fixture: testCase.id,
+          ruleId,
+          severity: rule.severity,
+        });
+      }
+    }
 
     if (testCase.golden_task_id === 'GT-CARD-002') {
       const material = cards[0]?.quality_metadata?.material || {};
@@ -1537,6 +1915,62 @@ function validateEvalFixtures(errors) {
       }
       if (!expectedBlockers.includes('reverse_engineered_front')) {
         pushIssue(errors, 'reverse_front_fixture_missing_blocker', { fixture: testCase.id });
+      }
+    }
+
+    if (testCase.golden_task_id === 'GT-CARD-005') {
+      const card = cards[0] || {};
+      const answerKey = card.answer_key?.correct_option;
+      const options = card.front?.options || card.front_content?.options || [];
+      const correctOption = options.find(option => option.key === answerKey);
+      const frontPrompt = [
+        card.front?.text,
+        card.front?.prompt,
+        card.front?.task_prompt,
+        card.front?.task_schema?.action,
+        card.front?.task_schema?.focus,
+        card.front?.task_schema?.success_criteria,
+        card.front_content?.text,
+        card.front_content?.prompt,
+        card.front_content?.task_prompt,
+        card.front_content?.task_schema?.action,
+        card.front_content?.task_schema?.focus,
+        card.front_content?.task_schema?.success_criteria,
+      ].filter(Boolean).join(' ');
+      if (testCase.fixture_flags?.front_contains_correct_option_text !== true) {
+        pushIssue(errors, 'front_answer_leak_fixture_missing_flag', { fixture: testCase.id });
+      }
+      if (!expectedAuditRules.includes('front_leaks_correct_answer')) {
+        pushIssue(errors, 'front_answer_leak_fixture_missing_audit_rule', { fixture: testCase.id });
+      }
+      if (!expectedHardBlockerRules.includes('front_leaks_correct_answer')) {
+        pushIssue(errors, 'front_answer_leak_fixture_missing_hard_blocker_rule', { fixture: testCase.id });
+      }
+      if (!correctOption?.text || !frontPrompt.includes(correctOption.text)) {
+        pushIssue(errors, 'front_answer_leak_fixture_does_not_name_correct_option', {
+          fixture: testCase.id,
+          card_id: card.card_id,
+        });
+      }
+    }
+
+    if (testCase.golden_task_id === 'GT-CARD-006') {
+      const audioRecord = testCase.audio_qc_record || {};
+      const expectedGateErrors = expected.expected_gate_errors || [];
+      if (testCase.fixture_flags?.existing_ai_tts_path_only !== true) {
+        pushIssue(errors, 'formal_audio_fixture_missing_existing_path_flag', { fixture: testCase.id });
+      }
+      if (testCase.fixture_flags?.target_signal_unreviewed !== true) {
+        pushIssue(errors, 'formal_audio_fixture_missing_target_signal_flag', { fixture: testCase.id });
+      }
+      if (audioRecord.verdict?.formal_audio_ready !== true) {
+        pushIssue(errors, 'formal_audio_fixture_does_not_claim_ready', { fixture: testCase.id });
+      }
+      if (audioRecord.qa_checks?.target_signal_audible !== false) {
+        pushIssue(errors, 'formal_audio_fixture_target_signal_not_failed', { fixture: testCase.id });
+      }
+      if (!expectedGateErrors.includes('target_signal_audible_required_for_formal_audio')) {
+        pushIssue(errors, 'formal_audio_fixture_expected_gate_missing', { fixture: testCase.id });
       }
     }
 
@@ -1600,6 +2034,7 @@ validateAuthorityMap(errors);
 validateSoftbookRefs(errors, warnings);
 validateUpstreamAlignment(errors, warnings);
 validateContentQuality(errors);
+validateAudioGenerationContract(errors);
 validateCardQualityAudit(errors, warnings);
 validateMetadataSchema(errors);
 validateWorkflow(errors);
