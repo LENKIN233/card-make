@@ -42,6 +42,10 @@ function runGit(args, options = {}) {
   return runCommand('git', args, options);
 }
 
+function resolveCommit(ref) {
+  return runGit(['rev-parse', '--verify', `${ref}^{commit}`]).trim();
+}
+
 function normalizePath(value) {
   return value.replaceAll('\\', '/');
 }
@@ -380,7 +384,8 @@ function primaryScopePrefixes(entries) {
 }
 
 function validate({ base, head }) {
-  const entries = changedEntries(base, head);
+  const resolvedHead = head ? resolveCommit(head) : null;
+  const entries = changedEntries(base, resolvedHead);
   const issues = [];
   const warnings = [];
   const contentCandidate = isContentCandidateDiff(entries);
@@ -421,7 +426,7 @@ function validate({ base, head }) {
     }
 
     if (primaryPrefixes.size > 1) {
-      const evidence = multiPrefixEvidenceRecords(entries, head, primaryPrefixes);
+      const evidence = multiPrefixEvidenceRecords(entries, resolvedHead, primaryPrefixes);
       const acceptedEvidence = evidence.filter(record => record.accepted);
       if (acceptedEvidence.length === 0) {
         issues.push({
@@ -440,7 +445,7 @@ function validate({ base, head }) {
       }
     }
 
-    currentScopedAudit = runCurrentScopedAudit({ base, head, entries });
+    currentScopedAudit = runCurrentScopedAudit({ base, head: resolvedHead, entries });
     if (currentScopedAudit?.ok === false) {
       issues.push({
         code: currentScopedAudit.code || 'content_sample_current_audit_scope_hard_blockers',
@@ -457,6 +462,7 @@ function validate({ base, head }) {
     ok: issues.length === 0,
     base,
     head,
+    resolved_head: resolvedHead,
     content_candidate_diff: contentCandidate,
     primary_scope_prefixes: [...primaryPrefixes].sort(),
     changed_paths: entries.map(entry => ({
