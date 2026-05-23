@@ -1597,6 +1597,8 @@ function validateGitWorkflow(errors) {
       'multi_prefix_review_unit',
       'no_auto_merge_content_candidate_user_confirmation_required',
       'scripts/audit_card_quality.mjs',
+      'rev-parse',
+      'resolved_head',
       'reports/card_quality_audit_report.json',
       'reports/card_validation_report.json',
     ]) {
