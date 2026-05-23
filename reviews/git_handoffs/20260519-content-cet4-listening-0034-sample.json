@@ -3,8 +3,8 @@
   "created_at": "2026-05-19T13:34:00+08:00",
   "agent": "codex",
   "branch": "content/cet4-listening-0034-sample",
-  "base_branch": "fix/review-findings-card-contract",
-  "commit_sha": "8ad754d8cc49e42e4e9d2276459ea608ee1bd5ba",
+  "base_branch": "main",
+  "commit_sha": "23225b6681944945ec651f3934b1f3840a84211b",
   "push_ref": "origin/content/cet4-listening-0034-sample",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/25",
   "PR_number": 25,
@@ -39,41 +39,42 @@
   ],
   "validation": [
     {
-      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 003401,003402,003403 --write-scope-report reviews/audit_scopes/20260519-cet4-listening-0034-scope-audit.json",
-      "result": "passed; corpus_digest=35d91675d8809f14ce030ca8c78d8d5f996e1279a4e5b26212155448671b3de6; scoped 003401-003403 issues are source_risk only; hard_blocker=0"
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 003401,003402,003403 --write-scope-report reviews/audit_scopes/20260519-cet4-listening-0034-scope-audit.json --max-examples 20",
+      "result": "passed; corpus_digest=a38b2128e9fdf3c6619fadb260cb03f1e1693267807fb878dcaf159665058da3; scoped 003401-003403 hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
-      "result": "passed; cards=2414; errors=0; warnings=0; global report restored to base before commit to keep content PR scoped"
-    },
-    {
-      "command": "node scripts/validate_harness.mjs",
-      "result": "passed; recorded upstream group alignment warnings plus allowed stale global audit warning backed by scoped audit evidence"
-    },
-    {
-      "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract",
-      "result": "passed; primary_scope_prefixes=[0034]; no global report or non-scope review churn in PR diff"
+      "result": "passed; cards=2414; errors=0; warnings=0; global reports/card_validation_report.json restored before commit to keep content PR scoped"
     },
     {
       "command": "node scripts/validate_cards.mjs",
       "result": "passed; cards=2414; errors=0; warnings=0"
     },
     {
-      "command": "git diff --check",
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group-alignment warnings plus allowed stale global audit warning backed by scoped evidence"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; resolved_head=23225b6681944945ec651f3934b1f3840a84211b; primary_scope_prefixes=[0034]; current scoped audit hard_blocker=0 and front_leaks_correct_answer=0"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
       "result": "passed"
     },
     {
-      "command": "git diff --name-status origin/fix/review-findings-card-contract -- reviews/approved_batches",
-      "result": "passed; no approved batch records changed"
+      "command": "git diff --name-status origin/main...HEAD -- reports reviews/approved_batches",
+      "result": "passed; no reports or approved batch records changed"
     }
   ],
-  "local_status": "clean after scoped audit cleanup commit 8ad754d; this handoff JSON is refreshed in a follow-up evidence commit",
+  "local_status": "clean after post-#61/#62 003402/003403 front-guide leakage fix commit 23225b6; handoff refreshed in a follow-up evidence commit",
   "remaining_risks": [
     "This is a candidate-only 3-card sample for user review, not formal product approval.",
+    "Post-#61/#62 current-audit replay no longer finds front-answer leakage in 003401-003403.",
     "The text source remains simulated/unverified legacy content_pool material and must not be labeled true exam content.",
-    "The scoped audit intentionally reports source_risk for all three cards; there are no hard_blocker/content_risk/review_gap issues in this sample scope.",
-    "The global audit and card validation reports were restored to base so this content PR does not carry merge-order-dependent report churn.",
+    "The scoped audit intentionally reports source_risk for all three cards; audio/TTS quality is not formal source-authenticity evidence.",
     "No reviews/approved_batches record was created; user confirmation is required before batch expansion or formal approval."
   ],
-  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample"
+  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample",
+  "updated_at": "2026-05-24T01:43:14+08:00"
 }
