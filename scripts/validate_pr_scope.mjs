@@ -1,4 +1,5 @@
 import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
 import path from 'node:path';
 
 const DEFAULT_BASE = 'origin/fix/review-findings-card-contract';
@@ -6,6 +7,11 @@ const GLOBAL_REPORT_PATHS = new Set([
   'reports/card_quality_audit_report.json',
   'reports/card_validation_report.json',
 ]);
+const MULTI_PREFIX_CONTENT_CHANGE_TYPES = new Set([
+  'content_candidate_front_answer_leak_queue',
+  'content_candidate_residual_blocker_closure',
+]);
+const CONTENT_NO_AUTO_MERGE_AUTHORITY = 'no_auto_merge_content_candidate_user_confirmation_required';
 
 function readOption(name, fallback) {
   const index = process.argv.indexOf(name);
@@ -96,6 +102,113 @@ function isContentReviewPath(filePath) {
     (isDraftPath(filePath) || isSelfReviewPath(filePath) || isHandoffPath(filePath) || isScopedAuditPath(filePath));
 }
 
+function safeJsonParse(text) {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+}
+
+function readChangedJson(filePath, head) {
+  let text = null;
+  try {
+    text = head ? runGit(['show', `${head}:${filePath}`]) : fs.readFileSync(filePath, 'utf8');
+  } catch {
+    return null;
+  }
+  return safeJsonParse(text);
+}
+
+function prefixesFromScope(scope = {}) {
+  const prefixes = new Set();
+  for (const prefix of scope.box_prefixes || []) {
+    if (typeof prefix === 'string') prefixes.add(prefix);
+  }
+  for (const box of scope.boxes || []) {
+    if (typeof box?.box_prefix === 'string') prefixes.add(box.box_prefix);
+  }
+  return prefixes;
+}
+
+function coversAllPrefixes(recordPrefixes, primaryPrefixes) {
+  for (const prefix of primaryPrefixes) {
+    if (!recordPrefixes.has(prefix)) return false;
+  }
+  return true;
+}
+
+function multiPrefixEvidenceRecords(entries, head, primaryPrefixes) {
+  const evidence = [];
+
+  for (const entry of entries) {
+    const statusType = entry.status[0] === '?' ? 'A' : entry.status[0];
+    if (statusType === 'D') continue;
+
+    for (const filePath of entry.paths) {
+      if (!isHandoffPath(filePath) && !isSelfReviewPath(filePath)) continue;
+
+      const record = readChangedJson(filePath, head);
+      if (!record) {
+        evidence.push({
+          path: filePath,
+          accepted: false,
+          reason: 'record_not_readable_as_json',
+        });
+        continue;
+      }
+
+      if (isHandoffPath(filePath)) {
+        const scope = record.scope || {};
+        const recordPrefixes = prefixesFromScope(scope);
+        const allowedChangeType = MULTI_PREFIX_CONTENT_CHANGE_TYPES.has(scope.change_type);
+        const explicitMultiPrefixUnit = scope.multi_prefix_review_unit === true &&
+          typeof scope.scope_reason === 'string' &&
+          scope.scope_reason.trim().length > 0;
+        const accepted = coversAllPrefixes(recordPrefixes, primaryPrefixes) &&
+          (allowedChangeType || explicitMultiPrefixUnit) &&
+          record.merge_authority === CONTENT_NO_AUTO_MERGE_AUTHORITY;
+
+        evidence.push({
+          path: filePath,
+          accepted,
+          kind: 'git_handoff',
+          change_type: scope.change_type || null,
+          multi_prefix_review_unit: scope.multi_prefix_review_unit === true,
+          prefixes: [...recordPrefixes].sort(),
+          reason: accepted
+            ? 'accepted_multi_prefix_handoff'
+            : 'handoff_must_cover_all_prefixes_name_an_allowed_multi_prefix_scope_and_keep_content_no_auto_merge',
+        });
+        continue;
+      }
+
+      if (isSelfReviewPath(filePath)) {
+        const samplePolicy = record.sample_policy || {};
+        const recordPrefixes = prefixesFromScope(record.scope || {});
+        const accepted = coversAllPrefixes(recordPrefixes, primaryPrefixes) &&
+          samplePolicy.review_scope_type === 'residual_blocker_closure' &&
+          samplePolicy.residual_blocker_closure === true &&
+          samplePolicy.not_sample_approval === true &&
+          record.batch_review?.status === 'documented_residual_closure';
+
+        evidence.push({
+          path: filePath,
+          accepted,
+          kind: 'agent_self_review',
+          review_scope_type: samplePolicy.review_scope_type || null,
+          prefixes: [...recordPrefixes].sort(),
+          reason: accepted
+            ? 'accepted_residual_blocker_closure_review'
+            : 'self_review_must_be_documented_residual_blocker_closure_and_cover_all_prefixes',
+        });
+      }
+    }
+  }
+
+  return evidence;
+}
+
 function isContentCandidateDiff(entries) {
   return entries.some(entry => entry.paths.some(filePath =>
     isCardBoxPath(filePath) || isContentReviewPath(filePath)
@@ -177,11 +290,23 @@ function validate({ base, head }) {
     }
 
     if (primaryPrefixes.size > 1) {
-      warnings.push({
-        code: 'content_sample_multiple_scope_prefixes',
-        prefixes: [...primaryPrefixes].sort(),
-        message: 'Multiple box prefixes changed; confirm this is intentional and still a single review unit.',
-      });
+      const evidence = multiPrefixEvidenceRecords(entries, head, primaryPrefixes);
+      const acceptedEvidence = evidence.filter(record => record.accepted);
+      if (acceptedEvidence.length === 0) {
+        issues.push({
+          code: 'content_sample_multiple_scope_prefixes_missing_evidence',
+          prefixes: [...primaryPrefixes].sort(),
+          evidence,
+          message: 'Multi-prefix content PRs must include explicit changed handoff or residual-closure evidence; a warning is not enough to prove a single review unit.',
+        });
+      } else {
+        warnings.push({
+          code: 'content_sample_multiple_scope_prefixes_documented',
+          prefixes: [...primaryPrefixes].sort(),
+          evidence: acceptedEvidence,
+          message: 'Multiple box prefixes changed and are documented by explicit multi-prefix content evidence.',
+        });
+      }
     }
   }
 
