@@ -124,7 +124,7 @@
       },
       "front": {
         "text": "听完后，选出男生去图书馆的最初目的。",
-        "task_prompt": "题目问 purpose，就抓 went to ... to return；ended up 后面是最后发生的事。",
+        "task_prompt": "题目问 purpose，先定位去某地时的不定式目的；ended up 后面是最后发生的事。",
         "display_mode": "audio_then_options",
         "audio_first": true,
         "audio_url": "ai_tts/cet4/0034/003402.mp3",
@@ -148,8 +148,8 @@
         ],
         "task_schema": {
           "action": "选择最初目的",
-          "focus": "to return some books 与 ended up studying 的目的/结果区分",
-          "success_criteria": "能说明 return books 是去图书馆的目的，studying for finals 是最终行为"
+          "focus": "initial purpose marker / later result boundary",
+          "success_criteria": "能区分去某地时的目的和后来实际发生的结果"
         }
       },
       "answer_key": {
@@ -207,7 +207,7 @@
       },
       "front": {
         "text": "听完后，选出演唱会被取消的原因。",
-        "task_prompt": "due to 后面是名词短语型原因；next month 的 reschedule 不是取消原因。",
+        "task_prompt": "due to 后面是名词短语型原因；后一句是后续处理信息，不是取消原因。",
         "display_mode": "audio_then_options",
         "audio_first": true,
         "audio_url": "ai_tts/cet4/0034/003403.mp3",
@@ -231,8 +231,8 @@
         ],
         "task_schema": {
           "action": "选择 due to 引出的原因",
-          "focus": "cancelled due to severe weather forecast 的因果绑定",
-          "success_criteria": "能说明 severe weather forecast 是取消原因，reschedule next month 只是后续安排"
+          "focus": "due to noun-phrase cause / follow-up arrangement",
+          "success_criteria": "能选出 due to 引出的取消原因，并排除后续处理信息"
         }
       },
       "answer_key": {
