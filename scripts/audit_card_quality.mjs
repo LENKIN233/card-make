@@ -176,6 +176,8 @@ const SEMANTIC_ANSWER_GLOSS_GROUPS = [
   },
 ];
 
+const ANSWER_SUMMARY_GUIDE_PATTERN = /(?:核心观点|核心|观点|主旨|重点|同一重点|强化|强调|反复|再次|更关键|真正驱动因素|驱动因素|作用|central|repeat|again|stress|emphasize|emphasise|main point|key point|driver|foundation|basis|essential)/iu;
+
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -309,7 +311,12 @@ function searchTokens(value) {
 function tokenAppears(normalizedText, token) {
   if (!normalizedText || !token) return false;
   if (/[\u4e00-\u9fff]/.test(token)) return normalizedText.includes(token);
-  return normalizedText.split(' ').includes(token);
+  const textTokens = normalizedText.split(' ');
+  if (textTokens.includes(token)) return true;
+  if (/^[a-z]{5,}$/.test(token)) {
+    return textTokens.some(textToken => textToken === `${token}ly`);
+  }
+  return false;
 }
 
 function containsSearchPhrase(normalizedText, normalizedPhrase) {
@@ -552,15 +559,58 @@ function stripNonPromptAnswerLeakText(frontText, optionRecords = []) {
   );
 }
 
-function optionLeakCandidateTexts(optionText) {
+function uniqueLongOptionLeakCandidateTexts(optionText, optionRecords = [], promptText = '') {
+  const raw = normalizeText(optionText);
+  const allTokens = searchTokens(raw);
+  const tokens = searchTokens(raw).filter(isDistinctiveAnswerToken);
+  if (raw.length <= 40 && allTokens.length <= 8) return [];
+  const hasAnswerSummaryGuide = ANSWER_SUMMARY_GUIDE_PATTERN.test(normalizeText(promptText));
+  if (!hasAnswerSummaryGuide) return [];
+
+  const otherTokens = new Set();
+  const otherOptionTexts = [];
+  for (const option of optionRecords) {
+    if (normalizeText(option.text) === raw) continue;
+    otherOptionTexts.push(normalizeForSearch(option.text));
+    for (const token of searchTokens(option.text).filter(isDistinctiveAnswerToken)) {
+      otherTokens.add(token);
+    }
+  }
+
+  const candidates = [];
+  for (let size = 3; size >= 2; size -= 1) {
+    for (let index = 0; index <= tokens.length - size; index += 1) {
+      const phraseTokens = tokens.slice(index, index + size);
+      const phrase = phraseTokens.join(' ');
+      if (
+        phraseTokens.some(token => !otherTokens.has(token)) &&
+        !otherOptionTexts.some(otherText => containsSearchPhrase(otherText, phrase))
+      ) {
+        candidates.push(phrase);
+      }
+    }
+  }
+
+  for (const token of tokens) {
+    if (otherTokens.has(token)) continue;
+    if (/^[a-z0-9]{6,}$/i.test(token) || /[\u4e00-\u9fff]/.test(token)) {
+      candidates.push(token);
+    }
+  }
+
+  return [...new Set(candidates)];
+}
+
+function optionLeakCandidateTexts(optionText, optionRecords = [], promptText = '') {
   const raw = normalizeText(optionText);
   const exampleTexts = extractOptionExampleTexts(raw);
   const semanticGlossTexts = extractSemanticAnswerGlossTexts(raw);
+  const longOptionTexts = uniqueLongOptionLeakCandidateTexts(raw, optionRecords, promptText);
   const head = extractOptionAnswerHead(raw);
-  if (head && head !== raw) return [...new Set([head, ...exampleTexts, ...semanticGlossTexts])];
-  if (isExplanatoryOptionText(raw)) return [...new Set([...exampleTexts, ...semanticGlossTexts])];
-  if (raw.length > 40 || searchTokens(raw).length > 8) return [];
-  return raw ? [...new Set([raw, ...exampleTexts, ...semanticGlossTexts])] : [...new Set([...exampleTexts, ...semanticGlossTexts])];
+  if (head && head !== raw) return [...new Set([head, ...exampleTexts, ...semanticGlossTexts, ...longOptionTexts])];
+  if (isExplanatoryOptionText(raw)) return [...new Set([...exampleTexts, ...semanticGlossTexts, ...longOptionTexts])];
+  if (raw.length > 40 || searchTokens(raw).length > 8) return [...new Set([...exampleTexts, ...semanticGlossTexts, ...longOptionTexts])];
+  return raw ? [...new Set([raw, ...exampleTexts, ...semanticGlossTexts, ...longOptionTexts])] : [...new Set([...exampleTexts, ...semanticGlossTexts, ...longOptionTexts])];
 }
 
 function isShortAlphabeticAnswerText(value) {
@@ -576,12 +626,13 @@ function promptNamesShortAnswer(normalizedFront, optionText) {
 }
 
 function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
-  const normalizedFront = normalizeForSearch(stripNonPromptAnswerLeakText(frontText, optionRecords));
+  const promptText = stripNonPromptAnswerLeakText(frontText, optionRecords);
+  const normalizedFront = normalizeForSearch(promptText);
   if (!normalizedFront) return [];
 
   const fragments = new Set();
   for (const option of extractCorrectOptionRecords(optionRecords, answer)) {
-    for (const optionText of optionLeakCandidateTexts(option.text)) {
+    for (const optionText of optionLeakCandidateTexts(option.text, optionRecords, promptText)) {
       const normalizedOptionText = normalizeForSearch(optionText);
       if (!optionText || !normalizedOptionText) continue;
 
@@ -597,6 +648,8 @@ function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
       }
 
       const tokens = searchTokens(optionText).filter(isDistinctiveAnswerToken);
+      const shouldSearchTokenFragments = normalizeText(optionText) === normalizeText(option.text) || tokens.length <= 2;
+      if (!shouldSearchTokenFragments) continue;
       if (tokens.length === 1 && containsSearchPhrase(normalizedFront, tokens[0])) {
         fragments.add(tokens[0]);
       }
@@ -1089,6 +1142,115 @@ function runSelfTest() {
     'A construction title that uniquely names the correct completion must remain a front-answer leak.'
   );
 
+  const longOptionPhraseGuideLeak = {
+    front_content: {
+      text: '听完后，选出说话人反复强调的核心观点。',
+      task_prompt: '注意 Let me repeat 和 This point is central：它们都在强化同一个 data sharing 观点。',
+      options: [
+        { key: 'A', text: 'Data sharing across departments is the basis for better decisions.' },
+        { key: 'B', text: 'Each team should make decisions without shared information.' },
+        { key: 'C', text: 'Customer examples are more important than decision quality.' },
+        { key: 'D', text: 'Every improvement depends mainly on reducing department size.' },
+      ],
+    },
+    answer_key: { correct_option: 'A' },
+  };
+  const longOptionPhraseGuideLeakOptions = extractOptionRecords(longOptionPhraseGuideLeak);
+  const longOptionPhraseGuideLeakAnswer = extractAnswerRecord(
+    longOptionPhraseGuideLeak,
+    longOptionPhraseGuideLeakOptions
+  );
+  assertSelfTest(
+    findFrontAnswerLeakFragments(
+      extractFrontText(longOptionPhraseGuideLeak),
+      longOptionPhraseGuideLeakOptions,
+      longOptionPhraseGuideLeakAnswer
+    ).includes('data sharing'),
+    'A distinctive phrase from a long correct option leaked through guide text must trigger front-answer leakage.'
+  );
+
+  const longOptionSummaryTokenGuideLeak = {
+    front_content: {
+      text: '听完后，选出被 again 强化的写作提升重点。',
+      task_prompt: 'regularly 和 steady feedback loop 都指向同一重点：持续反馈比偶尔总评更关键。',
+      options: [
+        { key: 'A', text: 'Students should only write longer essays every week.' },
+        { key: 'B', text: 'Occasional final scores matter more than a feedback loop.' },
+        { key: 'C', text: 'Peer competition is the main reason writing improves.' },
+        { key: 'D', text: 'Regular feedback is essential for sustained writing improvement.' },
+      ],
+    },
+    answer_key: { correct_option: 'D' },
+  };
+  const longOptionSummaryTokenGuideLeakOptions = extractOptionRecords(longOptionSummaryTokenGuideLeak);
+  const longOptionSummaryTokenGuideLeakAnswer = extractAnswerRecord(
+    longOptionSummaryTokenGuideLeak,
+    longOptionSummaryTokenGuideLeakOptions
+  );
+  assertSelfTest(
+    findFrontAnswerLeakFragments(
+      extractFrontText(longOptionSummaryTokenGuideLeak),
+      longOptionSummaryTokenGuideLeakOptions,
+      longOptionSummaryTokenGuideLeakAnswer
+    ).includes('regular'),
+    'A unique content token from a long correct option leaked by an answer-summary guide must trigger front-answer leakage.'
+  );
+
+  const longOptionUniqueDriverGuideLeak = {
+    front_content: {
+      text: '听完后，选出 Once more 后再次强调的客户信任重点。',
+      task_prompt: 'but 后先转到真正驱动因素；Once more 又重复强调 consistency 的作用。',
+      options: [
+        { key: 'A', text: 'Cost control is the only driver of customer trust.' },
+        { key: 'B', text: 'Clients return mainly because prices change often.' },
+        { key: 'C', text: 'Service consistency keeps customer trust and brings clients back.' },
+        { key: 'D', text: 'Customer trust does not depend on service experience.' },
+      ],
+    },
+    answer_key: { correct_option: 'C' },
+  };
+  const longOptionUniqueDriverGuideLeakOptions = extractOptionRecords(longOptionUniqueDriverGuideLeak);
+  const longOptionUniqueDriverGuideLeakAnswer = extractAnswerRecord(
+    longOptionUniqueDriverGuideLeak,
+    longOptionUniqueDriverGuideLeakOptions
+  );
+  assertSelfTest(
+    findFrontAnswerLeakFragments(
+      extractFrontText(longOptionUniqueDriverGuideLeak),
+      longOptionUniqueDriverGuideLeakOptions,
+      longOptionUniqueDriverGuideLeakAnswer
+    ).includes('consistency'),
+    'A unique driver token from a long correct option leaked by guide text must trigger front-answer leakage.'
+  );
+
+  const longOptionTopicContextOnly = {
+    front_content: {
+      text: 'Listen to the customer trust discussion and choose the best summary.',
+      task_prompt: 'Use the full recording instead of matching only the topic words customer trust.',
+      options: [
+        { key: 'A', text: 'Cost control is the only driver of customer trust.' },
+        { key: 'B', text: 'Clients return mainly because prices change often.' },
+        { key: 'C', text: 'Service consistency keeps customer trust and brings clients back.' },
+        { key: 'D', text: 'Customer trust does not depend on service experience.' },
+      ],
+    },
+    answer_key: { correct_option: 'C' },
+  };
+  const longOptionTopicContextOnlyOptions = extractOptionRecords(longOptionTopicContextOnly);
+  const longOptionTopicContextOnlyAnswer = extractAnswerRecord(
+    longOptionTopicContextOnly,
+    longOptionTopicContextOnlyOptions
+  );
+  const longOptionTopicContextOnlyFragments = findFrontAnswerLeakFragments(
+    extractFrontText(longOptionTopicContextOnly),
+    longOptionTopicContextOnlyOptions,
+    longOptionTopicContextOnlyAnswer
+  );
+  assertSelfTest(
+    longOptionTopicContextOnlyFragments.length === 0,
+    `A topic-only phrase shared by multiple long options must not be treated as front-answer leakage: ${longOptionTopicContextOnlyFragments.join(', ')}.`
+  );
+
   return {
     ok: true,
     cases: [
@@ -1115,6 +1277,10 @@ function runSelfTest() {
       'option_set_topic_hint_is_not_leak',
       'compressed_option_set_topic_hint_is_not_leak',
       'construction_title_still_leaks_answer',
+      'long_correct_option_phrase_guide_leak_is_audited',
+      'long_correct_option_summary_token_guide_leak_is_audited',
+      'long_correct_option_driver_token_guide_leak_is_audited',
+      'long_option_shared_topic_context_is_not_leak',
     ],
   };
 }
