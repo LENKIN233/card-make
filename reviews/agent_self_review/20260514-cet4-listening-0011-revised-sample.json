@@ -45,7 +45,7 @@
         "box": "弱读",
         "box_prefix": "0011"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
         "main_training_goal": "识别 have to 中 to 的弱读",
         "weak_point_tags": [
@@ -68,7 +68,7 @@
         },
         "exam_value": "帮助用户接受功能词不会完整重读，减少听力中漏听小词造成的误判。",
         "box_progression_role": "recognition",
-        "review_status": "agent_pass"
+        "review_status": "block"
       },
       "blocker_scan": {
         "logic_error": false,
@@ -80,11 +80,13 @@
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Blocked by front_leaks_correct_answer: the front prompt names the correct option outside the visible option list."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Audio file quality is still not formally reviewed; this remains blocked before any user-confirmation request."
+      ],
+      "recommendation": "Block this sample until the front prompt no longer names the correct option; regenerate scoped audit evidence after revision."
     },
     {
       "card_id": "001102",
@@ -98,7 +100,7 @@
         "box": "弱读",
         "box_prefix": "0011"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
         "main_training_goal": "识别 to explain 中 to 的弱读",
         "weak_point_tags": [
@@ -119,7 +121,7 @@
         },
         "exam_value": "训练用户从弱读功能词恢复句法关系，避免只听到实词后误解动作结构。",
         "box_progression_role": "application",
-        "review_status": "agent_pass"
+        "review_status": "block"
       },
       "blocker_scan": {
         "logic_error": false,
@@ -131,11 +133,13 @@
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Blocked by front_leaks_correct_answer: the front prompt names the correct option outside the visible option list."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Audio file quality is still not formally reviewed; this remains blocked before any user-confirmation request."
+      ],
+      "recommendation": "Block this sample until the front prompt no longer names the correct option; regenerate scoped audit evidence after revision."
     },
     {
       "card_id": "001103",
@@ -149,7 +153,7 @@
         "box": "弱读",
         "box_prefix": "0011"
       },
-      "status": "pass",
+      "status": "block",
       "quality_metadata": {
         "main_training_goal": "识别 could 的情态动词弱读",
         "weak_point_tags": [
@@ -172,7 +176,7 @@
         },
         "exam_value": "帮助用户在条件和建议类听力中识别轻读情态词，避免误判动作语气。",
         "box_progression_role": "transfer",
-        "review_status": "agent_pass"
+        "review_status": "block"
       },
       "blocker_scan": {
         "logic_error": false,
@@ -184,31 +188,34 @@
         "fake_source_claim": false,
         "low_quality_variation": false
       },
-      "major_issues": [],
-      "minor_issues": [
-        "Audio file quality is not formally reviewed; current pass is for text/task design only."
+      "major_issues": [
+        "Blocked by front_leaks_correct_answer: the front prompt names the correct option outside the visible option list."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "minor_issues": [
+        "Audio file quality is still not formally reviewed; this remains blocked before any user-confirmation request."
+      ],
+      "recommendation": "Block this sample until the front prompt no longer names the correct option; regenerate scoped audit evidence after revision."
     }
   ],
   "batch_review": {
-    "status": "recommend_user_confirmation",
+    "status": "blocked",
     "box_progression": "The revised sample moves from recognizing a basic weak to in have to, to applying the same method to to explain, to transferring it to a weak modal could in a conditional sentence.",
     "repetition_or_gap_risks": [
       "All three cards use multiple_choice because this box is specifically about identifying weak-read function words or chunks.",
-      "Formal approval still needs user confirmation and separate audio QA."
+      "Formal approval still needs user confirmation and separate audio QA.",
+      "New front_leaks_correct_answer audit rule finds hard blockers; do not request user confirmation until the front prompts stop naming correct options."
     ],
     "representative_cards": [
       "001101",
       "001102",
       "001103"
     ],
-    "next_step": "Publish this scoped candidate branch for user review. Keep it out of approved_batches until the user explicitly confirms the sample direction and separately delegates any broader expansion."
+    "next_step": "Do not ask for user confirmation on this sample. Rewrite the front-side prompts so the learner cannot answer by reading the prompt, then regenerate scoped audit evidence."
   },
   "quality_audit": {
     "report": "reports/card_quality_audit_report.json",
     "corpus_fingerprint": "d23ec6bd2b8184c11fff57677e97f6e684a98f0726312284b2dbe6246984c522",
-    "scope_has_no_hard_blockers": true,
+    "scope_has_no_hard_blockers": false,
     "scope_summary": {
       "card_ids": [
         "001101",
@@ -216,25 +223,27 @@
         "001103"
       ],
       "card_count": 3,
-      "issue_count": 6,
+      "issue_count": 9,
       "by_severity": {
-        "hard_blocker": 0,
+        "hard_blocker": 3,
         "content_risk": 0,
         "review_gap": 0,
         "source_risk": 6
       },
       "by_rule": {
-        "multiple_choice_no_options": 0,
-        "multiple_choice_answer_not_in_options": 0,
-        "front_missing_or_too_short": 0,
         "analysis_missing_or_too_short": 0,
-        "generic_front_pattern": 0,
-        "template_analysis_pattern": 0,
-        "exact_repeated_front": 0,
         "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 3,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
         "missing_quality_metadata": 0,
-        "unverified_source": 3,
-        "synthetic_source": 3
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 3
       }
     }
   }
