@@ -1,0 +1,57 @@
+{
+  "handoff_id": "20260521-tooling-front-leak-queue-audit",
+  "created_at": "2026-05-21T21:49:32+08:00",
+  "agent": "codex",
+  "branch": "tooling/front-leak-queue-audit",
+  "base_branch": "main",
+  "commit_sha": "01daf317f90c88c9d6028abac3e74f4d9d8ecdae",
+  "push_ref": "origin/tooling/front-leak-queue-audit",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/48",
+  "PR_number": 48,
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "tooling",
+    "touched_paths": [
+      "scripts/audit_front_leak_queue.mjs",
+      "spec/doc-manifest.json",
+      "spec/authority-map.json",
+      "spec/git-workflow.json"
+    ]
+  },
+  "summary": [
+    "Added a front-answer-leak queue audit script that creates a temporary sibling worktree, merges a caller-provided candidate branch queue, and reports queue-level quality status.",
+    "The script refreshes a temporary card-quality report inside the audit worktree, then reports front_answer_leaks, card validation, audio QC, and harness status separately.",
+    "Registered the new tooling surface in the doc manifest, authority map, and git workflow validation policy.",
+    "Verified the current front-leak draft queue merges cleanly and has front_answer_leaks=0 while exposing a separate stale scoped-audit fingerprint issue for future merge planning."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/audit_front_leak_queue.mjs --base origin/main --branches origin/content/cet4-listening-0010-0011-front-leak-fix,origin/content/cet4-bankedcloze-0223-front-leak-fix,origin/content/cet4-bankedcloze-0222-front-leak-fix,origin/content/cet4-bankedcloze-0221-front-leak-fix,origin/content/cet4-bankedcloze-0200-front-leak-fix,origin/content/cet4-listening-0012-front-leak-fix,origin/content/front-leak-uncovered-0101-1200-1212-1616",
+      "result": "passed; merged queue cleanly in temporary sibling worktree, front_answer_leaks=0, card_validation.ok=true, audio_qc.ok=true, harness.ok=false with stale quality-audit fingerprint errors surfaced separately"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group-alignment warnings"
+    },
+    {
+      "command": "node -e JSON parse for spec/doc-manifest.json, spec/authority-map.json, spec/git-workflow.json",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check HEAD~1...HEAD",
+      "result": "passed"
+    },
+    {
+      "command": "gh pr create --draft --base main --head tooling/front-leak-queue-audit",
+      "result": "passed; draft PR #48 created"
+    }
+  ],
+  "local_status": "Draft PR #48 is open for tooling review. It contains no card content, audio assets, approval records, or report refreshes.",
+  "remaining_risks": [
+    "The tool reports but does not resolve historical scoped-audit fingerprint drift after queue merging.",
+    "The current content queue still remains candidate-only and must not be auto-merged as formal content without user confirmation.",
+    "No GitHub checks are configured for this repository, so local validation is the authoritative evidence."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
