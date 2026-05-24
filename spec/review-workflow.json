@@ -48,6 +48,7 @@
       "card_quality_audit_no_hard_blockers",
       "scoped_card_quality_audit_report",
       "box_progression_roles",
+      "TTS_audio_QC_plan_when_audio_exists",
       "no_standalone_hint_layer_interaction"
     ],
     "approval_requires": [
@@ -56,6 +57,30 @@
       "harness_validation",
       "card_validation",
       "card_quality_audit_report"
+    ]
+  },
+  "residual_blocker_closure_review_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "purpose": "Record agent review evidence for a small set of previously detected blocker cards that may span unrelated box prefixes.",
+    "allowed_when": [
+      "the scope is a residual blocker closure rather than a new 3-card sample",
+      "each card is explicitly named by card_id",
+      "the source issue or PR evidence is recorded"
+    ],
+    "required_fields": [
+      "sample_policy.review_scope_type=residual_blocker_closure",
+      "sample_policy.is_three_card_sample_per_box=false",
+      "sample_policy.residual_blocker_closure=true",
+      "sample_policy.not_sample_approval=true",
+      "scope.closure_reason",
+      "scope.source_issue_refs",
+      "scoped_card_quality_audit_report"
+    ],
+    "not_sample_approval": true,
+    "must_not": [
+      "use recommend_user_confirmation",
+      "create reviews/approved_batches records",
+      "treat scoped audit plus handoff evidence as formal user approval"
     ]
   },
   "self_review_required_checks": [
@@ -68,7 +93,7 @@
   ],
   "self_review_output": {
     "per_card_status": ["pass", "revise", "block"],
-    "batch_status": ["recommend_user_confirmation", "revise_before_user_review", "blocked"],
+    "batch_status": ["recommend_user_confirmation", "revise_before_user_review", "blocked", "documented_residual_closure"],
     "must_include": [
       "changed_or_new_boxes",
       "representative_cards",
