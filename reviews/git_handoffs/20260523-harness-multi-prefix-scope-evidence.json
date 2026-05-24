@@ -1,0 +1,74 @@
+{
+  "handoff_id": "20260523-harness-multi-prefix-scope-evidence",
+  "created_at": "2026-05-23T23:26:38+08:00",
+  "agent": "codex",
+  "branch": "harness/multi-prefix-scope-evidence",
+  "base_branch": "main",
+  "commit_sha": "c58ea517cd40ebfe4d9dade9790d9bdbf3b858a3",
+  "push_ref": "origin/harness/multi-prefix-scope-evidence",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/60",
+  "PR_number": 60,
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness_pr_scope_gate",
+    "touched_paths": [
+      "scripts/validate_pr_scope.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/agent-harness.json",
+      "spec/git-workflow.json",
+      "reviews/git_handoffs/20260523-harness-multi-prefix-scope-evidence.json"
+    ]
+  },
+  "summary": [
+    "Changed validate_pr_scope so multi-prefix content PRs fail unless they include explicit changed handoff or residual-closure evidence proving a single review unit.",
+    "Allowed documented multi-prefix scopes for the existing front-leak queue and residual blocker closure patterns.",
+    "Kept regular content samples stricter: a plain multi-box content_sample handoff is no longer enough to pass by warning.",
+    "Recorded the new guardrail in agent-harness and git-workflow specs, and made validate_harness check for the guard tokens."
+  ],
+  "validation": [
+    {
+      "command": "node --check scripts/validate_pr_scope.mjs",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main",
+      "result": "passed; harness branch is not a content candidate diff"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head origin/content/front-leak-candidate-queue",
+      "result": "passed; PR #50 queue is documented by content_candidate_front_answer_leak_queue handoff evidence"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head origin/content/front-leak-uncovered-0101-1200-1212-1616",
+      "result": "passed; PR #47 residual closure is documented by content_candidate_residual_blocker_closure handoff evidence"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head origin/content/cet4-listening-0010-0011-front-leak-fix",
+      "result": "expected failure; plain two-prefix content_sample now reports content_sample_multiple_scope_prefixes_missing_evidence"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group-alignment warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --cached --check",
+      "result": "passed before the first commit"
+    },
+    {
+      "command": "gh pr view 60 --json number,state,isDraft,mergeable,headRefOid,url,statusCheckRollup",
+      "result": "passed; PR #60 open, ready, mergeable, and has no status checks"
+    }
+  ],
+  "local_status": "PR #60 is open, ready, and mergeable. The branch is harness/tooling-only and contains no card content changes.",
+  "remaining_risks": [
+    "Existing content PR #50 remains candidate-only and still requires user confirmation before any formal content merge.",
+    "Existing older multi-prefix content samples without explicit multi-prefix evidence will now need a handoff update, split, or superseding queue PR before passing this scope gate.",
+    "GitHub reports no checks for this repository; local validation and mergeability are the completion evidence."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}

@@ -837,7 +837,7 @@ function validateCardQualityAudit(errors, warnings) {
   if (!script.includes('--write-scope-report') || !script.includes('scoped_card_quality_audit')) {
     pushIssue(errors, 'card_quality_audit_script_scoped_report_missing', {});
   }
-  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak') || !script.includes('visible_task_schema_guide_is_audited') || !script.includes('visible_option_example_guide_leak_is_audited') || !script.includes('semantic_answer_gloss_guide_leak_is_audited') || !script.includes('strong_evidence_gloss_guide_leak_is_audited') || !script.includes('practical_gloss_guide_leak_is_audited') || !script.includes('research_account_gloss_guide_leak_is_audited') || !script.includes('preposition_semantic_role_gloss_guide_leak_is_audited') || !script.includes('short_preposition_answer_text_is_audited') || !script.includes('analysis_conclusion_guide_leak_is_audited') || !script.includes('quoted_clue_key_guide_leak_is_audited')) {
+  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak') || !script.includes('visible_task_schema_guide_is_audited') || !script.includes('visible_option_example_guide_leak_is_audited') || !script.includes('semantic_answer_gloss_guide_leak_is_audited') || !script.includes('strong_evidence_gloss_guide_leak_is_audited') || !script.includes('practical_gloss_guide_leak_is_audited') || !script.includes('research_account_gloss_guide_leak_is_audited') || !script.includes('preposition_semantic_role_gloss_guide_leak_is_audited') || !script.includes('short_preposition_answer_text_is_audited') || !script.includes('analysis_conclusion_guide_leak_is_audited') || !script.includes('quoted_clue_key_guide_leak_is_audited') || !script.includes('long_correct_option_phrase_guide_leak_is_audited') || !script.includes('long_correct_option_summary_token_guide_leak_is_audited') || !script.includes('long_correct_option_driver_token_guide_leak_is_audited') || !script.includes('long_option_shared_topic_context_is_not_leak')) {
     pushIssue(errors, 'card_quality_audit_self_test_missing', {});
   } else {
     try {
@@ -1590,6 +1590,15 @@ function validateGitWorkflow(errors) {
       'content_sample_global_report_changed',
       'content_sample_non_scope_self_review_changed',
       'content_sample_non_scope_scoped_audit_changed',
+      'content_sample_multiple_scope_prefixes_missing_evidence',
+      'content_sample_current_audit_scope_hard_blockers',
+      'content_candidate_front_answer_leak_queue',
+      'content_candidate_residual_blocker_closure',
+      'multi_prefix_review_unit',
+      'no_auto_merge_content_candidate_user_confirmation_required',
+      'scripts/audit_card_quality.mjs',
+      'rev-parse',
+      'resolved_head',
       'reports/card_quality_audit_report.json',
       'reports/card_validation_report.json',
     ]) {
@@ -1602,6 +1611,11 @@ function validateGitWorkflow(errors) {
     guardrail.includes('global report refreshes') && guardrail.includes('non-scope self-review')
   )) {
     pushIssue(errors, 'agent_harness_pr_scope_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('multi-prefix content') && guardrail.includes('explicit handoff')
+  )) {
+    pushIssue(errors, 'agent_harness_multi_prefix_guardrail_missing', {});
   }
   if (!agentEntry.includes('## Agent-Managed Git')) {
     pushIssue(errors, 'agent_entry_missing_git_section', {});
