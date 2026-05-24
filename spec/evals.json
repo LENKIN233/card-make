@@ -49,6 +49,28 @@
         "requires_agent_self_review_record",
         "prevents_user_approval_without_record"
       ]
+    },
+    {
+      "id": "GT-CARD-005",
+      "name": "reject_front_answer_leakage",
+      "prompt": "Review a multiple-choice card whose front-side task prompt names the correct option text before the learner chooses.",
+      "expected": [
+        "marks_front_answer_leak_as_hard_blocker",
+        "checks_prompt_text_outside_visible_options",
+        "does_not_salvage_by_adding_more_explanation"
+      ]
+    },
+    {
+      "id": "GT-CARD-006",
+      "name": "formal_audio_requires_qc_record",
+      "prompt": "Given a listening card using generated audio, decide whether it may be marked formal-audio-ready.",
+      "expected": [
+        "requires_text_gate_before_audio_generation",
+        "requires_reviews_audio_qc_record",
+        "requires_target_signal_audible_for_pronunciation_boxes",
+        "keeps_tts_audio_separate_from_source_authenticity",
+        "does_not_treat_existing_ai_tts_asset_as_formal_by_path_only"
+      ]
     }
   ],
   "scorecard": {
