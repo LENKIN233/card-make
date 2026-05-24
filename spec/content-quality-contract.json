@@ -128,9 +128,11 @@
     ]
   },
   "tts_policy": {
+    "audio_generation_contract": "spec/audio-generation-contract.json",
     "audio_generation_method": "TTS_AI_generated_by_default",
     "audio_source_type_is_separate_from_text_source_type": true,
     "text_for_tts_must_pass_content_review_before_audio_generation": true,
+    "formal_audio_use_requires_audio_qc_record": true,
     "tts_text_quality_checks": [
       "fits_CET_listening_register",
       "natural_spoken_English",
@@ -143,13 +145,15 @@
     "tts_audio_quality_checks": [
       "accurate_pronunciation",
       "suitable_speed",
+      "target_signal_audible_when_card_trains_pronunciation_or_listening_signal",
       "natural_rhythm",
       "stress_and_pauses_do_not_mislead",
       "audio_matches_text",
       "no_auto_play",
       "front_side_no_required_subtitles",
       "back_side_transcript_allowed"
-    ]
+    ],
+    "candidate_audio_boundary": "Existing TTS assets may support candidate sample review only when marked sample-only; formal audio readiness requires reviews/audio_qc evidence."
   },
   "blockers": [
     {
