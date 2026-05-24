@@ -1,0 +1,116 @@
+{
+  "version": "card-make-audio-generation-v1",
+  "status": "active",
+  "purpose": "Define how listening-card audio may move from candidate TTS assets to formal usable audio evidence.",
+  "authority_boundary": {
+    "owns": [
+      "audio_generation_plan",
+      "tts_text_review_gate",
+      "tts_audio_quality_gate",
+      "audio_qc_record_requirements"
+    ],
+    "does_not_own": [
+      "text_source_authenticity",
+      "softbook_cet_audio_presentation_rules",
+      "final_formal_content_approval"
+    ],
+    "source_authenticity_owner": "spec/content-quality-contract.json",
+    "presentation_owner": "../softbook_cet/spec/card-system.json",
+    "approval_owner": "reviews/approved_batches/TEMPLATE.json"
+  },
+  "asset_policy": {
+    "asset_dir": "ai_tts/",
+    "existing_assets_role": "legacy_candidate_assets",
+    "audio_is_content_medium_not_interaction_family": true,
+    "tts_audio_never_proves_source_authenticity": true,
+    "no_autoplay": true,
+    "front_side_subtitles_not_required": true,
+    "back_side_transcript_allowed": true
+  },
+  "candidate_policy": {
+    "existing_tts_assets_allowed_for_candidate_samples": true,
+    "must_mark_sample_only_when_audio_unreviewed": true,
+    "must_not_claim_formal_audio_quality": true,
+    "candidate_metadata_must_keep_text_source_type_separate_from_audio_generation_method": true,
+    "candidate_audio_can_support_card_review_only_when_transcript_matches_current_task": true
+  },
+  "text_gate_before_generation": {
+    "required": true,
+    "required_checks": [
+      "fits_CET_listening_register",
+      "natural_spoken_English",
+      "audibly_clear_not_hard_to_parse_written_sentence",
+      "serves_current_library_group_box",
+      "has_clear_signal_point_or_training_focus",
+      "avoids_Chinese_English",
+      "avoids_forced_scenario_for_fake_test_point"
+    ]
+  },
+  "generation_plan_required_fields": [
+    "card_id",
+    "transcript",
+    "target_signal",
+    "pronunciation_notes",
+    "method",
+    "voice_or_speaker",
+    "speed",
+    "style_notes",
+    "output_path",
+    "provenance_note"
+  ],
+  "allowed_generation_methods": [
+    "TTS_AI_generated",
+    "human_recorded",
+    "none"
+  ],
+  "legacy_generation_method_aliases": [
+    "tts"
+  ],
+  "pronunciation_target_policy": {
+    "required_for_listening_pronunciation_boxes": true,
+    "pronunciation_box_group": "语音现象",
+    "target_signal_must_be_audible_in_generated_audio": true,
+    "signal_examples": [
+      "linking_between_final_consonant_and_following_vowel",
+      "weak_form_or_function_word_reduction",
+      "unreleased_final_stop_before_following_consonant"
+    ],
+    "failure_rule": "If the target signal is not audible, the audio must be regenerated or the card cannot be marked formal-audio-ready."
+  },
+  "formal_audio_qc": {
+    "record_dir": "reviews/audio_qc/",
+    "template": "reviews/audio_qc/TEMPLATE.json",
+    "validator": "scripts/validate_audio_qc.mjs",
+    "required_before_formal_audio_use": true,
+    "required_checks": [
+      "audio_matches_text",
+      "target_signal_audible",
+      "accurate_pronunciation",
+      "suitable_speed",
+      "natural_rhythm",
+      "stress_and_pauses_do_not_mislead",
+      "no_unwanted_noise_or_clipping",
+      "no_autoplay_assumption",
+      "front_side_no_required_subtitles",
+      "tts_audio_not_used_as_source_authenticity"
+    ],
+    "blocking_failures": [
+      "audio_text_mismatch",
+      "target_signal_missing_or_misleading",
+      "pronunciation_error_changes_answer_logic",
+      "stress_or_pause_leaks_or_distorts_answer",
+      "source_authenticity_claim_from_tts",
+      "formal_audio_ready_without_user_content_approval_boundary"
+    ]
+  },
+  "asset_change_policy": {
+    "do_not_replace_audio_in_content_sample_PRs": true,
+    "audio_asset_changes_belong_in_audio_or_tooling_branch": true,
+    "replacement_requires_audio_qc_record": true,
+    "bulk_generation_requires_user_confirmed_sample_scope": true
+  },
+  "validation_commands": [
+    "node scripts/validate_audio_qc.mjs",
+    "node scripts/validate_harness.mjs"
+  ]
+}
