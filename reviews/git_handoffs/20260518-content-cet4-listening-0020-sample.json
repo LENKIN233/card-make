@@ -1,10 +1,11 @@
 {
   "handoff_id": "20260518-content-cet4-listening-0020-sample",
   "created_at": "2026-05-18T20:06:36+08:00",
+  "updated_at": "2026-05-24T14:29:50+08:00",
   "agent": "codex",
   "branch": "content/cet4-listening-0020-sample",
-  "base_branch": "fix/review-findings-card-contract",
-  "commit_sha": "16a1df38d3ec54570903274418511fcec9fa1280",
+  "base_branch": "main",
+  "commit_sha": "ed4e6e321f05bfa98a0e41a5cf92637ccb5cd20b",
   "push_ref": "origin/content/cet4-listening-0020-sample",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/16",
   "PR_number": 16,
@@ -35,12 +36,13 @@
     "Blocked the existing 0020 sample where legacy flip/timing-like prompts were not consistently checkable and lacked card quality metadata.",
     "Added a revised 3-card candidate sample focused on but-after-focus, not...but... denial-replacement, and however claim-versus-fact transfer.",
     "Synchronized the revised candidate sample into the first three cards of card_boxes_seed_cet4_listening_0020.json while keeping needs_review and unverified source boundaries.",
+    "Post-#61/#62 spot-check removed answer-direction 002001 front guide text that told the learner the answer was the contrast-after side.",
     "Refreshed scoped audit evidence and restored global report output to base so this PR only carries the 0020 candidate sample."
   ],
   "validation": [
     {
-      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 002001,002002,002003 --write-scope-report reviews/audit_scopes/20260518-cet4-listening-0020-scope-audit.json",
-      "result": "passed; scoped report ok=true, corpus_digest=13779e8fb05c4d80d5dee27d1a5fae21bd760abb6b026aaf2e7d6ba0815a7451, hard_blocker=0, content_risk=0, review_gap=0, source_risk=6"
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 002001,002002,002003 --write-scope-report reviews/audit_scopes/20260518-cet4-listening-0020-scope-audit.json --max-examples 20",
+      "result": "passed; scoped report ok=true, corpus_digest=8e866de542b7bbe950ab6b07637673415a58c2c5bd36ea450f4660cb493fb444, hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
@@ -51,7 +53,7 @@
       "result": "passed; only recorded upstream group alignment warnings plus scoped-evidence warning for stale global audit report"
     },
     {
-      "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract",
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
       "result": "passed; primary_scope_prefixes=[\"0020\"] and no non-scope report churn retained"
     },
     {
@@ -59,15 +61,15 @@
       "result": "passed; ok=true, cards=2414, errors=0, warnings=0"
     },
     {
-      "command": "git diff --check",
+      "command": "git diff --check origin/main...HEAD",
       "result": "passed"
     },
     {
-      "command": "git diff --name-status origin/fix/review-findings-card-contract -- reviews/approved_batches",
+      "command": "git diff --name-status origin/main...HEAD -- reports reviews/approved_batches",
       "result": "passed; empty diff, no approved batch was created"
     }
   ],
-  "local_status": "clean after scoped audit cleanup commit 16a1df3; this handoff JSON is refreshed in a follow-up evidence commit",
+  "local_status": "clean after scoped audit cleanup commit ed4e6e3; this handoff JSON is refreshed in a follow-up evidence commit",
   "remaining_risks": [
     "Candidate sample only; it is not formal user-approved product content.",
     "Source text remains simulated/unverified legacy content_pool material.",
