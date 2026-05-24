@@ -48,7 +48,7 @@
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 but 后的信息重心迁移",
+        "main_training_goal": "识别 but 引发的信息重心迁移",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -83,9 +83,10 @@
       },
       "major_issues": [],
       "minor_issues": [
+        "Text/front design passes the current scoped audit after removing answer-direction guide text.",
         "Audio file quality is not formally reviewed; current pass is for text/task design only."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction after current-harness validation."
     },
     {
       "card_id": "002002",
@@ -134,9 +135,10 @@
       },
       "major_issues": [],
       "minor_issues": [
+        "Text/front design passes the current scoped audit after removing answer-direction guide text.",
         "Audio file quality is not formally reviewed; current pass is for text/task design only."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction after current-harness validation."
     },
     {
       "card_id": "002003",
@@ -187,16 +189,18 @@
       },
       "major_issues": [],
       "minor_issues": [
+        "Text/front design passes the current scoped audit after removing answer-direction guide text.",
         "Audio file quality is not formally reviewed; current pass is for text/task design only."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "recommendation": "Candidate sample can be shown for user confirmation of content direction after current-harness validation."
     }
   ],
   "batch_review": {
     "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample moves from recognizing but-after-focus, to applying not...but... denial-replacement, to transferring contrast reading to however claim-versus-fact structure.",
+    "box_progression": "The revised sample moves from but contrast-weight recognition, to applying not...but... denial-replacement, to transferring contrast reading to however claim-versus-fact structure while keeping front guidance structural.",
     "repetition_or_gap_risks": [
       "All three cards use multiple_choice because this box is specifically about choosing the correct information role after a contrast marker.",
+      "Front guide text has been revised after #61/#62 so it cues contrast-weight reasoning without naming the correct answer direction outside the visible options.",
       "Formal approval still needs user confirmation and separate audio QA."
     ],
     "representative_cards": [
@@ -208,7 +212,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260518-cet4-listening-0020-scope-audit.json",
-    "corpus_fingerprint": "13779e8fb05c4d80d5dee27d1a5fae21bd760abb6b026aaf2e7d6ba0815a7451",
+    "corpus_fingerprint": "8e866de542b7bbe950ab6b07637673415a58c2c5bd36ea450f4660cb493fb444",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -225,17 +229,19 @@
         "source_risk": 6
       },
       "by_rule": {
-        "multiple_choice_no_options": 0,
-        "multiple_choice_answer_not_in_options": 0,
-        "front_missing_or_too_short": 0,
         "analysis_missing_or_too_short": 0,
-        "generic_front_pattern": 0,
-        "template_analysis_pattern": 0,
-        "exact_repeated_front": 0,
         "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
         "missing_quality_metadata": 0,
-        "unverified_source": 3,
-        "synthetic_source": 3
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 3
       }
     }
   }
