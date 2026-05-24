@@ -38,7 +38,7 @@
   "validation": [
     {
       "command": "node scripts/audit_card_quality.mjs --scope-card-ids 100001,100002,100003 --write-scope-report reviews/audit_scopes/20260520-cet6-listening-1000-scope-audit.json --max-examples 20",
-      "result": "passed; corpus_digest=7b70c723715cbe57d5ff47ae19c9f6d9100eeda0551ab79c2712d798648da400; scoped 100001-100003 hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
+      "result": "passed; corpus_digest=3ffe599e9300f284b3e0a8f9b649ebab7c47a566a81d5901c203192a9854fc15; scoped 100001-100003 hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
@@ -73,7 +73,7 @@
       "result": "passed; no global reports or approved batch records changed"
     }
   ],
-  "local_status": "Post-#61/#62 strict visible-front leak fix prepared for PR #36; final remote head and completed validation are recorded in the PR comment. Candidate-only boundary remains unchanged.",
+  "local_status": "Post-#63 answer-hindsight visible-front leak fix prepared for PR #36; final remote head and completed validation are recorded in the PR comment. Candidate-only boundary remains unchanged.",
   "remaining_risks": [
     "Candidate content uses simulated legacy content_pool transcripts with unverified provenance; do not label as true exam content.",
     "Scoped audit intentionally retains source_risk for all three cards.",
@@ -81,11 +81,12 @@
     "User confirmation is required before any batch expansion, approved_batches record, or formal product-content claim."
   ],
   "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample",
-  "updated_at": "2026-05-24T15:39:06+08:00",
+  "updated_at": "2026-05-24T21:35:28+08:00",
   "post_61_62_spot_check": {
     "issue": "Strict visible-front review found 100001 named the answer-bearing library/shuttle/exam-week option cluster, and all three revised fronts used correct-option success criteria before the learner answered.",
     "resolution": "Rewrote visible task_prompt/success_criteria to ask for structural option-first topic prediction only; options, answer keys, back-side analysis, transcripts, audio references, and audio files are unchanged.",
-    "scoped_audit_digest": "7b70c723715cbe57d5ff47ae19c9f6d9100eeda0551ab79c2712d798648da400",
+    "post_63_resolution": "Removed residual 100002 center-action hindsight wording and 100003 all-clues-hit prompt wording from visible front fields after #63 hardened answer-hindsight detection.",
+    "scoped_audit_digest": "3ffe599e9300f284b3e0a8f9b649ebab7c47a566a81d5901c203192a9854fc15",
     "scope_summary": {
       "card_ids": [
         "100001",
