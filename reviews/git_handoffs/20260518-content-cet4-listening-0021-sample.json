@@ -1,7 +1,7 @@
 {
   "handoff_id": "20260518-content-cet4-listening-0021-sample",
   "created_at": "2026-05-18T20:13:59+08:00",
-  "updated_at": "2026-05-24T14:20:31+08:00",
+  "updated_at": "2026-05-24T23:39:25+08:00",
   "agent": "codex",
   "branch": "content/cet4-listening-0021-sample",
   "base_branch": "main",
@@ -36,13 +36,13 @@
     "Blocked the existing 0021 sample because two cards were not checkable under the product interaction contract and all three lacked reviewable quality metadata.",
     "Added a revised 3-card candidate sample focused on because cause recognition, led to arrow direction, and therefore result-end transfer.",
     "Synchronized the revised candidate sample into the first three cards of card_boxes_seed_cet4_listening_0021.json while keeping needs_review and unverified source boundaries.",
-    "Post-#61/#62 spot-check removed answer-bearing 002101 front guide text that named the subway repair cause outside the visible options.",
+    "Post-#63 strict spot-check removed residual answer-hindsight wording from 002101 visible front prompt, focus, and success criteria.",
     "Refreshed scoped audit evidence and restored global report output to base so this PR only carries the 0021 candidate sample."
   ],
   "validation": [
     {
       "command": "node scripts/audit_card_quality.mjs --scope-card-ids 002101,002102,002103 --write-scope-report reviews/audit_scopes/20260518-cet4-listening-0021-scope-audit.json --max-examples 20",
-      "result": "passed; scoped report ok=true, corpus_digest=4c79d55a9d19f64a1dedd6bf9d283dd538b5d54f91a4bdf6196d5437a9d76226, hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
+      "result": "passed; scoped report ok=true, corpus_digest=114ac90c2884ba87525e4308fcbc6c2eaddb5fd4bb7fe0f98fb96ad3b5533111, hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
@@ -69,7 +69,7 @@
       "result": "passed; empty diff, no approved batch was created"
     }
   ],
-  "local_status": "clean after scoped audit cleanup commit 0863f06; this handoff JSON is refreshed in a follow-up evidence commit",
+  "local_status": "post-#63 strict spot-check update pending final commit/push; no reports or approved_batches changes intended",
   "remaining_risks": [
     "Candidate sample only; it is not formal user-approved product content.",
     "Source text remains simulated/unverified legacy content_pool material.",
