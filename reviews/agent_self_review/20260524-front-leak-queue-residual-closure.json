@@ -1,18 +1,23 @@
 {
-  "review_id": "20260521-cet4-bankedcloze-0200-front-leak-fix-sample",
-  "created_at": "2026-05-21T18:37:11+08:00",
+  "review_id": "20260524-front-leak-queue-residual-closure",
+  "created_at": "2026-05-24T14:45:00+08:00",
   "agent": "codex",
   "scope": {
-    "library": "选词填空",
-    "group": "词性判断",
-    "box": "名词",
     "box_prefixes": [
-      "0200"
+      "0100",
+      "0501",
+      "1501"
     ],
     "card_ids": [
-      "020008",
-      "020009",
-      "020010"
+      "010006",
+      "050112",
+      "150112"
+    ],
+    "closure_reason": "Residual front-answer-leak blocker closure for three cards exposed by the current PR #50 queue audit after the latest harness was merged.",
+    "source_issue_refs": [
+      "PR #50: https://github.com/LENKIN233/card-make/pull/50",
+      "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
+      "node scripts/audit_front_leak_queue.mjs --base origin/main --branches origin/content/front-leak-candidate-queue --refresh-scoped-evidence --require-harness"
     ]
   },
   "specs_read": [
@@ -28,26 +33,29 @@
     "spec/card-quality-audit.json"
   ],
   "sample_policy": {
-    "is_three_card_sample_per_box": true,
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260521-cet4-bankedcloze-0200-front-leak-fix-scope-audit.json",
+    "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
     "corpus_fingerprint": "2240db804c67c9ba89befcf5705213ccc206ee29ed58f88d01264db74c7436b2",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "020008",
-        "020009",
-        "020010"
+        "010006",
+        "050112",
+        "150112"
       ],
       "card_count": 3,
-      "issue_count": 6,
+      "issue_count": 5,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 6
+        "source_risk": 5
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -62,94 +70,41 @@
         "multiple_choice_no_options": 0,
         "synthetic_source": 3,
         "template_analysis_pattern": 0,
-        "unverified_source": 3
+        "unverified_source": 2
       }
     }
   },
   "cards": [
     {
-      "card_id": "020008",
-      "interaction_id": "lock",
+      "card_id": "010006",
+      "interaction_id": "multiple_choice",
       "knowledge_ref": {
-        "library_id": "2",
-        "library": "选词填空",
+        "library_id": "1",
+        "library": "仔细阅读",
         "group_id": "0",
-        "group": "词性判断",
+        "group": "定位词抓取",
         "box_id": "0",
-        "box": "名词",
-        "box_prefix": "0200"
+        "box": "专有名词和数字",
+        "box_prefix": "0100"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "用冠词和定语从句限定名词位候选词",
+        "main_training_goal": "用发布主体、延迟动作和条件从句组合定位原因句",
         "weak_point_tags": [
-          "grammar_weak",
-          "vocabulary_weak",
+          "reading_slow",
           "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
           "secondary": []
         },
-        "card_prototype": "context_input",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
-          "audio_generation_method": "none"
-        },
-        "exam_value": "训练用户先用冠词锁定名词位，再用后置定语从句判断候选名词是否语义自洽。",
-        "box_progression_role": "recognition",
-        "review_status": "agent_pass"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
-      ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
-    },
-    {
-      "card_id": "020009",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "library_id": "2",
-        "library": "选词填空",
-        "group_id": "0",
-        "group": "词性判断",
-        "box_id": "0",
-        "box": "名词",
-        "box_prefix": "0200"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "在名词候选中用量化修饰和 of 搭配锁定自然答案",
-        "weak_point_tags": [
-          "grammar_weak",
-          "vocabulary_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": [
-            "high_score"
-          ]
-        },
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "source_note": "Legacy content_pool passage with unverified provenance; residual closure evidence only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在候选词词性都合格时，继续用数量修饰和固定搭配判断名词语义是否成立。",
+        "exam_value": "帮助用户在原因题中用低重复度定位锚点快速压缩回文范围，而不是只抓泛词。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -167,42 +122,40 @@
       "minor_issues": [
         "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "020010",
+      "card_id": "050112",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
-        "library_id": "2",
-        "library": "选词填空",
+        "library_id": "5",
+        "library": "词汇",
         "group_id": "0",
-        "group": "词性判断",
-        "box_id": "0",
-        "box": "名词",
-        "box_prefix": "0200"
+        "group": "同义替换",
+        "box_id": "1",
+        "box": "词性转换",
+        "box_prefix": "0501"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "用上下文方法论边界判断名词宾语",
+        "main_training_goal": "判断名词短语到 that 从句的保义词性转换",
         "weak_point_tags": [
-          "grammar_weak",
           "vocabulary_weak",
+          "grammar_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
-          "secondary": [
-            "high_score"
-          ]
+          "secondary": []
         },
-        "card_prototype": "integrated_micro_drill",
+        "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "source_note": "Legacy content_pool sentence with unverified provenance; residual closure evidence only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在词性合格后继续利用上下文逻辑筛选名词，避免只看单词熟悉度。",
-        "box_progression_role": "transfer",
+        "exam_value": "训练用户判断词性变化后主体、评价方向和范围是否保持一致。",
+        "box_progression_role": "application",
         "review_status": "agent_pass"
       },
       "blocker_scan": {
@@ -219,22 +172,71 @@
       "minor_issues": [
         "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "150112",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义词替换",
+        "box_id": "1",
+        "box": "词性转换",
+        "box_prefix": "1501"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "判断抽象名词短语到 that 从句的保义改写",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Synthetic CET6 vocabulary sentence; residual closure evidence only and not true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在六级词汇改写中同时核对语义边界、论证功能和正式语体是否保留。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic source remains sample-only/residual-closure evidence and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
     }
   ],
   "batch_review": {
-    "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample moves from recognizing a noun slot with a relative clause, to applying quantifier/collocation checks for a noun choice, to transferring noun-object selection into a method-boundary contrast.",
+    "status": "documented_residual_closure",
+    "box_progression": "This is not a box sample. It closes three residual front-answer-leak blockers across one reading locator card and two vocabulary word-form cards.",
     "repetition_or_gap_risks": [
-      "The sample mixes one lock card and two multiple_choice cards because this box trains noun-position recognition and noun-candidate selection.",
-      "The visible fronts no longer repeat the correct noun outside the expected answer/option surfaces.",
-      "Formal approval still needs explicit user confirmation."
+      "The edited fronts now ask for locator or transformation strategy rather than exposing the exact correct option text outside the option list.",
+      "The scope remains residual closure evidence only; it is not a user-confirmed sample and not formal content approval."
     ],
     "representative_cards": [
-      "020008",
-      "020009",
-      "020010"
+      "010006",
+      "050112",
+      "150112"
     ],
-    "next_step": "Show this revised candidate sample to the user for content-direction confirmation; do not expand the box or mark it formal until explicit user approval is recorded."
+    "next_step": "Keep PR #50 candidate-only and rerun the queue-level front leak audit before any further content decision."
   }
 }

@@ -35,6 +35,7 @@
       "0010",
       "0011",
       "0012",
+      "0100",
       "0101",
       "0200",
       "0202",
@@ -43,8 +44,10 @@
       "0222",
       "0223",
       "0224",
+      "0501",
       "1200",
       "1212",
+      "1501",
       "1616"
     ],
     "touched_paths_summary": [
@@ -70,7 +73,9 @@
     "After PR #57 made short preposition answer text and preposition semantic-role guide text auditable, repaired 022008, 022010, 022202, 022204, 022206, 022210, 022302, 022304, 022306, 022308, 022310, and 022410; the six older direct-answer cards also received card-specific analysis and missing candidate-only quality_metadata.",
     "After PR #58 made front-side analysis-conclusion wording auditable, repaired 020008 by replacing “破解答案的关键” guide text with a task prompt that asks the learner to judge the noun by begin/continue compatibility.",
     "After PR #59 made quoted clue-key wording auditable, repaired 020210 by replacing the visible “___ for 是关键” guide text with a substitution-and-collocation task prompt.",
-    "Kept the queue candidate-only: no reviews/approved_batches records and no committed global report refreshes."
+    "Kept the queue candidate-only: no reviews/approved_batches records and no committed global report refreshes.",
+    "2026-05-24 strict residual spot-check repaired 010006, 050112, and 150112: visible fronts now ask for locator/word-form strategy rather than exposing the exact correct option content outside the option list.",
+    "Refreshed thirteen scoped audit reports and linked agent self-review quality_audit summaries to corpus_digest=2240db804c67c9ba89befcf5705213ccc206ee29ed58f88d01264db74c7436b2; no global reports or approved_batches records are part of this candidate queue update."
   ],
   "review_evidence_boundaries": [
     {
@@ -198,6 +203,27 @@
       "agent_self_review_record": "reviews/agent_self_review/20260521-cet4-bankedcloze-0200-front-leak-fix-sample.json",
       "reason": "PR #58 made front-side analysis-conclusion wording mechanically visible to quality auditing. 020008 exposed the conclusion that the relative clause was the key to cracking the answer; the front now keeps the sentence and required learner action while moving the conclusion back to the analysis side.",
       "follow_up": "Candidate sample evidence only; user confirmation is still required before any approval or formal content merge."
+    },
+    {
+      "source_PR": 50,
+      "scope": "2026-05-24 residual front-answer-leak spot-check closure",
+      "card_ids": [
+        "010006",
+        "050112",
+        "150112"
+      ],
+      "box_prefixes": [
+        "0100",
+        "0501",
+        "1501"
+      ],
+      "supporting_evidence": [
+        "reviews/agent_self_review/20260524-front-leak-queue-residual-closure.json",
+        "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json"
+      ],
+      "agent_self_review_record": "reviews/agent_self_review/20260524-front-leak-queue-residual-closure.json",
+      "reason": "Strict queue audit after the current harness found three remaining front-answer leaks: 010006 repeated answer-bearing locator text in the passage, while 050112 and 150112 exposed the full correct rewrite as the visible option target. The repair converts each front into a structure/strategy choice while keeping the answer key and back-side explanation boundary explicit.",
+      "follow_up": "Residual closure evidence only; this is not a 3-card-per-box sample approval and does not authorize formal content merge."
     }
   ],
   "validation": [
@@ -236,9 +262,37 @@
     {
       "command": "gh pr view 50 --json number,state,isDraft,mergeable,headRefOid,url,statusCheckRollup",
       "result": "passed on pushed branch after PR #59 follow-up; PR #50 remains OPEN and draft, mergeable=MERGEABLE, statusCheckRollup=[]"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 010006,050112,150112 --write-scope-report reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json --max-examples 20",
+      "result": "passed after residual spot-check closure; corpus_digest=2240db804c67c9ba89befcf5705213ccc206ee29ed58f88d01264db74c7436b2, hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=5"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed after residual spot-check closure; report restored before commit; errors=0 and warnings=0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --write-report --max-examples 0",
+      "result": "passed after residual spot-check closure; corpus_digest=2240db804c67c9ba89befcf5705213ccc206ee29ed58f88d01264db74c7436b2, hard_blocker=0, front_leaks_correct_answer=0; global report restored before commit"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "passed after residual spot-check closure; errors=0 and warnings=0"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed after residual spot-check closure; records_checked=1"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed after residual spot-check closure; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by thirteen current scoped reports"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed after residual spot-check closure; git diff --check clean"
     }
   ],
-  "local_status": "Draft PR #50 is open for user review. The branch includes PR #59 follow-up content and scoped evidence, remains candidate-only, and must not be auto-merged as formal content.",
+  "local_status": "Draft PR #50 is open for user review. The branch now includes the 2026-05-24 residual spot-check closure for 010006, 050112, and 150112 plus refreshed scoped evidence, remains candidate-only, and must not be auto-merged as formal content.",
   "remaining_risks": [
     "Candidate content only; this branch does not mark any card formally usable.",
     "No reviews/approved_batches record was created.",
@@ -248,7 +302,9 @@
     "PR #47, the 020207 follow-up, the 020210 follow-up, and the PR #57 preposition/direct-answer follow-up have residual closure self-review records, not normal 3-card-per-box sample records; do not treat them as sample approval.",
     "PR #58 follow-up repairs one visible analysis-conclusion leak inside the existing 0200 candidate sample; it is still not user approval.",
     "PR #59 follow-up repairs one quoted clue-key analysis-conclusion leak inside the existing 0202 residual closure scope; it is still not user approval.",
-    "User confirmation and explicit content merge delegation are still required before any formal content merge."
+    "User confirmation and explicit content merge delegation are still required before any formal content merge.",
+    "010006, 050112, and 150112 are residual front-answer-leak closure evidence only; they are not a normal 3-card-per-box sample approval."
   ],
-  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required",
+  "updated_at": "2026-05-24T14:53:00+08:00"
 }
