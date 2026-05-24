@@ -4,7 +4,7 @@
   "agent": "codex",
   "branch": "content/cet6-listening-1000-sample",
   "base_branch": "main",
-  "commit_sha": "bfcca094175ea17c411a9cf723b54bdef9768c39",
+  "commit_sha": "pending-final-head-recorded-in-pr-comment",
   "follow_up_commit_sha": "b960ab49923efc3f92864af3bd5be816cb67fcf4",
   "follow_up_reason": "Post-handoff review found cards 100002 and 100003 had drifted into audio-then-options semantics; they were aligned back to option-first topic prediction for the 1000 box.",
   "push_ref": "origin/content/cet6-listening-1000-sample",
@@ -31,53 +31,90 @@
       "reviews/agent_self_review/20260520-cet6-listening-1000-existing-sample.json",
       "reviews/agent_self_review/20260520-cet6-listening-1000-revised-sample.json",
       "reviews/audit_scopes/20260520-cet6-listening-1000-scope-audit.json",
-      "reviews/drafts/20260520-cet6-listening-1000-revised-sample.json"
+      "reviews/drafts/20260520-cet6-listening-1000-revised-sample.json",
+      "reviews/git_handoffs/20260520-content-cet6-listening-1000-sample.json"
     ]
   },
   "validation": [
     {
-      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 100001,100002,100003 --write-scope-report reviews/audit_scopes/20260520-cet6-listening-1000-scope-audit.json",
-      "result": "pass after follow-up; scoped audit has 0 hard_blocker, 0 content_risk, 0 review_gap, and 6 source_risk issues; corpus digest a7bb465ccc86823f67a369139b4a8cb8f3567c567f5ad9ec2072789c8f736040"
-    },
-    {
-      "command": "node scripts/validate_harness.mjs",
-      "result": "pass after follow-up; only existing recorded upstream alignment warnings plus stale global audit warning covered by scoped evidence"
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 100001,100002,100003 --write-scope-report reviews/audit_scopes/20260520-cet6-listening-1000-scope-audit.json --max-examples 20",
+      "result": "passed; corpus_digest=7b70c723715cbe57d5ff47ae19c9f6d9100eeda0551ab79c2712d798648da400; scoped 100001-100003 hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
-      "result": "pass; global report output restored to origin/main before commit"
+      "result": "passed; cards=2414; errors=0; warnings=0; global report restored to keep candidate PR scoped"
     },
     {
-      "command": "node scripts/validate_pr_scope.mjs --base origin/main",
-      "result": "pass; single content prefix 1000"
-    },
-    {
-      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
-      "result": "pass after follow-up; single content prefix 1000"
+      "command": "node scripts/audit_card_quality.mjs --write-report --max-examples 0",
+      "result": "passed; global audit report restored to keep candidate PR scoped"
     },
     {
       "command": "node scripts/validate_cards.mjs",
-      "result": "pass after follow-up"
+      "result": "passed; cards=2414; errors=0; warnings=0"
     },
     {
-      "command": "git diff --check",
-      "result": "pass after follow-up"
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed; records_checked=0; no audio files or audio QC records changed"
     },
     {
-      "command": "git diff --name-status origin/main -- reviews/approved_batches",
-      "result": "pass; no approved batch files changed"
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; recorded upstream group-alignment warnings plus allowed stale global audit warning backed by scoped audit evidence"
     },
     {
-      "command": "gh pr view 36 --json number,state,isDraft,mergeStateStatus,mergeable,url,headRefName,baseRefName",
-      "result": "OPEN draft PR, CLEAN, MERGEABLE, base main"
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed after final local commit; primary_scope_prefixes=[1000]; candidate-only sample scope"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed after final local commit"
+    },
+    {
+      "command": "git diff --name-status -- reports reviews/approved_batches",
+      "result": "passed; no global reports or approved batch records changed"
     }
   ],
-  "local_status": "follow-up content fix committed in b960ab49923efc3f92864af3bd5be816cb67fcf4; this handoff was refreshed afterward on the same branch",
+  "local_status": "Post-#61/#62 strict visible-front leak fix prepared for PR #36; final remote head and completed validation are recorded in the PR comment. Candidate-only boundary remains unchanged.",
   "remaining_risks": [
     "Candidate content uses simulated legacy content_pool transcripts with unverified provenance; do not label as true exam content.",
     "Scoped audit intentionally retains source_risk for all three cards.",
     "TTS text is reviewed for this sample, but TTS audio is not formally reviewed.",
     "User confirmation is required before any batch expansion, approved_batches record, or formal product-content claim."
   ],
-  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample"
+  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample",
+  "updated_at": "2026-05-24T15:39:06+08:00",
+  "post_61_62_spot_check": {
+    "issue": "Strict visible-front review found 100001 named the answer-bearing library/shuttle/exam-week option cluster, and all three revised fronts used correct-option success criteria before the learner answered.",
+    "resolution": "Rewrote visible task_prompt/success_criteria to ask for structural option-first topic prediction only; options, answer keys, back-side analysis, transcripts, audio references, and audio files are unchanged.",
+    "scoped_audit_digest": "7b70c723715cbe57d5ff47ae19c9f6d9100eeda0551ab79c2712d798648da400",
+    "scope_summary": {
+      "card_ids": [
+        "100001",
+        "100002",
+        "100003"
+      ],
+      "card_count": 3,
+      "issue_count": 6,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 6
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 3
+      }
+    }
+  }
 }
