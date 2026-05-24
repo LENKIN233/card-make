@@ -1,0 +1,166 @@
+{
+  "ok": true,
+  "audit_version": "card-make-quality-audit-v1",
+  "mode": "read_only_non_blocking_for_legacy_corpus",
+  "report_type": "scoped_card_quality_audit",
+  "corpus_fingerprint": {
+    "algorithm": "sha256",
+    "card_dir": "card_boxes_json",
+    "file_count": 218,
+    "card_count": 2414,
+    "digest": "d23ec6bd2b8184c11fff57677e97f6e684a98f0726312284b2dbe6246984c522"
+  },
+  "scope": {
+    "card_dir": "card_boxes_json",
+    "card_ids": [
+      "001101",
+      "001102",
+      "001103"
+    ],
+    "missing_card_ids": []
+  },
+  "scope_summary": {
+    "card_ids": [
+      "001101",
+      "001102",
+      "001103"
+    ],
+    "card_count": 3,
+    "issue_count": 9,
+    "by_severity": {
+      "hard_blocker": 3,
+      "content_risk": 0,
+      "review_gap": 0,
+      "source_risk": 6
+    },
+    "by_rule": {
+      "analysis_missing_or_too_short": 0,
+      "exact_repeated_analysis": 0,
+      "exact_repeated_front": 0,
+      "front_leaks_correct_answer": 3,
+      "front_missing_or_too_short": 0,
+      "generic_front_pattern": 0,
+      "missing_quality_metadata": 0,
+      "multiple_choice_answer_not_in_options": 0,
+      "multiple_choice_no_options": 0,
+      "synthetic_source": 3,
+      "template_analysis_pattern": 0,
+      "unverified_source": 3
+    }
+  },
+  "scoped_card_issue_index": {
+    "001101": {
+      "file": "card_boxes_seed_cet4_listening_0011.json",
+      "card_id": "001101",
+      "track": "cet4",
+      "library": "听力",
+      "group": "语音现象",
+      "box": "弱读",
+      "box_prefix": "0011",
+      "interaction_id": "multiple_choice",
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 1,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 2
+      },
+      "by_rule": {
+        "front_leaks_correct_answer": 1,
+        "unverified_source": 1,
+        "synthetic_source": 1
+      }
+    },
+    "001102": {
+      "file": "card_boxes_seed_cet4_listening_0011.json",
+      "card_id": "001102",
+      "track": "cet4",
+      "library": "听力",
+      "group": "语音现象",
+      "box": "弱读",
+      "box_prefix": "0011",
+      "interaction_id": "multiple_choice",
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 1,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 2
+      },
+      "by_rule": {
+        "front_leaks_correct_answer": 1,
+        "unverified_source": 1,
+        "synthetic_source": 1
+      }
+    },
+    "001103": {
+      "file": "card_boxes_seed_cet4_listening_0011.json",
+      "card_id": "001103",
+      "track": "cet4",
+      "library": "听力",
+      "group": "语音现象",
+      "box": "弱读",
+      "box_prefix": "0011",
+      "interaction_id": "multiple_choice",
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 1,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 2
+      },
+      "by_rule": {
+        "front_leaks_correct_answer": 1,
+        "unverified_source": 1,
+        "synthetic_source": 1
+      }
+    }
+  },
+  "scoped_hard_blocker_issues": [
+    {
+      "rule_id": "front_leaks_correct_answer",
+      "severity": "hard_blocker",
+      "message": "Front-side prompt names the correct option outside the visible option list: have to, have.",
+      "file": "card_boxes_seed_cet4_listening_0011.json",
+      "card_id": "001101",
+      "track": "cet4",
+      "library": "听力",
+      "group": "语音现象",
+      "box": "弱读",
+      "box_prefix": "0011",
+      "interaction_id": "multiple_choice",
+      "front_excerpt": "播放音频后，选出最需要用“弱读”还原的片段。 重点听 have to：to 很轻，不会像单独读单词时那么完整。 播放音频后，选出最需要用“弱读”还原的片段。 重点听 have to：to 很轻，不会像单独读单词时那么完整。",
+      "analysis_excerpt": "正确答案是 A。have to 里的 to 是功能词，通常读得很轻，接近 /tə/，不需要听成一个完整、重读的 /tu:/。如果把每个小词都按字典音去等，反而会觉得音频里“少了一个词”。finance office 是实词组，听感更重；C..."
+    },
+    {
+      "rule_id": "front_leaks_correct_answer",
+      "severity": "hard_blocker",
+      "message": "Front-side prompt names the correct option outside the visible option list: to explain, explain.",
+      "file": "card_boxes_seed_cet4_listening_0011.json",
+      "card_id": "001102",
+      "track": "cet4",
+      "library": "听力",
+      "group": "语音现象",
+      "box": "弱读",
+      "box_prefix": "0011",
+      "interaction_id": "multiple_choice",
+      "front_excerpt": "这句话里哪一段最可能因为弱读变得不显眼？ 播放音频后，找出 to explain 里的弱读功能词。 这句话里哪一段最可能因为弱读变得不显眼？ 播放音频后，找出 to explain 里的弱读功能词。",
+      "analysis_excerpt": "正确答案是 A。try to explain 中的 to 是不定式标记，通常弱读成 /tə/，听感很短，真正的重心落在 explain。C 里的 the 也可能弱读，但本题最核心的训练点是 to explain：如果漏掉弱读的 to，用户..."
+    },
+    {
+      "rule_id": "front_leaks_correct_answer",
+      "severity": "hard_blocker",
+      "message": "Front-side prompt names the correct option outside the visible option list: could.",
+      "file": "card_boxes_seed_cet4_listening_0011.json",
+      "card_id": "001103",
+      "track": "cet4",
+      "library": "听力",
+      "group": "语音现象",
+      "box": "弱读",
+      "box_prefix": "0011",
+      "interaction_id": "multiple_choice",
+      "front_excerpt": "听这句条件句，哪个词最可能被弱读成轻短音？ 重点听 could approve it，判断情态动词是否完整重读。 听这句条件句，哪个词最可能被弱读成轻短音？ 重点听 could approve it，判断情态动词是否完整重读。",
+      "analysis_excerpt": "正确答案是 A。could 在这里是情态动词，通常读得短而轻，接近 /kəd/，重心落在 approve。manager、approve、risk 都是实词，更容易承载句子信息。听条件句时，如果 could 读得轻，不代表它不存在；它告诉..."
+    }
+  ]
+}

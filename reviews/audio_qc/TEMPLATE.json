@@ -1,0 +1,86 @@
+{
+  "audio_qc_id": "YYYYMMDD-box-prefix-audio-qc",
+  "created_at": "YYYY-MM-DDTHH:mm:ss+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "",
+    "group": "",
+    "box": "",
+    "box_prefixes": [],
+    "card_ids": []
+  },
+  "source_records": {
+    "card_files": [],
+    "linked_agent_self_review": "",
+    "linked_approved_batch": ""
+  },
+  "text_gate": {
+    "tts_text_reviewed": false,
+    "text_source_type": "",
+    "transcripts": [
+      {
+        "card_id": "",
+        "transcript": "",
+        "target_signal": "",
+        "pronunciation_notes": "",
+        "text_review_result": "pending"
+      }
+    ]
+  },
+  "generation_plan": {
+    "method": "TTS_AI_generated",
+    "provider": "",
+    "voice_or_speaker": "",
+    "speed": "",
+    "style_notes": "",
+    "output_dir": "ai_tts/",
+    "overwrite_existing_assets": false,
+    "replacement_reason": ""
+  },
+  "generated_assets": [
+    {
+      "card_id": "",
+      "path": "ai_tts/",
+      "transcript_sha256": "",
+      "generated_at": "",
+      "generator_version": "",
+      "provenance_note": ""
+    }
+  ],
+  "qa_checks": {
+    "audio_matches_text": false,
+    "target_signal_audible": false,
+    "accurate_pronunciation": false,
+    "suitable_speed": false,
+    "natural_rhythm": false,
+    "stress_and_pauses_do_not_mislead": false,
+    "no_unwanted_noise_or_clipping": false,
+    "no_autoplay_assumption": false,
+    "front_side_no_required_subtitles": false,
+    "tts_audio_not_used_as_source_authenticity": true
+  },
+  "per_card_qc": [
+    {
+      "card_id": "",
+      "asset_path": "ai_tts/",
+      "audio_matches_text": false,
+      "target_signal_audible": false,
+      "notes": ""
+    }
+  ],
+  "verdict": {
+    "candidate_audio_ok": false,
+    "formal_audio_ready": false,
+    "requires_regeneration": true,
+    "reason": ""
+  },
+  "approval_boundary": {
+    "tts_audio_is_not_source_authenticity_evidence": true,
+    "formal_content_approval_still_requires_user": true,
+    "content_approval_record_required_for_formal_use": true
+  },
+  "validation": {
+    "audio_qc": "node scripts/validate_audio_qc.mjs",
+    "harness": "node scripts/validate_harness.mjs"
+  }
+}

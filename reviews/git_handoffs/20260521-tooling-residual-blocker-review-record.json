@@ -1,0 +1,62 @@
+{
+  "handoff_id": "20260521-tooling-residual-blocker-review-record",
+  "created_at": "2026-05-21T22:44:48+08:00",
+  "agent": "codex",
+  "branch": "tooling/residual-blocker-review-record",
+  "base_branch": "main",
+  "commit_sha": "ea59c9be5d0b61306132e6122e492c9ce1b06aea",
+  "push_ref": "origin/tooling/residual-blocker-review-record",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/51",
+  "PR_number": 51,
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "tooling_harness_residual_blocker_review_gate",
+    "touched_paths": [
+      "scripts/validate_harness.mjs",
+      "spec/review-workflow.json",
+      "spec/agent-harness.json",
+      "spec/eval-fixtures.json",
+      "reviews/agent_self_review/TEMPLATE.json",
+      "reviews/git_handoffs/20260521-tooling-residual-blocker-review-record.json"
+    ]
+  },
+  "summary": [
+    "Added a residual_blocker_closure self-review scope type for scattered blocker fixes that are not 3-card-per-box samples.",
+    "Kept the default sample review path strict: normal self-review records still require exactly 3 cards per box prefix.",
+    "Rejected residual blocker closure records that claim sample approval or use recommend_user_confirmation.",
+    "Added a regression fixture proving residual closure evidence cannot be misused as sample approval."
+  ],
+  "validation": [
+    {
+      "command": "node --check scripts/validate_harness.mjs",
+      "result": "passed"
+    },
+    {
+      "command": "node -e \"for (const f of ['spec/review-workflow.json','spec/agent-harness.json','spec/eval-fixtures.json','reviews/agent_self_review/TEMPLATE.json']) JSON.parse(require('fs').readFileSync(f,'utf8')); console.log('json ok')\"",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group-alignment warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; content_candidate_diff=false; issues=[]; warnings=[]"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed"
+    },
+    {
+      "command": "gh pr create --draft --base main --head tooling/residual-blocker-review-record",
+      "result": "passed; draft PR #51 created and GitHub reported mergeable"
+    }
+  ],
+  "local_status": "Draft PR #51 is open and mergeable. This is tooling/harness-only and contains no card content changes.",
+  "remaining_risks": [
+    "This PR only adds the review record type and guardrails; content PR #50 still needs a follow-up residual closure review record after this tooling is merged.",
+    "Existing upstream group-alignment warnings remain recorded and unrelated to this change."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
