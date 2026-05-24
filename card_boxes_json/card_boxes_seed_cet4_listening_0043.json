@@ -21,11 +21,11 @@
       "card_group_name": "推理判断",
       "front_content": {
         "text": "听完后，选出说话人下一步会先做什么。",
-        "task_prompt": "注意 My next step is 后面的动作顺序：先联系合作方，再视回应安排演示。",
+        "task_prompt": "先定位下一步计划信号，再按连接词区分第一步和后续安排。",
         "task_schema": {
           "action": "四选一：后续计划识别",
-          "focus": "My next step is / and then",
-          "success_criteria": "能区分先做的动作和随后可能发生的安排"
+          "focus": "下一步信号 + 动作顺序",
+          "success_criteria": "能区分优先动作、后续动作和条件限制"
         },
         "audio_first": true,
         "image_url": null,
@@ -97,14 +97,14 @@
       "interaction_id": "multiple_choice",
       "front": {
         "text": "听完后，选出说话人下一步会先做什么。",
-        "task_prompt": "注意 My next step is 后面的动作顺序：先联系合作方，再视回应安排演示。",
+        "task_prompt": "先定位下一步计划信号，再按连接词区分第一步和后续安排。",
         "audio_first": true,
         "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
           "action": "四选一：后续计划识别",
-          "focus": "My next step is / and then",
-          "success_criteria": "能区分先做的动作和随后可能发生的安排"
+          "focus": "下一步信号 + 动作顺序",
+          "success_criteria": "能区分优先动作、后续动作和条件限制"
         },
         "options": [
           {
@@ -191,11 +191,11 @@
       "card_group_name": "推理判断",
       "front_content": {
         "text": "听完后，选出最可能发生的后续变化。",
-        "task_prompt": "likely to 表示较强可能性；unless 后面是避免延期的条件。",
+        "task_prompt": "先判断可能性信号强度，再把例外条件和主结论分开。",
         "task_schema": {
           "action": "四选一：可能后果判断",
-          "focus": "likely to / unless",
-          "success_criteria": "能选出高概率结果，同时保留条件限制而不绝对化"
+          "focus": "可能性信号 + 条件限制",
+          "success_criteria": "能选出高概率结果，同时避免把条件句绝对化"
         },
         "audio_first": true,
         "image_url": null,
@@ -267,14 +267,14 @@
       "interaction_id": "multiple_choice",
       "front": {
         "text": "听完后，选出最可能发生的后续变化。",
-        "task_prompt": "likely to 表示较强可能性；unless 后面是避免延期的条件。",
+        "task_prompt": "先判断可能性信号强度，再把例外条件和主结论分开。",
         "audio_first": true,
         "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
           "action": "四选一：可能后果判断",
-          "focus": "likely to / unless",
-          "success_criteria": "能选出高概率结果，同时保留条件限制而不绝对化"
+          "focus": "可能性信号 + 条件限制",
+          "success_criteria": "能选出高概率结果，同时避免把条件句绝对化"
         },
         "options": [
           {
@@ -359,11 +359,11 @@
       "card_group_name": "推理判断",
       "front_content": {
         "text": "听完后，选出团队接下来要做的计划组合。",
-        "task_prompt": "The next thing we will do 后面才是计划；前一句 collected feedback 是背景。",
+        "task_prompt": "先区分已完成背景和计划触发句，再保留后续计划中的并列动作。",
         "task_schema": {
           "action": "四选一：计划触发句匹配",
-          "focus": "The next thing we will do is ...",
-          "success_criteria": "能把背景信息和真正的下一步动作分开"
+          "focus": "背景句 + 计划触发句 + 并列动作",
+          "success_criteria": "能把已经发生的信息和真正的下一步计划分开"
         },
         "audio_first": true,
         "image_url": null,
@@ -435,14 +435,14 @@
       "interaction_id": "multiple_choice",
       "front": {
         "text": "听完后，选出团队接下来要做的计划组合。",
-        "task_prompt": "The next thing we will do 后面才是计划；前一句 collected feedback 是背景。",
+        "task_prompt": "先区分已完成背景和计划触发句，再保留后续计划中的并列动作。",
         "audio_first": true,
         "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
           "action": "四选一：计划触发句匹配",
-          "focus": "The next thing we will do is ...",
-          "success_criteria": "能把背景信息和真正的下一步动作分开"
+          "focus": "背景句 + 计划触发句 + 并列动作",
+          "success_criteria": "能把已经发生的信息和真正的下一步计划分开"
         },
         "options": [
           {

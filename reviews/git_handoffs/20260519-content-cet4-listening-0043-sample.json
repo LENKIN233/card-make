@@ -3,8 +3,8 @@
   "created_at": "2026-05-19T22:05:00+08:00",
   "agent": "codex",
   "branch": "content/cet4-listening-0043-sample",
-  "base_branch": "fix/review-findings-card-contract",
-  "commit_sha": "9afd4c87310c9481dcb89d0acbf6aa7e7f17b5a6",
+  "base_branch": "main",
+  "commit_sha": "pending-final-head-recorded-in-pr-comment",
   "push_ref": "origin/content/cet4-listening-0043-sample",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/29",
   "PR_state": "OPEN",
@@ -33,41 +33,55 @@
   },
   "validation": [
     {
-      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 004301,004302,004303 --write-scope-report reviews/audit_scopes/20260519-cet4-listening-0043-scope-audit.json",
-      "result": "passed; corpus_digest=40aa7c2bc1353d4bcb036f5e6db4b16122f438b6c1dc335fb6f8151d24035942; scoped 004301-004303 issues are source_risk only; hard_blocker=0"
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 004301,004302,004303 --write-scope-report reviews/audit_scopes/20260519-cet4-listening-0043-scope-audit.json --max-examples 20",
+      "result": "passed; corpus_digest=e662ef7feabd999bba3a128b2c93661cd6d24e1f53d992c8fb221109df955d54; scoped 004301-004303 hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
-      "result": "passed; cards=2414; errors=0; warnings=0; global report restored to base before commit to keep content PR scoped"
+      "result": "passed; cards=2414; errors=0; warnings=0; global report restored to keep candidate PR scoped"
     },
     {
-      "command": "node scripts/validate_harness.mjs",
-      "result": "passed; recorded upstream group alignment warnings plus allowed stale global audit warning backed by scoped audit evidence"
-    },
-    {
-      "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract",
-      "result": "passed; primary_scope_prefixes=[0043]; no global report or non-scope review churn in PR diff"
+      "command": "node scripts/audit_card_quality.mjs --write-report --max-examples 0",
+      "result": "passed; global audit report restored to keep candidate PR scoped"
     },
     {
       "command": "node scripts/validate_cards.mjs",
       "result": "passed; cards=2414; errors=0; warnings=0"
     },
     {
-      "command": "git diff --check",
-      "result": "passed"
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed; records_checked=0; no audio files or audio QC records changed"
     },
     {
-      "command": "git diff --name-status origin/fix/review-findings-card-contract -- reviews/approved_batches",
-      "result": "passed; no approved batch records changed"
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; recorded upstream group-alignment warnings plus allowed stale global audit warning backed by scoped audit evidence"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed after final local commit; primary_scope_prefixes=[0043]; candidate-only sample scope"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed after final local commit"
+    },
+    {
+      "command": "git diff --name-status -- reports reviews/approved_batches",
+      "result": "passed; no global reports or approved batch records changed"
     }
   ],
-  "local_status": "clean after scoped audit cleanup commit 9afd4c8; this handoff JSON is refreshed in a follow-up evidence commit",
+  "local_status": "Post-#61/#62 visible-guide leak fix prepared for PR #29; final remote head and completed validation are recorded in the PR comment. Candidate-only boundary remains unchanged.",
   "remaining_risks": [
     "This is a candidate-only 3-card sample for user review, not formal product approval.",
     "The text source remains simulated/unverified legacy content_pool material and must not be labeled true exam content.",
     "The scoped audit intentionally reports source_risk for all three cards; there are no hard_blocker/content_risk/review_gap issues in this sample scope.",
-    "The global audit and card validation reports were restored to base so this content PR does not carry merge-order-dependent report churn.",
+    "The global audit and card validation reports are restored to base so this content PR does not carry merge-order-dependent report churn.",
     "No reviews/approved_batches record was created; user confirmation is required before batch expansion or formal approval."
   ],
-  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample"
+  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample",
+  "updated_at": "2026-05-24T15:26:14+08:00",
+  "PR_number": 29,
+  "summary": [
+    "Post-#61/#62 strict spot-check merged current origin/main and removed answer-bearing next-action/result semantic cues from visible task_prompt/task_schema for 004301, 004302, and 004303.",
+    "Only visible front guide text changed for the revised candidate; options, answer keys, back-side analysis, transcripts, audio references, and audio files are unchanged."
+  ]
 }
