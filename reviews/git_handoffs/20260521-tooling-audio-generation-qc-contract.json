@@ -1,0 +1,63 @@
+{
+  "handoff_id": "20260521-tooling-audio-generation-qc-contract",
+  "created_at": "2026-05-21T20:31:26+08:00",
+  "agent": "codex",
+  "branch": "tooling/audio-generation-qc-contract",
+  "base_branch": "main",
+  "commit_sha": "28ae55f10423d36a24d6ee5c303367c997520dc0",
+  "push_ref": "origin/tooling/audio-generation-qc-contract",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/46",
+  "PR_number": 46,
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "tooling",
+    "touched_paths": [
+      "spec/audio-generation-contract.json",
+      "reviews/audio_qc/README.md",
+      "reviews/audio_qc/TEMPLATE.json",
+      "scripts/validate_audio_qc.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/doc-manifest.json",
+      "spec/authority-map.json",
+      "spec/workspace-contract.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json",
+      "spec/agent-harness.json",
+      "spec/evals.json",
+      "spec/eval-fixtures.json",
+      "spec/perturbation-audit.json",
+      "spec/git-workflow.json"
+    ]
+  },
+  "summary": [
+    "Added an audio generation contract that separates candidate TTS assets from formal audio readiness.",
+    "Added reviews/audio_qc as the record zone for transcript review, generation details, per-card audio QC, and source-authenticity boundaries.",
+    "Added scripts/validate_audio_qc.mjs and wired the audio QC contract into validate_harness, eval fixtures, perturbation guards, and git validation policy."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed; records_checked=0 because no formal audio QC records exist yet"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group alignment warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "gh pr view 46 --json number,url,state,isDraft,mergeable,mergeStateStatus,baseRefName,headRefName,statusCheckRollup",
+      "result": "passed; draft PR #46 is open, mergeable, and clean before handoff commit"
+    }
+  ],
+  "local_status": "Handoff commit pending final validation and push.",
+  "remaining_risks": [
+    "This PR does not generate or replace audio assets.",
+    "Existing ai_tts files remain candidate/sample assets until a scoped reviews/audio_qc record proves formal audio readiness.",
+    "The validator currently checks audio QC record structure and formal-ready claims; it does not perform acoustic analysis."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
