@@ -3,8 +3,8 @@
   "created_at": "2026-05-19T13:19:05+08:00",
   "agent": "codex",
   "branch": "content/cet4-listening-0032-sample",
-  "base_branch": "fix/review-findings-card-contract",
-  "commit_sha": "8331a75e37fb1e0e03954aecbb74a63b9558efd5",
+  "base_branch": "main",
+  "commit_sha": "00fa4c08e3a1d331da77fe148768b0c667092124",
   "push_ref": "origin/content/cet4-listening-0032-sample",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/23",
   "PR_number": 23,
@@ -33,47 +33,51 @@
   },
   "summary": [
     "Blocked the existing 0032 sample because the first card was a generic flip task, the second needed clearer final-time wording and metadata, and the third relied on unsupported timing-click behavior.",
-    "Added a revised 3-card candidate sample focused on Friday noon as a submission deadline, six-thirty as the moved briefing time, and eight-fifteen as the shuttle departure event.",
+    "Added a revised 3-card candidate sample focused on Friday noon as a submission deadline, six-thirty as the moved briefing time, and eight-fifteen as the time-event binding input.",
     "Synchronized the revised candidate sample into the first three cards of card_boxes_seed_cet4_listening_0032.json as multiple_choice tasks while keeping needs_review and candidate-only boundaries.",
+    "Post-#61/#62 spot-check removed answer-bearing front guide text from 003202 and 003203 so the front now cues structure only.",
     "Refreshed card validation, card quality audit, and scoped self-review audit fingerprints after the 0032 card edits."
   ],
   "validation": [
     {
-      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 003201,003202,003203 --write-scope-report reviews/audit_scopes/20260519-cet4-listening-0032-scope-audit.json",
-      "result": "passed; corpus_digest=534741aa3198d79dfad5b1db6e05baa3f64529cd5a0bedc52ea2d1e93410c2ae; scoped 003201-003203 issues are source_risk only; hard_blocker=0"
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 003201,003202,003203 --write-scope-report reviews/audit_scopes/20260519-cet4-listening-0032-scope-audit.json --max-examples 20",
+      "result": "passed; corpus_digest=1b523be8251bb573c68eaddf672220c86d13a5350171ef04a5787069fb05a453; scoped 003201-003203 hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
       "result": "passed; cards=2414; errors=0; warnings=0; global report restored to base before commit to keep content PR scoped"
     },
     {
-      "command": "node scripts/validate_harness.mjs",
-      "result": "passed; recorded upstream group alignment warnings plus allowed stale global audit warning backed by scoped audit evidence"
-    },
-    {
-      "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract",
-      "result": "passed; primary_scope_prefixes=[0032]; no global report or non-scope review churn in PR diff"
-    },
-    {
       "command": "node scripts/validate_cards.mjs",
       "result": "passed; cards=2414; errors=0; warnings=0"
     },
     {
-      "command": "git diff --check",
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; recorded upstream group alignment warnings plus allowed stale global audit warning backed by scoped audit evidence"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; resolved_head=00fa4c08e3a1d331da77fe148768b0c667092124; primary_scope_prefixes=[0032]; scoped hard_blocker=0; front_leaks_correct_answer=0"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
       "result": "passed"
     },
     {
-      "command": "git diff --name-status origin/fix/review-findings-card-contract -- reviews/approved_batches",
-      "result": "passed; no approved batch records changed"
+      "command": "git diff --name-status origin/main...HEAD -- reports reviews/approved_batches",
+      "result": "passed; no reports or approved batch records changed"
     }
   ],
-  "local_status": "clean after scoped audit cleanup commit 8331a75; this handoff JSON is refreshed in a follow-up evidence commit",
+  "local_status": "clean after post-#61/#62 003202/003203 front-guide leakage fix commit 00fa4c0; handoff refreshed in follow-up evidence commit",
   "remaining_risks": [
     "This is a candidate-only 3-card sample for user review, not formal product approval.",
+    "Post-#61/#62 scope audit now has no front-answer leakage or other hard blockers in the 0032 sample scope.",
     "The text source remains simulated/unverified legacy content_pool material and must not be labeled true exam content.",
+    "TTS audio is generated from text and is not evidence of source authenticity; separate audio QA is still required for formal use.",
     "The scoped audit intentionally reports source_risk for all three cards; there are no hard_blocker/content_risk/review_gap issues in this sample scope.",
     "The global audit and card validation reports were restored to base so this content PR does not carry merge-order-dependent report churn.",
     "No reviews/approved_batches record was created; user confirmation is required before batch expansion or formal approval."
   ],
-  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample"
+  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample",
+  "updated_at": "2026-05-24T13:52:30+08:00"
 }
