@@ -39,14 +39,14 @@
       },
       "front": {
         "text": "听完后，选出说话人对 proposal 的态度。",
-        "task_prompt": "先抓 generally positive，再看 although 后面的保留条件。",
+        "task_prompt": "先抓态度词方向，再看转折后是否降低强度。",
         "audio_first": true,
         "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
           "action": "四选一：态度方向与保留判断",
-          "focus": "generally positive + although",
-          "success_criteria": "能判断总体正向，同时保留 timeline 风险"
+          "focus": "态度方向词 + 转折限制",
+          "success_criteria": "能先判断态度方向，再用限制信息判断支持强度"
         },
         "options": [
           {
@@ -128,14 +128,14 @@
       },
       "front": {
         "text": "听完后，选出最准确的态度强度。",
-        "task_prompt": "cautiously optimistic 是正向，但 but 后面说明还要看证据。",
+        "task_prompt": "先听态度形容词，再看修饰词和后续证据条件如何改变强度。",
         "audio_first": true,
         "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
           "action": "四选一：态度强度辨别",
-          "focus": "cautiously optimistic + evidence condition",
-          "success_criteria": "能区分谨慎支持、强烈支持和中立"
+          "focus": "态度形容词 + 修饰词 + 证据条件",
+          "success_criteria": "能区分偏支持、强烈支持和中立的强度边界"
         },
         "options": [
           {
@@ -215,14 +215,14 @@
       },
       "front": {
         "text": "听完后，选出说话人对结果的态度。",
-        "task_prompt": "lower than expected 是事实铺垫；frankly...disappointing 才是态度判断。",
+        "task_prompt": "先分清事实铺垫和评价信号，再判断说话人的态度方向。",
         "audio_first": true,
         "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
           "action": "四选一：事实信息与态度词分离",
-          "focus": "frankly + disappointing",
-          "success_criteria": "能把 disappointing 判断为负向态度，而不是只复述数据事实"
+          "focus": "事实信息与评价信号分离",
+          "success_criteria": "能根据评价信号判断态度方向，而不是只复述数据事实"
         },
         "options": [
           {
