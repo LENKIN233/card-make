@@ -3,7 +3,7 @@
   "created_at": "2026-05-19T12:55:59+08:00",
   "agent": "codex",
   "branch": "content/cet4-listening-0030-sample",
-  "base_branch": "fix/review-findings-card-contract",
+  "base_branch": "main",
   "commit_sha": "22b6d3c34e409f55ea658692788a7633ec3c201a",
   "push_ref": "origin/content/cet4-listening-0030-sample",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/21",
@@ -35,7 +35,10 @@
     "Blocked the existing 0030 sample because the first card was still a generic flip task and the sample did not consistently require explicit person-action answer selection.",
     "Added a revised 3-card candidate sample focused on binding Maria to her coordination duty, Dr. Chen to the proposed solution, and Mr. Alvarez to evening safety checks.",
     "Synchronized the revised candidate sample into the first three cards of card_boxes_seed_cet4_listening_0030.json as multiple_choice tasks while keeping needs_review and candidate-only boundaries.",
-    "Refreshed card validation, card quality audit, and scoped self-review audit fingerprints after the 0030 card edits."
+    "Refreshed card validation, card quality audit, and scoped self-review audit fingerprints after the 0030 card edits.",
+    "Post-#61/#62 strict spot-check merged current origin/main and removed answer-bearing person/action text from visible task_schema focus/success_criteria on 003001, 003002, and 003003; options, answer keys, back-side analysis, and audio bindings are unchanged.",
+    "Regenerated scoped audit under the current front-leak harness; scope has hard_blocker=0 and front_leaks_correct_answer=0.",
+    "Final handoff status updated after the visible-guide leak fix so the PR evidence no longer claims the repair is only local."
   ],
   "validation": [
     {
@@ -65,16 +68,50 @@
     {
       "command": "git diff --name-status origin/fix/review-findings-card-contract -- reviews/approved_batches",
       "result": "passed; empty diff, no approved batch was created"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 003001,003002,003003 --write-scope-report reviews/audit_scopes/20260519-cet4-listening-0030-scope-audit.json --max-examples 20",
+      "result": "passed after Post-#61/#62 spot-check; corpus_digest=d0bdf73ee11809377004cba0cf89bc96de0d2711d8eedc009f97fbeeafab40f6, hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed after Post-#61/#62 spot-check; report restored before commit; errors=0 and warnings=0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --write-report --max-examples 0",
+      "result": "passed after Post-#61/#62 spot-check; corpus_digest=d0bdf73ee11809377004cba0cf89bc96de0d2711d8eedc009f97fbeeafab40f6; global hard_blocker remains outside this scoped candidate branch and report was restored before commit"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "passed after Post-#61/#62 spot-check; errors=0 and warnings=0"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed after Post-#61/#62 spot-check; records_checked=0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed after Post-#61/#62 spot-check; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by current scoped report"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed after Post-#61/#62 spot-check; primary_scope_prefixes=[\"0030\"], hard_blocker=0, front_leaks_correct_answer=0"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed after Post-#61/#62 spot-check"
     }
   ],
-  "local_status": "clean after scoped audit cleanup commit 22b6d3c; this handoff JSON is refreshed in a follow-up evidence commit",
+  "local_status": "Post-#61/#62 visible-guide leak fix committed and pushed for PR #21; final remote head is recorded in the PR comment. Candidate-only boundary remains unchanged.",
   "remaining_risks": [
     "Candidate sample only; it is not formal user-approved product content.",
     "Source text remains simulated/unverified legacy content_pool material.",
     "Scoped audit still reports source_risk for all three cards, with no hard_blocker/content_risk/review_gap issues in the sample scope.",
     "Global reports were restored to base and are not part of this content PR diff.",
     "No reviews/approved_batches record was created.",
-    "TTS text is reviewed for the sample, but TTS audio is not formally reviewed."
+    "TTS text is reviewed for the sample, but TTS audio is not formally reviewed.",
+    "Visible guide text was repaired after stricter front-leak review; this remains candidate-only and is not content approval."
   ],
-  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample"
+  "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample",
+  "updated_at": "2026-05-24T15:07:18+08:00"
 }
