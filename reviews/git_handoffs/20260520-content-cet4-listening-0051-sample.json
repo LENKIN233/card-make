@@ -34,7 +34,7 @@
   "validation": [
     {
       "command": "node scripts/audit_card_quality.mjs --scope-card-ids 005101,005102,005103 --write-scope-report reviews/audit_scopes/20260520-cet4-listening-0051-scope-audit.json --max-examples 20",
-      "result": "passed; corpus_digest=14429625807b896c0e254641df75a5152af7cedea2a8f2f53a56f09cdfcda530; scoped 005101-005103 hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
+      "result": "passed; corpus_digest=cd93344d9ef663821e53ff8823bbacde79d129756361177ae659b2f662b9323a; scoped 005101-005103 hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
     },
     {
       "command": "node scripts/validate_cards.mjs --write-report",
@@ -61,14 +61,14 @@
       "result": "passed; no reports or approved batch records changed"
     }
   ],
-  "local_status": "clean after post-#61/#62 005102 front-guide leakage fix commit d555e9d; handoff refreshed in a follow-up evidence commit",
+  "local_status": "Post-#63 answer-hindsight front-guide fix prepared for PR #31; final remote head and validation are recorded in the PR comment.",
   "remaining_risks": [
     "This is a candidate-only 3-card sample for user review, not formal product approval.",
-    "Post-#61/#62 current-audit replay no longer finds front-answer leakage in 005101-005103.",
+    "Post-#63 current-audit replay no longer finds front-answer leakage in 005101-005103.",
     "The text source remains simulated/unverified legacy content_pool material and must not be labeled true exam content.",
     "The scoped audit intentionally reports source_risk for all three cards; audio/TTS quality is not formal source-authenticity evidence.",
     "No reviews/approved_batches record was created; user confirmation is required before batch expansion or formal approval."
   ],
   "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample",
-  "updated_at": "2026-05-24T01:17:46+08:00"
+  "updated_at": "2026-05-24T22:07:17+08:00"
 }
