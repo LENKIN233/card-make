@@ -65,6 +65,10 @@
         "command": "node scripts/validate_harness.mjs"
       },
       {
+        "scope": "audio_generation_or_qc_records",
+        "command": "node scripts/validate_audio_qc.mjs"
+      },
+      {
         "scope": "card_json_or_preview_reader",
         "command": "node scripts/validate_cards.mjs --write-report"
       },
@@ -74,7 +78,17 @@
       },
       {
         "scope": "content_sample_pr_scope",
-        "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract"
+        "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract",
+        "blocks": [
+          "global report refreshes in content PRs",
+          "non-scope self-review or scoped-audit churn",
+          "multi-prefix content PRs without explicit handoff or residual-closure evidence",
+          "current scoped card-quality audit hard blockers, even when changed scoped-audit evidence was generated under older rules"
+        ]
+      },
+      {
+        "scope": "front_leak_candidate_queue",
+        "command": "node scripts/audit_front_leak_queue.mjs --base origin/main --branches <comma-separated-content-branches> --refresh-scoped-evidence --require-harness"
       },
       {
         "scope": "all_tracked_changes",
