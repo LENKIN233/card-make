@@ -234,6 +234,23 @@ function extractFrontText(card) {
   );
 }
 
+function extractFrontGuideText(card) {
+  return textOf(
+    card.front?.prompt,
+    card.front?.task_prompt,
+    card.front?.instruction,
+    card.front?.task_schema?.action,
+    card.front?.task_schema?.focus,
+    card.front?.task_schema?.success_criteria,
+    card.front_content?.prompt,
+    card.front_content?.task_prompt,
+    card.front_content?.instruction,
+    card.front_content?.task_schema?.action,
+    card.front_content?.task_schema?.focus,
+    card.front_content?.task_schema?.success_criteria
+  );
+}
+
 function extractAnalysisText(card) {
   return textOf(
     card.analysis?.text,
@@ -559,13 +576,14 @@ function stripNonPromptAnswerLeakText(frontText, optionRecords = []) {
   );
 }
 
-function uniqueLongOptionLeakCandidateTexts(optionText, optionRecords = [], promptText = '') {
+function uniqueLongOptionLeakCandidateTexts(optionText, optionRecords = [], promptText = '', options = {}) {
   const raw = normalizeText(optionText);
   const allTokens = searchTokens(raw);
   const tokens = searchTokens(raw).filter(isDistinctiveAnswerToken);
   if (raw.length <= 40 && allTokens.length <= 8) return [];
+  const requireAnswerSummaryGuide = options.requireAnswerSummaryGuide !== false;
   const hasAnswerSummaryGuide = ANSWER_SUMMARY_GUIDE_PATTERN.test(normalizeText(promptText));
-  if (!hasAnswerSummaryGuide) return [];
+  if (requireAnswerSummaryGuide && !hasAnswerSummaryGuide) return [];
 
   const otherTokens = new Set();
   const otherOptionTexts = [];
@@ -601,11 +619,11 @@ function uniqueLongOptionLeakCandidateTexts(optionText, optionRecords = [], prom
   return [...new Set(candidates)];
 }
 
-function optionLeakCandidateTexts(optionText, optionRecords = [], promptText = '') {
+function optionLeakCandidateTexts(optionText, optionRecords = [], promptText = '', options = {}) {
   const raw = normalizeText(optionText);
   const exampleTexts = extractOptionExampleTexts(raw);
   const semanticGlossTexts = extractSemanticAnswerGlossTexts(raw);
-  const longOptionTexts = uniqueLongOptionLeakCandidateTexts(raw, optionRecords, promptText);
+  const longOptionTexts = uniqueLongOptionLeakCandidateTexts(raw, optionRecords, promptText, options);
   const head = extractOptionAnswerHead(raw);
   if (head && head !== raw) return [...new Set([head, ...exampleTexts, ...semanticGlossTexts, ...longOptionTexts])];
   if (isExplanatoryOptionText(raw)) return [...new Set([...exampleTexts, ...semanticGlossTexts, ...longOptionTexts])];
@@ -659,6 +677,86 @@ function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
           fragments.add(phrase);
         }
       }
+    }
+  }
+  return [...fragments];
+}
+
+function findFrontGuideAnswerLeakFragments(frontGuideText, optionRecords, answer) {
+  const promptText = normalizeText(frontGuideText);
+  const normalizedFront = normalizeForSearch(promptText);
+  if (!normalizedFront) return [];
+
+  const fragments = new Set();
+  for (const option of extractCorrectOptionRecords(optionRecords, answer)) {
+    for (const optionText of optionLeakCandidateTexts(
+      option.text,
+      optionRecords,
+      promptText,
+      { requireAnswerSummaryGuide: false }
+    )) {
+      const normalizedOptionText = normalizeForSearch(optionText);
+      if (!optionText || !normalizedOptionText) continue;
+
+      if (promptNamesShortAnswer(normalizedFront, optionText)) {
+        fragments.add(optionText);
+      }
+
+      if (
+        (normalizedOptionText.length >= 3 || /[\u4e00-\u9fff]/.test(normalizedOptionText)) &&
+        containsSearchPhrase(normalizedFront, normalizedOptionText)
+      ) {
+        fragments.add(optionText);
+      }
+
+      const tokens = searchTokens(optionText).filter(isDistinctiveAnswerToken);
+      for (let index = 0; index < tokens.length - 1; index += 1) {
+        const phrase = `${tokens[index]} ${tokens[index + 1]}`;
+        if (containsSearchPhrase(normalizedFront, phrase)) {
+          fragments.add(phrase);
+        }
+      }
+      for (const token of tokens) {
+        if ((/^[a-z0-9]{6,}$/i.test(token) || /[\u4e00-\u9fff]/.test(token)) &&
+          containsSearchPhrase(normalizedFront, token)) {
+          fragments.add(token);
+        }
+      }
+    }
+  }
+  return [...fragments];
+}
+
+const FRONT_ANSWER_HINDSIGHT_RAW_PATTERNS = [
+  /(?:正确答案|答案)\s*(?:是|为|[:：])\s*[^。！？!?\n]{1,80}/giu,
+  /correct\s+(?:answer|option)\s*(?:is|:)\s*[^.?!\n]{1,80}/giu,
+];
+
+const FRONT_ANSWER_HINDSIGHT_PATTERNS = [
+  /(?:正确选项)\s*(?:为什么|为何|如何|怎么|是|为|[:：])[^。！？!?\n]{0,80}/giu,
+  /(?:真正|正确|最终)?\s*答案候选/giu,
+  /(?:哪一项|哪项|哪个选项|哪一个选项)[^。！？!?]{0,40}(?:同时|全部|都)[^。！？!?]{0,24}(?:命中|覆盖)/giu,
+  /(?:后面|后的|后|之后|引出|引出的)[^。！？!?]{0,32}才是(?:真正)?[^。！？!?]{0,12}(?:原因|结果|重点|硬条件|本段主旨|最终(?:主旨判断|主旨|判断)?|长期收益(?:的总括)?|总括)/giu,
+  /final\s+(?:count|registration count|number)/giu,
+];
+
+function findFrontAnswerHindsightFragments(frontText, optionRecords = []) {
+  const promptText = stripOptionSetHints(stripLabeledMaterialSegments(frontText), optionRecords);
+  if (!promptText) return [];
+
+  const fragments = new Set();
+  for (const pattern of FRONT_ANSWER_HINDSIGHT_RAW_PATTERNS) {
+    pattern.lastIndex = 0;
+    for (const match of promptText.matchAll(pattern)) {
+      const fragment = normalizeText(match[0]);
+      if (fragment) fragments.add(fragment);
+    }
+  }
+  for (const pattern of FRONT_ANSWER_HINDSIGHT_PATTERNS) {
+    pattern.lastIndex = 0;
+    for (const match of promptText.matchAll(pattern)) {
+      const fragment = normalizeText(match[0]);
+      if (fragment) fragments.add(fragment);
     }
   }
   return [...fragments];
@@ -1052,6 +1150,73 @@ function runSelfTest() {
     'Removing source material must not hide a prompt that names the correct option.'
   );
 
+  const correctOptionHindsightGuideLeak = {
+    frontText: '听完后选择政策主题。能说明正确选项为什么同时覆盖服务对象、问题目标和措施类型。',
+    optionRecords: [
+      { key: 'A', text: 'energy loans for small businesses' },
+      { key: 'B', text: 'housing energy grants for homeowners' },
+      { key: 'C', text: 'temporary heating aid for tenants' },
+      { key: 'D', text: 'community recycling events' },
+    ],
+    answer: { text: 'B' },
+  };
+  assertSelfTest(
+    findFrontAnswerHindsightFragments(
+      correctOptionHindsightGuideLeak.frontText,
+      correctOptionHindsightGuideLeak.optionRecords
+    ).some(fragment => fragment.includes('正确选项为什么')),
+    'A visible front-side guide that asks why the correct option matches must trigger front-answer hindsight leakage.'
+  );
+
+  const answerCandidateSideGuideLeak = {
+    frontText: '听到 not ... but ... 后，先把 not 后面的解释划掉，再把 but 后面的解释当作真正答案候选。',
+    optionRecords: [
+      { key: 'A', text: 'Ownership structure is the root cause.' },
+      { key: 'B', text: 'Runway and terminal capacity shortage is the root cause.' },
+      { key: 'C', text: 'Foreign business visitors are the root cause.' },
+      { key: 'D', text: 'Airport privatization is the root cause.' },
+    ],
+    answer: { text: 'B' },
+  };
+  assertSelfTest(
+    findFrontAnswerHindsightFragments(
+      answerCandidateSideGuideLeak.frontText,
+      answerCandidateSideGuideLeak.optionRecords
+    ).includes('真正答案候选'),
+    'A visible front-side guide that labels one structural side as the answer candidate must trigger front-answer hindsight leakage.'
+  );
+
+  const whichOptionHitsGuideLeak = {
+    frontText: '先拆分每个选项的对象、目的和措施，再播放音频验证哪一项三类线索同时命中。',
+    optionRecords: correctOptionHindsightGuideLeak.optionRecords,
+    answer: { text: 'B' },
+  };
+  assertSelfTest(
+    findFrontAnswerHindsightFragments(
+      whichOptionHitsGuideLeak.frontText,
+      whichOptionHitsGuideLeak.optionRecords
+    ).some(fragment => fragment.includes('哪一项三类线索同时命中')),
+    'A visible front-side guide that tells the learner to find the option all clues hit must trigger front-answer hindsight leakage.'
+  );
+
+  const ordinaryCorrectAnswerInstruction = {
+    frontText: '播放音频后，选择正确答案。 A. campus shuttle B. library hours C. exam week D. dining hall',
+    optionRecords: [
+      { key: 'A', text: 'campus shuttle' },
+      { key: 'B', text: 'library hours' },
+      { key: 'C', text: 'exam week' },
+      { key: 'D', text: 'dining hall' },
+    ],
+    answer: { text: 'A' },
+  };
+  assertSelfTest(
+    findFrontAnswerHindsightFragments(
+      ordinaryCorrectAnswerInstruction.frontText,
+      ordinaryCorrectAnswerInstruction.optionRecords
+    ).length === 0,
+    'A generic instruction to choose the correct answer must not be treated as answer-hindsight leakage.'
+  );
+
   const dialogueMaterialOnly = {
     frontText: "对话片段：M: I'd love to join the trip, but it's over my budget. W: You can apply for a student discount. 这里最应优先识别的高频词是：",
     optionRecords: [
@@ -1223,6 +1388,87 @@ function runSelfTest() {
     'A unique driver token from a long correct option leaked by guide text must trigger front-answer leakage.'
   );
 
+  const longOptionCausalGuideLeak = {
+    front_content: {
+      text: '听完后，选出导致 response time 下降的原因。',
+      task_schema: {
+        action: '四选一：因果方向判断',
+        focus: 'Because 引出的原因与 dropped 引出的结果',
+        success_criteria: '能把 weekly practice sessions 判断为原因，把 response time dropped 判断为结果',
+      },
+      options: [
+        { key: 'A', text: 'The support team received weekly practice sessions.' },
+        { key: 'B', text: 'Average response time dropped by nearly 20 percent.' },
+        { key: 'C', text: 'The support team hired more employees.' },
+        { key: 'D', text: 'Customers stopped asking for support.' },
+      ],
+    },
+    answer_key: { correct_option: 'A' },
+  };
+  const longOptionCausalGuideLeakOptions = extractOptionRecords(longOptionCausalGuideLeak);
+  const longOptionCausalGuideLeakAnswer = extractAnswerRecord(
+    longOptionCausalGuideLeak,
+    longOptionCausalGuideLeakOptions
+  );
+  assertSelfTest(
+    findFrontGuideAnswerLeakFragments(
+      extractFrontGuideText(longOptionCausalGuideLeak),
+      longOptionCausalGuideLeakOptions,
+      longOptionCausalGuideLeakAnswer
+    ).includes('weekly practice'),
+    'A causal guide success criterion that repeats a distinctive phrase from the correct option must trigger front-answer leakage.'
+  );
+
+  const longOptionCausalGuideNoLeak = {
+    front_content: {
+      text: '听完后，选出这句里造成公交拥挤的原因。',
+      task_prompt: '重点听 because 引出的原因从句，先区分原因信息和结果信息，再和选项比对。',
+      task_schema: {
+        action: '选择原因端信息',
+        focus: 'because 引出的原因从句',
+        success_criteria: '能区分结果描述和 because 引出的原因端信息',
+      },
+      options: [
+        { key: 'A', text: 'Two subway lines are under repair this week.' },
+        { key: 'B', text: 'The morning buses are running earlier than usual.' },
+        { key: 'C', text: 'More students are taking the buses after class.' },
+        { key: 'D', text: 'The bus company reduced the ticket price.' },
+      ],
+    },
+    answer_key: { correct_option: 'A' },
+  };
+  const longOptionCausalGuideNoLeakOptions = extractOptionRecords(longOptionCausalGuideNoLeak);
+  const longOptionCausalGuideNoLeakAnswer = extractAnswerRecord(
+    longOptionCausalGuideNoLeak,
+    longOptionCausalGuideNoLeakOptions
+  );
+  assertSelfTest(
+    findFrontGuideAnswerLeakFragments(
+      extractFrontGuideText(longOptionCausalGuideNoLeak),
+      longOptionCausalGuideNoLeakOptions,
+      longOptionCausalGuideNoLeakAnswer
+    ).length === 0,
+    'A structural causal guide that does not repeat correct-option content must not trigger front-answer leakage.'
+  );
+
+  const resultSideHindsightLeak = {
+    frontText: 'suppliers delayed shipment 是原因；as a result 后面才是导致出的结果。',
+    optionRecords: [
+      { key: 'A', text: 'Several suppliers delayed shipment this month.' },
+      { key: 'B', text: 'Production targets were not met on schedule.' },
+      { key: 'C', text: 'The company changed all suppliers.' },
+      { key: 'D', text: 'Shipment delays were solved ahead of time.' },
+    ],
+    answer: { text: 'B' },
+  };
+  assertSelfTest(
+    findFrontAnswerHindsightFragments(
+      resultSideHindsightLeak.frontText,
+      resultSideHindsightLeak.optionRecords
+    ).some(fragment => fragment.includes('后面才是导致出的结果')),
+    'A visible guide that labels the result side as the answer path must trigger front-answer hindsight leakage.'
+  );
+
   const longOptionTopicContextOnly = {
     front_content: {
       text: 'Listen to the customer trust discussion and choose the best summary.',
@@ -1271,6 +1517,10 @@ function runSelfTest() {
       'duplicated_visible_option_list_only_is_not_leak',
       'source_material_only_is_not_leak',
       'material_strip_does_not_mask_prompt_leak',
+      'correct_option_hindsight_guide_leak_is_audited',
+      'answer_candidate_side_guide_leak_is_audited',
+      'which_option_hits_guide_leak_is_audited',
+      'generic_choose_correct_answer_instruction_is_not_leak',
       'dialogue_material_only_is_not_leak',
       'cloze_material_only_is_not_leak',
       'role_label_option_head_is_not_leak',
@@ -1280,6 +1530,9 @@ function runSelfTest() {
       'long_correct_option_phrase_guide_leak_is_audited',
       'long_correct_option_summary_token_guide_leak_is_audited',
       'long_correct_option_driver_token_guide_leak_is_audited',
+      'long_correct_option_causal_guide_leak_is_audited',
+      'structural_causal_guide_without_answer_content_is_not_leak',
+      'result_side_hindsight_guide_leak_is_audited',
       'long_option_shared_topic_context_is_not_leak',
     ],
   };
@@ -1405,7 +1658,7 @@ function buildScopedAuditReport(audit, scopeCardIds) {
     .filter(issue => scopedIds.has(issue.card_id));
 
   return {
-    ok: missingCardIds.length === 0,
+    ok: missingCardIds.length === 0 && scopedHardBlockers.length === 0,
     audit_version: audit.audit_version,
     mode: audit.mode,
     report_type: 'scoped_card_quality_audit',
@@ -1498,6 +1751,7 @@ function buildAudit({ maxExamples }) {
   for (const row of rows) {
     const { card } = row;
     const frontText = extractFrontText(card);
+    const frontGuideText = extractFrontGuideText(card);
     const analysisText = extractAnalysisText(card);
     const optionRecords = extractOptionRecords(card);
     const answer = extractAnswerRecord(card, optionRecords);
@@ -1508,14 +1762,18 @@ function buildAudit({ maxExamples }) {
       } else if (!answer.text || !answerMatchesOptions(answer.text, optionRecords)) {
         addIssue(issues, rulesById, row, 'multiple_choice_answer_not_in_options', 'Multiple-choice answer key does not match a visible option key or text.', frontText, analysisText);
       } else {
-        const leakedFragments = findFrontAnswerLeakFragments(frontText, optionRecords, answer);
+        const leakedFragments = [
+          ...findFrontAnswerLeakFragments(frontText, optionRecords, answer),
+          ...findFrontGuideAnswerLeakFragments(frontGuideText, optionRecords, answer),
+          ...findFrontAnswerHindsightFragments(frontText, optionRecords),
+        ];
         if (leakedFragments.length > 0) {
           addIssue(
             issues,
             rulesById,
             row,
             'front_leaks_correct_answer',
-            `Front-side prompt names the correct option outside the visible option list: ${leakedFragments.slice(0, 3).join(', ')}.`,
+            `Front-side prompt names or reveals the correct-answer path outside the visible option list: ${[...new Set(leakedFragments)].slice(0, 3).join(', ')}.`,
             frontText,
             analysisText
           );
@@ -1733,7 +1991,7 @@ const topRules = Object.entries(audit.summary.by_rule)
   .map(([rule_id, data]) => ({ rule_id, ...data }));
 
 console.log(JSON.stringify({
-  ok: audit.ok,
+  ok: scopedReport ? scopedReport.ok : audit.ok,
   mode: audit.mode,
   report_path: writeReport ? audit.report_path : null,
   scoped_report_path: scopedReportRelativePath,
