@@ -745,10 +745,13 @@ function validateCardQualityAudit(errors, warnings) {
   if (audit.scoped_report_contract?.report_type !== 'scoped_card_quality_audit') {
     pushIssue(errors, 'card_quality_audit_scoped_report_contract_missing', {});
   }
-  for (const field of ['report_type', 'corpus_fingerprint', 'scope', 'scope_summary', 'scoped_card_issue_index', 'scoped_hard_blocker_issues']) {
+  for (const field of ['ok', 'report_type', 'corpus_fingerprint', 'scope', 'scope_summary', 'scoped_card_issue_index', 'scoped_hard_blocker_issues']) {
     if (!(audit.scoped_report_contract?.must_include || []).includes(field)) {
       pushIssue(errors, 'card_quality_audit_scoped_report_field_missing', { field });
     }
+  }
+  if (!String(audit.scoped_report_contract?.ok_semantics || '').includes('scoped_hard_blocker_issues is empty')) {
+    pushIssue(errors, 'card_quality_audit_scoped_report_ok_semantics_missing', {});
   }
   if (audit.script_path !== 'scripts/audit_card_quality.mjs') {
     pushIssue(errors, 'card_quality_audit_script_path_drift', { script_path: audit.script_path });
@@ -837,7 +840,7 @@ function validateCardQualityAudit(errors, warnings) {
   if (!script.includes('--write-scope-report') || !script.includes('scoped_card_quality_audit')) {
     pushIssue(errors, 'card_quality_audit_script_scoped_report_missing', {});
   }
-  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak') || !script.includes('visible_task_schema_guide_is_audited') || !script.includes('visible_option_example_guide_leak_is_audited') || !script.includes('semantic_answer_gloss_guide_leak_is_audited') || !script.includes('strong_evidence_gloss_guide_leak_is_audited') || !script.includes('practical_gloss_guide_leak_is_audited') || !script.includes('research_account_gloss_guide_leak_is_audited') || !script.includes('preposition_semantic_role_gloss_guide_leak_is_audited') || !script.includes('short_preposition_answer_text_is_audited') || !script.includes('analysis_conclusion_guide_leak_is_audited') || !script.includes('quoted_clue_key_guide_leak_is_audited') || !script.includes('long_correct_option_phrase_guide_leak_is_audited') || !script.includes('long_correct_option_summary_token_guide_leak_is_audited') || !script.includes('long_correct_option_driver_token_guide_leak_is_audited') || !script.includes('long_option_shared_topic_context_is_not_leak')) {
+  if (!script.includes('--self-test') || !script.includes('visible_option_list_only_is_not_leak') || !script.includes('visible_task_schema_guide_is_audited') || !script.includes('visible_option_example_guide_leak_is_audited') || !script.includes('semantic_answer_gloss_guide_leak_is_audited') || !script.includes('strong_evidence_gloss_guide_leak_is_audited') || !script.includes('practical_gloss_guide_leak_is_audited') || !script.includes('research_account_gloss_guide_leak_is_audited') || !script.includes('preposition_semantic_role_gloss_guide_leak_is_audited') || !script.includes('short_preposition_answer_text_is_audited') || !script.includes('analysis_conclusion_guide_leak_is_audited') || !script.includes('quoted_clue_key_guide_leak_is_audited') || !script.includes('correct_option_hindsight_guide_leak_is_audited') || !script.includes('answer_candidate_side_guide_leak_is_audited') || !script.includes('which_option_hits_guide_leak_is_audited') || !script.includes('generic_choose_correct_answer_instruction_is_not_leak') || !script.includes('long_correct_option_phrase_guide_leak_is_audited') || !script.includes('long_correct_option_summary_token_guide_leak_is_audited') || !script.includes('long_correct_option_driver_token_guide_leak_is_audited') || !script.includes('long_correct_option_causal_guide_leak_is_audited') || !script.includes('structural_causal_guide_without_answer_content_is_not_leak') || !script.includes('result_side_hindsight_guide_leak_is_audited') || !script.includes('long_option_shared_topic_context_is_not_leak')) {
     pushIssue(errors, 'card_quality_audit_self_test_missing', {});
   } else {
     try {
