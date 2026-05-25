@@ -75,7 +75,10 @@
     "After PR #59 made quoted clue-key wording auditable, repaired 020210 by replacing the visible “___ for 是关键” guide text with a substitution-and-collocation task prompt.",
     "Kept the queue candidate-only: no reviews/approved_batches records and no committed global report refreshes.",
     "2026-05-24 strict residual spot-check repaired 010006, 050112, and 150112: visible fronts now ask for locator/word-form strategy rather than exposing the exact correct option content outside the option list.",
-    "Refreshed thirteen scoped audit reports and linked agent self-review quality_audit summaries to corpus_digest=2240db804c67c9ba89befcf5705213ccc206ee29ed58f88d01264db74c7436b2; no global reports or approved_batches records are part of this candidate queue update."
+    "Refreshed thirteen scoped audit reports and linked agent self-review quality_audit summaries to corpus_digest=2240db804c67c9ba89befcf5705213ccc206ee29ed58f88d01264db74c7436b2; no global reports or approved_batches records are part of this candidate queue update.",
+    "After PR #64 made front guide answer-overlap stricter, repaired 020010, 020207, 020210, 010102, and 120009 by removing exact correct-answer-path wording from front prompts and, where necessary, from visible/back-side explanatory text that duplicated the prompt source phrase.",
+    "Refreshed thirteen scoped audit reports and linked agent self-review quality_audit summaries to corpus_digest=ae1c0de8c519acb464dcbb901d9a11263574d98d9e7cc7a33c57073d2b5b4fe6; the 20260524 residual closure record now covers the full 39-card PR #50 queue scope.",
+    "No audio payloads, approved_batches records, or committed global report refreshes are part of the post-#64 queue closure."
   ],
   "review_evidence_boundaries": [
     {
@@ -290,9 +293,41 @@
     {
       "command": "git diff --check",
       "result": "passed after residual spot-check closure; git diff --check clean"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids <39 PR #50 queue cards> --write-scope-report reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json --max-examples 20",
+      "result": "passed after PR #64 follow-up; corpus_digest=ae1c0de8c519acb464dcbb901d9a11263574d98d9e7cc7a33c57073d2b5b4fe6, hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=77"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed after PR #64 follow-up; report restored before commit; errors=0 and warnings=0"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "passed after PR #64 follow-up; errors=0 and warnings=0"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed after PR #64 follow-up; records_checked=1"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed after PR #64 follow-up; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by thirteen current scoped reports"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main",
+      "result": "passed on worktree after PR #64 follow-up; issues=[]; content_sample_multiple_scope_prefixes warning is intentional for this candidate queue"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed after PR #64 follow-up; git diff --check clean"
+    },
+    {
+      "command": "git diff --name-status -- reports reviews/approved_batches",
+      "result": "passed after PR #64 follow-up; no reports/approved_batches diffs"
     }
   ],
-  "local_status": "Draft PR #50 is open for user review. The branch now includes the 2026-05-24 residual spot-check closure for 010006, 050112, and 150112 plus refreshed scoped evidence, remains candidate-only, and must not be auto-merged as formal content.",
+  "local_status": "Draft PR #50 is open for user review. The branch now includes the post-#64 residual front-answer-leak closure for the full 39-card candidate queue scope plus refreshed scoped evidence, remains candidate-only, and must not be auto-merged as formal content.",
   "remaining_risks": [
     "Candidate content only; this branch does not mark any card formally usable.",
     "No reviews/approved_batches record was created.",
@@ -303,8 +338,10 @@
     "PR #58 follow-up repairs one visible analysis-conclusion leak inside the existing 0200 candidate sample; it is still not user approval.",
     "PR #59 follow-up repairs one quoted clue-key analysis-conclusion leak inside the existing 0202 residual closure scope; it is still not user approval.",
     "User confirmation and explicit content merge delegation are still required before any formal content merge.",
-    "010006, 050112, and 150112 are residual front-answer-leak closure evidence only; they are not a normal 3-card-per-box sample approval."
+    "010006, 050112, and 150112 are residual front-answer-leak closure evidence only; they are not a normal 3-card-per-box sample approval.",
+    "Post-#64 repairs are residual front-answer-leak closure evidence only; they do not change source authenticity or mark any card formally usable.",
+    "The 20260524 residual closure record now lists the full 39-card PR #50 queue scope, but this remains candidate-only evidence rather than a normal sample approval."
   ],
   "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required",
-  "updated_at": "2026-05-24T14:53:00+08:00"
+  "updated_at": "2026-05-25T12:31:00+08:00"
 }

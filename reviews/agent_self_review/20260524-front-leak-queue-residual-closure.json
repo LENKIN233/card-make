@@ -4,20 +4,72 @@
   "agent": "codex",
   "scope": {
     "box_prefixes": [
+      "0002",
+      "0010",
+      "0011",
+      "0012",
       "0100",
+      "0101",
+      "0200",
+      "0202",
+      "0220",
+      "0221",
+      "0222",
+      "0223",
+      "0224",
       "0501",
-      "1501"
+      "1200",
+      "1212",
+      "1501",
+      "1616"
     ],
     "card_ids": [
+      "000201",
+      "000202",
+      "000203",
+      "001001",
+      "001002",
+      "001003",
+      "001101",
+      "001102",
+      "001103",
+      "001208",
+      "001209",
+      "001210",
       "010006",
+      "010102",
+      "020008",
+      "020009",
+      "020010",
+      "020207",
+      "020210",
+      "022008",
+      "022010",
+      "022102",
+      "022104",
+      "022106",
+      "022202",
+      "022204",
+      "022206",
+      "022210",
+      "022302",
+      "022304",
+      "022306",
+      "022308",
+      "022310",
+      "022410",
       "050112",
-      "150112"
+      "120009",
+      "121204",
+      "150112",
+      "161603"
     ],
-    "closure_reason": "Residual front-answer-leak blocker closure for three cards exposed by the current PR #50 queue audit after the latest harness was merged.",
+    "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
+      "PR #64: Harden front guide answer overlap audit (#64)",
       "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-      "node scripts/audit_front_leak_queue.mjs --base origin/main --branches origin/content/front-leak-candidate-queue --refresh-scoped-evidence --require-harness"
+      "node scripts/audit_card_quality.mjs --scope-card-ids <39 PR #50 queue cards> --write-scope-report reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json --max-examples 20"
     ]
   },
   "specs_read": [
@@ -37,25 +89,62 @@
     "is_three_card_sample_per_box": false,
     "residual_blocker_closure": true,
     "not_sample_approval": true,
-    "batch_generation_requires_user_confirmation": true
+    "batch_generation_requires_user_confirmation": true,
+    "detailed_cards_are_representative_only": true
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "2240db804c67c9ba89befcf5705213ccc206ee29ed58f88d01264db74c7436b2",
+    "corpus_fingerprint": "ae1c0de8c519acb464dcbb901d9a11263574d98d9e7cc7a33c57073d2b5b4fe6",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
+        "000201",
+        "000202",
+        "000203",
+        "001001",
+        "001002",
+        "001003",
+        "001101",
+        "001102",
+        "001103",
+        "001208",
+        "001209",
+        "001210",
         "010006",
+        "010102",
+        "020008",
+        "020009",
+        "020010",
+        "020207",
+        "020210",
+        "022008",
+        "022010",
+        "022102",
+        "022104",
+        "022106",
+        "022202",
+        "022204",
+        "022206",
+        "022210",
+        "022302",
+        "022304",
+        "022306",
+        "022308",
+        "022310",
+        "022410",
         "050112",
-        "150112"
+        "120009",
+        "121204",
+        "150112",
+        "161603"
       ],
-      "card_count": 3,
-      "issue_count": 5,
+      "card_count": 39,
+      "issue_count": 77,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 5
+        "source_risk": 77
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -68,13 +157,601 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 3,
+        "synthetic_source": 39,
         "template_analysis_pattern": 0,
-        "unverified_source": 2
+        "unverified_source": 38
       }
     }
   },
   "cards": [
+    {
+      "card_id": "000201",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "000202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "000203",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "001001",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "0",
+        "box": "连读",
+        "box_prefix": "0010"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "001002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "0",
+        "box": "连读",
+        "box_prefix": "0010"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "001003",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "0",
+        "box": "连读",
+        "box_prefix": "0010"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "001101",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "001102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "001103",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "001208",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "001209",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "001210",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "legacy_or_tts_audio_not_used_as_source_authenticity"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
     {
       "card_id": "010006",
       "interaction_id": "multiple_choice",
@@ -123,6 +800,1055 @@
         "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
       ],
       "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "010102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "0",
+        "group": "定位词抓取",
+        "box_id": "1",
+        "box": "实义名词",
+        "box_prefix": "0101"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "020008",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "0200"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "020009",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "0200"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "020010",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "0200"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "020207",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "2",
+        "box": "动词",
+        "box_prefix": "0202"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "020210",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "2",
+        "box": "动词",
+        "box_prefix": "0202"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022008",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "0",
+        "box": "动词+介词/副词",
+        "box_prefix": "0220"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022010",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "0",
+        "box": "动词+介词/副词",
+        "box_prefix": "0220"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "1",
+        "box": "形容词+名词",
+        "box_prefix": "0221"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "1",
+        "box": "形容词+名词",
+        "box_prefix": "0221"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022106",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "1",
+        "box": "形容词+名词",
+        "box_prefix": "0221"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "2",
+        "box": "名词+介词",
+        "box_prefix": "0222"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022204",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "2",
+        "box": "名词+介词",
+        "box_prefix": "0222"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022206",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "2",
+        "box": "名词+介词",
+        "box_prefix": "0222"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022210",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "2",
+        "box": "名词+介词",
+        "box_prefix": "0222"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022302",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "3",
+        "box": "be动词+形容词/分词+介词",
+        "box_prefix": "0223"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022304",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "3",
+        "box": "be动词+形容词/分词+介词",
+        "box_prefix": "0223"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022306",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "3",
+        "box": "be动词+形容词/分词+介词",
+        "box_prefix": "0223"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022308",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "3",
+        "box": "be动词+形容词/分词+介词",
+        "box_prefix": "0223"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022310",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "3",
+        "box": "be动词+形容词/分词+介词",
+        "box_prefix": "0223"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022410",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "4",
+        "box": "其他",
+        "box_prefix": "0224"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
       "card_id": "050112",
@@ -175,6 +1901,106 @@
       "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
     },
     {
+      "card_id": "120009",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "1200"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "121204",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "1",
+        "group": "空格语法预判",
+        "box_id": "2",
+        "box": "空格语法预判-动词",
+        "box_prefix": "1212"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
       "card_id": "150112",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
@@ -223,20 +2049,72 @@
         "Synthetic source remains sample-only/residual-closure evidence and must not be represented as true exam material."
       ],
       "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "161603",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "6",
+        "library": "语法",
+        "group_id": "1",
+        "group": "复杂句",
+        "box_id": "6",
+        "box": "其他固定句型",
+        "box_prefix": "1616"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "Document residual front-answer-leak closure while keeping the visible task independent of the back-side answer path.",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Candidate-queue residual closure evidence only; source provenance remains unverified/synthetic-risk where flagged by scoped audit.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Verifies that the front side asks for a strategy or structural judgment rather than exposing the correct-answer wording outside the option list.",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     }
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "This is not a box sample. It closes three residual front-answer-leak blockers across one reading locator card and two vocabulary word-form cards.",
+    "box_progression": "This is not a box sample. It documents the full PR #50 candidate-queue residual closure after the stricter front guide answer-overlap audit landed.",
     "repetition_or_gap_risks": [
-      "The edited fronts now ask for locator or transformation strategy rather than exposing the exact correct option text outside the option list.",
-      "The scope remains residual closure evidence only; it is not a user-confirmed sample and not formal content approval."
+      "The edited fronts now ask for locator, syntax, collocation, or semantic-role strategy rather than exposing exact correct-answer wording outside the option list.",
+      "The scope remains residual closure evidence only; it is not a user-confirmed sample and not formal content approval.",
+      "The detailed cards array remains representative evidence from the original residual closure; the quality_audit scope summary is the authoritative full queue evidence."
     ],
     "representative_cards": [
-      "010006",
-      "050112",
-      "150112"
+      "020010",
+      "020207",
+      "020210",
+      "010102",
+      "120009"
     ],
-    "next_step": "Keep PR #50 candidate-only and rerun the queue-level front leak audit before any further content decision."
+    "next_step": "Keep PR #50 candidate-only and rerun validate_pr_scope after all evidence records are synchronized."
   }
 }
