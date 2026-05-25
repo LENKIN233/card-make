@@ -35,7 +35,9 @@
     "Added a revised 3-card candidate sample focused on more importantly, besides, and moreover as parallel/progressive listening signals.",
     "Synchronized the revised candidate sample into the first three cards of card_boxes_seed_cet4_listening_0022.json while keeping needs_review and unverified source boundaries.",
     "Post-#61/#62 spot-check removed answer-bearing front guide text from 002201 so the front now cues progressive-weight structure only.",
-    "Refreshed scoped audit evidence and restored global report output to base so this PR only carries the 0022 candidate sample."
+    "Refreshed scoped audit evidence and restored global report output to base so this PR only carries the 0022 candidate sample.",
+    "Post-#64 strict spot-check found 002202 and 002203 still leaked the concrete added information in visible front fields; rewritten front guidance now cues progressive-signal operation only, with options, answer keys, analysis, transcripts, and audio bindings unchanged.",
+    "Regenerated scoped audit under the current front-guide overlap harness; scope has hard_blocker=0 and front_leaks_correct_answer=0."
   ],
   "validation": [
     {
@@ -65,12 +67,36 @@
     {
       "command": "git diff --name-status origin/main...HEAD -- reports reviews/approved_batches",
       "result": "passed; no reports or approved batch records changed"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 002201,002202,002203 --write-scope-report reviews/audit_scopes/20260519-cet4-listening-0022-scope-audit.json --max-examples 20",
+      "result": "passed after Post-#64 spot-check; corpus_digest=c7bd8229beb70d0c27e679c3978cde289bf79080c84502395285146be65b2309, hard_blocker=0, front_leaks_correct_answer=0, content_risk=0, review_gap=0, source_risk=6"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed after Post-#64 spot-check; report restored before commit; errors=0 and warnings=0"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "passed after Post-#64 spot-check; errors=0 and warnings=0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed after Post-#64 spot-check; only recorded upstream group-alignment warnings plus expected stale-global-report warning backed by current scoped report"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main",
+      "result": "passed locally after Post-#64 spot-check; primary_scope_prefixes=[\"0022\"] and no issues"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed after Post-#64 spot-check"
     }
   ],
-  "local_status": "clean after post-#61/#62 002201 front-guide leakage fix commit 5d3685a; handoff refreshed in follow-up evidence commit",
+  "local_status": "Post-#64 visible-guide overlap fix validated for PR #18; final remote head is recorded in the PR comment. Candidate-only boundary remains unchanged.",
   "remaining_risks": [
     "This is a candidate-only 3-card sample for user review, not formal product approval.",
-    "Post-#61/#62 scope audit now has no front-answer leakage or other hard blockers in the 0022 sample scope.",
+    "Post-#64 scope audit now has no front-answer leakage or other hard blockers in the 0022 sample scope.",
     "The text source remains simulated/unverified legacy content_pool material and must not be labeled true exam content.",
     "TTS audio is generated from text and is not evidence of source authenticity; separate audio QA is still required for formal use.",
     "The scoped audit intentionally reports source_risk for all three cards; there are no hard_blocker/content_risk/review_gap issues in this sample scope.",
@@ -79,5 +105,5 @@
   ],
   "merge_authority": "content approval and merge remain user-gated; no auto-merge for this formal-content candidate sample",
   "PR_number": 18,
-  "updated_at": "2026-05-24T14:10:29+08:00"
+  "updated_at": "2026-05-25T12:11:43+08:00"
 }
