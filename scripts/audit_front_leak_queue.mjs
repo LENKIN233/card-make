@@ -221,6 +221,14 @@ function refreshScopedEvidence(worktreeDir) {
   return {
     ok: failures.length === 0,
     refreshed_scoped_reports: [...refreshedReports.keys()],
+    front_answer_leaks: [...refreshedReports.values()].reduce(
+      (sum, item) => sum + Number(item.report?.scope_summary?.by_rule?.[FRONT_LEAK_RULE_ID] || 0),
+      0
+    ),
+    hard_blockers: [...refreshedReports.values()].reduce(
+      (sum, item) => sum + Number(item.report?.scope_summary?.by_severity?.hard_blocker || 0),
+      0
+    ),
     changed_review_records: changedReviewRecords,
     skipped,
     failures,
@@ -306,7 +314,9 @@ function main() {
   const cardsJson = cardsRecord ? parseJsonOutput(cardsRecord) : null;
   const audioJson = audioRecord ? parseJsonOutput(audioRecord) : null;
   const harnessJson = harnessRecord ? parseJsonOutput(harnessRecord) : null;
-  const leaks = report ? frontLeakCount(report) : null;
+  const globalLeaks = report ? frontLeakCount(report) : null;
+  const scopedLeaks = refreshEvidence && scopedEvidenceRefresh ? scopedEvidenceRefresh.front_answer_leaks : null;
+  const blockingLeakCount = scopedLeaks ?? globalLeaks;
   const blockingFailures = [];
 
   if (!mergeRecord?.ok) blockingFailures.push('merge_failed');
@@ -314,7 +324,7 @@ function main() {
   if (!cardsJson?.ok) blockingFailures.push('card_validation_failed');
   if (!audioJson?.ok) blockingFailures.push('audio_qc_failed');
   if (refreshEvidence && !scopedEvidenceRefresh?.ok) blockingFailures.push('scoped_evidence_refresh_failed');
-  if (!allowFrontLeaks && leaks !== 0) blockingFailures.push('front_answer_leaks_remain');
+  if (!allowFrontLeaks && blockingLeakCount !== 0) blockingFailures.push('front_answer_leaks_remain');
   if (requireHarness && !harnessJson?.ok) blockingFailures.push('harness_failed');
 
   const result = {
@@ -322,13 +332,14 @@ function main() {
     base,
     branches,
     worktree_dir: keepWorktree ? worktreeDir : null,
-    front_answer_leaks: leaks,
+    front_answer_leaks: blockingLeakCount,
+    global_front_answer_leaks: globalLeaks,
     quality_audit: auditJson ? {
       ok: auditJson.ok,
       corpus_digest: auditJson.corpus_digest,
       total_issues: auditJson.total_issues,
       by_severity: auditJson.by_severity,
-      front_leaks: leaks,
+      front_leaks: globalLeaks,
     } : null,
     card_validation: cardsJson ? {
       ok: cardsJson.ok,
@@ -345,6 +356,8 @@ function main() {
     scoped_evidence_refresh: refreshEvidence ? {
       ok: scopedEvidenceRefresh?.ok === true,
       refreshed_scoped_reports: scopedEvidenceRefresh?.refreshed_scoped_reports || [],
+      front_answer_leaks: scopedEvidenceRefresh?.front_answer_leaks ?? null,
+      hard_blockers: scopedEvidenceRefresh?.hard_blockers ?? null,
       changed_review_records: scopedEvidenceRefresh?.changed_review_records || [],
       skipped: scopedEvidenceRefresh?.skipped || [],
       failures: scopedEvidenceRefresh?.failures || [],
