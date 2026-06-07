@@ -1,24 +1,26 @@
 {
-  "review_id": "20260607-cet4-bankedcloze-0200-front-leak-followup-closure",
-  "created_at": "2026-06-07T15:14:40+08:00",
+  "review_id": "20260607-cet4-bankedcloze-0201-front-leak-followup-closure",
+  "created_at": "2026-06-07T15:25:10+08:00",
   "agent": "codex",
   "scope": {
     "library": "选词填空",
     "group": "词性判断",
-    "box": "名词",
+    "box": "形容词",
     "box_prefixes": [
-      "0200"
+      "0201"
     ],
     "card_ids": [
-      "020003",
-      "020005",
-      "020007"
+      "020104",
+      "020106",
+      "020108",
+      "020109",
+      "020110"
     ],
-    "closure_reason": "Current audit_card_quality examples identified three additional 0200 front-side answer-leak blockers on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality examples identified five 0201 front-side answer-leak blockers on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
-      "node scripts/audit_card_quality.mjs --write-report --max-examples 20 in a temporary HEAD worktree",
-      "reviews/audit_scopes/20260607-cet4-bankedcloze-0200-front-leak-followup-scope-audit.json"
+      "node scripts/audit_card_quality.mjs --write-report --max-examples 60 in a temporary HEAD worktree",
+      "reviews/audit_scopes/20260607-cet4-bankedcloze-0201-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -41,22 +43,24 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260607-cet4-bankedcloze-0200-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260607-cet4-bankedcloze-0201-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "1d63ef6d868a14e502fe845a28109a310a7a5dd7477886345d47463819c1c4c9",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "020003",
-        "020005",
-        "020007"
+        "020104",
+        "020106",
+        "020108",
+        "020109",
+        "020110"
       ],
-      "card_count": 3,
-      "issue_count": 6,
+      "card_count": 5,
+      "issue_count": 10,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 6
+        "source_risk": 10
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -69,28 +73,28 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 3,
+        "synthetic_source": 5,
         "template_analysis_pattern": 0,
-        "unverified_source": 3
+        "unverified_source": 5
       }
     }
   },
   "cards": [
     {
-      "card_id": "020003",
+      "card_id": "020104",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "2",
         "library": "选词填空",
         "group_id": "0",
         "group": "词性判断",
-        "box_id": "0",
-        "box": "名词",
-        "box_prefix": "0200"
+        "box_id": "1",
+        "box": "形容词",
+        "box_prefix": "0201"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "用冠词和前置形容词识别名词短语核心",
+        "main_training_goal": "用 such + 形容词 + 名词结构判断形容词位",
         "weak_point_tags": [
           "grammar_weak",
           "exam_strategy_weak"
@@ -107,7 +111,7 @@
           "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "Front side now asks for the learner action without naming the answer.",
+        "exam_value": "Front side now asks for a syntax judgment without naming the answer token.",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -128,36 +132,37 @@
       "recommendation": "Document as candidate-only residual closure evidence."
     },
     {
-      "card_id": "020005",
+      "card_id": "020106",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "2",
         "library": "选词填空",
         "group_id": "0",
         "group": "词性判断",
-        "box_id": "0",
-        "box": "名词",
-        "box_prefix": "0200"
+        "box_id": "1",
+        "box": "形容词",
+        "box_prefix": "0201"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "用并列结构判断名词作定语",
+        "main_training_goal": "在词性合格后用搭配和上下文区分形容词",
         "weak_point_tags": [
-          "grammar_weak",
           "vocabulary_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
-          "secondary": []
+          "secondary": [
+            "high_score"
+          ]
         },
-        "card_prototype": "solving_action",
+        "card_prototype": "integrated_micro_drill",
         "material": {
           "text_source_type": "simulation",
           "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "Front side now points to the structural clue without exposing the correct answer token.",
+        "exam_value": "Front side now asks for collocation judgment without repeating the correct option path outside the choices.",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -178,20 +183,72 @@
       "recommendation": "Document as candidate-only residual closure evidence."
     },
     {
-      "card_id": "020007",
+      "card_id": "020108",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "2",
         "library": "选词填空",
         "group_id": "0",
         "group": "词性判断",
-        "box_id": "0",
-        "box": "名词",
-        "box_prefix": "0200"
+        "box_id": "1",
+        "box": "形容词",
+        "box_prefix": "0201"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "在词性合格后用研究语境判断名词搭配",
+        "main_training_goal": "用上下文证据判断表语形容词的逻辑功能",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Front side now asks for the logic bridge rather than naming the answer expression.",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as candidate-only residual closure evidence."
+    },
+    {
+      "card_id": "020109",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "1",
+        "box": "形容词",
+        "box_prefix": "0201"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用语义属性判断最高级形容词搭配",
         "weak_point_tags": [
           "vocabulary_weak",
           "exam_strategy_weak"
@@ -208,7 +265,59 @@
           "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "Front side now asks for collocation and context judgment without exposing the correct option outside the choices.",
+        "exam_value": "Front side now asks for a semantic attribute judgment without naming the answer.",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as candidate-only residual closure evidence."
+    },
+    {
+      "card_id": "020110",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "1",
+        "box": "形容词",
+        "box_prefix": "0201"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用原因从句判断表语形容词的语义方向",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "Front side now asks for sentence-internal evidence rather than exposing the answer synonym path.",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -231,14 +340,16 @@
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "Recognition/application/transfer roles are documented for the three repaired 0200 cards, but this is not a new sample approval.",
+    "box_progression": "Recognition/application/transfer roles are documented for the five repaired 0201 cards, but this is not a new sample approval.",
     "repetition_or_gap_risks": [
       "The wider legacy corpus still has global front-answer-leak blockers outside this scoped closure."
     ],
     "representative_cards": [
-      "020003",
-      "020005",
-      "020007"
+      "020104",
+      "020106",
+      "020108",
+      "020109",
+      "020110"
     ],
     "next_step": "Keep PR #50 candidate-only until explicit user approval/delegation exists for content merge."
   }

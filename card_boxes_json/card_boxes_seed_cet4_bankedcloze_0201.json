@@ -316,7 +316,7 @@
       "card_box_name": "形容词",
       "card_group_name": "词性判断",
       "front_content": {
-        "text": "\"...anaerobic exercise—such as lifting heavy weights—is of such ___ intensity that your body does not have time to use oxygen.\"\n\n正确答案是 vigorous（剧烈的）。为什么空格必须是形容词，而非其他词性？",
+        "text": "\"...anaerobic exercise—such as lifting heavy weights—is of such ___ intensity that your body does not have time to use oxygen.\"\n\n先判断空格在 \"such ___ intensity\" 中的句法功能，再选择最能解释该空格词性的选项。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -335,7 +335,7 @@
       "options": [
         {
           "key": "A",
-          "text": "空格前有 such，such 是程度词，后面接副词修饰 intensity",
+          "text": "such 在这里只需要后接副词，副词再修饰 intensity",
           "is_correct": false
         },
         {
@@ -345,7 +345,7 @@
         },
         {
           "key": "C",
-          "text": "\"___ intensity\" 中空格是名词 intensity 的前置修饰语，必须是形容词",
+          "text": "空格处在名词前的前置修饰位，因此应填形容词",
           "is_correct": true
         },
         {
@@ -381,12 +381,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"...anaerobic exercise—such as lifting heavy weights—is of such ___ intensity that your body does not have time to use oxygen.\"\n\n正确答案是 vigorous（剧烈的）。为什么空格必须是形容词，而非其他词性？",
-        "task_prompt": "\"...anaerobic exercise—such as lifting heavy weights—is of such ___ intensity that your body does not have time to use oxygen.\"\n\n正确答案是 vigorous（剧烈的）。为什么空格必须是形容词，而非其他词性？",
+        "text": "\"...anaerobic exercise—such as lifting heavy weights—is of such ___ intensity that your body does not have time to use oxygen.\"\n\n先判断空格在 \"such ___ intensity\" 中的句法功能，再选择最能解释该空格词性的选项。",
+        "task_prompt": "\"...anaerobic exercise—such as lifting heavy weights—is of such ___ intensity that your body does not have time to use oxygen.\"\n\n先判断空格在 \"such ___ intensity\" 中的句法功能，再选择最能解释该空格词性的选项。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "判断形容词前置修饰位",
+          "focus": "such + 空格 + 名词的结构",
+          "success_criteria": "能说明空格直接修饰后面的名词，而不是填副词、动词或另一个名词"
+        }
       },
       "analysis": {
         "text": "① 识别信号：\"___ intensity\"——名词 intensity 前的空格是前置定语位，必须是形容词。这是形容词最经典的位置：「定冠词/不定冠词 + (形容词) + 名词」中的形容词位。\n\n② 核心规律：前置定语位（名词前直接修饰）是形容词的本职之一。副词不能修饰名词（× strongly intensity），名词不能直接并列修饰名词（但名词作定语时例外，如 cotton industry——而此处没有这种结构）。因此，___ intensity 直接锁定词性为形容词。\n\n③ 验证：\"of such vigorous intensity\" = 具有如此剧烈的强度，与下文描述身体无法用氧气产能的激烈状态吻合。detailed（形容词词性正确，但语义×：强度不能被「详细」修饰）。moderate（形容词✓词性，语义✓但偏弱——上文已说 vigorous 与 aerobic 相对，答案锁定 vigorous）。",
@@ -410,6 +414,28 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 such + 形容词 + 名词结构判断形容词位",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在选词填空中先用名词前置修饰位锁定形容词词性。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -528,7 +554,7 @@
       "card_box_name": "形容词",
       "card_group_name": "词性判断",
       "front_content": {
-        "text": "\"Yet whereas most countries have ___ , evidence-backed guidelines on the type and intensity of exercise required for various physical health benefits...\"\n\nword bank 中 detailed（详细的）和 moderate（适中的）都是形容词，都合词性。如何区分哪个是正确答案？",
+        "text": "\"Yet whereas most countries have ___ , evidence-backed guidelines on the type and intensity of exercise required for various physical health benefits...\"\n\n先判断空格与 evidence-backed guidelines 的关系，再选择最符合语义搭配和上下文逻辑的选项。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -547,22 +573,22 @@
       "options": [
         {
           "key": "A",
-          "text": "选 detailed：detailed guidelines 是固定搭配，强调指南的具体程度，与 evidence-backed 并列描述高质量指南的特征",
+          "text": "detailed 强调内容具体完整，适合描述一类操作性说明的质量",
           "is_correct": true
         },
         {
           "key": "B",
-          "text": "选 moderate：指南应该不过于严苛，moderate guidelines 表示力度适中，适合大众执行",
+          "text": "moderate guidelines 表示力度适中，能说明指南适合大众执行",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "选 partly：partly evidence-backed 描述了指南的支持程度，语义上更精确",
+          "text": "partly evidence-backed 描述指南的证据支持程度，语义上更精确",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "选 unique：unique guidelines 表示独一无二的指南，与各国都有这类指南的事实矛盾",
+          "text": "unique guidelines 表示独一无二的指南，与各国都有这类指南的事实矛盾",
           "is_correct": false
         }
       ],
@@ -593,12 +619,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"Yet whereas most countries have ___ , evidence-backed guidelines on the type and intensity of exercise required for various physical health benefits...\"\n\nword bank 中 detailed（详细的）和 moderate（适中的）都是形容词，都合词性。如何区分哪个是正确答案？",
-        "task_prompt": "\"Yet whereas most countries have ___ , evidence-backed guidelines on the type and intensity of exercise required for various physical health benefits...\"\n\nword bank 中 detailed（详细的）和 moderate（适中的）都是形容词，都合词性。如何区分哪个是正确答案？",
+        "text": "\"Yet whereas most countries have ___ , evidence-backed guidelines on the type and intensity of exercise required for various physical health benefits...\"\n\n先判断空格与 evidence-backed guidelines 的关系，再选择最符合语义搭配和上下文逻辑的选项。",
+        "task_prompt": "\"Yet whereas most countries have ___ , evidence-backed guidelines on the type and intensity of exercise required for various physical health benefits...\"\n\n先判断空格与 evidence-backed guidelines 的关系，再选择最符合语义搭配和上下文逻辑的选项。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "判断并列形容词搭配",
+          "focus": "空格与旁边的复合形容词共同修饰同一个名词",
+          "success_criteria": "能结合 guidelines 的语义选择最自然、最符合上下文的形容词搭配"
+        }
       },
       "analysis": {
         "text": "① 识别信号：\"___ , evidence-backed guidelines\"——空格与 evidence-backed 并列修饰 guidelines，词性确认为形容词（与 evidence-backed 这一复合形容词并列）。\n\n② 核心规律：当两个候选词词性相同时，通过「语义搭配」和「上下文逻辑」区分。关键词是 guidelines（指南）：最具价值的指南有两个特点——「基于证据（evidence-backed）」和「内容详细（detailed）」。而 moderate 描述的是「程度适中」，用于修饰指南时语感模糊（适中的指南？中等力度的指南？）。\n\n③ 验证：\"detailed, evidence-backed guidelines\" ✓——清晰、信息完整、学术写作常见搭配。\"moderate, evidence-backed guidelines\" × ——moderate 修饰 guidelines 的语义不明确，且与文章核心问题（运动指南是否存在）无直接关联。",
@@ -622,6 +652,28 @@
       },
       "answer_key": {
         "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "在词性合格后用搭配和上下文区分形容词",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在词性判断之后继续用名词搭配和政策语境判断答案。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -740,7 +792,7 @@
       "card_box_name": "形容词",
       "card_group_name": "词性判断",
       "front_content": {
-        "text": "\"Her last novel appeared when she was 84. And Morrison was not ___ in this regard. Numerous writers produce masterpieces well into their 70s and beyond.\"\n\nword bank 中有：unique（独特的）、alone（形容词/副词，孤单的）、rare（稀有的）、typical（典型的）。\n\n哪个词填入\"was not ___ in this regard\"最能体现作者的逻辑意图？",
+        "text": "\"Her last novel appeared when she was 84. And Morrison was not ___ in this regard. Numerous writers produce masterpieces well into their 70s and beyond.\"\n\n先判断空格如何承接前后两句，再选择最能体现作者逻辑意图的选项。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -759,22 +811,22 @@
       "options": [
         {
           "key": "A",
-          "text": "选 alone：\"was not alone in this regard\" = 在这方面并不孤单，暗示有同类人",
+          "text": "\"was not alone in this regard\" 表示在这方面并不孤单，暗示有同类人",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "选 typical：\"was not typical\" = 莫里森的情况不典型，说明她的晚年创作是个例外",
+          "text": "\"was not typical\" 表示莫里森的情况不典型，说明她的晚年创作是个例外",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "选 unique：\"was not unique in this regard\" = 在晚年创作上她并非独特/罕见，下文的众多作家证据恰好支撑了这一点",
+          "text": "unique 的否定表示她并非特例，下文的众多作家证据恰好支撑这一点",
           "is_correct": true
         },
         {
           "key": "D",
-          "text": "选 rare：\"was not rare\" = 这种现象不罕见，语义正确，且下文也说众多作家都是如此",
+          "text": "\"was not rare\" 表示这种现象不罕见，语义接近，但与 in this regard 的搭配不如固定表达自然",
           "is_correct": false
         }
       ],
@@ -805,12 +857,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"Her last novel appeared when she was 84. And Morrison was not ___ in this regard. Numerous writers produce masterpieces well into their 70s and beyond.\"\n\nword bank 中有：unique（独特的）、alone（形容词/副词，孤单的）、rare（稀有的）、typical（典型的）。\n\n哪个词填入\"was not ___ in this regard\"最能体现作者的逻辑意图？",
-        "task_prompt": "\"Her last novel appeared when she was 84. And Morrison was not ___ in this regard. Numerous writers produce masterpieces well into their 70s and beyond.\"\n\nword bank 中有：unique（独特的）、alone（形容词/副词，孤单的）、rare（稀有的）、typical（典型的）。\n\n哪个词填入\"was not ___ in this regard\"最能体现作者的逻辑意图？",
+        "text": "\"Her last novel appeared when she was 84. And Morrison was not ___ in this regard. Numerous writers produce masterpieces well into their 70s and beyond.\"\n\n先判断空格如何承接前后两句，再选择最能体现作者逻辑意图的选项。",
+        "task_prompt": "\"Her last novel appeared when she was 84. And Morrison was not ___ in this regard. Numerous writers produce masterpieces well into their 70s and beyond.\"\n\n先判断空格如何承接前后两句，再选择最能体现作者逻辑意图的选项。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "判断上下文逻辑桥梁",
+          "focus": "空格如何连接晚年出书和众多同类例子",
+          "success_criteria": "能选出既符合表语位置又能承接前后句逻辑的形容词"
+        }
       },
       "analysis": {
         "text": "① 识别信号：\"was not ___ in this regard\" → be 动词 + 否定 + 空格 + 介词短语 = 系动词后表语位 = 形容词。四个候选词都是形容词（词性全通过），需进入语义阶段。\n\n② 核心规律：此题考查「上下文逻辑推断」：上文=莫里森84岁还在出书；下文=众多作家70多岁也有杰作。中间句「She was not ___ in this regard」是逻辑桥梁，意思是「这在她那个年代并非个例」。unique（独特的、罕见的）的否定 = 并不特殊/不是唯一 = 引出下文「很多人都这样」。\n\n③ 验证：typical（典型的）否定 = 「不典型」更强调反常，而非「不孤立」；alone 否定 = \"not alone\" = 不孤单，语氣更口语；rare 在此处不合语法位置（rare 较少跟在 was not ___ in 结构后）。unique = 最精确的「罕见性/唯一性」，否定后 = 这种现象并不罕见。",
@@ -834,6 +890,29 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用上下文证据判断表语形容词的逻辑功能",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户用前后句逻辑验证形容词，而不是只看词性或孤立词义。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -848,7 +927,7 @@
       "card_box_name": "形容词",
       "card_group_name": "词性判断",
       "front_content": {
-        "text": "\"creating fabric from cotton, which is the most ___ clothing material, is actually a process that involves a lot of water.\"\n\nword bank 包含：abundant（充裕的）、exact（精确的）、intense（强烈的）。\n\n三者都是形容词，都能修饰 clothing material，如何确定正确答案？",
+        "text": "\"creating fabric from cotton, which is the most ___ clothing material, is actually a process that involves a lot of water.\"\n\n先判断 \"the most ___ clothing material\" 需要描述哪种特征，再选择最符合上下文的选项。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -867,17 +946,17 @@
       "options": [
         {
           "key": "A",
-          "text": "选 intense：棉花在加工过程中需要大量水，从某种意义上说是「最资源密集的」衣料",
+          "text": "intense 强调力度或感受强烈，可把棉花理解为加工过程很耗资源的衣料",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "选 abundant：棉花是全球生产量最大、使用最广泛的天然纺织纤维，\"most abundant\" 描述了它的核心地位",
+          "text": "abundant 强调数量充裕或分布广，能说明棉花作为衣料被广泛使用的地位",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "选 exact：高品质衣料要求工艺精确，\"most exact clothing material\" 描述了棉花的高工艺要求",
+          "text": "exact 强调精确，可把高品质衣料理解为对工艺要求很高",
           "is_correct": false
         },
         {
@@ -913,12 +992,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"creating fabric from cotton, which is the most ___ clothing material, is actually a process that involves a lot of water.\"\n\nword bank 包含：abundant（充裕的）、exact（精确的）、intense（强烈的）。\n\n三者都是形容词，都能修饰 clothing material，如何确定正确答案？",
-        "task_prompt": "\"creating fabric from cotton, which is the most ___ clothing material, is actually a process that involves a lot of water.\"\n\nword bank 包含：abundant（充裕的）、exact（精确的）、intense（强烈的）。\n\n三者都是形容词，都能修饰 clothing material，如何确定正确答案？",
+        "text": "\"creating fabric from cotton, which is the most ___ clothing material, is actually a process that involves a lot of water.\"\n\n先判断 \"the most ___ clothing material\" 需要描述哪种特征，再选择最符合上下文的选项。",
+        "task_prompt": "\"creating fabric from cotton, which is the most ___ clothing material, is actually a process that involves a lot of water.\"\n\n先判断 \"the most ___ clothing material\" 需要描述哪种特征，再选择最符合上下文的选项。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "判断最高级形容词搭配",
+          "focus": "the most ___ clothing material 需要描述衣料的核心属性",
+          "success_criteria": "能结合 cotton 的语境选择最能解释其重要性的形容词"
+        }
       },
       "analysis": {
         "text": "① 识别信号：\"the most ___ clothing material\" = 冠词 the + most（最高级标记）+ 空格 + 名词 = 形容词的最高级位置。三候选词均为形容词（词性全通过），进入语义阶段。\n\n② 核心规律：\"the most + 形容词 + 名词\" 中，需要选一个「最合理描述该名词特征」的形容词。关键是判断：棉花作为衣料的最突出特点是什么？棉花是全球生产量最大的天然纺织纤维，其最显著的属性是「数量充裕/普及广泛（abundant）」而非「强度大（intense）」或「精确度高（exact）」。\n\n③ 验证：上文语境说的是棉花衬衫和棉花的生产过程，作者需要先说明「为什么棉花最重要」→ 因为它是the most abundant clothing material（最普遍的衣料）→ 所以讨论它的用水量有意义。exact 和 intense 都不能解释棉花的重要性。",
@@ -942,6 +1025,28 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用语义属性判断最高级形容词搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在形容词词性全通过时，用名词属性和文章主题完成语义筛选。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -956,7 +1061,7 @@
       "card_box_name": "形容词",
       "card_group_name": "词性判断",
       "front_content": {
-        "text": "\"The findings of this study are somewhat ___, as they suggest that even minimal physical activity can significantly extend one's lifespan in ways that previous research had not anticipated.\"\n\nword bank 含：contradictory（矛盾的）、controversial（有争议的）、moderate（适中的）、unexpected（出人意料的）。\n\n这四个形容词都合词性。你如何通过句子内部的逻辑线索锁定正确答案？",
+        "text": "\"The findings of this study are somewhat ___, as they suggest that even minimal physical activity can significantly extend one's lifespan in ways that previous research had not anticipated.\"\n\n先看逗号后面的原因说明，再选择最能概括研究发现性质的选项。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -975,22 +1080,22 @@
       "options": [
         {
           "key": "A",
-          "text": "选 contradictory：该研究与之前研究的结论相矛盾，contradictory 描述了这一对立关系",
+          "text": "contradictory 表示该研究与另一个结论相互矛盾，强调内部或外部对立",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "选 controversial：如此颠覆性的结论必然引发争议，controversial 是更有力的形容词",
+          "text": "controversial 表示结论容易引发争议，强调社会或学术讨论中的分歧",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "选 moderate：研究结果比较适中，somewhat moderate 表示结论不极端",
+          "text": "moderate 表示程度适中，强调结论或影响并不极端",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "选 unexpected：as 从句说明「之前研究没有预期」这一结果，unexpected 直接对应 not anticipated 的语义",
+          "text": "unexpected 表示结果超出已有预期，契合句尾说明的研究背景",
           "is_correct": true
         }
       ],
@@ -1021,12 +1126,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"The findings of this study are somewhat ___, as they suggest that even minimal physical activity can significantly extend one's lifespan in ways that previous research had not anticipated.\"\n\nword bank 含：contradictory（矛盾的）、controversial（有争议的）、moderate（适中的）、unexpected（出人意料的）。\n\n这四个形容词都合词性。你如何通过句子内部的逻辑线索锁定正确答案？",
-        "task_prompt": "\"The findings of this study are somewhat ___, as they suggest that even minimal physical activity can significantly extend one's lifespan in ways that previous research had not anticipated.\"\n\nword bank 含：contradictory（矛盾的）、controversial（有争议的）、moderate（适中的）、unexpected（出人意料的）。\n\n这四个形容词都合词性。你如何通过句子内部的逻辑线索锁定正确答案？",
+        "text": "\"The findings of this study are somewhat ___, as they suggest that even minimal physical activity can significantly extend one's lifespan in ways that previous research had not anticipated.\"\n\n先看逗号后面的原因说明，再选择最能概括研究发现性质的选项。",
+        "task_prompt": "\"The findings of this study are somewhat ___, as they suggest that even minimal physical activity can significantly extend one's lifespan in ways that previous research had not anticipated.\"\n\n先看逗号后面的原因说明，再选择最能概括研究发现性质的选项。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "用原因说明反推表语形容词",
+          "focus": "后半句如何说明 findings 的性质",
+          "success_criteria": "能把句尾原因转化为对空格形容词的判断"
+        }
       },
       "analysis": {
         "text": "① 识别信号：\"somewhat ___ \" → 程度副词 somewhat + 空格 = 形容词位。四个候选词都是形容词（词性全通过）。\n\n② 核心规律：当词性无法区分时，用从句/后半句作为「语义锚」。本句结构：\"The findings are ___, as [原因/证据]\"。从句内容：even minimal activity can extend lifespan in ways that **previous research had not anticipated**（之前研究没有预期）。\"not anticipated\" 的同义表达 = unexpected（未被预期的、出人意料的）。\n\n③ 对比验证：contradictory = 与另一个结论相互矛盾（sentence 没有提另一个相矛盾的结论）；controversial = 在社会上引发争议（sentence 强调的是「之前没预期」而非「引发争论」）；moderate = 描述程度适中（与 not anticipated 没有语义关联）；unexpected = 之前没有预期/出乎意料 ✓ 完全对应从句语义。",
@@ -1050,6 +1159,29 @@
       },
       "answer_key": {
         "correct_option": "D"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用原因从句判断表语形容词的语义方向",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户用 as/because 类从句作语义验证器，区分词性相同的形容词。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],
