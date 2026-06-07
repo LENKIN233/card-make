@@ -1,18 +1,24 @@
 {
-  "review_id": "20260521-cet4-bankedcloze-0223-front-leak-fix-sample",
-  "created_at": "2026-05-21T16:33:50+08:00",
+  "review_id": "20260607-cet4-bankedcloze-0200-front-leak-followup-closure",
+  "created_at": "2026-06-07T15:14:40+08:00",
   "agent": "codex",
   "scope": {
     "library": "选词填空",
-    "group": "固定搭配",
-    "box": "be动词+形容词/分词+介词",
+    "group": "词性判断",
+    "box": "名词",
     "box_prefixes": [
-      "0223"
+      "0200"
     ],
     "card_ids": [
-      "022302",
-      "022304",
-      "022306"
+      "020003",
+      "020005",
+      "020007"
+    ],
+    "closure_reason": "Current audit_card_quality examples identified three additional 0200 front-side answer-leak blockers on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "source_issue_refs": [
+      "PR #50: https://github.com/LENKIN233/card-make/pull/50",
+      "node scripts/audit_card_quality.mjs --write-report --max-examples 20 in a temporary HEAD worktree",
+      "reviews/audit_scopes/20260607-cet4-bankedcloze-0200-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -28,18 +34,21 @@
     "spec/card-quality-audit.json"
   ],
   "sample_policy": {
-    "is_three_card_sample_per_box": true,
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260521-cet4-bankedcloze-0223-front-leak-fix-scope-audit.json",
+    "report": "reviews/audit_scopes/20260607-cet4-bankedcloze-0200-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "ee91328359254607eb1ec840308e42524debfbf128e48897fe50eb2566fe4a62",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "022302",
-        "022304",
-        "022306"
+        "020003",
+        "020005",
+        "020007"
       ],
       "card_count": 3,
       "issue_count": 6,
@@ -68,23 +77,22 @@
   },
   "cards": [
     {
-      "card_id": "022302",
+      "card_id": "020003",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "2",
         "library": "选词填空",
-        "group_id": "2",
-        "group": "固定搭配",
-        "box_id": "3",
-        "box": "be动词+形容词/分词+介词",
-        "box_prefix": "0223"
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "0200"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 familiar with 表示熟悉对象的形容词介词搭配",
+        "main_training_goal": "用冠词和前置形容词识别名词短语核心",
         "weak_point_tags": [
           "grammar_weak",
-          "vocabulary_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
@@ -99,7 +107,7 @@
           "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在选词填空中把形容词后的名词短语识别为搭配对象，而不是凭中文直觉乱配介词。",
+        "exam_value": "Front side now asks for the learner action without naming the answer.",
         "box_progression_role": "recognition",
         "review_status": "agent_pass"
       },
@@ -117,23 +125,23 @@
       "minor_issues": [
         "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "recommendation": "Document as candidate-only residual closure evidence."
     },
     {
-      "card_id": "022304",
+      "card_id": "020005",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "2",
         "library": "选词填空",
-        "group_id": "2",
-        "group": "固定搭配",
-        "box_id": "3",
-        "box": "be动词+形容词/分词+介词",
-        "box_prefix": "0223"
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "0200"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "区分 responsible for doing 和 responsible to sb 的搭配语义",
+        "main_training_goal": "用并列结构判断名词作定语",
         "weak_point_tags": [
           "grammar_weak",
           "vocabulary_weak",
@@ -143,13 +151,13 @@
           "primary": "pass",
           "secondary": []
         },
-        "card_prototype": "context_input",
+        "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
           "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在选词填空中根据后接成分判断固定搭配，避免把 responsible to 和 responsible for 机械混淆。",
+        "exam_value": "Front side now points to the structural clue without exposing the correct answer token.",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -167,25 +175,24 @@
       "minor_issues": [
         "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "recommendation": "Document as candidate-only residual closure evidence."
     },
     {
-      "card_id": "022306",
+      "card_id": "020007",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "2",
         "library": "选词填空",
-        "group_id": "2",
-        "group": "固定搭配",
-        "box_id": "3",
-        "box": "be动词+形容词/分词+介词",
-        "box_prefix": "0223"
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "0200"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 satisfied with 表示满意对象的形容词介词搭配",
+        "main_training_goal": "在词性合格后用研究语境判断名词搭配",
         "weak_point_tags": [
-          "grammar_weak",
           "vocabulary_weak",
           "exam_strategy_weak"
         ],
@@ -201,7 +208,7 @@
           "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户把形容词后的介词选择从中文直译转为语义角色判断，提高固定搭配题的稳定性。",
+        "exam_value": "Front side now asks for collocation and context judgment without exposing the correct option outside the choices.",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -219,22 +226,20 @@
       "minor_issues": [
         "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
       ],
-      "recommendation": "Candidate sample can be shown for user confirmation of content direction."
+      "recommendation": "Document as candidate-only residual closure evidence."
     }
   ],
   "batch_review": {
-    "status": "recommend_user_confirmation",
-    "box_progression": "The revised sample moves from recognizing familiar + object, to applying responsible + duty content, to transferring the same semantic-role method to satisfied + satisfaction object.",
+    "status": "documented_residual_closure",
+    "box_progression": "Recognition/application/transfer roles are documented for the three repaired 0200 cards, but this is not a new sample approval.",
     "repetition_or_gap_risks": [
-      "All three cards use multiple_choice because this box trains fixed adjective/preposition selection inside a sentence gap.",
-      "The previous front-answer leak blocker has been cleared by the scoped audit; the correct preposition appears only as a visible option and back-side answer.",
-      "Formal approval still needs explicit user confirmation."
+      "The wider legacy corpus still has global front-answer-leak blockers outside this scoped closure."
     ],
     "representative_cards": [
-      "022302",
-      "022304",
-      "022306"
+      "020003",
+      "020005",
+      "020007"
     ],
-    "next_step": "Show this revised candidate sample to the user for content-direction confirmation; do not expand the box or mark it formal until explicit user approval is recorded."
+    "next_step": "Keep PR #50 candidate-only until explicit user approval/delegation exists for content merge."
   }
 }

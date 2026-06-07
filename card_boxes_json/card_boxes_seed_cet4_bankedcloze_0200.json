@@ -212,7 +212,7 @@
       "card_box_name": "名词",
       "card_group_name": "词性判断",
       "front_content": {
-        "text": "\"...an important ___ made in the review is between aerobic exercise and anaerobic.\"\n\n正确答案是 distinction（区分）。下列哪项正确解释了为什么 detailed（详细的）和 moderate（适中的）都不能填入该空格？",
+        "text": "\"...an important ___ made in the review is between aerobic exercise and anaerobic.\"\n\n先判断空格在名词短语中承担什么句法功能，再选择最能解释该空格词性的选项。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -231,7 +231,7 @@
       "options": [
         {
           "key": "A",
-          "text": "\"an important\" 是冠词加形容词，后面的空格是名词短语核心，必须填名词",
+          "text": "冠词加前置修饰语之后还缺名词短语核心，因此空格必须填名词",
           "is_correct": true
         },
         {
@@ -277,12 +277,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"...an important ___ made in the review is between aerobic exercise and anaerobic.\"\n\n正确答案是 distinction（区分）。下列哪项正确解释了为什么 detailed（详细的）和 moderate（适中的）都不能填入该空格？",
-        "task_prompt": "\"...an important ___ made in the review is between aerobic exercise and anaerobic.\"\n\n正确答案是 distinction（区分）。下列哪项正确解释了为什么 detailed（详细的）和 moderate（适中的）都不能填入该空格？",
+        "text": "\"...an important ___ made in the review is between aerobic exercise and anaerobic.\"\n\n先判断空格在名词短语中承担什么句法功能，再选择最能解释该空格词性的选项。",
+        "task_prompt": "\"...an important ___ made in the review is between aerobic exercise and anaerobic.\"\n\n先判断空格在名词短语中承担什么句法功能，再选择最能解释该空格词性的选项。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "判断名词短语核心",
+          "focus": "用冠词和形容词位置判断空格词性",
+          "success_criteria": "能说明空格不是继续补形容词，而是承担名词短语核心"
+        }
       },
       "analysis": {
         "text": "① 识别信号：\"an important + 空格\" 是「冠词 + 形容词 + 名词」结构。冠词开启名词短语，形容词是修饰语，最后的空格才是核心名词。\n\n② 核心规律：英语名词短语的构成规则：冠词/限定词（可选）+ 形容词修饰（可选，可叠加）+ 核心名词（必选）。当你看到「a/an/the + 形容词 + 空格」，空格100%是名词——形容词再多也只是修饰语，核心名词必须存在。\n\n③ 验证：an important ___ made in the review → an (冠词) + important (形容词修饰语) + ___ (核心名词) + made in the review (过去分词短语做后置定语)。distinction（名词）✓。detailed（形容词）× 因为 an important detailed 后面还需要名词，结构残缺。moderate（形容词）× 同理。",
@@ -303,6 +307,28 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用冠词和前置形容词识别名词短语核心",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在选词填空中先用名词短语结构锁定词性，再排除形容词干扰项。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       },
       "answer_key": {
         "correct_option": "A"
@@ -424,7 +450,7 @@
       "card_box_name": "名词",
       "card_group_name": "词性判断",
       "front_content": {
-        "text": "\"Given how large the ___ and cotton industries are, they take up a lot of our fresh water demands.\"\n\n正确答案是 textile（纺织品）。下列哪项解释了为什么并列结构能帮助判断词性？",
+        "text": "\"Given how large the ___ and cotton industries are, they take up a lot of our fresh water demands.\"\n\n观察 and 两侧前置成分的关系，选择最能说明词性判断依据的选项。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -453,7 +479,7 @@
         },
         {
           "key": "C",
-          "text": "空格与 cotton 并列修饰 industries，cotton 是名词作定语，所以空格也必须是名词",
+          "text": "and 两侧前置成分需要词性和句法功能一致，已知成分是名词性定语，所以空格也应是名词性定语",
           "is_correct": true
         },
         {
@@ -489,12 +515,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"Given how large the ___ and cotton industries are, they take up a lot of our fresh water demands.\"\n\n正确答案是 textile（纺织品）。下列哪项解释了为什么并列结构能帮助判断词性？",
-        "task_prompt": "\"Given how large the ___ and cotton industries are, they take up a lot of our fresh water demands.\"\n\n正确答案是 textile（纺织品）。下列哪项解释了为什么并列结构能帮助判断词性？",
+        "text": "\"Given how large the ___ and cotton industries are, they take up a lot of our fresh water demands.\"\n\n观察 and 两侧前置成分的关系，选择最能说明词性判断依据的选项。",
+        "task_prompt": "\"Given how large the ___ and cotton industries are, they take up a lot of our fresh water demands.\"\n\n观察 and 两侧前置成分的关系，选择最能说明词性判断依据的选项。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "判断并列修饰结构",
+          "focus": "用 and 两侧成分的词性一致性判断空格",
+          "success_criteria": "能说明并列两侧在句中承担同类修饰功能"
+        }
       },
       "analysis": {
         "text": "① 识别信号：空格后紧跟「and + 已知名词」，这是\"并列词性一致\"信号。\"the ___ and cotton industries\" 中 cotton 是名词，因此空格也必须是名词（作定语修饰 industries）。\n\n② 核心规律：英语并列结构中，and/or/but 连接的两个成分必须具有相同的词性和句法功能。这一规则提供了强力的词性约束：只需判断已知并列项的词性，即可确定未知空格的词性。\n\n③ 验证：the ___ and cotton industries → the (冠词) + [___ and cotton] (名词性定语并列) + industries (中心名词)。textile（纺织品）作定语 = 名词 ✓。abundant（形容词）× 与名词 cotton 并列词性不对等。sew（动词）× 同理，不能与名词并列。awareness（名词，意为「认知」）× 词性虽对但语义不通，纺织品/棉布可以是某个行业，但 awareness industry 不是真实存在的行业描述。",
@@ -515,6 +545,27 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用并列结构判断名词作定语",
+        "weak_point_tags": [
+          "grammar_weak",
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户把 and 前后的句法功能对齐，用已知并列项反推空格词性。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       },
       "answer_key": {
         "correct_option": "C"
@@ -636,7 +687,7 @@
       "card_box_name": "名词",
       "card_group_name": "词性判断",
       "front_content": {
-        "text": "\"The researchers also studied a ___ of college students and found that their average vocabulary contained approximately 16,000 words.\"\n\nword bank 中有两个名词候选：sample（样本）和 component（成分/组成部分）。两者都是名词，都能跟在 \"a\" 后面。最终应选哪一个，判断依据是什么？",
+        "text": "\"The researchers also studied a ___ of college students and found that their average vocabulary contained approximately 16,000 words.\"\n\n四个选项都在比较名词语义。先判断 studied 和 of college students 要求空格表达哪一种研究对象，再选择最自然的搭配依据。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -701,12 +752,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"The researchers also studied a ___ of college students and found that their average vocabulary contained approximately 16,000 words.\"\n\nword bank 中有两个名词候选：sample（样本）和 component（成分/组成部分）。两者都是名词，都能跟在 \"a\" 后面。最终应选哪一个，判断依据是什么？",
-        "task_prompt": "\"The researchers also studied a ___ of college students and found that their average vocabulary contained approximately 16,000 words.\"\n\nword bank 中有两个名词候选：sample（样本）和 component（成分/组成部分）。两者都是名词，都能跟在 \"a\" 后面。最终应选哪一个，判断依据是什么？",
+        "text": "\"The researchers also studied a ___ of college students and found that their average vocabulary contained approximately 16,000 words.\"\n\n四个选项都在比较名词语义。先判断 studied 和 of college students 要求空格表达哪一种研究对象，再选择最自然的搭配依据。",
+        "task_prompt": "\"The researchers also studied a ___ of college students and found that their average vocabulary contained approximately 16,000 words.\"\n\n四个选项都在比较名词语义。先判断 studied 和 of college students 要求空格表达哪一种研究对象，再选择最自然的搭配依据。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "比较名词搭配",
+          "focus": "用 studied 和 of college students 判断名词语义是否自然",
+          "success_criteria": "能从研究对象语境判断哪个名词能自然接人群名词"
+        }
       },
       "analysis": {
         "text": "① 识别信号：\"a ___ of college students\" → 冠词 + 空格 + of + 名词。词性已锁定为名词。进入语义阶段：两个候选名词 sample vs component。\n\n② 核心规律：\"a ___ of + [人群名词]\" 结构中，常见合理搭配是 sample（样本）、group（小组）、number（数量）等，表示从该群体中取出的部分用于研究。component 表示某个系统的组成部分，后面通常接抽象概念（a component of success, a component of the plan），不接人群名词。\n\n③ 验证：研究人员 studied a ___ of college students → 动词 studied 后跟研究对象，这里指一个被研究的大学生群体子集 = a sample（样本）。a component of college students 在学术写作中不自然，因为大学生不被视为某个系统的「组成部分」来被研究。",
@@ -727,6 +782,28 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "在词性合格后用研究语境判断名词搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户从词性过滤进入搭配和语境判断，避免只凭单词中文意思选名词。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       },
       "answer_key": {
         "correct_option": "C"
