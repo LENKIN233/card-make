@@ -64,6 +64,8 @@
       "022102",
       "022104",
       "022106",
+      "022108",
+      "022110",
       "022202",
       "022204",
       "022206",
@@ -91,7 +93,8 @@
       "node scripts/audit_card_quality.mjs --write-report --max-examples 120 in /private/tmp/card-make-current-audit-next",
       "reviews/audit_scopes/20260608-cet4-bankedcloze-0203-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --write-report --max-examples 140 in /private/tmp/card-make-current-audit-next",
-      "reviews/audit_scopes/20260608-cet4-bankedcloze-0210-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260608-cet4-bankedcloze-0210-front-leak-followup-scope-audit.json",
+      "reviews/audit_scopes/20260608-cet4-bankedcloze-0221-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -116,7 +119,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "08b39326cd670ff1824629547807e93a61d71aef6bbb901c17c9f4c4199f48d3",
+    "corpus_fingerprint": "8934ed56a7cc66243a1ebe7eebd9b008952c967ad562450cf4314e9b62f2a67d",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -157,6 +160,8 @@
         "022102",
         "022104",
         "022106",
+        "022108",
+        "022110",
         "022202",
         "022204",
         "022206",
@@ -173,13 +178,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 52,
-      "issue_count": 103,
+      "card_count": 54,
+      "issue_count": 107,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 103
+        "source_risk": 107
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -192,9 +197,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 52,
+        "synthetic_source": 54,
         "template_analysis_pattern": 0,
-        "unverified_source": 51
+        "unverified_source": 53
       }
     }
   },
@@ -2050,6 +2055,110 @@
         "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
       ],
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "022108",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "1",
+        "box": "形容词+名词",
+        "box_prefix": "0221"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 coherent argument 表示逻辑连贯论证的形容词名词搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在正式论证语境中只看修饰词和句内关系判断自然搭配，避免靠选项外重复名词定位答案。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as candidate-only residual closure evidence."
+    },
+    {
+      "card_id": "022110",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "2",
+        "group": "固定搭配",
+        "box_id": "1",
+        "box": "形容词+名词",
+        "box_prefix": "0221"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 comprehensive assessment 表示全面评估的形容词名词搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户根据风险语境选择自然正式搭配，避免把题干名词与完整选项短语的重叠当作答案线索。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as candidate-only residual closure evidence."
     },
     {
       "card_id": "022202",
