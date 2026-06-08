@@ -316,7 +316,7 @@
       "card_box_name": "名词",
       "card_group_name": "空格语法预判",
       "front_content": {
-        "text": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n为什么这里优先预判为名词，而不是形容词？",
+        "text": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n先判断空格所在短语在句中承担什么成分，再选择最稳妥的词性预判步骤。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -335,22 +335,22 @@
       "options": [
         {
           "key": "A",
-          "text": "remains 前面应填副词修饰 remains，所以空格是副词",
+          "text": "空格在谓语前，应该用副词提前修饰后面的动作",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "financial 是名词，后面可接任何词性",
+          "text": "前置修饰语已经足够作句子主语，空格可以填任意补充成分",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "financial 是形容词，且空格后为谓语 remains，说明空格是主语短语核心名词",
+          "text": "空格所在短语要承担主语核心，前面的修饰语不能单独完成这个位置",
           "is_correct": true
         },
         {
           "key": "D",
-          "text": "remain 是及物动词，空格应填宾语动词",
+          "text": "后面的谓语可直接把前面修饰语当作宾语，所以空格应填动词",
           "is_correct": false
         }
       ],
@@ -381,12 +381,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n为什么这里优先预判为名词，而不是形容词？",
-        "task_prompt": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n为什么这里优先预判为名词，而不是形容词？",
+        "text": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n先判断空格所在短语在句中承担什么成分，再选择最稳妥的词性预判步骤。",
+        "task_prompt": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n先判断空格所在短语在句中承担什么成分，再选择最稳妥的词性预判步骤。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "判断主语短语核心词位置",
+          "focus": "前置修饰语后接空格并在谓语前形成主语",
+          "success_criteria": "能说明该位置需要名词性核心，而不是修饰语或动词"
+        }
       },
       "analysis": {
         "text": "① 识别信号：\"financial ___ remains ...\"。空格前有形容词 financial，空格后是谓语 remains。由此可知 \"financial ___\" 整体为主语。\n\n② 核心规律：主语位置要求名词性成分；\"形容词 + 名词\" 可构成主语短语，\"形容词 + 形容词\" 不能构成合法主语核心。\n\n③ 验证：\"financial pressure remains the main reason\" 结构完整。若把空格填成副词/动词，会导致主语缺失或结构冲突。",
@@ -410,6 +414,28 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用主语短语位置预判名词性核心词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在选词填空中先找句子主语核心，避免只看相邻词就误判词性。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -952,7 +978,7 @@
       "card_box_name": "名词",
       "card_group_name": "空格语法预判",
       "front_content": {
-        "text": "挑战题：\"For elderly workers, the key to delaying retirement is not motivation alone, but long-term financial ___.\"\n\n下列哪项对空格词性的判断最严谨？",
+        "text": "挑战题：\"For elderly workers, the key to delaying retirement is not motivation alone, but long-term financial ___.\"\n\n先观察 not A but B 的并列关系，再选择最稳妥的词性预判步骤。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -976,12 +1002,12 @@
         },
         {
           "key": "B",
-          "text": "motivation 与 but 后成分并列，financial 又要求后接名词，双重约束指向名词位",
+          "text": "not A but B 要求前后语法功能对等；B 内部还需要一个中心词承接前置修饰语",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "financial 本身可作名词，所以空格可填任意词",
+          "text": "前置修饰词本身可以作中心词，所以空格可填任意词",
           "is_correct": false
         },
         {
@@ -1017,12 +1043,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "挑战题：\"For elderly workers, the key to delaying retirement is not motivation alone, but long-term financial ___.\"\n\n下列哪项对空格词性的判断最严谨？",
-        "task_prompt": "挑战题：\"For elderly workers, the key to delaying retirement is not motivation alone, but long-term financial ___.\"\n\n下列哪项对空格词性的判断最严谨？",
+        "text": "挑战题：\"For elderly workers, the key to delaying retirement is not motivation alone, but long-term financial ___.\"\n\n先观察 not A but B 的并列关系，再选择最稳妥的词性预判步骤。",
+        "task_prompt": "挑战题：\"For elderly workers, the key to delaying retirement is not motivation alone, but long-term financial ___.\"\n\n先观察 not A but B 的并列关系，再选择最稳妥的词性预判步骤。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "用并列对等和前置修饰语判断中心词",
+          "focus": "not A but B 的语法功能对等",
+          "success_criteria": "能确认 B 部分需要名词性中心词，而不是副词或动词"
+        }
       },
       "analysis": {
         "text": "① 识别信号：\"not motivation alone, but long-term financial ___\"。前半部分 motivation 是名词，but 后成分与其对等；同时 financial 为形容词，后接名词。\n\n② 核心规律：并列对等原则可作为强词性约束。结构 not A but B 中，A/B 多保持同类语法角色。若 A 是名词短语，B 也应为名词短语。结合 \"adj + ___\" 再次确认名词位。\n\n③ 验证：\"...but long-term financial pressure\" 语法与语义均成立。若填副词 financially，则成为 \"financial financially\" 结构冲突；若填动词 pressure（动词用法）也与并列名词结构不一致。",
@@ -1046,6 +1076,28 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用并列对等结构和前置修饰语预判名词性中心词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在复杂选词填空中结合并列结构和修饰关系判断空格词性，降低凭词义硬选的风险。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],

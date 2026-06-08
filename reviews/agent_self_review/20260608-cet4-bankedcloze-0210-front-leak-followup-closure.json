@@ -1,23 +1,23 @@
 {
-  "review_id": "20260608-cet4-bankedcloze-0203-front-leak-followup-closure",
-  "created_at": "2026-06-08T13:54:22+08:00",
+  "review_id": "20260608-cet4-bankedcloze-0210-front-leak-followup-closure",
+  "created_at": "2026-06-08T14:03:37+08:00",
   "agent": "codex",
   "scope": {
     "library": "选词填空",
-    "group": "词性判断",
-    "box": "副词",
+    "group": "空格语法预判",
+    "box": "名词",
     "box_prefixes": [
-      "0203"
+      "0210"
     ],
     "card_ids": [
-      "020304",
-      "020308"
+      "021004",
+      "021010"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified two additional 0203 front-side answer-leak blockers on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified two additional 0210 front-side answer-leak blockers on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
-      "node scripts/audit_card_quality.mjs --write-report --max-examples 120 in /private/tmp/card-make-current-audit-next",
-      "reviews/audit_scopes/20260608-cet4-bankedcloze-0203-front-leak-followup-scope-audit.json"
+      "node scripts/audit_card_quality.mjs --write-report --max-examples 140 in /private/tmp/card-make-current-audit-next",
+      "reviews/audit_scopes/20260608-cet4-bankedcloze-0210-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -40,13 +40,13 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260608-cet4-bankedcloze-0203-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260608-cet4-bankedcloze-0210-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "08b39326cd670ff1824629547807e93a61d71aef6bbb901c17c9f4c4199f48d3",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "020304",
-        "020308"
+        "021004",
+        "021010"
       ],
       "card_count": 2,
       "issue_count": 4,
@@ -75,20 +75,20 @@
   },
   "cards": [
     {
-      "card_id": "020304",
+      "card_id": "021004",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "2",
         "library": "选词填空",
-        "group_id": "0",
-        "group": "词性判断",
-        "box_id": "3",
-        "box": "副词",
-        "box_prefix": "0203"
+        "group_id": "1",
+        "group": "空格语法预判",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "0210"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "用连系动词加表语形容词结构判断副词程度修饰位",
+        "main_training_goal": "用主语短语位置预判名词性核心词",
         "weak_point_tags": [
           "grammar_weak",
           "exam_strategy_weak"
@@ -105,7 +105,7 @@
           "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "Front side now asks for a structural degree-modifier judgment without naming the answer token or its same-root distractor.",
+        "exam_value": "Front side now asks for a subject-core judgment without telling the learner the target part of speech in the prompt.",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -126,20 +126,20 @@
       "recommendation": "Document as candidate-only residual closure evidence."
     },
     {
-      "card_id": "020308",
+      "card_id": "021010",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "library_id": "2",
         "library": "选词填空",
-        "group_id": "0",
-        "group": "词性判断",
-        "box_id": "3",
-        "box": "副词",
-        "box_prefix": "0203"
+        "group_id": "1",
+        "group": "空格语法预判",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "0210"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "先定位谓语动词位，再排除误判为副词位的陷阱",
+        "main_training_goal": "用并列对等结构和前置修饰语预判名词性中心词",
         "weak_point_tags": [
           "grammar_weak",
           "exam_strategy_weak"
@@ -156,7 +156,7 @@
           "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "Front side now asks the learner to check predicate completeness before choosing a part of speech, without repeating the subject phrase as the correct-option clue.",
+        "exam_value": "Front side now asks for an equivalence-structure judgment without repeating the answer path in the correct option.",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
@@ -179,13 +179,13 @@
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "Application/transfer roles are documented for the two repaired 0203 cards, but this is not a new sample approval.",
+    "box_progression": "Application/transfer roles are documented for the two repaired 0210 cards, but this is not a new sample approval.",
     "repetition_or_gap_risks": [
       "The wider legacy corpus still has global front-answer-leak blockers outside this scoped closure."
     ],
     "representative_cards": [
-      "020304",
-      "020308"
+      "021004",
+      "021010"
     ],
     "next_step": "Keep PR #50 candidate-only and continue closing remaining audit-reported front-answer-leak residuals."
   }

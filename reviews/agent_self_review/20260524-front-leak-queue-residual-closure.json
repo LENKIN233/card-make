@@ -14,6 +14,7 @@
       "0201",
       "0202",
       "0203",
+      "0210",
       "0220",
       "0221",
       "0222",
@@ -56,6 +57,8 @@
       "020210",
       "020304",
       "020308",
+      "021004",
+      "021010",
       "022008",
       "022010",
       "022102",
@@ -82,11 +85,13 @@
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
       "PR #64: Harden front guide answer overlap audit (#64)",
       "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-      "node scripts/audit_card_quality.mjs --scope-card-ids <50 PR #50 queue cards> --write-scope-report reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json --max-examples 20",
+      "node scripts/audit_card_quality.mjs --scope-card-ids <52 PR #50 queue cards> --write-scope-report reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json --max-examples 20",
       "node scripts/audit_card_quality.mjs --write-report --max-examples 80 in a temporary HEAD worktree",
       "reviews/audit_scopes/20260607-cet4-bankedcloze-0202-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --write-report --max-examples 120 in /private/tmp/card-make-current-audit-next",
-      "reviews/audit_scopes/20260608-cet4-bankedcloze-0203-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260608-cet4-bankedcloze-0203-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --write-report --max-examples 140 in /private/tmp/card-make-current-audit-next",
+      "reviews/audit_scopes/20260608-cet4-bankedcloze-0210-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -111,7 +116,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "d1cfe7f1d4348ee513eec1765bd8f0cc4100d74d1b605cf5fe44c1a52fb710aa",
+    "corpus_fingerprint": "08b39326cd670ff1824629547807e93a61d71aef6bbb901c17c9f4c4199f48d3",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -145,6 +150,8 @@
         "020210",
         "020304",
         "020308",
+        "021004",
+        "021010",
         "022008",
         "022010",
         "022102",
@@ -166,13 +173,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 50,
-      "issue_count": 99,
+      "card_count": 52,
+      "issue_count": 103,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 99
+        "source_risk": 103
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -185,9 +192,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 50,
+        "synthetic_source": 52,
         "template_analysis_pattern": 0,
-        "unverified_source": 49
+        "unverified_source": 51
       }
     }
   },
@@ -1673,6 +1680,108 @@
           "audio_generation_method": "none"
         },
         "exam_value": "帮助用户在看到百分比或程度状语时先检查句子谓语是否完整，避免把谓语位误判成副词位。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "021004",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "1",
+        "group": "空格语法预判",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "0210"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用主语短语位置预判名词性核心词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在选词填空中先找句子主语核心，避免只看相邻词就误判词性。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "021010",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "1",
+        "group": "空格语法预判",
+        "box_id": "0",
+        "box": "名词",
+        "box_prefix": "0210"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用并列对等结构和前置修饰语预判名词性中心词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在复杂选词填空中结合并列结构和修饰关系判断空格词性，降低凭词义硬选的风险。",
         "box_progression_role": "transfer",
         "review_status": "agent_pass"
       },
