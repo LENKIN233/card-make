@@ -316,7 +316,7 @@
       "card_box_name": "副词",
       "card_group_name": "词性判断",
       "front_content": {
-        "text": "\"The share of Americans working past 70 has grown ___ common over the past two decades.\"\n\n空格处选 increasingly 还是 increasing？下列哪项给出了正确的判断依据？",
+        "text": "\"The share of Americans working past 70 has grown ___ common over the past two decades.\"\n\n先判断空格修饰的对象，再选择最能说明该空格词性依据的选项。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -335,22 +335,22 @@
       "options": [
         {
           "key": "A",
-          "text": "grown 是动词，动词之后接形容词作表语，所以空格两侧都是形容词，选 increasing",
+          "text": "空格前是状态变化动词，后面结构可当作被修饰对象，所以空格应填形容词",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "common 后没有名词，所以 common 是副词，空格修饰动词，选副词 increasingly",
+          "text": "空格后没有名词，说明后面的词在句中作副词，空格只是在修饰动词",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "空格在连系动词 grown 与表语形容词 common 之间，充当程度修饰语，修饰形容词必须用副词 increasingly",
+          "text": "空格位于连系动词和表语形容词之间，承担程度修饰功能；修饰形容词要用副词",
           "is_correct": true
         },
         {
           "key": "D",
-          "text": "grown 是现在分词作定语，修饰后面的名词，所以空格填形容词 increasing",
+          "text": "空格前的动词形式说明它在这里作定语，后面应继续补一个形容词",
           "is_correct": false
         }
       ],
@@ -381,12 +381,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"The share of Americans working past 70 has grown ___ common over the past two decades.\"\n\n空格处选 increasingly 还是 increasing？下列哪项给出了正确的判断依据？",
-        "task_prompt": "\"The share of Americans working past 70 has grown ___ common over the past two decades.\"\n\n空格处选 increasingly 还是 increasing？下列哪项给出了正确的判断依据？",
+        "text": "\"The share of Americans working past 70 has grown ___ common over the past two decades.\"\n\n先判断空格修饰的对象，再选择最能说明该空格词性依据的选项。",
+        "task_prompt": "\"The share of Americans working past 70 has grown ___ common over the past two decades.\"\n\n先判断空格修饰的对象，再选择最能说明该空格词性依据的选项。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "判断程度修饰位的词性",
+          "focus": "空格处修饰表语形容词而不是名词",
+          "success_criteria": "能说明形容词前的程度修饰位需要副词"
+        }
       },
       "analysis": {
         "text": "① 识别信号：\"grown ___ common\"——grown 是连系动词，common 是表语形容词，空格在两者之间作「程度修饰语」。程度修饰语修饰的是形容词 common，因此必须是副词。\n\n② 核心规律：形容词前的程度词一律是副词——extremely / increasingly / deeply / highly / particularly + adj。切记：两个形容词不能直接相邻（没有名词被修饰）。\"increasing common\" 是两个形容词并排，在此结构中语法错误。\n\n③ 验证：\"has grown increasingly common\" = 变得越来越普遍 → increasingly（副词）✓ 修饰形容词 common。对比：\"an increasing number of...\" → increasing（形容词）修饰名词 number ✓（这里是另一种用法，位置不同）。",
@@ -410,6 +414,28 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用连系动词加表语形容词结构判断副词程度修饰位",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在选词填空中识别形容词前的程度副词位，避免被同根形容词干扰。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -740,7 +766,7 @@
       "card_box_name": "副词",
       "card_group_name": "词性判断",
       "front_content": {
-        "text": "\"Bike sales during the pandemic ___ by 75 percent, yet many older residents still prefer driving.\"\n\n空格处需要填什么词性？以下哪个选项最准确描述了判断逻辑？",
+        "text": "\"Bike sales during the pandemic ___ by 75 percent, yet many older residents still prefer driving.\"\n\n先判断句子里是否已经有谓语，再选择最稳妥的词性判断步骤。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -759,17 +785,17 @@
       "options": [
         {
           "key": "A",
-          "text": "by 75 percent 是程度状语，说明程度需要副词修饰，所以空格填副词 dramatically",
+          "text": "后面有百分比变化幅度，说明程度需要副词修饰，所以空格应填副词",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "Bike sales 是主语，空格在主语后是谓语动词位，需填动词（如 rose/exploded），而非副词",
+          "text": "句中尚未出现谓语，空格紧跟主语并连接后面的幅度状语，应先判断为限定动词位",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "sales 是名词，后面的空格是修饰它的形容词位，选形容词",
+          "text": "空格前是名词，后面的空格是修饰名词的形容词位，应选形容词",
           "is_correct": false
         },
         {
@@ -805,12 +831,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"Bike sales during the pandemic ___ by 75 percent, yet many older residents still prefer driving.\"\n\n空格处需要填什么词性？以下哪个选项最准确描述了判断逻辑？",
-        "task_prompt": "\"Bike sales during the pandemic ___ by 75 percent, yet many older residents still prefer driving.\"\n\n空格处需要填什么词性？以下哪个选项最准确描述了判断逻辑？",
+        "text": "\"Bike sales during the pandemic ___ by 75 percent, yet many older residents still prefer driving.\"\n\n先判断句子里是否已经有谓语，再选择最稳妥的词性判断步骤。",
+        "task_prompt": "\"Bike sales during the pandemic ___ by 75 percent, yet many older residents still prefer driving.\"\n\n先判断句子里是否已经有谓语，再选择最稳妥的词性判断步骤。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "区分谓语动词位和副词修饰位",
+          "focus": "主语之后尚缺核心谓语，后接幅度状语",
+          "success_criteria": "能先确认句中是否已有谓语，再决定空格词性"
+        }
       },
       "analysis": {
         "text": "① 识别信号：\"Bike sales ___ by 75 percent\"——主语 Bike sales（名词短语）后紧跟空格，by 75 percent 是方式/程度状语。主语之后、无助动词介入的空格位 = 谓语动词位（需动词），不是副词位。\n\n② 核心规律：判断副词位之前，先确认「这个位置是否是谓语位」——若是谓语位，需动词；若已有谓语且空格在动词旁边，才看是否是副词位。常见陷阱：\"sales ___ rapidly\"（谓语 + 副词）vs. \"sales rapidly ___\"（谓语 + 副词 → 宾语空格 = 名词）vs. \"sales ___ by 75%\"（谓语空格 = 动词）。\n\n③ 验证：\"Bike sales exploded / rose / increased by 75 percent during the pandemic\" → 谓语动词（exploded/rose/increased）✓。如果误填副词 dramatically，则句子没有谓语动词，语法不完整 ✗。",
@@ -834,6 +864,28 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "先定位谓语动词位，再排除误判为副词位的陷阱",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在看到百分比或程度状语时先检查句子谓语是否完整，避免把谓语位误判成副词位。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {

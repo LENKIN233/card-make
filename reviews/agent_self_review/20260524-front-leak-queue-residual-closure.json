@@ -13,6 +13,7 @@
       "0200",
       "0201",
       "0202",
+      "0203",
       "0220",
       "0221",
       "0222",
@@ -53,6 +54,8 @@
       "020207",
       "020209",
       "020210",
+      "020304",
+      "020308",
       "022008",
       "022010",
       "022102",
@@ -79,9 +82,11 @@
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
       "PR #64: Harden front guide answer overlap audit (#64)",
       "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-      "node scripts/audit_card_quality.mjs --scope-card-ids <44 PR #50 queue cards> --write-scope-report reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json --max-examples 20",
+      "node scripts/audit_card_quality.mjs --scope-card-ids <50 PR #50 queue cards> --write-scope-report reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json --max-examples 20",
       "node scripts/audit_card_quality.mjs --write-report --max-examples 80 in a temporary HEAD worktree",
-      "reviews/audit_scopes/20260607-cet4-bankedcloze-0202-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260607-cet4-bankedcloze-0202-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --write-report --max-examples 120 in /private/tmp/card-make-current-audit-next",
+      "reviews/audit_scopes/20260608-cet4-bankedcloze-0203-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -106,7 +111,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "d34c3ed926c8ae497daa5f9a99016cd2a84b2fe90feb011ed4d492521c370064",
+    "corpus_fingerprint": "d1cfe7f1d4348ee513eec1765bd8f0cc4100d74d1b605cf5fe44c1a52fb710aa",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -138,6 +143,8 @@
         "020207",
         "020209",
         "020210",
+        "020304",
+        "020308",
         "022008",
         "022010",
         "022102",
@@ -159,13 +166,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 48,
-      "issue_count": 95,
+      "card_count": 50,
+      "issue_count": 99,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 95
+        "source_risk": 99
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -178,9 +185,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 48,
+        "synthetic_source": 50,
         "template_analysis_pattern": 0,
-        "unverified_source": 47
+        "unverified_source": 49
       }
     }
   },
@@ -1582,6 +1589,108 @@
         "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
       ],
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "020304",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "3",
+        "box": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用连系动词加表语形容词结构判断副词程度修饰位",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在选词填空中识别形容词前的程度副词位，避免被同根形容词干扰。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "020308",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "2",
+        "library": "选词填空",
+        "group_id": "0",
+        "group": "词性判断",
+        "box_id": "3",
+        "box": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "先定位谓语动词位，再排除误判为副词位的陷阱",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; sample only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在看到百分比或程度状语时先检查句子谓语是否完整，避免把谓语位误判成副词位。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
     },
     {
       "card_id": "022008",
