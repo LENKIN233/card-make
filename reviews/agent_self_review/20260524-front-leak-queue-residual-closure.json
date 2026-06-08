@@ -21,6 +21,7 @@
       "0223",
       "0224",
       "0501",
+      "0610",
       "1200",
       "1212",
       "1501",
@@ -77,6 +78,7 @@
       "022310",
       "022410",
       "050112",
+      "061004",
       "120009",
       "121204",
       "150112",
@@ -94,7 +96,9 @@
       "reviews/audit_scopes/20260608-cet4-bankedcloze-0203-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --write-report --max-examples 140 in /private/tmp/card-make-current-audit-next",
       "reviews/audit_scopes/20260608-cet4-bankedcloze-0210-front-leak-followup-scope-audit.json",
-      "reviews/audit_scopes/20260608-cet4-bankedcloze-0221-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260608-cet4-bankedcloze-0221-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --write-report --max-examples 160 in /private/tmp/card-make-current-audit-next",
+      "reviews/audit_scopes/20260608-cet4-grammar-0610-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -119,7 +123,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "8934ed56a7cc66243a1ebe7eebd9b008952c967ad562450cf4314e9b62f2a67d",
+    "corpus_fingerprint": "9782cf8a27a00ccfacff5043c0f7d2ebd93bc94e3ef97c61247207d2b2dfda0b",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -173,18 +177,19 @@
         "022310",
         "022410",
         "050112",
+        "061004",
         "120009",
         "121204",
         "150112",
         "161603"
       ],
-      "card_count": 54,
-      "issue_count": 107,
+      "card_count": 55,
+      "issue_count": 109,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 107
+        "source_risk": 109
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -197,9 +202,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 54,
+        "synthetic_source": 55,
         "template_analysis_pattern": 0,
-        "unverified_source": 53
+        "unverified_source": 54
       }
     }
   },
@@ -2709,6 +2714,58 @@
         "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
       ],
       "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "061004",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "6",
+        "library": "语法",
+        "group_id": "1",
+        "group": "复杂句",
+        "box_id": "0",
+        "box": "名词性从句",
+        "box_prefix": "0610"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "判断 what 引导的信息块在系表结构中整体作主语",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在复杂句中先看系动词前后的结构位置，再判断句首信息块的语法功能，避免只凭 what 这个词面作答。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as candidate-only residual closure evidence."
     },
     {
       "card_id": "120009",

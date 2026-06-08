@@ -1,22 +1,22 @@
 {
-  "review_id": "20260522-020210-research-account-gloss-front-leak-closure",
-  "created_at": "2026-05-22T19:46:08+08:00",
+  "review_id": "20260608-cet4-grammar-0610-front-leak-followup-closure",
+  "created_at": "2026-06-08T14:22:14+08:00",
   "agent": "codex",
   "scope": {
-    "library": "选词填空",
-    "group": "词性判断",
-    "box": "动词",
+    "library": "语法",
+    "group": "复杂句",
+    "box": "名词性从句",
     "box_prefixes": [
-      "0202"
+      "0610"
     ],
     "card_ids": [
-      "020210"
+      "061004"
     ],
-    "closure_reason": "Residual visible front leak closure for one card exposed by PR #56 research account-for semantic gloss auditing and PR #59 quoted clue-key analysis-conclusion auditing.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified one additional 0610 front-side answer-leak blocker on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
-      "PR #56: https://github.com/LENKIN233/card-make/pull/56",
-      "PR #59: https://github.com/LENKIN233/card-make/pull/59",
-      "reviews/audit_scopes/20260522-cet4-bankedcloze-0202-research-account-front-leak-fix-scope-audit.json"
+      "PR #50: https://github.com/LENKIN233/card-make/pull/50",
+      "node scripts/audit_card_quality.mjs --write-report --max-examples 160 in /private/tmp/card-make-current-audit-next",
+      "reviews/audit_scopes/20260608-cet4-grammar-0610-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -39,12 +39,12 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260522-cet4-bankedcloze-0202-research-account-front-leak-fix-scope-audit.json",
+    "report": "reviews/audit_scopes/20260608-cet4-grammar-0610-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "9782cf8a27a00ccfacff5043c0f7d2ebd93bc94e3ef97c61247207d2b2dfda0b",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "020210"
+        "061004"
       ],
       "card_count": 1,
       "issue_count": 2,
@@ -73,23 +73,23 @@
   },
   "cards": [
     {
-      "card_id": "020210",
+      "card_id": "061004",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
-        "library_id": "2",
-        "library": "选词填空",
-        "group_id": "0",
-        "group": "词性判断",
-        "box_id": "2",
-        "box": "动词",
-        "box_prefix": "0202"
+        "library_id": "6",
+        "library": "语法",
+        "group_id": "1",
+        "group": "复杂句",
+        "box_id": "0",
+        "box": "名词性从句",
+        "box_prefix": "0610"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 account for 在研究语境中的动词搭配，并区分 adjust for 与 alter for",
+        "main_training_goal": "判断 what 引导的信息块在系表结构中整体作主语",
         "weak_point_tags": [
-          "vocabulary_weak",
           "grammar_weak",
+          "reading_slow",
           "exam_strategy_weak"
         ],
         "difficulty": {
@@ -104,9 +104,9 @@
           "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在选词填空中同时检查 to 后动词原形、动词后介词搭配和研究语境的局限性表达。",
-        "box_progression_role": "transfer",
-        "review_status": "agent_pass"
+        "exam_value": "训练用户在复杂句中先看系动词前后的结构位置，再判断句首信息块的语法功能，避免只凭 what 这个词面作答。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       },
       "blocker_scan": {
         "logic_error": false,
@@ -122,18 +122,18 @@
       "minor_issues": [
         "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
       ],
-      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+      "recommendation": "Document as candidate-only residual closure evidence."
     }
   ],
   "batch_review": {
     "status": "documented_residual_closure",
     "box_progression": "not_applicable_single_residual_closure",
     "repetition_or_gap_risks": [
-      "This record closes newly audited visible leak classes for one card and is not evidence of per-box sample readiness.",
+      "This record closes one newly surfaced 0610 residual front leak and is not evidence of per-box sample readiness.",
       "Source-risk findings remain because the underlying legacy/simulated provenance is not verified."
     ],
     "representative_cards": [
-      "020210"
+      "061004"
     ],
     "next_step": "Keep #50 as candidate-only content for user review; do not create approved batch records from this residual closure evidence."
   }
