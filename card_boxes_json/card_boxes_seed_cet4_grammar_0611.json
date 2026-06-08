@@ -123,10 +123,15 @@
       "card_box_name": "定语从句",
       "card_group_name": "复杂句",
       "front_content": {
-        "text": "句子：The article that explains the policy in plain language is widely shared among freshmen。\n\n任务：选择对 that-clause 功能最准确的解释。",
+        "text": "句子：The article that explains the policy in plain language is widely shared among freshmen。\n\n任务：判断句中 that explains the policy in plain language 这一段对前面名词的作用。",
         "image_url": null,
         "audio_url": null,
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "判断名词后信息段的修饰作用",
+          "focus": "观察该信息段是否在限定前面名词的范围",
+          "success_criteria": "能说明它是在筛选对象，而不是充当主句表语、宾语或状语"
+        }
       },
       "back_content": {
         "text": "答案：B. that-clause 在修饰 article，限定‘哪一篇文章’，属于限制性定语从句。",
@@ -142,22 +147,22 @@
       "options": [
         {
           "key": "A",
-          "text": "that-clause 作 is 的表语，回答‘是什么’。",
+          "text": "这一段作 is 的表语，回答‘是什么’。",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "that-clause 修饰 article，限定‘哪一篇文章’，是限制性定语从句。",
+          "text": "这一段修饰前面的名词，限定‘哪一个对象’，是限制性修饰结构。",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "that-clause 整体作 shared 的宾语。",
+          "text": "这一段整体作 shared 的宾语。",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "that-clause 表示结果状语，说明 why it is shared。",
+          "text": "这一段表示结果状语，说明 why it is shared。",
           "is_correct": false
         }
       ],
@@ -189,12 +194,16 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "句子：The article that explains the policy in plain language is widely shared among freshmen。\n\n任务：选择对 that-clause 功能最准确的解释。",
-        "task_prompt": "句子：The article that explains the policy in plain language is widely shared among freshmen。\n\n任务：选择对 that-clause 功能最准确的解释。",
+        "text": "句子：The article that explains the policy in plain language is widely shared among freshmen。\n\n任务：判断句中 that explains the policy in plain language 这一段对前面名词的作用。",
+        "task_prompt": "句子：The article that explains the policy in plain language is widely shared among freshmen。\n\n任务：判断句中 that explains the policy in plain language 这一段对前面名词的作用。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "判断名词后信息段的修饰作用",
+          "focus": "观察该信息段是否在限定前面名词的范围",
+          "success_criteria": "能说明它是在筛选对象，而不是充当主句表语、宾语或状语"
+        }
       },
       "analysis": {
         "text": "① 识别信号：that-clause 紧跟名词 article，且句义上在筛选对象。\n\n② 核心规律：限制性定语从句负责‘必要限定’，去掉后主句指代会变宽或变模糊。\n\n③ 验证：若删去 that explains the policy in plain language，句子只剩 The article is widely shared，信息精确度明显下降。",
@@ -218,6 +227,29 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "判断 that 引导的信息段如何限制前面名词的指代范围",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在复杂句中识别名词后信息段的限定作用，避免只看到 that 就误判为名词性从句或结果状语。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -357,21 +389,26 @@
       "card_box_name": "定语从句",
       "card_group_name": "复杂句",
       "front_content": {
-        "text": "句子：The framework in which the survey was designed has influenced the final interpretation。\n\n任务：选择对 in which 的最佳解释。",
+        "text": "句子：The framework in which the survey was designed has influenced the final interpretation。\n\n任务：判断 in which 在句中如何把后面动作场景回连到前面的名词。",
         "image_url": null,
         "audio_url": null,
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "判断介词加关系词的连接作用",
+          "focus": "观察 in 是否保留动作发生的范围或语境，并回连前面的名词",
+          "success_criteria": "能区分正式关系结构、宾语从句、原因状语和固定短语"
+        }
       },
       "back_content": {
         "text": "答案：D. in which = in the framework，属于‘介词 + which’结构，用于保持正式文体并避免句尾悬置介词。",
         "explanation": "介词前置（in which, for which, by which）常见于学术写作，语义与关系副词 where/when 有交叉但语体更正式。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“定语从句”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "① 识别信号：in which 紧跟前面的名词，which 回指这个名词，in 保留“在某个范围/框架内”的语义，后面的 the survey was designed 是补充说明这个动作发生的语境。\n\n② 核心规律：介词 + which 常用于正式语体，把介词提前，避免把介词悬在句尾。它不是 because，也不是一个脱离先行词的固定短语，而是把后面从句的信息回连到前面的名词。\n\n③ 验证与纠偏：可把 in which 理解为 in + 前面那个名词，再代回句子检查：调查设计发生在这个范围内，而这个范围影响了最终解释。常见误判是把 in which 当成普通连接词或原因标记；纠偏时先找 which 回指的名词，再看介词是否和后面动作形成合理搭配。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "遇到 in which / for which / by which，先把 which 回指到前面的名词。",
+          "介词前置通常是正式语体信号，不等于原因状语。",
+          "验证时用“介词 + 前面名词”代回，看语义是否成立。"
         ]
       },
       "options": [
@@ -392,7 +429,7 @@
         },
         {
           "key": "D",
-          "text": "in which = in the framework，属于介词前置的定语从句结构。",
+          "text": "in which 保留介词 in，并把后面动作场景回连到前面的名词，是介词前置的关系结构。",
           "is_correct": true
         }
       ],
@@ -424,19 +461,23 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "句子：The framework in which the survey was designed has influenced the final interpretation。\n\n任务：选择对 in which 的最佳解释。",
-        "task_prompt": "句子：The framework in which the survey was designed has influenced the final interpretation。\n\n任务：选择对 in which 的最佳解释。",
+        "text": "句子：The framework in which the survey was designed has influenced the final interpretation。\n\n任务：判断 in which 在句中如何把后面动作场景回连到前面的名词。",
+        "task_prompt": "句子：The framework in which the survey was designed has influenced the final interpretation。\n\n任务：判断 in which 在句中如何把后面动作场景回连到前面的名词。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "判断介词加关系词的连接作用",
+          "focus": "观察 in 是否保留动作发生的范围或语境，并回连前面的名词",
+          "success_criteria": "能区分正式关系结构、宾语从句、原因状语和固定短语"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“定语从句”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "① 识别信号：in which 紧跟前面的名词，which 回指这个名词，in 保留“在某个范围/框架内”的语义，后面的 the survey was designed 是补充说明这个动作发生的语境。\n\n② 核心规律：介词 + which 常用于正式语体，把介词提前，避免把介词悬在句尾。它不是 because，也不是一个脱离先行词的固定短语，而是把后面从句的信息回连到前面的名词。\n\n③ 验证与纠偏：可把 in which 理解为 in + 前面那个名词，再代回句子检查：调查设计发生在这个范围内，而这个范围影响了最终解释。常见误判是把 in which 当成普通连接词或原因标记；纠偏时先找 which 回指的名词，再看介词是否和后面动作形成合理搭配。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "遇到 in which / for which / by which，先把 which 回指到前面的名词。",
+          "介词前置通常是正式语体信号，不等于原因状语。",
+          "验证时用“介词 + 前面名词”代回，看语义是否成立。"
         ]
       },
       "auto_scoring": true,
@@ -454,6 +495,29 @@
       },
       "answer_key": {
         "correct_option": "D"
+      },
+      "quality_metadata": {
+        "main_training_goal": "判断 in which 如何用介词前置把动作场景回连到先行词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户识别介词加关系词的正式连接方式，避免把 in which 误当原因状语、宾语从句或孤立固定短语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {

@@ -22,6 +22,7 @@
       "0224",
       "0501",
       "0610",
+      "0611",
       "1200",
       "1212",
       "1501",
@@ -79,6 +80,8 @@
       "022410",
       "050112",
       "061004",
+      "061102",
+      "061104",
       "120009",
       "121204",
       "150112",
@@ -98,7 +101,9 @@
       "reviews/audit_scopes/20260608-cet4-bankedcloze-0210-front-leak-followup-scope-audit.json",
       "reviews/audit_scopes/20260608-cet4-bankedcloze-0221-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --write-report --max-examples 160 in /private/tmp/card-make-current-audit-next",
-      "reviews/audit_scopes/20260608-cet4-grammar-0610-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260608-cet4-grammar-0610-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --write-report --max-examples 180 in /private/tmp/card-make-current-audit-next",
+      "reviews/audit_scopes/20260608-cet4-grammar-0611-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -123,7 +128,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "9782cf8a27a00ccfacff5043c0f7d2ebd93bc94e3ef97c61247207d2b2dfda0b",
+    "corpus_fingerprint": "9982f50c1a9ab86e529cbe2bcf46830d1c21c28cb32aba92b8148c9eb7c0c267",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -178,18 +183,20 @@
         "022410",
         "050112",
         "061004",
+        "061102",
+        "061104",
         "120009",
         "121204",
         "150112",
         "161603"
       ],
-      "card_count": 55,
-      "issue_count": 109,
+      "card_count": 57,
+      "issue_count": 113,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 109
+        "source_risk": 113
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -202,9 +209,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 55,
+        "synthetic_source": 57,
         "template_analysis_pattern": 0,
-        "unverified_source": 54
+        "unverified_source": 56
       }
     }
   },
@@ -2748,6 +2755,110 @@
           "audio_generation_method": "none"
         },
         "exam_value": "训练用户在复杂句中先看系动词前后的结构位置，再判断句首信息块的语法功能，避免只凭 what 这个词面作答。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as candidate-only residual closure evidence."
+    },
+    {
+      "card_id": "061102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "6",
+        "library": "语法",
+        "group_id": "1",
+        "group": "复杂句",
+        "box_id": "1",
+        "box": "定语从句",
+        "box_prefix": "0611"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "判断 that 引导的信息段如何限制前面名词的指代范围",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在复杂句中识别名词后信息段的限定作用，避免只看到 that 就误判为名词性从句或结果状语。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as candidate-only residual closure evidence."
+    },
+    {
+      "card_id": "061104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "6",
+        "library": "语法",
+        "group_id": "1",
+        "group": "复杂句",
+        "box_id": "1",
+        "box": "定语从句",
+        "box_prefix": "0611"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "判断 in which 如何用介词前置把动作场景回连到先行词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户识别介词加关系词的正式连接方式，避免把 in which 误当原因状语、宾语从句或孤立固定短语。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
