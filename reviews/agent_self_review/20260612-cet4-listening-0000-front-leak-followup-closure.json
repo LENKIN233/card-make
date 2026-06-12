@@ -1,21 +1,22 @@
 {
-  "review_id": "20260522-020207-visible-option-example-front-leak-closure",
-  "created_at": "2026-05-22T18:20:27+08:00",
+  "review_id": "20260612-cet4-listening-0000-front-leak-followup-closure",
+  "created_at": "2026-06-12T12:12:23+08:00",
   "agent": "codex",
   "scope": {
-    "library": "选词填空",
-    "group": "词性判断",
-    "box": "动词",
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测话题",
     "box_prefixes": [
-      "0202"
+      "0000"
     ],
     "card_ids": [
-      "020207"
+      "000001"
     ],
-    "closure_reason": "Residual visible front-answer leak closure for one card exposed after PR #53 made correct-option example text auditable.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified one additional 0000 front-side answer-leak blocker on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
-      "PR #53: https://github.com/LENKIN233/card-make/pull/53",
-      "reviews/audit_scopes/20260522-cet4-bankedcloze-0202-visible-option-example-front-leak-fix-scope-audit.json"
+      "PR #50: https://github.com/LENKIN233/card-make/pull/50",
+      "node scripts/audit_card_quality.mjs --write-report --max-examples 220 in /private/tmp/card-make-current-audit-next",
+      "reviews/audit_scopes/20260612-cet4-listening-0000-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -38,12 +39,12 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260522-cet4-bankedcloze-0202-visible-option-example-front-leak-fix-scope-audit.json",
+    "report": "reviews/audit_scopes/20260612-cet4-listening-0000-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "fc53b7f307dfe94300ea12bd73e76b090ad668f6447340c8081c6f44c8a26019",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "020207"
+        "000001"
       ],
       "card_count": 1,
       "issue_count": 2,
@@ -72,38 +73,41 @@
   },
   "cards": [
     {
-      "card_id": "020207",
+      "card_id": "000001",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
-        "library_id": "2",
-        "library": "选词填空",
+        "library_id": "0",
+        "library": "听力",
         "group_id": "0",
-        "group": "词性判断",
-        "box_id": "2",
-        "box": "动词",
-        "box_prefix": "0202"
+        "group": "听前预测",
+        "box_id": "0",
+        "box": "根据选项预测话题",
+        "box_prefix": "0000"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "用介词 Before 后的空格位置判断动名词结构，并用 into 搭配确认动词选择",
+        "main_training_goal": "根据选项关键词组合预测听力主话题",
         "weak_point_tags": [
-          "grammar_weak",
-          "vocabulary_weak",
+          "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "pass",
-          "secondary": []
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
         },
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool sentence with unverified provenance; residual closure evidence only.",
-          "audio_generation_method": "none"
+          "source_note": "Legacy content_pool transcript with unverified provenance; candidate repair only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户在选词填空中先判断介词后成分的语法形式，再比较 dip into 与 fall into 的语义搭配。",
-        "box_progression_role": "application",
-        "review_status": "agent_pass"
+        "exam_value": "让用户练会从选项中先抓对象和角度，降低听力开头进入成本。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       },
       "blocker_scan": {
         "logic_error": false,
@@ -117,20 +121,22 @@
       },
       "major_issues": [],
       "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "Candidate TTS asset exists but remains non-formal because tts_audio_reviewed is false and formal audio QC is not closed for this card."
       ],
-      "recommendation": "Document as residual blocker closure evidence only; do not treat as sample approval."
+      "recommendation": "Document as candidate-only residual closure evidence."
     }
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "not_applicable_single_residual_closure",
+    "box_progression": "not_applicable_residual_closure",
     "repetition_or_gap_risks": [
-      "This record closes one newly audited visible leak and is not evidence of per-box sample readiness.",
-      "Source-risk findings remain because the underlying legacy/simulated provenance is not verified."
+      "This record closes one newly surfaced 0000 residual front leak and is not evidence of per-box sample readiness.",
+      "Source-risk findings remain because the underlying legacy/simulated provenance is not verified.",
+      "Candidate TTS is not source-authenticity evidence and is not formal audio readiness."
     ],
     "representative_cards": [
-      "020207"
+      "000001"
     ],
     "next_step": "Keep #50 as candidate-only content for user review; do not create approved batch records from this residual closure evidence."
   }

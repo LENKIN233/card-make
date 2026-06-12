@@ -4,6 +4,7 @@
   "agent": "codex",
   "scope": {
     "box_prefixes": [
+      "0000",
       "0002",
       "0010",
       "0011",
@@ -30,6 +31,7 @@
       "1616"
     ],
     "card_ids": [
+      "000001",
       "000201",
       "000202",
       "000203",
@@ -107,7 +109,8 @@
       "node scripts/audit_card_quality.mjs --write-report --max-examples 180 in /private/tmp/card-make-current-audit-next",
       "reviews/audit_scopes/20260608-cet4-grammar-0611-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --write-report --max-examples 220 in /private/tmp/card-make-current-audit-next",
-      "reviews/audit_scopes/20260612-cet4-grammar-0615-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260612-cet4-grammar-0615-front-leak-followup-scope-audit.json",
+      "reviews/audit_scopes/20260612-cet4-listening-0000-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -132,10 +135,11 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "205fc4a86aae90132232bb502f95504d172b4fe6194d23db57469613dfcac4b1",
+    "corpus_fingerprint": "fc53b7f307dfe94300ea12bd73e76b090ad668f6447340c8081c6f44c8a26019",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
+        "000001",
         "000201",
         "000202",
         "000203",
@@ -195,13 +199,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 58,
-      "issue_count": 115,
+      "card_count": 59,
+      "issue_count": 117,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 115
+        "source_risk": 117
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -214,13 +218,67 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 58,
+        "synthetic_source": 59,
         "template_analysis_pattern": 0,
-        "unverified_source": 57
+        "unverified_source": 58
       }
     }
   },
   "cards": [
+    {
+      "card_id": "000001",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "0",
+        "box": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项关键词组合预测听力主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; candidate repair only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "让用户练会从选项中先抓对象和角度，降低听力开头进入成本。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "Candidate TTS asset exists but remains non-formal because tts_audio_reviewed is false and formal audio QC is not closed for this card."
+      ],
+      "recommendation": "Document as candidate-only residual closure evidence."
+    },
     {
       "card_id": "000201",
       "interaction_id": "multiple_choice",
