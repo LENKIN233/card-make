@@ -1,22 +1,22 @@
 {
-  "review_id": "20260608-cet4-grammar-0610-front-leak-followup-closure",
-  "created_at": "2026-06-08T14:22:14+08:00",
+  "review_id": "20260612-cet4-listening-0034-front-leak-followup-closure",
+  "created_at": "2026-06-12T12:37:27+08:00",
   "agent": "codex",
   "scope": {
-    "library": "语法",
-    "group": "复杂句",
-    "box": "名词性从句",
+    "library": "听力",
+    "group": "细节捕捉",
+    "box": "时间因果",
     "box_prefixes": [
-      "0610"
+      "0034"
     ],
     "card_ids": [
-      "061004"
+      "003405"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified one additional 0610 front-side answer-leak blocker on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified one additional 0034 front-side answer-leak blocker on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
-      "node scripts/audit_card_quality.mjs --write-report --max-examples 160 in /private/tmp/card-make-current-audit-next",
-      "reviews/audit_scopes/20260608-cet4-grammar-0610-front-leak-followup-scope-audit.json"
+      "node scripts/audit_card_quality.mjs --write-report in the current worktree",
+      "reviews/audit_scopes/20260612-cet4-listening-0034-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -39,12 +39,12 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260608-cet4-grammar-0610-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260612-cet4-listening-0034-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "b1a910323a74c44112ba4ebd7116ba960fb6cec491fcea39adb8fbf68be16d38",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "061004"
+        "003405"
       ],
       "card_count": 1,
       "issue_count": 2,
@@ -73,38 +73,39 @@
   },
   "cards": [
     {
-      "card_id": "061004",
+      "card_id": "003405",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
-        "library_id": "6",
-        "library": "语法",
-        "group_id": "1",
-        "group": "复杂句",
-        "box_id": "0",
-        "box": "名词性从句",
-        "box_prefix": "0610"
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "4",
+        "box": "时间因果",
+        "box_prefix": "0034"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "判断 what 引导的信息块在系表结构中整体作主语",
+        "main_training_goal": "识别听力原因题中的 to do 目的区间，并用其核对选项同义改写",
         "weak_point_tags": [
-          "grammar_weak",
-          "reading_slow",
+          "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
           "secondary": [
-            "high_score"
+            "foundation"
           ]
         },
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
-          "audio_generation_method": "none"
+          "source_note": "Legacy content_pool transcript with unverified provenance; candidate repair only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户在复杂句中先看系动词前后的结构位置，再判断句首信息块的语法功能，避免只凭 what 这个词面作答。",
+        "exam_value": "训练用户在原因题中抓住目的表达，再用完整语义核对选项，避免被局部词替换带偏。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -120,20 +121,22 @@
       },
       "major_issues": [],
       "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "Candidate TTS asset exists but remains non-formal because tts_audio_reviewed is false and formal audio QC is not closed for this card."
       ],
       "recommendation": "Document as candidate-only residual closure evidence."
     }
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "not_applicable_single_residual_closure",
+    "box_progression": "not_applicable_residual_closure",
     "repetition_or_gap_risks": [
-      "This record closes one newly surfaced 0610 residual front leak and is not evidence of per-box sample readiness.",
-      "Source-risk findings remain because the underlying legacy/simulated provenance is not verified."
+      "This record closes one newly surfaced 0034 residual front leak and is not evidence of per-box sample readiness.",
+      "Source-risk findings remain because the underlying legacy/simulated provenance is not verified.",
+      "Candidate TTS is not source-authenticity evidence and is not formal audio readiness."
     ],
     "representative_cards": [
-      "061004"
+      "003405"
     ],
     "next_step": "Keep #50 as candidate-only content for user review; do not create approved batch records from this residual closure evidence."
   }

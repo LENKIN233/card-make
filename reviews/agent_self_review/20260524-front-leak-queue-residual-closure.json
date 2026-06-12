@@ -9,6 +9,7 @@
       "0010",
       "0011",
       "0012",
+      "0034",
       "0100",
       "0101",
       "0200",
@@ -44,6 +45,7 @@
       "001208",
       "001209",
       "001210",
+      "003405",
       "010006",
       "010102",
       "020008",
@@ -110,7 +112,8 @@
       "reviews/audit_scopes/20260608-cet4-grammar-0611-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --write-report --max-examples 220 in /private/tmp/card-make-current-audit-next",
       "reviews/audit_scopes/20260612-cet4-grammar-0615-front-leak-followup-scope-audit.json",
-      "reviews/audit_scopes/20260612-cet4-listening-0000-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260612-cet4-listening-0000-front-leak-followup-scope-audit.json",
+      "reviews/audit_scopes/20260612-cet4-listening-0034-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -135,7 +138,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "7b6077a86bed7f27066eba46293e561a8d0810e5355eb4a597f728736845c964",
+    "corpus_fingerprint": "b1a910323a74c44112ba4ebd7116ba960fb6cec491fcea39adb8fbf68be16d38",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -152,6 +155,7 @@
         "001208",
         "001209",
         "001210",
+        "003405",
         "010006",
         "010102",
         "020008",
@@ -199,13 +203,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 59,
-      "issue_count": 117,
+      "card_count": 60,
+      "issue_count": 119,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 117
+        "source_risk": 119
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -218,9 +222,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 59,
+        "synthetic_source": 60,
         "template_analysis_pattern": 0,
-        "unverified_source": 58
+        "unverified_source": 59
       }
     }
   },
@@ -864,6 +868,60 @@
       "major_issues": [],
       "minor_issues": [
         "Source provenance risk remains documented by scoped audit and must not be represented as true exam material."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "003405",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "4",
+        "box": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别听力原因题中的 to do 目的区间，并用其核对选项同义改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; candidate repair only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在原因题中抓住目的表达，再用完整语义核对选项，避免被局部词替换带偏。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "Candidate TTS asset exists but remains non-formal because tts_audio_reviewed is false and formal audio QC is not closed for this card."
       ],
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
