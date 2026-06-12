@@ -10,9 +10,10 @@
       "0041"
     ],
     "card_ids": [
-      "004102"
+      "004102",
+      "004105"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified one additional 0041 front-side answer-leak blocker on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified additional 0041 front-side answer-leak blockers on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
       "node scripts/audit_card_quality.mjs --write-report in the current worktree",
@@ -40,19 +41,20 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260612-cet4-listening-0041-front-leak-followup-scope-audit.json",
-    "corpus_fingerprint": "8ecab2a6ef6b5b419b06f1aedd005ea36615aea30e7161b57d921a3758fd7e54",
+    "corpus_fingerprint": "0765f4c4999cb6edd690189355dc92940d539ca6e5c21cae6d759947254345bc",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "004102"
+        "004102",
+        "004105"
       ],
-      "card_count": 1,
-      "issue_count": 2,
+      "card_count": 2,
+      "issue_count": 4,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 2
+        "source_risk": 4
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -65,9 +67,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 1,
+        "synthetic_source": 2,
         "template_analysis_pattern": 0,
-        "unverified_source": 1
+        "unverified_source": 2
       }
     }
   },
@@ -125,18 +127,74 @@
         "Candidate TTS asset exists but remains non-formal because tts_audio_reviewed is false and formal audio QC is not closed for this card."
       ],
       "recommendation": "Document as candidate-only residual closure evidence."
+    },
+    {
+      "card_id": "004105",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "1",
+        "box_name": "观点、态度",
+        "box_prefix": "0041"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据听力中的让步结构和主评价判断说话人态度方向与强度",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; candidate repair only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在观点态度题中识别让步信息和主评价的权重，避免把局部担忧误判为整体反对或无法判断。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "Candidate TTS asset exists but remains non-formal because tts_audio_reviewed is false and formal audio QC is not closed for this card."
+      ],
+      "recommendation": "Document as candidate-only residual closure evidence."
     }
   ],
   "batch_review": {
     "status": "documented_residual_closure",
     "box_progression": "not_applicable_residual_closure",
     "repetition_or_gap_risks": [
-      "This record closes one newly surfaced 0041 residual front leak and is not evidence of per-box sample readiness.",
+      "This record closes newly surfaced 0041 residual front leaks and is not evidence of per-box sample readiness.",
       "Source-risk findings remain because the underlying legacy/simulated provenance is not verified.",
       "Candidate TTS is not source-authenticity evidence and is not formal audio readiness."
     ],
     "representative_cards": [
-      "004102"
+      "004102",
+      "004105"
     ],
     "next_step": "Keep #50 as candidate-only content for user review; do not create approved batch records from this residual closure evidence."
   }
