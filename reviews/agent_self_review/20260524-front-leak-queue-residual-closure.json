@@ -11,6 +11,7 @@
       "0012",
       "0034",
       "0041",
+      "0042",
       "0100",
       "0101",
       "0200",
@@ -49,6 +50,7 @@
       "003405",
       "004102",
       "004105",
+      "004205",
       "010006",
       "010102",
       "020008",
@@ -117,7 +119,8 @@
       "reviews/audit_scopes/20260612-cet4-grammar-0615-front-leak-followup-scope-audit.json",
       "reviews/audit_scopes/20260612-cet4-listening-0000-front-leak-followup-scope-audit.json",
       "reviews/audit_scopes/20260612-cet4-listening-0034-front-leak-followup-scope-audit.json",
-      "reviews/audit_scopes/20260612-cet4-listening-0041-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260612-cet4-listening-0041-front-leak-followup-scope-audit.json",
+      "reviews/audit_scopes/20260612-cet4-listening-0042-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -142,7 +145,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "92170f421cf06e3bf946ae139737b556808ff8f146e4a36b565b68e4688a4320",
+    "corpus_fingerprint": "cb7f21025491d3146bea3d4e4ab9fdb96b5a4c4903260778cd2a91e935c1c495",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -162,6 +165,7 @@
         "003405",
         "004102",
         "004105",
+        "004205",
         "010006",
         "010102",
         "020008",
@@ -209,13 +213,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 62,
-      "issue_count": 123,
+      "card_count": 63,
+      "issue_count": 125,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 123
+        "source_risk": 125
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -228,9 +232,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 62,
+        "synthetic_source": 63,
         "template_analysis_pattern": 0,
-        "unverified_source": 61
+        "unverified_source": 62
       }
     }
   },
@@ -3364,6 +3368,61 @@
         "Candidate TTS asset exists but remains non-formal because tts_audio_reviewed is false and formal audio QC is not closed for this card."
       ],
       "recommendation": "Document as candidate-only residual closure evidence."
+    },
+    {
+      "card_id": "004205",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "2",
+        "box_name": "因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据听力证据强度判断因果推断是否过度或不足",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; candidate repair only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在听力推理题中区分证据支持的因果推断和绝对化因果判断，避免把同期出现误判为唯一原因。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "Candidate TTS asset exists but remains non-formal because tts_audio_reviewed is false and formal audio QC is not closed for this card."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     }
   ],
   "batch_review": {

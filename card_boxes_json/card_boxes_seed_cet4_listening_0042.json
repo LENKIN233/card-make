@@ -449,7 +449,7 @@
         "task_prompt": "先听音频，再选出证据支持的因果关系。",
         "task_schema": {
           "action": "四选一：因果强度判断",
-          "focus": "likely cause 与 certainty",
+          "focus": "证据强度与因果关系限定",
           "success_criteria": "根据证据选择适度推断"
         },
         "audio_first": true,
@@ -462,11 +462,11 @@
         "explanation": "语境揭示：New-user churn increased in the same period when onboarding sessions were repeatedly postponed."
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“因果逻辑”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "① 识别信号：音频只说明 new-user churn 上升与 onboarding sessions repeatedly postponed 出现在同一时期。这个线索支持两者有关，但没有给出“唯一原因”或“必然导致”的证据。\n\n② 核心规律：因果推断题先判断方向，再判断强度。这里可以从 delayed onboarding 推到 early churn increased，但证据强度只到“可能促成”，不能升级成 definitely / only cause。\n\n③ 验证与纠偏：A 把可能关系说成唯一原因，过度；C 把结果方向说反；D 直接否认关系，也过度。B 用 likely contributed 保留了因果强度限定，和音频证据最匹配。下次听到同一时期发生的变化，先问“证据能支持到哪一级强度”，再选措辞不过度的选项。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "same period 只能支持适度因果推断，不能自动等于唯一原因。",
+          "因果题先比方向，再比强度；带 only / definitely 的选项要特别谨慎。",
+          "选项含 likely / contributed 这类限定时，要看原文证据是否只到“可能有关”的层级。"
         ]
       },
       "options": [
@@ -527,16 +527,16 @@
         "highlight_ranges": [],
         "task_schema": {
           "action": "四选一：因果强度判断",
-          "focus": "likely cause 与 certainty",
+          "focus": "证据强度与因果关系限定",
           "success_criteria": "根据证据选择适度推断"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“因果逻辑”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "① 识别信号：音频只说明 new-user churn 上升与 onboarding sessions repeatedly postponed 出现在同一时期。这个线索支持两者有关，但没有给出“唯一原因”或“必然导致”的证据。\n\n② 核心规律：因果推断题先判断方向，再判断强度。这里可以从 delayed onboarding 推到 early churn increased，但证据强度只到“可能促成”，不能升级成 definitely / only cause。\n\n③ 验证与纠偏：A 把可能关系说成唯一原因，过度；C 把结果方向说反；D 直接否认关系，也过度。B 用 likely contributed 保留了因果强度限定，和音频证据最匹配。下次听到同一时期发生的变化，先问“证据能支持到哪一级强度”，再选措辞不过度的选项。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "same period 只能支持适度因果推断，不能自动等于唯一原因。",
+          "因果题先比方向，再比强度；带 only / definitely 的选项要特别谨慎。",
+          "选项含 likely / contributed 这类限定时，要看原文证据是否只到“可能有关”的层级。"
         ]
       },
       "auto_scoring": true,
@@ -554,6 +554,30 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据听力证据强度判断因果推断是否过度或不足",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; candidate repair only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在听力推理题中区分证据支持的因果推断和绝对化因果判断，避免把同期出现误判为唯一原因。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
