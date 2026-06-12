@@ -54,6 +54,7 @@
       "004205",
       "004302",
       "010002",
+      "010005",
       "010006",
       "010102",
       "020008",
@@ -125,7 +126,8 @@
       "reviews/audit_scopes/20260612-cet4-listening-0041-front-leak-followup-scope-audit.json",
       "reviews/audit_scopes/20260612-cet4-listening-0042-front-leak-followup-scope-audit.json",
       "reviews/audit_scopes/20260612-cet4-listening-0043-front-leak-followup-scope-audit.json",
-      "reviews/audit_scopes/20260612-cet4-reading-0100-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260612-cet4-reading-0100-front-leak-followup-scope-audit.json",
+      "reviews/audit_scopes/20260612-cet4-reading-0100-front-leak-followup-2-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -150,7 +152,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "7cb66e78a09fbeef062f230e734e77d16987a49e86809a97910abae698a37c49",
+    "corpus_fingerprint": "73b4e89689356da37cfc3b5faf8eba215d070186f4a6054ced722569f31b5e67",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -173,6 +175,7 @@
         "004205",
         "004302",
         "010002",
+        "010005",
         "010006",
         "010102",
         "020008",
@@ -220,13 +223,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 65,
-      "issue_count": 129,
+      "card_count": 66,
+      "issue_count": 131,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 129
+        "source_risk": 131
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -239,9 +242,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 65,
+        "synthetic_source": 66,
         "template_analysis_pattern": 0,
-        "unverified_source": 64
+        "unverified_source": 65
       }
     }
   },
@@ -1029,6 +1032,59 @@
           "audio_generation_method": "none"
         },
         "exam_value": "训练用户用题干专名、身份特征和奖项事实快速压缩仔细阅读回文范围，避免只抓宽泛背景词。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "010005",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "0",
+        "group_name": "定位词抓取",
+        "box_id": "0",
+        "box_name": "专有名词和数字",
+        "box_prefix": "0100"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用人物专名、核心动作和原因信号组合定位原因句",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在仔细阅读原因题中先用人物锁定主体，再用动作和原因信号压缩到答案句，避免只抓人名或宽泛评价词。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
