@@ -10,6 +10,7 @@
       "0011",
       "0012",
       "0034",
+      "0041",
       "0100",
       "0101",
       "0200",
@@ -46,6 +47,7 @@
       "001209",
       "001210",
       "003405",
+      "004102",
       "010006",
       "010102",
       "020008",
@@ -113,7 +115,8 @@
       "node scripts/audit_card_quality.mjs --write-report --max-examples 220 in /private/tmp/card-make-current-audit-next",
       "reviews/audit_scopes/20260612-cet4-grammar-0615-front-leak-followup-scope-audit.json",
       "reviews/audit_scopes/20260612-cet4-listening-0000-front-leak-followup-scope-audit.json",
-      "reviews/audit_scopes/20260612-cet4-listening-0034-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260612-cet4-listening-0034-front-leak-followup-scope-audit.json",
+      "reviews/audit_scopes/20260612-cet4-listening-0041-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -138,7 +141,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "b1a910323a74c44112ba4ebd7116ba960fb6cec491fcea39adb8fbf68be16d38",
+    "corpus_fingerprint": "8ecab2a6ef6b5b419b06f1aedd005ea36615aea30e7161b57d921a3758fd7e54",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -156,6 +159,7 @@
         "001209",
         "001210",
         "003405",
+        "004102",
         "010006",
         "010102",
         "020008",
@@ -203,13 +207,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 60,
-      "issue_count": 119,
+      "card_count": 61,
+      "issue_count": 121,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 119
+        "source_risk": 121
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -222,9 +226,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 60,
+        "synthetic_source": 61,
         "template_analysis_pattern": 0,
-        "unverified_source": 59
+        "unverified_source": 60
       }
     }
   },
@@ -905,6 +909,60 @@
           "tts_audio_reviewed": false
         },
         "exam_value": "训练用户在原因题中抓住目的表达，再用完整语义核对选项，避免被局部词替换带偏。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "Candidate TTS asset exists but remains non-formal because tts_audio_reviewed is false and formal audio QC is not closed for this card."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "004102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "4",
+        "group": "推理判断",
+        "box_id": "1",
+        "box": "观点、态度",
+        "box_prefix": "0041"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据听力中的评价方向和保留条件判断说话人态度强度",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; candidate repair only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在观点态度题中同时抓评价方向和限定条件，避免把有保留的正向态度误判为中立或绝对支持。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
