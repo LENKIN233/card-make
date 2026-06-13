@@ -1,6 +1,6 @@
 {
-  "review_id": "20260612-cet4-reading-0100-front-leak-followup-2-closure",
-  "created_at": "2026-06-12T21:16:05+08:00",
+  "review_id": "20260613-cet4-reading-0100-front-leak-followup-3-closure",
+  "created_at": "2026-06-13T14:13:22+08:00",
   "agent": "codex",
   "scope": {
     "library": "仔细阅读",
@@ -10,13 +10,13 @@
       "0100"
     ],
     "card_ids": [
-      "010005"
+      "010009"
     ],
     "closure_reason": "Current audit_card_quality hard-blocker report identified one additional 0100 front-side answer-path leak on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
       "node scripts/audit_card_quality.mjs --write-report in the current worktree",
-      "reviews/audit_scopes/20260612-cet4-reading-0100-front-leak-followup-2-scope-audit.json"
+      "reviews/audit_scopes/20260613-cet4-reading-0100-front-leak-followup-3-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -39,12 +39,12 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260612-cet4-reading-0100-front-leak-followup-2-scope-audit.json",
+    "report": "reviews/audit_scopes/20260613-cet4-reading-0100-front-leak-followup-3-scope-audit.json",
     "corpus_fingerprint": "704e4166e872fd101c50c561da7f53c2c50b90598bfd60ae7b2af2ea6589f1a2",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "010005"
+        "010009"
       ],
       "card_count": 1,
       "issue_count": 2,
@@ -73,7 +73,7 @@
   },
   "cards": [
     {
-      "card_id": "010005",
+      "card_id": "010009",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
@@ -87,7 +87,7 @@
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "用人物专名、核心动作和原因信号组合定位原因句",
+        "main_training_goal": "根据题干成本语义选择发布机构、年份和金额组成的高辨识定位组合",
         "weak_point_tags": [
           "reading_slow",
           "exam_strategy_weak"
@@ -104,7 +104,7 @@
           "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在仔细阅读原因题中先用人物锁定主体，再用动作和原因信号压缩到答案句，避免只抓人名或宽泛评价词。",
+        "exam_value": "训练用户在金额/成本细节题中优先抓低重复度数字锚点，并用来源和年份缩小回文范围，避免被收益论证词带偏。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -134,7 +134,7 @@
       "Source-risk findings remain because the underlying legacy/simulated provenance is not verified."
     ],
     "representative_cards": [
-      "010005"
+      "010009"
     ],
     "next_step": "Keep #50 as candidate-only content for user review; do not create approved batch records from this residual closure evidence."
   }
