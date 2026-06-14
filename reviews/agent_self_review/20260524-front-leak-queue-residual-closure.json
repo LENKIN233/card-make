@@ -35,7 +35,8 @@
       "1501",
       "1616",
       "0110",
-      "0111"
+      "0111",
+      "0112"
     ],
     "card_ids": [
       "000001",
@@ -123,7 +124,12 @@
       "011105",
       "011106",
       "011109",
-      "011112"
+      "011112",
+      "011202",
+      "011205",
+      "011206",
+      "011209",
+      "011212"
     ],
     "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
@@ -156,7 +162,9 @@
       "reviews/audit_scopes/20260614-cet4-reading-0101-front-leak-followup-scope-audit.json",
       "reviews/audit_scopes/20260614-cet4-reading-0102-front-leak-followup-scope-audit.json",
       "reviews/audit_scopes/20260614-cet4-reading-0110-front-leak-followup-scope-audit.json",
-      "reviews/audit_scopes/20260614-cet4-reading-0111-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260614-cet4-reading-0111-front-leak-followup-scope-audit.json",
+      "reviews/audit_scopes/20260614-cet4-reading-0112-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --scope-card-ids 011202,011205,011206,011209,011212 --write-scope-report reviews/audit_scopes/20260614-cet4-reading-0112-front-leak-followup-scope-audit.json --max-examples 20"
     ]
   },
   "specs_read": [
@@ -181,7 +189,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "94b95c1122680c6629a50d14e87f763d843fe17a939147993791819f5ad53fd4",
+    "corpus_fingerprint": "32d9e9a07bc30bd635206af7e28df59a68d4bb34a5c5278189b72b90e51c1d32",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -227,6 +235,11 @@
         "011106",
         "011109",
         "011112",
+        "011202",
+        "011205",
+        "011206",
+        "011209",
+        "011212",
         "020008",
         "020009",
         "020010",
@@ -272,13 +285,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 86,
-      "issue_count": 171,
+      "card_count": 91,
+      "issue_count": 181,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 171
+        "source_risk": 181
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -291,9 +304,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 86,
+        "synthetic_source": 91,
         "template_analysis_pattern": 0,
-        "unverified_source": 85
+        "unverified_source": 90
       }
     }
   },
@@ -4686,6 +4699,271 @@
           "audio_generation_method": "none"
         },
         "exam_value": "训练用户区分 generally associated with 和 guarantee/every situation，避免把相关性读成必然性。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "0112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把对照关系中的解释难度改写成可靠性的相反项",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在对照结构中保留评价方向，避免只看对象词而忽略关系反转。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011205",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "0112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把负向待遇感受改写成正向认可的相反项",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户先判断人物引语的态度底色，再核对选项是否把负向待遇翻成正向待遇。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011206",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "0112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把能耗降低改写成能耗升高的方向反转",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户把 less/more 一类结果方向固定下来，避免被相同主题词误导。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011209",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "0112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把修改意愿增强改写成意愿降低的方向反转",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户把态度提升和态度下降分开，避免把相同活动场景误读成同义改写。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011212",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "0112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把流失率降低改写成流失率升高的方向反转",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户核对结果箭头，避免在主题词高度相似时漏看 lower/higher 方向反转。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
