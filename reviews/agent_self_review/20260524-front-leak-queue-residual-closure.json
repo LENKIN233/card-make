@@ -40,7 +40,8 @@
       "0113",
       "0120",
       "0121",
-      "0122"
+      "0122",
+      "0123"
     ],
     "card_ids": [
       "000001",
@@ -76,6 +77,38 @@
       "010206",
       "010209",
       "010212",
+      "011005",
+      "011006",
+      "011009",
+      "011012",
+      "011102",
+      "011105",
+      "011106",
+      "011109",
+      "011112",
+      "011202",
+      "011205",
+      "011206",
+      "011209",
+      "011212",
+      "011302",
+      "011306",
+      "011309",
+      "011312",
+      "012002",
+      "012005",
+      "012006",
+      "012010",
+      "012102",
+      "012105",
+      "012106",
+      "012110",
+      "012202",
+      "012205",
+      "012206",
+      "012305",
+      "012306",
+      "012310",
       "020008",
       "020009",
       "020010",
@@ -119,36 +152,7 @@
       "120009",
       "121204",
       "150112",
-      "161603",
-      "011005",
-      "011006",
-      "011009",
-      "011012",
-      "011102",
-      "011105",
-      "011106",
-      "011109",
-      "011112",
-      "011202",
-      "011205",
-      "011206",
-      "011209",
-      "011212",
-      "011302",
-      "011306",
-      "011309",
-      "011312",
-      "012002",
-      "012005",
-      "012006",
-      "012010",
-      "012102",
-      "012105",
-      "012106",
-      "012110",
-      "012202",
-      "012205",
-      "012206"
+      "161603"
     ],
     "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
@@ -191,7 +195,9 @@
       "reviews/audit_scopes/20260614-cet4-reading-0121-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --scope-card-ids 012102,012105,012106,012110 --write-scope-report reviews/audit_scopes/20260614-cet4-reading-0121-front-leak-followup-scope-audit.json --max-examples 20",
       "reviews/audit_scopes/20260614-cet4-reading-0122-front-leak-followup-scope-audit.json",
-      "node scripts/audit_card_quality.mjs --scope-card-ids 012202,012205,012206 --write-scope-report reviews/audit_scopes/20260614-cet4-reading-0122-front-leak-followup-scope-audit.json --max-examples 20"
+      "node scripts/audit_card_quality.mjs --scope-card-ids 012202,012205,012206 --write-scope-report reviews/audit_scopes/20260614-cet4-reading-0122-front-leak-followup-scope-audit.json --max-examples 20",
+      "reviews/audit_scopes/20260614-cet4-reading-0123-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --scope-card-ids 012305,012306,012310 --write-scope-report reviews/audit_scopes/20260614-cet4-reading-0123-front-leak-followup-scope-audit.json --max-examples 20"
     ]
   },
   "specs_read": [
@@ -216,7 +222,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "9453e855fa6f1935b56c553d787c1fb0f74855a0d69b9dc88311a24f866407c8",
+    "corpus_fingerprint": "1dab95603f2aa1403bb60ae1f65e226c156a2c2e0de039a3309f79dab8588773",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -282,6 +288,9 @@
         "012202",
         "012205",
         "012206",
+        "012305",
+        "012306",
+        "012310",
         "020008",
         "020009",
         "020010",
@@ -327,13 +336,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 106,
-      "issue_count": 211,
+      "card_count": 109,
+      "issue_count": 217,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 211
+        "source_risk": 217
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -346,9 +355,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 106,
+        "synthetic_source": 109,
         "template_analysis_pattern": 0,
-        "unverified_source": 105
+        "unverified_source": 108
       }
     }
   },
@@ -5820,6 +5829,165 @@
         "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
       ],
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "012305",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "0123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别给予类动词后的接收方和被给予内容",
+        "weak_point_tags": [
+          "reading_slow",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户把给予类谓语后的两个名词短语按接收方和内容分层，并排除后置修饰干扰。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "012306",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "0123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别传递类动词后的接收方和直接宾语",
+        "weak_point_tags": [
+          "reading_slow",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户先锁定传递动作后的接收方和内容，再把分词说明降级为修饰层。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "012310",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "0123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别否定给予类结构中的主谓双宾骨架",
+        "weak_point_tags": [
+          "reading_slow",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在含让步状语的长句中保留主谓双宾核心，并把限定词和后置补足降级处理。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     }
   ],
   "batch_review": {
@@ -5831,12 +5999,15 @@
       "The detailed cards array remains representative evidence from the original residual closure; the quality_audit scope summary is the authoritative full queue evidence."
     ],
     "representative_cards": [
+      "010102",
+      "012305",
+      "012306",
+      "012310",
       "020010",
       "020207",
       "020210",
-      "010102",
       "120009"
     ],
-    "next_step": "Keep PR #50 candidate-only and rerun validate_pr_scope after all evidence records are synchronized."
+    "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
 }
