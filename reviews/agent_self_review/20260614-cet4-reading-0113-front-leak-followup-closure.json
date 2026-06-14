@@ -1,26 +1,25 @@
 {
-  "review_id": "20260614-cet4-reading-0111-front-leak-followup-closure",
-  "created_at": "2026-06-14T16:05:00+08:00",
+  "review_id": "20260614-cet4-reading-0113-front-leak-followup-closure",
+  "created_at": "2026-06-14T17:10:00+08:00",
   "agent": "codex",
   "scope": {
     "library": "仔细阅读",
     "group": "干扰项排除",
-    "box": "绝对化",
+    "box": "偷换概念",
     "box_prefixes": [
-      "0111"
+      "0113"
     ],
     "card_ids": [
-      "011102",
-      "011105",
-      "011106",
-      "011109",
-      "011112"
+      "011302",
+      "011306",
+      "011309",
+      "011312"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified five 0111 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified four 0113 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
       "node scripts/audit_card_quality.mjs --write-report in the current worktree",
-      "reviews/audit_scopes/20260614-cet4-reading-0111-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260614-cet4-reading-0113-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -43,24 +42,23 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260614-cet4-reading-0111-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260614-cet4-reading-0113-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "c150377151abb25f7f5cb1393b1d2e92ce79f381224e7ad15c9e275fa1108245",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "011102",
-        "011105",
-        "011106",
-        "011109",
-        "011112"
+        "011302",
+        "011306",
+        "011309",
+        "011312"
       ],
-      "card_count": 5,
-      "issue_count": 10,
+      "card_count": 4,
+      "issue_count": 8,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 10
+        "source_risk": 8
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -73,15 +71,15 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 5,
+        "synthetic_source": 4,
         "template_analysis_pattern": 0,
-        "unverified_source": 5
+        "unverified_source": 4
       }
     }
   },
   "cards": [
     {
-      "card_id": "011102",
+      "card_id": "011302",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
@@ -89,13 +87,13 @@
         "library_name": "仔细阅读",
         "group_id": "1",
         "group_name": "干扰项排除",
-        "box_id": "1",
-        "box_name": "绝对化",
-        "box_prefix": "0111"
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "0113"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别把当前证据不足永久化的绝对化干扰",
+        "main_training_goal": "识别把识别任务偷换成因素分类任务的干扰项",
         "weak_point_tags": [
           "reading_slow",
           "exam_strategy_weak"
@@ -112,7 +110,7 @@
           "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户保留 at the moment 一类时间边界，避免把目前证据不足误判成永久否定。",
+        "exam_value": "训练用户区分作者讨论的任务对象，避免把相邻概念当成同义改写。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -134,7 +132,7 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "011105",
+      "card_id": "011306",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
@@ -142,13 +140,13 @@
         "library_name": "仔细阅读",
         "group_id": "1",
         "group_name": "干扰项排除",
-        "box_id": "1",
-        "box_name": "绝对化",
-        "box_prefix": "0111"
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "0113"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别把比较级和主因限定推满为完全无例外的绝对化干扰",
+        "main_training_goal": "识别把原因机制从心理压力管理偷换成评价门槛下降",
         "weak_point_tags": [
           "reading_slow",
           "exam_strategy_weak"
@@ -165,7 +163,7 @@
           "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户把 more/mostly 等限定词保留下来，避免把改善趋势读成完全解决。",
+        "exam_value": "训练用户在原因题中分辨结果相同但机制不同的选项，避免被同一结果词带偏。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -187,7 +185,7 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "011106",
+      "card_id": "011309",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
@@ -195,13 +193,13 @@
         "library_name": "仔细阅读",
         "group_id": "1",
         "group_name": "干扰项排除",
-        "box_id": "1",
-        "box_name": "绝对化",
-        "box_prefix": "0111"
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "0113"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别把多数趋势改写成全体无例外的绝对化干扰",
+        "main_training_goal": "识别把政策可负担目标偷换成更宽公平目标的干扰项",
         "weak_point_tags": [
           "reading_slow",
           "exam_strategy_weak"
@@ -218,7 +216,7 @@
           "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户看到 many/minority 等比例词时保留例外空间，避免被 every/all 型选项误导。",
+        "exam_value": "训练用户在政策类阅读中分清相邻目标，避免把作者排除的更大目标当作结论。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -240,7 +238,7 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "011109",
+      "card_id": "011312",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
@@ -248,13 +246,13 @@
         "library_name": "仔细阅读",
         "group_id": "1",
         "group_name": "干扰项排除",
-        "box_id": "1",
-        "box_name": "绝对化",
-        "box_prefix": "0111"
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "0113"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别把通常有效改写为任何场景都最佳的绝对化干扰",
+        "main_training_goal": "识别把具体信息获取障碍偷换成全部文化参与障碍",
         "weak_point_tags": [
           "reading_slow",
           "exam_strategy_weak"
@@ -271,60 +269,7 @@
           "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户把 often/still 等趋势与例外信号一起保留，避免把主趋势读成一刀切规则。",
-        "box_progression_role": "application",
-        "review_status": "draft"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
-        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
-      ],
-      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
-    },
-    {
-      "card_id": "011112",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "1",
-        "library_name": "仔细阅读",
-        "group_id": "1",
-        "group_name": "干扰项排除",
-        "box_id": "1",
-        "box_name": "绝对化",
-        "box_prefix": "0111"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别把一般相关性改写成无条件保证的绝对化干扰",
-        "weak_point_tags": [
-          "reading_slow",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": [
-            "foundation"
-          ]
-        },
-        "card_prototype": "solving_action",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
-          "audio_generation_method": "none"
-        },
-        "exam_value": "训练用户区分 generally associated with 和 guarantee/every situation，避免把相关性读成必然性。",
+        "exam_value": "训练用户分清具体障碍和总括性障碍，避免把范围扩大的选项当作同义概括。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -348,17 +293,16 @@
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "This is a targeted residual blocker closure for existing 0111 cards, not a new three-card sample or box progression claim.",
+    "box_progression": "This is a targeted residual blocker closure for existing 0113 cards, not a new three-card sample or box progression claim.",
     "repetition_or_gap_risks": [
-      "Only the five audited hard-blocker cards were changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
+      "Only the four audited hard-blocker cards were changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
       "Source provenance remains unverified/synthetic-risk and visible in scoped audit evidence."
     ],
     "representative_cards": [
-      "011102",
-      "011105",
-      "011106",
-      "011109",
-      "011112"
+      "011302",
+      "011306",
+      "011309",
+      "011312"
     ],
     "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
