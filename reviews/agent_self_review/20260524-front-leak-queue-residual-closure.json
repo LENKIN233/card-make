@@ -33,7 +33,8 @@
       "1200",
       "1212",
       "1501",
-      "1616"
+      "1616",
+      "0110"
     ],
     "card_ids": [
       "000001",
@@ -112,7 +113,11 @@
       "120009",
       "121204",
       "150112",
-      "161603"
+      "161603",
+      "011005",
+      "011006",
+      "011009",
+      "011012"
     ],
     "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
@@ -143,7 +148,8 @@
       "reviews/audit_scopes/20260613-cet4-reading-0100-front-leak-followup-3-scope-audit.json",
       "reviews/audit_scopes/20260614-cet4-reading-0100-front-leak-followup-4-scope-audit.json",
       "reviews/audit_scopes/20260614-cet4-reading-0101-front-leak-followup-scope-audit.json",
-      "reviews/audit_scopes/20260614-cet4-reading-0102-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260614-cet4-reading-0102-front-leak-followup-scope-audit.json",
+      "reviews/audit_scopes/20260614-cet4-reading-0110-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -168,7 +174,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "a0c670aff5dcdf6db5bb0859544b369c728d3a9dcb995234f2582a1f5a0a36c0",
+    "corpus_fingerprint": "ccfec6abc637a06404d11a79de279d555bf5683bf62c0950180fa35fac44c86e",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -205,6 +211,10 @@
         "010206",
         "010209",
         "010212",
+        "011005",
+        "011006",
+        "011009",
+        "011012",
         "020008",
         "020009",
         "020010",
@@ -250,13 +260,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 77,
-      "issue_count": 153,
+      "card_count": 81,
+      "issue_count": 161,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 153
+        "source_risk": 161
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -269,9 +279,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 77,
+        "synthetic_source": 81,
         "template_analysis_pattern": 0,
-        "unverified_source": 76
+        "unverified_source": 80
       }
     }
   },
@@ -4187,6 +4197,218 @@
           "audio_generation_method": "none"
         },
         "exam_value": "训练用户在让步后抓 caution that 的提醒层，保留 may 与 still underestimate 的不确定和未充分边界，避免把提醒误读成确认。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011005",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别阅读选项中凭空新增的单一原因机制",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户把原文已有机制和选项新增机制分开，避免被看似科学的额外解释带偏。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011006",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把未测量结果添加进选项的无中生有干扰",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户看到 did not examine 这类范围排除句时，立即警惕把未测量维度写成结论的选项。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011009",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把有限试验扩张为普遍成功的无中生有干扰",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户区分有限试验、克制表述和普遍成功结论，避免被 every/all/proved 类扩张误导。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011012",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把功能性结果外推成态度性结果的无中生有干扰",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户区分可被原文证明的功能结果和未被讨论的态度结果，避免把合理联想当成文本结论。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
