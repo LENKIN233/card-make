@@ -1,25 +1,24 @@
 {
-  "review_id": "20260614-cet4-reading-0121-front-leak-followup-closure",
-  "created_at": "2026-06-14T16:23:17+08:00",
+  "review_id": "20260614-cet4-reading-0122-front-leak-followup-closure",
+  "created_at": "2026-06-14T16:33:37+08:00",
   "agent": "codex",
   "scope": {
     "library": "仔细阅读",
     "group": "长难句主干",
-    "box": "主谓宾",
+    "box": "主系表",
     "box_prefixes": [
-      "0121"
+      "0122"
     ],
     "card_ids": [
-      "012102",
-      "012105",
-      "012106",
-      "012110"
+      "012202",
+      "012205",
+      "012206"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified four 0121 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified three 0122 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
       "node scripts/audit_card_quality.mjs --write-report in the current worktree",
-      "reviews/audit_scopes/20260614-cet4-reading-0121-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260614-cet4-reading-0122-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -42,23 +41,22 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260614-cet4-reading-0121-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260614-cet4-reading-0122-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "9453e855fa6f1935b56c553d787c1fb0f74855a0d69b9dc88311a24f866407c8",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "012102",
-        "012105",
-        "012106",
-        "012110"
+        "012202",
+        "012205",
+        "012206"
       ],
-      "card_count": 4,
-      "issue_count": 8,
+      "card_count": 3,
+      "issue_count": 6,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 8
+        "source_risk": 6
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -71,15 +69,15 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 4,
+        "synthetic_source": 3,
         "template_analysis_pattern": 0,
-        "unverified_source": 4
+        "unverified_source": 3
       }
     }
   },
   "cards": [
     {
-      "card_id": "012102",
+      "card_id": "012202",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
@@ -87,119 +85,13 @@
         "library_name": "仔细阅读",
         "group_id": "2",
         "group_name": "长难句主干",
-        "box_id": "1",
-        "box_name": "主谓宾",
-        "box_prefix": "0121"
+        "box_id": "2",
+        "box_name": "主系表",
+        "box_prefix": "0122"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别主谓宾主干后面的定语从句干扰",
-        "weak_point_tags": [
-          "reading_slow",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": [
-            "foundation"
-          ]
-        },
-        "card_prototype": "solving_action",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
-          "audio_generation_method": "none"
-        },
-        "exam_value": "训练用户先确认主句 SVO 已经闭合，再把 that 从句作为后置信息处理。",
-        "box_progression_role": "application",
-        "review_status": "draft"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
-        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
-      ],
-      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
-    },
-    {
-      "card_id": "012105",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "1",
-        "library_name": "仔细阅读",
-        "group_id": "2",
-        "group_name": "长难句主干",
-        "box_id": "1",
-        "box_name": "主谓宾",
-        "box_prefix": "0121"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别主谓宾结构中必须保留的不定式宾语",
-        "weak_point_tags": [
-          "reading_slow",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": [
-            "foundation"
-          ]
-        },
-        "card_prototype": "solving_action",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
-          "audio_generation_method": "none"
-        },
-        "exam_value": "训练用户区分动词核心宾语和后面的比较/原因补充，避免过度删减主干。",
-        "box_progression_role": "application",
-        "review_status": "draft"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
-        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
-      ],
-      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
-    },
-    {
-      "card_id": "012106",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "1",
-        "library_name": "仔细阅读",
-        "group_id": "2",
-        "group_name": "长难句主干",
-        "box_id": "1",
-        "box_name": "主谓宾",
-        "box_prefix": "0121"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别主谓宾结构中动名词短语作宾语",
+        "main_training_goal": "识别介词短语干扰下的主语核心和形容词表语",
         "weak_point_tags": [
           "reading_slow",
           "grammar_weak"
@@ -216,7 +108,7 @@
           "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在状语前置和长宾语干扰下，仍能保留谓语支配的动名词宾语。",
+        "exam_value": "训练用户把主语后的介词短语降级为修饰层，并保留真正描述主语状态的表语。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -238,7 +130,7 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "012110",
+      "card_id": "012205",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
@@ -246,13 +138,13 @@
         "library_name": "仔细阅读",
         "group_id": "2",
         "group_name": "长难句主干",
-        "box_id": "1",
-        "box_name": "主谓宾",
-        "box_prefix": "0121"
+        "box_id": "2",
+        "box_name": "主系表",
+        "box_prefix": "0122"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别动词直接宾语和后置介词短语说明的层级差异",
+        "main_training_goal": "识别感官系动词后接形容词表语",
         "weak_point_tags": [
           "reading_slow",
           "grammar_weak"
@@ -269,7 +161,60 @@
           "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户先抓谓语后直接支配的名词宾语，再把 of/how 后续内容降级为说明层。",
+        "exam_value": "训练用户用后接形容词的形式判断感官动词是否为系动词，避免按实义动词理解。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "012206",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "2",
+        "box_name": "主系表",
+        "box_prefix": "0122"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别变化型系动词后接名词短语表语",
+        "weak_point_tags": [
+          "reading_slow",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户把变化型系动词后的名词短语整体看作表语，并排除句末时间状语干扰。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -293,16 +238,15 @@
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "This is a targeted residual blocker closure for existing 0121 cards, not a new three-card sample or box progression claim.",
+    "box_progression": "This is a targeted residual blocker closure for existing 0122 cards, not a new three-card sample or box progression claim.",
     "repetition_or_gap_risks": [
-      "Only the four audited hard-blocker cards were changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
+      "Only the three audited hard-blocker cards were changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
       "Source provenance remains unverified/synthetic-risk and visible in scoped audit evidence."
     ],
     "representative_cards": [
-      "012102",
-      "012105",
-      "012106",
-      "012110"
+      "012202",
+      "012205",
+      "012206"
     ],
     "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
