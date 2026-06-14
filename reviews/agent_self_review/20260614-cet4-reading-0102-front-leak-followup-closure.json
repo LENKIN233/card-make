@@ -1,25 +1,26 @@
 {
-  "review_id": "20260614-cet4-reading-0101-front-leak-followup-closure",
-  "created_at": "2026-06-14T15:15:13+08:00",
+  "review_id": "20260614-cet4-reading-0102-front-leak-followup-closure",
+  "created_at": "2026-06-14T15:25:42+08:00",
   "agent": "codex",
   "scope": {
     "library": "仔细阅读",
     "group": "定位词抓取",
-    "box": "实义名词",
+    "box": "逻辑限定词",
     "box_prefixes": [
-      "0101"
+      "0102"
     ],
     "card_ids": [
-      "010105",
-      "010106",
-      "010109",
-      "010112"
+      "010202",
+      "010205",
+      "010206",
+      "010209",
+      "010212"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified four 0101 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified five 0102 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
       "node scripts/audit_card_quality.mjs --write-report in the current worktree",
-      "reviews/audit_scopes/20260614-cet4-reading-0101-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260614-cet4-reading-0102-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -42,23 +43,24 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260614-cet4-reading-0101-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260614-cet4-reading-0102-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "a0c670aff5dcdf6db5bb0859544b369c728d3a9dcb995234f2582a1f5a0a36c0",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "010105",
-        "010106",
-        "010109",
-        "010112"
+        "010202",
+        "010205",
+        "010206",
+        "010209",
+        "010212"
       ],
-      "card_count": 4,
-      "issue_count": 8,
+      "card_count": 5,
+      "issue_count": 10,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 8
+        "source_risk": 10
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -71,15 +73,15 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 4,
+        "synthetic_source": 5,
         "template_analysis_pattern": 0,
-        "unverified_source": 4
+        "unverified_source": 5
       }
     }
   },
   "cards": [
     {
-      "card_id": "010105",
+      "card_id": "010202",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
@@ -87,13 +89,13 @@
         "library_name": "仔细阅读",
         "group_id": "0",
         "group_name": "定位词抓取",
-        "box_id": "1",
-        "box_name": "实义名词",
-        "box_prefix": "0101"
+        "box_id": "2",
+        "box_name": "逻辑限定词",
+        "box_prefix": "0102"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "根据改写题干选择实义名词的语义映射组合",
+        "main_training_goal": "根据时间和程度限定判断作者对测试科学依据的态度边界",
         "weak_point_tags": [
           "reading_slow",
           "exam_strategy_weak"
@@ -110,7 +112,7 @@
           "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在改写题干中把人群、学科项目和比例等实义名词映射回原文，避免只抓时间或状态变化词。",
+        "exam_value": "训练用户同时保留 at the moment 的时间边界和 non-existent / incredibly weak 的程度边界，避免把暂时判断永久化或把弱证据夸大。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -132,7 +134,7 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "010106",
+      "card_id": "010205",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
@@ -140,13 +142,13 @@
         "library_name": "仔细阅读",
         "group_id": "0",
         "group_name": "定位词抓取",
-        "box_id": "1",
-        "box_name": "实义名词",
-        "box_prefix": "0101"
+        "box_id": "2",
+        "box_name": "逻辑限定词",
+        "box_prefix": "0102"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "根据 obstacle 题干选择 but 后的问题本体名词作为定位抓手",
+        "main_training_goal": "根据多条件依赖限定判断 DNA test accuracy 的准确改写",
         "weak_point_tags": [
           "reading_slow",
           "exam_strategy_weak"
@@ -163,7 +165,7 @@
           "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在 obstacle/problem 类题干中优先识别 not A but B 的后项名词，避免被技术、会议等高频配角名词带偏。",
+        "exam_value": "训练用户看到 relies greatly upon 和并列 on... 条件时保留多因素限制，避免把准确性判断压扁成单一原因或绝对结论。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -185,7 +187,7 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "010109",
+      "card_id": "010206",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
@@ -193,13 +195,13 @@
         "library_name": "仔细阅读",
         "group_id": "0",
         "group_name": "定位词抓取",
-        "box_id": "1",
-        "box_name": "实义名词",
-        "box_prefix": "0101"
+        "box_id": "2",
+        "box_name": "逻辑限定词",
+        "box_prefix": "0102"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "根据 deeper driver 题干选择 than by 后的深层原因名词作为定位抓手",
+        "main_training_goal": "根据 most 和 only some 的范围限定区分普遍收益与少数晋升结果",
         "weak_point_tags": [
           "reading_slow",
           "exam_strategy_weak"
@@ -216,7 +218,7 @@
           "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在 deeper/underlying cause 类题干中抓 less by A than by B 的后项，区分表层原因和作者扶正的深层原因。",
+        "exam_value": "训练用户在同一句多量词结构中分清不同限定词修饰的结果层，避免把 most 的反馈收益误套到 promotion gains 上。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -238,7 +240,7 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "010112",
+      "card_id": "010209",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
@@ -246,13 +248,13 @@
         "library_name": "仔细阅读",
         "group_id": "0",
         "group_name": "定位词抓取",
-        "box_id": "1",
-        "box_name": "实义名词",
-        "box_prefix": "0101"
+        "box_id": "2",
+        "box_name": "逻辑限定词",
+        "box_prefix": "0102"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "根据 mainly 题干选择 but from 后的主因名词作为定位抓手",
+        "main_training_goal": "根据比例限定和群体比较限定判断调查发现的准确改写",
         "weak_point_tags": [
           "reading_slow",
           "exam_strategy_weak"
@@ -269,7 +271,60 @@
           "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在 mainly/primarily 类题干中跟随作者加权，优先抓 but from 后的主因名词而不是背景或被否定原因。",
+        "exam_value": "训练用户同时保留 nearly half 的比例边界和 significantly lower among daily commuters 的比较方向，避免多数化或立场反转。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "010212",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "0",
+        "group_name": "定位词抓取",
+        "box_id": "2",
+        "box_name": "逻辑限定词",
+        "box_prefix": "0102"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据 caution 后的不确定语气和 still underestimate 判断提醒内容",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在让步后抓 caution that 的提醒层，保留 may 与 still underestimate 的不确定和未充分边界，避免把提醒误读成确认。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -295,14 +350,15 @@
     "status": "documented_residual_closure",
     "box_progression": "not_applicable_residual_closure",
     "repetition_or_gap_risks": [
-      "This record closes four newly surfaced 0101 residual front leaks and is not evidence of per-box sample readiness.",
+      "This record closes five newly surfaced 0102 residual front leaks and is not evidence of per-box sample readiness.",
       "Source-risk findings remain because the underlying legacy/simulated provenance is not verified."
     ],
     "representative_cards": [
-      "010105",
-      "010106",
-      "010109",
-      "010112"
+      "010202",
+      "010205",
+      "010206",
+      "010209",
+      "010212"
     ],
     "next_step": "Keep #50 as candidate-only content for user review; do not create approved batch records from this residual closure evidence."
   }
