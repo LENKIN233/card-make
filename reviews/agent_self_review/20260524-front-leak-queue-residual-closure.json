@@ -38,7 +38,8 @@
       "0111",
       "0112",
       "0113",
-      "0120"
+      "0120",
+      "0121"
     ],
     "card_ids": [
       "000001",
@@ -139,7 +140,11 @@
       "012002",
       "012005",
       "012006",
-      "012010"
+      "012010",
+      "012102",
+      "012105",
+      "012106",
+      "012110"
     ],
     "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
@@ -178,7 +183,9 @@
       "reviews/audit_scopes/20260614-cet4-reading-0113-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --scope-card-ids 011302,011306,011309,011312 --write-scope-report reviews/audit_scopes/20260614-cet4-reading-0113-front-leak-followup-scope-audit.json --max-examples 20",
       "reviews/audit_scopes/20260614-cet4-reading-0120-front-leak-followup-scope-audit.json",
-      "node scripts/audit_card_quality.mjs --scope-card-ids 012002,012005,012006,012010 --write-scope-report reviews/audit_scopes/20260614-cet4-reading-0120-front-leak-followup-scope-audit.json --max-examples 20"
+      "node scripts/audit_card_quality.mjs --scope-card-ids 012002,012005,012006,012010 --write-scope-report reviews/audit_scopes/20260614-cet4-reading-0120-front-leak-followup-scope-audit.json --max-examples 20",
+      "reviews/audit_scopes/20260614-cet4-reading-0121-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --scope-card-ids 012102,012105,012106,012110 --write-scope-report reviews/audit_scopes/20260614-cet4-reading-0121-front-leak-followup-scope-audit.json --max-examples 20"
     ]
   },
   "specs_read": [
@@ -203,7 +210,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "9dcb40751536662dbb8a7db5e4be98220a0fb970b266636a53733e5d9366d1e9",
+    "corpus_fingerprint": "9b2bd3d61a54ffc2e401068499aa6b16455624868710b256df77e86b9a8c230a",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -262,6 +269,10 @@
         "012005",
         "012006",
         "012010",
+        "012102",
+        "012105",
+        "012106",
+        "012110",
         "020008",
         "020009",
         "020010",
@@ -307,13 +318,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 99,
-      "issue_count": 197,
+      "card_count": 103,
+      "issue_count": 205,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 197
+        "source_risk": 205
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -326,9 +337,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 99,
+        "synthetic_source": 103,
         "template_analysis_pattern": 0,
-        "unverified_source": 98
+        "unverified_source": 102
       }
     }
   },
@@ -5410,6 +5421,218 @@
           "audio_generation_method": "none"
         },
         "exam_value": "训练用户把 what 从句作为整体主语处理，并跳过破折号同位语补充后再找主句谓语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "012102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "1",
+        "box_name": "主谓宾",
+        "box_prefix": "0121"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别主谓宾主干后面的定语从句干扰",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户先确认主句 SVO 已经闭合，再把 that 从句作为后置信息处理。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "012105",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "1",
+        "box_name": "主谓宾",
+        "box_prefix": "0121"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别主谓宾结构中必须保留的不定式宾语",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户区分动词核心宾语和后面的比较/原因补充，避免过度删减主干。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "012106",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "1",
+        "box_name": "主谓宾",
+        "box_prefix": "0121"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别主谓宾结构中动名词短语作宾语",
+        "weak_point_tags": [
+          "reading_slow",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在状语前置和长宾语干扰下，仍能保留谓语支配的动名词宾语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "012110",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "1",
+        "box_name": "主谓宾",
+        "box_prefix": "0121"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别动词直接宾语和后置介词短语说明的层级差异",
+        "weak_point_tags": [
+          "reading_slow",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户先抓谓语后直接支配的名词宾语，再把 of/how 后续内容降级为说明层。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
