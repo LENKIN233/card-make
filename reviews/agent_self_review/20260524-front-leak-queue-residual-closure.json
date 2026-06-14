@@ -34,7 +34,8 @@
       "1212",
       "1501",
       "1616",
-      "0110"
+      "0110",
+      "0111"
     ],
     "card_ids": [
       "000001",
@@ -117,7 +118,12 @@
       "011005",
       "011006",
       "011009",
-      "011012"
+      "011012",
+      "011102",
+      "011105",
+      "011106",
+      "011109",
+      "011112"
     ],
     "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
@@ -149,7 +155,8 @@
       "reviews/audit_scopes/20260614-cet4-reading-0100-front-leak-followup-4-scope-audit.json",
       "reviews/audit_scopes/20260614-cet4-reading-0101-front-leak-followup-scope-audit.json",
       "reviews/audit_scopes/20260614-cet4-reading-0102-front-leak-followup-scope-audit.json",
-      "reviews/audit_scopes/20260614-cet4-reading-0110-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260614-cet4-reading-0110-front-leak-followup-scope-audit.json",
+      "reviews/audit_scopes/20260614-cet4-reading-0111-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -174,7 +181,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "ccfec6abc637a06404d11a79de279d555bf5683bf62c0950180fa35fac44c86e",
+    "corpus_fingerprint": "94b95c1122680c6629a50d14e87f763d843fe17a939147993791819f5ad53fd4",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -215,6 +222,11 @@
         "011006",
         "011009",
         "011012",
+        "011102",
+        "011105",
+        "011106",
+        "011109",
+        "011112",
         "020008",
         "020009",
         "020010",
@@ -260,13 +272,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 81,
-      "issue_count": 161,
+      "card_count": 86,
+      "issue_count": 171,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 161
+        "source_risk": 171
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -279,9 +291,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 81,
+        "synthetic_source": 86,
         "template_analysis_pattern": 0,
-        "unverified_source": 80
+        "unverified_source": 85
       }
     }
   },
@@ -4409,6 +4421,271 @@
           "audio_generation_method": "none"
         },
         "exam_value": "训练用户区分可被原文证明的功能结果和未被讨论的态度结果，避免把合理联想当成文本结论。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "1",
+        "box_name": "绝对化",
+        "box_prefix": "0111"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把当前证据不足永久化的绝对化干扰",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户保留 at the moment 一类时间边界，避免把目前证据不足误判成永久否定。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011105",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "1",
+        "box_name": "绝对化",
+        "box_prefix": "0111"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把比较级和主因限定推满为完全无例外的绝对化干扰",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户把 more/mostly 等限定词保留下来，避免把改善趋势读成完全解决。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011106",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "1",
+        "box_name": "绝对化",
+        "box_prefix": "0111"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把多数趋势改写成全体无例外的绝对化干扰",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户看到 many/minority 等比例词时保留例外空间，避免被 every/all 型选项误导。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011109",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "1",
+        "box_name": "绝对化",
+        "box_prefix": "0111"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把通常有效改写为任何场景都最佳的绝对化干扰",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户把 often/still 等趋势与例外信号一起保留，避免把主趋势读成一刀切规则。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "011112",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "1",
+        "box_name": "绝对化",
+        "box_prefix": "0111"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把一般相关性改写成无条件保证的绝对化干扰",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户区分 generally associated with 和 guarantee/every situation，避免把相关性读成必然性。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
