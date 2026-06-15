@@ -49,7 +49,8 @@
       "0133",
       "0503",
       "0504",
-      "0505"
+      "0505",
+      "0510"
     ],
     "card_ids": [
       "000001",
@@ -178,7 +179,8 @@
       "050312",
       "050410",
       "050510",
-      "050512"
+      "050512",
+      "051010"
     ],
     "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
@@ -240,7 +242,8 @@
       "reviews/audit_scopes/20260615-cet4-vocabulary-0504-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --scope-card-ids 050410 --write-scope-report reviews/audit_scopes/20260615-cet4-vocabulary-0504-front-leak-followup-scope-audit.json --max-examples 20",
       "reviews/audit_scopes/20260615-cet4-vocabulary-0505-front-leak-followup-scope-audit.json",
-      "node scripts/audit_card_quality.mjs --scope-card-ids 050510,050512 --write-scope-report reviews/audit_scopes/20260615-cet4-vocabulary-0505-front-leak-followup-scope-audit.json --max-examples 20"
+      "node scripts/audit_card_quality.mjs --scope-card-ids 050510,050512 --write-scope-report reviews/audit_scopes/20260615-cet4-vocabulary-0505-front-leak-followup-scope-audit.json --max-examples 20",
+      "reviews/audit_scopes/20260615-cet4-vocabulary-0510-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -265,6 +268,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
+    "corpus_fingerprint": "0897abb8123ee5d5490ec040322512c157d51d49a9810cea52465bbd3cad82da",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -387,6 +391,7 @@
         "050410",
         "050510",
         "050512",
+        "051010",
         "061004",
         "061102",
         "061104",
@@ -396,13 +401,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 127,
-      "issue_count": 253,
+      "card_count": 128,
+      "issue_count": 255,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 253
+        "source_risk": 255
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -415,12 +420,11 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 127,
+        "synthetic_source": 128,
         "template_analysis_pattern": 0,
-        "unverified_source": 126
+        "unverified_source": 127
       }
-    },
-    "corpus_fingerprint": "7c0996392f8f2ff2f487b474f727ede6ce6afc24aba8f46d01d62ca6cc64c628"
+    }
   },
   "cards": [
     {
@@ -7012,6 +7016,60 @@
         "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
       ],
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "051010",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "1",
+        "group_name": "中国特色词汇",
+        "box_id": "0",
+        "box_name": "政治",
+        "box_prefix": "0510"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别中国特色政治词汇中直译拼接导致的不规范表达",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy Chinese-characteristic vocabulary discrimination card with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户区分规范政策术语和中文语序硬拼表达，避免在翻译或写作中使用不自然的直译短语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     }
   ],
   "batch_review": {
@@ -7020,7 +7078,8 @@
     "repetition_or_gap_risks": [
       "The edited fronts now ask for locator, syntax, collocation, or semantic-role strategy rather than exposing exact correct-answer wording outside the option list.",
       "The scope remains residual closure evidence only; it is not a user-confirmed sample and not formal content approval.",
-      "The detailed cards array remains representative evidence from the original residual closure; the quality_audit scope summary is the authoritative full queue evidence."
+      "The detailed cards array remains representative evidence from the original residual closure; the quality_audit scope summary is the authoritative full queue evidence.",
+      "The 0510 follow-up closes only the audited politics-term direct-translation blocker and is not a full box review."
     ],
     "representative_cards": [
       "010102",
@@ -7040,7 +7099,8 @@
       "050312",
       "050410",
       "050510",
-      "050512"
+      "050512",
+      "051010"
     ],
     "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
