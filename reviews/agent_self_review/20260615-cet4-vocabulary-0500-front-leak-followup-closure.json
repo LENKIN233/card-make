@@ -1,22 +1,22 @@
 {
-  "review_id": "20260612-cet4-listening-0000-front-leak-followup-closure",
-  "created_at": "2026-06-12T12:12:23+08:00",
+  "review_id": "20260615-cet4-vocabulary-0500-front-leak-followup-closure",
+  "created_at": "2026-06-15T21:43:07+08:00",
   "agent": "codex",
   "scope": {
-    "library": "听力",
-    "group": "听前预测",
-    "box": "根据选项预测话题",
+    "library": "词汇",
+    "group": "同义词替换",
+    "box": "近义词替换",
     "box_prefixes": [
-      "0000"
+      "0500"
     ],
     "card_ids": [
-      "000001"
+      "050012"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified one additional 0000 front-side answer-leak blocker on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified one 0500 front-side answer-path leak on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
-      "node scripts/audit_card_quality.mjs --write-report --max-examples 220 in /private/tmp/card-make-current-audit-next",
-      "reviews/audit_scopes/20260612-cet4-listening-0000-front-leak-followup-scope-audit.json"
+      "node scripts/audit_card_quality.mjs --write-report in the current worktree",
+      "reviews/audit_scopes/20260615-cet4-vocabulary-0500-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -39,12 +39,12 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260612-cet4-listening-0000-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260615-cet4-vocabulary-0500-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "f941adafdc594ee657c32270f1e46041cb70a043f15f402fd7e5625ad745bc31",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "000001"
+        "050012"
       ],
       "card_count": 1,
       "issue_count": 2,
@@ -73,40 +73,40 @@
   },
   "cards": [
     {
-      "card_id": "000001",
+      "card_id": "050012",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
-        "library_id": "0",
-        "library": "听力",
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
         "group_id": "0",
-        "group": "听前预测",
+        "group_name": "同义词替换",
         "box_id": "0",
-        "box": "根据选项预测话题",
-        "box_prefix": "0000"
+        "box_name": "近义词替换",
+        "box_prefix": "0500"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "根据选项关键词组合预测听力主话题",
+        "main_training_goal": "识别倍数表达中的超过需求含义，并选择不偷换极性的近义改写",
         "weak_point_tags": [
-          "listening_weak",
+          "vocabulary_weak",
+          "reading_slow",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "foundation",
+          "primary": "pass",
           "secondary": [
-            "pass"
+            "foundation"
           ]
         },
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool transcript with unverified provenance; candidate repair only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
+          "source_note": "Legacy vocabulary paraphrase card with unverified provenance; source claim removed for candidate repair only.",
+          "audio_generation_method": "none"
         },
-        "exam_value": "让用户练会从选项中先抓对象和角度，降低听力开头进入成本。",
-        "box_progression_role": "recognition",
+        "exam_value": "训练用户把 twice as much as needed 判断为数量高于所需水平，避免在近义替换中把超量误判成不足、刚好或建议。",
+        "box_progression_role": "application",
         "review_status": "draft"
       },
       "blocker_scan": {
@@ -122,22 +122,21 @@
       "major_issues": [],
       "minor_issues": [
         "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
-        "Candidate TTS asset exists but remains non-formal because tts_audio_reviewed is false and formal audio QC is not closed for this card."
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
       ],
-      "recommendation": "Document as candidate-only residual closure evidence."
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     }
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "not_applicable_residual_closure",
+    "box_progression": "This is a targeted residual blocker closure for existing 0500 cards, not a new three-card sample or box progression claim.",
     "repetition_or_gap_risks": [
-      "This record closes one newly surfaced 0000 residual front leak and is not evidence of per-box sample readiness.",
-      "Source-risk findings remain because the underlying legacy/simulated provenance is not verified.",
-      "Candidate TTS is not source-authenticity evidence and is not formal audio readiness."
+      "Only the audited hard-blocker card was changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
+      "Source provenance remains unverified/synthetic-risk and visible in scoped audit evidence."
     ],
     "representative_cards": [
-      "000001"
+      "050012"
     ],
-    "next_step": "Keep #50 as candidate-only content for user review; do not create approved batch records from this residual closure evidence."
+    "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
 }
