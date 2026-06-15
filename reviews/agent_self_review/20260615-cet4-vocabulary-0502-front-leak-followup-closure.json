@@ -1,23 +1,23 @@
 {
-  "review_id": "20260608-cet4-bankedcloze-0221-front-leak-followup-closure",
-  "created_at": "2026-06-08T14:13:38+08:00",
+  "review_id": "20260615-cet4-vocabulary-0502-front-leak-followup-closure",
+  "created_at": "2026-06-15T21:53:44+08:00",
   "agent": "codex",
   "scope": {
-    "library": "选词填空",
-    "group": "固定搭配",
-    "box": "形容词+名词",
+    "library": "词汇",
+    "group": "同义词替换",
+    "box": "短语类替换",
     "box_prefixes": [
-      "0221"
+      "0502"
     ],
     "card_ids": [
-      "022108",
-      "022110"
+      "050210",
+      "050212"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified two additional 0221 front-side answer-leak blockers on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified two 0502 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
-      "node scripts/audit_card_quality.mjs --write-report --max-examples 140 in /private/tmp/card-make-current-audit-next",
-      "reviews/audit_scopes/20260608-cet4-bankedcloze-0221-front-leak-followup-scope-audit.json"
+      "node scripts/audit_card_quality.mjs --write-report in the current worktree",
+      "reviews/audit_scopes/20260615-cet4-vocabulary-0502-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -40,13 +40,13 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260608-cet4-bankedcloze-0221-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260615-cet4-vocabulary-0502-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "cc84f533d56cfe82d55adcb3723135b1f86a1acfccaf463b20944b0b8cd7b7ac",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "022108",
-        "022110"
+        "050210",
+        "050212"
       ],
       "card_count": 2,
       "issue_count": 4,
@@ -75,39 +75,40 @@
   },
   "cards": [
     {
-      "card_id": "022108",
+      "card_id": "050210",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
-        "library_id": "2",
-        "library": "选词填空",
-        "group_id": "2",
-        "group": "固定搭配",
-        "box_id": "1",
-        "box": "形容词+名词",
-        "box_prefix": "0221"
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "2",
+        "box_name": "短语类替换",
+        "box_prefix": "0502"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 coherent argument 表示逻辑连贯论证的形容词名词搭配",
+        "main_training_goal": "区分短语替换中主动提出与发现已有对象的语义方向",
         "weak_point_tags": [
           "vocabulary_weak",
-          "grammar_weak",
+          "reading_slow",
           "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
           "secondary": [
-            "high_score"
+            "foundation"
           ]
         },
-        "card_prototype": "context_input",
+        "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
+          "source_note": "Legacy vocabulary phrase-substitution card with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在正式论证语境中只看修饰词和句内关系判断自然搭配，避免靠选项外重复名词定位答案。",
-        "box_progression_role": "transfer",
+        "exam_value": "训练用户在短语类替换中检查动作方向和对象存在状态，避免把主动提出误判成发现已有对象。",
+        "box_progression_role": "application",
         "review_status": "draft"
       },
       "blocker_scan": {
@@ -122,44 +123,46 @@
       },
       "major_issues": [],
       "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
       ],
-      "recommendation": "Document as candidate-only residual closure evidence."
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "022110",
+      "card_id": "050212",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
-        "library_id": "2",
-        "library": "选词填空",
-        "group_id": "2",
-        "group": "固定搭配",
-        "box_id": "1",
-        "box": "形容词+名词",
-        "box_prefix": "0221"
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "2",
+        "box_name": "短语类替换",
+        "box_prefix": "0502"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别 comprehensive assessment 表示全面评估的形容词名词搭配",
+        "main_training_goal": "识别 carry out 与 conduct 在任务执行语境中的等值替换",
         "weak_point_tags": [
           "vocabulary_weak",
-          "grammar_weak",
+          "reading_slow",
           "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
           "secondary": [
-            "high_score"
+            "foundation"
           ]
         },
-        "card_prototype": "context_input",
+        "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
+          "source_note": "Legacy vocabulary phrase-substitution card with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户根据风险语境选择自然正式搭配，避免把题干名词与完整选项短语的重叠当作答案线索。",
-        "box_progression_role": "transfer",
+        "exam_value": "训练用户判断短语动词与正式动词是否在动作、对象和顺序上保持等值，避免只看词面相似。",
+        "box_progression_role": "application",
         "review_status": "draft"
       },
       "blocker_scan": {
@@ -174,22 +177,23 @@
       },
       "major_issues": [],
       "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
       ],
-      "recommendation": "Document as candidate-only residual closure evidence."
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     }
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "not_applicable_residual_closure",
+    "box_progression": "This is a targeted residual blocker closure for existing 0502 cards, not a new three-card sample or box progression claim.",
     "repetition_or_gap_risks": [
-      "This record closes two newly surfaced 0221 residual front leaks and is not evidence of per-box sample readiness.",
-      "Source-risk findings remain because the underlying legacy/simulated provenance is not verified."
+      "Only the audited hard-blocker cards were changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
+      "Source provenance remains unverified/synthetic-risk and visible in scoped audit evidence."
     ],
     "representative_cards": [
-      "022108",
-      "022110"
+      "050210",
+      "050212"
     ],
-    "next_step": "Keep #50 as candidate-only content for user review; do not create approved batch records from this residual closure evidence."
+    "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
 }
