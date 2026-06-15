@@ -1,22 +1,22 @@
 {
-  "review_id": "20260612-cet4-grammar-0615-front-leak-followup-closure",
-  "created_at": "2026-06-12T12:05:51+08:00",
+  "review_id": "20260615-cet4-reading-0133-front-leak-followup-closure",
+  "created_at": "2026-06-15T10:05:00+08:00",
   "agent": "codex",
   "scope": {
-    "library": "语法",
-    "group": "复杂句",
-    "box": "比较结构",
+    "library": "仔细阅读",
+    "group": "长难句关键修饰",
+    "box": "插入语",
     "box_prefixes": [
-      "0615"
+      "0133"
     ],
     "card_ids": [
-      "061502"
+      "013305"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified one additional 0615 front-side answer-leak blocker on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified one 0133 front-side answer-path leak on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
-      "node scripts/audit_card_quality.mjs --write-report --max-examples 220 in /private/tmp/card-make-current-audit-next",
-      "reviews/audit_scopes/20260612-cet4-grammar-0615-front-leak-followup-scope-audit.json"
+      "node scripts/audit_card_quality.mjs --write-report in the current worktree",
+      "reviews/audit_scopes/20260615-cet4-reading-0133-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -39,12 +39,12 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260612-cet4-grammar-0615-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260615-cet4-reading-0133-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "5c9f3415248c744478756cafbb34aa97a2e0505e11778d0eaa285ddc47c66a01",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "061502"
+        "013305"
       ],
       "card_count": 1,
       "issue_count": 2,
@@ -73,38 +73,38 @@
   },
   "cards": [
     {
-      "card_id": "061502",
+      "card_id": "013305",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
-        "library_id": "6",
-        "library": "语法",
-        "group_id": "1",
-        "group": "复杂句",
-        "box_id": "5",
-        "box": "比较结构",
-        "box_prefix": "0615"
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "3",
+        "box_name": "插入语",
+        "box_prefix": "0133"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "判断 no less ... than 如何表达同等或不低于的强化比较",
+        "main_training_goal": "识别逗号夹住的同位语插入语",
         "weak_point_tags": [
-          "grammar_weak",
           "reading_slow",
-          "exam_strategy_weak"
+          "grammar_weak"
         ],
         "difficulty": {
           "primary": "pass",
           "secondary": [
-            "high_score"
+            "foundation"
           ]
         },
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool sentence with unverified provenance; candidate repair only.",
+          "source_note": "Legacy reading sentence with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户识别 no less ... than 的强化肯定语义，避免把 less 字面误读为前项价值更低。",
+        "exam_value": "训练用户识别逗号包围的同位语插入成分，并用删除测试快速找回长句主干。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -120,21 +120,22 @@
       },
       "major_issues": [],
       "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material."
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
       ],
-      "recommendation": "Document as candidate-only residual closure evidence."
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     }
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "not_applicable_residual_closure",
+    "box_progression": "This is a targeted residual blocker closure for existing 0133 cards, not a new three-card sample or box progression claim.",
     "repetition_or_gap_risks": [
-      "This record closes one newly surfaced 0615 residual front leak and is not evidence of per-box sample readiness.",
-      "Source-risk findings remain because the underlying legacy/simulated provenance is not verified."
+      "Only the audited hard-blocker card was changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
+      "Source provenance remains unverified/synthetic-risk and visible in scoped audit evidence."
     ],
     "representative_cards": [
-      "061502"
+      "013305"
     ],
-    "next_step": "Keep #50 as candidate-only content for user review; do not create approved batch records from this residual closure evidence."
+    "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
 }

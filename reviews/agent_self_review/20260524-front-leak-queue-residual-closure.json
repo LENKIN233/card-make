@@ -43,7 +43,8 @@
       "0122",
       "0123",
       "0124",
-      "0130"
+      "0130",
+      "0133"
     ],
     "card_ids": [
       "000001",
@@ -162,7 +163,8 @@
       "013002",
       "013005",
       "013006",
-      "013010"
+      "013010",
+      "013305"
     ],
     "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
@@ -211,7 +213,9 @@
       "reviews/audit_scopes/20260615-cet4-reading-0124-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --scope-card-ids 012402,012405,012406,012410 --write-scope-report reviews/audit_scopes/20260615-cet4-reading-0124-front-leak-followup-scope-audit.json --max-examples 20",
       "reviews/audit_scopes/20260615-cet4-reading-0130-front-leak-followup-scope-audit.json",
-      "node scripts/audit_card_quality.mjs --scope-card-ids 013002,013005,013006,013010 --write-scope-report reviews/audit_scopes/20260615-cet4-reading-0130-front-leak-followup-scope-audit.json --max-examples 20"
+      "node scripts/audit_card_quality.mjs --scope-card-ids 013002,013005,013006,013010 --write-scope-report reviews/audit_scopes/20260615-cet4-reading-0130-front-leak-followup-scope-audit.json --max-examples 20",
+      "reviews/audit_scopes/20260615-cet4-reading-0133-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --scope-card-ids 013305 --write-scope-report reviews/audit_scopes/20260615-cet4-reading-0133-front-leak-followup-scope-audit.json --max-examples 20"
     ]
   },
   "specs_read": [
@@ -236,7 +240,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "7598c2d4fb1c940e07d8e2a7861b92778970b2a561d6e3ed809aba3d0ced417f",
+    "corpus_fingerprint": "5c9f3415248c744478756cafbb34aa97a2e0505e11778d0eaa285ddc47c66a01",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -313,6 +317,7 @@
         "013005",
         "013006",
         "013010",
+        "013305",
         "020008",
         "020009",
         "020010",
@@ -358,13 +363,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 117,
-      "issue_count": 233,
+      "card_count": 118,
+      "issue_count": 235,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 233
+        "source_risk": 235
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -377,9 +382,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 117,
+        "synthetic_source": 118,
         "template_analysis_pattern": 0,
-        "unverified_source": 116
+        "unverified_source": 117
       }
     }
   },
@@ -6416,6 +6421,59 @@
         },
         "exam_value": "训练用户在多层后置修饰中结合就近原则和语义合理性定位先行对象。",
         "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "013305",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "3",
+        "box_name": "插入语",
+        "box_prefix": "0133"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别逗号夹住的同位语插入语",
+        "weak_point_tags": [
+          "reading_slow",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy reading sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户识别逗号包围的同位语插入成分，并用删除测试快速找回长句主干。",
+        "box_progression_role": "application",
         "review_status": "draft"
       },
       "blocker_scan": {
