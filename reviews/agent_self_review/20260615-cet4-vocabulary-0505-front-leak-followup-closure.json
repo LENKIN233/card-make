@@ -1,24 +1,23 @@
 {
-  "review_id": "20260614-cet4-reading-0122-front-leak-followup-closure",
-  "created_at": "2026-06-14T16:33:37+08:00",
+  "review_id": "20260615-cet4-vocabulary-0505-front-leak-followup-closure",
+  "created_at": "2026-06-15T22:31:34+08:00",
   "agent": "codex",
   "scope": {
-    "library": "仔细阅读",
-    "group": "长难句主干",
-    "box": "主系表",
+    "library": "词汇",
+    "group": "同义词替换",
+    "box": "解释性替换",
     "box_prefixes": [
-      "0122"
+      "0505"
     ],
     "card_ids": [
-      "012202",
-      "012205",
-      "012206"
+      "050510",
+      "050512"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified three 0122 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified two 0505 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
       "node scripts/audit_card_quality.mjs --write-report in the current worktree",
-      "reviews/audit_scopes/20260614-cet4-reading-0122-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260615-cet4-vocabulary-0505-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -41,22 +40,21 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260614-cet4-reading-0122-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260615-cet4-vocabulary-0505-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "7c0996392f8f2ff2f487b474f727ede6ce6afc24aba8f46d01d62ca6cc64c628",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "012202",
-        "012205",
-        "012206"
+        "050510",
+        "050512"
       ],
-      "card_count": 3,
-      "issue_count": 6,
+      "card_count": 2,
+      "issue_count": 4,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 6
+        "source_risk": 4
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -69,32 +67,33 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 3,
+        "synthetic_source": 2,
         "template_analysis_pattern": 0,
-        "unverified_source": 3
+        "unverified_source": 2
       }
     }
   },
   "cards": [
     {
-      "card_id": "012202",
+      "card_id": "050510",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
-        "library_id": "1",
-        "library_name": "仔细阅读",
-        "group_id": "2",
-        "group_name": "长难句主干",
-        "box_id": "2",
-        "box_name": "主系表",
-        "box_prefix": "0122"
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "0505"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别介词短语干扰下的主语核心和形容词表语",
+        "main_training_goal": "识别解释性替换中术语机制被反向解释的失效情况",
         "weak_point_tags": [
+          "vocabulary_weak",
           "reading_slow",
-          "grammar_weak"
+          "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -102,13 +101,13 @@
             "foundation"
           ]
         },
-        "card_prototype": "solving_action",
+        "card_prototype": "error_correction",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "source_note": "Legacy vocabulary explanatory-substitution discrimination card with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户把主语后的介词短语降级为修饰层，并保留真正描述主语状态的表语。",
+        "exam_value": "训练用户在术语解释题中检查定义是否保留核心机制，避免把机制反转的解释误判为同义扩写。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -130,24 +129,25 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "012205",
+      "card_id": "050512",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
-        "library_id": "1",
-        "library_name": "仔细阅读",
-        "group_id": "2",
-        "group_name": "长难句主干",
-        "box_id": "2",
-        "box_name": "主系表",
-        "box_prefix": "0122"
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "0505"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别感官系动词后接形容词表语",
+        "main_training_goal": "识别 inclusive growth 的解释性改写是否同时保留增长和覆盖面两个要素",
         "weak_point_tags": [
+          "vocabulary_weak",
           "reading_slow",
-          "grammar_weak"
+          "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -158,63 +158,10 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "source_note": "Legacy vocabulary explanatory-substitution card with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户用后接形容词的形式判断感官动词是否为系动词，避免按实义动词理解。",
-        "box_progression_role": "application",
-        "review_status": "draft"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
-        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
-      ],
-      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
-    },
-    {
-      "card_id": "012206",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "1",
-        "library_name": "仔细阅读",
-        "group_id": "2",
-        "group_name": "长难句主干",
-        "box_id": "2",
-        "box_name": "主系表",
-        "box_prefix": "0122"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别变化型系动词后接名词短语表语",
-        "weak_point_tags": [
-          "reading_slow",
-          "grammar_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": [
-            "foundation"
-          ]
-        },
-        "card_prototype": "solving_action",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
-          "audio_generation_method": "none"
-        },
-        "exam_value": "训练用户把变化型系动词后的名词短语整体看作表语，并排除句末时间状语干扰。",
+        "exam_value": "训练用户把抽象术语拆成核心名词和限定含义，再判断解释性改写是否完整保义。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -238,15 +185,14 @@
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "This is a targeted residual blocker closure for existing 0122 cards, not a new three-card sample or box progression claim.",
+    "box_progression": "This is a targeted residual blocker closure for existing 0505 cards, not a new three-card sample or box progression claim.",
     "repetition_or_gap_risks": [
-      "Only the three audited hard-blocker cards were changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
+      "Only the audited hard-blocker cards were changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
       "Source provenance remains unverified/synthetic-risk and visible in scoped audit evidence."
     ],
     "representative_cards": [
-      "012202",
-      "012205",
-      "012206"
+      "050510",
+      "050512"
     ],
     "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
