@@ -42,7 +42,8 @@
       "0121",
       "0122",
       "0123",
-      "0124"
+      "0124",
+      "0130"
     ],
     "card_ids": [
       "000001",
@@ -157,7 +158,11 @@
       "120009",
       "121204",
       "150112",
-      "161603"
+      "161603",
+      "013002",
+      "013005",
+      "013006",
+      "013010"
     ],
     "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
@@ -204,7 +209,9 @@
       "reviews/audit_scopes/20260614-cet4-reading-0123-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --scope-card-ids 012305,012306,012310 --write-scope-report reviews/audit_scopes/20260614-cet4-reading-0123-front-leak-followup-scope-audit.json --max-examples 20",
       "reviews/audit_scopes/20260615-cet4-reading-0124-front-leak-followup-scope-audit.json",
-      "node scripts/audit_card_quality.mjs --scope-card-ids 012402,012405,012406,012410 --write-scope-report reviews/audit_scopes/20260615-cet4-reading-0124-front-leak-followup-scope-audit.json --max-examples 20"
+      "node scripts/audit_card_quality.mjs --scope-card-ids 012402,012405,012406,012410 --write-scope-report reviews/audit_scopes/20260615-cet4-reading-0124-front-leak-followup-scope-audit.json --max-examples 20",
+      "reviews/audit_scopes/20260615-cet4-reading-0130-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --scope-card-ids 013002,013005,013006,013010 --write-scope-report reviews/audit_scopes/20260615-cet4-reading-0130-front-leak-followup-scope-audit.json --max-examples 20"
     ]
   },
   "specs_read": [
@@ -229,7 +236,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "c20fbba2a79001f25459b351237cc925ff359af2bbf6fec5caac46358a715bf5",
+    "corpus_fingerprint": "7598c2d4fb1c940e07d8e2a7861b92778970b2a561d6e3ed809aba3d0ced417f",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -302,6 +309,10 @@
         "012405",
         "012406",
         "012410",
+        "013002",
+        "013005",
+        "013006",
+        "013010",
         "020008",
         "020009",
         "020010",
@@ -347,13 +358,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 113,
-      "issue_count": 225,
+      "card_count": 117,
+      "issue_count": 233,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 225
+        "source_risk": 233
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -366,9 +377,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 113,
+        "synthetic_source": 117,
         "template_analysis_pattern": 0,
-        "unverified_source": 112
+        "unverified_source": 116
       }
     }
   },
@@ -6192,6 +6203,218 @@
           "audio_generation_method": "none"
         },
         "exam_value": "训练用户区分描述宾语状态的形容词宾补和说明时间范围的状语。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "013002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "0130"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别定语从句的先行词范围",
+        "weak_point_tags": [
+          "reading_slow",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy reading sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户用语义合理性判断定语从句先行词，避免只按就近名词误挂。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "013005",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "0130"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别名词嵌套中的后置定语归属",
+        "weak_point_tags": [
+          "reading_slow",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy reading sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在比例和人群描述中追踪后置定语限定范围，避免把统计对象读泛。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "013006",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "0130"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别过去分词短语作后置定语",
+        "weak_point_tags": [
+          "reading_slow",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy reading sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户把名词后的过去分词短语判作后置定语，并用 which was 扩展验证。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "013010",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "0130"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别多层定语中 that 从句的真实先行对象",
+        "weak_point_tags": [
+          "reading_slow",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy reading sentence with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在多层后置修饰中结合就近原则和语义合理性定位先行对象。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       },

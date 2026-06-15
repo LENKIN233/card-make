@@ -1,25 +1,25 @@
 {
-  "review_id": "20260614-cet4-reading-0113-front-leak-followup-closure",
-  "created_at": "2026-06-14T17:10:00+08:00",
+  "review_id": "20260615-cet4-reading-0130-front-leak-followup-closure",
+  "created_at": "2026-06-15T09:30:00+08:00",
   "agent": "codex",
   "scope": {
     "library": "仔细阅读",
-    "group": "干扰项排除",
-    "box": "偷换概念",
+    "group": "长难句关键修饰",
+    "box": "定语",
     "box_prefixes": [
-      "0113"
+      "0130"
     ],
     "card_ids": [
-      "011302",
-      "011306",
-      "011309",
-      "011312"
+      "013002",
+      "013005",
+      "013006",
+      "013010"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified four 0113 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified four 0130 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
       "node scripts/audit_card_quality.mjs --write-report in the current worktree",
-      "reviews/audit_scopes/20260614-cet4-reading-0113-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260615-cet4-reading-0130-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -42,15 +42,15 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260614-cet4-reading-0113-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260615-cet4-reading-0130-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "7598c2d4fb1c940e07d8e2a7861b92778970b2a561d6e3ed809aba3d0ced417f",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "011302",
-        "011306",
-        "011309",
-        "011312"
+        "013002",
+        "013005",
+        "013006",
+        "013010"
       ],
       "card_count": 4,
       "issue_count": 8,
@@ -79,24 +79,24 @@
   },
   "cards": [
     {
-      "card_id": "011302",
+      "card_id": "013002",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
         "library_id": "1",
         "library_name": "仔细阅读",
-        "group_id": "1",
-        "group_name": "干扰项排除",
-        "box_id": "3",
-        "box_name": "偷换概念",
-        "box_prefix": "0113"
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "0130"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别把识别任务偷换成因素分类任务的干扰项",
+        "main_training_goal": "识别定语从句的先行词范围",
         "weak_point_tags": [
           "reading_slow",
-          "exam_strategy_weak"
+          "grammar_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -107,10 +107,10 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "source_note": "Legacy reading sentence with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户区分作者讨论的任务对象，避免把相邻概念当成同义改写。",
+        "exam_value": "训练用户用语义合理性判断定语从句先行词，避免只按就近名词误挂。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -132,24 +132,24 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "011306",
+      "card_id": "013005",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
         "library_id": "1",
         "library_name": "仔细阅读",
-        "group_id": "1",
-        "group_name": "干扰项排除",
-        "box_id": "3",
-        "box_name": "偷换概念",
-        "box_prefix": "0113"
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "0130"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别把原因机制从心理压力管理偷换成评价门槛下降",
+        "main_training_goal": "识别名词嵌套中的后置定语归属",
         "weak_point_tags": [
           "reading_slow",
-          "exam_strategy_weak"
+          "grammar_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -160,10 +160,10 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "source_note": "Legacy reading sentence with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在原因题中分辨结果相同但机制不同的选项，避免被同一结果词带偏。",
+        "exam_value": "训练用户在比例和人群描述中追踪后置定语限定范围，避免把统计对象读泛。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -185,24 +185,24 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "011309",
+      "card_id": "013006",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
         "library_id": "1",
         "library_name": "仔细阅读",
-        "group_id": "1",
-        "group_name": "干扰项排除",
-        "box_id": "3",
-        "box_name": "偷换概念",
-        "box_prefix": "0113"
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "0130"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别把政策可负担目标偷换成更宽公平目标的干扰项",
+        "main_training_goal": "识别过去分词短语作后置定语",
         "weak_point_tags": [
           "reading_slow",
-          "exam_strategy_weak"
+          "grammar_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -213,10 +213,10 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "source_note": "Legacy reading sentence with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户在政策类阅读中分清相邻目标，避免把作者排除的更大目标当作结论。",
+        "exam_value": "训练用户把名词后的过去分词短语判作后置定语，并用 which was 扩展验证。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -238,24 +238,24 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "011312",
+      "card_id": "013010",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
         "library_id": "1",
         "library_name": "仔细阅读",
-        "group_id": "1",
-        "group_name": "干扰项排除",
-        "box_id": "3",
-        "box_name": "偷换概念",
-        "box_prefix": "0113"
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "0130"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别把具体信息获取障碍偷换成全部文化参与障碍",
+        "main_training_goal": "识别多层定语中 that 从句的真实先行对象",
         "weak_point_tags": [
           "reading_slow",
-          "exam_strategy_weak"
+          "grammar_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -266,11 +266,11 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "source_note": "Legacy reading sentence with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户分清具体障碍和总括性障碍，避免把范围扩大的选项当作同义概括。",
-        "box_progression_role": "application",
+        "exam_value": "训练用户在多层后置修饰中结合就近原则和语义合理性定位先行对象。",
+        "box_progression_role": "transfer",
         "review_status": "draft"
       },
       "blocker_scan": {
@@ -293,16 +293,16 @@
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "This is a targeted residual blocker closure for existing 0113 cards, not a new three-card sample or box progression claim.",
+    "box_progression": "This is a targeted residual blocker closure for existing 0130 cards, not a new three-card sample or box progression claim.",
     "repetition_or_gap_risks": [
       "Only the four audited hard-blocker cards were changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
       "Source provenance remains unverified/synthetic-risk and visible in scoped audit evidence."
     ],
     "representative_cards": [
-      "011302",
-      "011306",
-      "011309",
-      "011312"
+      "013002",
+      "013005",
+      "013006",
+      "013010"
     ],
     "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
