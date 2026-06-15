@@ -1,25 +1,24 @@
 {
-  "review_id": "20260615-cet4-reading-0124-front-leak-followup-closure",
-  "created_at": "2026-06-15T09:00:00+08:00",
+  "review_id": "20260615-cet4-vocabulary-0503-front-leak-followup-closure",
+  "created_at": "2026-06-15T22:06:28+08:00",
   "agent": "codex",
   "scope": {
-    "library": "仔细阅读",
-    "group": "长难句主干",
-    "box": "主谓宾补",
+    "library": "词汇",
+    "group": "同义词替换",
+    "box": "句式替换",
     "box_prefixes": [
-      "0124"
+      "0503"
     ],
     "card_ids": [
-      "012402",
-      "012405",
-      "012406",
-      "012410"
+      "050304",
+      "050310",
+      "050312"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified four 0124 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "Current audit_card_quality hard-blocker report identified three 0503 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
       "node scripts/audit_card_quality.mjs --write-report in the current worktree",
-      "reviews/audit_scopes/20260615-cet4-reading-0124-front-leak-followup-scope-audit.json"
+      "reviews/audit_scopes/20260615-cet4-vocabulary-0503-front-leak-followup-scope-audit.json"
     ]
   },
   "specs_read": [
@@ -42,23 +41,22 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260615-cet4-reading-0124-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260615-cet4-vocabulary-0503-front-leak-followup-scope-audit.json",
     "corpus_fingerprint": "6f941969f61e0a0477805b2e43e8ac8a9c28e2db8827414c18d10977b8250dc6",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "012402",
-        "012405",
-        "012406",
-        "012410"
+        "050304",
+        "050310",
+        "050312"
       ],
-      "card_count": 4,
-      "issue_count": 8,
+      "card_count": 3,
+      "issue_count": 6,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 8
+        "source_risk": 6
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -71,32 +69,33 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 4,
+        "synthetic_source": 3,
         "template_analysis_pattern": 0,
-        "unverified_source": 4
+        "unverified_source": 3
       }
     }
   },
   "cards": [
     {
-      "card_id": "012402",
+      "card_id": "050304",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
-        "library_id": "1",
-        "library_name": "仔细阅读",
-        "group_id": "2",
-        "group_name": "长难句主干",
-        "box_id": "4",
-        "box_name": "主谓宾补",
-        "box_prefix": "0124"
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别使役动词后的宾语和形容词短语宾补",
+        "main_training_goal": "识别延迟触发关系在不同句法外壳中的等值改写",
         "weak_point_tags": [
+          "vocabulary_weak",
           "reading_slow",
-          "grammar_weak"
+          "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -107,10 +106,10 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "source_note": "Legacy vocabulary sentence-substitution card with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户用 be 测试识别形容词短语宾补，并排除句末地点状语干扰。",
+        "exam_value": "训练用户在句式替换中先抓时间触发条件和结果事件，避免被倒装或否定外壳带偏。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -132,24 +131,25 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "012405",
+      "card_id": "050310",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
-        "library_id": "1",
-        "library_name": "仔细阅读",
-        "group_id": "2",
-        "group_name": "长难句主干",
-        "box_id": "4",
-        "box_name": "主谓宾补",
-        "box_prefix": "0124"
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别评价类动词后的宾语和形容词宾补",
+        "main_training_goal": "识别句式替换中数量关系反转导致的不等值改写",
         "weak_point_tags": [
+          "vocabulary_weak",
           "reading_slow",
-          "grammar_weak"
+          "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -157,13 +157,13 @@
             "foundation"
           ]
         },
-        "card_prototype": "solving_action",
+        "card_prototype": "error_correction",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "source_note": "Legacy vocabulary sentence-substitution discrimination card with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户把评价类谓语后的形容词判作宾补，而不是双宾或状语。",
+        "exam_value": "训练用户在综合句式替换题中优先检查数量方向，避免把结构相似但语义反转的表达误判为同义。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -185,24 +185,25 @@
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     },
     {
-      "card_id": "012406",
+      "card_id": "050312",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
-        "library_id": "1",
-        "library_name": "仔细阅读",
-        "group_id": "2",
-        "group_name": "长难句主干",
-        "box_id": "4",
-        "box_name": "主谓宾补",
-        "box_prefix": "0124"
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别评价类谓语后的宾语和形容词短语宾补",
+        "main_training_goal": "识别 not until 倒装句与 only in 常规语序之间的等值改写",
         "weak_point_tags": [
+          "vocabulary_weak",
           "reading_slow",
-          "grammar_weak"
+          "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -213,64 +214,11 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
+          "source_note": "Legacy vocabulary sentence-substitution card with unverified provenance; candidate repair only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户把形容词加不定式短语整体看作宾补，并排除后置成本对象干扰。",
+        "exam_value": "训练用户把 not until 倒装还原为时间边界判断，再核对结果动作和对象是否保持等值。",
         "box_progression_role": "application",
-        "review_status": "draft"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
-        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
-      ],
-      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
-    },
-    {
-      "card_id": "012410",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "1",
-        "library_name": "仔细阅读",
-        "group_id": "2",
-        "group_name": "长难句主干",
-        "box_id": "4",
-        "box_name": "主谓宾补",
-        "box_prefix": "0124"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别保持类谓语后的状态形容词宾补",
-        "weak_point_tags": [
-          "reading_slow",
-          "grammar_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": [
-            "foundation"
-          ]
-        },
-        "card_prototype": "solving_action",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy content_pool passage with unverified provenance; candidate repair only.",
-          "audio_generation_method": "none"
-        },
-        "exam_value": "训练用户区分描述宾语状态的形容词宾补和说明时间范围的状语。",
-        "box_progression_role": "transfer",
         "review_status": "draft"
       },
       "blocker_scan": {
@@ -293,16 +241,15 @@
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "This is a targeted residual blocker closure for existing 0124 cards, not a new three-card sample or box progression claim.",
+    "box_progression": "This is a targeted residual blocker closure for existing 0503 cards, not a new three-card sample or box progression claim.",
     "repetition_or_gap_risks": [
-      "Only the four audited hard-blocker cards were changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
+      "Only the audited hard-blocker cards were changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
       "Source provenance remains unverified/synthetic-risk and visible in scoped audit evidence."
     ],
     "representative_cards": [
-      "012402",
-      "012405",
-      "012406",
-      "012410"
+      "050304",
+      "050310",
+      "050312"
     ],
     "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }

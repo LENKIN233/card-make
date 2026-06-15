@@ -46,7 +46,8 @@
       "0123",
       "0124",
       "0130",
-      "0133"
+      "0133",
+      "0503"
     ],
     "card_ids": [
       "000001",
@@ -169,7 +170,10 @@
       "013005",
       "013006",
       "013010",
-      "013305"
+      "013305",
+      "050304",
+      "050310",
+      "050312"
     ],
     "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
@@ -224,7 +228,9 @@
       "reviews/audit_scopes/20260615-cet4-vocabulary-0500-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --scope-card-ids 050012 --write-scope-report reviews/audit_scopes/20260615-cet4-vocabulary-0500-front-leak-followup-scope-audit.json --max-examples 20",
       "reviews/audit_scopes/20260615-cet4-vocabulary-0502-front-leak-followup-scope-audit.json",
-      "node scripts/audit_card_quality.mjs --scope-card-ids 050210,050212 --write-scope-report reviews/audit_scopes/20260615-cet4-vocabulary-0502-front-leak-followup-scope-audit.json --max-examples 20"
+      "node scripts/audit_card_quality.mjs --scope-card-ids 050210,050212 --write-scope-report reviews/audit_scopes/20260615-cet4-vocabulary-0502-front-leak-followup-scope-audit.json --max-examples 20",
+      "reviews/audit_scopes/20260615-cet4-vocabulary-0503-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --scope-card-ids 050304,050310,050312 --write-scope-report reviews/audit_scopes/20260615-cet4-vocabulary-0503-front-leak-followup-scope-audit.json --max-examples 20"
     ]
   },
   "specs_read": [
@@ -249,7 +255,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "cc84f533d56cfe82d55adcb3723135b1f86a1acfccaf463b20944b0b8cd7b7ac",
+    "corpus_fingerprint": "6f941969f61e0a0477805b2e43e8ac8a9c28e2db8827414c18d10977b8250dc6",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -366,6 +372,9 @@
         "050112",
         "050210",
         "050212",
+        "050304",
+        "050310",
+        "050312",
         "061004",
         "061102",
         "061104",
@@ -375,13 +384,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 121,
-      "issue_count": 241,
+      "card_count": 124,
+      "issue_count": 247,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 241
+        "source_risk": 247
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -394,9 +403,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 121,
+        "synthetic_source": 124,
         "template_analysis_pattern": 0,
-        "unverified_source": 120
+        "unverified_source": 123
       }
     }
   },
@@ -6666,6 +6675,168 @@
         "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
       ],
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "050304",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别延迟触发关系在不同句法外壳中的等值改写",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy vocabulary sentence-substitution card with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在句式替换中先抓时间触发条件和结果事件，避免被倒装或否定外壳带偏。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "050310",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别句式替换中数量关系反转导致的不等值改写",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy vocabulary sentence-substitution discrimination card with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在综合句式替换题中优先检查数量方向，避免把结构相似但语义反转的表达误判为同义。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "050312",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "3",
+        "box_name": "句式替换",
+        "box_prefix": "0503"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 not until 倒装句与 only in 常规语序之间的等值改写",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy vocabulary sentence-substitution card with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户把 not until 倒装还原为时间边界判断，再核对结果动作和对象是否保持等值。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     }
   ],
   "batch_review": {
@@ -6688,7 +6859,10 @@
       "020010",
       "020207",
       "020210",
-      "120009"
+      "120009",
+      "050304",
+      "050310",
+      "050312"
     ],
     "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
