@@ -53,7 +53,8 @@
       "0510",
       "0511",
       "0512",
-      "0513"
+      "0513",
+      "0514"
     ],
     "card_ids": [
       "000001",
@@ -187,7 +188,8 @@
       "051110",
       "051202",
       "051203",
-      "051310"
+      "051310",
+      "051410"
     ],
     "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
@@ -256,7 +258,9 @@
       "reviews/audit_scopes/20260616-cet4-vocabulary-0512-front-leak-followup-scope-audit.json",
       "node scripts/audit_card_quality.mjs --scope-card-ids 051202,051203 --write-scope-report reviews/audit_scopes/20260616-cet4-vocabulary-0512-front-leak-followup-scope-audit.json --max-examples 20",
       "reviews/audit_scopes/20260616-cet4-vocabulary-0513-front-leak-followup-scope-audit.json",
-      "node scripts/audit_card_quality.mjs --scope-card-ids 051310 --write-scope-report reviews/audit_scopes/20260616-cet4-vocabulary-0513-front-leak-followup-scope-audit.json --max-examples 20"
+      "node scripts/audit_card_quality.mjs --scope-card-ids 051310 --write-scope-report reviews/audit_scopes/20260616-cet4-vocabulary-0513-front-leak-followup-scope-audit.json --max-examples 20",
+      "reviews/audit_scopes/20260616-cet4-vocabulary-0514-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --scope-card-ids 051410 --write-scope-report reviews/audit_scopes/20260616-cet4-vocabulary-0514-front-leak-followup-scope-audit.json --max-examples 20"
     ]
   },
   "specs_read": [
@@ -281,7 +285,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "aee087c5905a1261f4152c3b220804bdda6cfb8ec22ef96123799aec6ba80df8",
+    "corpus_fingerprint": "77bb68a5ea662add8ecfd80d8aff4491f8069133a3971c3ad7b9ba4ad25b94af",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -409,6 +413,7 @@
         "051202",
         "051203",
         "051310",
+        "051410",
         "061004",
         "061102",
         "061104",
@@ -418,13 +423,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 132,
-      "issue_count": 263,
+      "card_count": 133,
+      "issue_count": 265,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 263
+        "source_risk": 265
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -437,9 +442,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 132,
+        "synthetic_source": 133,
         "template_analysis_pattern": 0,
-        "unverified_source": 131
+        "unverified_source": 132
       }
     }
   },
@@ -7303,6 +7308,60 @@
         "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
       ],
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "051410",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "1",
+        "group_name": "中国特色词汇",
+        "box_id": "4",
+        "box_name": "生态",
+        "box_prefix": "0514"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别中国特色生态词汇中直译拼接导致的不规范表达",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "translation_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy Chinese-characteristic vocabulary discrimination card with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户区分规范生态治理术语和中文修辞硬译，避免在翻译或写作中使用不自然的直译短句。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     }
   ],
   "batch_review": {
@@ -7315,7 +7374,8 @@
       "The 0510 follow-up closes only the audited politics-term direct-translation blocker and is not a full box review.",
       "The 0511 follow-up closes only the audited economy-term direct-translation blocker and is not a full box review.",
       "The 0512 follow-up closes only the audited culture-term front-leak blockers and is not a full box review.",
-      "The 0513 follow-up closes only the audited social-term direct-translation blocker and is not a full box review."
+      "The 0513 follow-up closes only the audited social-term direct-translation blocker and is not a full box review.",
+      "The 0514 follow-up closes only the audited ecology-term direct-translation blocker and is not a full box review."
     ],
     "representative_cards": [
       "010102",
@@ -7340,7 +7400,8 @@
       "051110",
       "051202",
       "051203",
-      "051310"
+      "051310",
+      "051410"
     ],
     "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
