@@ -51,7 +51,8 @@
       "0504",
       "0505",
       "0510",
-      "0511"
+      "0511",
+      "0512"
     ],
     "card_ids": [
       "000001",
@@ -182,7 +183,9 @@
       "050510",
       "050512",
       "051010",
-      "051110"
+      "051110",
+      "051202",
+      "051203"
     ],
     "closure_reason": "Post-#64 residual front-answer-leak blocker closure for the full PR #50 candidate queue scope. The queue remains candidate-only evidence, not sample approval.",
     "source_issue_refs": [
@@ -247,7 +250,9 @@
       "node scripts/audit_card_quality.mjs --scope-card-ids 050510,050512 --write-scope-report reviews/audit_scopes/20260615-cet4-vocabulary-0505-front-leak-followup-scope-audit.json --max-examples 20",
       "reviews/audit_scopes/20260615-cet4-vocabulary-0510-front-leak-followup-scope-audit.json",
       "reviews/audit_scopes/20260616-cet4-vocabulary-0511-front-leak-followup-scope-audit.json",
-      "node scripts/audit_card_quality.mjs --scope-card-ids 051110 --write-scope-report reviews/audit_scopes/20260616-cet4-vocabulary-0511-front-leak-followup-scope-audit.json --max-examples 20"
+      "node scripts/audit_card_quality.mjs --scope-card-ids 051110 --write-scope-report reviews/audit_scopes/20260616-cet4-vocabulary-0511-front-leak-followup-scope-audit.json --max-examples 20",
+      "reviews/audit_scopes/20260616-cet4-vocabulary-0512-front-leak-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --scope-card-ids 051202,051203 --write-scope-report reviews/audit_scopes/20260616-cet4-vocabulary-0512-front-leak-followup-scope-audit.json --max-examples 20"
     ]
   },
   "specs_read": [
@@ -272,7 +277,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260524-front-leak-queue-residual-scope-audit.json",
-    "corpus_fingerprint": "38981550d5d3aa6cef13b247e8c3ec1834fdae75eef9baa960d25d0056715ddd",
+    "corpus_fingerprint": "102fa4dfa774d4e755e187fd344a493ef1862beecdc52dec5bab47bbd690e05b",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -397,6 +402,8 @@
         "050512",
         "051010",
         "051110",
+        "051202",
+        "051203",
         "061004",
         "061102",
         "061104",
@@ -406,13 +413,13 @@
         "150112",
         "161603"
       ],
-      "card_count": 129,
-      "issue_count": 257,
+      "card_count": 131,
+      "issue_count": 261,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 257
+        "source_risk": 261
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -425,9 +432,9 @@
         "missing_quality_metadata": 0,
         "multiple_choice_answer_not_in_options": 0,
         "multiple_choice_no_options": 0,
-        "synthetic_source": 129,
+        "synthetic_source": 131,
         "template_analysis_pattern": 0,
-        "unverified_source": 128
+        "unverified_source": 130
       }
     }
   },
@@ -7129,6 +7136,114 @@
         "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
       ],
       "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "051202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "1",
+        "group_name": "中国特色词汇",
+        "box_id": "2",
+        "box_name": "文化",
+        "box_prefix": "0512"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别中国特色文化词汇中固定文化术语的规范英文表达",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "translation_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy Chinese-characteristic vocabulary discrimination card with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户识别文化政策术语的固定译法，避免把完整文化概念拆成近义散词。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+    },
+    {
+      "card_id": "051203",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "1",
+        "group_name": "中国特色词汇",
+        "box_id": "2",
+        "box_name": "文化",
+        "box_prefix": "0512"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别中国特色文化词汇中政策语域固定表达与近似误译的差异",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "translation_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy Chinese-characteristic vocabulary discrimination card with unverified provenance; candidate repair only.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户区分政策语域固定译法和情绪化近似表达，减少翻译题中的不规范替换。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
+        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+      ],
+      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
     }
   ],
   "batch_review": {
@@ -7139,7 +7254,8 @@
       "The scope remains residual closure evidence only; it is not a user-confirmed sample and not formal content approval.",
       "The detailed cards array remains representative evidence from the original residual closure; the quality_audit scope summary is the authoritative full queue evidence.",
       "The 0510 follow-up closes only the audited politics-term direct-translation blocker and is not a full box review.",
-      "The 0511 follow-up closes only the audited economy-term direct-translation blocker and is not a full box review."
+      "The 0511 follow-up closes only the audited economy-term direct-translation blocker and is not a full box review.",
+      "The 0512 follow-up closes only the audited culture-term front-leak blockers and is not a full box review."
     ],
     "representative_cards": [
       "010102",
@@ -7161,7 +7277,9 @@
       "050510",
       "050512",
       "051010",
-      "051110"
+      "051110",
+      "051202",
+      "051203"
     ],
     "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
   }
