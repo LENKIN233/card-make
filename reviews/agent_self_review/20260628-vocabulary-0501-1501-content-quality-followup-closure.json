@@ -1,23 +1,25 @@
 {
-  "review_id": "20260615-cet4-vocabulary-0505-front-leak-followup-closure",
-  "created_at": "2026-06-15T22:31:34+08:00",
+  "review_id": "20260628-vocabulary-0501-1501-content-quality-followup-closure",
+  "created_at": "2026-06-28T23:37:54+08:00",
   "agent": "codex",
   "scope": {
     "library": "词汇",
     "group": "同义词替换",
-    "box": "解释性替换",
+    "box": "词性转换",
     "box_prefixes": [
-      "0505"
+      "0501",
+      "1501"
     ],
     "card_ids": [
-      "050510",
-      "050512"
+      "050112",
+      "150112"
     ],
-    "closure_reason": "Current audit_card_quality hard-blocker report identified two 0505 front-side answer-path leaks on PR #50. This record documents candidate-only residual closure, not sample approval.",
+    "closure_reason": "User requested continuing the card-content quality improvement after review identified weak CET4/CET6 differentiation and generic explanation in the paired word-form transformation cards. This record documents candidate-only content-quality residual closure, not sample approval.",
     "source_issue_refs": [
       "PR #50: https://github.com/LENKIN233/card-make/pull/50",
-      "node scripts/audit_card_quality.mjs --write-report in the current worktree",
-      "reviews/audit_scopes/20260615-cet4-vocabulary-0505-front-leak-followup-scope-audit.json"
+      "User request on 2026-06-28: 按你说的继续",
+      "reviews/audit_scopes/20260628-vocabulary-0501-1501-content-quality-followup-scope-audit.json",
+      "node scripts/audit_card_quality.mjs --scope-card-ids 050112,150112 --write-scope-report reviews/audit_scopes/20260628-vocabulary-0501-1501-content-quality-followup-scope-audit.json --max-examples 20"
     ]
   },
   "specs_read": [
@@ -29,8 +31,7 @@
     "spec/review-workflow.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
-    "../softbook_cet/spec/box-catalog.json",
-    "spec/card-quality-audit.json"
+    "../softbook_cet/spec/box-catalog.json"
   ],
   "sample_policy": {
     "review_scope_type": "residual_blocker_closure",
@@ -40,21 +41,21 @@
     "batch_generation_requires_user_confirmation": true
   },
   "quality_audit": {
-    "report": "reviews/audit_scopes/20260615-cet4-vocabulary-0505-front-leak-followup-scope-audit.json",
+    "report": "reviews/audit_scopes/20260628-vocabulary-0501-1501-content-quality-followup-scope-audit.json",
     "corpus_fingerprint": "0cd2479028fda9640d016761f6699f32042c70776e467283c35c7930d243ce26",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
-        "050510",
-        "050512"
+        "050112",
+        "150112"
       ],
       "card_count": 2,
-      "issue_count": 4,
+      "issue_count": 3,
       "by_severity": {
         "hard_blocker": 0,
         "content_risk": 0,
         "review_gap": 0,
-        "source_risk": 4
+        "source_risk": 3
       },
       "by_rule": {
         "analysis_missing_or_too_short": 0,
@@ -69,101 +70,45 @@
         "multiple_choice_no_options": 0,
         "synthetic_source": 2,
         "template_analysis_pattern": 0,
-        "unverified_source": 2
+        "unverified_source": 1
       }
     }
   },
   "cards": [
     {
-      "card_id": "050510",
+      "card_id": "050112",
       "interaction_id": "multiple_choice",
       "knowledge_ref": {
         "track": "cet4",
         "library_id": "5",
         "library_name": "词汇",
         "group_id": "0",
-        "group_name": "同义词替换",
-        "box_id": "5",
-        "box_name": "解释性替换",
-        "box_prefix": "0505"
+        "group_name": "同义替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "0501"
       },
       "status": "pass",
       "quality_metadata": {
-        "main_training_goal": "识别解释性替换中术语机制被反向解释的失效情况",
+        "main_training_goal": "判断名词短语到 that 从句的保义词性转换",
         "weak_point_tags": [
           "vocabulary_weak",
-          "reading_slow",
+          "grammar_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
-          "secondary": [
-            "foundation"
-          ]
-        },
-        "card_prototype": "error_correction",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Legacy vocabulary explanatory-substitution discrimination card with unverified provenance; candidate repair only.",
-          "audio_generation_method": "none"
-        },
-        "exam_value": "训练用户在术语解释题中检查定义是否保留核心机制，避免把机制反转的解释误判为同义扩写。",
-        "box_progression_role": "application",
-        "review_status": "draft"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "major_issues": [],
-      "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
-        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
-      ],
-      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
-    },
-    {
-      "card_id": "050512",
-      "interaction_id": "multiple_choice",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "5",
-        "library_name": "词汇",
-        "group_id": "0",
-        "group_name": "同义词替换",
-        "box_id": "5",
-        "box_name": "解释性替换",
-        "box_prefix": "0505"
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "识别 inclusive growth 的解释性改写是否同时保留增长和覆盖面两个要素",
-        "weak_point_tags": [
-          "vocabulary_weak",
-          "reading_slow",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": [
-            "foundation"
-          ]
+          "secondary": []
         },
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy vocabulary explanatory-substitution card with unverified provenance; candidate repair only.",
+          "source_note": "Legacy content_pool sentence with unverified provenance; residual closure evidence only.",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练用户把抽象术语拆成核心名词和限定含义，再判断解释性改写是否完整保义。",
+        "exam_value": "训练用户判断词性变化后主体、评价方向和范围是否保持一致，避免被词面重复或语义反转干扰。",
         "box_progression_role": "application",
-        "review_status": "draft"
+        "review_status": "agent_pass"
       },
       "blocker_scan": {
         "logic_error": false,
@@ -177,23 +122,75 @@
       },
       "major_issues": [],
       "minor_issues": [
-        "Source provenance remains unverified/synthetic-risk and must not be represented as true exam material.",
-        "No audio asset is attached; audio/source authenticity is not claimed by this closure record."
+        "Source provenance remains unverified and must not be represented as true exam material.",
+        "This is a single-card follow-up inside 0501, not proof of complete box progression."
       ],
-      "recommendation": "Document as PR #50 candidate-queue residual closure evidence only; do not treat as sample approval."
+      "recommendation": "Keep as PR #50 candidate content-quality follow-up evidence only; do not treat as formal sample approval."
+    },
+    {
+      "card_id": "150112",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "判断 assumption 抽象名词链改写为从句结构时是否保留质疑立场和因果限定",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Synthetic CET6 vocabulary sentence; residual closure evidence only and not true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用户在六级词汇改写中同时核对抽象名词链、作者立场、限定词和因果强度，避免把被质疑的假设误读为作者结论。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source is synthetic and must stay candidate-only unless explicitly approved.",
+        "This repair differentiates CET6 difficulty from the paired CET4 card, but it is not a full 1501 box review."
+      ],
+      "recommendation": "Keep as PR #50 candidate content-quality follow-up evidence only; do not treat as formal sample approval."
     }
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "This is a targeted residual blocker closure for existing 0505 cards, not a new three-card sample or box progression claim.",
+    "box_progression": "This is a targeted quality refinement for two existing word-form transformation cards across CET4/CET6, not a new three-card sample or complete box progression claim.",
     "repetition_or_gap_risks": [
-      "Only the audited hard-blocker cards were changed; remaining legacy cards in the box still require separate review before any formal-use claim.",
+      "Only the two identified weak differentiation cards were changed; remaining 0501/1501 cards need separate review before any full-box quality claim.",
       "Source provenance remains unverified/synthetic-risk and visible in scoped audit evidence."
     ],
     "representative_cards": [
-      "050510",
-      "050512"
+      "050112",
+      "150112"
     ],
-    "next_step": "Keep PR #50 candidate-only; continue closing audited front-answer-leak residuals under scoped evidence."
+    "next_step": "Keep PR #50 candidate-only; continue content-level refinement on the next weak card pair or strategy-label option cluster."
   }
 }
