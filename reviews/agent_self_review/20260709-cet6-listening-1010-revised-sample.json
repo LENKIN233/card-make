@@ -1,0 +1,248 @@
+{
+  "review_id": "20260709-cet6-listening-1010-revised-sample",
+  "created_at": "2026-07-09T21:11:10+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "语音现象",
+    "box": "连读",
+    "box_prefixes": [
+      "1010"
+    ],
+    "card_ids": [
+      "101001",
+      "101002",
+      "101003"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260709-cet6-listening-1010-scope-audit.json",
+    "corpus_fingerprint": "8aebffce5737d54fb7e1b92fa2dc52324f4252a3eb6275fe9e8e47d5b12588ba",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "101001",
+        "101002",
+        "101003"
+      ],
+      "card_count": 3,
+      "issue_count": 6,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 6
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 3
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "101001",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "0",
+        "box": "连读",
+        "box_prefix": "1010"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 CET6 听力中动词短语内部的辅音-元音连读块",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把 turn it off 这类高频动作串当成听力识别单位，降低被连读吞音干扰的成本。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source remains simulated/unverified legacy content_pool material.",
+        "TTS text is reviewed for sample use, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of this linking-sound recognition direction."
+    },
+    {
+      "card_id": "101002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "0",
+        "box": "连读",
+        "box_prefix": "1010"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选短语识别 CET6 听力中最稳定的连读发生点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户从地点、时间等干扰信息中锁定真正导致听辨困难的连读动作块。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source remains simulated/unverified legacy content_pool material.",
+        "TTS text is reviewed for sample use, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of this linking-sound recognition direction."
+    },
+    {
+      "card_id": "101003",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "0",
+        "box": "连读",
+        "box_prefix": "1010"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "迁移识别 CET6 听力中连续动作安排里的两个连读高发点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户从整句语流中同时抓两个连读语块，把语音现象转化为理解任务安排的线索。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source remains simulated/unverified legacy content_pool material.",
+        "TTS text is reviewed for sample use, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of this linking-sound recognition direction."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The revised sample moves from recognizing common verb-phrase linking, to applying linking-sound judgment among distractor phrases, to transferring the same phrase-level listening method across two action blocks in one longer sentence.",
+    "repetition_or_gap_risks": [
+      "All three cards use multiple_choice because this box needs a checkable phrase-level linking judgment before formal audio review.",
+      "The sample covers recognition, application, and transfer roles without creating a standalone audio interaction family.",
+      "The scoped audit intentionally leaves source_risk visible because the material remains simulated/unverified and TTS audio is not formally reviewed."
+    ],
+    "representative_cards": [
+      "101001",
+      "101002",
+      "101003"
+    ],
+    "next_step": "Show this candidate sample for user confirmation. Do not expand the batch, create approved_batches records, import into softbook_cet, or claim Apple-release readiness until the user explicitly approves the sample direction."
+  }
+}
