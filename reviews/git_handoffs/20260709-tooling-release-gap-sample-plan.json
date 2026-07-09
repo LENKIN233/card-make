@@ -1,0 +1,65 @@
+{
+  "handoff_id": "20260709-tooling-release-gap-sample-plan",
+  "created_at": "2026-07-09T20:30:16+08:00",
+  "agent": "codex",
+  "branch": "tooling/release-gap-sample-plan",
+  "base_branch": "main",
+  "commit_sha": "self_referential_tooling_handoff_commit_after_push",
+  "push_ref": "origin/tooling/release-gap-sample-plan",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/66",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "tooling",
+    "purpose": "Translate softbook_cet release content-gap JSON into card make 3-card candidate sample targets without generating or approving content.",
+    "referenced_specs": [
+      "../softbook_cet/spec/requirement-memory.json",
+      "../softbook_cet/spec/product-core.json",
+      "../softbook_cet/spec/card-system.json",
+      "../softbook_cet/spec/box-catalog.json",
+      "spec/workspace-contract.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json"
+    ],
+    "touched_paths": [
+      "scripts/plan_release_gap_samples.mjs",
+      "spec/doc-manifest.json",
+      "spec/authority-map.json",
+      "reviews/git_handoffs/20260709-tooling-release-gap-sample-plan.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/plan_release_gap_samples.mjs --self-test",
+      "result": "passed; verifies candidate-covered boxes are skipped by default, included with --include-covered, and markdown states reviews/approved_batches boundary"
+    },
+    {
+      "command": "node scripts/plan_release_gap_samples.mjs --content-gap-report /tmp/softbook-content-gap-handoff-20260709-final.json --format markdown --output /tmp/card-make-release-gap-sample-plan-20260709.md",
+      "result": "passed; generated next 12 sample targets from the softbook runtime gap report without modifying repository content"
+    },
+    {
+      "command": "node scripts/plan_release_gap_samples.mjs --content-gap-report /tmp/softbook-content-gap-handoff-20260709-final.json --format json --output /tmp/card-make-release-gap-sample-plan-20260709.json",
+      "result": "passed; plan_summary projected CET4 free-target gap 584 -> 566 after the listed samples and CET6 600 -> 582"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed after final tooling commit; only recorded upstream group-alignment warnings remain"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed after final tooling commit; content_candidate_diff=false"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #66 is open for the tooling-only release gap sample planner and is eligible for standing-delegation auto-merge after final validation and mergeability checks.",
+  "remaining_risks": [
+    "The planner consumes a softbook_cet content-gap JSON report; it does not regenerate that report by itself.",
+    "Candidate projection rows are treated as dry-run planning evidence only and do not make PR #50 formal content.",
+    "The planner does not generate card text, update card_boxes_json, import runtime payloads, or write reviews/approved_batches records.",
+    "Actual sample production still requires a concrete library/group/box target, prototype plan, scoped audit, agent self-review, and user confirmation before batch expansion."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
