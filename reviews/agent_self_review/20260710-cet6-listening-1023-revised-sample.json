@@ -1,0 +1,253 @@
+{
+  "review_id": "20260710-cet6-listening-1023-revised-sample",
+  "created_at": "2026-07-10T02:35:06+08:00",
+  "agent": "codex",
+  "scope": {
+    "track": "cet6",
+    "library": "听力",
+    "group": "逻辑关系",
+    "box": "对比/比较关系",
+    "box_prefixes": [
+      "1023"
+    ],
+    "card_ids": [
+      "102301",
+      "102302",
+      "102303"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "product_truth": {
+    "source": "../softbook_cet/spec/box-catalog.json",
+    "track": "cet6",
+    "library_id": "0",
+    "group_id": "2",
+    "box_id": "3",
+    "resolved_box_prefix": "1023",
+    "formal_use_requires_user_approval_record": true
+  },
+  "implementation_hypothesis": {
+    "sample_shape": "three revised audio-first listening cards covering recognition, application, and transfer for contrast/comparison cues",
+    "legacy_issue_addressed": "The local 1023 candidates were condition-relation content even though box-catalog assigns 1023 to contrast/comparison. This sample revises 102301-102303 only.",
+    "audio_display": "audio-first card surface; no front-side transcript; audio does not autoplay",
+    "candidate_boundary": "no approved_batches record and no formal content approval claimed"
+  },
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260710-cet6-listening-1023-scope-audit.json",
+    "corpus_fingerprint": "609c723562a437291d6678098d38f3c97583daab201146f6020a37b3010bb595",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "102301",
+        "102302",
+        "102303"
+      ],
+      "card_count": 3,
+      "issue_count": 6,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 6
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 3
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "102301",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "2",
+        "group": "逻辑关系",
+        "box_id": "3",
+        "box": "对比/比较关系",
+        "box_prefix": "1023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 CET6 听力中 unlike 标记的双方差异",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated"
+        },
+        "exam_value": "帮助学生在 CET6 听力中听到 unlike 时快速锁定比较双方和差异维度，避免只记住一个地点或方案名。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Text remains simulation / legacy content_pool material rather than verified true-exam source.",
+        "TTS text is reviewed for sample suitability, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Keep as a candidate-only recognition sample and ask the user whether this direction should be expanded for box 1023."
+    },
+    {
+      "card_id": "102302",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "2",
+        "group": "逻辑关系",
+        "box_id": "3",
+        "box": "对比/比较关系",
+        "box_prefix": "1023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 fewer than 与 twice as many 判断双维度对比",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated"
+        },
+        "exam_value": "训练学生在 CET6 听力中处理人数、反馈、成本等多维比较，避免被单一数字或表面优劣带偏。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Text remains simulation / legacy content_pool material rather than verified true-exam source.",
+        "TTS text is reviewed for sample suitability, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Keep as a candidate-only application sample and ask the user whether this direction should be expanded for box 1023."
+    },
+    {
+      "card_id": "102303",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "2",
+        "group": "逻辑关系",
+        "box_id": "3",
+        "box": "对比/比较关系",
+        "box_prefix": "1023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "把 whereas 对比句迁移到两方案侧重点复述",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated"
+        },
+        "exam_value": "帮助学生在 CET6 方案比较类听力中复述双方侧重点差异，而不是只记住修订版新增了什么。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Text remains simulation / legacy content_pool material rather than verified true-exam source.",
+        "TTS text is reviewed for sample suitability, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Keep as a candidate-only transfer sample and ask the user whether this direction should be expanded for box 1023."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "102301 recognition of unlike-marked difference between two branches; 102302 application to a dual-dimension fewer-than / twice-as-many comparison; 102303 transfer to whereas-marked contrast between two proposal priorities.",
+    "repetition_or_gap_risks": [
+      "The three-card sample proves direction only; it does not cover the full 12-card box progression.",
+      "The remaining local cards 102304-102312 still reflect the legacy condition-relation batch and are outside this sample review.",
+      "Formal audio readiness still requires a separate audio QC record before import."
+    ],
+    "representative_cards": [
+      "102301",
+      "102302",
+      "102303"
+    ],
+    "next_step": "Wait for explicit user confirmation before expanding 1023, creating approved_batches records, importing to softbook_cet, or claiming Apple release readiness."
+  }
+}
