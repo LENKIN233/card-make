@@ -16,31 +16,32 @@
       "box": 1,
       "card_no": 1,
       "card_box_code": "1011",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "弱读",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，感受弱读词如何在语流里变轻。",
-        "task_prompt": "任务：先听音频，感受弱读词如何在语流里变轻。",
+        "text": "先看四组选项，播放音频后判断哪一组功能词在语流里最明显变轻。",
+        "task_prompt": "听的时候不要追求逐词重读，重点比较哪些小词承担连接功能、没有落在句子信息重心上。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "弱读",
-          "success_criteria": "准确完成交互操作"
+          "action": "选择最明显的弱读词组合",
+          "focus": "识别非重读位置的功能词弱读",
+          "success_criteria": "能把轻读的小词和前后内容词区分开，而不是把每个词都按词典读音听"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1011/101101.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "结论：句中的 can 和 to 都采用了弱读。",
-        "explanation": "语境揭示：You can leave the files with me, and I'll try to send them to the editor before the evening meeting starts."
+        "text": "答案：A\n\n解析：句中的 can 和 to 最明显采用弱读。",
+        "explanation": "正确答案是 A。You can leave... 里的 can 处在非重读位置，常接近 /kən/；try to send... 和 to the editor 里的 to 也会弱化成轻短的 /tə/。CET6 听力里，弱读词不会消失，但它们不承担主要信息重心。B、C、D 都是内容词或重音更明确的词组，不是本句最适合训练弱读识别的位置。"
       },
       "analysis_content": {
-        "text": "① 识别信号：can、to 在非重读位置自然弱化，是弱读训练的典型入口。② 核心规律：弱读词通常承担语法连接功能而不是信息核心，听的时候要轻捕捉、重理解它们前后的内容词。③ 验证与迁移：如果你总把 can 听成重重的 /kaen/，说明还在按单词表读音处理真实语流。",
+        "text": "正确答案是 A。You can leave... 里的 can 处在非重读位置，常接近 /kən/；try to send... 和 to the editor 里的 to 也会弱化成轻短的 /tə/。CET6 听力里，弱读词不会消失，但它们不承担主要信息重心。B、C、D 都是内容词或重音更明确的词组，不是本句最适合训练弱读识别的位置。",
         "tips": [
-          "can 的弱读常接近 /kən/，to 的弱读常接近 /tə/。",
-          "弱读不等于消失，它只是降低了听觉重量。"
+          "弱读优先看功能词：can、to、of、for、and 这类词最常变轻。",
+          "听弱读时要把注意力放在内容词上，小词只需要轻捕捉。"
         ]
       },
       "source_ref": {
@@ -72,31 +73,53 @@
         "box_name": "弱读",
         "box_prefix": "1011"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，感受弱读词如何在语流里变轻。",
-        "task_prompt": "任务：先听音频，感受弱读词如何在语流里变轻。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看四组选项，播放音频后判断哪一组功能词在语流里最明显变轻。",
+        "task_prompt": "听的时候不要追求逐词重读，重点比较哪些小词承担连接功能、没有落在句子信息重心上。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "弱读",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：can、to 在非重读位置自然弱化，是弱读训练的典型入口。② 核心规律：弱读词通常承担语法连接功能而不是信息核心，听的时候要轻捕捉、重理解它们前后的内容词。③ 验证与迁移：如果你总把 can 听成重重的 /kaen/，说明还在按单词表读音处理真实语流。",
-        "tips": [
-          "can 的弱读常接近 /kən/，to 的弱读常接近 /tə/。",
-          "弱读不等于消失，它只是降低了听觉重量。"
+          "action": "选择最明显的弱读词组合",
+          "focus": "识别非重读位置的功能词弱读",
+          "success_criteria": "能把轻读的小词和前后内容词区分开，而不是把每个词都按词典读音听"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "can / to",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "files / editor",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "evening / meeting",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "leave / starts",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。You can leave... 里的 can 处在非重读位置，常接近 /kən/；try to send... 和 to the editor 里的 to 也会弱化成轻短的 /tə/。CET6 听力里，弱读词不会消失，但它们不承担主要信息重心。B、C、D 都是内容词或重音更明确的词组，不是本句最适合训练弱读识别的位置。",
+        "tips": [
+          "弱读优先看功能词：can、to、of、for、and 这类词最常变轻。",
+          "听弱读时要把注意力放在内容词上，小词只需要轻捕捉。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice because weak-form recognition needs a checkable function-word judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -104,6 +127,55 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "can / to",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "files / editor",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "evening / meeting",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "leave / starts",
+          "is_correct": false
+        }
+      ],
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 CET6 听力中 can 和 to 在非重读位置的弱读形式",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户接受真实语流中功能词变轻，避免因为听不到强读音就误判句子缺词。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -118,27 +190,28 @@
       "card_box_name": "弱读",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再判断哪一个词最可能在语流中弱读。",
-        "task_prompt": "任务：先听音频，再判断哪一个词最可能在语流中弱读。",
+        "text": "先看四个候选词，播放音频后判断哪一个最可能在语流中弱读。",
+        "task_prompt": "听的时候比较内容词和功能词的轻重差异，判断哪个词主要承担连接作用而不是信息重心。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "弱读",
-          "success_criteria": "准确完成交互操作"
+          "action": "选择最明显的弱读词",
+          "focus": "在名词短语内部识别功能词弱读",
+          "success_criteria": "能说明所选词为什么比名词内容词更容易被快速带过"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1011/101102.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "结论：答案是 C，of 在名词短语里通常弱读。",
-        "explanation": "语境揭示：Most of the guests from the afternoon workshop have already left, but a few of the senior managers are still waiting in the lounge upstairs."
+        "text": "答案：C\n\n解析：of 在名词短语里最明显弱读。",
+        "explanation": "正确答案是 C。Most of the guests 和 a few of the senior managers 中，of 只是把数量表达和名词连接起来，语流中会很轻、很快。CET6 弱读识别的关键是区分信息词和功能词：guests、workshop、lounge 都承载具体信息，通常不会像 of 这样被压轻。"
       },
       "analysis_content": {
-        "text": "① 识别信号：of the 在连续名词短语里通常快速带过，弱读最明显。② 核心规律：功能词弱读最常出现在名词短语和介词短语内部，尤其是 of / to / for / and。③ 验证与迁移：如果你把 senior 或 lounge 当成弱读目标，说明没有区分信息词和功能词。",
+        "text": "正确答案是 C。Most of the guests 和 a few of the senior managers 中，of 只是把数量表达和名词连接起来，语流中会很轻、很快。CET6 弱读识别的关键是区分信息词和功能词：guests、workshop、lounge 都承载具体信息，通常不会像 of 这样被压轻。",
         "tips": [
-          "of 在语流里常缩到很轻，甚至更像一个过渡音。",
-          "真正承载信息的是 guests、managers、lounge，功能词只是把它们串起来。"
+          "of the 这类组合常被快速带过，不要期待每个音都像慢速朗读。",
+          "如果一个词主要负责语法连接，它就比名词、动词、形容词更可能弱读。"
         ]
       },
       "source_ref": {
@@ -194,29 +267,51 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断哪一个词最可能在语流中弱读。",
-        "task_prompt": "任务：先听音频，再判断哪一个词最可能在语流中弱读。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看四个候选词，播放音频后判断哪一个最可能在语流中弱读。",
+        "task_prompt": "听的时候比较内容词和功能词的轻重差异，判断哪个词主要承担连接作用而不是信息重心。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "弱读",
-          "success_criteria": "准确完成交互操作"
-        }
+          "action": "选择最明显的弱读词",
+          "focus": "在名词短语内部识别功能词弱读",
+          "success_criteria": "能说明所选词为什么比名词内容词更容易被快速带过"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "guests",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "workshop",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "of",
+            "is_correct": true
+          },
+          {
+            "key": "D",
+            "text": "lounge",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：of the 在连续名词短语里通常快速带过，弱读最明显。② 核心规律：功能词弱读最常出现在名词短语和介词短语内部，尤其是 of / to / for / and。③ 验证与迁移：如果你把 senior 或 lounge 当成弱读目标，说明没有区分信息词和功能词。",
+        "text": "正确答案是 C。Most of the guests 和 a few of the senior managers 中，of 只是把数量表达和名词连接起来，语流中会很轻、很快。CET6 弱读识别的关键是区分信息词和功能词：guests、workshop、lounge 都承载具体信息，通常不会像 of 这样被压轻。",
         "tips": [
-          "of 在语流里常缩到很轻，甚至更像一个过渡音。",
-          "真正承载信息的是 guests、managers、lounge，功能词只是把它们串起来。"
+          "of the 这类组合常被快速带过，不要期待每个音都像慢速朗读。",
+          "如果一个词主要负责语法连接，它就比名词、动词、形容词更可能弱读。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "candidate sample uses multiple_choice because weak-form recognition needs a checkable function-word judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -227,6 +322,30 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据候选词识别 CET6 名词短语中 of 的弱读位置",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户从内容词干扰中识别功能词弱读，减少对真实语流的误听。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -237,31 +356,32 @@
       "box": 1,
       "card_no": 3,
       "card_box_code": "1011",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "弱读",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再在时限内复述两个你听到的弱读词。",
-        "task_prompt": "任务：先听音频，再在时限内复述两个你听到的弱读词。",
+        "text": "先看四组选项，播放音频后判断哪一组最能代表本句的两个弱读点。",
+        "task_prompt": "听的时候优先比较功能词是否被压轻，并观察重音是否落在 supplier、packaging、contract 等内容词上。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "弱读",
-          "success_criteria": "准确完成交互操作"
+          "action": "选择两个最明显的弱读词组合",
+          "focus": "识别介词和不定式标记在快速语流中的弱读",
+          "success_criteria": "能同时抓住两个弱读点，并说明它们为什么不承担句子主重音"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1011/101103.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "结论：可复述的弱读词是 for 和 to。",
-        "explanation": "语境揭示：We're looking for a cheaper supplier to handle the packaging, because the current contract is too expensive for a small seasonal product line."
+        "text": "答案：A\n\n解析：可识别的弱读词是 for 和 to。",
+        "explanation": "正确答案是 A。looking for a cheaper supplier 里的 for 和 supplier to handle... 里的 to 都承担连接功能，语流中会被压轻；真正重的信息落在 cheaper supplier、packaging、current contract、too expensive 等内容词上。CET6 弱读训练不是只列出介词，而是理解节奏逻辑：功能词轻，内容词重。B、C、D 都是信息密度更高的内容词组，不是本句的弱读目标。"
       },
       "analysis_content": {
-        "text": "① 识别信号：for a、supplier to 都把功能词压轻，主重音留给 cheaper supplier 和 packaging。② 核心规律：弱读题复述时，不只是说出词本身，更要说明它在语流里为什么会变轻：因为信息重心不在它身上。③ 验证与迁移：如果你的复述只列出一个介词，没有指出它前后的重音词，说明还没理解弱读的节奏逻辑。",
+        "text": "正确答案是 A。looking for a cheaper supplier 里的 for 和 supplier to handle... 里的 to 都承担连接功能，语流中会被压轻；真正重的信息落在 cheaper supplier、packaging、current contract、too expensive 等内容词上。CET6 弱读训练不是只列出介词，而是理解节奏逻辑：功能词轻，内容词重。B、C、D 都是信息密度更高的内容词组，不是本句的弱读目标。",
         "tips": [
-          "for、to 这类词在快速语流里常被压缩成过渡音。",
-          "听弱读时不要和连读混淆：弱读关注“轻重”，连读关注“黏连”。"
+          "for、to 在快速语流里常变成很轻的过渡音。",
+          "弱读看轻重，连读看黏连；这张卡重点是功能词被压轻。"
         ]
       },
       "source_ref": {
@@ -272,10 +392,6 @@
         "note": "untraced_content_pool_from_legacy_card_make_batch",
         "provenance_status": "unverified"
       },
-      "time_window_ms": [
-        3200,
-        4700
-      ],
       "audio": {
         "url": "ai_tts/cet6/1011/101103.mp3",
         "local_path": "ai_tts/cet6/1011/101103.mp3",
@@ -297,31 +413,53 @@
         "box_name": "弱读",
         "box_prefix": "1011"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再在时限内复述两个你听到的弱读词。",
-        "task_prompt": "任务：先听音频，再在时限内复述两个你听到的弱读词。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看四组选项，播放音频后判断哪一组最能代表本句的两个弱读点。",
+        "task_prompt": "听的时候优先比较功能词是否被压轻，并观察重音是否落在 supplier、packaging、contract 等内容词上。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "弱读",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：for a、supplier to 都把功能词压轻，主重音留给 cheaper supplier 和 packaging。② 核心规律：弱读题复述时，不只是说出词本身，更要说明它在语流里为什么会变轻：因为信息重心不在它身上。③ 验证与迁移：如果你的复述只列出一个介词，没有指出它前后的重音词，说明还没理解弱读的节奏逻辑。",
-        "tips": [
-          "for、to 这类词在快速语流里常被压缩成过渡音。",
-          "听弱读时不要和连读混淆：弱读关注“轻重”，连读关注“黏连”。"
+          "action": "选择两个最明显的弱读词组合",
+          "focus": "识别介词和不定式标记在快速语流中的弱读",
+          "success_criteria": "能同时抓住两个弱读点，并说明它们为什么不承担句子主重音"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "for / to",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "cheaper / supplier",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "current / contract",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "small / seasonal",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。looking for a cheaper supplier 里的 for 和 supplier to handle... 里的 to 都承担连接功能，语流中会被压轻；真正重的信息落在 cheaper supplier、packaging、current contract、too expensive 等内容词上。CET6 弱读训练不是只列出介词，而是理解节奏逻辑：功能词轻，内容词重。B、C、D 都是信息密度更高的内容词组，不是本句的弱读目标。",
+        "tips": [
+          "for、to 在快速语流里常变成很轻的过渡音。",
+          "弱读看轻重，连读看黏连；这张卡重点是功能词被压轻。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice because weak-form recognition needs a checkable function-word judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -329,6 +467,55 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "for / to",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "cheaper / supplier",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "current / contract",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "small / seasonal",
+          "is_correct": false
+        }
+      ],
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "迁移识别 CET6 句子中 for 和 to 两个功能词弱读点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把弱读和句子重音结合起来听，避免把轻读功能词误当成漏听。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
