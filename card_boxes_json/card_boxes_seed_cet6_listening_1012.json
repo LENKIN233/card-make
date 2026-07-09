@@ -16,31 +16,54 @@
       "box": 2,
       "card_no": 1,
       "card_box_code": "1012",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，感受失去爆破让辅音收尾更短。",
-        "task_prompt": "任务：先听音频，感受失去爆破让辅音收尾更短。",
+        "text": "任务：听一句实验报告，选出最该预判“收住不爆”的两个短语。",
+        "task_prompt": "听完这句，选出最该预判“失去爆破”的两个短语。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后选择",
+          "focus": "CET6 失去爆破识别",
+          "success_criteria": "能根据词尾塞音与后续辅音的关系选出失去爆破位置"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1012/101201.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio",
+        "options": [
+          {
+            "key": "A",
+            "text": "next day / big change",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "the lab / reported a",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "battery performance / after the",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "final temperature / was completed",
+            "is_correct": false
+          }
+        ]
       },
       "back_content": {
-        "text": "结论：重点现象出现在 next day 和 big change。",
+        "text": "答案：A。next day 和 big change 都有词尾塞音直接撞上后续辅音。",
         "explanation": "语境揭示：The next day, the lab reported a big change in battery performance after the final temperature test was completed."
       },
       "analysis_content": {
-        "text": "① 识别信号：next day、big change 都包含塞音在下一个辅音前不完全释放的典型结构。② 核心规律：失去爆破不是把音删掉，而是把辅音收住；听的时候要注意收尾被截短的感觉。③ 验证与迁移：如果你总期待 next 的 /t/ 明显爆出来，就会错把自然语流听成吞音或漏词。",
+        "text": "① 识别信号：next day 里 next 的 /t/ 后接 /d/，big change 里 big 的 /g/ 后接 /tʃ/，都是词尾塞音遇到后续辅音的环境。② 核心规律：失去爆破不是把音删掉，而是“成阻但不完整释放”；CET6 听力中要把这类短促收尾当作正常语流。③ 验证与迁移：若你期待 next 或 big 后面一定有清楚爆破声，就容易把自然连贯的短语误听成漏词。",
         "tips": [
-          "词尾 /t/ /d/ /p/ /b/ /k/ /g/ 在下一个辅音前常出现不完全爆破。",
-          "不完全爆破最常见于两个单词衔接处，也常见于词内辅音群。"
+          "先找词尾 /t/ /d/ /p/ /b/ /k/ /g/，再看下一个词是否以辅音开头。",
+          "听到短促停顿不等于没发音，很多时候只是爆破被收住了。"
         ]
       },
       "source_ref": {
@@ -72,31 +95,53 @@
         "box_name": "失去爆破",
         "box_prefix": "1012"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，感受失去爆破让辅音收尾更短。",
-        "task_prompt": "任务：先听音频，感受失去爆破让辅音收尾更短。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "任务：听一句实验报告，选出最该预判“收住不爆”的两个短语。",
+        "task_prompt": "听完这句，选出最该预判“失去爆破”的两个短语。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：next day、big change 都包含塞音在下一个辅音前不完全释放的典型结构。② 核心规律：失去爆破不是把音删掉，而是把辅音收住；听的时候要注意收尾被截短的感觉。③ 验证与迁移：如果你总期待 next 的 /t/ 明显爆出来，就会错把自然语流听成吞音或漏词。",
-        "tips": [
-          "词尾 /t/ /d/ /p/ /b/ /k/ /g/ 在下一个辅音前常出现不完全爆破。",
-          "不完全爆破最常见于两个单词衔接处，也常见于词内辅音群。"
+          "action": "听后选择",
+          "focus": "CET6 失去爆破识别",
+          "success_criteria": "能根据词尾塞音与后续辅音的关系选出失去爆破位置"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "next day / big change",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "the lab / reported a",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "battery performance / after the",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "final temperature / was completed",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "① 识别信号：next day 里 next 的 /t/ 后接 /d/，big change 里 big 的 /g/ 后接 /tʃ/，都是词尾塞音遇到后续辅音的环境。② 核心规律：失去爆破不是把音删掉，而是“成阻但不完整释放”；CET6 听力中要把这类短促收尾当作正常语流。③ 验证与迁移：若你期待 next 或 big 后面一定有清楚爆破声，就容易把自然连贯的短语误听成漏词。",
+        "tips": [
+          "先找词尾 /t/ /d/ /p/ /b/ /k/ /g/，再看下一个词是否以辅音开头。",
+          "听到短促停顿不等于没发音，很多时候只是爆破被收住了。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "sample review normalizes the card to the core multiple_choice interaction for auto-scored lost-plosion recognition"
       },
       "quality_flags": [
         "unverified_source"
@@ -104,6 +149,58 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "next day / big change",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "the lab / reported a",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "battery performance / after the",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "final temperature / was completed",
+          "is_correct": false
+        }
+      ],
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 CET6 语流中词尾塞音在辅音前收住不爆的短语位置",
+        "secondary_training_goals": [
+          "建立 /t/ 或 /g/ 遇后续辅音时不期待完整爆破的听觉预判"
+        ],
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy content_pool material revised as a candidate-only CET6 lost-plosion sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助学生在 CET6 听力里把 next day、big change 这类高频短语听成自然语流，而不是误判为漏词。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
       }
     },
     {
@@ -118,27 +215,50 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再判断哪一组词最可能出现失去爆破。",
-        "task_prompt": "任务：先听音频，再判断哪一组词最可能出现失去爆破。",
+        "text": "任务：听一句办公室指令，判断哪个短语最典型地出现失去爆破。",
+        "task_prompt": "听完办公室指令，选出 /t/ 最可能“收住不爆”的短语。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后选择",
+          "focus": "CET6 失去爆破识别",
+          "success_criteria": "能根据词尾塞音与后续辅音的关系选出失去爆破位置"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1012/101202.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio",
+        "options": [
+          {
+            "key": "A",
+            "text": "fact sheet",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "for the client",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "leave the signed",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "head out",
+            "is_correct": false
+          }
+        ]
       },
       "back_content": {
-        "text": "结论：答案是 A，fact sheet 最典型。",
+        "text": "答案：A。fact sheet 中 fact 的词尾 /t/ 后接 /ʃ/，是本句最清晰的失去爆破点。",
         "explanation": "语境揭示：Please print the fact sheet for the client and leave the signed draft contract on the front desk before you head out."
       },
       "analysis_content": {
-        "text": "① 识别信号：fact sheet 中 /t/ 后接 /ʃ/，draft contract 中 /t/ 后接 /k/，都容易出现失去爆破；其中 fact sheet 最集中最稳定。② 核心规律：判断失去爆破时，优先找词尾塞音后面马上跟另一个辅音的组合。③ 验证与迁移：如果你只看拼写长短，不看辅音碰撞关系，就很难稳定识别失去爆破位置。",
+        "text": "① 识别信号：fact sheet 的 /t/ + /ʃ/ 构成清楚的塞音加辅音环境，/t/ 往往只保留短促成阻感。② 核心规律：判断失去爆破时，不是看哪个短语更重要，而是看“词尾塞音 + 后续辅音”是否紧挨出现。③ 验证与迁移：B、C、D 更像语义连接或元音衔接，不能稳定训练这张卡的语音目标；考试里先锁定这类声学触发点，再回到句义。",
         "tips": [
-          "fact sheet 常听成 fact-shee，/t/ 被收住但仍保留停顿感。",
-          "front desk 也可能有弱爆破，但这句里 fact sheet 更明显。"
+          "fact sheet 常听起来像 fact-shee，中间不是漏了 /t/，而是 /t/ 没有完全爆开。",
+          "先判断语音环境，再判断句义位置，能减少听力里反复回听。"
         ]
       },
       "source_ref": {
@@ -157,12 +277,12 @@
         },
         {
           "key": "B",
-          "text": "for the",
+          "text": "for the client",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "leave the",
+          "text": "leave the signed",
           "is_correct": false
         },
         {
@@ -194,29 +314,51 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断哪一组词最可能出现失去爆破。",
-        "task_prompt": "任务：先听音频，再判断哪一组词最可能出现失去爆破。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "任务：听一句办公室指令，判断哪个短语最典型地出现失去爆破。",
+        "task_prompt": "听完办公室指令，选出 /t/ 最可能“收住不爆”的短语。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+          "action": "听后选择",
+          "focus": "CET6 失去爆破识别",
+          "success_criteria": "能根据词尾塞音与后续辅音的关系选出失去爆破位置"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "fact sheet",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "for the client",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "leave the signed",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "head out",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：fact sheet 中 /t/ 后接 /ʃ/，draft contract 中 /t/ 后接 /k/，都容易出现失去爆破；其中 fact sheet 最集中最稳定。② 核心规律：判断失去爆破时，优先找词尾塞音后面马上跟另一个辅音的组合。③ 验证与迁移：如果你只看拼写长短，不看辅音碰撞关系，就很难稳定识别失去爆破位置。",
+        "text": "① 识别信号：fact sheet 的 /t/ + /ʃ/ 构成清楚的塞音加辅音环境，/t/ 往往只保留短促成阻感。② 核心规律：判断失去爆破时，不是看哪个短语更重要，而是看“词尾塞音 + 后续辅音”是否紧挨出现。③ 验证与迁移：B、C、D 更像语义连接或元音衔接，不能稳定训练这张卡的语音目标；考试里先锁定这类声学触发点，再回到句义。",
         "tips": [
-          "fact sheet 常听成 fact-shee，/t/ 被收住但仍保留停顿感。",
-          "front desk 也可能有弱爆破，但这句里 fact sheet 更明显。"
+          "fact sheet 常听起来像 fact-shee，中间不是漏了 /t/，而是 /t/ 没有完全爆开。",
+          "先判断语音环境，再判断句义位置，能减少听力里反复回听。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "sample review normalizes the card to the core multiple_choice interaction for auto-scored lost-plosion recognition"
       },
       "quality_flags": [
         "unverified_source"
@@ -227,6 +369,31 @@
       },
       "answer_key": {
         "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "在较长 CET6 指令句中定位最稳定的失去爆破触发短语",
+        "secondary_training_goals": [
+          "区分功能词连接和词尾塞音加辅音的语音触发关系"
+        ],
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy content_pool material revised as a candidate-only CET6 lost-plosion sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练学生在办公场景指令中快速抓住 fact sheet 这类被弱化的关键信息块，减少因听不到 /t/ 爆破而回听的冲动。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
       }
     },
     {
@@ -237,31 +404,54 @@
       "box": 2,
       "card_no": 3,
       "card_box_code": "1012",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再在时限内复述哪两个位置最可能发生失去爆破。",
-        "task_prompt": "任务：先听音频，再在时限内复述哪两个位置最可能发生失去爆破。",
+        "text": "任务：听一句产品延期原因，选出最能代表失去爆破迁移识别的短语。",
+        "task_prompt": "听完产品延期句，选出含有 word-final /t/ + consonant 的位置。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后选择",
+          "focus": "CET6 失去爆破识别",
+          "success_criteria": "能根据词尾塞音与后续辅音的关系选出失去爆破位置"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1012/101203.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio",
+        "options": [
+          {
+            "key": "A",
+            "text": "product launch",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "was delayed",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "marketing team",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "stress checks",
+            "is_correct": false
+          }
+        ]
       },
       "back_content": {
-        "text": "结论：明显位置是 product launch 和 last quarter。",
+        "text": "答案：A。product launch 中 product 的词尾 /t/ 后接 launch 的 /l/，应预判 /t/ 收住不爆。",
         "explanation": "语境揭示：The product launch was delayed because the marketing team discovered last quarter's packaging test had failed the stress checks."
       },
       "analysis_content": {
-        "text": "① 识别信号：product launch、last quarter、packaging test 都有词尾塞音撞上后续辅音的环境。② 核心规律：复述时优先说最稳定、最好辨认的两个位置，不必把所有潜在爆破点全部罗列出来。③ 验证与迁移：如果你说不出具体词组，只说“有点含糊”，说明还没把语音现象和词语位置绑定起来。",
+        "text": "① 识别信号：product launch 的 product 以 /t/ 收尾，launch 以 /l/ 开头，正好形成词尾塞音加辅音的失去爆破环境。② 核心规律：CET6 长句里不要只靠语义猜重点；先抓可听见的语音触发点，再把它绑定到信息块。③ 验证与迁移：B、C、D 可能有重音或语义作用，但不如 product launch 稳定呈现 word-final /t/ + consonant；这就是从规则识别迁移到长句定位。",
         "tips": [
-          "失去爆破训练要把“现象”落到具体词组，不要停留在抽象定义。",
-          "quarter's packaging 也有辅音堆积，但初学时先抓 product launch / last quarter 更稳。"
+          "product launch 可以先在心里标成 product | launch，竖线处预判 /t/ 收住。",
+          "高分层训练重点不是多背规则，而是在信息密集句里快速把规则落到词组位置。"
         ]
       },
       "source_ref": {
@@ -272,10 +462,6 @@
         "note": "untraced_content_pool_from_legacy_card_make_batch",
         "provenance_status": "unverified"
       },
-      "time_window_ms": [
-        3300,
-        4800
-      ],
       "audio": {
         "url": "ai_tts/cet6/1012/101203.mp3",
         "local_path": "ai_tts/cet6/1012/101203.mp3",
@@ -297,31 +483,53 @@
         "box_name": "失去爆破",
         "box_prefix": "1012"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再在时限内复述哪两个位置最可能发生失去爆破。",
-        "task_prompt": "任务：先听音频，再在时限内复述哪两个位置最可能发生失去爆破。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "任务：听一句产品延期原因，选出最能代表失去爆破迁移识别的短语。",
+        "task_prompt": "听完产品延期句，选出含有 word-final /t/ + consonant 的位置。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：product launch、last quarter、packaging test 都有词尾塞音撞上后续辅音的环境。② 核心规律：复述时优先说最稳定、最好辨认的两个位置，不必把所有潜在爆破点全部罗列出来。③ 验证与迁移：如果你说不出具体词组，只说“有点含糊”，说明还没把语音现象和词语位置绑定起来。",
-        "tips": [
-          "失去爆破训练要把“现象”落到具体词组，不要停留在抽象定义。",
-          "quarter's packaging 也有辅音堆积，但初学时先抓 product launch / last quarter 更稳。"
+          "action": "听后选择",
+          "focus": "CET6 失去爆破识别",
+          "success_criteria": "能根据词尾塞音与后续辅音的关系选出失去爆破位置"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "product launch",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "was delayed",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "marketing team",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "stress checks",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "① 识别信号：product launch 的 product 以 /t/ 收尾，launch 以 /l/ 开头，正好形成词尾塞音加辅音的失去爆破环境。② 核心规律：CET6 长句里不要只靠语义猜重点；先抓可听见的语音触发点，再把它绑定到信息块。③ 验证与迁移：B、C、D 可能有重音或语义作用，但不如 product launch 稳定呈现 word-final /t/ + consonant；这就是从规则识别迁移到长句定位。",
+        "tips": [
+          "product launch 可以先在心里标成 product | launch，竖线处预判 /t/ 收住。",
+          "高分层训练重点不是多背规则，而是在信息密集句里快速把规则落到词组位置。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "sample review normalizes the card to the core multiple_choice interaction for auto-scored lost-plosion recognition"
       },
       "quality_flags": [
         "unverified_source"
@@ -329,6 +537,56 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "product launch",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "was delayed",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "marketing team",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "stress checks",
+          "is_correct": false
+        }
+      ],
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "把失去爆破识别迁移到信息密度更高的 CET6 因果句中",
+        "secondary_training_goals": [
+          "在产品延期类句子中从多个候选短语里选择最可解释的 /t/ 加辅音位置"
+        ],
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy content_pool material revised as a candidate-only CET6 lost-plosion sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助学生在 CET6 较长因果句中不被语义负荷拖慢，能用语音触发点定位 product launch 这类关键信息块。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
       }
     },
     {

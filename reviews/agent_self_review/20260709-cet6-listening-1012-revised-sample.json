@@ -1,0 +1,269 @@
+{
+  "review_id": "20260709-cet6-listening-1012-revised-sample",
+  "created_at": "2026-07-09T21:34:46+08:00",
+  "agent": "codex",
+  "scope": {
+    "track": "cet6",
+    "library": "听力",
+    "group": "语音现象",
+    "box": "失去爆破",
+    "box_prefixes": [
+      "1012"
+    ],
+    "card_ids": [
+      "101201",
+      "101202",
+      "101203"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "product_truth": {
+    "source": "../softbook_cet/spec/box-catalog.json",
+    "track": "cet6",
+    "library_id": "0",
+    "group_id": "1",
+    "box_id": "2",
+    "resolved_box_prefix": "1012",
+    "formal_use_requires_user_approval_record": true
+  },
+  "implementation_hypothesis": {
+    "sample_shape": "three auto-scored multiple_choice listening cards using existing TTS assets for candidate review only",
+    "audio_display": "options_then_audio; no front-side transcript; audio does not autoplay",
+    "candidate_boundary": "no approved_batches record and no formal content approval claimed"
+  },
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260709-cet6-listening-1012-scope-audit.json",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "101201",
+        "101202",
+        "101203"
+      ],
+      "card_count": 3,
+      "issue_count": 6,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 6
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 3
+      }
+    },
+    "corpus_fingerprint": "31fbb167b3fd204111f6b892d3ff7320dc10a62f6c9fae7a1b43141cb31e366e"
+  },
+  "cards": [
+    {
+      "card_id": "101201",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "1012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 CET6 语流中词尾塞音在辅音前收住不爆的短语位置",
+        "secondary_training_goals": [
+          "建立 /t/ 或 /g/ 遇后续辅音时不期待完整爆破的听觉预判"
+        ],
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy content_pool material revised as a candidate-only CET6 lost-plosion sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助学生在 CET6 听力里把 next day、big change 这类高频短语听成自然语流，而不是误判为漏词。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Text remains simulation / legacy content_pool material rather than verified true-exam source.",
+        "TTS text is reviewed for sample suitability, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Keep as a candidate-only three-card sample and ask the user whether this direction should be expanded for box 1012."
+    },
+    {
+      "card_id": "101202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "1012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在较长 CET6 指令句中定位最稳定的失去爆破触发短语",
+        "secondary_training_goals": [
+          "区分功能词连接和词尾塞音加辅音的语音触发关系"
+        ],
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy content_pool material revised as a candidate-only CET6 lost-plosion sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练学生在办公场景指令中快速抓住 fact sheet 这类被弱化的关键信息块，减少因听不到 /t/ 爆破而回听的冲动。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Text remains simulation / legacy content_pool material rather than verified true-exam source.",
+        "TTS text is reviewed for sample suitability, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Keep as a candidate-only three-card sample and ask the user whether this direction should be expanded for box 1012."
+    },
+    {
+      "card_id": "101203",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "2",
+        "box": "失去爆破",
+        "box_prefix": "1012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "把失去爆破识别迁移到信息密度更高的 CET6 因果句中",
+        "secondary_training_goals": [
+          "在产品延期类句子中从多个候选短语里选择最可解释的 /t/ 加辅音位置"
+        ],
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy content_pool material revised as a candidate-only CET6 lost-plosion sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助学生在 CET6 较长因果句中不被语义负荷拖慢，能用语音触发点定位 product launch 这类关键信息块。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Text remains simulation / legacy content_pool material rather than verified true-exam source.",
+        "TTS text is reviewed for sample suitability, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Keep as a candidate-only three-card sample and ask the user whether this direction should be expanded for box 1012."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "101201 recognition of unreleased stops in short phrase pairs; 101202 application in a longer office-instruction sentence; 101203 transfer to a denser CET6 cause/effect sentence.",
+    "repetition_or_gap_risks": [
+      "The three-card sample intentionally proves direction only; it does not cover the full 12-card box progression.",
+      "Formal audio readiness still requires a separate audio QC record before import."
+    ],
+    "representative_cards": [
+      "101201",
+      "101202",
+      "101203"
+    ],
+    "next_step": "Wait for explicit user confirmation before expanding 1012, creating approved_batches records, importing to softbook_cet, or claiming Apple release readiness."
+  }
+}
