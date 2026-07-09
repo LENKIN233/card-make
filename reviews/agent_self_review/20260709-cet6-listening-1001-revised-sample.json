@@ -1,0 +1,248 @@
+{
+  "review_id": "20260709-cet6-listening-1001-revised-sample",
+  "created_at": "2026-07-09T20:53:34+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测考点",
+    "box_prefixes": [
+      "1001"
+    ],
+    "card_ids": [
+      "100101",
+      "100102",
+      "100103"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260709-cet6-listening-1001-scope-audit.json",
+    "corpus_fingerprint": "8574dc7c04df73f7102851f4dd0eecd510e61421a6b17b2a4ac2a9346f473c6d",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "100101",
+        "100102",
+        "100103"
+      ],
+      "card_count": 3,
+      "issue_count": 6,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 6
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 3
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "100101",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项先预测 CET6 听力可能追问的决策依据类考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在方案比较型听力中先识别考点类型，避免被房间、时间、客户等表层词分散。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source remains simulated/unverified legacy content_pool material.",
+        "TTS text is reviewed for sample use, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of this exam-focus prediction direction."
+    },
+    {
+      "card_id": "100102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项预测 CET6 听力改期场景最可能追问的原因类考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户从时间变动、地点补充和原因链中判断题目最可能问 why，而不是平均记所有细节。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source remains simulated/unverified legacy content_pool material.",
+        "TTS text is reviewed for sample use, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of this exam-focus prediction direction."
+    },
+    {
+      "card_id": "100103",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "1",
+        "box": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项预测 CET6 观点-质疑结构最可能追问的结论可靠性考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在观点与反驳并存的高密度听力中，先预测题目会问质疑依据和结论边界。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source remains simulated/unverified legacy content_pool material.",
+        "TTS text is reviewed for sample use, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Candidate sample can be shown for user confirmation of this exam-focus prediction direction."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The revised sample moves from recognizing decision-basis question focus, to applying reason-vs-location-vs-number discrimination in a rescheduling context, to transferring the same option-first prediction method to an opinion-review structure where the likely test point is conclusion reliability.",
+    "repetition_or_gap_risks": [
+      "All three cards use multiple_choice because this box needs a checkable option-first judgment before audio validation.",
+      "The sample covers recognition, application, and transfer roles, but formal approval still requires explicit user confirmation.",
+      "The scoped audit intentionally leaves source_risk visible because the material remains simulated/unverified and TTS audio is not formally reviewed."
+    ],
+    "representative_cards": [
+      "100101",
+      "100102",
+      "100103"
+    ],
+    "next_step": "Show this candidate sample for user confirmation. Do not expand the batch, create approved_batches records, import into softbook_cet, or claim Apple-release readiness until the user explicitly approves the sample direction."
+  }
+}

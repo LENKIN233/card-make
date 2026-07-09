@@ -16,31 +16,32 @@
       "box": 1,
       "card_no": 1,
       "card_box_code": "1001",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "根据选项预测考点",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，判断这道题最可能追问哪类信息。",
-        "task_prompt": "任务：先听音频，判断这道题最可能追问哪类信息。",
+        "text": "先看选项，预测这段 CET6 听力最可能追问哪类决策信息。",
+        "task_prompt": "先从选项中区分“原因、地点、人数、主题”四类考点，再播放音频验证说话者真正收束到哪一类信息。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测考点",
-          "success_criteria": "准确完成交互操作"
+          "action": "选择最可能被追问的考点类型",
+          "focus": "用选项先建立考点假设，再听比较/转折后的收束条件",
+          "success_criteria": "能说明题目更可能问最终选择依据，而不是房间位置或人数细节"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1001/100101.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "结论：最可能考“最终决定的依据”。",
-        "explanation": "语境揭示：We could book the larger conference room, but it would exceed the budget. The smaller room is available all afternoon, and the client mainly cares that the presentation starts on time."
+        "text": "答案：A\n\n解析：最可能考最终选择会议室时真正看重的依据。",
+        "explanation": "正确答案是 A。音频先比较 larger conference room 和 smaller room，再用 but / available / mainly cares 收束到决策条件：预算不能超、时间必须保证。CET6 这类听前预测题不是记所有房间细节，而是先判断题目可能追问“为什么这样决定”。B、C、D 都是可能出现的表层信息类型，但音频没有展开位置、人数或展示主题。"
       },
       "analysis_content": {
-        "text": "① 识别信号：larger room、budget、available all afternoon、starts on time 说明说话者在权衡选项并收束到决策依据。② 核心规律：预测考点时，看说话者是在描述背景、表达态度，还是在比较多个方案后落到决定条件；后者通常考“为什么这么决定”。③ 验证与迁移：如果你只记住两个房间的差异，却没抓到 client mainly cares 这一收束句，就容易错过真正考点。",
+        "text": "正确答案是 A。音频先比较 larger conference room 和 smaller room，再用 but / available / mainly cares 收束到决策条件：预算不能超、时间必须保证。CET6 这类听前预测题不是记所有房间细节，而是先判断题目可能追问“为什么这样决定”。B、C、D 都是可能出现的表层信息类型，但音频没有展开位置、人数或展示主题。",
         "tips": [
-          "mainly cares that... 这类句子常直接暴露题目要问的决定性条件。",
-          "当音频出现方案比较时，最常考的是最终选择依据，而不是所有细节都考。"
+          "听到 could...but... 这类方案比较，要优先预测“最终选择依据”。",
+          "mainly cares that... 往往把题目从背景细节推向决定性条件。"
         ]
       },
       "source_ref": {
@@ -72,31 +73,53 @@
         "box_name": "根据选项预测考点",
         "box_prefix": "1001"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，判断这道题最可能追问哪类信息。",
-        "task_prompt": "任务：先听音频，判断这道题最可能追问哪类信息。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看选项，预测这段 CET6 听力最可能追问哪类决策信息。",
+        "task_prompt": "先从选项中区分“原因、地点、人数、主题”四类考点，再播放音频验证说话者真正收束到哪一类信息。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测考点",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：larger room、budget、available all afternoon、starts on time 说明说话者在权衡选项并收束到决策依据。② 核心规律：预测考点时，看说话者是在描述背景、表达态度，还是在比较多个方案后落到决定条件；后者通常考“为什么这么决定”。③ 验证与迁移：如果你只记住两个房间的差异，却没抓到 client mainly cares 这一收束句，就容易错过真正考点。",
-        "tips": [
-          "mainly cares that... 这类句子常直接暴露题目要问的决定性条件。",
-          "当音频出现方案比较时，最常考的是最终选择依据，而不是所有细节都考。"
+          "action": "选择最可能被追问的考点类型",
+          "focus": "用选项先建立考点假设，再听比较/转折后的收束条件",
+          "success_criteria": "能说明题目更可能问最终选择依据，而不是房间位置或人数细节"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "最终选择会议室时真正看重的依据",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "两个会议室分别位于校园的什么位置",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "客户代表团一共有多少人参加展示",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "演示内容本身属于哪一个商业主题",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。音频先比较 larger conference room 和 smaller room，再用 but / available / mainly cares 收束到决策条件：预算不能超、时间必须保证。CET6 这类听前预测题不是记所有房间细节，而是先判断题目可能追问“为什么这样决定”。B、C、D 都是可能出现的表层信息类型，但音频没有展开位置、人数或展示主题。",
+        "tips": [
+          "听到 could...but... 这类方案比较，要优先预测“最终选择依据”。",
+          "mainly cares that... 往往把题目从背景细节推向决定性条件。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice because exam-focus prediction needs a checkable option judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -104,6 +127,55 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "最终选择会议室时真正看重的依据",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "两个会议室分别位于校园的什么位置",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "客户代表团一共有多少人参加展示",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "演示内容本身属于哪一个商业主题",
+          "is_correct": false
+        }
+      ],
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据选项先预测 CET6 听力可能追问的决策依据类考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在方案比较型听力中先识别考点类型，避免被房间、时间、客户等表层词分散。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -118,27 +190,28 @@
       "card_box_name": "根据选项预测考点",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，再判断题目最可能追问哪类信息。",
-        "task_prompt": "任务：先听音频，再判断题目最可能追问哪类信息。",
+        "text": "先看选项，预测这段 CET6 听力最可能追问哪类变动信息。",
+        "task_prompt": "先判断四个选项分别对应原因、人数、地点、后续安排，再播放音频验证哪类信息被明确展开。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测考点",
-          "success_criteria": "准确完成交互操作"
+          "action": "选择最可能被追问的考点类型",
+          "focus": "用选项区分时间变动后的原因、地点和数量干扰项",
+          "success_criteria": "能抓住因果链是题目最可能追问的核心，而不是只记时间变化"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1001/100102.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "结论：答案是 A，最可能考研讨会改期的原因。",
-        "explanation": "语境揭示：The seminar was moved from Thursday morning to Friday evening because the guest speaker's flight was canceled in the storm, even though the lecture hall itself remained available."
+        "text": "答案：A\n\n解析：最可能考研讨会为什么必须改期。",
+        "explanation": "正确答案是 A。音频用 moved from Thursday morning to Friday evening 给出变动，再用 because the guest speaker's flight was canceled in the storm 解释原因。CET6 听前预测时，如果选项同时给出原因、人数、地点、后续主题，要看音频最充分展开哪一类信息；这里原因链最完整。B、C、D 都没有得到展开，lecture hall remained available 还反向排除了地点原因。"
       },
       "analysis_content": {
-        "text": "① 识别信号：moved from Thursday to Friday because... 直接给出变动事实和原因。② 核心规律：当信息结构是“结果 + because 原因”时，最常考的是 why 而不是 where 或 how many。③ 验证与迁移：如果选项里同时有时间、地点、原因，优先看句子真正展开的是哪一类；这里展开最充分的是原因链。",
+        "text": "正确答案是 A。音频用 moved from Thursday morning to Friday evening 给出变动，再用 because the guest speaker's flight was canceled in the storm 解释原因。CET6 听前预测时，如果选项同时给出原因、人数、地点、后续主题，要看音频最充分展开哪一类信息；这里原因链最完整。B、C、D 都没有得到展开，lecture hall remained available 还反向排除了地点原因。",
         "tips": [
-          "because the guest speaker's flight was canceled 是完整因果链，明显强于 lecture hall remained available 这种补充信息。",
-          "改期题里，storm、flight canceled 这类事件词通常就是题目要追问的原因。"
+          "结果 + because 原因 是典型 why-question 触发结构。",
+          "even though 后面的可用信息常是排除干扰，不一定是题目核心。"
         ]
       },
       "source_ref": {
@@ -152,22 +225,22 @@
       "options": [
         {
           "key": "A",
-          "text": "Why the seminar had to be rescheduled.",
+          "text": "研讨会为什么必须改期",
           "is_correct": true
         },
         {
           "key": "B",
-          "text": "How many people will attend the seminar.",
+          "text": "研讨会预计会有多少人参加",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "Where the lecture hall is located.",
+          "text": "演讲厅位于校园哪个位置",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "What the speaker plans to teach next month.",
+          "text": "演讲者下个月计划讲什么主题",
           "is_correct": false
         }
       ],
@@ -194,29 +267,51 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断题目最可能追问哪类信息。",
-        "task_prompt": "任务：先听音频，再判断题目最可能追问哪类信息。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看选项，预测这段 CET6 听力最可能追问哪类变动信息。",
+        "task_prompt": "先判断四个选项分别对应原因、人数、地点、后续安排，再播放音频验证哪类信息被明确展开。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测考点",
-          "success_criteria": "准确完成交互操作"
-        }
+          "action": "选择最可能被追问的考点类型",
+          "focus": "用选项区分时间变动后的原因、地点和数量干扰项",
+          "success_criteria": "能抓住因果链是题目最可能追问的核心，而不是只记时间变化"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "研讨会为什么必须改期",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "研讨会预计会有多少人参加",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "演讲厅位于校园哪个位置",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "演讲者下个月计划讲什么主题",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：moved from Thursday to Friday because... 直接给出变动事实和原因。② 核心规律：当信息结构是“结果 + because 原因”时，最常考的是 why 而不是 where 或 how many。③ 验证与迁移：如果选项里同时有时间、地点、原因，优先看句子真正展开的是哪一类；这里展开最充分的是原因链。",
+        "text": "正确答案是 A。音频用 moved from Thursday morning to Friday evening 给出变动，再用 because the guest speaker's flight was canceled in the storm 解释原因。CET6 听前预测时，如果选项同时给出原因、人数、地点、后续主题，要看音频最充分展开哪一类信息；这里原因链最完整。B、C、D 都没有得到展开，lecture hall remained available 还反向排除了地点原因。",
         "tips": [
-          "because the guest speaker's flight was canceled 是完整因果链，明显强于 lecture hall remained available 这种补充信息。",
-          "改期题里，storm、flight canceled 这类事件词通常就是题目要追问的原因。"
+          "结果 + because 原因 是典型 why-question 触发结构。",
+          "even though 后面的可用信息常是排除干扰，不一定是题目核心。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "candidate sample uses multiple_choice because exam-focus prediction needs a checkable option judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -227,6 +322,30 @@
       },
       "answer_key": {
         "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据选项预测 CET6 听力改期场景最可能追问的原因类考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户从时间变动、地点补充和原因链中判断题目最可能问 why，而不是平均记所有细节。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -237,31 +356,32 @@
       "box": 1,
       "card_no": 3,
       "card_box_code": "1001",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "根据选项预测考点",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，再在时限内复述：这道题最可能考什么，以及你依据的线索。",
-        "task_prompt": "任务：先听音频，再在时限内复述：这道题最可能考什么，以及你依据的线索。",
+        "text": "先看选项，预测这段 CET6 听力最可能考哪类结论判断。",
+        "task_prompt": "先区分选项中的原观点、质疑依据、公司政策和数量细节，再播放音频验证 reviewer 真正指出的问题。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测考点",
-          "success_criteria": "准确完成交互操作"
+          "action": "选择最可能被追问的考点类型",
+          "focus": "用选项预测观点-质疑结构里会考原结论还是质疑依据",
+          "success_criteria": "能判断题目更可能追问结论可靠性，而不是复述原始观点"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1001/100103.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "结论：最可能考研究结论是否可靠，线索是 sample size 太小。",
-        "explanation": "语境揭示：The report claims that remote work always boosts productivity, but the lead reviewer points out that only eighteen employees were surveyed, so the conclusion may not apply to the whole company."
+        "text": "答案：A\n\n解析：最可能考研究结论是否可靠，以及 reviewer 的质疑依据。",
+        "explanation": "正确答案是 A。音频先给 report claims，再用 but the lead reviewer points out... 转到质疑依据：only eighteen employees were surveyed。CET6 预测考点时，观点后的 reviewer / but 往往把题目焦点转向“结论站不站得住”。B 只复述原观点，C 换成政策决定，D 把样本量细节孤立化，都没有抓住“样本太小导致结论不一定适用”的考点类型。"
       },
       "analysis_content": {
-        "text": "① 识别信号：claims that... but... only eighteen employees were surveyed 把考点拉向“结论可靠性”。② 核心规律：当音频先给观点、后给质疑依据时，题目常考 reviewer 的核心质疑点，而不是原始观点内容。③ 验证与迁移：复述时要说出“样本量太小”，否则只是重复表面观点，没有抓到真正考点。",
+        "text": "正确答案是 A。音频先给 report claims，再用 but the lead reviewer points out... 转到质疑依据：only eighteen employees were surveyed。CET6 预测考点时，观点后的 reviewer / but 往往把题目焦点转向“结论站不站得住”。B 只复述原观点，C 换成政策决定，D 把样本量细节孤立化，都没有抓住“样本太小导致结论不一定适用”的考点类型。",
         "tips": [
-          "only eighteen employees 是典型的考点触发器，数字小往往对应样本代表性问题。",
-          "always 这种绝对化表达经常配合 reviewer 的质疑，提示题目会考 conclusion 是否站得住。"
+          "claims that... but reviewer points out... 通常考质疑点，而不是原观点。",
+          "only + 小样本数字 常提示 sample size / representativeness 问题。"
         ]
       },
       "source_ref": {
@@ -272,10 +392,6 @@
         "note": "untraced_content_pool_from_legacy_card_make_batch",
         "provenance_status": "unverified"
       },
-      "time_window_ms": [
-        3600,
-        5200
-      ],
       "audio": {
         "url": "ai_tts/cet6/1001/100103.mp3",
         "local_path": "ai_tts/cet6/1001/100103.mp3",
@@ -297,31 +413,53 @@
         "box_name": "根据选项预测考点",
         "box_prefix": "1001"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再在时限内复述：这道题最可能考什么，以及你依据的线索。",
-        "task_prompt": "任务：先听音频，再在时限内复述：这道题最可能考什么，以及你依据的线索。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看选项，预测这段 CET6 听力最可能考哪类结论判断。",
+        "task_prompt": "先区分选项中的原观点、质疑依据、公司政策和数量细节，再播放音频验证 reviewer 真正指出的问题。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测考点",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：claims that... but... only eighteen employees were surveyed 把考点拉向“结论可靠性”。② 核心规律：当音频先给观点、后给质疑依据时，题目常考 reviewer 的核心质疑点，而不是原始观点内容。③ 验证与迁移：复述时要说出“样本量太小”，否则只是重复表面观点，没有抓到真正考点。",
-        "tips": [
-          "only eighteen employees 是典型的考点触发器，数字小往往对应样本代表性问题。",
-          "always 这种绝对化表达经常配合 reviewer 的质疑，提示题目会考 conclusion 是否站得住。"
+          "action": "选择最可能被追问的考点类型",
+          "focus": "用选项预测观点-质疑结构里会考原结论还是质疑依据",
+          "success_criteria": "能判断题目更可能追问结论可靠性，而不是复述原始观点"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "研究结论是否可靠以及质疑依据是什么",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "远程办公是否一定会提高所有员工效率",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "公司是否已经正式调整远程办公政策",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "公司目前总共有多少名员工接受调查",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。音频先给 report claims，再用 but the lead reviewer points out... 转到质疑依据：only eighteen employees were surveyed。CET6 预测考点时，观点后的 reviewer / but 往往把题目焦点转向“结论站不站得住”。B 只复述原观点，C 换成政策决定，D 把样本量细节孤立化，都没有抓住“样本太小导致结论不一定适用”的考点类型。",
+        "tips": [
+          "claims that... but reviewer points out... 通常考质疑点，而不是原观点。",
+          "only + 小样本数字 常提示 sample size / representativeness 问题。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice because exam-focus prediction needs a checkable option judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -329,6 +467,55 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "研究结论是否可靠以及质疑依据是什么",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "远程办公是否一定会提高所有员工效率",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "公司是否已经正式调整远程办公政策",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "公司目前总共有多少名员工接受调查",
+          "is_correct": false
+        }
+      ],
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据选项预测 CET6 观点-质疑结构最可能追问的结论可靠性考点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在观点与反驳并存的高密度听力中，先预测题目会问质疑依据和结论边界。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
