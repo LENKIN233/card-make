@@ -1,0 +1,256 @@
+{
+  "review_id": "20260710-cet6-listening-1030-revised-sample",
+  "created_at": "2026-07-10T06:38:34+08:00",
+  "agent": "codex",
+  "scope": {
+    "track": "cet6",
+    "library": "听力",
+    "group": "细节捕捉",
+    "box": "人物类",
+    "box_prefixes": [
+      "1030"
+    ],
+    "card_ids": [
+      "103001",
+      "103002",
+      "103003"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "product_truth": {
+    "source": "../softbook_cet/spec/box-catalog.json",
+    "track": "cet6",
+    "library_id": "0",
+    "library": "听力",
+    "group_id": "3",
+    "group": "细节捕捉",
+    "box_id": "0",
+    "box": "人物类",
+    "resolved_box_prefix": "1030",
+    "formal_use_requires_user_approval_record": true
+  },
+  "implementation_hypothesis": {
+    "sample_shape": "three revised audio-first listening cards covering recognition, application, and transfer for person-detail capture",
+    "legacy_issue_addressed": "The local 1030 candidates were synonym-replacement / deep-understanding content even though box-catalog assigns 1030 to person-detail capture. This sample revises 103001-103003 only.",
+    "audio_display": "audio-first card surface; no front-side transcript; audio does not autoplay",
+    "candidate_boundary": "no approved_batches record and no formal content approval claimed"
+  },
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260710-cet6-listening-1030-scope-audit.json",
+    "corpus_fingerprint": "de3a5a205a8100ca77321c47c5b1cc1a595ce07321993ac7f7f75c7203ca5e85",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "103001",
+        "103002",
+        "103003"
+      ],
+      "card_count": 3,
+      "issue_count": 6,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 6
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 3
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "103001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "0",
+        "box": "人物类",
+        "box_prefix": "1030"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 CET6 听力人物细节中的姓名、身份和观点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated"
+        },
+        "exam_value": "帮助学生在 CET6 听力中听到人物专名后继续捕捉身份和观点，避免只记住人名却漏掉可作答信息。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Text remains simulation / legacy content_pool material rather than verified true-exam source.",
+        "TTS text is reviewed for sample suitability, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Keep as a candidate-only recognition sample and ask the user whether this direction should be expanded for box 1030."
+    },
+    {
+      "card_id": "103002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "0",
+        "box": "人物类",
+        "box_prefix": "1030"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用动作动词锁定人物和职责的对应关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated"
+        },
+        "exam_value": "训练学生在 CET6 人物细节题中根据 appointed / oversee 等动作关系判断人物，而不是被原因或机构信息带偏。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Text remains simulation / legacy content_pool material rather than verified true-exam source.",
+        "TTS text is reviewed for sample suitability, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Keep as a candidate-only application sample and ask the user whether this direction should be expanded for box 1030."
+    },
+    {
+      "card_id": "103003",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "0",
+        "box": "人物类",
+        "box_prefix": "1030"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在复杂句中复述人物动作链",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated"
+        },
+        "exam_value": "帮助学生在 CET6 听力中处理带干扰背景的人物题，按人物关系链复述而不是抓到任意出现的人物就作答。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Text remains simulation / legacy content_pool material rather than verified true-exam source.",
+        "TTS text is reviewed for sample suitability, but TTS audio is not formally reviewed."
+      ],
+      "recommendation": "Keep as a candidate-only transfer sample and ask the user whether this direction should be expanded for box 1030."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "103001 recognition of named person, identity, and opinion; 103002 application to appointed-person and responsibility matching; 103003 transfer to a person-action-chain restatement with background distractors.",
+    "repetition_or_gap_risks": [
+      "The three-card sample proves direction only; it does not cover the full 12-card box progression.",
+      "The remaining local cards 103004-103012 still reflect the legacy synonym-replacement batch and are outside this sample review.",
+      "Formal audio readiness still requires a separate audio QC record before import."
+    ],
+    "representative_cards": [
+      "103001",
+      "103002",
+      "103003"
+    ],
+    "next_step": "Wait for explicit user confirmation before expanding 1030, creating approved_batches records, importing to softbook_cet, or claiming Apple release readiness."
+  }
+}
