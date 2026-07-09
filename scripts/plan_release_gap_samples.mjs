@@ -25,8 +25,10 @@ function parseArgs(argv) {
     contentGapReport: '',
     format: 'markdown',
     hideLocalSampleReady: false,
+    hideOpenPrCovered: false,
     includeCovered: false,
     limit: DEFAULT_LIMIT,
+    openPrReport: '',
     output: '',
     sampleSize: DEFAULT_SAMPLE_SIZE,
     selfTest: false,
@@ -51,11 +53,18 @@ function parseArgs(argv) {
       case '--hide-local-sample-ready':
         options.hideLocalSampleReady = true;
         break;
+      case '--hide-open-pr-covered':
+        options.hideOpenPrCovered = true;
+        break;
       case '--include-covered':
         options.includeCovered = true;
         break;
       case '--limit':
         options.limit = parsePositiveInteger(requireNextValue(argv, index, arg), arg);
+        index += 1;
+        break;
+      case '--open-pr-report':
+        options.openPrReport = requireNextValue(argv, index, arg);
         index += 1;
         break;
       case '--output':
@@ -120,8 +129,10 @@ Options:
   --format markdown|json   Output format. Defaults to markdown.
   --hide-local-sample-ready
                            Hide rows that already have a local 3-card self-review.
+  --hide-open-pr-covered   Hide rows that already have an open candidate PR.
   --include-covered        Include boxes already covered by candidate projection.
   --limit <n>              Maximum target rows. Defaults to ${DEFAULT_LIMIT}.
+  --open-pr-report <json>  Optional JSON output from gh pr list for open candidate PR coverage.
   --output <path>          Write output to a file instead of stdout.
   --sample-size <n>        Candidate sample size per target box. Defaults to ${DEFAULT_SAMPLE_SIZE}.
   --track cet4|cet6|both   Track filter. Defaults to both.
@@ -207,6 +218,68 @@ function loadLocalCoverage(root) {
   return {byKey};
 }
 
+function loadOpenPrCoverage(path) {
+  const rows = normalizeOpenPrRows(readJson(path));
+  const byKey = new Map();
+  let mappedCount = 0;
+
+  for (const pr of rows) {
+    const target = inferOpenPrTarget(pr);
+    if (!target) continue;
+
+    const key = `${target.track}:${target.prefix}`;
+    if (!byKey.has(key)) {
+      byKey.set(key, []);
+    }
+    byKey.get(key).push({
+      number: pr.number ?? null,
+      title: pr.title || '',
+      head_ref: pr.headRefName || pr.head_ref || pr.branch || '',
+      url: pr.url || '',
+      is_draft: Boolean(pr.isDraft ?? pr.draft ?? false),
+      merge_state_status: pr.mergeStateStatus || pr.merge_state_status || '',
+    });
+    mappedCount += 1;
+  }
+
+  return {
+    byKey,
+    source_report: resolve(path),
+    total_open_prs: rows.length,
+    mapped_open_candidate_prs: mappedCount,
+  };
+}
+
+function normalizeOpenPrRows(payload) {
+  if (Array.isArray(payload)) return payload;
+  for (const key of ['pull_requests', 'pullRequests', 'prs', 'rows']) {
+    if (Array.isArray(payload?.[key])) return payload[key];
+  }
+  throw new Error('Open PR report must be a JSON array or include pull_requests/pullRequests/prs/rows.');
+}
+
+function inferOpenPrTarget(pr) {
+  const text = [pr.headRefName, pr.head_ref, pr.branch, pr.title]
+    .filter(Boolean)
+    .join(' ');
+  const prefix = inferBoxPrefix(text);
+  if (!prefix) return null;
+  return {
+    prefix,
+    track: inferTrackFromPrefix(prefix),
+  };
+}
+
+function inferBoxPrefix(text) {
+  const candidates = [...String(text).matchAll(/(?:^|[^\d])(\d{4})(?=$|[^\d])/g)]
+    .map(match => match[1]);
+  return candidates.find(candidate => /^[01]\d{3}$/.test(candidate)) || null;
+}
+
+function inferTrackFromPrefix(prefix) {
+  return String(prefix).startsWith('1') ? 'cet6' : 'cet4';
+}
+
 function ensureLocalRecord(byKey, track, prefix) {
   const key = `${track}:${prefix}`;
   if (!byKey.has(key)) {
@@ -236,6 +309,7 @@ function planTargets(report, options) {
 
   const candidateProjection = buildCandidateProjectionMap(report);
   const localCoverage = options.localCoverage || loadLocalCoverage(options.cardMakeRoot);
+  const openPrCoverage = options.openPrCoverage || {byKey: new Map()};
   const targets = [];
   const selectedTracks = trackList(options.track);
 
@@ -258,10 +332,16 @@ function planTargets(report, options) {
       const planningGap = projectedGap;
       const local = localCoverage.byKey.get(`${track}:${prefix}`) || emptyLocalRecord();
       const localStatus = localCandidateStatus(local, options.sampleSize);
+      const openCandidatePrs = openPrCoverage.byKey.get(`${track}:${prefix}`) || [];
+      const candidateReviewState = candidateReviewStateFor(localStatus.status, openCandidatePrs);
+      const sampleSize = openCandidatePrs.length > 0
+        ? 0
+        : Math.min(options.sampleSize, Math.max(1, planningGap || currentGap));
 
       if (planningGap <= 0 && !options.includeCovered) continue;
       if (currentGap <= 0 && !options.includeCovered) continue;
       if (options.hideLocalSampleReady && local.local_three_card_self_reviews.length > 0) continue;
+      if (options.hideOpenPrCovered && openCandidatePrs.length > 0) continue;
 
       targets.push({
         track,
@@ -279,18 +359,46 @@ function planTargets(report, options) {
         local_three_card_self_reviews: local.local_three_card_self_reviews,
         local_approved_batch_records: local.local_approved_batch_records,
         local_candidate_status: localStatus.status,
+        open_candidate_prs: openCandidatePrs,
+        open_candidate_pr_count: openCandidatePrs.length,
+        candidate_review_state: candidateReviewState.status,
         projected_current_cards: projectedCurrent,
         projected_gap: projectedGap,
         planning_gap: planningGap,
-        sample_size: Math.min(options.sampleSize, Math.max(1, planningGap || currentGap)),
+        sample_size: sampleSize,
         priority_reason: priorityReason(current, candidateNew, projectedGap),
-        review_workflow: localStatus.next_step,
+        review_workflow: candidateReviewState.next_step || localStatus.next_step,
         boundary: 'candidate planning only; no reviews/approved_batches record and no formal content approval',
       });
     }
   }
 
   return targets.slice(0, options.limit);
+}
+
+function candidateReviewStateFor(localStatus, openCandidatePrs) {
+  if (localStatus === 'user_approved_batch_recorded') {
+    return {
+      status: localStatus,
+      next_step: '',
+    };
+  }
+  if (localStatus === 'local_three_card_sample_reviewed_waiting_user_confirmation') {
+    return {
+      status: localStatus,
+      next_step: '',
+    };
+  }
+  if (openCandidatePrs.length > 0) {
+    return {
+      status: 'open_candidate_pr_pending_user_confirmation',
+      next_step: 'review the open candidate PR sample and wait for explicit user confirmation; do not generate a duplicate sample',
+    };
+  }
+  return {
+    status: localStatus,
+    next_step: '',
+  };
 }
 
 function emptyLocalRecord() {
@@ -356,16 +464,20 @@ function summarizePlan(report, targets) {
     const plannedSampleCards = trackTargets.reduce((sum, target) => sum + target.sample_size, 0);
     const startingFreeGap = candidateSummary.projected_free_target_gap ?? sourceSummary.free_target_gap ?? null;
     const localStatusCounts = countBy(trackTargets, target => target.local_candidate_status);
+    const candidateReviewStateCounts = countBy(trackTargets, target => target.candidate_review_state);
+    const openCandidatePrCovered = trackTargets.filter(target => target.open_candidate_pr_count > 0).length;
 
     byTrack[track] = {
       target_boxes: trackTargets.length,
       planned_sample_cards: plannedSampleCards,
+      open_candidate_pr_covered: openCandidatePrCovered,
       current_free_target_gap: sourceSummary.free_target_gap ?? null,
       candidate_projected_free_target_gap: candidateSummary.projected_free_target_gap ?? null,
       projected_free_target_gap_after_samples: startingFreeGap === null
         ? null
         : Math.max(0, startingFreeGap - plannedSampleCards),
       local_status_counts: localStatusCounts,
+      candidate_review_state_counts: candidateReviewStateCounts,
     };
   }
   return byTrack;
@@ -394,6 +506,14 @@ function buildPlan(report, options, sourcePath = '') {
       approval_records_written: false,
       formal_content_claimed: false,
     },
+    open_pr_coverage: options.openPrCoverage
+      ? {
+        source_report: options.openPrCoverage.source_report,
+        total_open_prs: options.openPrCoverage.total_open_prs,
+        mapped_open_candidate_prs: options.openPrCoverage.mapped_open_candidate_prs,
+        hide_open_pr_covered: options.hideOpenPrCovered,
+      }
+      : null,
     plan_summary: summarizePlan(report, targets),
     targets,
   };
@@ -419,21 +539,28 @@ function renderMarkdown(plan) {
   lines.push('');
   lines.push('## Track Summary');
   lines.push('');
-  lines.push('| Track | Target boxes | Planned sample cards | Current free-target gap | Candidate-projected free-target gap | Projected gap after these samples | Local reviewed samples | Local candidates needing review | No local candidates |');
-  lines.push('| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |');
+  lines.push('| Track | Target boxes | Planned sample cards | Open PR covered | Current free-target gap | Candidate-projected free-target gap | Projected gap after these samples | Local reviewed samples | Open PR pending confirmation | Local candidates needing review | No local candidates |');
+  lines.push('| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |');
   for (const track of TRACKS) {
     const row = plan.plan_summary[track];
-    lines.push(`| ${track.toUpperCase()} | ${row.target_boxes} | ${row.planned_sample_cards} | ${nullable(row.current_free_target_gap)} | ${nullable(row.candidate_projected_free_target_gap)} | ${nullable(row.projected_free_target_gap_after_samples)} | ${row.local_status_counts.local_three_card_sample_reviewed_waiting_user_confirmation || 0} | ${row.local_status_counts.local_candidates_need_agent_self_review || 0} | ${row.local_status_counts.no_local_candidates || 0} |`);
+    lines.push(`| ${track.toUpperCase()} | ${row.target_boxes} | ${row.planned_sample_cards} | ${row.open_candidate_pr_covered} | ${nullable(row.current_free_target_gap)} | ${nullable(row.candidate_projected_free_target_gap)} | ${nullable(row.projected_free_target_gap_after_samples)} | ${row.local_status_counts.local_three_card_sample_reviewed_waiting_user_confirmation || 0} | ${row.candidate_review_state_counts.open_candidate_pr_pending_user_confirmation || 0} | ${row.local_status_counts.local_candidates_need_agent_self_review || 0} | ${row.local_status_counts.no_local_candidates || 0} |`);
   }
   lines.push('');
   lines.push('## Next Sample Targets');
   lines.push('');
-  lines.push('| # | Track | Prefix | Library | Group | Box | Runtime current | Local candidates | Local status | Candidate new | Planning gap | Sample size | Next step |');
-  lines.push('| ---: | --- | --- | --- | --- | --- | ---: | ---: | --- | ---: | ---: | ---: | --- |');
+  lines.push('| # | Track | Prefix | Library | Group | Box | Runtime current | Local candidates | Open PRs | Candidate state | Candidate new | Planning gap | Sample size | Next step |');
+  lines.push('| ---: | --- | --- | --- | --- | --- | ---: | ---: | --- | --- | ---: | ---: | ---: | --- |');
   plan.targets.forEach((target, index) => {
-    lines.push(`| ${index + 1} | ${target.track.toUpperCase()} | ${target.prefix} | ${target.library} | ${target.group} | ${target.box} | ${target.current_runtime_cards} | ${target.local_candidate_cards} | ${target.local_candidate_status} | ${target.candidate_new_cards} | ${target.planning_gap} | ${target.sample_size} | ${target.review_workflow} |`);
+    lines.push(`| ${index + 1} | ${target.track.toUpperCase()} | ${target.prefix} | ${target.library} | ${target.group} | ${target.box} | ${target.current_runtime_cards} | ${target.local_candidate_cards} | ${formatOpenPrRefs(target.open_candidate_prs)} | ${target.candidate_review_state} | ${target.candidate_new_cards} | ${target.planning_gap} | ${target.sample_size} | ${target.review_workflow} |`);
   });
   return `${lines.join('\n')}\n`;
+}
+
+function formatOpenPrRefs(openCandidatePrs) {
+  if (!openCandidatePrs.length) return '-';
+  return openCandidatePrs
+    .map(pr => pr.number ? `#${pr.number}` : pr.head_ref || 'open PR')
+    .join(', ');
 }
 
 function nullable(value) {
@@ -553,6 +680,48 @@ function runSelfTest() {
     track: 'cet4',
   }, 'fixture.json');
   assert.equal(hiddenLocalPlan.targets.length, 0);
+
+  const openPrCoverage = {
+    source_report: 'open-prs.json',
+    total_open_prs: 1,
+    mapped_open_candidate_prs: 1,
+    byKey: new Map([
+      ['cet6:1000', [{
+        number: 36,
+        title: 'content: revise cet6 listening 1000 sample',
+        head_ref: 'content/cet6-listening-1000-sample',
+        url: 'https://example.invalid/pull/36',
+        is_draft: true,
+        merge_state_status: 'CLEAN',
+      }]],
+    ]),
+  };
+  const openPrPlan = buildPlan(report, {
+    format: 'json',
+    includeCovered: false,
+    localCoverage: {byKey: new Map()},
+    openPrCoverage,
+    limit: 10,
+    sampleSize: 3,
+    track: 'both',
+  }, 'fixture.json');
+  const openPrTarget = openPrPlan.targets.find(target => target.prefix === '1000');
+  assert.equal(openPrTarget.open_candidate_pr_count, 1);
+  assert.equal(openPrTarget.candidate_review_state, 'open_candidate_pr_pending_user_confirmation');
+  assert.equal(openPrTarget.sample_size, 0);
+  assert.equal(openPrPlan.plan_summary.cet6.open_candidate_pr_covered, 1);
+
+  const hiddenOpenPrPlan = buildPlan(report, {
+    format: 'json',
+    hideOpenPrCovered: true,
+    includeCovered: false,
+    localCoverage: {byKey: new Map()},
+    openPrCoverage,
+    limit: 10,
+    sampleSize: 3,
+    track: 'both',
+  }, 'fixture.json');
+  assert.equal(hiddenOpenPrPlan.targets.some(target => target.prefix === '1000'), false);
   console.log('[ok] plan_release_gap_samples self-test passed');
 }
 
@@ -565,7 +734,13 @@ function main() {
 
   const resolvedReportPath = resolve(options.contentGapReport);
   const report = readJson(resolvedReportPath);
-  const plan = buildPlan(report, options, resolvedReportPath);
+  const planOptions = {
+    ...options,
+    openPrCoverage: options.openPrReport
+      ? loadOpenPrCoverage(resolve(options.openPrReport))
+      : undefined,
+  };
+  const plan = buildPlan(report, planOptions, resolvedReportPath);
   const content = options.format === 'json'
     ? `${JSON.stringify(plan, null, 2)}\n`
     : renderMarkdown(plan);
