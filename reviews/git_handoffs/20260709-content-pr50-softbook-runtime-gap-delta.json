@@ -1,0 +1,125 @@
+{
+  "handoff_id": "20260709-content-pr50-softbook-runtime-gap-delta",
+  "created_at": "2026-07-09T17:16:22+08:00",
+  "agent": "codex",
+  "branch": "content/front-leak-candidate-queue",
+  "base_branch": "main",
+  "commit_sha": "self_referential_handoff_commit_after_push",
+  "push_ref": "origin/content/front-leak-candidate-queue",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/50",
+  "PR_number": 50,
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate_runtime_gap_delta_handoff",
+    "source_PRs": [
+      50
+    ],
+    "card_ids": [
+      "050206",
+      "150101",
+      "150102",
+      "150103",
+      "150104",
+      "150105",
+      "150106",
+      "150107",
+      "150108",
+      "150109",
+      "150110",
+      "150111",
+      "150112"
+    ],
+    "box_prefixes": [
+      "0502",
+      "1501"
+    ],
+    "softbook_cet_refs": {
+      "runtime_payload_bridge_PR": "https://github.com/LENKIN233/softbook_cet/pull/399",
+      "runtime_payload_bridge_merge_commit": "631fc27f",
+      "content_gap_delta_PR": "https://github.com/LENKIN233/softbook_cet/pull/400",
+      "content_gap_delta_merge_commit": "5a4e5eabd3e839b7ccc88b955983d411e8a8cb6e"
+    },
+    "touched_paths": [
+      "reviews/agent_self_review/",
+      "reviews/audit_scopes/",
+      "reviews/git_handoffs/20260709-content-pr50-softbook-runtime-gap-delta.json"
+    ]
+  },
+  "summary": [
+    "Recorded the cross-workspace handoff from PR #50 candidate vocabulary repairs into the softbook_cet runtime payload and release content gap evidence chain.",
+    "Confirmed current PR #50 scoped candidate evidence remains clean: validate_pr_scope passes for 149 scoped cards with hard_blocker=0, content_risk=0, review_gap=0, and front_leaks_correct_answer=0.",
+    "Refreshed linked scoped audit fingerprints on the PR branch so raw harness validation is no longer dependent on an isolated audit worktree refresh.",
+    "Regenerated softbook_cet runtime card-source payloads from the 13-card 2026-07-09 vocabulary scope: CET4 produced 1 card and CET6 produced 12 cards.",
+    "Confirmed softbook_cet release content gap delta projection on origin/main 5a4e5eab: CET4 +1 new mapped card, projected free-target gap 584; CET6 +12 new mapped cards, projected free-target gap 600.",
+    "Kept the queue candidate-only: no reviews/approved_batches records, no production import application, no formal user approval claim, and no content auto-merge request."
+  ],
+  "runtime_handoff_evidence": {
+    "softbook_cet_root": "/Users/lenkin/programing/softbook_cet",
+    "softbook_cet_origin_main": "5a4e5eabd3e839b7ccc88b955983d411e8a8cb6e",
+    "payload_command": "node scripts/build_card_make_runtime_payload.mjs --scope-card-ids 050206,150101,150102,150103,150104,150105,150106,150107,150108,150109,150110,150111,150112 --output-dir /tmp/softbook-card-make-runtime-payloads-handoff-20260709 --source-id card-make-pr50-20260709-vocabulary --source-label \"Card make PR50 2026-07-09 vocabulary candidates\"",
+    "payload_outputs": [
+      {
+        "track": "cet4",
+        "cards": 1,
+        "file": "/tmp/softbook-card-make-runtime-payloads-handoff-20260709/card-make-pr50-20260709-vocabulary-cet4-card-source.json"
+      },
+      {
+        "track": "cet6",
+        "cards": 12,
+        "file": "/tmp/softbook-card-make-runtime-payloads-handoff-20260709/card-make-pr50-20260709-vocabulary-cet6-card-source.json"
+      }
+    ],
+    "release_content_gap_delta": {
+      "command": "node scripts/report_release_content_gap.mjs --format json --output /tmp/softbook-content-gap-handoff-20260709.json --candidate-card-source /tmp/softbook-card-make-runtime-payloads-handoff-20260709/card-make-pr50-20260709-vocabulary-cet4-card-source.json --candidate-card-source /tmp/softbook-card-make-runtime-payloads-handoff-20260709/card-make-pr50-20260709-vocabulary-cet6-card-source.json",
+      "cet4": {
+        "candidate_cards": 1,
+        "unique_candidate_cards": 1,
+        "new_mapped_cards": 1,
+        "duplicate_current_cards": 0,
+        "gap_delta": 1,
+        "projected_gap": 1174,
+        "free_target_gap_delta": 1,
+        "projected_free_target_gap": 584,
+        "projected_mapped_current": 6
+      },
+      "cet6": {
+        "candidate_cards": 12,
+        "unique_candidate_cards": 12,
+        "new_mapped_cards": 12,
+        "duplicate_current_cards": 0,
+        "gap_delta": 12,
+        "projected_gap": 1217,
+        "free_target_gap_delta": 12,
+        "projected_free_target_gap": 600,
+        "projected_mapped_current": 17
+      }
+    }
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed before this evidence-only follow-up; current scoped audit covers 149 PR-scope cards with hard_blocker=0, content_risk=0, review_gap=0, front_leaks_correct_answer=0, and missing_quality_metadata=0"
+    },
+    {
+      "command": "node scripts/audit_front_leak_queue.mjs --base origin/main --branches content/front-leak-candidate-queue --refresh-scoped-evidence --require-harness",
+      "result": "passed; front_answer_leaks=0, scoped hard_blockers=0, card validation ok, audio QC ok, harness ok; global_front_answer_leaks=94 remains legacy informational context"
+    },
+    {
+      "command": "node scripts/build_card_make_runtime_payload.mjs --scope-card-ids 050206,150101,150102,150103,150104,150105,150106,150107,150108,150109,150110,150111,150112 --output-dir /tmp/softbook-card-make-runtime-payloads-handoff-20260709 --source-id card-make-pr50-20260709-vocabulary --source-label \"Card make PR50 2026-07-09 vocabulary candidates\"",
+      "result": "passed in softbook_cet; generated 1 CET4 and 12 CET6 validated runtime card-source records"
+    },
+    {
+      "command": "node scripts/report_release_content_gap.mjs --format json --output /tmp/softbook-content-gap-handoff-20260709.json --candidate-card-source /tmp/softbook-card-make-runtime-payloads-handoff-20260709/card-make-pr50-20260709-vocabulary-cet4-card-source.json --candidate-card-source /tmp/softbook-card-make-runtime-payloads-handoff-20260709/card-make-pr50-20260709-vocabulary-cet6-card-source.json",
+      "result": "passed in softbook_cet; projected CET4 free-target gap 584 and CET6 free-target gap 600"
+    }
+  ],
+  "local_status": "Committed to PR #50 follow-up branch after final card make validation; current branch remains candidate-only and draft.",
+  "remaining_risks": [
+    "This is candidate handoff evidence only; it is not explicit user approval and does not authorize formal content use.",
+    "Projected free-target gaps remain large after this candidate delta: CET4 584 and CET6 600.",
+    "Global legacy corpus still has informational hard blockers outside the PR #50 scoped queue; scoped PR #50 gate remains clean.",
+    "Generated runtime payload files live under /tmp and are not committed as product truth."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
