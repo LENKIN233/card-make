@@ -16,31 +16,54 @@
       "box": 0,
       "card_no": 1,
       "card_box_code": "1020",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，判断真正结论出现在转折前还是转折后。",
-        "task_prompt": "任务：先听音频，判断真正结论出现在转折前还是转折后。",
+        "text": "任务：听一句校园设施说明，选出 but 后真正落下来的结论。",
+        "task_prompt": "听完后判断：说话人最后真正想让你带走的信息是什么？",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "转折关系",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后选择",
+          "focus": "CET6 转折关系判断",
+          "success_criteria": "能根据 but / however 后的信息重心选出真实结论"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1020/102001.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio",
+        "options": [
+          {
+            "key": "A",
+            "text": "The study lounge will immediately get more seats.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "The university will not add more seats until the safety inspection is done.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "The fire-safety inspection was completed last term.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Students have already moved to a different lounge.",
+            "is_correct": false
+          }
+        ]
       },
       "back_content": {
-        "text": "结论：真正结论在转折后，图书馆座位不会增加。",
+        "text": "答案：B。but 后的 not add more seats until... 才是本句真正结论。",
         "explanation": "语境揭示：The university promised to redesign the study lounge, but it has decided not to add more seats until the fire-safety inspection is completed next term."
       },
       "analysis_content": {
-        "text": "① 识别信号：but 把前面的积极铺垫转向后面的限制结论。② 核心规律：转折题的答案通常落在 but / however / yet 之后；前半句多是背景或让步信息。③ 验证与迁移：如果你只记住 redesign the lounge 而忽略 not add more seats，就会被转折前信息误导。",
+        "text": "① 识别信号：but 把前半句的积极承诺 redesign the study lounge 转向后半句的限制结论 not add more seats。② 核心规律：CET6 转折题里，前半句常是让步或背景，but / however 后才是可作答的信息重心。③ 验证与迁移：如果你只记住 redesign，就会选到前置铺垫；正确流程是先定位转折词，再把答案锚定在转折后的动作和限制条件。",
         "tips": [
-          "转折后优先级高于转折前，这是听力判断题最稳定的规律之一。",
-          "否定词 not 常和转折词一起出现，形成真正的答案区。"
+          "听到 but 后，先问：前面哪一点被削弱或限制了？",
+          "转折后若出现 not / until 这类限制词，通常就是答案区。"
         ]
       },
       "source_ref": {
@@ -72,31 +95,53 @@
         "box_name": "转折关系",
         "box_prefix": "1020"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，判断真正结论出现在转折前还是转折后。",
-        "task_prompt": "任务：先听音频，判断真正结论出现在转折前还是转折后。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "任务：听一句校园设施说明，选出 but 后真正落下来的结论。",
+        "task_prompt": "听完后判断：说话人最后真正想让你带走的信息是什么？",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "转折关系",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：but 把前面的积极铺垫转向后面的限制结论。② 核心规律：转折题的答案通常落在 but / however / yet 之后；前半句多是背景或让步信息。③ 验证与迁移：如果你只记住 redesign the lounge 而忽略 not add more seats，就会被转折前信息误导。",
-        "tips": [
-          "转折后优先级高于转折前，这是听力判断题最稳定的规律之一。",
-          "否定词 not 常和转折词一起出现，形成真正的答案区。"
+          "action": "听后选择",
+          "focus": "CET6 转折关系判断",
+          "success_criteria": "能根据 but / however 后的信息重心选出真实结论"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "The study lounge will immediately get more seats.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "The university will not add more seats until the safety inspection is done.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "The fire-safety inspection was completed last term.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "Students have already moved to a different lounge.",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "① 识别信号：but 把前半句的积极承诺 redesign the study lounge 转向后半句的限制结论 not add more seats。② 核心规律：CET6 转折题里，前半句常是让步或背景，but / however 后才是可作答的信息重心。③ 验证与迁移：如果你只记住 redesign，就会选到前置铺垫；正确流程是先定位转折词，再把答案锚定在转折后的动作和限制条件。",
+        "tips": [
+          "听到 but 后，先问：前面哪一点被削弱或限制了？",
+          "转折后若出现 not / until 这类限制词，通常就是答案区。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "sample review normalizes the card to the core multiple_choice interaction for auto-scored transition-relation recognition"
       },
       "quality_flags": [
         "unverified_source"
@@ -104,6 +149,58 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "The study lounge will immediately get more seats.",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "The university will not add more seats until the safety inspection is done.",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "The fire-safety inspection was completed last term.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "Students have already moved to a different lounge.",
+          "is_correct": false
+        }
+      ],
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 CET6 听力中 but 后的信息重心转移",
+        "secondary_training_goals": [
+          "区分转折前的积极铺垫和转折后的限制性结论"
+        ],
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy content_pool material revised as a candidate-only CET6 transition-relation sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助学生在 CET6 校园场景听力中不被 redesign 这类前置积极信息带偏，优先抓住 but 后的真实限制。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
       }
     },
     {
@@ -118,27 +215,50 @@
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断说话者最终表达的重点是什么。",
-        "task_prompt": "任务：先听音频，再判断说话者最终表达的重点是什么。",
+        "text": "任务：听一句店铺选址说明，选出 however 后的最终安排。",
+        "task_prompt": "听完后选择：说话者最终表达的重点是什么？",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "转折关系",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后选择",
+          "focus": "CET6 转折关系判断",
+          "success_criteria": "能根据 but / however 后的信息重心选出真实结论"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1020/102002.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio",
+        "options": [
+          {
+            "key": "A",
+            "text": "The owner has already moved the shop to campus.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "The station area has become too expensive for the shop.",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "The shop will remain near the station for practical reasons.",
+            "is_correct": true
+          },
+          {
+            "key": "D",
+            "text": "Morning commuters no longer visit the shop.",
+            "is_correct": false
+          }
+        ]
       },
       "back_content": {
-        "text": "结论：答案是 C，重点是咖啡店仍将在火车站营业。",
+        "text": "答案：C。However 后说明租金更低、通勤客方便，所以店会留在车站附近。",
         "explanation": "语境揭示：The owner considered moving the coffee shop closer to the university. However, the rent near the station is lower, so the business will stay where morning commuters can easily reach it."
       },
       "analysis_content": {
-        "text": "① 识别信号：However 明确推翻前面的考虑，后句给出最终安排。② 核心规律：转折结构里，considered / thought about 常常不是答案，真正答案在后面说“but / however 实际决定了什么”。③ 验证与迁移：选项对比时，优先找最终行动 stay，而不是 earlier idea move closer to the university。",
+        "text": "① 识别信号：considered moving 只是前置想法，However 后的 stay 才是最终行动。② 核心规律：转折结构经常把“想过的方案”放在前面，再用 however 改写最终结论；作答时要优先抓后半句的动作词。③ 验证与迁移：A 把旧想法当成结果，B 反转了租金信息，D 夸大了通勤客变化；只有 C 同时覆盖 stay 和 practical reasons。",
         "tips": [
-          "considered 表示曾经考虑，不等于最终决定。",
-          "听到 however 后要立刻提高警惕，后面常直接落答案。"
+          "considered / planned / hoped 这类词不等于最终决定。",
+          "听到 however 后，立刻寻找决定性动作：stay、cancel、delay、require 等。"
         ]
       },
       "source_ref": {
@@ -194,29 +314,51 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断说话者最终表达的重点是什么。",
-        "task_prompt": "任务：先听音频，再判断说话者最终表达的重点是什么。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "任务：听一句店铺选址说明，选出 however 后的最终安排。",
+        "task_prompt": "听完后选择：说话者最终表达的重点是什么？",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "转折关系",
-          "success_criteria": "准确完成交互操作"
-        }
+          "action": "听后选择",
+          "focus": "CET6 转折关系判断",
+          "success_criteria": "能根据 but / however 后的信息重心选出真实结论"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "The owner has already moved the shop to campus.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "The station area has become too expensive for the shop.",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "The shop will remain near the station for practical reasons.",
+            "is_correct": true
+          },
+          {
+            "key": "D",
+            "text": "Morning commuters no longer visit the shop.",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：However 明确推翻前面的考虑，后句给出最终安排。② 核心规律：转折结构里，considered / thought about 常常不是答案，真正答案在后面说“but / however 实际决定了什么”。③ 验证与迁移：选项对比时，优先找最终行动 stay，而不是 earlier idea move closer to the university。",
+        "text": "① 识别信号：considered moving 只是前置想法，However 后的 stay 才是最终行动。② 核心规律：转折结构经常把“想过的方案”放在前面，再用 however 改写最终结论；作答时要优先抓后半句的动作词。③ 验证与迁移：A 把旧想法当成结果，B 反转了租金信息，D 夸大了通勤客变化；只有 C 同时覆盖 stay 和 practical reasons。",
         "tips": [
-          "considered 表示曾经考虑，不等于最终决定。",
-          "听到 however 后要立刻提高警惕，后面常直接落答案。"
+          "considered / planned / hoped 这类词不等于最终决定。",
+          "听到 however 后，立刻寻找决定性动作：stay、cancel、delay、require 等。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "sample review normalizes the card to the core multiple_choice interaction for auto-scored transition-relation recognition"
       },
       "quality_flags": [
         "unverified_source"
@@ -227,6 +369,31 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 however 判断 CET6 听力中最终行动与前置考虑的差别",
+        "secondary_training_goals": [
+          "排除 considered 代表的旧想法，选择 however 后的实际安排"
+        ],
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy content_pool material revised as a candidate-only CET6 transition-relation sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练学生在 CET6 商业/校园场景中分清“曾考虑过”与“最终决定”，避免把前置想法当结论。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
       }
     },
     {
@@ -237,31 +404,54 @@
       "box": 0,
       "card_no": 3,
       "card_box_code": "1020",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再在时限内复述：转折前说了什么，转折后真正结论是什么。",
-        "task_prompt": "任务：先听音频，再在时限内复述：转折前说了什么，转折后真正结论是什么。",
+        "text": "任务：听一句课程安排说明，选出 but 后真正影响学生行动的要求。",
+        "task_prompt": "听完后选择：这句话最终强调学生必须做什么？",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "转折关系",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后选择",
+          "focus": "CET6 转折关系判断",
+          "success_criteria": "能根据 but / however 后的信息重心选出真实结论"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1020/102003.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio",
+        "options": [
+          {
+            "key": "A",
+            "text": "They can complete all first-year courses online.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "They must complete chemistry lab sessions on campus every week.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "Commuters are exempt from laboratory requirements.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "The department will remove weekly lab sessions.",
+            "is_correct": false
+          }
+        ]
       },
       "back_content": {
-        "text": "结论：前半句承认线上课程方便，后半句真正强调实验课仍需线下进行。",
+        "text": "答案：B。前半句承认线上课灵活，but 后真正强调实验课仍需每周线下完成。",
         "explanation": "语境揭示：Online classes are certainly more flexible for commuters, but the chemistry department still requires first-year students to complete their lab sessions on campus every week."
       },
       "analysis_content": {
-        "text": "① 识别信号：but 把 flexible for commuters 的让步信息转到 requires lab sessions on campus 的核心结论。② 核心规律：复述转折题时，必须同时说出“铺垫信息”和“真实重点”，否则无法真正体现转折关系。③ 验证与迁移：如果你只说 online classes are flexible，就说明还停留在让步句，没有进入答题核心区。",
+        "text": "① 识别信号：certainly more flexible 是让步铺垫，but 后的 still requires 才是硬性要求。② 核心规律：CET6 转折句常用“承认一个好处 + 保留一个限制”的结构，答案通常落在限制对行动的影响上。③ 验证与迁移：A 和 C 都把灵活性误读成豁免，D 则反向理解 requires；B 才保留了 but 后的要求、对象和频率。",
         "tips": [
-          "转折复述常用“虽然……但是……”的双段式框架。",
-          "requires 是强信号词，说明后半句不是建议，而是硬性要求。"
+          "转折后出现 requires / must / still，优先当作高权重信息。",
+          "复述长句时可先压缩成“虽然灵活，但是仍必须……”的答题框架。"
         ]
       },
       "source_ref": {
@@ -272,10 +462,6 @@
         "note": "untraced_content_pool_from_legacy_card_make_batch",
         "provenance_status": "unverified"
       },
-      "time_window_ms": [
-        3400,
-        5000
-      ],
       "audio": {
         "url": "ai_tts/cet6/1020/102003.mp3",
         "local_path": "ai_tts/cet6/1020/102003.mp3",
@@ -297,31 +483,53 @@
         "box_name": "转折关系",
         "box_prefix": "1020"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再在时限内复述：转折前说了什么，转折后真正结论是什么。",
-        "task_prompt": "任务：先听音频，再在时限内复述：转折前说了什么，转折后真正结论是什么。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "任务：听一句课程安排说明，选出 but 后真正影响学生行动的要求。",
+        "task_prompt": "听完后选择：这句话最终强调学生必须做什么？",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "转折关系",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：but 把 flexible for commuters 的让步信息转到 requires lab sessions on campus 的核心结论。② 核心规律：复述转折题时，必须同时说出“铺垫信息”和“真实重点”，否则无法真正体现转折关系。③ 验证与迁移：如果你只说 online classes are flexible，就说明还停留在让步句，没有进入答题核心区。",
-        "tips": [
-          "转折复述常用“虽然……但是……”的双段式框架。",
-          "requires 是强信号词，说明后半句不是建议，而是硬性要求。"
+          "action": "听后选择",
+          "focus": "CET6 转折关系判断",
+          "success_criteria": "能根据 but / however 后的信息重心选出真实结论"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "They can complete all first-year courses online.",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "They must complete chemistry lab sessions on campus every week.",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "Commuters are exempt from laboratory requirements.",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "The department will remove weekly lab sessions.",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "① 识别信号：certainly more flexible 是让步铺垫，but 后的 still requires 才是硬性要求。② 核心规律：CET6 转折句常用“承认一个好处 + 保留一个限制”的结构，答案通常落在限制对行动的影响上。③ 验证与迁移：A 和 C 都把灵活性误读成豁免，D 则反向理解 requires；B 才保留了 but 后的要求、对象和频率。",
+        "tips": [
+          "转折后出现 requires / must / still，优先当作高权重信息。",
+          "复述长句时可先压缩成“虽然灵活，但是仍必须……”的答题框架。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "sample review normalizes the card to the core multiple_choice interaction for auto-scored transition-relation recognition"
       },
       "quality_flags": [
         "unverified_source"
@@ -329,6 +537,56 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "They can complete all first-year courses online.",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "They must complete chemistry lab sessions on campus every week.",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "Commuters are exempt from laboratory requirements.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "The department will remove weekly lab sessions.",
+          "is_correct": false
+        }
+      ],
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "把转折关系迁移到 CET6 课程安排类长句的信息重心判断",
+        "secondary_training_goals": [
+          "在 although-like 前置让步和 but 后硬性要求之间选择真实重点"
+        ],
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy content_pool material revised as a candidate-only CET6 transition-relation sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助学生在 CET6 长句里不被 online classes are flexible 这类让步信息吸走，能抓住 but 后的课程要求。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
       }
     },
     {
