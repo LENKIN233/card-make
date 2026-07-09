@@ -16,31 +16,32 @@
       "box": 2,
       "card_no": 1,
       "card_box_code": "1002",
-      "interaction_type": 0,
+      "interaction_type": 1,
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，判断你最该提前锁定哪个信号词。",
-        "task_prompt": "任务：先听音频，判断你最该提前锁定哪个信号词。",
+        "text": "先看四个候选词，预测这段 CET6 听力最该提前锁定哪个信号词。",
+        "task_prompt": "先比较四个候选词的逻辑作用，再播放音频验证哪一个词把前半句的铺垫推向真正重点。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "选择最该提前锁定的信号词",
+          "focus": "根据选项先建立句间关系假设，再听前后评价是否发生方向变化",
+          "success_criteria": "能说明目标词后的限制信息为什么比前半句优点更接近题目重点"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1002/100201.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "结论：要锁定 however，它提示说话重点在后半句。",
-        "explanation": "语境揭示：The software is inexpensive and easy to install. However, it cannot process large image files quickly enough for the design team."
+        "text": "答案：A\n\n解析：最该提前锁定 however。",
+        "explanation": "正确答案是 A。音频先说软件 inexpensive and easy to install，看起来是正向评价；however 一出现，真正重点转到 cannot process large image files quickly enough。CET6 听前预测信号词时，要优先找会改变评价方向的词。B 是因果，C 是时间，D 是补充，都不能解释前正后负的结构。"
       },
       "analysis_content": {
-        "text": "① 识别信号：However 明确标记前后信息发生转折，真正结论常落在后句。② 核心规律：预测信号词时，先看句子是否出现态度反转或评价反转；若前正后负，however / but / yet 就是最高优先级信号。③ 验证与迁移：若你把 inexpensive 和 easy to install 当最终答案，就说明没抓住转折词后的主信息。",
+        "text": "正确答案是 A。音频先说软件 inexpensive and easy to install，看起来是正向评价；however 一出现，真正重点转到 cannot process large image files quickly enough。CET6 听前预测信号词时，要优先找会改变评价方向的词。B 是因果，C 是时间，D 是补充，都不能解释前正后负的结构。",
         "tips": [
-          "转折词后往往才是题目真正要考的内容，前半句常只是铺垫或让步。",
-          "however 比 but 更书面，常出现在短讲座和说明类材料里。"
+          "however / but / yet 往往把题目重点推到后半句。",
+          "前半句的优点越明显，转折后的限制越可能成为考点。"
         ]
       },
       "source_ref": {
@@ -72,31 +73,53 @@
         "box_name": "根据选项预测信号词",
         "box_prefix": "1002"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，判断你最该提前锁定哪个信号词。",
-        "task_prompt": "任务：先听音频，判断你最该提前锁定哪个信号词。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看四个候选词，预测这段 CET6 听力最该提前锁定哪个信号词。",
+        "task_prompt": "先比较四个候选词的逻辑作用，再播放音频验证哪一个词把前半句的铺垫推向真正重点。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：However 明确标记前后信息发生转折，真正结论常落在后句。② 核心规律：预测信号词时，先看句子是否出现态度反转或评价反转；若前正后负，however / but / yet 就是最高优先级信号。③ 验证与迁移：若你把 inexpensive 和 easy to install 当最终答案，就说明没抓住转折词后的主信息。",
-        "tips": [
-          "转折词后往往才是题目真正要考的内容，前半句常只是铺垫或让步。",
-          "however 比 but 更书面，常出现在短讲座和说明类材料里。"
+          "action": "选择最该提前锁定的信号词",
+          "focus": "根据选项先建立句间关系假设，再听前后评价是否发生方向变化",
+          "success_criteria": "能说明目标词后的限制信息为什么比前半句优点更接近题目重点"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "however",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "because",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "last month",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "in addition",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 A。音频先说软件 inexpensive and easy to install，看起来是正向评价；however 一出现，真正重点转到 cannot process large image files quickly enough。CET6 听前预测信号词时，要优先找会改变评价方向的词。B 是因果，C 是时间，D 是补充，都不能解释前正后负的结构。",
+        "tips": [
+          "however / but / yet 往往把题目重点推到后半句。",
+          "前半句的优点越明显，转折后的限制越可能成为考点。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice because signal-word prediction needs a checkable option judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -104,6 +127,55 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "however",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "because",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "last month",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "in addition",
+          "is_correct": false
+        }
+      ],
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据选项先预测 CET6 听力中前正后负结构的转折信号词",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在听前先用选项锁定 however 这类转折词，避免把铺垫优点误当作主信息。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -118,27 +190,28 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，再判断最该锁定哪个结构信号词。",
-        "task_prompt": "任务：先听音频，再判断最该锁定哪个结构信号词。",
+        "text": "先看四个候选词，预测这段 CET6 听力最该提前锁定哪个信号词。",
+        "task_prompt": "先比较四个候选词中哪一个最能控制句子的逻辑走向，再播放音频验证它如何连接条件和后续信息。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "选择最该提前锁定的信号词",
+          "focus": "根据选项先建立条件关系假设，再听条件和后续信息的方向",
+          "success_criteria": "能说明目标词如何决定维修零件和列车安排之间的关系"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1002/100202.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "结论：答案是 C，最关键的信号词是 unless。",
-        "explanation": "语境揭示：Unless the maintenance team receives the replacement parts by noon, the subway line will reopen with fewer trains and longer waiting times throughout the afternoon."
+        "text": "答案：C\n\n解析：最该提前锁定 unless。",
+        "explanation": "正确答案是 C。Unless the maintenance team receives the replacement parts by noon 先设定条件，后面 fewer trains and longer waiting times 是条件不满足时的后果。CET6 信号词预测不是找最熟的单词，而是找最能决定逻辑方向的词。A 是范围，B 是时间截止点，D 是动作，都没有 C 对句意骨架的控制力。"
       },
       "analysis_content": {
-        "text": "① 识别信号：Unless 直接定义条件与后果的关系，是这句的结构核心。② 核心规律：signal word 题不要只找熟词，要找最能决定句间逻辑的词；unless 比 noon、afternoon 这类时间词更重要。③ 验证与迁移：若你复述时没有说出“除非/否则”方向，说明还没真正抓到句子的逻辑骨架。",
+        "text": "正确答案是 C。Unless the maintenance team receives the replacement parts by noon 先设定条件，后面 fewer trains and longer waiting times 是条件不满足时的后果。CET6 信号词预测不是找最熟的单词，而是找最能决定逻辑方向的词。A 是范围，B 是时间截止点，D 是动作，都没有 C 对句意骨架的控制力。",
         "tips": [
-          "unless = if not，属于高频条件信号词。",
-          "条件句里真正该锁定的是条件词，不是后面的具体时间名词。"
+          "unless = if not，听到后要立刻准备接“否则会怎样”。",
+          "时间词 by noon 是条件里的细节，不是逻辑信号本身。"
         ]
       },
       "source_ref": {
@@ -194,29 +267,51 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断最该锁定哪个结构信号词。",
-        "task_prompt": "任务：先听音频，再判断最该锁定哪个结构信号词。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看四个候选词，预测这段 CET6 听力最该提前锁定哪个信号词。",
+        "task_prompt": "先比较四个候选词中哪一个最能控制句子的逻辑走向，再播放音频验证它如何连接条件和后续信息。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
-        }
+          "action": "选择最该提前锁定的信号词",
+          "focus": "根据选项先建立条件关系假设，再听条件和后续信息的方向",
+          "success_criteria": "能说明目标词如何决定维修零件和列车安排之间的关系"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "throughout",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "by noon",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "unless",
+            "is_correct": true
+          },
+          {
+            "key": "D",
+            "text": "reopen",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：Unless 直接定义条件与后果的关系，是这句的结构核心。② 核心规律：signal word 题不要只找熟词，要找最能决定句间逻辑的词；unless 比 noon、afternoon 这类时间词更重要。③ 验证与迁移：若你复述时没有说出“除非/否则”方向，说明还没真正抓到句子的逻辑骨架。",
+        "text": "正确答案是 C。Unless the maintenance team receives the replacement parts by noon 先设定条件，后面 fewer trains and longer waiting times 是条件不满足时的后果。CET6 信号词预测不是找最熟的单词，而是找最能决定逻辑方向的词。A 是范围，B 是时间截止点，D 是动作，都没有 C 对句意骨架的控制力。",
         "tips": [
-          "unless = if not，属于高频条件信号词。",
-          "条件句里真正该锁定的是条件词，不是后面的具体时间名词。"
+          "unless = if not，听到后要立刻准备接“否则会怎样”。",
+          "时间词 by noon 是条件里的细节，不是逻辑信号本身。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "candidate sample uses multiple_choice because signal-word prediction needs a checkable option judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -227,6 +322,30 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据选项预测 CET6 听力中条件-后果结构的核心信号词",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把 unless 从时间、动作等干扰词中拎出来，先搭好条件逻辑再听细节。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -237,31 +356,32 @@
       "box": 2,
       "card_no": 3,
       "card_box_code": "1002",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，再在时限内复述：哪个信号词决定了句子的逻辑方向。",
-        "task_prompt": "任务：先听音频，再在时限内复述：哪个信号词决定了句子的逻辑方向。",
+        "text": "先看四个候选词，预测这段 CET6 听力最该提前锁定哪个信号词。",
+        "task_prompt": "先比较四个候选词中哪一个最能连接两句话，再播放音频验证它如何说明后一句和前一句的关系。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "选择最该提前锁定的信号词",
+          "focus": "根据选项先建立句间关系假设，再听第二句是否承接第一句",
+          "success_criteria": "能说明目标短语如何把系统升级和服务器变化连成一条逻辑链"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet6/1002/100203.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "结论：核心信号是 as a result，它把原因和结果串起来。",
-        "explanation": "语境揭示：The laboratory upgraded its cooling system last month. As a result, the servers now run more quietly and consume less electricity during overnight data analysis."
+        "text": "答案：B\n\n解析：最该提前锁定 as a result。",
+        "explanation": "正确答案是 B。The laboratory upgraded its cooling system 是原因，As a result 后面的 run more quietly and consume less electricity 是结果。CET6 听力里，句首连接副词常常直接告诉你两句之间的关系。A 是让步，C 是顺序，D 是举例，都不能概括这两句的因果走向。"
       },
       "analysis_content": {
-        "text": "① 识别信号：As a result 明确提示后句是前句带来的结果，不是并列补充。② 核心规律：结果信号词通常位于后句句首，看到这类结构时应自动去找前因后果，而不是把两句拆开孤立理解。③ 验证与迁移：如果复述时只说系统升级了，却没说 quieter / less electricity 是结果，说明没利用好结果信号词。",
+        "text": "正确答案是 B。The laboratory upgraded its cooling system 是原因，As a result 后面的 run more quietly and consume less electricity 是结果。CET6 听力里，句首连接副词常常直接告诉你两句之间的关系。A 是让步，C 是顺序，D 是举例，都不能概括这两句的因果走向。",
         "tips": [
-          "as a result / therefore / consequently 都是结果导向信号词。",
-          "句首连接副词常决定句间关系，比后面的细节名词更值得优先捕捉。"
+          "as a result / therefore / consequently 都提示后句是结果。",
+          "看到结果信号词，听力目标要从孤立细节转成“前因后果链”。"
         ]
       },
       "source_ref": {
@@ -272,10 +392,6 @@
         "note": "untraced_content_pool_from_legacy_card_make_batch",
         "provenance_status": "unverified"
       },
-      "time_window_ms": [
-        3300,
-        4700
-      ],
       "audio": {
         "url": "ai_tts/cet6/1002/100203.mp3",
         "local_path": "ai_tts/cet6/1002/100203.mp3",
@@ -297,31 +413,53 @@
         "box_name": "根据选项预测信号词",
         "box_prefix": "1002"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再在时限内复述：哪个信号词决定了句子的逻辑方向。",
-        "task_prompt": "任务：先听音频，再在时限内复述：哪个信号词决定了句子的逻辑方向。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看四个候选词，预测这段 CET6 听力最该提前锁定哪个信号词。",
+        "task_prompt": "先比较四个候选词中哪一个最能连接两句话，再播放音频验证它如何说明后一句和前一句的关系。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：As a result 明确提示后句是前句带来的结果，不是并列补充。② 核心规律：结果信号词通常位于后句句首，看到这类结构时应自动去找前因后果，而不是把两句拆开孤立理解。③ 验证与迁移：如果复述时只说系统升级了，却没说 quieter / less electricity 是结果，说明没利用好结果信号词。",
-        "tips": [
-          "as a result / therefore / consequently 都是结果导向信号词。",
-          "句首连接副词常决定句间关系，比后面的细节名词更值得优先捕捉。"
+          "action": "选择最该提前锁定的信号词",
+          "focus": "根据选项先建立句间关系假设，再听第二句是否承接第一句",
+          "success_criteria": "能说明目标短语如何把系统升级和服务器变化连成一条逻辑链"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "although",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "as a result",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "first",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "for example",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "正确答案是 B。The laboratory upgraded its cooling system 是原因，As a result 后面的 run more quietly and consume less electricity 是结果。CET6 听力里，句首连接副词常常直接告诉你两句之间的关系。A 是让步，C 是顺序，D 是举例，都不能概括这两句的因果走向。",
+        "tips": [
+          "as a result / therefore / consequently 都提示后句是结果。",
+          "看到结果信号词，听力目标要从孤立细节转成“前因后果链”。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "candidate sample uses multiple_choice because signal-word prediction needs a checkable option judgment"
       },
       "quality_flags": [
         "unverified_source"
@@ -329,6 +467,55 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "although",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "as a result",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "first",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "for example",
+          "is_correct": false
+        }
+      ],
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据选项预测 CET6 听力中前因后果结构的结果信号词",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在听前用结果信号词建立句间关系，避免把升级动作和运行变化拆开理解。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
