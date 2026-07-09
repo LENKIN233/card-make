@@ -1,0 +1,124 @@
+{
+  "handoff_id": "20260709-content-cet4-listening-0012-sample-review",
+  "created_at": "2026-07-09T21:24:02+08:00",
+  "workspace": "card make",
+  "branch": "content/cet4-listening-0012-sample-review",
+  "base_branch": "main",
+  "target_remote": "origin",
+  "push_ref": "origin/content/cet4-listening-0012-sample-review",
+  "pr_url": "https://github.com/LENKIN233/card-make/pull/72",
+  "pr_state": "OPEN",
+  "is_draft": true,
+  "commit_sha": "self_referential_content_candidate_handoff_commit_after_push",
+  "scope": {
+    "change_type": "content_candidate_sample",
+    "track": "CET4",
+    "library": "听力",
+    "group": "语音现象",
+    "box": "失去爆破",
+    "box_prefix": "0012",
+    "card_ids": [
+      "001201",
+      "001202",
+      "001203"
+    ],
+    "sample_policy": "three_card_sample_per_box",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0012.json",
+      "reviews/agent_self_review/20260709-cet4-listening-0012-revised-sample.json",
+      "reviews/audit_scopes/20260709-cet4-listening-0012-scope-audit.json",
+      "reviews/git_handoffs/20260709-content-cet4-listening-0012-sample-review.json"
+    ]
+  },
+  "referenced_specs": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "quality_summary": {
+    "audit_report": "reviews/audit_scopes/20260709-cet4-listening-0012-scope-audit.json",
+    "corpus_fingerprint": "ef2cd6c19eb130de82cffc6169a905ac4dca7e3d4e054795e5c44cfc931f01b8",
+    "scope_summary": {
+      "card_count": 3,
+      "issue_count": 6,
+      "hard_blocker": 0,
+      "content_risk": 0,
+      "review_gap": 0,
+      "source_risk": 6,
+      "front_leaks_correct_answer": 0,
+      "missing_quality_metadata": 0,
+      "synthetic_source": 3,
+      "unverified_source": 3
+    }
+  },
+  "validation": {
+    "pre_commit": [
+      {
+        "command": "node scripts/audit_card_quality.mjs --scope-card-ids 001201,001202,001203 --write-scope-report reviews/audit_scopes/20260709-cet4-listening-0012-scope-audit.json --max-examples 20",
+        "result": "passed",
+        "notes": "Scoped hard_blocker=0, content_risk=0, review_gap=0; remaining source_risk=6."
+      },
+      {
+        "command": "node scripts/validate_cards.mjs",
+        "result": "passed",
+        "notes": "2414 cards checked; errors=0, warnings=0."
+      }
+    ],
+    "post_commit": [
+      {
+        "command": "node scripts/audit_card_quality.mjs --scope-card-ids 001201,001202,001203 --write-scope-report reviews/audit_scopes/20260709-cet4-listening-0012-scope-audit.json --max-examples 20",
+        "result": "passed",
+        "notes": "Scoped hard_blocker=0, content_risk=0, review_gap=0; remaining source_risk=6."
+      },
+      {
+        "command": "node scripts/validate_cards.mjs",
+        "result": "passed",
+        "notes": "2414 cards checked; errors=0, warnings=0."
+      },
+      {
+        "command": "node scripts/validate_audio_qc.mjs",
+        "result": "passed",
+        "notes": "errors=0, warnings=0."
+      },
+      {
+        "command": "node scripts/validate_harness.mjs",
+        "result": "passed",
+        "notes": "Only existing recorded upstream warnings plus scoped-evidence allowance for stale global audit report."
+      },
+      {
+        "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+        "result": "passed",
+        "notes": "content_candidate_diff=true, primary_scope_prefixes=0012, issues=0, warnings=0."
+      },
+      {
+        "command": "git diff --check",
+        "result": "passed",
+        "notes": "No whitespace errors."
+      },
+      {
+        "command": "git diff --name-status origin/main...HEAD -- reports reviews/approved_batches",
+        "result": "passed",
+        "notes": "No reports or approved_batches changes."
+      }
+    ]
+  },
+  "candidate_boundary": {
+    "formal_content_approval": false,
+    "approved_batches_changed": false,
+    "softbook_import_ready": false,
+    "apple_release_ready": false,
+    "merge_authority": "Content approval and merge remain user-gated; do not auto-merge this formal-content candidate sample.",
+    "remaining_risks": [
+      "Source remains simulated/unverified legacy content_pool material.",
+      "TTS text is reviewed for sample use, but TTS audio is not formally reviewed.",
+      "This is a 3-card direction sample only; batch expansion requires explicit user confirmation."
+    ]
+  },
+  "next_step": "Open a draft PR for user review, then wait for explicit confirmation before expanding 0012 or creating approval records."
+}
