@@ -1,0 +1,75 @@
+{
+  "handoff_id": "20260710-content-cet6-listening-1033-sample-review",
+  "created_at": "2026-07-10T07:13:47+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-listening-1033-sample-review",
+  "base_branch": "main",
+  "commit_sha": "2df4202de8915e1faf4400ded16a777e4ccb9d6e",
+  "push_ref": "origin/content/cet6-listening-1033-sample-review",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/83",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "candidate_content_review",
+    "track": "cet6",
+    "library": "听力",
+    "group": "细节捕捉",
+    "box": "地点",
+    "box_prefix": "1033",
+    "card_ids": [
+      "103301",
+      "103302",
+      "103303"
+    ],
+    "referenced_specs": [
+      "AGENTS.md",
+      "spec/doc-manifest.json",
+      "spec/authority-map.json",
+      "spec/workspace-contract.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json",
+      "spec/card-metadata.schema.json",
+      "../softbook_cet/spec/product-core.json",
+      "../softbook_cet/spec/card-system.json",
+      "../softbook_cet/spec/box-catalog.json",
+      "../softbook_cet/spec/interactions.json"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_listening_1033.json",
+      "reviews/audit_scopes/20260710-cet6-listening-1033-scope-audit.json",
+      "reviews/agent_self_review/20260710-cet6-listening-1033-revised-sample.json",
+      "reviews/git_handoffs/20260710-content-cet6-listening-1033-sample-review.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 103301,103302,103303 --write-scope-report reviews/audit_scopes/20260710-cet6-listening-1033-scope-audit.json",
+      "result": "passed; scoped audit has 0 hard blockers, 0 content risks, 0 review gaps, and 6 source risks"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; changed content scope is prefix 1033 plus scoped audit and self-review evidence"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed; 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; warnings limited to recorded upstream alignment issues and global audit staleness allowed by scoped evidence"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Draft PR #83 is open. It revises only candidate cards 103301-103303 for CET6 listening prefix 1033 and records scoped review evidence.",
+  "remaining_risks": [
+    "This is a three-card candidate sample only; it does not approve or import the full 1033 box.",
+    "Remaining local cards 103304-103312 still reflect the legacy interference-elimination batch and require separate review before use.",
+    "Text source remains simulation / legacy content_pool material and is not claimed as verified true-exam source.",
+    "TTS text is reviewed for candidate direction, but audio binaries are not formally QC-reviewed in this PR.",
+    "No reviews/approved_batches record is added, and no softbook_cet import or Apple release readiness is claimed."
+  ],
+  "merge_authority": "formal_content_merge_requires_user_confirmed_sample_and_scope_delegation"
+}
