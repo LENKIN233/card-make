@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
 import assert from 'node:assert/strict';
-import {mkdirSync, readFileSync, writeFileSync} from 'node:fs';
-import {dirname, resolve} from 'node:path';
+import {existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync} from 'node:fs';
+import {dirname, join, resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
 
 const TRACKS = ['cet4', 'cet6'];
 const DEFAULT_LIMIT = 12;
 const DEFAULT_SAMPLE_SIZE = 3;
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const REFERENCED_SPECS = [
   '../softbook_cet/spec/requirement-memory.json',
   '../softbook_cet/spec/product-core.json',
@@ -19,8 +21,10 @@ const REFERENCED_SPECS = [
 
 function parseArgs(argv) {
   const options = {
+    cardMakeRoot: ROOT,
     contentGapReport: '',
     format: 'markdown',
+    hideLocalSampleReady: false,
     includeCovered: false,
     limit: DEFAULT_LIMIT,
     output: '',
@@ -36,9 +40,16 @@ function parseArgs(argv) {
         options.contentGapReport = requireNextValue(argv, index, arg);
         index += 1;
         break;
+      case '--card-make-root':
+        options.cardMakeRoot = resolve(requireNextValue(argv, index, arg));
+        index += 1;
+        break;
       case '--format':
         options.format = requireNextValue(argv, index, arg);
         index += 1;
+        break;
+      case '--hide-local-sample-ready':
+        options.hideLocalSampleReady = true;
         break;
       case '--include-covered':
         options.includeCovered = true;
@@ -105,7 +116,10 @@ function printUsage() {
   console.log(`Usage: node scripts/plan_release_gap_samples.mjs --content-gap-report <json> [options]
 
 Options:
+  --card-make-root <dir>   Card make workspace root. Defaults to this repository.
   --format markdown|json   Output format. Defaults to markdown.
+  --hide-local-sample-ready
+                           Hide rows that already have a local 3-card self-review.
   --include-covered        Include boxes already covered by candidate projection.
   --limit <n>              Maximum target rows. Defaults to ${DEFAULT_LIMIT}.
   --output <path>          Write output to a file instead of stdout.
@@ -136,12 +150,92 @@ function trackList(track) {
   return track === 'both' ? TRACKS : [track];
 }
 
+function loadLocalCoverage(root) {
+  const byKey = new Map();
+  const cardDir = join(root, 'card_boxes_json');
+  const selfReviewDir = join(root, 'reviews', 'agent_self_review');
+  const approvalDir = join(root, 'reviews', 'approved_batches');
+
+  if (existsSync(cardDir)) {
+    for (const file of readdirSync(cardDir).filter(name => name.endsWith('.json')).sort()) {
+      const payload = readJson(join(cardDir, file));
+      for (const card of payload.cards || []) {
+        const track = card.track || payload.track;
+        const prefix = card.space_metadata?.box_ref ||
+          card.knowledge_ref?.box_prefix ||
+          card.card_box_code ||
+          payload.card_box_code;
+
+        if (!track || !prefix) continue;
+        const record = ensureLocalRecord(byKey, track, prefix);
+        record.local_candidate_cards += 1;
+        if (record.local_sample_card_ids.length < DEFAULT_SAMPLE_SIZE) {
+          record.local_sample_card_ids.push(card.card_id);
+        }
+      }
+    }
+  }
+
+  if (existsSync(selfReviewDir)) {
+    for (const file of readdirSync(selfReviewDir).filter(name => name.endsWith('.json')).sort()) {
+      const review = readJson(join(selfReviewDir, file));
+      const prefixes = review.scope?.box_prefixes || [];
+      const isThreeCardSample = review.sample_policy?.is_three_card_sample_per_box === true;
+      for (const prefix of prefixes) {
+        const track = inferTrack(review, prefix);
+        const record = ensureLocalRecord(byKey, track, prefix);
+        record.local_self_review_records.push(review.review_id || file);
+        if (isThreeCardSample) {
+          record.local_three_card_self_reviews.push(review.review_id || file);
+        }
+      }
+    }
+  }
+
+  if (existsSync(approvalDir)) {
+    for (const file of readdirSync(approvalDir).filter(name => name.endsWith('.json') && name !== 'TEMPLATE.json').sort()) {
+      const approval = readJson(join(approvalDir, file));
+      const prefixes = approval.scope?.box_prefixes || approval.scope?.prefixes || [];
+      for (const prefix of prefixes) {
+        const track = approval.scope?.track || inferTrack(approval, prefix);
+        const record = ensureLocalRecord(byKey, track, prefix);
+        record.local_approved_batch_records.push(approval.approval_id || file);
+      }
+    }
+  }
+
+  return {byKey};
+}
+
+function ensureLocalRecord(byKey, track, prefix) {
+  const key = `${track}:${prefix}`;
+  if (!byKey.has(key)) {
+    byKey.set(key, {
+      local_candidate_cards: 0,
+      local_sample_card_ids: [],
+      local_self_review_records: [],
+      local_three_card_self_reviews: [],
+      local_approved_batch_records: [],
+    });
+  }
+  return byKey.get(key);
+}
+
+function inferTrack(record, prefix) {
+  const cardTrack = (record.cards || [])
+    .map(card => card.track || card.knowledge_ref?.track)
+    .find(Boolean);
+  if (TRACKS.includes(cardTrack)) return cardTrack;
+  return String(prefix).startsWith('1') ? 'cet6' : 'cet4';
+}
+
 function planTargets(report, options) {
   if (!Array.isArray(report.rows)) {
     throw new Error('Content gap report must include a rows array.');
   }
 
   const candidateProjection = buildCandidateProjectionMap(report);
+  const localCoverage = options.localCoverage || loadLocalCoverage(options.cardMakeRoot);
   const targets = [];
   const selectedTracks = trackList(options.track);
 
@@ -162,9 +256,12 @@ function planTargets(report, options) {
         ? Number(projection.projected_gap ?? Math.max(0, planned - projectedCurrent))
         : currentGap;
       const planningGap = projectedGap;
+      const local = localCoverage.byKey.get(`${track}:${prefix}`) || emptyLocalRecord();
+      const localStatus = localCandidateStatus(local, options.sampleSize);
 
       if (planningGap <= 0 && !options.includeCovered) continue;
       if (currentGap <= 0 && !options.includeCovered) continue;
+      if (options.hideLocalSampleReady && local.local_three_card_self_reviews.length > 0) continue;
 
       targets.push({
         track,
@@ -176,18 +273,65 @@ function planTargets(report, options) {
         current_runtime_cards: current,
         current_gap: currentGap,
         candidate_new_cards: candidateNew,
+        local_candidate_cards: local.local_candidate_cards,
+        local_sample_card_ids: local.local_sample_card_ids,
+        local_self_review_records: local.local_self_review_records,
+        local_three_card_self_reviews: local.local_three_card_self_reviews,
+        local_approved_batch_records: local.local_approved_batch_records,
+        local_candidate_status: localStatus.status,
         projected_current_cards: projectedCurrent,
         projected_gap: projectedGap,
         planning_gap: planningGap,
         sample_size: Math.min(options.sampleSize, Math.max(1, planningGap || currentGap)),
         priority_reason: priorityReason(current, candidateNew, projectedGap),
-        review_workflow: 'produce 3-card candidate sample, run scoped audit and agent self-review, then wait for user confirmation before batch expansion',
+        review_workflow: localStatus.next_step,
         boundary: 'candidate planning only; no reviews/approved_batches record and no formal content approval',
       });
     }
   }
 
   return targets.slice(0, options.limit);
+}
+
+function emptyLocalRecord() {
+  return {
+    local_candidate_cards: 0,
+    local_sample_card_ids: [],
+    local_self_review_records: [],
+    local_three_card_self_reviews: [],
+    local_approved_batch_records: [],
+  };
+}
+
+function localCandidateStatus(local, sampleSize) {
+  if (local.local_approved_batch_records.length > 0) {
+    return {
+      status: 'user_approved_batch_recorded',
+      next_step: 'use approved-batch scope for formal import planning; do not regenerate candidate samples',
+    };
+  }
+  if (local.local_three_card_self_reviews.length > 0) {
+    return {
+      status: 'local_three_card_sample_reviewed_waiting_user_confirmation',
+      next_step: 'present existing reviewed 3-card sample for user confirmation before batch expansion or formal import',
+    };
+  }
+  if (local.local_candidate_cards >= sampleSize) {
+    return {
+      status: 'local_candidates_need_agent_self_review',
+      next_step: 'create or refresh a scoped 3-card self-review record, then wait for user confirmation',
+    };
+  }
+  if (local.local_candidate_cards > 0) {
+    return {
+      status: 'partial_local_candidates_need_sample_completion',
+      next_step: 'complete the local candidate set to a 3-card sample, run scoped audit and agent self-review, then wait for user confirmation',
+    };
+  }
+  return {
+    status: 'no_local_candidates',
+    next_step: 'produce a 3-card candidate sample, run scoped audit and agent self-review, then wait for user confirmation before batch expansion',
+  };
 }
 
 function priorityReason(current, candidateNew, projectedGap) {
@@ -211,6 +355,7 @@ function summarizePlan(report, targets) {
     const candidateSummary = report.candidate_handoff_delta?.summary?.[track] || {};
     const plannedSampleCards = trackTargets.reduce((sum, target) => sum + target.sample_size, 0);
     const startingFreeGap = candidateSummary.projected_free_target_gap ?? sourceSummary.free_target_gap ?? null;
+    const localStatusCounts = countBy(trackTargets, target => target.local_candidate_status);
 
     byTrack[track] = {
       target_boxes: trackTargets.length,
@@ -220,9 +365,19 @@ function summarizePlan(report, targets) {
       projected_free_target_gap_after_samples: startingFreeGap === null
         ? null
         : Math.max(0, startingFreeGap - plannedSampleCards),
+      local_status_counts: localStatusCounts,
     };
   }
   return byTrack;
+}
+
+function countBy(items, getKey) {
+  const counts = {};
+  for (const item of items) {
+    const key = getKey(item);
+    counts[key] = (counts[key] || 0) + 1;
+  }
+  return counts;
 }
 
 function buildPlan(report, options, sourcePath = '') {
@@ -232,7 +387,7 @@ function buildPlan(report, options, sourcePath = '') {
     source_report: sourcePath,
     referenced_specs: REFERENCED_SPECS,
     product_truth: 'Apple release content must map to the active softbook_cet box catalog and formal usability still requires explicit user approval.',
-    implementation_hypothesis: 'This plan translates a release content gap report into candidate sample targets for card make. Candidate projections are dry-run planning evidence only.',
+    implementation_hypothesis: 'This plan translates a release content gap report into card make sample-review targets and cross-checks local candidate coverage. Candidate projections are dry-run planning evidence only.',
     sample_policy: {
       default_sample_size: options.sampleSize,
       batch_generation_requires_user_confirmation: true,
@@ -264,19 +419,19 @@ function renderMarkdown(plan) {
   lines.push('');
   lines.push('## Track Summary');
   lines.push('');
-  lines.push('| Track | Target boxes | Planned sample cards | Current free-target gap | Candidate-projected free-target gap | Projected gap after these samples |');
-  lines.push('| --- | ---: | ---: | ---: | ---: | ---: |');
+  lines.push('| Track | Target boxes | Planned sample cards | Current free-target gap | Candidate-projected free-target gap | Projected gap after these samples | Local reviewed samples | Local candidates needing review | No local candidates |');
+  lines.push('| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |');
   for (const track of TRACKS) {
     const row = plan.plan_summary[track];
-    lines.push(`| ${track.toUpperCase()} | ${row.target_boxes} | ${row.planned_sample_cards} | ${nullable(row.current_free_target_gap)} | ${nullable(row.candidate_projected_free_target_gap)} | ${nullable(row.projected_free_target_gap_after_samples)} |`);
+    lines.push(`| ${track.toUpperCase()} | ${row.target_boxes} | ${row.planned_sample_cards} | ${nullable(row.current_free_target_gap)} | ${nullable(row.candidate_projected_free_target_gap)} | ${nullable(row.projected_free_target_gap_after_samples)} | ${row.local_status_counts.local_three_card_sample_reviewed_waiting_user_confirmation || 0} | ${row.local_status_counts.local_candidates_need_agent_self_review || 0} | ${row.local_status_counts.no_local_candidates || 0} |`);
   }
   lines.push('');
   lines.push('## Next Sample Targets');
   lines.push('');
-  lines.push('| # | Track | Prefix | Library | Group | Box | Current | Candidate new | Planning gap | Sample size | Reason |');
-  lines.push('| ---: | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- |');
+  lines.push('| # | Track | Prefix | Library | Group | Box | Runtime current | Local candidates | Local status | Candidate new | Planning gap | Sample size | Next step |');
+  lines.push('| ---: | --- | --- | --- | --- | --- | ---: | ---: | --- | ---: | ---: | ---: | --- |');
   plan.targets.forEach((target, index) => {
-    lines.push(`| ${index + 1} | ${target.track.toUpperCase()} | ${target.prefix} | ${target.library} | ${target.group} | ${target.box} | ${target.current_runtime_cards} | ${target.candidate_new_cards} | ${target.planning_gap} | ${target.sample_size} | ${target.priority_reason} |`);
+    lines.push(`| ${index + 1} | ${target.track.toUpperCase()} | ${target.prefix} | ${target.library} | ${target.group} | ${target.box} | ${target.current_runtime_cards} | ${target.local_candidate_cards} | ${target.local_candidate_status} | ${target.candidate_new_cards} | ${target.planning_gap} | ${target.sample_size} | ${target.review_workflow} |`);
   });
   return `${lines.join('\n')}\n`;
 }
@@ -340,6 +495,7 @@ function runSelfTest() {
   const plan = buildPlan(report, {
     format: 'json',
     includeCovered: false,
+    localCoverage: {byKey: new Map()},
     limit: 10,
     sampleSize: 3,
     track: 'both',
@@ -354,12 +510,49 @@ function runSelfTest() {
   const coveredPlan = buildPlan(report, {
     format: 'json',
     includeCovered: true,
+    localCoverage: {byKey: new Map()},
     limit: 10,
     sampleSize: 3,
     track: 'cet6',
   }, 'fixture.json');
   assert.equal(coveredPlan.targets.some(target => target.prefix === '1501'), true);
   assert.equal(renderMarkdown(plan).includes('reviews/approved_batches'), true);
+
+  const localCoverage = {
+    byKey: new Map([
+      ['cet4:0000', {
+        local_candidate_cards: 12,
+        local_sample_card_ids: ['000001', '000002', '000003'],
+        local_self_review_records: ['fixture-review'],
+        local_three_card_self_reviews: ['fixture-review'],
+        local_approved_batch_records: [],
+      }],
+    ]),
+  };
+  const localPlan = buildPlan(report, {
+    format: 'json',
+    includeCovered: false,
+    localCoverage,
+    limit: 10,
+    sampleSize: 3,
+    track: 'cet4',
+  }, 'fixture.json');
+  assert.equal(localPlan.targets[0].local_candidate_cards, 12);
+  assert.equal(
+    localPlan.targets[0].local_candidate_status,
+    'local_three_card_sample_reviewed_waiting_user_confirmation',
+  );
+
+  const hiddenLocalPlan = buildPlan(report, {
+    format: 'json',
+    hideLocalSampleReady: true,
+    includeCovered: false,
+    localCoverage,
+    limit: 10,
+    sampleSize: 3,
+    track: 'cet4',
+  }, 'fixture.json');
+  assert.equal(hiddenLocalPlan.targets.length, 0);
   console.log('[ok] plan_release_gap_samples self-test passed');
 }
 
