@@ -1,0 +1,69 @@
+{
+  "handoff_id": "20260710-tooling-release-gap-open-pr-coverage",
+  "created_at": "2026-07-10T00:04:04+08:00",
+  "agent": "codex",
+  "branch": "tooling/release-gap-open-pr-coverage",
+  "base_branch": "main",
+  "commit_sha": "self_referential_tooling_handoff_commit_after_push",
+  "push_ref": "origin/tooling/release-gap-open-pr-coverage",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/76",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "tooling",
+    "purpose": "Refine the release gap sample planner so it can account for open candidate PR coverage before recommending the next sample targets.",
+    "referenced_specs": [
+      "../softbook_cet/spec/requirement-memory.json",
+      "../softbook_cet/spec/product-core.json",
+      "../softbook_cet/spec/card-system.json",
+      "../softbook_cet/spec/box-catalog.json",
+      "spec/workspace-contract.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json",
+      "spec/agent-harness.json",
+      "spec/git-workflow.json"
+    ],
+    "touched_paths": [
+      "scripts/plan_release_gap_samples.mjs",
+      "reviews/git_handoffs/20260710-tooling-release-gap-open-pr-coverage.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node --check scripts/plan_release_gap_samples.mjs",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/plan_release_gap_samples.mjs --self-test",
+      "result": "passed; includes regression coverage for open candidate PR detection, zero new sample planning for covered targets, and --hide-open-pr-covered filtering"
+    },
+    {
+      "command": "node scripts/plan_release_gap_samples.mjs --content-gap-report /tmp/softbook-content-gap-handoff-20260709-final.json --open-pr-report /tmp/card-make-open-prs-current.json --hide-local-sample-ready --format json --output /tmp/plan-open-pr-covered-visible.json",
+      "result": "passed; 27 open PRs read, 26 mapped to candidate box prefixes, and the visible first 12 targets were marked open_candidate_pr_pending_user_confirmation with zero planned new sample cards"
+    },
+    {
+      "command": "node scripts/plan_release_gap_samples.mjs --content-gap-report /tmp/softbook-content-gap-handoff-20260709-final.json --open-pr-report /tmp/card-make-open-prs-current.json --hide-local-sample-ready --hide-open-pr-covered --format json --output /tmp/plan-open-pr-covered-hidden.json",
+      "result": "passed; after hiding open-PR-covered targets the next recommended uncovered target starts at cet6:1022"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream group-alignment warnings remain"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; content_candidate_diff=false and only tooling/handoff paths changed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #76 is open for a tooling-only release gap planner follow-up and is eligible for standing-delegation auto-merge after final validation and mergeability checks.",
+  "remaining_risks": [
+    "The planner consumes a point-in-time gh pr list JSON report; it does not query GitHub by itself.",
+    "Open candidate PR coverage is planning evidence only and does not equal user approval or formal content usability.",
+    "The planner still does not generate card text, import runtime payloads, write reviews/approved_batches records, or judge human content quality.",
+    "User confirmation remains required before formal batch approval, import, or Apple-release content claims."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}

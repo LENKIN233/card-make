@@ -1,0 +1,286 @@
+{
+  "draft_id": "20260514-cet4-listening-0010-revised-sample",
+  "created_at": "2026-05-14T13:20:42+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0010 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "语音现象",
+    "box": "连读",
+    "box_prefix": "0010",
+    "candidate_for_existing_card_ids": [
+      "001001",
+      "001002",
+      "001003"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "001001",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "0",
+        "box_name": "连读",
+        "box_prefix": "0010"
+      },
+      "front": {
+        "text": "播放音频后，选出最明显的连读位置。",
+        "task_prompt": "重点听 turn off：前一个词以辅音结尾，后一个词以元音开头。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0010/001001.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "turn off"
+          },
+          {
+            "key": "B",
+            "text": "old server"
+          },
+          {
+            "key": "C",
+            "text": "before midnight"
+          },
+          {
+            "key": "D",
+            "text": "data conflict"
+          }
+        ],
+        "task_schema": {
+          "action": "定位连读位置",
+          "focus": "识别辅音结尾接元音开头的连读",
+          "success_criteria": "能听出 turn off 会被连成一个更紧的音块"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0010/001001.mp3",
+        "duration_ms": 5520,
+        "transcript": "We need to turn off the old server before midnight to prevent data conflict.",
+        "path": "ai_tts/cet4/0010/001001.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。turn 以 /n/ 结尾，off 以元音开头，实际听感中两个词会贴得很近，像一个连续音块。CET 听力里这类连读会让熟悉的短语一瞬间变得不容易分开。old server、before midnight、data conflict 虽然也是信息块，但本题要抓的是辅音接元音的连读，不是普通词组。",
+        "tips": [
+          "辅音结尾 + 元音开头时，两个词常贴在一起读。",
+          "听不清短语时，先问自己有没有发生连读。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 turn off 中的辅音加元音连读",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把听不清的短语还原成词边界，提升短句理解速度。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "001002",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "0",
+        "box_name": "连读",
+        "box_prefix": "0010"
+      },
+      "front": {
+        "text": "这句话里哪一段最容易因为连续短词而听成一团？",
+        "task_prompt": "播放音频后，找出 pick it up at 这类连续连读音块。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0010/001002.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "pick it up at"
+          },
+          {
+            "key": "B",
+            "text": "front desk"
+          },
+          {
+            "key": "C",
+            "text": "registration closes"
+          },
+          {
+            "key": "D",
+            "text": "could you"
+          }
+        ],
+        "task_schema": {
+          "action": "选择连续连读音块",
+          "focus": "识别多个短词连续相连造成的听感压缩",
+          "success_criteria": "能把听成一团的音还原成 pick it up at"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0010/001002.mp3",
+        "duration_ms": 4920,
+        "transcript": "Could you pick it up at the front desk after the registration closes?",
+        "path": "ai_tts/cet4/0010/001002.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。pick it up at 里连续出现多个短词，pick 的 /k/ 会接到 it，up 的 /p/ 又接到 at，听感容易被压缩成一串。遇到这类短词连读，不要急着按单个重读词找答案，要先把动作短语 pick up 和代词 it、地点介词 at 分开。B、C 是相对完整的实词组，D 更偏弱读/同化，不是这张卡要练的连续连读核心。",
+        "tips": [
+          "短词越密集，越容易出现连续连读。",
+          "先还原动词短语，再处理代词和介词。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 pick it up at 的连续短词连读",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把连续短词音块拆回可理解的动作和介词结构。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "001003",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "0",
+        "box_name": "连读",
+        "box_prefix": "0010"
+      },
+      "front": {
+        "text": "听这句问话，哪一处最适合用连读来还原词边界？",
+        "task_prompt": "重点听 ask about，不要把它误听成一个陌生词。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0010/001003.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "ask about"
+          },
+          {
+            "key": "B",
+            "text": "updated timeline"
+          },
+          {
+            "key": "C",
+            "text": "final presentation"
+          },
+          {
+            "key": "D",
+            "text": "I want"
+          }
+        ],
+        "task_schema": {
+          "action": "选择可连读还原的词组",
+          "focus": "识别 /k/ 接元音的词边界连读",
+          "success_criteria": "能把 ask about 还原成两个词并理解提问意图"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0010/001003.mp3",
+        "duration_ms": 5088,
+        "transcript": "I want to ask about the updated timeline for the final presentation.",
+        "path": "ai_tts/cet4/0010/001003.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。ask 以 /k/ 结尾，about 以元音开头，连读后两个词的边界会变弱，容易听成一个连续音块。还原出 ask about 后，整句就是在询问 final presentation 的更新时间线。B、C 是重点信息名词组，但不是最典型的连读位置；D 的 want to 更偏弱读或口语缩合，不是本卡的目标。",
+        "tips": [
+          "词尾辅音接词首元音时，要主动尝试拆词。",
+          "先拆出 ask about，后面的主题信息才容易跟上。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 ask about 的辅音加元音连读",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把连读听感还原成词边界，避免把常见短语误听成陌生表达。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ],
+  "review_limits": [
+    "This is a local draft sample only.",
+    "It is not formal product content.",
+    "Audio file quality still needs separate review before formal approval.",
+    "User confirmation is required before any batch expansion or card_boxes_json replacement beyond this scoped candidate sample."
+  ]
+}

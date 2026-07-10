@@ -1,0 +1,286 @@
+{
+  "draft_id": "20260514-cet4-listening-0002-revised-sample",
+  "created_at": "2026-05-14T12:38:37+08:00",
+  "status": "draft_candidate_not_formal_content",
+  "purpose": "Revised 3-card candidate sample for CET4 listening box 0002 after the existing sample was blocked by agent self-review.",
+  "scope": {
+    "track": "cet4",
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测信号词",
+    "box_prefix": "0002",
+    "candidate_for_existing_card_ids": [
+      "000201",
+      "000202",
+      "000203"
+    ]
+  },
+  "source_policy": {
+    "text_source_type": "simulation",
+    "source_note": "Uses legacy content_pool transcripts with unverified provenance as simulated training material. Do not label as true exam content.",
+    "audio_generation_method": "TTS_AI_generated",
+    "tts_text_reviewed_for_sample": true,
+    "tts_audio_reviewed_for_formal_use": false
+  },
+  "cards": [
+    {
+      "card_id": "000201",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "front": {
+        "text": "播放音频前先看选项：这句话最可能出现哪组信号词？",
+        "task_prompt": "注意 demand grew quickly 和 delayed expansion 之间可能有转折，再听原因解释。",
+        "display_mode": "options_then_audio",
+        "audio_first": false,
+        "audio_url": "ai_tts/cet4/0002/000201.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "Although ... because ..."
+          },
+          {
+            "key": "B",
+            "text": "For example ... in addition ..."
+          },
+          {
+            "key": "C",
+            "text": "First ... second ..."
+          },
+          {
+            "key": "D",
+            "text": "As soon as ... finally ..."
+          }
+        ],
+        "task_schema": {
+          "action": "选择最可能的信号词组合",
+          "focus": "预测让步加原因的双信号结构",
+          "success_criteria": "能解释 although 标出反预期，because 引出真正原因"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0002/000201.mp3",
+        "duration_ms": 7056,
+        "transcript": "Although demand grew quickly, the team delayed expansion because funding approval was not finalized.",
+        "path": "ai_tts/cet4/0002/000201.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。Although 先制造反预期：需求增长很快，按理应该扩张；but 这里实际动作是 delayed expansion。because 接着给出延迟原因：funding approval was not finalized。听前预测信号词时，要先看句子里可能存在的逻辑冲突，再预判会不会出现 although / however / because 这类结构词。B 是举例和补充，C 是排序，D 是时间流程，都不能解释“需求增长却推迟扩张”的关系。",
+        "tips": [
+          "Although 常提示“前面不等于结论”。",
+          "because 后面通常是题目最容易追问的原因。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "预测让步加原因信号词组合",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在听前预判反预期和原因结构，降低听到长句时的处理负担。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "000202",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "front": {
+        "text": "听到前半句是 positive，后半句最需要抓哪个信号词？",
+        "task_prompt": "先预测评价方向会不会反转，再播放音频验证。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0002/000202.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "however"
+          },
+          {
+            "key": "B",
+            "text": "therefore"
+          },
+          {
+            "key": "C",
+            "text": "for instance"
+          },
+          {
+            "key": "D",
+            "text": "meanwhile"
+          }
+        ],
+        "task_schema": {
+          "action": "选择需要重点听的信号词",
+          "focus": "识别正向反馈到安全担忧的转折",
+          "success_criteria": "能说明 however 后的信息权重更高"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0002/000202.mp3",
+        "duration_ms": 7440,
+        "transcript": "The initial feedback seemed positive; however, several users reported serious security concerns.",
+        "path": "ai_tts/cet4/0002/000202.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。positive 让人以为整体评价不错，但 however 之后出现 serious security concerns，信息重心明显反转。CET 听力里，however / but / yet 后面的内容常常比前面的铺垫更接近答案。therefore 是结果，for instance 是举例，meanwhile 是并列时间，都不能承接 positive 到 security concerns 的冲突。",
+        "tips": [
+          "however 后面常是转折后的重点。",
+          "前半句很正面时，更要警惕后面的负向转折。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别转折信号词 however",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把 however 后的信息当成听力判断的高权重点。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "000203",
+      "track": "cet4",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "front": {
+        "text": "听到 transport 被 disrupted，预测句子开头最可能是什么逻辑信号。",
+        "task_prompt": "判断后面的 postponed the field survey 是结果还是补充说明。",
+        "display_mode": "audio_then_options",
+        "audio_first": true,
+        "audio_url": "ai_tts/cet4/0002/000203.mp3",
+        "options": [
+          {
+            "key": "A",
+            "text": "Since"
+          },
+          {
+            "key": "B",
+            "text": "Besides"
+          },
+          {
+            "key": "C",
+            "text": "Unless"
+          },
+          {
+            "key": "D",
+            "text": "In contrast"
+          }
+        ],
+        "task_schema": {
+          "action": "选择开头信号词",
+          "focus": "识别原因到结果的预测关系",
+          "success_criteria": "能说明 weather disrupted transport 是 postponed 的原因"
+        }
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "audio": {
+        "url": "ai_tts/cet4/0002/000203.mp3",
+        "duration_ms": 7032,
+        "transcript": "Since the weather disrupted transport, the organizers postponed the field survey by two days.",
+        "path": "ai_tts/cet4/0002/000203.mp3"
+      },
+      "analysis": {
+        "text": "正确答案是 A。Since 在这里不是“自从”，而是原因信号，相当于 because：天气影响交通，所以组织者把实地调查推迟两天。听到 disrupted / delayed / postponed 这类结果词时，可以反向预测前面可能会有 since / because / due to。Besides 是补充，unless 是条件，in contrast 是对比，都不适合连接天气影响和活动推迟。",
+        "tips": [
+          "Since 放句首时常可表示原因。",
+          "postponed 这类结果词前后通常要找原因。"
+        ]
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别句首原因信号词 since",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户把原因信号词和结果动作绑定，避免只记 isolated words。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    }
+  ],
+  "review_limits": [
+    "This is a local draft sample only.",
+    "It is not formal product content.",
+    "Audio file quality still needs separate review before formal approval.",
+    "User confirmation is required before any batch expansion or card_boxes_json replacement beyond this scoped candidate sample."
+  ]
+}

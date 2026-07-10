@@ -1,0 +1,155 @@
+{
+  "version": "card-make-review-workflow-v1",
+  "status": "active",
+  "agent_permissions": {
+    "may": [
+      "produce_candidate_cards",
+      "produce_3_card_sample_per_box",
+      "self_review_candidates",
+      "revise_user_authorized_scope",
+      "mark_discard_candidates",
+      "manage_git_lifecycle_for_agent_authored_tracked_changes",
+      "open_or_update_draft_PRs",
+      "auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation",
+      "commit_push_open_PR_for_harness_changes",
+      "commit_push_open_PR_for_user_confirmed_formal_batches"
+    ],
+    "must_not": [
+      "declare_final_formal_usability",
+      "batch_generate_before_user_confirms_sample",
+      "delete_cards_without_user_confirmation",
+      "auto_merge_formal_content_without_user_confirmed_sample_and_scope_delegation",
+      "auto_merge_without_standing_or_explicit_user_authorization",
+      "force_push_main_or_shared_base_branches",
+      "mix_harness_changes_with_bulk_card_content_changes"
+    ]
+  },
+  "pre_generation_required_inputs": [
+    "library_group_box_target",
+    "target_user_weak_points",
+    "difficulty_tier",
+    "card_prototype_plan",
+    "material_source_type",
+    "TTS_text_and_audio_plan_when_audio_exists"
+  ],
+  "sample_policy": {
+    "default_size": "3 cards per box",
+    "purpose": "prove quality before batch expansion",
+    "batch_generation_requires": "user_confirmation_of_sample"
+  },
+  "candidate_review_queue": {
+    "schema": "spec/candidate-review-queue.schema.json",
+    "record": "reviews/candidate-review-queue.json",
+    "active_candidate_pr_limit": 5,
+    "parallel_tooling_pr_limit": 1,
+    "active_unit": "one_box_three_card_sample",
+    "green_checks_do_not_create_formal_approval": true,
+    "parked_units_must_keep_patch_sha_and_original_head": true
+  },
+  "sample_quality_gate": {
+    "quality_metadata_schema": "spec/card-metadata.schema.json",
+    "agent_self_review_directory": "reviews/agent_self_review/",
+    "approval_record_directory": "reviews/approved_batches/",
+    "required_before_user_confirmation": [
+      "quality_metadata_per_card",
+      "agent_self_review_record",
+      "blocker_scan_per_card",
+      "card_quality_audit_no_hard_blockers",
+      "scoped_card_quality_audit_report",
+      "box_progression_roles",
+      "TTS_audio_QC_plan_when_audio_exists",
+      "no_standalone_hint_layer_interaction"
+    ],
+    "approval_requires": [
+      "explicit_user_confirmation",
+      "linked_agent_self_review_record",
+      "harness_validation",
+      "card_validation",
+      "card_quality_audit_report"
+    ]
+  },
+  "residual_blocker_closure_review_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "purpose": "Record agent review evidence for a small set of previously detected blocker cards that may span unrelated box prefixes.",
+    "allowed_when": [
+      "the scope is a residual blocker closure rather than a new 3-card sample",
+      "each card is explicitly named by card_id",
+      "the source issue or PR evidence is recorded"
+    ],
+    "required_fields": [
+      "sample_policy.review_scope_type=residual_blocker_closure",
+      "sample_policy.is_three_card_sample_per_box=false",
+      "sample_policy.residual_blocker_closure=true",
+      "sample_policy.not_sample_approval=true",
+      "scope.closure_reason",
+      "scope.source_issue_refs",
+      "scoped_card_quality_audit_report"
+    ],
+    "not_sample_approval": true,
+    "must_not": [
+      "use recommend_user_confirmation",
+      "create reviews/approved_batches records",
+      "treat scoped audit plus handoff evidence as formal user approval"
+    ]
+  },
+  "self_review_required_checks": [
+    "single_card_quality",
+    "front_back_relationship",
+    "language_naturalness",
+    "library_group_box_match",
+    "box_progression",
+    "blocker_scan"
+  ],
+  "self_review_output": {
+    "per_card_status": ["pass", "revise", "block"],
+    "batch_status": ["recommend_user_confirmation", "revise_before_user_review", "blocked", "documented_residual_closure"],
+    "must_include": [
+      "changed_or_new_boxes",
+      "representative_cards",
+      "self_review_result",
+      "blockers_or_risks",
+      "next_step_recommendation"
+    ]
+  },
+  "uncertainty_policy": {
+    "default": "mark_uncertainty_do_not_invent",
+    "allowed_low_risk_assumption": "only_for_non_content-critical wording",
+    "preferred_actions": [
+      "reduce_scope",
+      "make_smaller_sample",
+      "ask_user"
+    ]
+  },
+  "edit_existing_card_policy": {
+    "requires": [
+      "clear_quality_issue",
+      "user_authorized_scope",
+      "pre_edit_statement_of_issue"
+    ],
+    "delete_policy": "Do not delete directly; mark discard candidates for user confirmation."
+  },
+  "approval_record_policy": {
+    "directory": "reviews/approved_batches/",
+    "required_for_formal_use": true,
+    "required_fields": [
+      "approved_by_user",
+      "approved_at",
+      "scope",
+      "summary",
+      "card_quality_audit",
+      "representative_cards",
+      "validation"
+    ]
+  },
+  "git_policy": {
+    "contract": "spec/git-workflow.json",
+    "pre_edit_status_check": "required",
+    "harness_changes": "validated_commit_push_open_or_update_draft_PR_required",
+    "small_samples": "may_remain_local_for_user_review",
+    "formal_bulk_card_changes": "validated_commit_push_open_or_update_draft_PR_required_after_user_confirmed_sample",
+    "existing_PR_update": "update_existing_open_PR_when_same_requirement_domain_and_base",
+    "new_PR": "create_scoped_branch_when_separate_review_unit_or_existing_PR_scope_would_blur",
+    "PR_merge": "auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation",
+    "handoff": "branch_base_commit_push_ref_validation_PR_status_required"
+  }
+}

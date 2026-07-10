@@ -1,0 +1,63 @@
+{
+  "handoff_id": "20260709-tooling-release-gap-local-coverage",
+  "created_at": "2026-07-09T20:42:00+08:00",
+  "agent": "codex",
+  "branch": "tooling/release-gap-local-coverage",
+  "base_branch": "main",
+  "commit_sha": "self_referential_tooling_handoff_commit_after_push",
+  "push_ref": "origin/tooling/release-gap-local-coverage",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/67",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "tooling",
+    "purpose": "Refine the release gap sample planner so it cross-checks local card make candidate coverage, self-review records, and approved-batch records before recommending next sample work.",
+    "referenced_specs": [
+      "../softbook_cet/spec/requirement-memory.json",
+      "../softbook_cet/spec/product-core.json",
+      "../softbook_cet/spec/card-system.json",
+      "../softbook_cet/spec/box-catalog.json",
+      "spec/workspace-contract.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json"
+    ],
+    "touched_paths": [
+      "scripts/plan_release_gap_samples.mjs",
+      "reviews/git_handoffs/20260709-tooling-release-gap-local-coverage.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/plan_release_gap_samples.mjs --self-test",
+      "result": "passed; includes regression coverage for local 3-card self-review detection and --hide-local-sample-ready"
+    },
+    {
+      "command": "node scripts/plan_release_gap_samples.mjs --content-gap-report /tmp/softbook-content-gap-handoff-20260709-final.json --format markdown --output /tmp/card-make-release-gap-local-coverage-plan-20260709.md",
+      "result": "passed; output shows existing local candidate coverage, reviewed-sample wait states, and self-review-needed states"
+    },
+    {
+      "command": "node scripts/plan_release_gap_samples.mjs --content-gap-report /tmp/softbook-content-gap-handoff-20260709-final.json --hide-local-sample-ready --format json --output /tmp/card-make-release-gap-missing-review-plan-20260709.json",
+      "result": "passed; first remaining targets are local candidate boxes needing agent self-review such as 1000, 1001, 1002, 1010, and 1011"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed after final tooling commit; only recorded upstream group-alignment warnings remain"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed after final tooling commit; content_candidate_diff=false"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #67 is open for a tooling-only local coverage follow-up and is eligible for standing-delegation auto-merge after final validation and mergeability checks.",
+  "remaining_risks": [
+    "The planner reports local candidate/self-review/approval coverage but does not judge human content quality.",
+    "Existing local candidates and agent self-review records are not formal content approval.",
+    "The planner does not generate card text, update card_boxes_json, import runtime payloads, or write reviews/approved_batches records.",
+    "User confirmation remains required before formal batch approval, import, or Apple-release content claims."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}

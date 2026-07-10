@@ -1,0 +1,161 @@
+name: pr-gates
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: card-pr-gates-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  contract-harness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: card-make
+    steps:
+      - name: Checkout card workspace
+        uses: actions/checkout@v4
+        with:
+          path: card-make
+          fetch-depth: 0
+          lfs: true
+
+      - name: Checkout product authority
+        uses: actions/checkout@v4
+        with:
+          repository: LENKIN233/softbook_cet
+          ref: main
+          path: softbook_cet
+          ssh-key: ${{ secrets.SOFTBOOK_CET_DEPLOY_KEY }}
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.11.0"
+
+      - name: Validate contracts
+        run: |
+          node scripts/validate_harness.mjs
+          node scripts/validate_audio_qc.mjs
+          node scripts/validate_audio_lfs.mjs
+          git diff --check
+
+  content-scope:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: card-make
+    steps:
+      - name: Checkout card workspace
+        uses: actions/checkout@v4
+        with:
+          path: card-make
+          fetch-depth: 0
+          lfs: true
+
+      - name: Checkout product authority
+        uses: actions/checkout@v4
+        with:
+          repository: LENKIN233/softbook_cet
+          ref: main
+          path: softbook_cet
+          ssh-key: ${{ secrets.SOFTBOOK_CET_DEPLOY_KEY }}
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.11.0"
+
+      - name: Validate cards and current audit
+        run: |
+          node scripts/validate_cards.mjs --report-path "$RUNNER_TEMP/card-validation.json"
+          node scripts/audit_card_quality.mjs --report-path "$RUNNER_TEMP/card-quality-audit.json"
+
+      - name: Validate pull request scope
+        if: github.event_name == 'pull_request'
+        run: node scripts/validate_pr_scope.mjs --base "origin/${{ github.base_ref }}" --head HEAD
+
+  approval-boundary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: card-make
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: card-make
+          fetch-depth: 0
+
+      - name: Validate approval boundary
+        if: github.event_name == 'pull_request'
+        env:
+          PR_LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+        run: node scripts/validate_delivery_boundary.mjs --base "origin/${{ github.base_ref }}" --head HEAD
+
+  delivery-record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: card-make
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: card-make
+          fetch-depth: 0
+
+      - name: Validate handoff record
+        if: github.event_name == 'pull_request'
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+          BASE_BRANCH: ${{ github.base_ref }}
+        run: node scripts/validate_delivery_record.mjs --base "origin/${{ github.base_ref }}" --head HEAD
+
+  repo-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: card-make
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: card-make
+          fetch-depth: 0
+
+      - name: Validate repository health
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT_NAME" = "schedule" ]; then
+            node scripts/report_repo_health.mjs --full-tree --remote --strict --output "$RUNNER_TEMP/repository-health.json"
+            node scripts/validate_candidate_review_queue.mjs --required --require-five
+          elif git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
+            node scripts/report_repo_health.mjs --base "$BASE_SHA" --strict --output "$RUNNER_TEMP/repository-health.json"
+            node scripts/validate_candidate_review_queue.mjs
+          else
+            node scripts/report_repo_health.mjs --strict --output "$RUNNER_TEMP/repository-health.json"
+            node scripts/validate_candidate_review_queue.mjs
+          fi

@@ -1,0 +1,3259 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CET-4/6 卡片交互预览器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0081d4;
+            --accent: #00d4ff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg-dark: #0f1419;
+            --bg-surface: #1a1f2e;
+            --bg-card: #242d3d;
+            --border: #3a4556;
+            --text-primary: #eceff1;
+            --text-secondary: #b0bec5;
+            --text-muted: #78909c;
+            --card-fixed-height: clamp(520px, 60vh, 700px);
+            --phone-zoom: 1.12;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0a0e14 0%, #141a25 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .viewport {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            min-height: 100vh;
+            gap: 0;
+        }
+
+        /* ============ SIDEBAR ============ */
+        .sidebar {
+            background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-dark) 100%);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            background: rgba(0, 129, 212, 0.05);
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .sidebar-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 0;
+        }
+
+        .section {
+            padding: 0 16px;
+            margin-bottom: 24px;
+        }
+
+        .upload-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary), #0066aa);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 129, 212, 0.25);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 129, 212, 0.4);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .stats-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .stat-item {
+            background: var(--bg-card);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 2px solid var(--primary);
+            font-size: 12px;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 10px;
+            margin-bottom: 2px;
+        }
+
+        .stat-value {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .filter-checkbox:hover {
+            background: rgba(0, 129, 212, 0.05);
+        }
+
+        .filter-checkbox input {
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .filter-checkbox label {
+            font-size: 12px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .card-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .card-item {
+            padding: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .card-item:hover {
+            background: rgba(0, 129, 212, 0.05);
+            border-color: var(--primary);
+        }
+
+        .card-item.active {
+            background: rgba(0, 129, 212, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 129, 212, 0.08);
+        }
+
+        .card-item-id {
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'Courier New', monospace;
+        }
+
+        .card-item-name {
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 11px;
+        }
+
+        .card-item-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .card-item-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .list-chip {
+            display: inline-flex;
+            align-items: center;
+            max-width: 100%;
+            padding: 2px 6px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-muted);
+            font-size: 10px;
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+
+        .list-chip.warn {
+            border-color: rgba(245, 158, 11, 0.48);
+            color: #ffd58a;
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .list-chip.ok {
+            border-color: rgba(16, 185, 129, 0.45);
+            color: #8df3c2;
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .list-chip.block {
+            border-color: rgba(239, 68, 68, 0.42);
+            color: #ffb0b0;
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .review-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .review-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .review-row strong {
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .review-chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .review-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .review-chip.ok {
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #8df3c2;
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .review-chip.warn {
+            border-color: rgba(245, 158, 11, 0.5);
+            color: #ffd58a;
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .review-chip.block {
+            border-color: rgba(239, 68, 68, 0.45);
+            color: #ffb0b0;
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .review-findings {
+            display: grid;
+            gap: 6px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .review-finding {
+            padding: 7px 8px;
+            border-radius: 6px;
+            border-left: 2px solid var(--border);
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        .review-finding.warn {
+            border-left-color: var(--warning);
+        }
+
+        .review-finding.block {
+            border-left-color: var(--error);
+        }
+
+        .review-finding.ok {
+            border-left-color: var(--success);
+        }
+
+        .secondary-btn {
+            width: 100%;
+            min-height: 36px;
+            padding: 8px 10px;
+            border: 1px solid rgba(0, 212, 255, 0.42);
+            border-radius: 8px;
+            background: rgba(0, 129, 212, 0.12);
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(0, 129, 212, 0.2);
+        }
+
+        .copy-status {
+            min-height: 16px;
+            color: var(--text-muted);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* ============ MAIN CONTENT ============ */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-surface);
+            overflow-y: auto;
+        }
+
+        .content-container {
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-viewer {
+            width: 100%;
+            max-width: 560px;
+            animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .phone-stage {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .phone-shell {
+            width: min(460px, 100%);
+            border-radius: 40px;
+            padding: 10px;
+            background: linear-gradient(160deg, #151b2b 0%, #0d111d 100%);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 28px 72px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+            position: relative;
+            transform: scale(var(--phone-zoom));
+            transform-origin: center center;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 145px;
+            height: 24px;
+            border-radius: 14px;
+            background: #0a0d16;
+            z-index: 4;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .phone-screen {
+            background: radial-gradient(circle at 20% 0%, rgba(24, 36, 62, 0.95), rgba(14, 20, 36, 0.98));
+            border-radius: 32px;
+            overflow: hidden;
+            height: min(844px, calc(100vh - 90px));
+            padding-top: 42px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .phone-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 8px 10px;
+        }
+
+        .phone-home-indicator {
+            width: 120px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.32);
+            border-radius: 4px;
+            margin: 8px auto 10px;
+            flex-shrink: 0;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .placeholder {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 60px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 60px 20px;
+        }
+
+        /* ============ MOCK PHONE UI ============ */
+        .mock-phone {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+        }
+
+        .card-meta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-meta-left {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            min-width: 0;
+        }
+
+        .meta-badge {
+            padding: 4px 12px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .meta-info {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .meta-warn {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        /* Card Content */
+        .interactive-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 18px;
+            height: var(--card-fixed-height);
+            min-height: var(--card-fixed-height);
+            max-height: var(--card-fixed-height);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            text-align: left;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            overflow-y: hidden;
+            scrollbar-gutter: stable;
+            overscroll-behavior: contain;
+        }
+
+        .interactive-card::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .interactive-card::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .interactive-card::-webkit-scrollbar-thumb {
+            background: rgba(120, 144, 156, 0.45);
+            border-radius: 8px;
+        }
+
+        .interactive-card::-webkit-scrollbar-thumb:hover {
+            background: rgba(120, 144, 156, 0.65);
+        }
+
+        .interactive-card.flipped {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border-color: rgba(16, 185, 129, 0.35);
+        }
+
+        /* Inner content area — grows to fill, clips overflow */
+        .card-content {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Action row pinned to bottom of card */
+        .card-actions {
+            flex-shrink: 0;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .card-actions .flip-btn {
+            display: block;
+            margin: 0 auto 0;
+            width: fit-content;
+        }
+
+        .card-actions .feedback-buttons {
+            margin-top: 6px;
+        }
+
+        .card-phase {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            align-self: flex-start;
+        }
+
+        .card-front-text {
+            font-size: 17px;
+            line-height: 1.8;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .front-block {
+            width: 100%;
+            text-align: left;
+            display: grid;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .front-panel {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .front-panel-label {
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .front-panel.context {
+            border-left: 3px solid var(--accent);
+        }
+
+        .front-panel.task {
+            border-left: 3px solid var(--warning);
+        }
+
+        .hl {
+            background: rgba(0, 212, 255, 0.2);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.45);
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+
+        .card-back-text {
+            width: 100%;
+            font-size: 18px;
+            line-height: 1.9;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-weight: 500;
+            white-space: pre-wrap;
+        }
+
+        .card-explanation {
+            width: 100%;
+            font-size: 15px;
+            line-height: 1.9;
+            color: #c7d2e2;
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            white-space: pre-wrap;
+        }
+
+        .answer-result {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 6px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .answer-result.correct {
+            background: rgba(16, 185, 129, 0.18);
+            border: 1px solid rgba(16, 185, 129, 0.45);
+            color: #8df3c2;
+        }
+
+        .answer-result.incorrect {
+            background: rgba(239, 68, 68, 0.16);
+            border: 1px solid rgba(239, 68, 68, 0.42);
+            color: #ffb0b0;
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            position: relative;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: rgba(0, 129, 212, 0.15);
+            border-color: var(--primary);
+        }
+
+        .option-btn.selected {
+            background: rgba(0, 129, 212, 0.25);
+            border-color: var(--primary);
+        }
+
+        .option-btn.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .option-btn.incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .option-label {
+            display: inline-block;
+            width: 24px;
+            font-weight: 700;
+            margin-right: 8px;
+            color: var(--accent);
+        }
+
+        .option-btn.correct .option-label,
+        .option-btn.incorrect .option-label {
+            color: inherit;
+        }
+
+        /* Eliminable Items */
+        .eliminable-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            width: 100%;
+            margin-top: 16px;
+            align-items: flex-start;
+        }
+
+        .eliminable-item {
+            padding: 8px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .eliminable-item:hover {
+            background: rgba(0, 129, 212, 0.16);
+            border-color: var(--primary);
+        }
+
+        .eliminable-item.eliminated {
+            text-decoration: line-through;
+            opacity: 0.55;
+        }
+
+        /* Revealed only after 查看解析 */
+        .eliminable-item.correct-eliminated {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--success);
+            color: var(--success);
+            opacity: 1;
+            text-decoration: line-through;
+        }
+
+        .eliminable-item.error-eliminated {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--error);
+            color: var(--error);
+            opacity: 1;
+            text-decoration: line-through;
+        }
+
+        .eliminable-item.missed {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: var(--warning);
+            color: var(--warning);
+            opacity: 1;
+        }
+
+        .eliminate-status {
+            margin-top: 10px;
+            width: 100%;
+            text-align: left;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* True/False Swipe */
+        .swipe-area {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 0;
+            gap: 12px;
+        }
+
+        .swipe-btn {
+            flex: 1;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .swipe-btn:hover {
+            background: rgba(0, 129, 212, 0.15);
+            border-color: var(--primary);
+        }
+
+        .swipe-btn.false {
+            color: var(--error);
+        }
+
+        .swipe-btn.false:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--error);
+        }
+
+        .swipe-btn.true {
+            color: var(--success);
+        }
+
+        .swipe-btn.true:hover {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--success);
+        }
+
+        /* Flip Button */
+        .flip-btn {
+            padding: 10px 24px;
+            background: rgba(0, 212, 255, 0.15);
+            border: 1.5px solid var(--accent);
+            border-radius: 8px;
+            color: var(--accent);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .flip-btn:hover {
+            background: rgba(0, 212, 255, 0.25);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .peek-btn {
+            padding: 10px 16px;
+            background: rgba(245, 158, 11, 0.14);
+            border: 1.5px solid var(--warning);
+            border-radius: 8px;
+            color: #ffd58a;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .peek-btn:hover {
+            background: rgba(245, 158, 11, 0.24);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+        }
+
+        .peek-panel {
+            margin-top: 10px;
+            width: 100%;
+            border: 1px dashed rgba(245, 158, 11, 0.55);
+            border-radius: 10px;
+            padding: 10px 12px;
+            background: rgba(245, 158, 11, 0.08);
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.7;
+            text-align: left;
+        }
+
+        .peek-panel strong {
+            color: #ffd58a;
+        }
+
+        /* Feedback Buttons */
+        .feedback-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .fb-btn {
+            flex: 1;
+            min-height: 44px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .fb-btn:hover {
+            border-color: var(--border);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* 音频播放器样式 */
+        .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(0, 129, 212, 0.1);
+            border: 1.5px solid rgba(0, 129, 212, 0.3);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .audio-play-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #0066aa);
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            box-shadow: 0 4px 16px rgba(0, 129, 212, 0.3);
+        }
+
+        .audio-play-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 24px rgba(0, 129, 212, 0.4);
+        }
+
+        .audio-play-btn:active {
+            transform: scale(0.95);
+        }
+
+        .audio-play-btn.playing {
+            animation: audioPlaying 1s ease-in-out infinite;
+        }
+
+        @keyframes audioPlaying {
+            0%, 100% { box-shadow: 0 4px 16px rgba(0, 129, 212, 0.3); }
+            50% { box-shadow: 0 6px 24px rgba(0, 129, 212, 0.6); }
+        }
+
+        .audio-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .audio-duration {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .audio-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .audio-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .audio-time {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        audio {
+            display: none;
+        }
+
+        .analysis-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .analysis-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .analysis-content {
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+        }
+
+        .adaptive-details {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .adaptive-details summary {
+            list-style: none;
+            cursor: pointer;
+            user-select: none;
+            padding: 10px 12px;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .adaptive-details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .adaptive-details .adaptive-body {
+            padding: 10px 12px;
+        }
+
+        .front-context-details {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        @media (max-width: 1024px) {
+            :root {
+                --phone-zoom: 1.06;
+            }
+            .viewport {
+                grid-template-columns: 280px 1fr;
+            }
+            .phone-screen {
+                height: min(844px, calc(100vh - 70px));
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --phone-zoom: 1;
+            }
+            .viewport {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+            .content-container {
+                padding: 10px;
+            }
+            .card-viewer {
+                max-width: 100%;
+            }
+            .phone-shell {
+                border-radius: 26px;
+                padding: 8px;
+            }
+            .phone-screen {
+                border-radius: 22px;
+                height: calc(100vh - 6px);
+                padding-top: 28px;
+            }
+            .mock-phone {
+                padding: 6px;
+            }
+            .interactive-card {
+                /* ~80% of screen: maximize card area */
+                height: clamp(520px, 76vh, 820px);
+                min-height: clamp(520px, 76vh, 820px);
+                max-height: clamp(520px, 76vh, 820px);
+            }
+
+            .adaptive-details {
+                margin-top: 8px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .adaptive-details summary {
+                display: none;
+            }
+
+            .adaptive-details .adaptive-body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="viewport">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">🎮 交互预览</div>
+                <div class="sidebar-subtitle">查看真实呈现</div>
+            </div>
+
+            <div class="sidebar-body">
+                <div class="section">
+                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">📂 选择JSON文件</button>
+                    <input type="file" id="fileInput" accept=".json" />
+                </div>
+
+                <div class="section" id="statsSection" style="display: none;">
+                    <div class="section-title">📊 统计</div>
+                    <div class="stats-box">
+                        <div class="stat-item">
+                            <div class="stat-label">总数</div>
+                            <div class="stat-value" id="totalCards">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">已显示</div>
+                            <div class="stat-value" id="shownCards">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section" id="reviewSection" style="display: none;">
+                    <div class="section-title">审核信号</div>
+                    <div class="review-panel">
+                        <div class="review-row">
+                            <span>当前卡</span>
+                            <strong id="reviewCardId">未选择</strong>
+                        </div>
+                        <div class="review-row">
+                            <span>所属盒子</span>
+                            <strong id="reviewBoxPath">—</strong>
+                        </div>
+                        <div class="review-chip-list" id="reviewChips"></div>
+                        <div class="review-findings" id="reviewFindings"></div>
+                        <button class="secondary-btn" type="button" id="copyReviewDraftBtn">复制审核草稿</button>
+                        <div class="copy-status" id="copyReviewStatus"></div>
+                    </div>
+                </div>
+
+                <div class="section" id="filterSection" style="display: none;">
+                    <div class="section-title">筛选互动模型</div>
+                    <div class="filter-checkbox">
+                        <input type="checkbox" value="flip" class="typeFilter" checked />
+                        <label>flip 翻面复盘</label>
+                    </div>
+                    <div class="filter-checkbox">
+                        <input type="checkbox" value="multiple_choice" class="typeFilter" checked />
+                        <label>multiple_choice 选择判断</label>
+                    </div>
+                    <div class="filter-checkbox">
+                        <input type="checkbox" value="lock" class="typeFilter" checked />
+                        <label>lock 锁定 / 时机</label>
+                    </div>
+                    <div class="filter-checkbox">
+                        <input type="checkbox" value="elimination" class="typeFilter" checked />
+                        <label>elimination 消除</label>
+                    </div>
+                    <div class="filter-checkbox">
+                        <input type="checkbox" value="swipe" class="typeFilter" checked />
+                        <label>swipe 滑动判断</label>
+                    </div>
+                    <div class="filter-checkbox">
+                        <input type="checkbox" value="__unsupported" class="typeFilter" checked />
+                        <label>unsupported / unknown</label>
+                    </div>
+                </div>
+
+                <div class="section" id="cardsSection" style="display: none;">
+                    <div class="section-title">卡片列表</div>
+                    <div class="card-items-list" id="cardsList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="content-container">
+                <div class="card-viewer" id="cardViewer">
+                    <div class="placeholder">
+                        <div style="font-size: 48px; margin-bottom: 16px;">📂</div>
+                        <div style="font-size: 16px; margin-bottom: 8px;">选择一个JSON卡片文件</div>
+                        <div style="font-size: 13px; color: var(--text-secondary);">或将JSON内容粘贴到此页面</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allCards = [];
+        let filteredCards = [];
+        let currentCardIdx = -1;
+        let cardState = {}; // Store interaction state for current card
+
+        const INTERACTION_TYPES = {
+            0: 'T0 翻面卡',
+            1: 'T1 四选一',
+            2: 'T2 时机点击',
+            3: 'T3 长按松手',
+            4: 'T4 消除卡',
+            5: 'T5 下滑提示',
+            6: 'T6 选词填空',
+            7: 'T7 浏览判断',
+            8: 'T8 时态切换'
+        };
+
+        const PRODUCT_INTERACTION_TYPES = {
+            flip: 'flip 翻面复盘',
+            multiple_choice: 'multiple_choice 选择判断',
+            lock: 'lock 锁定/时机',
+            elimination: 'elimination 消除',
+            swipe: 'swipe 滑动判断'
+        };
+        const UNSUPPORTED_INTERACTION_FILTER = '__unsupported';
+
+        const LEGACY_TO_PRODUCT_INTERACTION = {
+            0: 'flip',
+            1: 'multiple_choice',
+            2: 'lock',
+            3: 'lock',
+            4: 'elimination',
+            5: 'flip',
+            6: 'multiple_choice',
+            7: 'swipe',
+            8: 'multiple_choice'
+        };
+
+        const PRODUCT_TO_RENDER_TYPE = {
+            flip: 0,
+            multiple_choice: 1,
+            lock: 2,
+            elimination: 4,
+            swipe: 7
+        };
+
+        const CONTRACT_REQUIRED_FIELDS = [
+            'card_id',
+            'track',
+            'knowledge_ref',
+            'interaction_id',
+            'front',
+            'analysis',
+            'source_ref'
+        ];
+        const SOURCE_REQUIRED_FIELDS = ['type', 'provenance_status'];
+
+        const WARN_SOURCE_STATUSES = new Set(['unverified', 'synthetic', 'simulated', 'unknown']);
+        const REVIEW_BLOCKING_FLAGS = new Set(['missing_front', 'missing_analysis', 'unsupported_interaction']);
+        const REVIEW_WARN_FLAGS = new Set(['unverified_source', 'simulated_source', 'needs_review', 'legacy_migration']);
+
+        function normalizeLegacyType(value) {
+            const type = Number(value);
+            return Number.isInteger(type) && type >= 0 ? type : null;
+        }
+
+        function getExplicitLegacyInteractionType(card) {
+            if (!card || typeof card !== 'object') return null;
+            const direct = normalizeLegacyType(card.interaction_type);
+            if (direct !== null) return direct;
+            const legacy = card.legacy_interaction || {};
+            return normalizeLegacyType(legacy.type);
+        }
+
+        function getCardInteractionId(card) {
+            if (!card || typeof card !== 'object') return 'unknown';
+            const productId = typeof card.interaction_id === 'string' ? card.interaction_id.trim() : '';
+            if (productId) return productId;
+            const legacyType = getExplicitLegacyInteractionType(card);
+            return LEGACY_TO_PRODUCT_INTERACTION[legacyType] || 'unknown';
+        }
+
+        function getRenderInteractionType(card) {
+            const legacyType = getExplicitLegacyInteractionType(card);
+            if (legacyType !== null) return legacyType;
+            const productId = getCardInteractionId(card);
+            if (productId === 'multiple_choice') {
+                if (Array.isArray(card.word_bank) || Array.isArray(card.blank_answers)) return 6;
+                if (Array.isArray(card.form_options)) return 8;
+                return 1;
+            }
+            if (productId === 'lock') {
+                if ('target_duration_ms' in card) return 3;
+                return 2;
+            }
+            if (productId === 'flip') {
+                const front = getCardFront(card);
+                if (front && front.hint_content) return 5;
+                return 0;
+            }
+            return PRODUCT_TO_RENDER_TYPE[productId] ?? -1;
+        }
+
+        function isSupportedInteractionId(interactionId) {
+            return Object.prototype.hasOwnProperty.call(PRODUCT_INTERACTION_TYPES, interactionId);
+        }
+
+        function matchesSelectedInteractions(card, selectedInteractionIds) {
+            const interactionId = getCardInteractionId(card);
+            if (isSupportedInteractionId(interactionId)) {
+                return selectedInteractionIds.includes(interactionId);
+            }
+            return selectedInteractionIds.includes(UNSUPPORTED_INTERACTION_FILTER);
+        }
+
+        function prepareCardForPreview(card) {
+            if (!card || typeof card !== 'object') return card;
+            const prepared = { ...card };
+            if (!prepared.front_content && prepared.front) prepared.front_content = prepared.front;
+            if (!prepared.analysis_content && prepared.analysis) prepared.analysis_content = prepared.analysis;
+            if (!prepared.back_content && prepared.answer) prepared.back_content = prepared.answer;
+            if (!prepared.audio && prepared.front && prepared.front.audio_url) {
+                prepared.audio = { url: prepared.front.audio_url, path: prepared.front.audio_url };
+            }
+            if (!('interaction_type' in prepared)) {
+                prepared.interaction_type = getRenderInteractionType(prepared);
+            }
+            return prepared;
+        }
+
+        function getCardFront(card) {
+            return (card && (card.front || card.front_content)) || {};
+        }
+
+        function getCardAnalysis(card) {
+            return (card && (card.analysis || card.analysis_content)) || {};
+        }
+
+        function getCardSource(card) {
+            return (card && card.source_ref) || {};
+        }
+
+        function hasText(value) {
+            return typeof value === 'string' && value.trim().length > 0;
+        }
+
+        function hasReviewValue(value) {
+            if (value === null || value === undefined) return false;
+            if (typeof value === 'string') return value.trim().length > 0;
+            if (Array.isArray(value)) return value.length > 0;
+            if (typeof value === 'object') return Object.keys(value).length > 0;
+            return true;
+        }
+
+        function getKnowledgePath(card) {
+            const ref = (card && card.knowledge_ref) || {};
+            const track = ref.track || card.track || 'unknown';
+            const library = ref.library_name || ref.library_id || (card.library ?? 'NA');
+            const group = ref.group_name || ref.group_id || (card.group ?? 'NA');
+            const box = ref.box_name || ref.box_id || card.card_box_name || (card.box ?? 'NA');
+            const prefix = ref.box_prefix || card.card_box_code || '';
+            return `${track} / ${library} / ${group} / ${box}${prefix ? ` / ${prefix}` : ''}`;
+        }
+
+        function getReviewFindings(card) {
+            if (!card) return [{ severity: 'block', text: '未选择卡片。' }];
+
+            const findings = [];
+            const missingFields = CONTRACT_REQUIRED_FIELDS.filter(field => !hasReviewValue(card[field]));
+            if (missingFields.length) {
+                findings.push({
+                    severity: 'block',
+                    code: 'missing_contract_fields',
+                    text: `缺少 softbook 合同字段：${missingFields.join(', ')}。`
+                });
+            }
+
+            const interactionId = getCardInteractionId(card);
+            if (!PRODUCT_INTERACTION_TYPES[interactionId]) {
+                findings.push({
+                    severity: 'block',
+                    code: 'unsupported_interaction',
+                    text: `interaction_id=${interactionId || 'unknown'} 不在当前产品互动集合内。`
+                });
+            }
+
+            const front = getCardFront(card);
+            if (!hasText(front.text) && !hasText(front.task_prompt)) {
+                findings.push({
+                    severity: 'block',
+                    code: 'missing_front',
+                    text: '题面缺少可独立成立的 text 或 task_prompt。'
+                });
+            }
+
+            const analysis = getCardAnalysis(card);
+            if (!hasText(analysis.text)) {
+                findings.push({
+                    severity: 'block',
+                    code: 'missing_analysis',
+                    text: 'analysis.text 缺失，无法审核知识点复盘。'
+                });
+            }
+
+            if (!card.knowledge_ref) {
+                findings.push({
+                    severity: 'block',
+                    code: 'missing_knowledge_ref',
+                    text: '缺少 knowledge_ref，无法确认盒子归属。'
+                });
+            }
+
+            const source = getCardSource(card);
+            const provenance = source.provenance_status || 'unknown';
+            const missingSourceFields = hasReviewValue(card.source_ref)
+                ? SOURCE_REQUIRED_FIELDS.filter(field => !hasReviewValue(source[field]))
+                : [];
+            if (missingSourceFields.length) {
+                findings.push({
+                    severity: 'block',
+                    code: 'missing_source_ref_fields',
+                    text: `source_ref 缺少必填字段：${missingSourceFields.join(', ')}。`
+                });
+            } else if (hasReviewValue(card.source_ref) && WARN_SOURCE_STATUSES.has(String(provenance).toLowerCase())) {
+                findings.push({
+                    severity: 'warn',
+                    code: 'source_not_verified',
+                    text: `来源状态为 ${provenance}，只能作为样卡预览或待审内容。`
+                });
+            }
+
+            const flags = Array.isArray(card.quality_flags) ? card.quality_flags : [];
+            flags.forEach(flag => {
+                const severity = REVIEW_BLOCKING_FLAGS.has(flag)
+                    ? 'block'
+                    : (REVIEW_WARN_FLAGS.has(flag) ? 'warn' : 'info');
+                findings.push({
+                    severity,
+                    code: `quality_flag:${flag}`,
+                    text: `quality_flags 包含 ${flag}。`
+                });
+            });
+
+            const status = card.production_status || card.review_status || 'unknown';
+            if (status !== 'reviewed_sample') {
+                findings.push({
+                    severity: 'warn',
+                    code: 'not_user_approved',
+                    text: `当前状态为 ${status}；此字段不是正式发布批准。`
+                });
+            }
+
+            findings.push({
+                severity: 'info',
+                code: 'preview_is_not_approval',
+                text: '预览器只辅助检查呈现和审核信号，不产生最终批准。'
+            });
+
+            return findings;
+        }
+
+        function getReviewTone(card) {
+            const findings = getReviewFindings(card);
+            if (findings.some(f => f.severity === 'block')) return 'block';
+            if (findings.some(f => f.severity === 'warn')) return 'warn';
+            return 'ok';
+        }
+
+        function getReviewToneLabel(tone) {
+            if (tone === 'block') return '阻断';
+            if (tone === 'warn') return '待审';
+            return '可预览';
+        }
+
+        function renderChip(label, tone = '') {
+            const cls = tone ? ` ${tone}` : '';
+            return `<span class="review-chip${cls}">${escapeHtml(label)}</span>`;
+        }
+
+        function renderListChip(label, tone = '') {
+            const cls = tone ? ` ${tone}` : '';
+            return `<span class="list-chip${cls}">${escapeHtml(label)}</span>`;
+        }
+
+        function getCardListMeta(card) {
+            const interactionId = getCardInteractionId(card);
+            const tone = getReviewTone(card);
+            const flags = Array.isArray(card.quality_flags) ? card.quality_flags.length : 0;
+            const source = getCardSource(card);
+            return {
+                tone,
+                toneLabel: getReviewToneLabel(tone),
+                interactionLabel: PRODUCT_INTERACTION_TYPES[interactionId] || interactionId || 'unknown',
+                status: card.production_status || card.review_status || 'unknown',
+                provenance: source.provenance_status || 'unknown',
+                flags
+            };
+        }
+
+        // File loading
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    allCards = normalizeCards(JSON.parse(event.target.result));
+                    filteredCards = [...allCards];
+                    loadCards();
+                } catch (err) {
+                    alert('解析失败: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        document.getElementById('copyReviewDraftBtn').addEventListener('click', copyCurrentReviewDraft);
+
+        // Filters
+        document.querySelectorAll('.typeFilter').forEach(f => f.addEventListener('change', applyFilters));
+
+        function normalizeCards(data) {
+            const extractFromObject = (obj) => {
+                if (!obj || typeof obj !== 'object') return [];
+
+                if (Array.isArray(obj.cards)) {
+                    return obj.cards;
+                }
+
+                if (obj.cards && typeof obj.cards === 'object') {
+                    return Object.values(obj.cards);
+                }
+
+                if (obj.tracks) {
+                    const cards = [];
+                    Object.values(obj.tracks || {}).forEach(track => {
+                        Object.values(track.libraries || {}).forEach(lib => {
+                            Object.values(lib.groups || {}).forEach(group => {
+                                Object.values(group.boxes || {}).forEach(box => {
+                                    if (Array.isArray(box.cards)) {
+                                        cards.push(...box.cards);
+                                    } else if (box.cards && typeof box.cards === 'object') {
+                                        cards.push(...Object.values(box.cards));
+                                    }
+                                });
+                            });
+                        });
+                    });
+                    return cards;
+                }
+
+                return [];
+            };
+
+            if (Array.isArray(data)) {
+                const flat = data.flatMap(item => {
+                    if (item && (item.tracks || item.cards)) {
+                        return extractFromObject(item);
+                    }
+                    return item && typeof item === 'object' ? [item] : [];
+                });
+
+                const cards = flat.filter(item => item && typeof item === 'object' && ('interaction_type' in item || 'card_id' in item));
+                if (cards.length > 0) {
+                    return cards.map(prepareCardForPreview);
+                }
+            }
+
+            const extracted = extractFromObject(data);
+            if (extracted.length > 0) {
+                return extracted.map(prepareCardForPreview);
+            }
+
+            throw new Error('不支持的 JSON 结构');
+        }
+
+        function applyFilters() {
+            const selectedInteractionIds = Array.from(document.querySelectorAll('.typeFilter'))
+                .filter(f => f.checked)
+                .map(f => f.value);
+
+            filteredCards = allCards.filter(card => matchesSelectedInteractions(card, selectedInteractionIds));
+            filteredCards.sort((a, b) => {
+                const aNo = Number.isFinite(Number(a.card_no)) ? Number(a.card_no) : 999999;
+                const bNo = Number.isFinite(Number(b.card_no)) ? Number(b.card_no) : 999999;
+                if (aNo !== bNo) return aNo - bNo;
+                return (a.card_id || '').localeCompare(b.card_id || '');
+            });
+
+            renderCardsList();
+            document.getElementById('shownCards').textContent = `${filteredCards.length}/${allCards.length}`;
+            if (currentCardIdx >= filteredCards.length) {
+                currentCardIdx = filteredCards.length - 1;
+            }
+            if (currentCardIdx < 0 && filteredCards.length > 0) {
+                currentCardIdx = 0;
+            }
+            renderCard();
+        }
+
+        function loadCards() {
+            document.getElementById('statsSection').style.display = 'block';
+            document.getElementById('reviewSection').style.display = 'block';
+            document.getElementById('filterSection').style.display = 'block';
+            document.getElementById('cardsSection').style.display = 'block';
+            document.getElementById('totalCards').textContent = allCards.length;
+            applyFilters();
+            if (filteredCards.length > 0) selectCard(0);
+        }
+
+        function renderCardsList() {
+            const cardsList = document.getElementById('cardsList');
+            cardsList.innerHTML = '';
+            filteredCards.forEach((card, idx) => {
+                const meta = getCardListMeta(card);
+                const item = document.createElement('div');
+                item.className = `card-item${idx === currentCardIdx ? ' active' : ''}`;
+                item.innerHTML = `
+                    <div class="card-item-top">
+                        <div class="card-item-id">${escapeHtml(card.card_id || 'unknown')}</div>
+                        ${renderListChip(meta.toneLabel, meta.tone)}
+                    </div>
+                    <div class="card-item-name">#${escapeHtml(card.card_no ?? 'NA')} · ${escapeHtml(meta.interactionLabel)} · ${escapeHtml(card.card_box_name || (card.knowledge_ref && card.knowledge_ref.box_name) || '未命名')}</div>
+                    <div class="card-item-chips">
+                        ${renderListChip(meta.status, meta.status === 'reviewed_sample' ? 'ok' : 'warn')}
+                        ${renderListChip(meta.provenance, meta.provenance === 'verified' ? 'ok' : 'warn')}
+                        ${meta.flags ? renderListChip(`flags ${meta.flags}`, 'warn') : renderListChip('no flags', 'ok')}
+                    </div>
+                `;
+                item.addEventListener('click', () => selectCard(idx));
+                cardsList.appendChild(item);
+            });
+        }
+
+        function renderReviewPanel(card) {
+            const cardIdEl = document.getElementById('reviewCardId');
+            const boxPathEl = document.getElementById('reviewBoxPath');
+            const chipsEl = document.getElementById('reviewChips');
+            const findingsEl = document.getElementById('reviewFindings');
+            const copyStatusEl = document.getElementById('copyReviewStatus');
+            if (!cardIdEl || !boxPathEl || !chipsEl || !findingsEl) return;
+
+            if (!card) {
+                cardIdEl.textContent = '未选择';
+                boxPathEl.textContent = '—';
+                chipsEl.innerHTML = renderChip('无当前卡', 'block');
+                findingsEl.innerHTML = '<div class="review-finding block">当前筛选条件下没有可预览卡片。</div>';
+                if (copyStatusEl) copyStatusEl.textContent = '';
+                return;
+            }
+
+            const interactionId = getCardInteractionId(card);
+            const source = getCardSource(card);
+            const tone = getReviewTone(card);
+            const flags = Array.isArray(card.quality_flags) ? card.quality_flags : [];
+            const audioUrl = card.audio && card.audio.url;
+            const status = card.production_status || card.review_status || 'unknown';
+
+            cardIdEl.textContent = card.card_id || 'unknown';
+            boxPathEl.textContent = getKnowledgePath(card);
+            chipsEl.innerHTML = [
+                renderChip(getReviewToneLabel(tone), tone),
+                renderChip(PRODUCT_INTERACTION_TYPES[interactionId] || interactionId || 'unknown', PRODUCT_INTERACTION_TYPES[interactionId] ? 'ok' : 'block'),
+                renderChip(status, status === 'reviewed_sample' ? 'ok' : 'warn'),
+                renderChip(`source: ${source.provenance_status || 'unknown'}`, source.provenance_status === 'verified' ? 'ok' : 'warn'),
+                renderChip(audioUrl ? 'audio linked' : 'no audio', audioUrl ? 'ok' : '')
+            ].join('');
+
+            const findings = getReviewFindings(card);
+            findingsEl.innerHTML = findings.map(finding => {
+                const cls = finding.severity === 'block'
+                    ? 'block'
+                    : (finding.severity === 'warn' ? 'warn' : (finding.severity === 'info' ? '' : 'ok'));
+                return `<div class="review-finding ${cls}">${escapeHtml(finding.text)}</div>`;
+            }).join('');
+
+            if (copyStatusEl) {
+                copyStatusEl.textContent = flags.length
+                    ? `质量标记：${flags.join(', ')}`
+                    : '未发现 quality_flags。';
+            }
+        }
+
+        function buildReviewDraft(card) {
+            const findings = getReviewFindings(card);
+            return {
+                card_id: card.card_id || null,
+                interaction_id: getCardInteractionId(card),
+                knowledge_ref: card.knowledge_ref || null,
+                production_status: card.production_status || card.review_status || null,
+                preview_review: {
+                    tool: 'card_viewer_interactive.html',
+                    reviewed_at: new Date().toISOString(),
+                    final_user_approval: false,
+                    findings: findings.map(finding => ({
+                        severity: finding.severity,
+                        code: finding.code || null,
+                        text: finding.text
+                    }))
+                }
+            };
+        }
+
+        async function copyCurrentReviewDraft() {
+            const card = filteredCards[currentCardIdx];
+            const statusEl = document.getElementById('copyReviewStatus');
+            if (!card) {
+                if (statusEl) statusEl.textContent = '没有当前卡可复制。';
+                return;
+            }
+
+            const text = JSON.stringify(buildReviewDraft(card), null, 2);
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    textarea.remove();
+                }
+                if (statusEl) statusEl.textContent = '已复制当前卡审核草稿；仍需写入正式 review 记录并由用户确认。';
+            } catch (err) {
+                if (statusEl) statusEl.textContent = '复制失败，可在控制台查看审核草稿。';
+                console.log(text);
+            }
+        }
+
+        function selectCard(idx) {
+            currentCardIdx = idx;
+            cardState = {};
+            document.querySelectorAll('.card-item').forEach((el, i) => {
+                el.classList.toggle('active', i === idx);
+            });
+            globalAudio.pause();
+            const card = filteredCards[idx];
+            const audioUrl = card && card.audio && card.audio.url;
+            if (audioUrl) {
+                currentAudioCardId = card.card_id;
+                if (globalAudio.src !== audioUrl) {
+                    // Preload on select: keeps old behavior where selecting a card readies its audio.
+                    globalAudio.src = audioUrl;
+                }
+                globalAudio.currentTime = 0;
+                globalAudio.load();
+            } else {
+                currentAudioCardId = null;
+                globalAudio.removeAttribute('src');
+                globalAudio.load();
+            }
+            renderCard();
+        }
+
+        function renderCard() {
+            const card = filteredCards[currentCardIdx];
+            if (!card) {
+                document.getElementById('cardViewer').innerHTML = '<div class="placeholder" style="border: 1px solid var(--border);"><div style="font-size: 48px; margin-bottom: 16px;">📭</div>卡片不存在</div>';
+                renderReviewPanel(null);
+                return;
+            }
+
+            renderReviewPanel(card);
+            const type = getRenderInteractionType(card);
+            const html = renderCardByType(card, type);
+            document.getElementById('cardViewer').innerHTML = html;
+
+            // Attach event listeners
+            attachInteractionListeners(card, type);
+            autoFitCards();
+            syncAudioUi();
+        }
+
+        function autoFitCards() {
+            document.querySelectorAll('.interactive-card').forEach(cardEl => autoFitSingleCard(cardEl));
+        }
+
+        function autoFitSingleCard(cardEl) {
+            if (!cardEl) return;
+
+            // Target the scrollable content area; fall back to the whole card for legacy layouts.
+            const contentEl = cardEl.querySelector('.card-content') || cardEl;
+            contentEl.style.overflowY = 'hidden';
+
+            const adjustableEls = Array.from(
+                cardEl.querySelectorAll(
+                    '.card-front-text, .card-back-text, .card-explanation, .analysis-content, .answer-result, .option-btn, .eliminable-item, .front-panel-label'
+                )
+            );
+
+            // Front/back cards use panel blocks; reducing panel paddings helps fit without harming readability.
+            const panelEls = Array.from(cardEl.querySelectorAll('.front-panel'));
+
+            const maxPasses = 18;
+            let pass = 0;
+
+            while (contentEl.scrollHeight > contentEl.clientHeight + 1 && pass < maxPasses) {
+                pass += 1;
+
+                adjustableEls.forEach(el => {
+                    const cs = window.getComputedStyle(el);
+                    const fs = parseFloat(cs.fontSize) || 14;
+                    const lh = parseFloat(cs.lineHeight) || fs * 1.6;
+
+                    const minSize = el.classList.contains('front-panel-label') ? 9.5 : 11;
+                    if (fs > minSize) {
+                        el.style.fontSize = `${Math.max(minSize, fs - 0.6)}px`;
+                    }
+                    if (lh > 15) {
+                        el.style.lineHeight = `${Math.max(15, lh - 0.7)}px`;
+                    }
+                });
+
+                panelEls.forEach(panel => {
+                    const cs = window.getComputedStyle(panel);
+                    const pt = parseFloat(cs.paddingTop) || 12;
+                    const pr = parseFloat(cs.paddingRight) || 14;
+                    const pb = parseFloat(cs.paddingBottom) || 12;
+                    const pl = parseFloat(cs.paddingLeft) || 14;
+                    panel.style.padding = `${Math.max(7, pt - 0.6)}px ${Math.max(8, pr - 0.6)}px ${Math.max(7, pb - 0.6)}px ${Math.max(8, pl - 0.6)}px`;
+                });
+
+                const cardCs = window.getComputedStyle(cardEl);
+                const cpt = parseFloat(cardCs.paddingTop) || 18;
+                const cpr = parseFloat(cardCs.paddingRight) || 18;
+                const cpb = parseFloat(cardCs.paddingBottom) || 18;
+                const cpl = parseFloat(cardCs.paddingLeft) || 18;
+                cardEl.style.padding = `${Math.max(10, cpt - 0.7)}px ${Math.max(10, cpr - 0.7)}px ${Math.max(10, cpb - 0.7)}px ${Math.max(10, cpl - 0.7)}px`;
+            }
+
+            // Extreme fallback: allow inner scroll only when auto-fit reaches limit.
+            if (contentEl.scrollHeight > contentEl.clientHeight + 1) {
+                contentEl.style.overflowY = 'auto';
+            }
+        }
+
+        function renderCardByType(card, type) {
+            const interactionId = getCardInteractionId(card);
+            const interactionLabel = PRODUCT_INTERACTION_TYPES[interactionId] || INTERACTION_TYPES[type] || interactionId || '未知';
+            const boxName = card.card_box_name || ((card.knowledge_ref || {}).box_name) || '—';
+            const metaHtml = `
+                <div class="card-meta-header">
+                    <div class="card-meta-left">
+                        <div class="meta-badge">ID: ${escapeHtml(card.card_id || 'unknown')}</div>
+                        <div class="meta-badge">${escapeHtml(interactionLabel)}</div>
+                        <div class="meta-badge">${escapeHtml(boxName)}</div>
+                    </div>
+                    <div class="meta-info">#${escapeHtml(card.card_no ?? 'NA')}</div>
+                </div>
+            `;
+
+            let cardHtml = '';
+
+            // Check for missing required fields
+            const warnings = [];
+            if (type === 1 && (!card.options || card.options.length === 0)) {
+                warnings.push('⚠️ T1 缺少选项！');
+            }
+            if (type === 4 && (!card.eliminable_items || card.eliminable_items.length === 0)) {
+                warnings.push('⚠️ T4 缺少消除项！');
+            }
+            if (type === 6 && (!card.word_bank || card.word_bank.length === 0)) {
+                warnings.push('⚠️ T6 缺少词汇库！');
+            }
+            if (type === 6) {
+                const frontText = ((card.front_content || {}).text) || '';
+                const blankCount = countT6Blanks(frontText);
+                const answerCount = Array.isArray(card.blank_answers) ? card.blank_answers.length : 0;
+                if (blankCount === 0) {
+                    warnings.push('⚠️ T6 正文中缺少 {{blank}} 占位符。');
+                }
+                if (blankCount > 0 && answerCount !== blankCount) {
+                    warnings.push(`⚠️ T6 空格数与答案数不一致：${blankCount} vs ${answerCount}。`);
+                }
+            }
+            if (type === 8 && (!card.form_options || card.form_options.length === 0)) {
+                warnings.push('⚠️ T8 缺少形态选项！');
+            }
+            if (type === 1 && card.options && card.options.length !== 4) {
+                warnings.push(`⚠️ T1 选项数量应为4，当前为 ${card.options.length}。`);
+            }
+
+            const warningHtml = warnings.length ? `<div class="meta-warn">${warnings.join('<br>')}</div>` : '';
+
+            // Render by type
+            if (type === 0) {
+                cardHtml = renderT0(card);
+            } else if (type === 1) {
+                cardHtml = renderT1(card);
+            } else if (type === 2) {
+                cardHtml = renderT2(card);
+            } else if (type === 3) {
+                cardHtml = renderT3(card);
+            } else if (type === 6) {
+                cardHtml = renderT6(card);
+            } else if (type === 4) {
+                cardHtml = renderT4(card);
+            } else if (type === 5) {
+                cardHtml = renderT5(card);
+            } else if (type === 7) {
+                cardHtml = renderT7(card);
+            } else if (type === 8) {
+                cardHtml = renderT8(card);
+            } else {
+                cardHtml = renderDefault(card);
+            }
+
+            return `
+                <div class="phone-stage">
+                    <div class="phone-shell">
+                        <div class="phone-notch"></div>
+                        <div class="phone-screen">
+                            <div class="phone-scroll">
+                                <div class="mock-phone">
+                                    ${metaHtml}
+                                    ${warningHtml}
+                                    ${cardHtml}
+                                </div>
+                            </div>
+                            <div class="phone-home-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderT0(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const audio = card.audio || {};
+            const isFlipped = cardState.flipped || false;
+
+            return `
+                <div class="interactive-card ${isFlipped ? 'flipped' : ''}">
+                    <div class="card-phase">${isFlipped ? '背面' : '正面'}</div>
+                    <div class="card-content">
+                        ${!isFlipped ? `
+                            ${renderFrontPanels(front, card)}
+                        ` : `
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                            ${audio.transcript ? renderAdaptiveBlock('音频文字稿', `<div class="card-explanation" style="font-style: italic;">${escapeHtml(audio.transcript)}</div>`) : ''}
+                        `}
+                    </div>
+                    <div class="card-actions">
+                        <div style="text-align: center;">
+                            <button class="flip-btn">
+                                ${isFlipped ? '📖 看正面' : '翻面看答案 →'}
+                            </button>
+                            ${!isFlipped ? renderPeekToggleButton(card) : ''}
+                        </div>
+                        ${!isFlipped ? renderPeekPanel(card) : ''}
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderT1(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const options = card.options || [];
+            const isFlipped = cardState.flipped || false;
+            if (options.length === 0) {
+                return `
+                    <div class="interactive-card">
+                        <div style="color: var(--error); font-size: 14px;">❌ 缺少选项数据</div>
+                    </div>
+                `;
+            }
+
+            const selectedIdx = Number.isInteger(cardState.selectedOptionIndex) ? cardState.selectedOptionIndex : null;
+            const selectedLabel = selectedIdx !== null ? String.fromCharCode(65 + selectedIdx) : '';
+            const selectedText = selectedIdx !== null && options[selectedIdx] ? options[selectedIdx].text : '';
+            const resultHtml = selectedIdx !== null ? `
+                <div class="answer-result ${cardState.optionIsCorrect ? 'correct' : 'incorrect'}">
+                    ${cardState.optionIsCorrect ? '✓ 回答正确' : '✗ 回答不正确'}
+                    ${selectedLabel ? `（你选择了 ${selectedLabel}${selectedText ? `: ${escapeHtml(selectedText)}` : ''}）` : ''}
+                </div>
+            ` : '';
+
+            if (isFlipped) {
+                return `
+                    <div class="interactive-card flipped">
+                        <div class="card-phase">背面（答案解析）</div>
+                        <div class="card-content">
+                            ${resultHtml}
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                            ${(card.audio && card.audio.transcript) ? renderAdaptiveBlock('音频文字稿', `<div class="card-explanation" style="font-style: italic;">${escapeHtml(card.audio.transcript)}</div>`) : ''}
+                        </div>
+                        <div class="card-actions">
+                            <div style="text-align: center;">
+                                <button class="flip-btn">📖 看正面</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="interactive-card">
+                    <div class="card-phase">正面（选择题）</div>
+                    <div class="card-content">
+                        ${renderFrontPanels(front, card)}
+                        <div class="options-grid">
+                            ${options.map((opt, i) => `
+                                <button class="option-btn">
+                                    <span class="option-label">${String.fromCharCode(65 + i)}.</span>
+                                    <span>${escapeHtml(opt.text)}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <div style="text-align: center;">
+                            ${renderPeekToggleButton(card)}
+                        </div>
+                        ${renderPeekPanel(card)}
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderT2(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const windowMs = Array.isArray(card.time_window_ms) ? card.time_window_ms : [];
+            const isFlipped = cardState.flipped || false;
+            const clickedMs = Number.isFinite(cardState.t2ClickedMs) ? cardState.t2ClickedMs : null;
+            const hasResult = typeof cardState.t2IsCorrect === 'boolean';
+            const expectedText = windowMs.length === 2
+                ? `${formatDuration(windowMs[0])} - ${formatDuration(windowMs[1])}`
+                : '未提供';
+
+            if (isFlipped) {
+                const resultHtml = hasResult ? `
+                    <div class="answer-result ${cardState.t2IsCorrect ? 'correct' : 'incorrect'}">
+                        ${cardState.t2IsCorrect ? '✓ 点击落在触发窗口' : '✗ 点击未落在触发窗口'}
+                        <div style="margin-top: 6px; font-size: 12px; opacity: 0.9;">你的点击：${formatDuration(clickedMs || 0)} · 目标窗口：${expectedText}</div>
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="interactive-card flipped">
+                        <div class="card-phase">背面（时机解析）</div>
+                        <div class="card-content">
+                            ${resultHtml}
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                            ${(card.audio && card.audio.transcript) ? renderAdaptiveBlock('音频文字稿', `<div class="card-explanation" style="font-style: italic;">${escapeHtml(card.audio.transcript)}</div>`) : ''}
+                        </div>
+                        <div class="card-actions">
+                            <div style="text-align: center;">
+                                <button class="flip-btn">📖 返回题面</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="interactive-card">
+                    <div class="card-phase">正面（时机点击）</div>
+                    <div class="card-content">
+                        ${renderFrontPanels(front, card)}
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px; text-align: left; width: 100%;">播放音频后，在你认为触发词出现时点击。</div>
+                    </div>
+                    <div class="card-actions">
+                        <div style="text-align: center;">
+                            <button class="flip-btn timing-click-btn" type="button">记录当前点击点</button>
+                        </div>
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderT3(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const targetMs = Number(card.target_duration_ms) || 0;
+            const heldMs = Number.isFinite(cardState.t3HeldMs) ? cardState.t3HeldMs : null;
+            const isFlipped = cardState.flipped || false;
+            const hasResult = typeof cardState.t3IsCorrect === 'boolean';
+
+            if (isFlipped) {
+                const resultHtml = hasResult ? `
+                    <div class="answer-result ${cardState.t3IsCorrect ? 'correct' : 'incorrect'}">
+                        ${cardState.t3IsCorrect ? '✓ 按住时长接近目标区间' : '✗ 按住时长偏离目标区间'}
+                        <div style="margin-top: 6px; font-size: 12px; opacity: 0.9;">你的时长：${formatDuration(heldMs || 0)} · 目标：${targetMs ? formatDuration(targetMs) : '未提供'}</div>
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="interactive-card flipped">
+                        <div class="card-phase">背面（长按解析）</div>
+                        <div class="card-content">
+                            ${resultHtml}
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                            ${(card.audio && card.audio.transcript) ? renderAdaptiveBlock('音频文字稿', `<div class="card-explanation" style="font-style: italic;">${escapeHtml(card.audio.transcript)}</div>`) : ''}
+                        </div>
+                        <div class="card-actions">
+                            <div style="text-align: center;">
+                                <button class="flip-btn">📖 返回题面</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="interactive-card">
+                    <div class="card-phase">正面（长按松手）</div>
+                    <div class="card-content">
+                        ${renderFrontPanels(front, card)}
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px; text-align: left; width: 100%;">听到目标信息链开始时按住，结束时松手。</div>
+                    </div>
+                    <div class="card-actions">
+                        <div style="text-align: center;">
+                            <button class="flip-btn hold-release-btn" type="button">按住并松手</button>
+                        </div>
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderT4(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const items = card.eliminable_items || [];
+            const isFlipped = cardState.flipped || false;
+
+            if (items.length === 0) {
+                return `
+                    <div class="interactive-card">
+                        <div style="color: var(--error); font-size: 14px;">❌ 缺少消除项数据</div>
+                    </div>
+                `;
+            }
+
+            if (isFlipped) {
+                return `
+                    <div class="interactive-card flipped">
+                        <div class="card-phase">背面（结构解析）</div>
+                        <div class="card-content">
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                        </div>
+                        <div class="card-actions">
+                            <div style="text-align: center;">
+                                <button class="flip-btn">📖 返回题面</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            const correctItems = items.filter(it => it.is_correct);
+            // Strip highlight_ranges for T4 front — highlights would reveal the correct items
+            const frontNoHl = Object.assign({}, front, { highlight_ranges: [] });
+            const displayItems = items
+                .map((item, index) => ({ item, sortKey: `${(index * 37) % 17}-${(item.text || '').length % 11}-${index}` }))
+                .sort((left, right) => left.sortKey.localeCompare(right.sortKey))
+                .map(entry => entry.item);
+            return `
+                <div class="interactive-card">
+                    <div class="card-phase">正面（结构拆解）</div>
+                    <div class="card-content">
+                        ${renderFrontPanels(frontNoHl, card)}
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px; text-align: left; width: 100%;">点击句中需要消除的片段</div>
+                        <div class="eliminable-grid">
+                            ${displayItems.map((item) => `
+                                <div class="eliminable-item" data-correct="${item.is_correct ? 'true' : 'false'}">
+                                    <span>${escapeHtml(item.text)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="eliminate-status" id="eliminateStatus" data-target="${correctItems.length}">尚未消除任何片段</div>
+                    </div>
+                    <div class="card-actions">
+                        <div style="text-align: center;">
+                            <button class="flip-btn">查看解析 →</button>
+                        </div>
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderT5(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const isFlipped = cardState.flipped || false;
+            const hintOpen = cardState.hintOpen || false;
+
+            if (isFlipped) {
+                return `
+                    <div class="interactive-card flipped">
+                        <div class="card-phase">背面（提示复盘）</div>
+                        <div class="card-content">
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                        </div>
+                        <div class="card-actions">
+                            <div style="text-align: center;">
+                                <button class="flip-btn">📖 返回题面</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="interactive-card">
+                    <div class="card-phase">正面（提示层）</div>
+                    <div class="card-content">
+                        ${renderFrontPanels(front, card)}
+                        ${hintOpen ? renderAdaptiveBlock('提示层', `<div class="card-explanation">${escapeHtml(front.hint_content || '本卡未提供提示内容。').replace(/\n/g, '<br>')}</div>`) : ''}
+                    </div>
+                    <div class="card-actions">
+                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <button class="peek-btn js-hint-toggle" type="button">${hintOpen ? '收起提示' : '露出提示层'}</button>
+                            <button class="flip-btn">查看解析 →</button>
+                        </div>
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderT7(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const isFlipped = cardState.flipped || false;
+
+            if (isFlipped) {
+                const hasAnswered = typeof cardState.t7IsCorrect === 'boolean';
+                const resultHtml = hasAnswered ? `
+                    <div class="answer-result ${cardState.t7IsCorrect ? 'correct' : 'incorrect'}">
+                        ${cardState.t7IsCorrect ? '✓ 判断正确' : '✗ 判断不正确'}
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="interactive-card flipped">
+                        <div class="card-phase">背面（判断解析）</div>
+                        <div class="card-content">
+                            ${resultHtml}
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                        </div>
+                        <div class="card-actions">
+                            <div style="text-align: center;">
+                                <button class="flip-btn">📖 返回题面</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="interactive-card">
+                    <div class="card-phase">快速判断</div>
+                    <div class="card-content">
+                        ${renderFrontPanels(front, card)}
+                    </div>
+                    <div class="card-actions">
+                        <div class="swipe-area">
+                            <button class="swipe-btn false">← False</button>
+                            <button class="swipe-btn true">True →</button>
+                        </div>
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderT6(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const wordBank = Array.isArray(card.word_bank) ? card.word_bank : [];
+            const answers = Array.isArray(card.blank_answers) ? card.blank_answers : [];
+            const isFlipped = cardState.flipped || false;
+            const selections = Array.isArray(cardState.t6Selections) ? cardState.t6Selections : [];
+
+            if (wordBank.length === 0) {
+                return `
+                    <div class="interactive-card">
+                        <div style="color: var(--error); font-size: 14px;">❌ 缺少词汇库数据</div>
+                    </div>
+                `;
+            }
+
+            if (isFlipped) {
+                const selectedWords = selections.length ? selections.join(' / ') : '未填写';
+                const resultHtml = typeof cardState.t6IsCorrect === 'boolean' ? `
+                    <div class="answer-result ${cardState.t6IsCorrect ? 'correct' : 'incorrect'}">
+                        ${cardState.t6IsCorrect ? '✓ 填写正确' : '✗ 填写不正确'}
+                        <div style="margin-top: 6px; font-size: 12px; opacity: 0.9;">你的填写：${escapeHtml(selectedWords)}</div>
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="interactive-card flipped">
+                        <div class="card-phase">背面（填空解析）</div>
+                        <div class="card-content">
+                            ${resultHtml}
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                            ${answers.length ? renderAdaptiveBlock('标准填空', `<div class="card-explanation">${escapeHtml(answers.join(' / '))}</div>`) : ''}
+                        </div>
+                        <div class="card-actions">
+                            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                                <button class="flip-btn">📖 返回题面</button>
+                                <button class="t6-reset-btn" type="button">重做本题</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="interactive-card">
+                    <div class="card-phase">正面（选词填空）</div>
+                    <div class="card-content">
+                        ${renderFrontPanels(front, card)}
+                        <div class="front-panel" style="margin-top: 10px;">
+                            <div class="front-panel-label">填空预览</div>
+                            <div class="card-front-text" style="margin-bottom: 0;">${renderT6Text(front.text || '', selections)}</div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px; text-align: left; width: 100%;">按顺序点击词库，将词填入空格。</div>
+                        <div class="options-grid" style="margin-top: 12px;">
+                            ${wordBank.map((word, index) => `
+                                <button class="option-btn word-bank-btn" type="button" data-word-index="${index}">
+                                    <span>${escapeHtml(word)}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <button class="flip-btn">查看答案 →</button>
+                            <button class="t6-reset-btn" type="button">清空重填</button>
+                            ${renderPeekToggleButton(card)}
+                        </div>
+                        ${renderPeekPanel(card)}
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderT8(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const formOptions = Array.isArray(card.form_options) ? card.form_options : [];
+            const isFlipped = cardState.flipped || false;
+
+            if (formOptions.length === 0) {
+                return `
+                    <div class="interactive-card">
+                        <div style="color: var(--error); font-size: 14px;">❌ 缺少形态选项数据</div>
+                    </div>
+                `;
+            }
+
+            if (isFlipped) {
+                const selectedIdx = Number.isInteger(cardState.t8SelectedIndex) ? cardState.t8SelectedIndex : null;
+                const selectedForm = selectedIdx !== null && formOptions[selectedIdx] ? formOptions[selectedIdx].form : '未选择';
+                const resultHtml = typeof cardState.t8IsCorrect === 'boolean' ? `
+                    <div class="answer-result ${cardState.t8IsCorrect ? 'correct' : 'incorrect'}">
+                        ${cardState.t8IsCorrect ? '✓ 形态选择正确' : '✗ 形态选择不正确'}
+                        <div style="margin-top: 6px; font-size: 12px; opacity: 0.9;">你的选择：${escapeHtml(selectedForm)}</div>
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="interactive-card flipped">
+                        <div class="card-phase">背面（形态解析）</div>
+                        <div class="card-content">
+                            ${resultHtml}
+                            <div class="card-back-text">${escapeHtml(back.text || '（无背面内容）')}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                        </div>
+                        <div class="card-actions">
+                            <div style="text-align: center;">
+                                <button class="flip-btn">📖 返回题面</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="interactive-card">
+                    <div class="card-phase">正面（时态切换）</div>
+                    <div class="card-content">
+                        ${renderFrontPanels(front, card)}
+                        <div class="options-grid" style="margin-top: 12px;">
+                            ${formOptions.map((opt, i) => `
+                                <button class="option-btn t8-option-btn" type="button" data-form-index="${i}">
+                                    <span class="option-label">${String.fromCharCode(65 + i)}.</span>
+                                    <span>${escapeHtml(opt.form)}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        ${renderFeedbackButtons()}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDefault(card) {
+            const front = card.front_content || {};
+            const back = card.back_content || {};
+            const audio = card.audio || {};
+
+            return `
+                <div class="interactive-card ${cardState.flipped ? 'flipped' : ''}">
+                    <div class="card-phase">${cardState.flipped ? '背面' : '正面'}</div>
+                    <div class="card-content">
+                        ${!cardState.flipped ? renderFrontPanels(front, card) : `
+                            <div class="card-back-text">${escapeHtml(back.text)}</div>
+                            ${back.explanation ? `<div class="card-explanation">${escapeHtml(back.explanation)}</div>` : ''}
+                            ${renderBackReviewPanel(card)}
+                            ${audio.transcript ? renderAdaptiveBlock('音频文字稿', `<div class="card-explanation" style="font-style: italic;">${escapeHtml(audio.transcript)}</div>`) : ''}
+                        `}
+                    </div>
+                    ${back.text ? `
+                        <div class="card-actions">
+                            <div style="text-align: center;">
+                                <button class="flip-btn">${cardState.flipped ? '📖 看正面' : '翻面 →'}</button>
+                            </div>
+                            ${renderFeedbackButtons()}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Interaction handlers
+        function toggleFlip() {
+            cardState.flipped = !cardState.flipped;
+            globalAudio.pause();
+            renderCard();
+        }
+
+        function selectOption(btn, idx, isCorrect) {
+            document.querySelectorAll('.option-btn').forEach(b => {
+                b.classList.remove('selected', 'correct', 'incorrect');
+                b.disabled = false;
+            });
+            btn.classList.add('selected');
+            btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+            document.querySelectorAll('.option-btn').forEach(b => {
+                if (b !== btn) b.disabled = true;
+            });
+
+            cardState.selectedOptionIndex = idx;
+            cardState.optionIsCorrect = !!isCorrect;
+            cardState.flipped = true;
+            globalAudio.pause();
+            renderCard();
+        }
+
+        function toggleEliminate(el) {
+            // Only toggle neutral strikethrough — no color feedback until 查看解析
+            if (el.classList.contains('eliminated')) {
+                el.classList.remove('eliminated');
+            } else {
+                el.classList.add('eliminated');
+            }
+            updateEliminateStatus();
+        }
+
+        function updateEliminateStatus() {
+            const status = document.getElementById('eliminateStatus');
+            if (!status) return;
+            const total = Number(status.getAttribute('data-target') || 0);
+            const eliminated = document.querySelectorAll('.eliminable-item.eliminated').length;
+            if (eliminated === 0) {
+                status.textContent = '尚未消除任何片段';
+            } else {
+                status.textContent = `已消除 ${eliminated} 个片段`;
+            }
+        }
+
+        function checkAndFlipT4() {
+            // Reveal correct/incorrect/missed on each item, then flip
+            document.querySelectorAll('.eliminable-item').forEach(item => {
+                const isCorrect = item.getAttribute('data-correct') === 'true';
+                const isEliminated = item.classList.contains('eliminated');
+                item.classList.remove('eliminated');
+                if (isCorrect && isEliminated) {
+                    item.classList.add('correct-eliminated');
+                } else if (!isCorrect && isEliminated) {
+                    item.classList.add('error-eliminated');
+                } else if (isCorrect && !isEliminated) {
+                    item.classList.add('missed'); // should have eliminated but didn't
+                }
+            });
+            // Brief pause so user sees the result, then flip
+            setTimeout(() => toggleFlip(), 600);
+        }
+
+        function recordT2Click() {
+            const card = filteredCards[currentCardIdx];
+            const windowMs = Array.isArray(card.time_window_ms) ? card.time_window_ms : [];
+            const clickedMs = Math.floor((globalAudio.currentTime || 0) * 1000);
+            const isCorrect = windowMs.length === 2 && clickedMs >= windowMs[0] && clickedMs <= windowMs[1];
+
+            cardState.t2ClickedMs = clickedMs;
+            cardState.t2IsCorrect = isCorrect;
+            cardState.flipped = true;
+            globalAudio.pause();
+            renderCard();
+        }
+
+        function startT3Hold() {
+            cardState.t3HoldStart = performance.now();
+        }
+
+        function finishT3Hold() {
+            const card = filteredCards[currentCardIdx];
+            const targetMs = Number(card.target_duration_ms) || 0;
+            const start = Number(cardState.t3HoldStart) || performance.now();
+            const heldMs = Math.max(0, Math.floor(performance.now() - start));
+            const tolerance = Math.max(650, targetMs * 0.35);
+
+            cardState.t3HeldMs = heldMs;
+            cardState.t3IsCorrect = targetMs > 0 ? Math.abs(heldMs - targetMs) <= tolerance : heldMs > 0;
+            cardState.flipped = true;
+            delete cardState.t3HoldStart;
+            globalAudio.pause();
+            renderCard();
+        }
+
+        function toggleHintLayer() {
+            cardState.hintOpen = !cardState.hintOpen;
+            renderCard();
+        }
+
+        function respondT7(answer) {
+            const card = filteredCards[currentCardIdx];
+            const expected = card.correct_answer;
+            const normalizedExpected = typeof expected === 'boolean'
+                ? expected
+                : String(expected).toLowerCase() === 'true';
+            const isCorrect = normalizedExpected === answer;
+            cardState.t7Answer = answer;
+            cardState.t7IsCorrect = isCorrect;
+            cardState.flipped = true;
+            globalAudio.pause();
+            renderCard();
+        }
+
+        function countT6Blanks(text) {
+            return (String(text || '').match(/\{\{blank\}\}/g) || []).length;
+        }
+
+        function renderT6Text(text, selections) {
+            const source = String(text || '');
+            const chosen = Array.isArray(selections) ? selections : [];
+            const regex = /\{\{blank\}\}/g;
+            let cursor = 0;
+            let index = 0;
+            let match;
+            let html = '';
+
+            while ((match = regex.exec(source)) !== null) {
+                html += escapeHtml(source.slice(cursor, match.index)).replace(/\n/g, '<br>');
+                const selectedWord = chosen[index];
+                html += selectedWord
+                    ? `<span style="display: inline-block; min-width: 62px; padding: 2px 8px; margin: 0 3px; border-radius: 999px; background: rgba(0, 129, 212, 0.18); border: 1px solid rgba(0, 212, 255, 0.35); color: var(--accent); text-align: center;">${escapeHtml(selectedWord)}</span>`
+                    : `<span style="display: inline-block; min-width: 62px; padding: 2px 8px; margin: 0 3px; border-bottom: 2px solid rgba(255,255,255,0.28); color: var(--text-muted); text-align: center;">____</span>`;
+                cursor = match.index + match[0].length;
+                index += 1;
+            }
+
+            html += escapeHtml(source.slice(cursor)).replace(/\n/g, '<br>');
+            return html || '（无题面内容）';
+        }
+
+        function selectT6Word(word) {
+            const card = filteredCards[currentCardIdx];
+            const blankCount = countT6Blanks((card.front_content || {}).text || '');
+            const targetCount = blankCount || ((Array.isArray(card.blank_answers) && card.blank_answers.length) ? card.blank_answers.length : 0);
+            const currentSelections = Array.isArray(cardState.t6Selections) ? [...cardState.t6Selections] : [];
+
+            if (currentSelections.length >= targetCount) {
+                return;
+            }
+
+            currentSelections.push(word);
+            cardState.t6Selections = currentSelections;
+
+            if (currentSelections.length >= targetCount && targetCount > 0) {
+                const answers = Array.isArray(card.blank_answers) ? card.blank_answers : [];
+                cardState.t6IsCorrect = answers.length === currentSelections.length && currentSelections.every((value, idx) => {
+                    return String(value || '').trim().toLowerCase() === String(answers[idx] || '').trim().toLowerCase();
+                });
+                cardState.flipped = true;
+            }
+
+            renderCard();
+        }
+
+        function resetT6() {
+            delete cardState.t6Selections;
+            delete cardState.t6IsCorrect;
+            cardState.flipped = false;
+            renderCard();
+        }
+
+        function selectT8Option(btn, idx, isCorrect) {
+            document.querySelectorAll('.t8-option-btn').forEach(button => {
+                button.classList.remove('selected', 'correct', 'incorrect');
+                button.disabled = false;
+            });
+
+            btn.classList.add('selected');
+            btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+            document.querySelectorAll('.t8-option-btn').forEach(button => {
+                if (button !== btn) button.disabled = true;
+            });
+
+            cardState.t8SelectedIndex = idx;
+            cardState.t8IsCorrect = !!isCorrect;
+            cardState.flipped = true;
+            renderCard();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = String(text || '');
+            return div.innerHTML;
+        }
+
+        function splitFrontText(text) {
+            const raw = String(text || '').trim();
+            if (!raw) return { context: '', task: '' };
+            const parts = raw.split(/\n\n+/).map(s => s.trim()).filter(Boolean);
+            if (parts.length === 1) {
+                const single = parts[0];
+                const taskStart = single.search(/(请选择|选出|判断|是否|点击|消除|填空|选择|根据|推断|True\/False|\?|？)/);
+                if (taskStart > 0) {
+                    return {
+                        context: single.slice(0, taskStart).trim(),
+                        task: single.slice(taskStart).trim()
+                    };
+                }
+                return { context: single, task: '' };
+            }
+            return {
+                context: parts[0],
+                task: parts.slice(1).join('\n\n')
+            };
+        }
+
+        function isMobileViewport() {
+            return window.matchMedia('(max-width: 768px)').matches;
+        }
+
+        function renderAdaptiveBlock(title, innerHtml) {
+            return `
+                <details class="adaptive-details">
+                    <summary>${escapeHtml(title || '更多')}</summary>
+                    <div class="adaptive-body">${innerHtml}</div>
+                </details>
+            `;
+        }
+
+        function normalizeRanges(ranges, textLength) {
+            if (!Array.isArray(ranges)) return [];
+            return ranges
+                .filter(r => Array.isArray(r) && r.length === 2)
+                .map(r => [Math.max(0, Number(r[0]) || 0), Math.min(textLength, Number(r[1]) || 0)])
+                .filter(r => r[1] > r[0])
+                .sort((a, b) => a[0] - b[0]);
+        }
+
+        function renderContextWithHighlights(text, ranges) {
+            const source = String(text || '');
+            if (!source) return '（无语境内容）';
+            const safeText = escapeHtml(source);
+            const normalized = normalizeRanges(ranges, source.length);
+            if (!normalized.length) {
+                return safeText.replace(/\n/g, '<br>');
+            }
+
+            let html = '';
+            let cursor = 0;
+            for (const [start, end] of normalized) {
+                if (start > cursor) {
+                    html += escapeHtml(source.slice(cursor, start));
+                }
+                html += `<span class="hl">${escapeHtml(source.slice(start, end))}</span>`;
+                cursor = end;
+            }
+            if (cursor < source.length) {
+                html += escapeHtml(source.slice(cursor));
+            }
+            return html.replace(/\n/g, '<br>');
+        }
+
+        function renderAudioPlayer(card) {
+            const audio = (card && card.audio) || {};
+            if (!audio.url) return '';
+
+            const isCurrent = currentAudioCardId === card.card_id;
+            const isPlaying = isCurrent && !globalAudio.paused;
+            const currentMs = isCurrent ? Math.floor((globalAudio.currentTime || 0) * 1000) : 0;
+            const totalMs = audio.duration_ms || Math.floor((globalAudio.duration || 0) * 1000) || 0;
+            const progress = isCurrent && globalAudio.duration ? (globalAudio.currentTime / globalAudio.duration) * 100 : 0;
+
+            return `
+                <div class="audio-player" data-card-id="${card.card_id}">
+                    <button class="audio-play-btn js-audio-play ${isPlaying ? 'playing' : ''}" data-card-id="${card.card_id}" data-audio-url="${audio.url}" aria-label="播放音频">
+                        <span>${isPlaying ? '⏸' : '▶'}</span>
+                    </button>
+                    <div class="audio-info">
+                        <div class="audio-duration">听音频后作答${totalMs ? ` · ${formatDuration(totalMs)}` : ''}</div>
+                        <div class="audio-progress" data-card-id="${card.card_id}">
+                            <div class="audio-progress-bar js-audio-bar" style="width: ${progress}%"></div>
+                        </div>
+                        <div class="audio-time">
+                            <span class="js-audio-current">${formatDuration(currentMs)}</span>
+                            <span class="js-audio-duration">${formatDuration(totalMs)}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderFeedbackButtons() {
+            return `
+                <div class="feedback-buttons">
+                    <button class="fb-btn">⭐ 熟练</button>
+                    <button class="fb-btn">📚 会</button>
+                    <button class="fb-btn">❓ 待定</button>
+                    <button class="fb-btn">❌ 不会</button>
+                </div>
+            `;
+        }
+
+        function isTranslationCard(card) {
+            return !!card && Number(card.library) === 4;
+        }
+
+        function getPeekHint(card) {
+            const back = (card && card.back_content) || {};
+            const explanation = (back.explanation || '').trim();
+            const answer = (back.text || '').trim();
+            if (explanation) {
+                return explanation.length > 140 ? `${explanation.slice(0, 140)}...` : explanation;
+            }
+            if (answer) {
+                return answer.length > 120 ? `${answer.slice(0, 120)}...` : answer;
+            }
+            return '先写出你的英文主干，再检查并列连接词是否对齐。';
+        }
+
+        function renderPeekToggleButton(card) {
+            if (!isTranslationCard(card)) return '';
+            return `<button class="peek-btn js-peek-toggle" type="button">${cardState.peekOpen ? '收起偷看' : '偷看提示'}</button>`;
+        }
+
+        function renderPeekPanel(card) {
+            if (!isTranslationCard(card) || !cardState.peekOpen) return '';
+            return `
+                <div class="peek-panel">
+                    <strong>偷看提示（不计分）</strong><br>
+                    ${escapeHtml(getPeekHint(card)).replace(/\n/g, '<br>')}<br>
+                    先完成你的汉译英版本，再翻面核对完整译文。
+                </div>
+            `;
+        }
+
+        function togglePeek() {
+            cardState.peekOpen = !cardState.peekOpen;
+            renderCard();
+        }
+
+        function renderFrontGuidePanel(card) {
+            if (!card) return '';
+            const schema = ((card.front_content || {}).task_schema) || {};
+            const lines = [];
+            if (schema.action) lines.push(`动作：${schema.action}`);
+            if (schema.focus) lines.push(`焦点：${schema.focus}`);
+            if (schema.success_criteria) lines.push(`达标：${schema.success_criteria}`);
+
+            if (!lines.length) return '';
+
+            const body = [
+                `<div class="card-front-text" style="margin-bottom: 0; font-size: 13px; line-height: 1.7;">${escapeHtml(lines.join(' | '))}</div>`
+            ].join('');
+
+            return `
+                <div class="front-panel context">
+                    <div class="front-panel-label">作答引导</div>
+                    ${body}
+                </div>
+            `;
+        }
+
+        function renderBackReviewPanel(card) {
+            const analysis = (card && card.analysis_content) || {};
+            const text = (analysis.text || '').trim();
+            const tips = Array.isArray(analysis.tips) ? analysis.tips.filter(Boolean) : [];
+            if (!text && !tips.length) return '';
+
+            const sections = text.split(/\n\n+/).map(s => s.trim()).filter(Boolean);
+            const core = sections[0] || text;
+            const rest = sections.slice(1).join('\n\n');
+            const coreTip = tips[0] ? `<div class="card-explanation" style="margin-top: 8px; font-size: 13px; line-height: 1.7;">复盘提示：${escapeHtml(tips[0])}</div>` : '';
+
+            const detailText = rest
+                ? `<div class="analysis-content" style="margin-top: 6px;">${escapeHtml(rest).replace(/\n/g, '<br>')}</div>`
+                : '';
+            const extraTips = tips.slice(1);
+            const extraTipsHtml = extraTips.length
+                ? `<div class="card-explanation" style="margin-top: 8px; font-size: 13px; line-height: 1.7;">更多提示：${escapeHtml(extraTips.join('；'))}</div>`
+                : '';
+            const details = (detailText || extraTipsHtml)
+                ? renderAdaptiveBlock('展开完整复盘', `
+                    <div class="analysis-section" style="margin-top: 8px; padding: 12px;">
+                        ${detailText}
+                        ${extraTipsHtml}
+                    </div>
+                `)
+                : '';
+
+            return `
+                <div class="analysis-section" style="margin-top: 10px; padding: 12px;">
+                    <div class="analysis-title">知识点复盘</div>
+                    <div class="analysis-content">${escapeHtml(core).replace(/\n/g, '<br>')}</div>
+                    ${coreTip}
+                </div>
+                ${details}
+            `;
+        }
+
+        function renderFrontPanels(front, card = null) {
+            const isAudioFirst = !!(front && (front.audio_first === true || front.display_mode === 'audio_first'));
+            if (isAudioFirst) {
+                const taskPrompt = ((front && front.task_prompt) || (front && front.text) || '请先播放音频并完成任务').trim();
+                const taskHtmlOnly = escapeHtml(taskPrompt).replace(/\n/g, '<br>');
+                return `
+                    <div class="front-block">
+                        ${card ? renderAudioPlayer(card) : ''}
+                        ${renderFrontGuidePanel(card)}
+                        <div class="front-panel task">
+                            <div class="front-panel-label">任务 Task</div>
+                            <div class="card-front-text" style="margin-bottom: 0; font-size: 15px;">${taskHtmlOnly}</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            const text = (front && front.text) || '';
+            const { context, task } = splitFrontText(text);
+            const contextHtml = renderContextWithHighlights(context, (front && front.highlight_ranges) || []);
+            const taskHtml = task ? escapeHtml(task).replace(/\n/g, '<br>') : '（未显式提供任务提示）';
+            const mobile = isMobileViewport();
+
+            const contextPanel = mobile
+                ? `
+                    <details class="adaptive-details front-context-details">
+                        <summary>语境 Context</summary>
+                        <div class="adaptive-body">
+                            <div class="card-front-text" style="margin-bottom: 0;">${contextHtml}</div>
+                        </div>
+                    </details>
+                `
+                : `
+                    <div class="front-panel context">
+                        <div class="front-panel-label">语境 Context</div>
+                        <div class="card-front-text" style="margin-bottom: 0;">${contextHtml}</div>
+                    </div>
+                `;
+
+            return `
+                <div class="front-block">
+                    ${contextPanel}
+                    <div class="front-panel task">
+                        <div class="front-panel-label">任务 Task</div>
+                        <div class="card-front-text" style="margin-bottom: 0; font-size: 15px;">${taskHtml}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function attachInteractionListeners(card, type) {
+            // Since innerHTML replaces the entire DOM, all previous listeners are destroyed
+            // We just need to attach new listeners to the new elements
+
+            // Attach flip button event
+            const flipBtn = document.querySelector('.flip-btn');
+            if (flipBtn) {
+                flipBtn.addEventListener('click', toggleFlip);
+            }
+
+            const peekBtn = document.querySelector('.js-peek-toggle');
+            if (peekBtn) {
+                peekBtn.addEventListener('click', togglePeek);
+            }
+
+            // Attach feedback button events
+            const feedbackButtons = document.querySelectorAll('.fb-btn');
+            feedbackButtons.forEach((btn) => {
+                btn.addEventListener('click', recordFeedback);
+            });
+
+            // Attach option selection events for T1
+            if (type === 1) {
+                const optionBtns = document.querySelectorAll('.option-btn');
+                optionBtns.forEach((btn, i) => {
+                    btn.addEventListener('click', function() {
+                        const isCorrect = card.options[i].is_correct;
+                        selectOption(btn, i, isCorrect);
+                    });
+                });
+            }
+
+            if (type === 2) {
+                const timingBtn = document.querySelector('.timing-click-btn');
+                if (timingBtn) {
+                    timingBtn.removeEventListener('click', toggleFlip);
+                    timingBtn.addEventListener('click', recordT2Click);
+                }
+            }
+
+            if (type === 3) {
+                const holdBtn = document.querySelector('.hold-release-btn');
+                if (holdBtn) {
+                    holdBtn.removeEventListener('click', toggleFlip);
+                    holdBtn.addEventListener('pointerdown', startT3Hold);
+                    holdBtn.addEventListener('pointerup', finishT3Hold);
+                    holdBtn.addEventListener('pointercancel', finishT3Hold);
+                    holdBtn.addEventListener('keydown', (event) => {
+                        if (event.code === 'Space' || event.code === 'Enter') startT3Hold();
+                    });
+                    holdBtn.addEventListener('keyup', (event) => {
+                        if (event.code === 'Space' || event.code === 'Enter') finishT3Hold();
+                    });
+                }
+            }
+
+            // Attach eliminate item events for T4
+            if (type === 4) {
+                const eliminableItems = document.querySelectorAll('.eliminable-item');
+                eliminableItems.forEach((item) => {
+                    item.addEventListener('click', function() {
+                        toggleEliminate(item);
+                    });
+                });
+                // Override flip button to reveal results first
+                if (flipBtn) {
+                    flipBtn.removeEventListener('click', toggleFlip);
+                    flipBtn.addEventListener('click', checkAndFlipT4);
+                }
+            }
+
+            if (type === 5) {
+                const hintBtn = document.querySelector('.js-hint-toggle');
+                if (hintBtn) {
+                    hintBtn.addEventListener('click', toggleHintLayer);
+                }
+            }
+
+            // Attach True/False response events for T7
+            if (type === 7) {
+                const swipeBtns = document.querySelectorAll('.swipe-btn');
+                swipeBtns.forEach((btn) => {
+                    const answer = btn.classList.contains('true');
+                    btn.addEventListener('click', function() {
+                        respondT7(answer);
+                    });
+                });
+            }
+
+            if (type === 6) {
+                const wordBtns = document.querySelectorAll('.word-bank-btn');
+                wordBtns.forEach((btn) => {
+                    btn.addEventListener('click', function() {
+                        const index = Number(btn.dataset.wordIndex);
+                        const word = Array.isArray(card.word_bank) ? card.word_bank[index] : undefined;
+                        if (typeof word === 'string') {
+                            selectT6Word(word);
+                        }
+                    });
+                });
+
+                const resetBtn = document.querySelector('.t6-reset-btn');
+                if (resetBtn) {
+                    resetBtn.addEventListener('click', resetT6);
+                }
+            }
+
+            if (type === 8) {
+                const formBtns = document.querySelectorAll('.t8-option-btn');
+                formBtns.forEach((btn) => {
+                    btn.addEventListener('click', function() {
+                        const index = Number(btn.dataset.formIndex);
+                        const option = Array.isArray(card.form_options) ? card.form_options[index] : null;
+                        if (option) {
+                            selectT8Option(btn, index, !!option.is_correct);
+                        }
+                    });
+                });
+            }
+        }
+
+        function recordFeedback(e) {
+            const text = e.target.textContent.trim();
+            console.log('Feedback recorded:', text);
+            alert(`✓ 反馈已记录: ${text}`);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' && filteredCards.length > 0) {
+                selectCard((currentCardIdx + 1) % filteredCards.length);
+            } else if (e.key === 'ArrowUp' && filteredCards.length > 0) {
+                selectCard((currentCardIdx - 1 + filteredCards.length) % filteredCards.length);
+            }
+        });
+
+        // 格式化时长
+        function formatDuration(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const mins = Math.floor(totalSeconds / 60);
+            const secs = totalSeconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // 全局音频
+        let globalAudio = new Audio();
+        let currentAudioCardId = null;
+
+        function syncAudioUi() {
+            const player = currentAudioCardId
+                ? document.querySelector(`.audio-player[data-card-id="${currentAudioCardId}"]`)
+                : null;
+
+            document.querySelectorAll('.js-audio-play').forEach((btn) => {
+                const isCurrent = btn.dataset.cardId === currentAudioCardId;
+                const icon = btn.querySelector('span');
+                btn.classList.toggle('playing', isCurrent && !globalAudio.paused);
+                if (icon) icon.textContent = isCurrent && !globalAudio.paused ? '⏸' : '▶';
+            });
+
+            document.querySelectorAll('.js-audio-bar').forEach((bar) => {
+                bar.style.width = '0%';
+            });
+
+            document.querySelectorAll('.js-audio-current').forEach((node) => {
+                node.textContent = '0:00';
+            });
+
+            if (!player) return;
+
+            const bar = player.querySelector('.js-audio-bar');
+            const current = player.querySelector('.js-audio-current');
+            const duration = player.querySelector('.js-audio-duration');
+            if (bar && globalAudio.duration) {
+                bar.style.width = `${(globalAudio.currentTime / globalAudio.duration) * 100}%`;
+            }
+            if (current) {
+                current.textContent = formatDuration(Math.floor((globalAudio.currentTime || 0) * 1000));
+            }
+            if (duration && globalAudio.duration) {
+                duration.textContent = formatDuration(Math.floor(globalAudio.duration * 1000));
+            }
+        }
+
+        globalAudio.addEventListener('play', syncAudioUi);
+        globalAudio.addEventListener('pause', syncAudioUi);
+        globalAudio.addEventListener('ended', () => {
+            syncAudioUi();
+        });
+        globalAudio.addEventListener('loadedmetadata', syncAudioUi);
+        globalAudio.addEventListener('timeupdate', syncAudioUi);
+
+        // 音频播放
+        document.addEventListener('click', (e) => {
+            const playBtn = e.target.closest('.js-audio-play');
+            if (playBtn) {
+                const audioUrl = playBtn.dataset.audioUrl;
+                const cardId = playBtn.dataset.cardId;
+                if (!audioUrl || !cardId) {
+                    alert('❌ 音频路径错误');
+                    return;
+                }
+
+                if (currentAudioCardId !== cardId) {
+                    globalAudio.pause();
+                    globalAudio.src = audioUrl;
+                    currentAudioCardId = cardId;
+                    globalAudio.currentTime = 0;
+                    globalAudio.play().catch(() => {
+                        alert(`❌ 音频播放失败\n${audioUrl}`);
+                    });
+                    return;
+                }
+
+                if (globalAudio.paused) {
+                    globalAudio.play().catch(() => {
+                        alert(`❌ 音频播放失败\n${audioUrl}`);
+                    });
+                } else {
+                    globalAudio.pause();
+                }
+                return;
+            }
+
+            const progressDiv = e.target.closest('.audio-progress');
+            if (progressDiv && globalAudio.duration) {
+                const cardId = progressDiv.dataset.cardId;
+                if (cardId !== currentAudioCardId) return;
+                const rect = progressDiv.getBoundingClientRect();
+                const percent = (e.clientX - rect.left) / rect.width;
+                globalAudio.currentTime = Math.max(0, Math.min(percent * globalAudio.duration, globalAudio.duration));
+                syncAudioUi();
+            }
+        });
+
+        // Paste support
+        window.addEventListener('paste', (e) => {
+            const text = e.clipboardData.getData('text/plain');
+            try {
+                const data = JSON.parse(text);
+                allCards = normalizeCards(data);
+                loadCards();
+            } catch {}
+        });
+
+        function applyLoadedData(data) {
+            allCards = normalizeCards(data);
+            filteredCards = [...allCards];
+            loadCards();
+        }
+
+        // Auto-load cards on page load.
+        // Pure HTML mode (file://) intentionally does not inject built-in samples.
+        // Please use file picker or paste JSON content in this mode.
+        window.addEventListener('DOMContentLoaded', async () => {
+            if (window.location.protocol === 'file:') {
+            console.log('纯 HTML 模式：请点击“选择JSON文件”或直接粘贴 JSON 数据。');
+                return;
+            }
+
+            try {
+                const response = await fetch('./card_boxes_json/card_boxes_seed_cet4_listening_0020.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    applyLoadedData(data);
+                    return;
+                }
+            } catch (err) {
+                console.log('自动加载失败，可手动上传或粘贴卡片数据');
+            }
+        });
+    </script>
+</body>
+</html>

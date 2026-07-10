@@ -1,0 +1,588 @@
+{
+  "version": "card-make-eval-fixtures-v1",
+  "status": "active",
+  "purpose": "Canonical regression fixtures for the card content harness golden tasks.",
+  "fixture_cases": [
+    {
+      "id": "FIX-GT-CARD-001-PASS-THREE-SAMPLE",
+      "golden_task_id": "GT-CARD-001",
+      "type": "sample_batch",
+      "target": {
+        "track": "cet4",
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "3",
+        "group": "细节捕捉",
+        "box_id": "1",
+        "box": "数字类",
+        "box_prefix": "0031"
+      },
+      "cards": [
+        {
+          "card_id": "003191",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "3",
+            "group": "细节捕捉",
+            "box_id": "1",
+            "box": "数字类",
+            "box_prefix": "0031"
+          },
+          "interaction_id": "multiple_choice",
+          "front": {
+            "prompt": "In the short audio, focus on the price the woman finally agrees to pay.",
+            "options": ["$5", "$15", "$50", "$55"]
+          },
+          "analysis": {
+            "answer": "$15",
+            "value": "This trains number discrimination under weak stress, a common CET listening detail trap."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Identify the final agreed number in a short listening context.",
+            "secondary_training_goals": ["separate similar-sounding numbers"],
+            "weak_point_tags": ["listening_weak"],
+            "difficulty": {
+              "primary": "foundation",
+              "secondary": []
+            },
+            "card_prototype": "context_input",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only listening micro-drill, not true exam content.",
+              "audio_generation_method": "none"
+            },
+            "exam_value": "CET listening often tests whether the learner catches the final corrected number.",
+            "box_progression_role": "recognition",
+            "review_status": "agent_pass"
+          }
+        },
+        {
+          "card_id": "003192",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "3",
+            "group": "细节捕捉",
+            "box_id": "1",
+            "box": "数字类",
+            "box_prefix": "0031"
+          },
+          "interaction_id": "lock",
+          "front": {
+            "prompt": "Arrange the two numbers in the order they appear in the mini dialogue.",
+            "lock_slots": ["first number", "second number"]
+          },
+          "analysis": {
+            "value": "Ordering numbers forces the learner to track local listening detail instead of guessing from memory."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Track two numbers in sequence during a short listening prompt.",
+            "secondary_training_goals": ["avoid swapping first and final number"],
+            "weak_point_tags": ["listening_weak"],
+            "difficulty": {
+              "primary": "pass",
+              "secondary": []
+            },
+            "card_prototype": "solving_action",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only listening micro-drill, not true exam content.",
+              "audio_generation_method": "none"
+            },
+            "exam_value": "CET listening detail questions often punish learners who catch a number but miss its role.",
+            "box_progression_role": "application",
+            "review_status": "agent_pass"
+          }
+        },
+        {
+          "card_id": "003193",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "3",
+            "group": "细节捕捉",
+            "box_id": "1",
+            "box": "数字类",
+            "box_prefix": "0031"
+          },
+          "interaction_id": "flip",
+          "front": {
+            "prompt": "After hearing a number and a corrected number, decide what the question is really asking you to keep."
+          },
+          "analysis": {
+            "value": "The transfer point is to listen for correction markers such as actually, instead, or make it."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Transfer number-detail listening to correction-marker contexts.",
+            "secondary_training_goals": ["notice correction markers"],
+            "weak_point_tags": ["listening_weak", "exam_strategy_weak"],
+            "difficulty": {
+              "primary": "high_score",
+              "secondary": ["pass"]
+            },
+            "card_prototype": "exam_strategy",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only listening micro-drill, not true exam content.",
+              "audio_generation_method": "none"
+            },
+            "exam_value": "Higher-score CET listening requires keeping the number that survives a correction, not the first number heard.",
+            "box_progression_role": "transfer",
+            "review_status": "agent_pass"
+          }
+        }
+      ],
+      "expected_outcome": {
+        "batch_status": "recommend_user_confirmation",
+        "formal_use_claimed": false,
+        "expected_blockers": [],
+        "box_progression": ["recognition", "application", "transfer"]
+      }
+    },
+    {
+      "id": "FIX-GT-CARD-002-BLOCK-TTS-SOURCE-CONFLATION",
+      "golden_task_id": "GT-CARD-002",
+      "type": "single_card",
+      "cards": [
+        {
+          "card_id": "003198",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "3",
+            "group": "细节捕捉",
+            "box_id": "1",
+            "box": "数字类",
+            "box_prefix": "0031"
+          },
+          "interaction_id": "flip",
+          "front": {
+            "prompt": "Listen to the generated audio and treat it as a true exam recording."
+          },
+          "analysis": {
+            "value": "This card is intentionally bad: it treats generated TTS audio as proof of source authenticity."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Detect source/authenticity confusion in a listening card.",
+            "secondary_training_goals": [],
+            "weak_point_tags": ["listening_weak"],
+            "difficulty": {
+              "primary": "foundation",
+              "secondary": []
+            },
+            "card_prototype": "context_input",
+            "material": {
+              "text_source_type": "ai_generated",
+              "source_note": "Incorrectly claims true exam authenticity because a TTS file exists.",
+              "audio_generation_method": "TTS_AI_generated",
+              "tts_text_reviewed": false,
+              "tts_audio_reviewed": false
+            },
+            "exam_value": "The fixture exists to block source-authenticity drift before audio generation.",
+            "box_progression_role": "recognition",
+            "review_status": "block"
+          }
+        }
+      ],
+      "fixture_flags": {
+        "conflates_tts_with_source_authenticity": true
+      },
+      "expected_outcome": {
+        "card_status": "block",
+        "formal_use_claimed": false,
+        "expected_blockers": ["fake_source_claim"],
+        "blocker_scan": {
+          "fake_source_claim": true
+        }
+      }
+    },
+    {
+      "id": "FIX-GT-CARD-003-BLOCK-REVERSE-FRONT",
+      "golden_task_id": "GT-CARD-003",
+      "type": "single_card",
+      "cards": [
+        {
+          "card_id": "011190",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "1",
+            "library": "仔细阅读",
+            "group_id": "1",
+            "group": "干扰项排除",
+            "box_id": "1",
+            "box": "绝对化",
+            "box_prefix": "0111"
+          },
+          "interaction_id": "multiple_choice",
+          "front": {
+            "prompt": "Fill in the blank: The option is wrong because it uses the word ____."
+          },
+          "analysis": {
+            "answer": "always",
+            "value": "This is intentionally bad because the front side was reverse-engineered from the analysis answer."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Reject a front side that only hides the back-side answer.",
+            "secondary_training_goals": [],
+            "weak_point_tags": ["reading_slow", "exam_strategy_weak"],
+            "difficulty": {
+              "primary": "foundation",
+              "secondary": []
+            },
+            "card_prototype": "error_correction",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only bad card, not true exam content.",
+              "audio_generation_method": "none"
+            },
+            "exam_value": "The fixture protects front-side independence: the prompt must stand as a real reading task.",
+            "box_progression_role": "recognition",
+            "review_status": "block"
+          }
+        }
+      ],
+      "fixture_flags": {
+        "front_stands_alone": false
+      },
+      "expected_outcome": {
+        "card_status": "block",
+        "formal_use_claimed": false,
+        "expected_blockers": ["reverse_engineered_front"],
+        "blocker_scan": {
+          "reverse_engineered_front": true
+        }
+      }
+    },
+    {
+      "id": "FIX-GT-CARD-004-BLOCK-APPROVAL-WITHOUT-SELF-REVIEW",
+      "golden_task_id": "GT-CARD-004",
+      "type": "approval_record",
+      "approval_record": {
+        "approval_id": "fixture-missing-self-review",
+        "approved_by_user": true,
+        "approved_at": "2026-05-13T00:00:00+08:00",
+        "scope": {
+          "library": "听力",
+          "group": "细节捕捉",
+          "box": "数字类",
+          "box_prefixes": ["0031"],
+          "card_ids": ["003191", "003192", "003193"]
+        },
+        "summary": "Intentionally incomplete fixture: user approval exists without a linked agent self-review record.",
+        "representative_cards": ["003191", "003192", "003193"],
+        "card_quality_audit": {
+          "report": "reports/card_quality_audit_report.json",
+          "corpus_fingerprint": "FIXTURE_CARD_CORPUS_SHA256",
+          "scope_has_no_hard_blockers": true,
+          "scope_summary": {
+            "card_ids": ["003191", "003192", "003193"],
+            "card_count": 3,
+            "issue_count": 0,
+            "by_severity": {
+              "hard_blocker": 0,
+              "content_risk": 0,
+              "review_gap": 0,
+              "source_risk": 0
+            },
+            "by_rule": {
+              "multiple_choice_no_options": 0,
+              "multiple_choice_answer_not_in_options": 0,
+              "front_missing_or_too_short": 0,
+              "analysis_missing_or_too_short": 0,
+              "generic_front_pattern": 0,
+              "template_analysis_pattern": 0,
+              "exact_repeated_front": 0,
+              "exact_repeated_analysis": 0,
+              "missing_quality_metadata": 0,
+              "unverified_source": 0,
+              "synthetic_source": 0
+            }
+          }
+        },
+        "validation": {
+          "harness": "node scripts/validate_harness.mjs",
+          "cards": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+          "card_quality_audit": "node scripts/audit_card_quality.mjs --report-path exports/card_quality_audit_report.json",
+          "card_quality_audit_report": "reports/card_quality_audit_report.json",
+          "agent_self_review": ""
+        },
+        "approval_limits": [
+          "Only the listed scope is approved.",
+          "Approval does not authorize unrelated bulk generation.",
+          "Approval does not change softbook_cet product specs."
+        ]
+      },
+      "expected_outcome": {
+        "approval_status": "block",
+        "formal_use_claimed": false,
+        "expected_gate_errors": ["approval_record_missing_agent_self_review"]
+      }
+    },
+    {
+      "id": "FIX-GT-CARD-004-BLOCK-RESIDUAL-CLOSURE-AS-SAMPLE",
+      "golden_task_id": "GT-CARD-004",
+      "type": "self_review_record",
+      "self_review_record": {
+        "review_id": "fixture-residual-closure-misused-as-sample",
+        "created_at": "2026-05-21T00:00:00+08:00",
+        "agent": "codex",
+        "scope": {
+          "box_prefixes": ["0101"],
+          "card_ids": ["010102"],
+          "closure_reason": "Fixture for a residual blocker fix that must not be treated as a sample approval.",
+          "source_issue_refs": ["FIX-GT-CARD-005-BLOCK-FRONT-ANSWER-LEAK"]
+        },
+        "specs_read": ["spec/review-workflow.json"],
+        "sample_policy": {
+          "review_scope_type": "residual_blocker_closure",
+          "is_three_card_sample_per_box": false,
+          "residual_blocker_closure": true,
+          "not_sample_approval": true,
+          "batch_generation_requires_user_confirmation": true
+        },
+        "quality_audit": {
+          "report": "reports/card_quality_audit_report.json",
+          "corpus_fingerprint": "FIXTURE_CARD_CORPUS_SHA256",
+          "scope_has_no_hard_blockers": true,
+          "scope_summary": {
+            "card_ids": ["010102"],
+            "card_count": 1,
+            "issue_count": 0,
+            "by_severity": {
+              "hard_blocker": 0,
+              "content_risk": 0,
+              "review_gap": 0,
+              "source_risk": 0
+            },
+            "by_rule": {
+              "multiple_choice_no_options": 0,
+              "multiple_choice_answer_not_in_options": 0,
+              "front_leaks_correct_answer": 0,
+              "front_missing_or_too_short": 0,
+              "analysis_missing_or_too_short": 0,
+              "generic_front_pattern": 0,
+              "template_analysis_pattern": 0,
+              "exact_repeated_front": 0,
+              "exact_repeated_analysis": 0,
+              "missing_quality_metadata": 0,
+              "unverified_source": 0,
+              "synthetic_source": 0
+            }
+          }
+        },
+        "cards": [
+          {
+            "card_id": "010102",
+            "interaction_id": "multiple_choice",
+            "knowledge_ref": {
+              "library_id": "1",
+              "library": "阅读",
+              "group_id": "0",
+              "group": "细节理解",
+              "box_id": "1",
+              "box": "定位",
+              "box_prefix": "0101"
+            },
+            "status": "pass",
+            "quality_metadata": {
+              "main_training_goal": "Identify why a repaired front prompt no longer exposes the answer.",
+              "weak_point_tags": ["reading_slow"],
+              "difficulty": {
+                "primary": "foundation",
+                "secondary": []
+              },
+              "card_prototype": "context_input",
+              "material": {
+                "text_source_type": "human_original",
+                "audio_generation_method": "none"
+              },
+              "exam_value": "Prevents front-side answer leakage in reading cards.",
+              "box_progression_role": "recognition",
+              "review_status": "agent_pass"
+            },
+            "blocker_scan": {
+              "logic_error": false,
+              "language_error": false,
+              "inappropriate_wording": false,
+              "low_knowledge_density": false,
+              "not_meeting_requirement": false,
+              "reverse_engineered_front": false,
+              "fake_source_claim": false,
+              "low_quality_variation": false
+            },
+            "major_issues": [],
+            "minor_issues": [],
+            "recommendation": "Keep as residual closure evidence only."
+          }
+        ],
+        "batch_review": {
+          "status": "recommend_user_confirmation",
+          "box_progression": "not_applicable_residual_closure",
+          "repetition_or_gap_risks": [],
+          "representative_cards": ["010102"],
+          "next_step": "This fixture must be blocked because residual closures cannot recommend user confirmation."
+        }
+      },
+      "expected_outcome": {
+        "self_review_status": "block",
+        "formal_use_claimed": false,
+        "expected_gate_errors": ["residual_self_review_must_not_recommend_confirmation"]
+      }
+    },
+    {
+      "id": "FIX-GT-CARD-005-BLOCK-FRONT-ANSWER-LEAK",
+      "golden_task_id": "GT-CARD-005",
+      "type": "single_card",
+      "cards": [
+        {
+          "card_id": "001199",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "1",
+            "group": "语音现象",
+            "box_id": "1",
+            "box": "弱读",
+            "box_prefix": "0011"
+          },
+          "interaction_id": "multiple_choice",
+          "front": {
+            "text": "播放音频后，选择最需要用弱读还原的片段。",
+            "task_prompt": "重点听 have to：to 很轻，不会像单独读单词时那么完整。能说明正确选项为什么就是 have to。",
+            "options": [
+              {
+                "key": "A",
+                "text": "have to"
+              },
+              {
+                "key": "B",
+                "text": "finance office"
+              },
+              {
+                "key": "C",
+                "text": "data proposal"
+              },
+              {
+                "key": "D",
+                "text": "before midnight"
+              }
+            ]
+          },
+          "answer_key": {
+            "correct_option": "A"
+          },
+          "analysis": {
+            "text": "This card is intentionally bad: the front-side task prompt already names the correct option text have to and uses correct-option hindsight language, so the learner can answer from the prompt instead of doing the listening task.",
+            "answer": "A"
+          },
+          "quality_metadata": {
+            "main_training_goal": "Reject a multiple-choice prompt that leaks its correct option.",
+            "secondary_training_goals": [],
+            "weak_point_tags": ["listening_weak", "exam_strategy_weak"],
+            "difficulty": {
+              "primary": "foundation",
+              "secondary": []
+            },
+            "card_prototype": "solving_action",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only bad card, not true exam content.",
+              "audio_generation_method": "none"
+            },
+            "exam_value": "The fixture protects the front side as a real learning task instead of a disguised answer key.",
+            "box_progression_role": "recognition",
+            "review_status": "block"
+          }
+        }
+      ],
+      "fixture_flags": {
+        "front_contains_correct_option_text": true,
+        "front_contains_answer_hindsight_language": true
+      },
+      "expected_outcome": {
+        "card_status": "block",
+        "formal_use_claimed": false,
+        "expected_audit_rules": ["front_leaks_correct_answer"],
+        "expected_hard_blocker_rules": ["front_leaks_correct_answer"]
+      }
+    },
+    {
+      "id": "FIX-GT-CARD-006-BLOCK-FORMAL-AUDIO-BY-PATH-ONLY",
+      "golden_task_id": "GT-CARD-006",
+      "type": "audio_qc_record",
+      "cards": [
+        {
+          "card_id": "001299",
+          "track": "cet4",
+          "knowledge_ref": {
+            "library_id": "0",
+            "library": "听力",
+            "group_id": "1",
+            "group": "语音现象",
+            "box_id": "2",
+            "box": "失去爆破",
+            "box_prefix": "0012"
+          },
+          "interaction_id": "flip",
+          "front": {
+            "text": "Listen and decide whether the final stop is unreleased before the next consonant."
+          },
+          "audio": {
+            "path": "ai_tts/cet4/0012/001299.mp3",
+            "transcript": "Fixture audio path only; no actual target-signal QC has been completed."
+          },
+          "analysis": {
+            "text": "This fixture is intentionally bad: it tries to mark generated audio formal by path presence without proving the target signal is audible."
+          },
+          "quality_metadata": {
+            "main_training_goal": "Reject formal audio readiness when only an ai_tts path exists.",
+            "secondary_training_goals": [],
+            "weak_point_tags": ["listening_weak", "exam_strategy_weak"],
+            "difficulty": {
+              "primary": "pass",
+              "secondary": []
+            },
+            "card_prototype": "context_input",
+            "material": {
+              "text_source_type": "simulation",
+              "source_note": "Fixture-only bad audio readiness claim, not true exam content.",
+              "audio_generation_method": "TTS_AI_generated"
+            },
+            "exam_value": "The fixture protects pronunciation/listening cards from shipping audio that never proved the audible signal.",
+            "box_progression_role": "recognition",
+            "review_status": "block"
+          }
+        }
+      ],
+      "audio_qc_record": {
+        "qa_checks": {
+          "target_signal_audible": false,
+          "tts_audio_not_used_as_source_authenticity": true
+        },
+        "verdict": {
+          "formal_audio_ready": true,
+          "requires_regeneration": false
+        },
+        "approval_boundary": {
+          "tts_audio_is_not_source_authenticity_evidence": true,
+          "formal_content_approval_still_requires_user": true
+        }
+      },
+      "fixture_flags": {
+        "existing_ai_tts_path_only": true,
+        "target_signal_unreviewed": true
+      },
+      "expected_outcome": {
+        "audio_qc_status": "block",
+        "formal_use_claimed": false,
+        "expected_gate_errors": ["target_signal_audible_required_for_formal_audio"]
+      }
+    }
+  ]
+}
