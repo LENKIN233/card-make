@@ -1,0 +1,234 @@
+{
+  "review_id": "20260710-cet6-reading-1111-revised-sample",
+  "created_at": "2026-07-10T11:26:46+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "仔细阅读",
+    "group": "干扰项排除",
+    "box": "绝对化",
+    "box_prefixes": [
+      "1111"
+    ],
+    "card_ids": [
+      "111101",
+      "111102",
+      "111103"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true,
+    "approval_records_written": false,
+    "formal_content_claimed": false
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260710-cet6-reading-1111-scope-audit.json",
+    "corpus_fingerprint": "ea81275c7828cf245d01d90287df1fc364f47e249ca99d03f189b9545d11d5f7",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "111101",
+        "111102",
+        "111103"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "111101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "1",
+        "box": "绝对化",
+        "box_prefix": "1111"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别选项把有限表达放大成全称或必然结论的绝对化干扰",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助学生建立强度对齐意识，避免被看似有力但超过原文证据边界的选项误导。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "simulation_source_requires_user_confirmation_before_formal_use"
+      ],
+      "recommendation": "Keep as recognition card for absolute-strength signal awareness."
+    },
+    {
+      "card_id": "111102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "1",
+        "box": "绝对化",
+        "box_prefix": "1111"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在四选一中排除 every、only、always、prove 等绝对化改写",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练学生把原文趋势、范围和证据强度逐项对齐，减少选中“更强但不被支持”的干扰项。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "simulation_source_requires_user_confirmation_before_formal_use"
+      ],
+      "recommendation": "Keep as application card for four-option absolute-distractor filtering."
+    },
+    {
+      "card_id": "111103",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "1",
+        "box": "绝对化",
+        "box_prefix": "1111"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在多选消除题中保留 may/some/cannot replace 等限制并删除绝对化结论",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "提升学生在多条件文本中识别强度放大的能力，避免把方向正确但范围过大的选项当作正确项。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "simulation_source_requires_user_confirmation_before_formal_use"
+      ],
+      "recommendation": "Keep as transfer card for multi-select absolute-strength elimination."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "111101 builds recognition of absolute-strength wording, 111102 applies the check in a four-option reading task, and 111103 transfers it to multi-select elimination with multiple boundary signals.",
+    "repetition_or_gap_risks": [
+      "All three cards use simulation text and therefore remain candidate-only until explicit user confirmation."
+    ],
+    "representative_cards": [
+      "111101",
+      "111102",
+      "111103"
+    ],
+    "next_step": "Ask user to confirm or revise the 3-card sample before any formal batch expansion, approval record, import, or Apple-release content claim."
+  }
+}
