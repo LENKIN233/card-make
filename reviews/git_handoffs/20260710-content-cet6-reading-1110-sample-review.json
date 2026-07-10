@@ -1,0 +1,69 @@
+{
+  "handoff_id": "20260710-content-cet6-reading-1110-sample-review",
+  "created_at": "2026-07-10T11:21:11+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-reading-1110-sample-review",
+  "base_branch": "main",
+  "content_commit_sha": "b9367183a0148812a7b9616265d2a4c9fe2ba1ac",
+  "commit_sha": "b9367183a0148812a7b9616265d2a4c9fe2ba1ac",
+  "push_ref": "origin/content/cet6-reading-1110-sample-review",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/97",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "merge_state_status": "CLEAN",
+  "scope": {
+    "change_type": "candidate_content_sample",
+    "track": "cet6",
+    "library": "仔细阅读",
+    "group": "干扰项排除",
+    "box": "无中生有",
+    "box_prefix": "1110",
+    "card_ids": [
+      "111001",
+      "111002",
+      "111003"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_reading_1110.json",
+      "reviews/agent_self_review/20260710-cet6-reading-1110-revised-sample.json",
+      "reviews/audit_scopes/20260710-cet6-reading-1110-scope-audit.json",
+      "reviews/git_handoffs/20260710-content-cet6-reading-1110-sample-review.json"
+    ]
+  },
+  "candidate_boundary": {
+    "approval_records_written": false,
+    "formal_content_claimed": false,
+    "approved_batches_modified": false,
+    "requires_user_confirmation_before_batch_expansion": true,
+    "requires_user_confirmation_before_import_or_release_claim": true
+  },
+  "validation": [
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 111001,111002,111003 --write-scope-report reviews/audit_scopes/20260710-cet6-reading-1110-scope-audit.json --max-examples 20",
+      "result": "passed; scoped hard blockers 0, content risks 0, review gaps 0, source risks 3 synthetic_source only"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "passed; errors 0, warnings 0; generated global report restored"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; recorded upstream group alignment warnings plus scoped-evidence stale-global-report warning only"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; primary scope prefix 1110; current scoped audit ok"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "clean before handoff record",
+  "remaining_risks": [
+    "Candidate cards use simulation material and are not formal content until explicit user confirmation.",
+    "This PR does not modify reviews/approved_batches and does not prove Apple-release readiness.",
+    "Runtime import, release payload generation, production content approval, and Apple submission gates remain outside this sample PR."
+  ],
+  "merge_authority": "no_auto_merge_for_candidate_content_without_user_confirmed_sample_and_scope_delegation"
+}
