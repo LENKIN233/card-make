@@ -1,0 +1,267 @@
+{
+  "review_id": "20260710-cet6-listening-1051-revised-sample",
+  "created_at": "2026-07-10T10:30:35+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "主旨大意",
+    "box": "结尾总结",
+    "box_prefixes": [
+      "1051"
+    ],
+    "card_ids": [
+      "105101",
+      "105102",
+      "105103"
+    ]
+  },
+  "product_truth": {
+    "source": "../softbook_cet/spec/box-catalog.json",
+    "track": "cet6",
+    "library_id": "0",
+    "library": "听力",
+    "group_id": "5",
+    "group": "主旨大意",
+    "box_id": "1",
+    "box": "结尾总结",
+    "resolved_box_prefix": "1051"
+  },
+  "implementation_hypothesis": {
+    "scope": "Revise only the first three candidate cards in legacy CET6 listening box 1051.",
+    "legacy_issues": [
+      "Cards lacked task_schema and quality_metadata needed for reviewable sample handoff.",
+      "Analysis was generic and did not explain how ending summary signals compress final main ideas.",
+      "105103 used a timing-click shape unsupported by the V1 core interaction contract."
+    ],
+    "revision_intent": "Create an audio-first three-card candidate sample that progresses from recognizing ending summary signals to choosing the final emphasized point and transferring the method to research-ending conclusion compression.",
+    "candidate_boundary": "This is not user approval, not approved_batches content, and not Apple-ready production content."
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "cards": [
+    {
+      "card_id": "105101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "1",
+        "box": "结尾总结",
+        "box_prefix": "1051"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 In short 引出的结尾总结和最终建议。",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy 1051 ending-summary listening content revised as a candidate-only CET6 main-idea ending sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "CET6 主旨大意题常在结尾用总结词收束观点，本卡训练学生把结尾信号转成可复述的最终观点。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified and TTS audio has not been formally reviewed."
+      ],
+      "recommendation": "Pass as a candidate-only recognition sample pending user confirmation and later audio/source QA."
+    },
+    {
+      "card_id": "105102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "1",
+        "box": "结尾总结",
+        "box_prefix": "1051"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在四选一中识别结尾总结的最终强调点。",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy 1051 ending-summary listening content revised as a candidate-only CET6 main-idea ending sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "CET6 结尾主旨题常把总结句改写成概括选项，本卡训练学生用结尾信号和强调动作共同确认答案。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Source provenance remains unverified and TTS audio has not been formally reviewed."
+      ],
+      "recommendation": "Pass as a candidate-only application sample pending user confirmation and later audio/source QA."
+    },
+    {
+      "card_id": "105103",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "5",
+        "group": "主旨大意",
+        "box_id": "1",
+        "box": "结尾总结",
+        "box_prefix": "1051"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 overall / thus 压缩研究结尾的比较关系和结论。",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy 1051 ending-summary listening content revised as a candidate-only CET6 main-idea ending sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "CET6 研究类听力常在结尾用 overall/thus 总结发现，本卡训练学生把复杂比较关系压缩成可复述的主旨结论。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Legacy timing-click behavior was removed because V1 does not define audio timing as a core interaction family.",
+        "Source provenance remains unverified and TTS audio has not been formally reviewed."
+      ],
+      "recommendation": "Pass as a candidate-only transfer sample pending user confirmation and later audio/source QA."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The revised 1051 sample moves from recognizing ending summary signals, to selecting the final emphasized point, to compressing a research-ending comparison into a main-idea conclusion.",
+    "repetition_or_gap_risks": [
+      "Only 105101-105103 are revised; 105104-105112 remain legacy content and still need separate review before any batch expansion.",
+      "All three sample cards use simulation text with unverified provenance.",
+      "TTS text was reviewed, but audio timing and listening quality still need formal audio QC before production import."
+    ],
+    "representative_cards": [
+      "105101",
+      "105102",
+      "105103"
+    ],
+    "next_step": "Wait for explicit user confirmation before expanding this box, writing approved_batches records, importing into softbook_cet, or claiming Apple readiness."
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260710-cet6-listening-1051-scope-audit.json",
+    "corpus_fingerprint": "a5224de62d952913f315c9bdc3aa7a1e0b469400878d3a965aa0c05e83a3c19c",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "105101",
+        "105102",
+        "105103"
+      ],
+      "card_count": 3,
+      "issue_count": 6,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 6
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 3
+      }
+    }
+  }
+}
