@@ -5,7 +5,7 @@
   "group": 3,
   "box": 6,
   "card_box_code": "1036",
-  "card_box_name": "专家看法",
+  "card_box_name": "专家看法（仅六级）",
   "card_group_name": "细节捕捉",
   "trial": true,
   "cards": [
@@ -18,26 +18,31 @@
       "card_no": 1,
       "card_box_code": "1036",
       "interaction_type": 0,
-      "card_box_name": "专家看法",
+      "card_box_name": "专家看法（仅六级）",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "点击专家发出警告（warn）的瞬间",
+        "text": "任务：先听音频，抓住专家对城市树木价值的核心看法。",
         "image_url": null,
         "audio_url": "ai_tts/cet6/1036/103601.mp3",
         "highlight_ranges": [],
-        "task_prompt": "点击专家发出警告（warn）的瞬间",
-        "audio_first": true
+        "task_prompt": "任务：先听音频，抓住专家对城市树木价值的核心看法。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "task_schema": {
+          "action": "听后提取",
+          "focus": "专家观点中的定位、理由和限制条件",
+          "success_criteria": "能说出专家主张、支持理由和 caveat 边界"
+        }
       },
       "back_content": {
-        "text": "结论：本题训练“专家看法”的听力判定流程。\n\n定位依据：先抓信号，再核对对象与限定词，最后回文验证。",
-        "explanation": null
+        "text": "结论：专家认为城市树木应被当作 public health infrastructure，而不只是 decoration；理由是它们能 reduce heat stress 并 encourage outdoor activity；但成效取决于 long-term maintenance。",
+        "explanation": "语境揭示：Dr. Elaine Porter argues that urban trees should be treated as public health infrastructure, not merely decoration, because they reduce heat stress and encourage outdoor activity. However, she notes that the benefits depend on long-term maintenance, not just planting more trees."
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“专家看法”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：先用信号词或句法骨架定位信息重心，再根据上下文完成含义确认，避免只看单个词就下结论。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到本题请先核对题干限定词，再对照音频证据完成对象-关系-范围三点自检。常见误判是把定义性描述当答案本身，忽略语境中真正限制条件。纠偏时先问“这句话在当前语境里解决了什么问题”。下次遇到同类题时，直接执行：先圈出触发信号，再用一句话复述该句对主题的贡献。",
+        "text": "① 识别信号：argues 引出专家核心观点；not merely decoration 排除“只是美化”的误听；because 后面给出两个理由。② 核心规律：专家看法题不能只摘关键词，要按“观点 + 理由 + 限制条件”复述。③ 验证与纠偏：However 后的 long-term maintenance 是边界，不是反对种树；答案要保留 benefits depend on maintenance 的条件。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "听到 argues / believes / warns 时，先判断它后面是观点、理由还是限制。",
+          "however / but 后常补充边界，不能被前面的正向观点盖住。"
         ]
       },
       "options": null,
@@ -52,7 +57,7 @@
         "duration_ms": 25584,
         "voice": "en-US-AriaNeural",
         "rate": "-8%",
-        "transcript": "For years, antibiotics have been responsible for saving millions of lives since Penicillin was first used on a clinical basis seventy years ago. In the past, health experts warned us that the day would come in which it would become very difficult to provide medical care for even common problems, such as lung infection or severe sore throat. And apparently, that day has come.",
+        "transcript": "Dr. Elaine Porter argues that urban trees should be treated as public health infrastructure, not merely decoration, because they reduce heat stress and encourage outdoor activity. However, she notes that the benefits depend on long-term maintenance, not just planting more trees.",
         "path": "ai_tts/cet6/1036/103601.mp3"
       },
       "source_ref": {
@@ -60,7 +65,7 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "note": "legacy 1036 expert-opinion listening content revised as a candidate-only CET6 expert-opinion sample; not claimed as true-exam source",
         "provenance_status": "unverified"
       },
       "track_index": 1,
@@ -72,31 +77,34 @@
         "group_id": "3",
         "group_name": "细节捕捉",
         "box_id": "6",
-        "box_name": "专家看法",
+        "box_name": "专家看法（仅六级）",
         "box_prefix": "1036"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "点击专家发出警告（warn）的瞬间",
-        "task_prompt": "点击专家发出警告（warn）的瞬间",
+        "text": "任务：先听音频，抓住专家对城市树木价值的核心看法。",
+        "task_prompt": "任务：先听音频，抓住专家对城市树木价值的核心看法。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "听后提取",
+          "focus": "专家观点中的定位、理由和限制条件",
+          "success_criteria": "能说出专家主张、支持理由和 caveat 边界"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“专家看法”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：先用信号词或句法骨架定位信息重心，再根据上下文完成含义确认，避免只看单个词就下结论。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到本题请先核对题干限定词，再对照音频证据完成对象-关系-范围三点自检。常见误判是把定义性描述当答案本身，忽略语境中真正限制条件。纠偏时先问“这句话在当前语境里解决了什么问题”。下次遇到同类题时，直接执行：先圈出触发信号，再用一句话复述该句对主题的贡献。",
+        "text": "① 识别信号：argues 引出专家核心观点；not merely decoration 排除“只是美化”的误听；because 后面给出两个理由。② 核心规律：专家看法题不能只摘关键词，要按“观点 + 理由 + 限制条件”复述。③ 验证与纠偏：However 后的 long-term maintenance 是边界，不是反对种树；答案要保留 benefits depend on maintenance 的条件。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "听到 argues / believes / warns 时，先判断它后面是观点、理由还是限制。",
+          "however / but 后常补充边界，不能被前面的正向观点盖住。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
         "type": 0,
         "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "product_mapping_reason": "legacy flip card maps directly to a product-contract flip sample"
       },
       "quality_flags": [
         "unverified_source"
@@ -104,6 +112,34 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "提取专家观点中的主张、理由和限制条件。",
+        "secondary_training_goals": [
+          "识别 argues 引出的专家主张",
+          "区分支持理由与 caveat 边界"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "exam_value": "CET6 专家观点题常把主张和限制条件拆开呈现，本卡训练学生完整保留观点边界。",
+        "box_progression_role": "recognition",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy 1036 expert-opinion listening content revised as a candidate-only CET6 expert-opinion sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "review_status": "agent_pass"
       }
     },
     {
@@ -115,47 +151,52 @@
       "card_no": 2,
       "card_box_code": "1036",
       "interaction_type": 1,
-      "card_box_name": "专家看法",
+      "card_box_name": "专家看法（仅六级）",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "听录音，选择专家对未来的看法\n根据录音，专家对抗生素耐药问题的前景持何看法？",
+        "text": "任务：先听音频，选择专家对 AI 辅导工具在课堂中作用的看法。",
         "image_url": null,
         "audio_url": "ai_tts/cet6/1036/103602.mp3",
         "highlight_ranges": [],
-        "task_prompt": "听录音，选择专家对未来的看法\n根据录音，专家对抗生素耐药问题的前景持何看法？",
-        "audio_first": true
+        "task_prompt": "任务：先听音频，选择专家对 AI 辅导工具在课堂中作用的看法。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "task_schema": {
+          "action": "听后选择",
+          "focus": "专家观点与 caveat 的选项匹配",
+          "success_criteria": "能排除替换主语、绝对化和方向相反选项，选出保留边界的观点"
+        }
       },
       "back_content": {
-        "text": "答案：B。\n\n定位依据：先对齐题干限定词，再用音频中的对应信息完成对象-关系-范围三点核对。",
-        "explanation": null
+        "text": "答案：B。专家认为 AI tutoring tools 可以提供 quicker feedback，但应 support teachers rather than replace them。",
+        "explanation": "语境揭示：Professor Malik says AI tutoring tools can help students receive quicker feedback, but he warns that they should support teachers rather than replace them, especially when students need emotional guidance or motivation."
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“专家看法”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到本题请先核对题干限定词，再对照音频证据完成对象-关系-范围三点自检。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "① 识别信号：says 给出专家认可的功能，but he warns 转入限制条件；support teachers rather than replace them 是观点核心。② 干扰项分析：A 把 support 偷换成 replace；C 把 quicker feedback 反说成无用；D 把 emotional guidance 误听成 AI 的主要功能。③ 验证与迁移：正确选项必须同时保留“quicker feedback”和“不替代教师”两个信息。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "四选一先排除替换核心动词的选项，如 support 被改成 replace。",
+          "rather than 后面通常是专家明确排除的方向。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "Deaths may fall sharply with better regulation.",
+          "text": "They should replace teachers in routine classroom work.",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "Deaths could reach ten million per year by 2050.",
+          "text": "They should support teachers while offering quicker feedback.",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "The problem will be solved within a decade.",
+          "text": "They should be avoided because feedback becomes less useful.",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "Antibiotic research is now adequately funded.",
+          "text": "They are mainly useful for emotional guidance.",
           "is_correct": false
         }
       ],
@@ -170,7 +211,7 @@
         "duration_ms": 21360,
         "voice": "en-US-AriaNeural",
         "rate": "-8%",
-        "transcript": "Health experts worry that the number of antibiotic-resistant deaths will rise to ten million or more on a yearly basis by 2050. The problem has grown into such epidemic proportions that this severe strain of resistant bacteria is already being blamed for nearly seven hundred thousand deaths each year throughout the world.",
+        "transcript": "Professor Malik says AI tutoring tools can help students receive quicker feedback, but he warns that they should support teachers rather than replace them, especially when students need emotional guidance or motivation.",
         "path": "ai_tts/cet6/1036/103602.mp3"
       },
       "source_ref": {
@@ -178,7 +219,7 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "note": "legacy 1036 expert-opinion listening content revised as a candidate-only CET6 expert-opinion sample; not claimed as true-exam source",
         "provenance_status": "unverified"
       },
       "track_index": 1,
@@ -190,24 +231,27 @@
         "group_id": "3",
         "group_name": "细节捕捉",
         "box_id": "6",
-        "box_name": "专家看法",
+        "box_name": "专家看法（仅六级）",
         "box_prefix": "1036"
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "听录音，选择专家对未来的看法\n根据录音，专家对抗生素耐药问题的前景持何看法？",
-        "task_prompt": "听录音，选择专家对未来的看法\n根据录音，专家对抗生素耐药问题的前景持何看法？",
+        "text": "任务：先听音频，选择专家对 AI 辅导工具在课堂中作用的看法。",
+        "task_prompt": "任务：先听音频，选择专家对 AI 辅导工具在课堂中作用的看法。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "听后选择",
+          "focus": "专家观点与 caveat 的选项匹配",
+          "success_criteria": "能排除替换主语、绝对化和方向相反选项，选出保留边界的观点"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“专家看法”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到本题请先核对题干限定词，再对照音频证据完成对象-关系-范围三点自检。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "① 识别信号：says 给出专家认可的功能，but he warns 转入限制条件；support teachers rather than replace them 是观点核心。② 干扰项分析：A 把 support 偷换成 replace；C 把 quicker feedback 反说成无用；D 把 emotional guidance 误听成 AI 的主要功能。③ 验证与迁移：正确选项必须同时保留“quicker feedback”和“不替代教师”两个信息。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "四选一先排除替换核心动词的选项，如 support 被改成 replace。",
+          "rather than 后面通常是专家明确排除的方向。"
         ]
       },
       "auto_scoring": true,
@@ -225,6 +269,31 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别专家对课堂 AI 工具作用的支持边界。",
+        "secondary_training_goals": [
+          "保留 but he warns 引出的限制",
+          "排除 replace / avoid / mainly 等偷换或绝对化选项"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "integrated_micro_drill",
+        "exam_value": "CET6 专家观点题常考支持与保留并存的态度，本卡训练学生选出带边界的观点表达。",
+        "box_progression_role": "application",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy 1036 expert-opinion listening content revised as a candidate-only CET6 expert-opinion sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "review_status": "agent_pass"
       }
     },
     {
@@ -235,27 +304,32 @@
       "box": 6,
       "card_no": 3,
       "card_box_code": "1036",
-      "interaction_type": 2,
-      "card_box_name": "专家看法",
+      "interaction_type": 0,
+      "card_box_name": "专家看法（仅六级）",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "听到专家给出具体建议的瞬间时点击",
+        "text": "任务：先听音频，比较两位专家对食品标签作用的看法。",
         "image_url": null,
         "audio_url": "ai_tts/cet6/1036/103603.mp3",
         "highlight_ranges": [],
-        "task_prompt": "听到专家给出具体建议的瞬间时点击",
-        "audio_first": true
+        "task_prompt": "任务：先听音频，比较两位专家对食品标签作用的看法。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "task_schema": {
+          "action": "听后比较",
+          "focus": "两位专家观点的差异与共同边界",
+          "success_criteria": "能分别说出两位专家观点，并指出共同同意的限制"
+        }
       },
       "back_content": {
-        "text": "答案窗口：约第 16.0s - 21.5s。\n\n定位依据：点击应落在“关键信号词触发后、核心信息落地前”的语义区间。",
-        "explanation": null
+        "text": "结论：第一位专家认为 front-of-package labels 能帮助 shoppers make faster choices；另一位专家认为标签要配合 schools teach basic nutrition 才有效；两人都认为 labels alone 不能改变长期饮食习惯。",
+        "explanation": "语境揭示：One nutrition specialist believes front-of-package labels help shoppers make faster choices, while another argues that labels only work when schools also teach basic nutrition. Both agree that labels alone cannot change long-term eating habits."
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“专家看法”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：时机点击题先定位“信息转折或答案触发点”，点击窗口应落在语义发生变化的时间段。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到本题请先核对题干限定词，再对照音频证据完成对象-关系-范围三点自检。常见误判是按语速或节奏点点击，而不是按语义转折点击。纠偏时以“观点变化点”为唯一锚。下次遇到同类题时，直接执行：听到转折词或态度词后再点击，不要在铺垫句提前作答。",
+        "text": "① 识别信号：believes 和 argues 分别标出两位专家观点；while 表示对比；Both agree 引出共同边界。② 核心规律：双专家观点题要分开记录“谁认为 A、谁认为 B”，再总结共同点。③ 验证与纠偏：不要把第二位专家的学校教育条件听成否定标签；准确结论是 labels need support, not labels are useless。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "听到 while another argues 时，立即把两位专家观点分栏记录。",
+          "Both agree 后面通常是共同结论，比单个细节更适合作答核验。"
         ]
       },
       "options": null,
@@ -270,7 +344,7 @@
         "duration_ms": 26688,
         "voice": "en-US-AriaNeural",
         "rate": "-8%",
-        "transcript": "An American researcher who studied six hundred millionaires found that six behaviors are related to net worth potential: thriftiness, confidence, responsibility, planning, focus, and social indifference. Spending above your means makes you a slave to the paycheck. To properly build wealth, experts recommend saving twenty percent of your income and living off the remaining eighty percent.",
+        "transcript": "One nutrition specialist believes front-of-package labels help shoppers make faster choices, while another argues that labels only work when schools also teach basic nutrition. Both agree that labels alone cannot change long-term eating habits.",
         "path": "ai_tts/cet6/1036/103603.mp3"
       },
       "source_ref": {
@@ -278,13 +352,9 @@
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
+        "note": "legacy 1036 expert-opinion listening content revised as a candidate-only CET6 expert-opinion sample; not claimed as true-exam source",
         "provenance_status": "unverified"
       },
-      "time_window_ms": [
-        16000,
-        21500
-      ],
       "track_index": 1,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -294,31 +364,34 @@
         "group_id": "3",
         "group_name": "细节捕捉",
         "box_id": "6",
-        "box_name": "专家看法",
+        "box_name": "专家看法（仅六级）",
         "box_prefix": "1036"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "听到专家给出具体建议的瞬间时点击",
-        "task_prompt": "听到专家给出具体建议的瞬间时点击",
+        "text": "任务：先听音频，比较两位专家对食品标签作用的看法。",
+        "task_prompt": "任务：先听音频，比较两位专家对食品标签作用的看法。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "听后比较",
+          "focus": "两位专家观点的差异与共同边界",
+          "success_criteria": "能分别说出两位专家观点，并指出共同同意的限制"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“专家看法”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：时机点击题先定位“信息转折或答案触发点”，点击窗口应落在语义发生变化的时间段。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到本题请先核对题干限定词，再对照音频证据完成对象-关系-范围三点自检。常见误判是按语速或节奏点点击，而不是按语义转折点击。纠偏时以“观点变化点”为唯一锚。下次遇到同类题时，直接执行：听到转折词或态度词后再点击，不要在铺垫句提前作答。",
+        "text": "① 识别信号：believes 和 argues 分别标出两位专家观点；while 表示对比；Both agree 引出共同边界。② 核心规律：双专家观点题要分开记录“谁认为 A、谁认为 B”，再总结共同点。③ 验证与纠偏：不要把第二位专家的学校教育条件听成否定标签；准确结论是 labels need support, not labels are useless。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "听到 while another argues 时，立即把两位专家观点分栏记录。",
+          "Both agree 后面通常是共同结论，比单个细节更适合作答核验。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "legacy timing-click preview behavior is revised to a product-contract flip sample"
       },
       "quality_flags": [
         "unverified_source"
@@ -326,6 +399,34 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "比较两位专家观点并提炼共同限制。",
+        "secondary_training_goals": [
+          "识别 while another argues 的观点对比结构",
+          "提取 Both agree 引出的共同边界"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "exam_value": "CET6 专家观点材料常出现多方观点对比，本卡训练学生把差异和共同限制同时保留下来。",
+        "box_progression_role": "transfer",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "legacy 1036 expert-opinion listening content revised as a candidate-only CET6 expert-opinion sample; not claimed as true-exam source",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "review_status": "agent_pass"
       }
     },
     {
