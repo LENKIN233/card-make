@@ -37,6 +37,15 @@
     "purpose": "prove quality before batch expansion",
     "batch_generation_requires": "user_confirmation_of_sample"
   },
+  "candidate_review_queue": {
+    "schema": "spec/candidate-review-queue.schema.json",
+    "record": "reviews/candidate-review-queue.json",
+    "active_candidate_pr_limit": 5,
+    "parallel_tooling_pr_limit": 1,
+    "active_unit": "one_box_three_card_sample",
+    "green_checks_do_not_create_formal_approval": true,
+    "parked_units_must_keep_patch_sha_and_original_head": true
+  },
   "sample_quality_gate": {
     "quality_metadata_schema": "spec/card-metadata.schema.json",
     "agent_self_review_directory": "reviews/agent_self_review/",

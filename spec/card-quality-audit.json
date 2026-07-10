@@ -4,6 +4,12 @@
   "purpose": "Read-only quality audit rules for existing and candidate card JSON. This audit surfaces mechanical blockers and content-risk signals; it is not formal release approval.",
   "mode": "read_only_non_blocking_for_legacy_corpus",
   "report_path": "reports/card_quality_audit_report.json",
+  "report_output_policy": {
+    "tracked_in_git": false,
+    "default_path_is_ignored": true,
+    "explicit_cli_option": "--report-path <path>",
+    "ci_output_location": "runner_temp"
+  },
   "scoped_report_dir": "reviews/audit_scopes/",
   "script_path": "scripts/audit_card_quality.mjs",
   "approval_boundary": {

@@ -59,6 +59,14 @@
     "default_for_harness_followups": "use_existing_PR_for_same_harness_domain; create_stacked_PR_for_distinct_git_workflow_or_quality_gate_domains"
   },
   "validation_policy": {
+    "required_github_checks": [
+      "contract-harness",
+      "content-scope",
+      "approval-boundary",
+      "delivery-record",
+      "repo-health"
+    ],
+    "generated_report_policy": "Global validation and quality reports are ephemeral outputs and must not be committed.",
     "before_commit": [
       {
         "scope": "harness_files",
@@ -70,7 +78,7 @@
       },
       {
         "scope": "card_json_or_preview_reader",
-        "command": "node scripts/validate_cards.mjs --write-report"
+        "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json"
       },
       {
         "scope": "candidate_sample_scoped_audit",
@@ -125,6 +133,13 @@
       "draft_PR",
       "auto_merge_after_ready_and_mergeable"
     ]
+  },
+  "wip_policy": {
+    "active_candidate_pr_limit": 5,
+    "parallel_tooling_or_harness_pr_limit": 1,
+    "candidate_queue_contract": "spec/candidate-review-queue.schema.json",
+    "parked_candidate_state": "closed PR plus recoverable patch_sha256 and original head_sha",
+    "green_checks_are_not_formal_approval": true
   },
   "merge_policy": {
     "default": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs",

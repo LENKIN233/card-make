@@ -6,7 +6,8 @@ import crypto from 'node:crypto';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
 const SPEC_PATH = path.join(ROOT, 'spec', 'card-quality-audit.json');
-const REPORT_PATH = path.join(ROOT, 'reports', 'card_quality_audit_report.json');
+const DEFAULT_REPORT_PATH = path.join(ROOT, 'reports', 'card_quality_audit_report.json');
+let reportPath = DEFAULT_REPORT_PATH;
 const SCOPED_REPORT_DIR = path.join(ROOT, 'reviews', 'audit_scopes');
 const DEFAULT_MAX_EXAMPLES = 5;
 const OPTION_KEYS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -1916,7 +1917,7 @@ function buildAudit({ maxExamples }) {
     ok: true,
     audit_version: spec.version,
     mode: spec.mode,
-    report_path: path.relative(ROOT, REPORT_PATH),
+    report_path: path.relative(ROOT, reportPath),
     corpus_fingerprint: computeCorpusFingerprint(files, rows.length),
     scope: {
       card_dir: path.relative(ROOT, CARD_DIR),
@@ -1956,15 +1957,17 @@ if (process.argv.includes('--self-test')) {
   process.exit(0);
 }
 
-const writeReport = process.argv.includes('--write-report');
+const reportPathOption = readOption('--report-path');
+reportPath = reportPathOption ? path.resolve(ROOT, reportPathOption) : DEFAULT_REPORT_PATH;
+const writeReport = process.argv.includes('--write-report') || reportPathOption !== null;
 const scopeCardIds = readCsvOption('--scope-card-ids');
 const scopedReportPath = readOption('--write-scope-report');
 const maxExamples = readOptionValue('--max-examples', DEFAULT_MAX_EXAMPLES);
 const audit = buildAudit({ maxExamples });
 
 if (writeReport) {
-  fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
-  fs.writeFileSync(REPORT_PATH, `${JSON.stringify(audit, null, 2)}\n`);
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+  fs.writeFileSync(reportPath, `${JSON.stringify(audit, null, 2)}\n`);
 }
 
 let scopedReport = null;

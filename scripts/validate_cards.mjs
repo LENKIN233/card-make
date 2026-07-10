@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
-const REPORT_PATH = path.join(ROOT, 'reports', 'card_validation_report.json');
+const DEFAULT_REPORT_PATH = path.join(ROOT, 'reports', 'card_validation_report.json');
 
 const REQUIRED_FIELDS = ['card_id', 'track', 'knowledge_ref', 'interaction_id', 'front', 'analysis', 'source_ref'];
 const SOURCE_REQUIRED_FIELDS = ['type', 'provenance_status'];
@@ -146,9 +146,20 @@ function validate() {
 
 const report = validate();
 
-if (process.argv.includes('--write-report')) {
-  fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
-  fs.writeFileSync(REPORT_PATH, `${JSON.stringify(report, null, 2)}\n`);
+function readOption(name) {
+  const index = process.argv.indexOf(name);
+  if (index === -1) return null;
+  if (!process.argv[index + 1]) throw new Error(`${name} requires a path`);
+  return process.argv[index + 1];
+}
+
+const reportPathOption = readOption('--report-path');
+const reportPath = reportPathOption ? path.resolve(ROOT, reportPathOption) : DEFAULT_REPORT_PATH;
+const writeReport = process.argv.includes('--write-report') || reportPathOption !== null;
+
+if (writeReport) {
+  fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+  fs.writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
 }
 
 console.log(JSON.stringify({
@@ -156,6 +167,7 @@ console.log(JSON.stringify({
   stats: report.stats,
   errors: report.errors.length,
   warnings: report.warnings.length,
+  report_path: writeReport ? reportPath : null,
   first_errors: report.errors.slice(0, 10),
   first_warnings: report.warnings.slice(0, 10),
 }, null, 2));

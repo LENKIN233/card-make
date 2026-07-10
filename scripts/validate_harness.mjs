@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
@@ -178,6 +179,26 @@ let cachedCurrentScopedAuditFiles = null;
 function currentCardCorpusFingerprint() {
   if (!cachedCurrentFingerprint) cachedCurrentFingerprint = computeCardCorpusFingerprint();
   return cachedCurrentFingerprint;
+}
+
+function buildEphemeralCardQualityAudit(errors) {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'card-quality-audit-'));
+  const reportPath = path.join(tempDir, 'card_quality_audit_report.json');
+  try {
+    execFileSync(process.execPath, ['scripts/audit_card_quality.mjs', '--report-path', reportPath], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    });
+    return JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+  } catch (error) {
+    pushIssue(errors, 'card_quality_audit_ephemeral_report_failed', {
+      message: error.message,
+      output: String(error.stdout || error.stderr || '').slice(0, 1000),
+    });
+    return null;
+  } finally {
+    fs.rmSync(tempDir, {recursive: true, force: true});
+  }
 }
 
 function listScopedAuditReportFiles() {
@@ -860,12 +881,8 @@ function validateCardQualityAudit(errors, warnings) {
     }
   }
 
-  if (!exists('reports/card_quality_audit_report.json')) {
-    pushIssue(errors, 'card_quality_audit_report_missing', {});
-    return;
-  }
-
-  const report = readJson('reports/card_quality_audit_report.json');
+  const report = buildEphemeralCardQualityAudit(errors);
+  if (!report) return;
   if (report.audit_version !== audit.version) {
     pushIssue(errors, 'card_quality_audit_report_version_drift', {
       expected: audit.version,
@@ -1676,7 +1693,7 @@ function validateGitWorkflow(errors) {
   }
 
   const validationCommands = (gitWorkflow.validation_policy?.before_commit || []).map(entry => entry.command);
-  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_audio_qc.mjs', 'node scripts/validate_cards.mjs --write-report', SCOPED_AUDIT_VALIDATION_COMMAND, PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
+  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_audio_qc.mjs', 'node scripts/validate_cards.mjs --report-path exports/card_validation_report.json', SCOPED_AUDIT_VALIDATION_COMMAND, PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
     if (!validationCommands.includes(command)) {
       pushIssue(errors, 'git_validation_command_missing', { command });
     }

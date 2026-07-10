@@ -68,7 +68,7 @@ node scripts/validate_harness.mjs
 After editing card JSON or the preview reader, also run:
 
 ```bash
-node scripts/validate_cards.mjs --write-report
+node scripts/validate_cards.mjs --report-path exports/card_validation_report.json
 ```
 
 For candidate sample PRs, do not commit global report refreshes from
@@ -94,6 +94,10 @@ Default branch policy:
   work is a separate review unit or would blur an existing PR.
 - Do not force-push shared base branches such as `main` or
   `fix/review-findings-card-contract`.
+- Keep at most five active candidate content PRs and one separate tooling or
+  harness PR. Park additional candidates as closed, recoverable queue entries.
+- Green checks and a mergeable PR never create formal approval; only a record
+  under `reviews/approved_batches/` backed by explicit user confirmation does.
 - The user has delegated automatic merge for validated harness/tooling PRs in
   this workspace. After validation passes and GitHub reports the PR as
   mergeable, merge the PR instead of stopping for another confirmation.
@@ -108,3 +112,7 @@ require commit, push, and PR after user-confirmed samples. Small samples may be
 delivered locally for review. Validated harness/tooling PRs are auto-merged
 under the standing user delegation; formal content merge remains gated by
 content approval and scope-specific merge delegation.
+
+Generated global reports under `reports/` and local health output under
+`exports/` are ignored. CI and local validation must use explicit
+`--report-path` destinations rather than committing report refreshes.

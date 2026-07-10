@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "candidate-review-queue.v1",
+  "title": "Candidate Review Queue",
+  "type": "object",
+  "required": ["schema_version", "cutover_id", "limits", "entries"],
+  "properties": {
+    "schema_version": {"const": "candidate-review-queue.v1"},
+    "cutover_id": {"type": "string", "minLength": 1},
+    "limits": {
+      "type": "object",
+      "required": ["active_candidate_prs", "tooling_prs"],
+      "properties": {
+        "active_candidate_prs": {"const": 5},
+        "tooling_prs": {"const": 1}
+      },
+      "additionalProperties": false
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["queue_id", "status", "priority", "original", "scope", "patch_sha256", "formal_approval"],
+        "properties": {
+          "queue_id": {"type": "string", "minLength": 1},
+          "status": {"enum": ["active", "parked", "patch_pool", "superseded"]},
+          "priority": {"type": "integer", "minimum": 1},
+          "original": {
+            "type": "object",
+            "required": ["pr_number", "branch", "head_sha"],
+            "properties": {
+              "pr_number": {"type": ["integer", "null"], "minimum": 1},
+              "branch": {"type": "string", "minLength": 1},
+              "head_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+            },
+            "additionalProperties": false
+          },
+          "scope": {
+            "type": "object",
+            "required": ["box_prefixes", "card_ids"],
+            "properties": {
+              "box_prefixes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+              "card_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+            },
+            "additionalProperties": false
+          },
+          "patch_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "new_pr_number": {"type": ["integer", "null"], "minimum": 1},
+          "formal_approval": {"type": "boolean"},
+          "approval_record": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

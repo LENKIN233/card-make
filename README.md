@@ -9,7 +9,7 @@ This workspace contains card content and preview tooling for the `softbook_cet` 
 - `card_viewer_interactive.html`: local card preview reader.
 - `schemas/softbook_card_contract.schema.json`: product card contract anchor.
 - `scripts/validate_cards.mjs`: repeatable card validation.
-- `reports/card_validation_report.json`: latest validation report.
+- `reports/`: ignored default output location for generated validation reports.
 - `AGENTS.md` and `spec/`: agent harness for content-quality control.
 - `reviews/`: agent self-review records, user-approved batches, and drafts.
 
@@ -18,7 +18,7 @@ This workspace contains card content and preview tooling for the `softbook_cet` 
 Run this after editing card JSON or the reader:
 
 ```bash
-node scripts/validate_cards.mjs --write-report
+node scripts/validate_cards.mjs --report-path exports/card_validation_report.json
 ```
 
 The validator enforces the product contract fields required by `softbook_cet`:
@@ -41,7 +41,7 @@ The current JSON files keep the legacy preview-reader fields for compatibility, 
 
 ```bash
 node scripts/migrate_cards_to_softbook_contract.mjs
-node scripts/validate_cards.mjs --write-report
+node scripts/validate_cards.mjs --report-path exports/card_validation_report.json
 ```
 
 Cards with `production_status: "needs_review"` are structurally valid but still need content/source audit before product release.
@@ -61,8 +61,18 @@ node scripts/validate_harness.mjs
 Run this after editing card JSON, review records, or the quality-audit harness:
 
 ```bash
-node scripts/audit_card_quality.mjs --write-report
+node scripts/audit_card_quality.mjs --report-path exports/card_quality_audit_report.json
 ```
+
+Validate repository delivery state:
+
+```bash
+node scripts/validate_candidate_review_queue.mjs
+node scripts/report_repo_health.mjs --base origin/main --strict
+```
+
+Candidate review WIP is capped at five active content PRs plus one separate
+tooling or harness PR. Passing checks do not create formal content approval.
 
 Agent self-review and approval records must link the current audit fingerprint
 and include a scoped audit summary for their own `card_ids`; corpus-level totals
