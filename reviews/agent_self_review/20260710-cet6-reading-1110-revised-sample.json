@@ -1,0 +1,234 @@
+{
+  "review_id": "20260710-cet6-reading-1110-revised-sample",
+  "created_at": "2026-07-10T11:18:48+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "仔细阅读",
+    "group": "干扰项排除",
+    "box": "无中生有",
+    "box_prefixes": [
+      "1110"
+    ],
+    "card_ids": [
+      "111001",
+      "111002",
+      "111003"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true,
+    "approval_records_written": false,
+    "formal_content_claimed": false
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260710-cet6-reading-1110-scope-audit.json",
+    "corpus_fingerprint": "9b98744c2319d9f6124af546f6522f44cb96476484a1852737ad0937d2ef45e3",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "111001",
+        "111002",
+        "111003"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "111001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "0",
+        "box": "无中生有",
+        "box_prefix": "1110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别仔细阅读选项中没有原文证据的新信息",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助学生先建立证据边界意识，减少凭常识选择看似合理但原文未支持的干扰项。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "simulation_source_requires_user_confirmation_before_formal_use"
+      ],
+      "recommendation": "Keep as recognition card for evidence-boundary awareness."
+    },
+    {
+      "card_id": "111002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "0",
+        "box": "无中生有",
+        "box_prefix": "1110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在四选一中排除新增成绩、原因或行为动机的无中生有选项",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练学生把选项拆成对象、关系和结果，避免被与学习场景相关但原文没有支撑的结论误导。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "simulation_source_requires_user_confirmation_before_formal_use"
+      ],
+      "recommendation": "Keep as application card for four-option unsupported-information filtering."
+    },
+    {
+      "card_id": "111003",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "0",
+        "box": "无中生有",
+        "box_prefix": "1110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在多选消除题中区分原文支持、原文未测量和新增因果",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "提升学生处理多选干扰项的稳定性，尤其是把未测量内容误当可推结论的高频失误。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "simulation_source_requires_user_confirmation_before_formal_use"
+      ],
+      "recommendation": "Keep as transfer card for multi-select evidence-boundary elimination."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "111001 builds recognition of unsupported information, 111002 applies the check in four-option reading, and 111003 transfers the same evidence-boundary logic to multi-select elimination.",
+    "repetition_or_gap_risks": [
+      "All three cards use simulation text and therefore remain candidate-only until explicit user confirmation."
+    ],
+    "representative_cards": [
+      "111001",
+      "111002",
+      "111003"
+    ],
+    "next_step": "Ask user to confirm or revise the 3-card sample before any formal batch expansion, approval record, import, or Apple-release content claim."
+  }
+}
