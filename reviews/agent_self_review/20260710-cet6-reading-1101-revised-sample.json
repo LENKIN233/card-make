@@ -1,0 +1,259 @@
+{
+  "review_id": "20260710-cet6-reading-1101-revised-sample",
+  "created_at": "2026-07-10T11:00:02+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "仔细阅读",
+    "group": "定位词抓取",
+    "box": "实义名词",
+    "box_prefixes": [
+      "1101"
+    ],
+    "card_ids": [
+      "110101",
+      "110102",
+      "110103"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true,
+    "approval_records_written": false,
+    "formal_content_claimed": false
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260710-cet6-reading-1101-scope-audit.json",
+    "corpus_fingerprint": "ea991fbe5f2d8217c1b6f35980b508cd65ef6287fff75a545412d278a06ac8be",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "110101",
+        "110102",
+        "110103"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "110101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "0",
+        "group": "定位词抓取",
+        "box_id": "1",
+        "box": "实义名词",
+        "box_prefix": "1101"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别题干和原文中的实义名词链，并按措施、对象、结果建立回文定位路线。",
+        "secondary_training_goals": [
+          "区分高价值实义名词和低价值功能词。"
+        ],
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "CET6-style simulated reading material for locating and binding content nouns; not a true exam passage.",
+          "audio_generation_method": "none",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在六级仔细阅读中用名词链快速定位细节句，减少整段盲读。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "source material is simulation and remains candidate-only until user approval"
+      ],
+      "recommendation": "Use as the recognition sample for turning high-value content nouns into a location route before reading the full paragraph."
+    },
+    {
+      "card_id": "110102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "0",
+        "group": "定位词抓取",
+        "box_id": "1",
+        "box": "实义名词",
+        "box_prefix": "1101"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用实义名词链和对比结构判断哪个名词短语承载原文结果。",
+        "secondary_training_goals": [
+          "避免看到词面重合就选择前一个名词短语。"
+        ],
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "CET6-style simulated reading material for locating and binding content nouns; not a true exam passage.",
+          "audio_generation_method": "none",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级仔细阅读中常见的名词短语对比题，减少词面匹配误判。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "source material is simulation and remains candidate-only until user approval"
+      ],
+      "recommendation": "Use as the application sample for binding content noun phrases to the contrast relation without leaking the correct answer path."
+    },
+    {
+      "card_id": "110103",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "0",
+        "group": "定位词抓取",
+        "box_id": "1",
+        "box": "实义名词",
+        "box_prefix": "1101"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在多项判断中核对实义名词的主题域、对象角色和结果关系。",
+        "secondary_training_goals": [
+          "识别把同类场景名词偷换到另一主题域的干扰项。"
+        ],
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "CET6-style simulated reading material for locating and binding content nouns; not a true exam passage.",
+          "audio_generation_method": "none",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户处理六级仔细阅读中名词域相近但关系错误的多项干扰。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "source material is simulation and remains candidate-only until user approval"
+      ],
+      "recommendation": "Use as the transfer sample for eliminating options that move familiar nouns into the wrong topic domain."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "110101 establishes content-noun recognition; 110102 applies noun-chain comparison in a four-option task; 110103 transfers noun-domain checks to elimination.",
+    "repetition_or_gap_risks": [
+      "All three sample materials are simulation, not true exam excerpts; formal use requires explicit user approval and later import/runtime evidence."
+    ],
+    "representative_cards": [
+      "110101",
+      "110102",
+      "110103"
+    ],
+    "next_step": "User reviews the 3-card sample; only after explicit confirmation should this box be expanded or represented in reviews/approved_batches/."
+  }
+}
