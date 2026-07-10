@@ -1,0 +1,63 @@
+{
+  "handoff_id": "20260710-content-cet6-listening-1042-sample-review",
+  "created_at": "2026-07-10T10:13:03+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-listening-1042-sample-review",
+  "base_branch": "main",
+  "commit_sha": "662842a0b93bf8c30679b3dc9057598ecd3a7536",
+  "push_ref": "origin/content/cet6-listening-1042-sample-review",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/89",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "merge_state_status": "CLEAN",
+  "scope": {
+    "change_type": "content_sample",
+    "track": "cet6",
+    "library": "听力",
+    "group": "推理判断",
+    "box": "因果逻辑",
+    "box_prefix": "1042",
+    "card_ids": [
+      "104201",
+      "104202",
+      "104203"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_listening_1042.json",
+      "reviews/audit_scopes/20260710-cet6-listening-1042-scope-audit.json",
+      "reviews/agent_self_review/20260710-cet6-listening-1042-revised-sample.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 104201,104202,104203 --write-scope-report reviews/audit_scopes/20260710-cet6-listening-1042-scope-audit.json",
+      "result": "pass: scoped hard blockers 0, content risks 0, review gaps 0, source risks 6"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "pass: primary_scope_prefixes [1042], no issues, no warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass: no whitespace errors"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --write-report",
+      "result": "pass: ok true, 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "pass: ok true, 0 errors; warnings are existing upstream group alignment issues plus allowed stale global audit because scoped evidence is linked"
+    }
+  ],
+  "local_status": "clean before handoff record; handoff record added after draft PR creation",
+  "remaining_risks": [
+    "This is a candidate sample only and is not formal content approval.",
+    "No reviews/approved_batches record was created.",
+    "No softbook_cet import, runtime smoke, or Apple-ready claim was made.",
+    "Source provenance remains unverified and the text is marked as simulation.",
+    "TTS text was reviewed, but formal audio QC is still pending.",
+    "Cards 104204-104212 remain legacy content and need separate review before any full-box expansion."
+  ],
+  "merge_authority": "user_reserved_for_formal_content; no standing auto-merge for this content sample"
+}
