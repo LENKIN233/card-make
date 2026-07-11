@@ -37,6 +37,7 @@
           },
           "scope": {
             "type": "object",
+            "description": "Active box prefixes and card IDs must also be globally disjoint; the queue validator enforces this cross-entry constraint.",
             "required": ["box_prefixes", "card_ids"],
             "properties": {
               "box_prefixes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
@@ -49,7 +50,21 @@
           "formal_approval": {"type": "boolean"},
           "approval_record": {"type": ["string", "null"]}
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {"status": {"const": "active"}},
+              "required": ["status"]
+            },
+            "then": {
+              "required": ["new_pr_number"],
+              "properties": {
+                "new_pr_number": {"type": "integer", "minimum": 1}
+              }
+            }
+          }
+        ]
       }
     }
   },
