@@ -1,0 +1,77 @@
+{
+  "handoff_id": "20260711-tooling-review-governance-fixes",
+  "created_at": "2026-07-11T10:41:51+08:00",
+  "agent": "codex",
+  "branch": "tooling/review-governance-fixes",
+  "base_branch": "main",
+  "commit_sha": "bf410a518ed23b240c7703e28d3c6a4129fa9694",
+  "push_ref": "origin/tooling/review-governance-fixes",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/105",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "tooling",
+    "purpose": "Close review findings in commit-range blob auditing and active candidate queue integrity without changing candidate content or approval state.",
+    "referenced_specs": [
+      "spec/authority-map.json",
+      "spec/candidate-review-queue.schema.json",
+      "spec/review-workflow.json",
+      "spec/git-workflow.json",
+      "spec/agent-harness.json"
+    ],
+    "touched_paths": [
+      ".github/workflows/pr-gates.yml",
+      "scripts/report_repo_health.mjs",
+      "scripts/test_report_repo_health.mjs",
+      "scripts/validate_candidate_review_queue.mjs",
+      "spec/candidate-review-queue.schema.json",
+      "spec/git-workflow.json",
+      "spec/review-workflow.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only the six recorded upstream group-alignment warnings remain"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --report-path /tmp/card-review-fixes-validation.json",
+      "result": "passed; 2414 cards and zero validation errors"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --report-path /tmp/card-review-fixes-quality.json",
+      "result": "passed in read-only legacy-corpus mode; no report was committed"
+    },
+    {
+      "command": "node scripts/validate_candidate_review_queue.mjs --required --require-five --verify-remote",
+      "result": "passed; five active entries map one-to-one to five open draft PRs and formal approval count remains zero"
+    },
+    {
+      "command": "node scripts/test_report_repo_health.mjs",
+      "result": "passed; an introduced-and-deleted 2 MiB ordinary blob is rejected"
+    },
+    {
+      "command": "node scripts/report_repo_health.mjs --base origin/main --strict",
+      "result": "passed; seven introduced blobs and zero oversized ordinary blobs"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; tooling-only scope"
+    },
+    {
+      "command": "node scripts/validate_delivery_boundary.mjs --base origin/main --head HEAD",
+      "result": "passed; no card, audio, or approval files changed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Tooling branch is ready for final delivery-record validation and GitHub required checks after this handoff commit.",
+  "remaining_risks": [
+    "GitHub remote verification depends on the workflow token and GitHub API availability; failures are now blocking rather than treated as an empty PR list.",
+    "No card content, audio asset, candidate review evidence, or reviews/approved_batches record changed.",
+    "Green checks do not create formal content approval."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}

@@ -148,10 +148,13 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
           EVENT_NAME: ${{ github.event_name }}
+          GH_TOKEN: ${{ github.token }}
         run: |
+          node scripts/test_report_repo_health.mjs
+          node scripts/validate_candidate_review_queue.mjs --self-test
           if [ "$EVENT_NAME" = "schedule" ]; then
             node scripts/report_repo_health.mjs --full-tree --remote --strict --output "$RUNNER_TEMP/repository-health.json"
-            node scripts/validate_candidate_review_queue.mjs --required --require-five
+            node scripts/validate_candidate_review_queue.mjs --required --require-five --verify-remote
           elif git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
             node scripts/report_repo_health.mjs --base "$BASE_SHA" --strict --output "$RUNNER_TEMP/repository-health.json"
             node scripts/validate_candidate_review_queue.mjs
