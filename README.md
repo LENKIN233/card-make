@@ -68,8 +68,13 @@ Validate repository delivery state:
 
 ```bash
 node scripts/validate_candidate_review_queue.mjs
-node scripts/report_repo_health.mjs --base origin/main --strict
+node scripts/report_repo_health.mjs --base origin/main --strict --expected-max-worktrees 7 --expected-max-stashes 0 --require-upstreams
 ```
+
+The local health check covers every linked worktree, not only the current path.
+The seven-worktree ceiling allows `main`, five candidate branches, and one
+isolated tooling or harness branch; stashes and branches without upstreams are
+not accepted as durable work state, and deleted upstreams fail strict checks.
 
 The 627 tracked MP3 files are managed by Git LFS. Their pre-cutover byte hashes
 are recorded in `ai_tts/audio-lfs-manifest.json` and checked with

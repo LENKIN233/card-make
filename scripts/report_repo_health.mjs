@@ -14,9 +14,19 @@ function option(name, fallback = null) {
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
 
-function run(command, args, {allowFailure = false} = {}) {
+function integerOption(name) {
+  const value = option(name);
+  if (value === null) return null;
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    throw new Error(`${name} must be a non-negative integer.`);
+  }
+  return parsed;
+}
+
+function run(command, args, {allowFailure = false, cwd = ROOT} = {}) {
   try {
-    return execFileSync(command, args, {cwd: ROOT, encoding: 'utf8'}).trim();
+    return execFileSync(command, args, {cwd, encoding: 'utf8'}).trim();
   } catch (error) {
     if (allowFailure) return '';
     throw error;
@@ -101,12 +111,32 @@ function isForbidden(file) {
     file.startsWith('exports/');
 }
 
+function worktreePaths() {
+  return lines(git('worktree', 'list', '--porcelain'))
+    .filter(line => line.startsWith('worktree '))
+    .map(line => line.slice('worktree '.length));
+}
+
+function localBranches() {
+  return lines(git(
+    'for-each-ref',
+    'refs/heads',
+    '--format=%(refname:short)%09%(upstream:short)%09%(upstream:track)',
+  )).map(line => {
+    const [name, upstream = '', tracking = ''] = line.split('\t');
+    return {name, upstream, tracking};
+  });
+}
+
 const strict = process.argv.includes('--strict');
 const allowDirty = process.argv.includes('--allow-dirty');
 const fullTree = process.argv.includes('--full-tree');
 const includeRemote = process.argv.includes('--remote');
+const requireUpstreams = process.argv.includes('--require-upstreams');
 const base = option('--base');
 const output = option('--output');
+const maxWorktrees = integerOption('--expected-max-worktrees');
+const maxStashes = integerOption('--expected-max-stashes');
 const errors = [];
 const warnings = [];
 const auditRangeBase = rangeBase(base, fullTree);
@@ -120,17 +150,42 @@ const files = fullTree
 const historicalPaths = introducedPaths(auditRangeBase);
 const introducedBlobEntries = introducedBlobs(auditRangeBase);
 const auditedBlobEntries = uniqueBlobEntries([...currentBlobs(files), ...introducedBlobEntries]);
-const status = lines(git('status', '--porcelain'));
 const forbidden = [...new Set([...files, ...historicalPaths].filter(isForbidden))];
 const oversized = auditedBlobEntries.filter(entry => entry.bytes > BLOB_LIMIT);
 const audioFiles = fullTree ? files.filter(file => file.startsWith('ai_tts/') && file.endsWith('.mp3')) : [];
 const lfsAudio = new Set(lines(run('git', ['lfs', 'ls-files', '--name-only'], {allowFailure: true})).filter(file => file.startsWith('ai_tts/') && file.endsWith('.mp3')));
+const worktrees = worktreePaths();
+const dirtyWorktrees = worktrees.flatMap(worktree => {
+  if (!fs.existsSync(worktree)) return [{worktree, entries: ['worktree path is unavailable']}];
+  const entries = lines(run('git', ['status', '--porcelain'], {cwd: worktree}));
+  return entries.length > 0 ? [{worktree, entries}] : [];
+});
+const stashCount = lines(git('stash', 'list')).length;
+const branches = localBranches();
+const goneBranches = branches.filter(branch => branch.tracking.includes('[gone]')).map(branch => branch.name);
+const branchesWithoutUpstream = branches.filter(branch => !branch.upstream).map(branch => branch.name);
 
-if (!allowDirty && status.length > 0) errors.push({code: 'dirty_worktree', entries: status});
+if (!allowDirty && dirtyWorktrees.length > 0) errors.push({code: 'dirty_worktree', worktrees: dirtyWorktrees});
 if (forbidden.length > 0) errors.push({code: 'generated_reports_tracked', files: forbidden});
 if (oversized.length > 0) errors.push({code: 'ordinary_git_blob_too_large', blobs: oversized});
 if (fullTree && audioFiles.some(file => !lfsAudio.has(file))) {
   errors.push({code: 'audio_not_managed_by_lfs', count: audioFiles.filter(file => !lfsAudio.has(file)).length});
+}
+if (maxWorktrees !== null && worktrees.length > maxWorktrees) {
+  errors.push({code: 'worktree_limit_exceeded', expected_max: maxWorktrees, actual: worktrees.length});
+}
+if (maxStashes !== null && stashCount > maxStashes) {
+  errors.push({code: 'stash_limit_exceeded', expected_max: maxStashes, actual: stashCount});
+}
+if (goneBranches.length > 0) {
+  const issue = {code: 'gone_local_branches', branches: goneBranches};
+  if (requireUpstreams) errors.push(issue);
+  else warnings.push(issue);
+}
+if (branchesWithoutUpstream.length > 0) {
+  const issue = {code: 'branch_upstream_missing', branches: branchesWithoutUpstream};
+  if (requireUpstreams) errors.push(issue);
+  else warnings.push(issue);
 }
 
 let remote = null;
@@ -181,7 +236,19 @@ const report = {
   head: git('rev-parse', 'HEAD'),
   base: base && resolves(base) ? git('rev-parse', base) : null,
   scope: fullTree ? 'full_tree' : 'changed_files',
-  metrics: {checked_files: files.length, checked_blobs: auditedBlobEntries.length, introduced_blobs: introducedBlobEntries.length, audio_files: audioFiles.length, lfs_audio_files: lfsAudio.size, oversized_blobs: oversized.length},
+  metrics: {
+    checked_files: files.length,
+    checked_blobs: auditedBlobEntries.length,
+    introduced_blobs: introducedBlobEntries.length,
+    audio_files: audioFiles.length,
+    lfs_audio_files: lfsAudio.size,
+    oversized_blobs: oversized.length,
+    worktrees: worktrees.length,
+    dirty_worktrees: dirtyWorktrees.length,
+    stashes: stashCount,
+    gone_branches: goneBranches.length,
+    branches_without_upstream: branchesWithoutUpstream.length,
+  },
   remote,
   errors,
   warnings,
