@@ -28,14 +28,14 @@ jobs:
         working-directory: card-make
     steps:
       - name: Checkout card workspace
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: card-make
           fetch-depth: 0
           lfs: true
 
       - name: Checkout product authority
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: LENKIN233/softbook_cet
           ref: main
@@ -44,7 +44,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "22.11.0"
 
@@ -63,14 +63,14 @@ jobs:
         working-directory: card-make
     steps:
       - name: Checkout card workspace
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: card-make
           fetch-depth: 0
           lfs: true
 
       - name: Checkout product authority
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: LENKIN233/softbook_cet
           ref: main
@@ -79,7 +79,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "22.11.0"
 
@@ -100,7 +100,7 @@ jobs:
         working-directory: card-make
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: card-make
           fetch-depth: 0
@@ -119,7 +119,7 @@ jobs:
         working-directory: card-make
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: card-make
           fetch-depth: 0
@@ -139,7 +139,7 @@ jobs:
         working-directory: card-make
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: card-make
           fetch-depth: 0
@@ -153,12 +153,12 @@ jobs:
           node scripts/test_report_repo_health.mjs
           node scripts/validate_candidate_review_queue.mjs --self-test
           if [ "$EVENT_NAME" = "schedule" ]; then
-            node scripts/report_repo_health.mjs --full-tree --remote --strict --output "$RUNNER_TEMP/repository-health.json"
+            node scripts/report_repo_health.mjs --full-tree --remote --strict --expected-max-worktrees 1 --expected-max-stashes 0 --require-upstreams --output "$RUNNER_TEMP/repository-health.json"
             node scripts/validate_candidate_review_queue.mjs --required --require-five --verify-remote
           elif git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
-            node scripts/report_repo_health.mjs --base "$BASE_SHA" --strict --output "$RUNNER_TEMP/repository-health.json"
+            node scripts/report_repo_health.mjs --base "$BASE_SHA" --strict --expected-max-worktrees 1 --expected-max-stashes 0 --require-upstreams --output "$RUNNER_TEMP/repository-health.json"
             node scripts/validate_candidate_review_queue.mjs
           else
-            node scripts/report_repo_health.mjs --strict --output "$RUNNER_TEMP/repository-health.json"
+            node scripts/report_repo_health.mjs --strict --expected-max-worktrees 1 --expected-max-stashes 0 --require-upstreams --output "$RUNNER_TEMP/repository-health.json"
             node scripts/validate_candidate_review_queue.mjs
           fi
