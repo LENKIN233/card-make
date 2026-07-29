@@ -1098,6 +1098,21 @@ function validateWorkflow(errors) {
   if (workflow.approval_record_policy?.full_track_final_mode?.approval_mode !== 'full_track_final') {
     pushIssue(errors, 'full_track_final_approval_mode_missing', {});
   }
+  if (!exists('scripts/build_full_track_remediation_baseline.mjs')) {
+    pushIssue(errors, 'full_track_remediation_baseline_tool_missing', {});
+  } else {
+    const baselineTool = readText('scripts/build_full_track_remediation_baseline.mjs');
+    for (const token of [
+      'full-track-remediation-baseline.v1',
+      'candidate remediation planning only',
+      'human_CET_review_not_recorded',
+      'final_user_approval_not_recorded',
+    ]) {
+      if (!baselineTool.includes(token)) {
+        pushIssue(errors, 'full_track_remediation_baseline_guard_missing', { token });
+      }
+    }
+  }
   for (const forbidden of [
     'declare_final_formal_usability',
     'batch_generate_before_user_confirms_sample',

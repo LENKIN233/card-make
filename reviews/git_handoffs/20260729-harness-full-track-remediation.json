@@ -25,6 +25,7 @@
       "reviews/agent_self_review/FULL_TRACK_TEMPLATE.json",
       "reviews/approved_batches/FULL_TRACK_TEMPLATE.json",
       "reviews/audio_qc/TEMPLATE.json",
+      "scripts/build_full_track_remediation_baseline.mjs",
       "scripts/validate_audio_qc.mjs",
       "scripts/validate_harness.mjs",
       "spec/audio-generation-contract.json",
@@ -41,6 +42,10 @@
     {
       "command": "node scripts/validate_audio_qc.mjs",
       "result": "passed; zero formal QC records exist and the legacy-adoption template guards validate"
+    },
+    {
+      "command": "node scripts/build_full_track_remediation_baseline.mjs --track cet4 --report-path exports/cet4-full-track-remediation-baseline-20260729.json",
+      "result": "passed; reports 1180 cards, 108 boxes, 137 cards with hard blockers, 301 audio cards, and ready_for_full_track_user_approval=false"
     },
     {
       "command": "git diff --check",
