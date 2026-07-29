@@ -94,6 +94,13 @@ duration, and transcript presence. It deliberately does not claim that speech
 matches the transcript or that pronunciation, noise, clipping, rhythm, stress,
 or pauses pass; those require records under `reviews/audio_qc/`.
 
+Before bulk TTS regeneration, compare providers with the fixed 20-case blind
+suite under `reviews/audio_vendor_selection/`. A named human reviewer must lock
+1–5 listening scores and blockers before provider identities are revealed. Run
+`node scripts/validate_audio_vendor_selection.mjs`; only blocker-free candidates
+with a mean score of at least 4 are eligible, with Tencent Cloud preferred on an
+equal-score tie. This selection evidence does not replace per-card audio QC.
+
 Candidate review WIP is capped at five active content PRs plus one separate
 tooling or harness PR. Passing checks do not create formal content approval.
 

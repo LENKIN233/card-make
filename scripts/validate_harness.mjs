@@ -610,8 +610,13 @@ function validateAudioGenerationContract(errors) {
   for (const path of [
     'spec/audio-generation-contract.json',
     'scripts/validate_audio_qc.mjs',
+    'scripts/validate_audio_vendor_selection.mjs',
+    'scripts/test_audio_vendor_selection.mjs',
     'reviews/audio_qc/README.md',
     'reviews/audio_qc/TEMPLATE.json',
+    'reviews/audio_vendor_selection/README.md',
+    'reviews/audio_vendor_selection/CASES.json',
+    'reviews/audio_vendor_selection/TEMPLATE.json',
   ]) {
     if (!activePaths.has(path)) {
       pushIssue(errors, 'audio_generation_manifest_entry_missing', { path });
@@ -627,6 +632,16 @@ function validateAudioGenerationContract(errors) {
   if (authorityMap.owners?.audio_qc_records !== 'reviews/audio_qc/TEMPLATE.json') {
     pushIssue(errors, 'audio_qc_records_owner_drift', {
       owner: authorityMap.owners?.audio_qc_records,
+    });
+  }
+  if (authorityMap.owners?.audio_vendor_selection_records !== 'reviews/audio_vendor_selection/TEMPLATE.json') {
+    pushIssue(errors, 'audio_vendor_selection_records_owner_drift', {
+      owner: authorityMap.owners?.audio_vendor_selection_records,
+    });
+  }
+  if (authorityMap.owners?.audio_vendor_selection_validation !== 'scripts/validate_audio_vendor_selection.mjs') {
+    pushIssue(errors, 'audio_vendor_selection_validation_owner_drift', {
+      owner: authorityMap.owners?.audio_vendor_selection_validation,
     });
   }
 
@@ -703,6 +718,38 @@ function validateAudioGenerationContract(errors) {
   if (contract.pronunciation_target_policy?.target_signal_must_be_audible_in_generated_audio !== true) {
     pushIssue(errors, 'audio_target_signal_policy_missing', {});
   }
+  const vendorSelection = contract.vendor_blind_selection || {};
+  if (vendorSelection.required_before_bulk_regeneration !== true || vendorSelection.case_count !== 20) {
+    pushIssue(errors, 'audio_vendor_selection_requirement_missing', {});
+  }
+  for (const [category, expected] of Object.entries({ dialogue: 4, monologue: 4, weak_form: 4, linking: 4, error_prone_pronunciation: 4 })) {
+    if (vendorSelection.required_category_counts?.[category] !== expected) {
+      pushIssue(errors, 'audio_vendor_selection_category_drift', { category, expected });
+    }
+  }
+  if (vendorSelection.eligibility?.minimum_mean_listening_score !== 4 ||
+      vendorSelection.eligibility?.maximum_blockers !== 0 ||
+      vendorSelection.eligibility?.human_perceptual_reviewer_required !== true) {
+    pushIssue(errors, 'audio_vendor_selection_eligibility_drift', {});
+  }
+  if (vendorSelection.winner_policy !== 'highest_eligible_mean_then_tencent_cloud_then_blind_id') {
+    pushIssue(errors, 'audio_vendor_selection_winner_policy_drift', {});
+  }
+  for (const field of ['provider', 'model', 'voice', 'speed', 'generated_at', 'version', 'per_case_transcript_sha256', 'per_case_file_sha256']) {
+    if (!(vendorSelection.generation_metadata_fields || []).includes(field)) {
+      pushIssue(errors, 'audio_vendor_selection_generation_metadata_missing', { field });
+    }
+  }
+  for (const [field, expected] of Object.entries({
+    record_dir: 'reviews/audio_vendor_selection/',
+    suite: 'reviews/audio_vendor_selection/CASES.json',
+    template: 'reviews/audio_vendor_selection/TEMPLATE.json',
+    validator: 'scripts/validate_audio_vendor_selection.mjs',
+  })) {
+    if (vendorSelection[field] !== expected) {
+      pushIssue(errors, 'audio_vendor_selection_path_drift', { field, expected, actual: vendorSelection[field] });
+    }
+  }
   if (contract.formal_audio_qc?.record_dir !== 'reviews/audio_qc/') {
     pushIssue(errors, 'audio_qc_record_dir_drift', { record_dir: contract.formal_audio_qc?.record_dir });
   }
@@ -739,7 +786,7 @@ function validateAudioGenerationContract(errors) {
       pushIssue(errors, 'audio_asset_change_policy_missing', { field });
     }
   }
-  for (const command of ['node scripts/validate_audio_qc.mjs', 'node scripts/validate_harness.mjs']) {
+  for (const command of ['node --test scripts/test_audio_vendor_selection.mjs', 'node scripts/validate_audio_vendor_selection.mjs', 'node scripts/validate_audio_qc.mjs', 'node scripts/validate_harness.mjs']) {
     if (!(contract.validation_commands || []).includes(command)) {
       pushIssue(errors, 'audio_validation_command_missing', { command });
     }
@@ -807,6 +854,38 @@ function validateAudioGenerationContract(errors) {
       }
     } catch (error) {
       pushIssue(errors, 'audio_qc_validator_failed', {
+        message: error.message,
+        output: String(error.stdout || error.stderr || '').slice(0, 1000),
+      });
+    }
+  }
+
+  if (!exists('scripts/validate_audio_vendor_selection.mjs')) {
+    pushIssue(errors, 'audio_vendor_selection_validator_missing', {});
+  } else {
+    const script = readText('scripts/validate_audio_vendor_selection.mjs');
+    for (const token of [
+      'audio_vendor_score_case_coverage_invalid',
+      'audio_vendor_human_reviewer_evidence_missing',
+      'audio_vendor_winner_mismatch',
+      'prefer_tencent_cloud_then_blind_id',
+      'automation_cannot_supply_listening_scores',
+    ]) {
+      if (!script.includes(token)) {
+        pushIssue(errors, 'audio_vendor_selection_validator_guard_missing', { token });
+      }
+    }
+    try {
+      const output = execFileSync(process.execPath, ['scripts/validate_audio_vendor_selection.mjs'], {
+        cwd: ROOT,
+        encoding: 'utf8',
+      });
+      const validation = JSON.parse(output);
+      if (validation.ok !== true) {
+        pushIssue(errors, 'audio_vendor_selection_validator_failed', { output: validation });
+      }
+    } catch (error) {
+      pushIssue(errors, 'audio_vendor_selection_validator_failed', {
         message: error.message,
         output: String(error.stdout || error.stderr || '').slice(0, 1000),
       });
@@ -1152,6 +1231,7 @@ function validateReviewDirs(errors) {
     'reviews/approved_batches',
     'reviews/audit_scopes',
     'reviews/audio_qc',
+    'reviews/audio_vendor_selection',
     'reviews/drafts',
     'reviews/git_handoffs',
   ]) {
@@ -1938,7 +2018,7 @@ function validateGitWorkflow(errors) {
   }
 
   const validationCommands = (gitWorkflow.validation_policy?.before_commit || []).map(entry => entry.command);
-  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_audio_qc.mjs', 'node scripts/validate_cards.mjs --report-path exports/card_validation_report.json', SCOPED_AUDIT_VALIDATION_COMMAND, PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
+  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_audio_qc.mjs', 'node scripts/validate_audio_vendor_selection.mjs', 'node scripts/validate_cards.mjs --report-path exports/card_validation_report.json', SCOPED_AUDIT_VALIDATION_COMMAND, PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
     if (!validationCommands.includes(command)) {
       pushIssue(errors, 'git_validation_command_missing', { command });
     }

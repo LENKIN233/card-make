@@ -100,6 +100,44 @@
     ],
     "failure_rule": "If the target signal is not audible, the audio must be regenerated or the card cannot be marked formal-audio-ready."
   },
+  "vendor_blind_selection": {
+    "required_before_bulk_regeneration": true,
+    "record_dir": "reviews/audio_vendor_selection/",
+    "suite": "reviews/audio_vendor_selection/CASES.json",
+    "template": "reviews/audio_vendor_selection/TEMPLATE.json",
+    "validator": "scripts/validate_audio_vendor_selection.mjs",
+    "case_count": 20,
+    "required_category_counts": {
+      "dialogue": 4,
+      "monologue": 4,
+      "weak_form": 4,
+      "linking": 4,
+      "error_prone_pronunciation": 4
+    },
+    "blind_protocol": [
+      "provider_model_and_voice_hidden_while_scoring",
+      "scores_and_blockers_locked_before_unblinding",
+      "same_fixed_suite_rendered_by_every_candidate"
+    ],
+    "generation_metadata_fields": [
+      "provider",
+      "model",
+      "voice",
+      "speed",
+      "generated_at",
+      "version",
+      "per_case_transcript_sha256",
+      "per_case_file_sha256"
+    ],
+    "eligibility": {
+      "minimum_mean_listening_score": 4,
+      "maximum_blockers": 0,
+      "score_scale": [1, 2, 3, 4, 5],
+      "human_perceptual_reviewer_required": true
+    },
+    "winner_policy": "highest_eligible_mean_then_tencent_cloud_then_blind_id",
+    "evidence_boundary": "Automation validates coverage, hashes, thresholds, and deterministic selection only; it cannot create listening scores or replace per-card formal audio QC."
+  },
   "formal_audio_qc": {
     "record_dir": "reviews/audio_qc/",
     "template": "reviews/audio_qc/TEMPLATE.json",
@@ -149,7 +187,9 @@
   },
   "validation_commands": [
     "node --test scripts/test_audio_technical_audit.mjs",
+    "node --test scripts/test_audio_vendor_selection.mjs",
     "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json",
+    "node scripts/validate_audio_vendor_selection.mjs",
     "node scripts/validate_audio_qc.mjs",
     "node scripts/validate_harness.mjs"
   ]

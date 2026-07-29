@@ -1,0 +1,38 @@
+{
+  "schema": "audio-vendor-selection.v1",
+  "selection_id": "YYYYMMDD-cet4-tts-vendor-selection",
+  "created_at": "",
+  "track": "cet4",
+  "suite": {
+    "file": "reviews/audio_vendor_selection/CASES.json",
+    "file_sha256": ""
+  },
+  "blind_protocol": {
+    "provider_identity_hidden_during_scoring": true,
+    "scores_recorded_before_unblinding": true,
+    "instructions": "Use blind_id only while listening; do not expose provider, model, or voice until all scores and blockers are locked."
+  },
+  "candidates": [],
+  "evaluations": [],
+  "unblinding": {
+    "completed_at": null,
+    "completed_after_scoring": false,
+    "mapping_required_fields": ["blind_id", "provider", "model", "voice", "speed", "generated_at", "version"],
+    "mapping": []
+  },
+  "decision": {
+    "status": "pending",
+    "minimum_mean_score": 4,
+    "maximum_blockers": 0,
+    "tie_breaker": "prefer_tencent_cloud_then_blind_id",
+    "eligible_blind_ids": [],
+    "winner_blind_id": null
+  },
+  "quality_boundaries": {
+    "human_perceptual_review_required": true,
+    "automation_cannot_supply_listening_scores": true,
+    "selection_is_not_per_card_audio_qc": true,
+    "selection_does_not_approve_content": true
+  },
+  "validation": []
+}
