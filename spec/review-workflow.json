@@ -71,6 +71,38 @@
       "card_quality_audit_report"
     ]
   },
+  "full_track_remediation_policy": {
+    "review_scope_type": "full_track_remediation",
+    "purpose": "Remediate an existing complete track corpus under one explicitly user-authorized scope, while preserving one final user approval for formal use.",
+    "allowed_when": [
+      "the track corpus already exists and this flow does not authorize new bulk generation",
+      "the user explicitly authorizes the named track remediation scope",
+      "every in-scope card is bound to one current corpus fingerprint",
+      "automated audit, agent review, and a named human CET reviewer cover the complete track"
+    ],
+    "required_fields": [
+      "sample_policy.review_scope_type=full_track_remediation",
+      "sample_policy.is_three_card_sample_per_box=false",
+      "sample_policy.full_track_remediation=true",
+      "sample_policy.final_user_approval_required=true",
+      "scope.track",
+      "scope.box_prefixes",
+      "scope.card_ids",
+      "coverage.expected_card_count",
+      "coverage.reviewed_card_ids",
+      "coverage.human_reviewer",
+      "coverage.boxes",
+      "quality_audit",
+      "batch_review.status=ready_for_full_track_user_approval"
+    ],
+    "approval_model": "execution_team_remediates_and_reviews_the_full_track; user_performs_one_final_complete_batch_approval",
+    "does_not_authorize": [
+      "new_bulk_card_generation",
+      "formal_use_before_the_final_user_approval_record",
+      "deleting_cards_without_user_confirmation",
+      "using_green_automation_as_human_content_review"
+    ]
+  },
   "residual_blocker_closure_review_policy": {
     "review_scope_type": "residual_blocker_closure",
     "purpose": "Record agent review evidence for a small set of previously detected blocker cards that may span unrelated box prefixes.",
@@ -105,7 +137,7 @@
   ],
   "self_review_output": {
     "per_card_status": ["pass", "revise", "block"],
-    "batch_status": ["recommend_user_confirmation", "revise_before_user_review", "blocked", "documented_residual_closure"],
+    "batch_status": ["recommend_user_confirmation", "revise_before_user_review", "blocked", "documented_residual_closure", "ready_for_full_track_user_approval"],
     "must_include": [
       "changed_or_new_boxes",
       "representative_cards",
@@ -142,7 +174,13 @@
       "card_quality_audit",
       "representative_cards",
       "validation"
-    ]
+    ],
+    "full_track_final_mode": {
+      "approval_mode": "full_track_final",
+      "requires_linked_review_scope_type": "full_track_remediation",
+      "requires_exact_track_card_and_box_scope_match": true,
+      "requires_one_explicit_final_user_confirmation": true
+    }
   },
   "git_policy": {
     "contract": "spec/git-workflow.json",

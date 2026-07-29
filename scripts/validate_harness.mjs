@@ -108,9 +108,10 @@ const REQUIRED_QUALITY_AUDIT_SCOPE_SUMMARY_FIELDS = [
   'by_rule',
 ];
 const QUALITY_AUDIT_SEVERITIES = ['hard_blocker', 'content_risk', 'review_gap', 'source_risk'];
-const SELF_REVIEW_SCOPE_TYPES = ['three_card_sample_per_box', 'residual_blocker_closure'];
+const SELF_REVIEW_SCOPE_TYPES = ['three_card_sample_per_box', 'residual_blocker_closure', 'full_track_remediation'];
 const STANDARD_SELF_REVIEW_BATCH_STATUSES = ['recommend_user_confirmation', 'revise_before_user_review', 'blocked'];
 const RESIDUAL_BLOCKER_CLOSURE_STATUS = 'documented_residual_closure';
+const FULL_TRACK_READY_STATUS = 'ready_for_full_track_user_approval';
 const PR_SCOPE_VALIDATION_COMMAND = 'node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract';
 const SCOPED_AUDIT_VALIDATION_COMMAND = 'node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json';
 
@@ -1073,6 +1074,19 @@ function validateWorkflow(errors) {
   if (!(workflow.self_review_output?.batch_status || []).includes(RESIDUAL_BLOCKER_CLOSURE_STATUS)) {
     pushIssue(errors, 'residual_blocker_closure_status_missing', {});
   }
+  const fullTrackPolicy = workflow.full_track_remediation_policy;
+  if (fullTrackPolicy?.review_scope_type !== 'full_track_remediation') {
+    pushIssue(errors, 'full_track_remediation_policy_missing', {});
+  }
+  if (!(workflow.self_review_output?.batch_status || []).includes(FULL_TRACK_READY_STATUS)) {
+    pushIssue(errors, 'full_track_ready_status_missing', {});
+  }
+  if (fullTrackPolicy?.approval_model !== 'execution_team_remediates_and_reviews_the_full_track; user_performs_one_final_complete_batch_approval') {
+    pushIssue(errors, 'full_track_approval_model_drift', {});
+  }
+  if (workflow.approval_record_policy?.full_track_final_mode?.approval_mode !== 'full_track_final') {
+    pushIssue(errors, 'full_track_final_approval_mode_missing', {});
+  }
   for (const forbidden of [
     'declare_final_formal_usability',
     'batch_generate_before_user_confirms_sample',
@@ -1126,7 +1140,7 @@ function listReviewRecordFiles(dir) {
   const full = resolveWorkspacePath(dir);
   if (!fs.existsSync(full)) return [];
   return fs.readdirSync(full)
-    .filter(file => file.endsWith('.json') && file !== 'TEMPLATE.json')
+    .filter(file => file.endsWith('.json') && !file.endsWith('TEMPLATE.json'))
     .sort()
     .map(file => `${dir}/${file}`);
 }
@@ -1420,12 +1434,23 @@ function selfReviewScopeType(record) {
 function validateSelfReviewRecord(record, errors, source, { template = false, fixture = false } = {}) {
   const reviewScopeType = selfReviewScopeType(record);
   const isResidualBlockerClosure = reviewScopeType === 'residual_blocker_closure';
+  const isFullTrackRemediation = reviewScopeType === 'full_track_remediation';
 
   if (!SELF_REVIEW_SCOPE_TYPES.includes(reviewScopeType)) {
     pushIssue(errors, 'self_review_unknown_scope_type', { source, reviewScopeType });
   }
 
-  if (isResidualBlockerClosure) {
+  if (isFullTrackRemediation) {
+    if (record.sample_policy?.is_three_card_sample_per_box !== false) {
+      pushIssue(errors, 'full_track_review_must_not_claim_three_card_sample', { source });
+    }
+    if (record.sample_policy?.full_track_remediation !== true) {
+      pushIssue(errors, 'full_track_review_policy_flag_missing', { source });
+    }
+    if (record.sample_policy?.final_user_approval_required !== true) {
+      pushIssue(errors, 'full_track_review_final_user_approval_missing', { source });
+    }
+  } else if (isResidualBlockerClosure) {
     if (record.sample_policy?.is_three_card_sample_per_box !== false) {
       pushIssue(errors, 'residual_self_review_must_not_claim_three_card_sample', { source });
     }
@@ -1440,6 +1465,76 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
   }
   if (record.sample_policy?.batch_generation_requires_user_confirmation !== true) {
     pushIssue(errors, 'self_review_sample_policy_user_confirmation_missing', { source });
+  }
+
+  if (isFullTrackRemediation) {
+    const scopeCardIds = Array.isArray(record.scope?.card_ids) ? record.scope.card_ids : [];
+    validateQualityAuditRecord(record.quality_audit, errors, source, {
+      template,
+      fixture,
+      scopeCardIds,
+      requiredForApproval: record.batch_review?.status === FULL_TRACK_READY_STATUS,
+    });
+    if (template) return;
+
+    if (!['cet4', 'cet6'].includes(record.scope?.track)) {
+      pushIssue(errors, 'full_track_review_track_invalid', { source, track: record.scope?.track });
+    }
+    if (!Array.isArray(record.scope?.box_prefixes) || record.scope.box_prefixes.length === 0) {
+      pushIssue(errors, 'full_track_review_box_prefixes_missing', { source });
+    }
+    if (scopeCardIds.length === 0) {
+      pushIssue(errors, 'full_track_review_card_ids_missing', { source });
+    }
+    if (!Array.isArray(record.specs_read) || record.specs_read.length === 0) {
+      pushIssue(errors, 'self_review_specs_read_missing', { source });
+    }
+    if (record.coverage?.expected_card_count !== scopeCardIds.length) {
+      pushIssue(errors, 'full_track_review_expected_count_mismatch', {
+        source,
+        expected: scopeCardIds.length,
+        actual: record.coverage?.expected_card_count,
+      });
+    }
+    if (!setsEqual(record.coverage?.reviewed_card_ids, scopeCardIds)) {
+      pushIssue(errors, 'full_track_review_coverage_mismatch', { source });
+    }
+    if (!hasText(record.coverage?.human_reviewer)) {
+      pushIssue(errors, 'full_track_review_human_reviewer_missing', { source });
+    }
+    const boxes = Array.isArray(record.coverage?.boxes) ? record.coverage.boxes : [];
+    if (boxes.length !== record.scope.box_prefixes.length) {
+      pushIssue(errors, 'full_track_review_box_coverage_mismatch', {
+        source,
+        expected: record.scope.box_prefixes.length,
+        actual: boxes.length,
+      });
+    }
+    const reviewedPrefixes = boxes.map(box => box?.box_prefix);
+    if (!setsEqual(reviewedPrefixes, record.scope.box_prefixes)) {
+      pushIssue(errors, 'full_track_review_box_prefix_mismatch', { source });
+    }
+    for (const box of boxes) {
+      if (box?.status !== 'pass' || !hasText(box?.reviewer)) {
+        pushIssue(errors, 'full_track_review_box_not_human_passed', {
+          source,
+          box_prefix: box?.box_prefix,
+        });
+      }
+    }
+    if (!isSubset(record.representative_cards, scopeCardIds)) {
+      pushIssue(errors, 'full_track_review_representative_cards_outside_scope', { source });
+    }
+    if (record.batch_review?.status !== FULL_TRACK_READY_STATUS) {
+      pushIssue(errors, 'full_track_review_batch_status_invalid', {
+        source,
+        status: record.batch_review?.status,
+      });
+    }
+    if (!Array.isArray(record.batch_review?.remaining_risks) || record.batch_review.remaining_risks.length > 0) {
+      pushIssue(errors, 'full_track_review_has_remaining_risks', { source });
+    }
+    return;
   }
 
   const cards = record.cards || [];
@@ -1523,6 +1618,7 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
 }
 
 function validateApprovalRecord(record, errors, source, { template = false, fixture = false } = {}) {
+  const isFullTrackFinal = record.approval_mode === 'full_track_final';
   if (record.approved_by_user !== true) {
     pushIssue(errors, 'approval_record_not_user_approved', { source });
   }
@@ -1541,9 +1637,15 @@ function validateApprovalRecord(record, errors, source, { template = false, fixt
     requiredForApproval: true,
   });
   if (!template) {
-    for (const field of ['library', 'group', 'box']) {
-      if (!hasText(record.scope?.[field])) {
-        pushIssue(errors, 'approval_record_scope_field_missing', { source, field });
+    if (isFullTrackFinal) {
+      if (!['cet4', 'cet6'].includes(record.scope?.track)) {
+        pushIssue(errors, 'full_track_approval_track_invalid', { source, track: record.scope?.track });
+      }
+    } else {
+      for (const field of ['library', 'group', 'box']) {
+        if (!hasText(record.scope?.[field])) {
+          pushIssue(errors, 'approval_record_scope_field_missing', { source, field });
+        }
       }
     }
     if (!Array.isArray(record.scope?.box_prefixes) || record.scope.box_prefixes.length === 0) {
@@ -1583,14 +1685,27 @@ function validateApprovalRecord(record, errors, source, { template = false, fixt
       pushIssue(errors, 'approval_record_quality_audit_report_missing', { source });
     }
     if (selfReview) {
-      if (selfReview.batch_review?.status !== 'recommend_user_confirmation') {
+      const linkedScopeType = selfReviewScopeType(selfReview);
+      const expectedStatus = isFullTrackFinal ? FULL_TRACK_READY_STATUS : 'recommend_user_confirmation';
+      const expectedScopeType = isFullTrackFinal ? 'full_track_remediation' : 'three_card_sample_per_box';
+      if (linkedScopeType !== expectedScopeType) {
+        pushIssue(errors, 'approval_record_review_scope_type_mismatch', {
+          source,
+          linkedReview,
+          expected: expectedScopeType,
+          actual: linkedScopeType,
+        });
+      }
+      if (selfReview.batch_review?.status !== expectedStatus) {
         pushIssue(errors, 'approval_record_self_review_not_recommended', {
           source,
           linkedReview,
+          expected: expectedStatus,
           status: selfReview.batch_review?.status,
         });
       }
-      for (const field of ['library', 'group', 'box']) {
+      const scalarFields = isFullTrackFinal ? ['track'] : ['library', 'group', 'box'];
+      for (const field of scalarFields) {
         if (record.scope?.[field] !== selfReview.scope?.[field]) {
           pushIssue(errors, 'approval_record_scope_mismatch', {
             source,
@@ -1623,7 +1738,13 @@ function validateReviewTemplatesAndRecords(errors) {
   validateSelfReviewRecord(readJson('reviews/agent_self_review/TEMPLATE.json'), errors, 'reviews/agent_self_review/TEMPLATE.json', {
     template: true,
   });
+  validateSelfReviewRecord(readJson('reviews/agent_self_review/FULL_TRACK_TEMPLATE.json'), errors, 'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json', {
+    template: true,
+  });
   validateApprovalRecord(readJson('reviews/approved_batches/TEMPLATE.json'), errors, 'reviews/approved_batches/TEMPLATE.json', {
+    template: true,
+  });
+  validateApprovalRecord(readJson('reviews/approved_batches/FULL_TRACK_TEMPLATE.json'), errors, 'reviews/approved_batches/FULL_TRACK_TEMPLATE.json', {
     template: true,
   });
 
