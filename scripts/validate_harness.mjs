@@ -1662,6 +1662,31 @@ function validateApprovalRecord(record, errors, source, { template = false, fixt
     scopeCardIds: record.scope?.card_ids || [],
     requiredForApproval: true,
   });
+  if (isFullTrackFinal) {
+    const reportSha256 = record.card_quality_audit?.report_sha256;
+    if (!hasText(reportSha256)) {
+      pushIssue(errors, 'full_track_approval_audit_report_hash_missing', { source });
+    } else if (!template && !fixture) {
+      if (!/^sha256:[a-f0-9]{64}$/.test(reportSha256)) {
+        pushIssue(errors, 'full_track_approval_audit_report_hash_invalid', {
+          source,
+          report_sha256: reportSha256,
+        });
+      } else if (exists(record.card_quality_audit?.report)) {
+        const actualReportSha256 = `sha256:${crypto
+          .createHash('sha256')
+          .update(fs.readFileSync(resolveWorkspacePath(record.card_quality_audit.report)))
+          .digest('hex')}`;
+        if (reportSha256 !== actualReportSha256) {
+          pushIssue(errors, 'full_track_approval_audit_report_hash_mismatch', {
+            source,
+            expected: actualReportSha256,
+            actual: reportSha256,
+          });
+        }
+      }
+    }
+  }
   if (!template) {
     if (isFullTrackFinal) {
       if (!['cet4', 'cet6'].includes(record.scope?.track)) {
