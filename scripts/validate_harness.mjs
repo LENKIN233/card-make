@@ -689,6 +689,14 @@ function validateAudioGenerationContract(errors) {
   if (!(contract.legacy_generation_method_aliases || []).includes('tts')) {
     pushIssue(errors, 'audio_legacy_tts_alias_missing', {});
   }
+  if (contract.legacy_asset_adoption_policy?.same_quality_gate_as_new_audio !== true) {
+    pushIssue(errors, 'audio_legacy_adoption_quality_gate_missing', {});
+  }
+  for (const forbidden of ['invent_provider_or_voice', 'claim_reproducibility', 'skip_transcript_or_perceptual_review']) {
+    if (!(contract.legacy_asset_adoption_policy?.must_not || []).includes(forbidden)) {
+      pushIssue(errors, 'audio_legacy_adoption_forbidden_rule_missing', { forbidden });
+    }
+  }
   if (contract.pronunciation_target_policy?.required_for_listening_pronunciation_boxes !== true) {
     pushIssue(errors, 'audio_pronunciation_target_policy_missing', {});
   }
@@ -747,6 +755,7 @@ function validateAudioGenerationContract(errors) {
       'source_records',
       'text_gate',
       'generation_plan',
+      'legacy_adoption',
       'generated_assets',
       'qa_checks',
       'per_card_qc',
@@ -778,6 +787,8 @@ function validateAudioGenerationContract(errors) {
     for (const token of [
       'audio_qc_formal_ready_with_failed_check',
       'audio_qc_source_authenticity_boundary_missing',
+      'audio_qc_legacy_asset_hash_missing',
+      'audio_qc_legacy_provider_must_be_unknown',
       'target_signal_audible',
       'ai_tts/',
     ]) {

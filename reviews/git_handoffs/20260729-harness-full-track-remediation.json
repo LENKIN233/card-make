@@ -11,19 +11,23 @@
   "is_draft": true,
   "scope": {
     "change_type": "harness",
-    "purpose": "Add a full-track remediation and one-time final user approval path for an existing CET corpus without changing any card or audio asset.",
+    "purpose": "Add full-track remediation, one-time final user approval, and explicit legacy-audio adoption governance without changing any card or audio asset.",
     "referenced_specs": [
       "spec/authority-map.json",
       "spec/workspace-contract.json",
       "spec/content-quality-contract.json",
       "spec/review-workflow.json",
+      "spec/audio-generation-contract.json",
       "../softbook_cet/spec/card-system.json",
       "../softbook_cet/spec/box-catalog.json"
     ],
     "touched_paths": [
       "reviews/agent_self_review/FULL_TRACK_TEMPLATE.json",
       "reviews/approved_batches/FULL_TRACK_TEMPLATE.json",
+      "reviews/audio_qc/TEMPLATE.json",
+      "scripts/validate_audio_qc.mjs",
       "scripts/validate_harness.mjs",
+      "spec/audio-generation-contract.json",
       "spec/doc-manifest.json",
       "spec/eval-fixtures.json",
       "spec/review-workflow.json"
@@ -35,6 +39,10 @@
       "result": "passed; only recorded upstream version and group-alignment warnings remain"
     },
     {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed; zero formal QC records exist and the legacy-adoption template guards validate"
+    },
+    {
       "command": "git diff --check",
       "result": "passed"
     }
@@ -42,6 +50,7 @@
   "local_status": "Governance-only branch is ready for delivery-record validation and GitHub required checks.",
   "remaining_risks": [
     "No CET4 card has been remediated or approved by this PR.",
+    "No legacy audio is adopted automatically; every asset still requires text, hash, perceptual, and per-card QC evidence.",
     "The required human CET reviewer and final complete-track user approval remain future evidence.",
     "Green checks do not create formal content approval."
   ],

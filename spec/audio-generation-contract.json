@@ -34,6 +34,29 @@
     "candidate_metadata_must_keep_text_source_type_separate_from_audio_generation_method": true,
     "candidate_audio_can_support_card_review_only_when_transcript_matches_current_task": true
   },
+  "legacy_asset_adoption_policy": {
+    "purpose": "Allow a technically intact legacy candidate asset to enter a closed beta only after full text, hash, and perceptual QC without inventing missing generation provenance.",
+    "allowed_for_formal_audio_evidence": true,
+    "required_fields": [
+      "legacy_adoption.enabled=true",
+      "legacy_adoption.reviewed_at",
+      "legacy_adoption.reviewer",
+      "legacy_adoption.reproducibility_status=non_reproducible",
+      "generation_plan.provider=legacy_unknown",
+      "generation_plan.voice_or_speaker=legacy_unknown",
+      "generated_assets[].file_sha256",
+      "generated_assets[].provenance_note",
+      "per_card_qc for every scoped card"
+    ],
+    "same_quality_gate_as_new_audio": true,
+    "must_not": [
+      "invent_provider_or_voice",
+      "claim_reproducibility",
+      "skip_transcript_or_perceptual_review",
+      "treat_audio_QC_as_text_source_authenticity",
+      "bypass_final_content_approval"
+    ]
+  },
   "text_gate_before_generation": {
     "required": true,
     "required_checks": [
