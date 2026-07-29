@@ -83,6 +83,17 @@ ignored; immutable legacy review references resolve through
 `reports/pre-cutover-report-index.json`, while new candidate work must commit a
 current scoped audit under `reviews/audit_scopes/`.
 
+Run the read-only technical audio audit before perceptual QC:
+
+```bash
+node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json
+```
+
+The audit verifies exact bytes, manifest hashes, decoder metadata, declared
+duration, and transcript presence. It deliberately does not claim that speech
+matches the transcript or that pronunciation, noise, clipping, rhythm, stress,
+or pauses pass; those require records under `reviews/audio_qc/`.
+
 Candidate review WIP is capped at five active content PRs plus one separate
 tooling or harness PR. Passing checks do not create formal content approval.
 

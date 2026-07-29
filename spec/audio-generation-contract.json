@@ -126,6 +126,21 @@
       "formal_audio_ready_without_user_content_approval_boundary"
     ]
   },
+  "technical_audio_audit": {
+    "script": "scripts/audit_audio_technical.mjs",
+    "report_schema": "audio-technical-audit.v1",
+    "default_report": "exports/<track>-audio-technical-audit.json",
+    "required_checks": [
+      "one_unique_asset_path_per_audio_card",
+      "manifest_size_and_sha256_match",
+      "decoder_can_probe_mp3",
+      "declared_duration_matches_probed_duration_within_50ms",
+      "transcript_is_present_and_hash_bound"
+    ],
+    "supported_probe_commands": ["afinfo", "ffprobe"],
+    "authority_boundary": "A passing technical audit does not prove speech-to-transcript match, clipping/noise absence, pronunciation, rhythm, stress, pauses, source authenticity, or formal audio readiness; those remain perceptual per-card QC.",
+    "must_not_create_formal_qc_records": true
+  },
   "asset_change_policy": {
     "do_not_replace_audio_in_content_sample_PRs": true,
     "audio_asset_changes_belong_in_audio_or_tooling_branch": true,
@@ -133,6 +148,8 @@
     "bulk_generation_requires_user_confirmed_sample_scope": true
   },
   "validation_commands": [
+    "node --test scripts/test_audio_technical_audit.mjs",
+    "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json",
     "node scripts/validate_audio_qc.mjs",
     "node scripts/validate_harness.mjs"
   ]

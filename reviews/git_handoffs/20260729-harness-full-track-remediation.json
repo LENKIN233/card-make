@@ -11,7 +11,7 @@
   "is_draft": false,
   "scope": {
     "change_type": "harness",
-    "purpose": "Add full-track remediation, one-time final user approval, and explicit legacy-audio adoption governance without changing any card or audio asset.",
+    "purpose": "Add full-track remediation, one-time final user approval, explicit legacy-audio adoption governance, and a read-only technical audio audit without changing any card or audio asset.",
     "referenced_specs": [
       "spec/authority-map.json",
       "spec/workspace-contract.json",
@@ -25,7 +25,9 @@
       "reviews/agent_self_review/FULL_TRACK_TEMPLATE.json",
       "reviews/approved_batches/FULL_TRACK_TEMPLATE.json",
       "reviews/audio_qc/TEMPLATE.json",
+      "scripts/audit_audio_technical.mjs",
       "scripts/build_full_track_remediation_baseline.mjs",
+      "scripts/test_audio_technical_audit.mjs",
       "scripts/validate_audio_qc.mjs",
       "scripts/validate_harness.mjs",
       "spec/audio-generation-contract.json",
@@ -44,6 +46,14 @@
       "result": "passed; zero formal QC records exist and the legacy-adoption template guards validate"
     },
     {
+      "command": "node --test scripts/test_audio_technical_audit.mjs",
+      "result": "passed; probe parsing, exact byte/transcript binding, formal-QC non-claim, and duration drift failure are covered"
+    },
+    {
+      "command": "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json",
+      "result": "passed; 301 unique referenced assets decode as mono 24 kHz 48 kbps MP3, all hashes/transcripts/durations bind, while perceptual and speech-match checks remain explicitly unverified"
+    },
+    {
       "command": "node scripts/build_full_track_remediation_baseline.mjs --track cet4 --report-path exports/cet4-full-track-remediation-baseline-20260729.json",
       "result": "passed; reports 1180 cards, 108 boxes, 137 cards with hard blockers, 301 audio cards, and ready_for_full_track_user_approval=false"
     },
@@ -56,6 +66,7 @@
   "remaining_risks": [
     "No CET4 card has been remediated or approved by this PR.",
     "No legacy audio is adopted automatically; every asset still requires text, hash, perceptual, and per-card QC evidence.",
+    "The technical audit does not perform ASR or perceptual listening and cannot create formal QC records.",
     "The final approval record must bind the exact card-quality audit bytes with SHA-256 before release publication.",
     "The required human CET reviewer and final complete-track user approval remain future evidence.",
     "Green checks do not create formal content approval."
