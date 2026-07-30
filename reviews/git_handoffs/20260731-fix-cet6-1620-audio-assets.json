@@ -1,0 +1,85 @@
+{
+  "handoff_id": "20260731-fix-cet6-1620-audio-assets",
+  "created_at": "2026-07-31T02:18:19+08:00",
+  "agent": "codex",
+  "branch": "fix/cet6-1620-audio-assets",
+  "base_branch": "main",
+  "commit_sha": "bc724c66ecc2a11e2dbe614a4dabce1cd83dec74",
+  "primary_asset_commit_sha": "61ac0defd99d71cb907b762bef587af08c65870d",
+  "push_ref": "origin/fix/cet6-1620-audio-assets",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...fix/cet6-1620-audio-assets",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": true,
+  "scope": {
+    "change_type": "audio_asset_candidate",
+    "box_prefixes": [
+      "1620"
+    ],
+    "touched_paths": [
+      "ai_tts/audio-lfs-manifest.json",
+      "ai_tts/cet6/1620/162001.mp3",
+      "ai_tts/cet6/1620/162002.mp3",
+      "ai_tts/cet6/1620/162003.mp3",
+      "ai_tts/cet6/1620/162004.mp3",
+      "ai_tts/cet6/1620/162005.mp3",
+      "ai_tts/cet6/1620/162006.mp3",
+      "ai_tts/cet6/1620/162007.mp3",
+      "ai_tts/cet6/1620/162008.mp3",
+      "reviews/audio_qc/20260731-1620-audio-qc.json"
+    ],
+    "patch_sha256": "dc3aaaa6d7a2bd7230a88491fe3eb1f2e42bf800ffc14173232f8f39979d72e4"
+  },
+  "summary": [
+    "Replaced six unbound legacy 1620 MP3s and added the missing 162007 and 162008 assets using the independently reviewed scripts from content/cet6-full-remediation-1620.",
+    "Pinned provider, voice, speed, generator version, transcript hashes, asset hashes, durations, file sizes, replacement evidence, and the exact eight output paths in a scoped audio-QC record.",
+    "Matched all eight repository asset bytes to the content-branch audio descriptors and rebuilt the tracked LFS manifest to 629 assets.",
+    "Passed technical identity, format, decode, clipping, LFS-pointer, and LFS-object integrity checks.",
+    "Kept candidate_audio_ok, tts_audio_reviewed, and formal_audio_ready false because no named human has completed the required blind and transcript-assisted listening passes."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed schema/boundary validation with records_checked=1; the record itself explicitly preserves pending human perceptual checks and formal_audio_ready=false"
+    },
+    {
+      "command": "node scripts/validate_audio_lfs.mjs",
+      "result": "passed: manifest count 629 and no LFS validation errors"
+    },
+    {
+      "command": "git lfs fsck",
+      "result": "passed: all referenced LFS objects are present and valid"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with recorded upstream-version and group-alignment warnings only"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base main --head HEAD",
+      "result": "passed: audio-only candidate diff, no card-content scope"
+    },
+    {
+      "command": "node scripts/validate_delivery_boundary.mjs --base main --head HEAD",
+      "result": "passed: audio and QC evidence only, zero card files and zero approval files"
+    },
+    {
+      "command": "cross-branch descriptor comparison against content/cet6-full-remediation-1620",
+      "result": "passed 8/8: asset SHA256 and duration match every card audio descriptor; formal_audio_ready=false and tts_audio_reviewed=false"
+    },
+    {
+      "command": "macOS afconvert PCM decode and signal measurements",
+      "result": "passed technical-only checks: 8/8 decodable, zero clipped samples, peak -4.50 to -2.79 dBFS, RMS -22.23 to -21.26 dBFS"
+    },
+    {
+      "command": "git verify-commit 61ac0defd99d71cb907b762bef587af08c65870d and git verify-commit bc724c66ecc2a11e2dbe614a4dabce1cd83dec74",
+      "result": "passed: good ED25519 signatures"
+    }
+  ],
+  "local_status": "Audio asset and QC-record commits pushed; handoff commit pending at record creation. No PR opened while the five candidate-content PR slots remain occupied.",
+  "remaining_risks": [
+    "A named human must complete both required full-listen passes for every asset: blind listening for speed, rhythm, stress, pauses, noise, and clipping, followed by transcript-assisted listening for text match, target-signal audibility, and pronunciation.",
+    "Until that review is recorded, candidate_audio_ok=false, tts_audio_reviewed=false, and formal_audio_ready=false; technical checks must not be reported as perceptual approval.",
+    "The linked synthetic card content still requires final user whole-track approval and a formal approved-batch record before production use.",
+    "The audio branch must remain separate from the card-content branch to preserve the delivery boundary."
+  ],
+  "merge_authority": "no_auto_merge_audio_candidate_human_qc_and_final_user_approval_required"
+}
