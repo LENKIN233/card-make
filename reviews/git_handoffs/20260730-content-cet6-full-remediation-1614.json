@@ -1,0 +1,31 @@
+{
+  "handoff_id":"20260730-content-cet6-full-remediation-1614",
+  "created_at":"2026-07-30T23:39:18+08:00",
+  "agent":"codex",
+  "branch":"content/cet6-full-remediation-1614",
+  "base_branch":"main",
+  "commit_sha":"2a5e70f17caa0a410060bf235c49fc537e946d32",
+  "push_ref":"origin/content/cet6-full-remediation-1614",
+  "PR_url":"https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1614",
+  "PR_state":"PARKED_NO_PR_WIP_LIMIT",
+  "is_draft":true,
+  "scope":{"change_type":"content_candidate","box_prefixes":["1614"],"touched_paths":["card_boxes_json/card_boxes_seed_cet6_grammar_1614.json","reviews/agent_self_review/20260730-cet6-grammar-1614-full-remediation.json","reviews/audit_scopes/20260730-cet6-grammar-1614-full-remediation-scope-audit.json"],"patch_sha256":"547b259ac28527cd6ac3140ce89e452e0a44b6c6dba9ae8693a20a95b6f0ebb7"},
+  "summary":[
+    "Corrected answer leakage, canonical-option gaps, content-clause misclassification, ambiguous correction rules, invalid wh-question shell deletion, and a time-as-place error across eight cleft-sentence cards.",
+    "Covered ordinary-order restoration, focus categories, not-A-but-B correction, cleft/relative/content/extraposition distinction, unambiguous error correction, wh-cleft reconstruction, contextual cause correction, and time-focus writing transfer.",
+    "Preserved IDs and interaction sequence; added canonical/form parity, schema-valid metadata tags, synthetic provenance, and a 2/4/2 progression."
+  ],
+  "validation":[
+    {"command":"node scripts/validate_cards.mjs --report-path /tmp/1614-final-cards.json","result":"passed: 2414 cards, 0 errors, 0 warnings"},
+    {"command":"node scripts/audit_card_quality.mjs --scope-card-ids 161401,...,161408 --write-scope-report reviews/audit_scopes/20260730-cet6-grammar-1614-full-remediation-scope-audit.json","result":"passed: 0 hard blockers, 0 content risks, 0 review gaps, 8 declared synthetic-source risks"},
+    {"command":"node scripts/validate_harness.mjs","result":"passed with recorded upstream-version and group-alignment warnings only"},
+    {"command":"node scripts/validate_audio_qc.mjs","result":"passed: no audio records in scope"},
+    {"command":"node scripts/validate_pr_scope.mjs --base main --head HEAD","result":"passed: primary scope prefix 1614"},
+    {"command":"node scripts/validate_delivery_boundary.mjs --base main --head HEAD","result":"passed: one card file and two review-evidence files, no approval or audio files"},
+    {"command":"manual assertions for placement/count, option/form parity, metadata enum, cleft classification, question reconstruction, source/audio boundary, and 2/4/2 progression","result":"passed"},
+    {"command":"git verify-commit 2a5e70f17caa0a410060bf235c49fc537e946d32","result":"passed: good ED25519 signature"}
+  ],
+  "local_status":"Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "remaining_risks":["All eight cards are synthetic candidate content and require final user whole-track approval before integration.","Twelve CET6 hard-blocker prefixes remain unresolved after 1614, including the blocked 1030 authority conflict and five open sample prefixes.","Candidate PR slots remain fully occupied by open sample PRs 99 through 103."],
+  "merge_authority":"no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
