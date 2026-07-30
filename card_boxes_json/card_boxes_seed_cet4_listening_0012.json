@@ -20,27 +20,28 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "播放后先盯住 market pressure：market 末尾的 /t/ 是否必须先单独爆破，才能进入 /p/？",
+        "task_prompt": "翻面前说明：为什么听不到独立爆破，不能直接判成删音？",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "判断词尾塞音的释放方式",
+          "focus": "区分没有可闻爆破与音位删除",
+          "success_criteria": "能说明 /t/ 可保留闭塞而不出现独立爆破声"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001201.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "结论：本题核心是失去爆破识别。\n\n关键点：优先抓结构信号，再做内容判断。",
-        "explanation": "语境揭示：The report showed rapid growth, but market pressure kept profits unstable."
+        "text": "结论：/t/ 不必先单独爆破；这不等于 /t/ 自动被删除。",
+        "explanation": "market 以 /t/ 收尾，pressure 以 /p/ 开头。自然语流中，/t/ 的闭塞可以直接过渡到 /p/，听者未必听到独立的 /t/ 爆破声；这里更准确的说法是“没有可闻爆破”，而不是把 market 听写成少一个音。report showed 与 rapid growth 也包含塞音后接辅音的候选边界，但每处实际实现都要靠听感确认。当前只完成脚本文本判断，现有 TTS 是否真的呈现目标声学线索仍待正式 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先概括主判断，再回看支持该判断的语义证据。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "market 以 /t/ 收尾，pressure 以 /p/ 开头。自然语流中，/t/ 的闭塞可以直接过渡到 /p/，听者未必听到独立的 /t/ 爆破声；这里更准确的说法是“没有可闻爆破”，而不是把 market 听写成少一个音。report showed 与 rapid growth 也包含塞音后接辅音的候选边界，但每处实际实现都要靠听感确认。当前只完成脚本文本判断，现有 TTS 是否真的呈现目标声学线索仍待正式 QC。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "听不到独立爆破声，不等于词尾塞音不存在。",
+          "先标出词尾塞音与下一个词首辅音，再判断释放方式。"
         ]
       },
       "options": null,
@@ -52,12 +53,12 @@
         "path": "ai_tts/cet4/0012/001201.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -73,22 +74,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "播放后先盯住 market pressure：market 末尾的 /t/ 是否必须先单独爆破，才能进入 /p/？",
+        "task_prompt": "翻面前说明：为什么听不到独立爆破，不能直接判成删音？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "判断词尾塞音的释放方式",
+          "focus": "区分没有可闻爆破与音位删除",
+          "success_criteria": "能说明 /t/ 可保留闭塞而不出现独立爆破声"
         }
       },
       "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先概括主判断，再回看支持该判断的语义证据。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "market 以 /t/ 收尾，pressure 以 /p/ 开头。自然语流中，/t/ 的闭塞可以直接过渡到 /p/，听者未必听到独立的 /t/ 爆破声；这里更准确的说法是“没有可闻爆破”，而不是把 market 听写成少一个音。report showed 与 rapid growth 也包含塞音后接辅音的候选边界，但每处实际实现都要靠听感确认。当前只完成脚本文本判断，现有 TTS 是否真的呈现目标声学线索仍待正式 QC。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "听不到独立爆破声，不等于词尾塞音不存在。",
+          "先标出词尾塞音与下一个词首辅音，再判断释放方式。"
         ]
       },
       "auto_scoring": false,
@@ -98,11 +99,35 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分词尾塞音无可闻爆破与音位删除",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在快速听力中保留被压缩的词尾辅音，避免少还原一个词。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -117,48 +142,49 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "音频里有四个词边界。若要定位“词尾 /t/ 后立刻接 /k/”的候选，应该截取哪一处？",
+        "task_prompt": "先按每个词末和下一个词首的实际音素配对，再选择。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "定位目标辅音边界",
+          "focus": "识别 /t/ → /k/ 的跨词组合",
+          "success_criteria": "能由词尾和词首音素排除不匹配的边界"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001202.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "答案：B\n\n解析：该卡训练目标是失去爆破识别，应优先使用结构信号完成判断。",
-        "explanation": "语境揭示：We stopped collecting paper forms because digital records were easier to track."
+        "text": "答案：A\n\n解析：stopped 末尾 /t/ 后紧接 collecting 开头 /k/。",
+        "explanation": "正确答案是 A。stopped /stɒpt/ 的最后一个底层音段是 /t/，collecting 以 /k/ 开头，所以跨词边界可标为 /t/ → /k/；/p/ 位于 stopped 的词内辅音群中，并不直接连接 collecting。由于 stopped 本身以复杂 /pt/ 群收尾，实际语流中的 /t/ 可能保留但没有独立可闻爆破、与后续闭塞重叠，也可能发生省音；文字只能定位候选，不能替音频定性。collecting paper、paper forms 与 digital records 无论采用 rhotic 还是 non-rhotic 口音，都不是题干指定的 /t/ → /k/。现有 TTS 的具体实现仍需听感 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先排除与结构信号冲突的选项，再比较剩余项覆盖范围。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "正确答案是 A。stopped /stɒpt/ 的最后一个底层音段是 /t/，collecting 以 /k/ 开头，所以跨词边界可标为 /t/ → /k/；/p/ 位于 stopped 的词内辅音群中，并不直接连接 collecting。由于 stopped 本身以复杂 /pt/ 群收尾，实际语流中的 /t/ 可能保留但没有独立可闻爆破、与后续闭塞重叠，也可能发生省音；文字只能定位候选，不能替音频定性。collecting paper、paper forms 与 digital records 无论采用 rhotic 还是 non-rhotic 口音，都不是题干指定的 /t/ → /k/。现有 TTS 的具体实现仍需听感 QC。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "复杂词尾辅音群要区分底层音段、未释放与可能省音。",
+          "先找单词最后一个底层音段，再用真实听感判断它是否实现。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "关注背景信息，不做结构判断",
-          "is_correct": false
-        },
-        {
-          "key": "B",
-          "text": "优先依据失去爆破识别完成判断",
+          "text": "stopped collecting",
           "is_correct": true
         },
         {
+          "key": "B",
+          "text": "collecting paper",
+          "is_correct": false
+        },
+        {
           "key": "C",
-          "text": "忽略连接关系，只看名词",
+          "text": "paper forms",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "等待全文结束再随机选择",
+          "text": "digital records",
           "is_correct": false
         }
       ],
@@ -170,12 +196,12 @@
         "path": "ai_tts/cet4/0012/001202.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -191,22 +217,44 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "音频里有四个词边界。若要定位“词尾 /t/ 后立刻接 /k/”的候选，应该截取哪一处？",
+        "task_prompt": "先按每个词末和下一个词首的实际音素配对，再选择。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
-        }
+          "action": "定位目标辅音边界",
+          "focus": "识别 /t/ → /k/ 的跨词组合",
+          "success_criteria": "能由词尾和词首音素排除不匹配的边界"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "stopped collecting",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "collecting paper",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "paper forms",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "digital records",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先排除与结构信号冲突的选项，再比较剩余项覆盖范围。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "正确答案是 A。stopped /stɒpt/ 的最后一个底层音段是 /t/，collecting 以 /k/ 开头，所以跨词边界可标为 /t/ → /k/；/p/ 位于 stopped 的词内辅音群中，并不直接连接 collecting。由于 stopped 本身以复杂 /pt/ 群收尾，实际语流中的 /t/ 可能保留但没有独立可闻爆破、与后续闭塞重叠，也可能发生省音；文字只能定位候选，不能替音频定性。collecting paper、paper forms 与 digital records 无论采用 rhotic 还是 non-rhotic 口音，都不是题干指定的 /t/ → /k/。现有 TTS 的具体实现仍需听感 QC。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "复杂词尾辅音群要区分底层音段、未释放与可能省音。",
+          "先找单词最后一个底层音段，再用真实听感判断它是否实现。"
         ]
       },
       "auto_scoring": true,
@@ -216,14 +264,38 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "answer_key": {
-        "correct_option": "B"
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "定位 stopped collecting 的 /t/ → /k/ 边界",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练从拼写还原真实词尾音素，准确定位可能没有可闻爆破的跨词边界。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -238,27 +310,28 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "播放后比较 next task 与 step can：两处都可能听起来很紧，但塞音组合有什么不同？",
+        "task_prompt": "翻面前先说出“同一发音部位连续 /t/”和“/p/ 转到 /k/”的区别。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "比较两类塞音边界",
+          "focus": "区分 /t/ + /t/ 与 /p/ + /k/",
+          "success_criteria": "能说明共享闭塞和跨部位转换不是同一种听感来源"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001203.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "答案窗口：约第 2.8s - 4.6s\n\n解析：点击应落在结构触发词出现区间。",
-        "explanation": "语境揭示：The next task requires strict timing so that every step can be checked."
+        "text": "结论：next task 是 /t/ + /t/；step can 是 /p/ + /k/。",
+        "explanation": "next task 的跨词边界是词尾 /t/ 接词首 /t/，两个齿龈塞音可能共享或延长一次闭塞，只出现一次主要释放；但 next 本身含复杂 /kst/ 词尾，/t/ 是否保留还会随口音和语速变化。step can 则是双唇 /p/ 转向软腭 /k/，/p/ 可能没有独立可闻爆破，再由 /k/ 释放。两者都不能仅凭“听起来短”就写成字母消失，现有资产的具体实现仍待正式听感 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先找结构触发词，再把点击点锚定在触发词起始附近。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "next task 的跨词边界是词尾 /t/ 接词首 /t/，两个齿龈塞音可能共享或延长一次闭塞，只出现一次主要释放；但 next 本身含复杂 /kst/ 词尾，/t/ 是否保留还会随口音和语速变化。step can 则是双唇 /p/ 转向软腭 /k/，/p/ 可能没有独立可闻爆破，再由 /k/ 释放。两者都不能仅凭“听起来短”就写成字母消失，现有资产的具体实现仍待正式听感 QC。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "相同塞音相接常表现为共享闭塞，不宜机械写成删音。",
+          "不同发音部位的塞音相接，要追踪闭塞位置如何转换。"
         ]
       },
       "options": null,
@@ -274,12 +347,12 @@
         4600
       ],
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -295,22 +368,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "播放后比较 next task 与 step can：两处都可能听起来很紧，但塞音组合有什么不同？",
+        "task_prompt": "翻面前先说出“同一发音部位连续 /t/”和“/p/ 转到 /k/”的区别。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "比较两类塞音边界",
+          "focus": "区分 /t/ + /t/ 与 /p/ + /k/",
+          "success_criteria": "能说明共享闭塞和跨部位转换不是同一种听感来源"
         }
       },
       "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先找结构触发词，再把点击点锚定在触发词起始附近。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "next task 的跨词边界是词尾 /t/ 接词首 /t/，两个齿龈塞音可能共享或延长一次闭塞，只出现一次主要释放；但 next 本身含复杂 /kst/ 词尾，/t/ 是否保留还会随口音和语速变化。step can 则是双唇 /p/ 转向软腭 /k/，/p/ 可能没有独立可闻爆破，再由 /k/ 释放。两者都不能仅凭“听起来短”就写成字母消失，现有资产的具体实现仍待正式听感 QC。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "相同塞音相接常表现为共享闭塞，不宜机械写成删音。",
+          "不同发音部位的塞音相接，要追踪闭塞位置如何转换。"
         ]
       },
       "auto_scoring": false,
@@ -320,11 +393,35 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分同部位塞音相接与跨部位无可闻爆破",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练把相似的短促边界还原成不同音段组合，提升快速语流中的词形恢复。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -339,27 +436,28 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "播放后找出句中两处 /t/ → /p/ 候选边界，并说明为什么不能只凭拼写判成“未释放”。",
+        "task_prompt": "翻面前区分底层音段组合与实际声学实现。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "定位并审查复杂辅音群边界",
+          "focus": "比较 /st/ + /p/ 与 /ft/ + /p/",
+          "success_criteria": "能区分底层 /t/ 候选、无可闻爆破与省音"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001204.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "目标区间：约 4.2 秒\n\n解析：按住覆盖关键结构段，结束后松手。",
-        "explanation": "语境揭示：Most participants accepted the draft plan, though budget limits remained."
+        "text": "答案：most participants；draft plan。\n\n两处都有底层 /t/ → /p/，但实际 /t/ 也可能因复杂辅音群而省略。",
+        "explanation": "most participants 的边界是 /st/ + /p/，draft plan 的边界是 /ft/ + /p/；两处底层都含词尾 /t/ 后接词首 /p/。但 /t/ 已位于复杂词尾群中，自然语流可能保留 /t/ 而没有独立可闻爆破，也可能发生 /t/ 省音，不能把“字面存在 /t/”直接当作纯失爆正例。accepted the 是 /d/ → /ð/，budget limits 是 /t/ → /l/，不属于指定组合。当前脚本文本只建立候选和竞争解释，具体 TTS 实现仍需听感 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先覆盖关键结构段，再在结构结束点松手避免拖尾。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "most participants 的边界是 /st/ + /p/，draft plan 的边界是 /ft/ + /p/；两处底层都含词尾 /t/ 后接词首 /p/。但 /t/ 已位于复杂词尾群中，自然语流可能保留 /t/ 而没有独立可闻爆破，也可能发生 /t/ 省音，不能把“字面存在 /t/”直接当作纯失爆正例。accepted the 是 /d/ → /ð/，budget limits 是 /t/ → /l/，不属于指定组合。当前脚本文本只建立候选和竞争解释，具体 TTS 实现仍需听感 QC。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "复杂 C+/t/+C 环境同时允许无可闻爆破与 /t/ 省音等实现。",
+          "文字负责定位候选，音频 QC 才能判断实际实现。"
         ]
       },
       "options": null,
@@ -372,12 +470,12 @@
       },
       "target_duration_ms": 4200,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -393,22 +491,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "播放后找出句中两处 /t/ → /p/ 候选边界，并说明为什么不能只凭拼写判成“未释放”。",
+        "task_prompt": "翻面前区分底层音段组合与实际声学实现。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "定位并审查复杂辅音群边界",
+          "focus": "比较 /st/ + /p/ 与 /ft/ + /p/",
+          "success_criteria": "能区分底层 /t/ 候选、无可闻爆破与省音"
         }
       },
       "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先覆盖关键结构段，再在结构结束点松手避免拖尾。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "most participants 的边界是 /st/ + /p/，draft plan 的边界是 /ft/ + /p/；两处底层都含词尾 /t/ 后接词首 /p/。但 /t/ 已位于复杂词尾群中，自然语流可能保留 /t/ 而没有独立可闻爆破，也可能发生 /t/ 省音，不能把“字面存在 /t/”直接当作纯失爆正例。accepted the 是 /d/ → /ð/，budget limits 是 /t/ → /l/，不属于指定组合。当前脚本文本只建立候选和竞争解释，具体 TTS 实现仍需听感 QC。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "复杂 C+/t/+C 环境同时允许无可闻爆破与 /t/ 省音等实现。",
+          "文字负责定位候选，音频 QC 才能判断实际实现。"
         ]
       },
       "auto_scoring": false,
@@ -418,11 +516,33 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分复杂 /t/ → /p/ 边界的未释放与省音",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在连续听力中定位复杂辅音群，同时避免把所有短促听感都误标为同一过程。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -437,48 +557,49 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "若要先避开复杂词尾辅音群，选择“简单词尾 /t/ + 后续辅音”的片段，哪项最合适？",
+        "task_prompt": "比较四个前词的词尾结构，再选择。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "筛选简单词尾塞音边界",
+          "focus": "区分单一 /t/ 词尾与复杂辅音群",
+          "success_criteria": "能说明三个干扰项为何含额外词尾辅音"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001205.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "答案：B\n\n解析：该卡训练目标是失去爆破识别，应优先使用结构信号完成判断。",
-        "explanation": "语境揭示：The first pilot failed, yet the second trial produced consistent results."
+        "text": "答案：A\n\n解析：pilot failed 是简单词尾 /t/ 后接 /f/；其余前词均以辅音群收尾。",
+        "explanation": "正确答案是 A。pilot /ˈpaɪlət/ 以单一 /t/ 收尾，failed 以 /f/ 开头，适合先观察简单 /t/ → /f/ 边界的释放变化；实际是否没有可闻爆破仍须听感确认。first pilot 的 first 以 /st/ 收尾，second trial 的 second 以 /nd/ 收尾，consistent results 的 consistent 以 /nt/ 收尾，都多了一层辅音群保留或省音变量。先从简单词尾入手，再迁移到复杂群，能避免把群简化误写成纯未释放。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先排除与结构信号冲突的选项，再比较剩余项覆盖范围。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "正确答案是 A。pilot /ˈpaɪlət/ 以单一 /t/ 收尾，failed 以 /f/ 开头，适合先观察简单 /t/ → /f/ 边界的释放变化；实际是否没有可闻爆破仍须听感确认。first pilot 的 first 以 /st/ 收尾，second trial 的 second 以 /nd/ 收尾，consistent results 的 consistent 以 /nt/ 收尾，都多了一层辅音群保留或省音变量。先从简单词尾入手，再迁移到复杂群，能避免把群简化误写成纯未释放。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "先用单一词尾塞音建立基线，再处理复杂辅音群。",
+          "stop + fricative 的具体释放强弱仍需实际听感确认。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "关注背景信息，不做结构判断",
-          "is_correct": false
-        },
-        {
-          "key": "B",
-          "text": "优先依据失去爆破识别完成判断",
+          "text": "pilot failed",
           "is_correct": true
         },
         {
+          "key": "B",
+          "text": "first pilot",
+          "is_correct": false
+        },
+        {
           "key": "C",
-          "text": "忽略连接关系，只看名词",
+          "text": "second trial",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "等待全文结束再随机选择",
+          "text": "consistent results",
           "is_correct": false
         }
       ],
@@ -490,12 +611,12 @@
         "path": "ai_tts/cet4/0012/001205.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -511,22 +632,44 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "若要先避开复杂词尾辅音群，选择“简单词尾 /t/ + 后续辅音”的片段，哪项最合适？",
+        "task_prompt": "比较四个前词的词尾结构，再选择。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
-        }
+          "action": "筛选简单词尾塞音边界",
+          "focus": "区分单一 /t/ 词尾与复杂辅音群",
+          "success_criteria": "能说明三个干扰项为何含额外词尾辅音"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "pilot failed",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "first pilot",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "second trial",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "consistent results",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先排除与结构信号冲突的选项，再比较剩余项覆盖范围。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "正确答案是 A。pilot /ˈpaɪlət/ 以单一 /t/ 收尾，failed 以 /f/ 开头，适合先观察简单 /t/ → /f/ 边界的释放变化；实际是否没有可闻爆破仍须听感确认。first pilot 的 first 以 /st/ 收尾，second trial 的 second 以 /nd/ 收尾，consistent results 的 consistent 以 /nt/ 收尾，都多了一层辅音群保留或省音变量。先从简单词尾入手，再迁移到复杂群，能避免把群简化误写成纯未释放。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "先用单一词尾塞音建立基线，再处理复杂辅音群。",
+          "stop + fricative 的具体释放强弱仍需实际听感确认。"
         ]
       },
       "auto_scoring": true,
@@ -536,14 +679,36 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "answer_key": {
-        "correct_option": "B"
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "从复杂辅音群中筛选简单 /t/ → /f/ 边界",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练先控制词尾复杂度，再判断快速语流中的释放变化。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -558,27 +723,28 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "播放后比较 but delayed 与 feedback blocked：一处是同部位 /t/ + /d/，一处是跨部位 /k/ + /b/，分别如何衔接？",
+        "task_prompt": "翻面前先说出两组塞音的发音部位与清浊差异。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "比较两类 stop-stop 边界",
+          "focus": "区分同部位 /t/ → /d/ 与跨部位 /k/ → /b/",
+          "success_criteria": "能说明共享闭塞和跨部位闭塞转换的不同"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001206.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "结论：本题核心是失去爆破识别。\n\n关键点：优先抓结构信号，再做内容判断。",
-        "explanation": "语境揭示：They asked for quick updates, but delayed feedback blocked final approval."
+        "text": "结论：but delayed 是齿龈 /t/ → /d/；feedback blocked 是软腭 /k/ → 双唇 /b/。",
+        "explanation": "but delayed 中，/t/ 与 /d/ 都是齿龈塞音，闭塞可以共享或连续衔接，前一个 /t/ 未必出现独立爆破；清浊变化仍可能留下边界线索。feedback blocked 中，feedback 末尾 /k/ 后接 blocked 开头 /b/，发音部位从软腭转到双唇，/k/ 的释放可能被后续闭塞遮蔽。两处都是比辅音群更干净的 stop-stop 候选，但当前 TTS 是否真正呈现这些实现仍须人工听感 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先概括主判断，再回看支持该判断的语义证据。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "but delayed 中，/t/ 与 /d/ 都是齿龈塞音，闭塞可以共享或连续衔接，前一个 /t/ 未必出现独立爆破；清浊变化仍可能留下边界线索。feedback blocked 中，feedback 末尾 /k/ 后接 blocked 开头 /b/，发音部位从软腭转到双唇，/k/ 的释放可能被后续闭塞遮蔽。两处都是比辅音群更干净的 stop-stop 候选，但当前 TTS 是否真正呈现这些实现仍须人工听感 QC。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "同部位塞音相接可共享闭塞，清浊变化仍可能提示边界。",
+          "跨部位塞音相接要追踪闭塞位置从哪里转到哪里。"
         ]
       },
       "options": null,
@@ -590,12 +756,12 @@
         "path": "ai_tts/cet4/0012/001206.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -611,22 +777,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，完成失去爆破识别训练。",
-        "task_prompt": "先听音频，再根据失去爆破给出判断。",
+        "text": "播放后比较 but delayed 与 feedback blocked：一处是同部位 /t/ + /d/，一处是跨部位 /k/ + /b/，分别如何衔接？",
+        "task_prompt": "翻面前先说出两组塞音的发音部位与清浊差异。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "失去爆破识别",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "比较两类 stop-stop 边界",
+          "focus": "区分同部位 /t/ → /d/ 与跨部位 /k/ → /b/",
+          "success_criteria": "能说明共享闭塞和跨部位闭塞转换的不同"
         }
       },
       "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在失去爆破识别对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先概括主判断，再回看支持该判断的语义证据。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的失去爆破识别机制。",
+        "text": "but delayed 中，/t/ 与 /d/ 都是齿龈塞音，闭塞可以共享或连续衔接，前一个 /t/ 未必出现独立爆破；清浊变化仍可能留下边界线索。feedback blocked 中，feedback 末尾 /k/ 后接 blocked 开头 /b/，发音部位从软腭转到双唇，/k/ 的释放可能被后续闭塞遮蔽。两处都是比辅音群更干净的 stop-stop 候选，但当前 TTS 是否真正呈现这些实现仍须人工听感 QC。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "同部位塞音相接可共享闭塞，清浊变化仍可能提示边界。",
+          "跨部位塞音相接要追踪闭塞位置从哪里转到哪里。"
         ]
       },
       "auto_scoring": false,
@@ -636,11 +802,35 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "比较同部位与跨部位 stop-stop 边界",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练从发音部位和清浊线索恢复紧密衔接的跨词塞音。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -655,27 +845,28 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "点击你听到“失去爆破”导致边界弱化的时刻。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "听完后判断：把 next train 写成 nex train，能否证明 /t/ 只是“没有可闻爆破”，而没有发生省音？",
+        "task_prompt": "翻面前先区分 no audible release 与辅音群省音。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查伪拼写的证据范围",
+          "focus": "区分未释放塞音与 /t/ 省音",
+          "success_criteria": "能说明正字法删字不能诊断具体语音过程"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001207.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "结论：next train 中 t 常失去爆破。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：In next train, the t in next is often unreleased before tr, so listeners may hear nex train."
+        "text": "结论：不能。\n\nnex train 的写法把未释放、共享闭塞和省音混成了一个结论。",
+        "explanation": "next train 的底层音段包含复杂 /kst/ 词尾再接 /tr/。不同说话者和语速下，/t/ 可能保留但没有独立可闻爆破，也可能与相邻闭塞重叠，甚至发生辅音群省音；把它写成 nex train 直接删掉字母，不能区分这些过程。现有音频是讲规则的元教学旁白，并非自然 CET 语境，也没有声学证据支持唯一判断，因此脚本、音频和伪拼写都不能正式采用。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“In next train, the t in next is often unreleased before tr, so listeners may hear nex train.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "next train 的底层音段包含复杂 /kst/ 词尾再接 /tr/。不同说话者和语速下，/t/ 可能保留但没有独立可闻爆破，也可能与相邻闭塞重叠，甚至发生辅音群省音；把它写成 nex train 直接删掉字母，不能区分这些过程。现有音频是讲规则的元教学旁白，并非自然 CET 语境，也没有声学证据支持唯一判断，因此脚本、音频和伪拼写都不能正式采用。",
         "tips": [
-          "爆破音后接辅音时常弱化。",
-          "别把失爆听成漏词。"
+          "没有爆破声和音段省略是两种不同结论。",
+          "伪拼写只能提示听感，不能替代音段分析。"
         ]
       },
       "options": null,
@@ -689,12 +880,12 @@
         "transcript": "In next train, the t in next is often unreleased before tr, so listeners may hear nex train."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3100,
@@ -714,22 +905,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "点击你听到“失去爆破”导致边界弱化的时刻。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "听完后判断：把 next train 写成 nex train，能否证明 /t/ 只是“没有可闻爆破”，而没有发生省音？",
+        "task_prompt": "翻面前先区分 no audible release 与辅音群省音。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查伪拼写的证据范围",
+          "focus": "区分未释放塞音与 /t/ 省音",
+          "success_criteria": "能说明正字法删字不能诊断具体语音过程"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“In next train, the t in next is often unreleased before tr, so listeners may hear nex train.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "next train 的底层音段包含复杂 /kst/ 词尾再接 /tr/。不同说话者和语速下，/t/ 可能保留但没有独立可闻爆破，也可能与相邻闭塞重叠，甚至发生辅音群省音；把它写成 nex train 直接删掉字母，不能区分这些过程。现有音频是讲规则的元教学旁白，并非自然 CET 语境，也没有声学证据支持唯一判断，因此脚本、音频和伪拼写都不能正式采用。",
         "tips": [
-          "爆破音后接辅音时常弱化。",
-          "别把失爆听成漏词。"
+          "没有爆破声和音段省略是两种不同结论。",
+          "伪拼写只能提示听感，不能替代音段分析。"
         ]
       },
       "auto_scoring": false,
@@ -739,11 +930,35 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分 next train 中未释放与辅音群省音",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练面对复杂辅音群时保留多种解释，避免把听不清直接写成删音。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -758,27 +973,28 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "长按覆盖“词尾爆破音+后续辅音”片段。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "听完后判断：good boy 被写成 goo boy，是否足以说明 /d/ 已经消失？",
+        "task_prompt": "翻面前先区分爆破声缺失、发音部位重叠和音段删除。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查听感拼写的语音结论",
+          "focus": "区分 /d/ 无可闻爆破与删除",
+          "success_criteria": "能指出听不到独立爆破声仍可能保留闭塞线索"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001208.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "结论：good boy 里 d 常不完全爆破。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：The phrase good boy may sound like goo boy, because the final d is not fully released before b."
+        "text": "结论：不足以说明 /d/ 消失。\n\n没有独立爆破声不等于音段被删除。",
+        "explanation": "good 末尾 /d/ 后接 boy 开头 /b/。/d/ 可能没有独立可闻爆破，舌尖闭塞与后续双唇闭塞也可能重叠；具体语流还可能出现发音部位同化。把听感写成 goo boy 会把“爆破声不明显”误写成 /d/ 不存在。现有脚本只在旁白中宣布规则，没有自然话语和听感证据，正式采用前必须重写、重生成并完成 transcript 与人工听感 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The phrase good boy may sound like goo boy, because the final d is not fully released before b.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "good 末尾 /d/ 后接 boy 开头 /b/。/d/ 可能没有独立可闻爆破，舌尖闭塞与后续双唇闭塞也可能重叠；具体语流还可能出现发音部位同化。把听感写成 goo boy 会把“爆破声不明显”误写成 /d/ 不存在。现有脚本只在旁白中宣布规则，没有自然话语和听感证据，正式采用前必须重写、重生成并完成 transcript 与人工听感 QC。",
         "tips": [
-          "词尾 d/t/p/k/g/b 常见失爆。",
-          "听辨时关注前后辅音组合。"
+          "爆破声是声学线索之一，不是音段存在的唯一证据。",
+          "相邻塞音可能重叠或同化，不能只用删字解释。"
         ]
       },
       "options": null,
@@ -792,12 +1008,12 @@
         "transcript": "The phrase good boy may sound like goo boy, because the final d is not fully released before b."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 4000,
       "track_index": 0,
@@ -814,22 +1030,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "长按覆盖“词尾爆破音+后续辅音”片段。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "听完后判断：good boy 被写成 goo boy，是否足以说明 /d/ 已经消失？",
+        "task_prompt": "翻面前先区分爆破声缺失、发音部位重叠和音段删除。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查听感拼写的语音结论",
+          "focus": "区分 /d/ 无可闻爆破与删除",
+          "success_criteria": "能指出听不到独立爆破声仍可能保留闭塞线索"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The phrase good boy may sound like goo boy, because the final d is not fully released before b.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "good 末尾 /d/ 后接 boy 开头 /b/。/d/ 可能没有独立可闻爆破，舌尖闭塞与后续双唇闭塞也可能重叠；具体语流还可能出现发音部位同化。把听感写成 goo boy 会把“爆破声不明显”误写成 /d/ 不存在。现有脚本只在旁白中宣布规则，没有自然话语和听感证据，正式采用前必须重写、重生成并完成 transcript 与人工听感 QC。",
         "tips": [
-          "词尾 d/t/p/k/g/b 常见失爆。",
-          "听辨时关注前后辅音组合。"
+          "爆破声是声学线索之一，不是音段存在的唯一证据。",
+          "相邻塞音可能重叠或同化，不能只用删字解释。"
         ]
       },
       "auto_scoring": false,
@@ -839,11 +1055,35 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分 good boy 中 /d/ 无可闻爆破与删除",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在听不到清晰词尾时仍保留词形和多种协同发音解释。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -858,27 +1098,28 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "翻面前先判断：失爆发生在哪个位置？",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "听完后判断：这段 last minute 讲解为什么不能把 /t/ 唯一判成“未释放”？",
+        "task_prompt": "同时检查英语语境是否自然、复杂辅音群是否允许其他实现。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查单一语音标签的证据",
+          "focus": "识别语境缺陷与 /st/ + /m/ 的实现变体",
+          "success_criteria": "能指出脚本和声学证据都不足以支持唯一结论"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001209.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "结论：last 的 t 在 m 前失去爆破。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：At last minute, the t in last is unreleased before m, but minute remains clear and carries timing detail."
+        "text": "结论：语境和声学证据都不足。\n\n/t/ 可能未释放、鼻腔释放、与相邻手势重叠或省略，不能只凭旁白定性。",
+        "explanation": "现有脚本说 At last minute，缺少自然表达通常需要的 the；即使改成 at the last minute，last 的 /st/ 再接 minute 的 /m/ 也可能因口音和语速表现为没有独立可闻爆破、经鼻腔释放、与相邻手势重叠或 /t/ 省音。旁白还把 minute remains clear 当作结论，却没有自然句子或听感对照支撑。当前卡面只能用于诊断旧脚本，正式内容必须换成自然语境并重新生成、匹配 transcript、完成听感 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：翻面前先自述判断路径，翻面后只核验证据链是否闭合。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“At last minute, the t in last is unreleased before m, but minute remains clear and carries timing detail.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "现有脚本说 At last minute，缺少自然表达通常需要的 the；即使改成 at the last minute，last 的 /st/ 再接 minute 的 /m/ 也可能因口音和语速表现为没有独立可闻爆破、经鼻腔释放、与相邻手势重叠或 /t/ 省音。旁白还把 minute remains clear 当作结论，却没有自然句子或听感对照支撑。当前卡面只能用于诊断旧脚本，正式内容必须换成自然语境并重新生成、匹配 transcript、完成听感 QC。",
         "tips": [
-          "失爆位置多在词尾辅音。",
-          "核心信息仍由后续实词承载。"
+          "塞音后接鼻音时，还要考虑鼻腔释放这一实现。",
+          "先检查例句是否自然，再讨论复杂辅音群的语音过程。"
         ]
       },
       "options": null,
@@ -892,12 +1133,12 @@
         "transcript": "At last minute, the t in last is unreleased before m, but minute remains clear and carries timing detail."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -913,22 +1154,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "翻面前先判断：失爆发生在哪个位置？",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "听完后判断：这段 last minute 讲解为什么不能把 /t/ 唯一判成“未释放”？",
+        "task_prompt": "同时检查英语语境是否自然、复杂辅音群是否允许其他实现。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查单一语音标签的证据",
+          "focus": "识别语境缺陷与 /st/ + /m/ 的实现变体",
+          "success_criteria": "能指出脚本和声学证据都不足以支持唯一结论"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：翻面前先自述判断路径，翻面后只核验证据链是否闭合。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“At last minute, the t in last is unreleased before m, but minute remains clear and carries timing detail.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "现有脚本说 At last minute，缺少自然表达通常需要的 the；即使改成 at the last minute，last 的 /st/ 再接 minute 的 /m/ 也可能因口音和语速表现为没有独立可闻爆破、经鼻腔释放、与相邻手势重叠或 /t/ 省音。旁白还把 minute remains clear 当作结论，却没有自然句子或听感对照支撑。当前卡面只能用于诊断旧脚本，正式内容必须换成自然语境并重新生成、匹配 transcript、完成听感 QC。",
         "tips": [
-          "失爆位置多在词尾辅音。",
-          "核心信息仍由后续实词承载。"
+          "塞音后接鼻音时，还要考虑鼻腔释放这一实现。",
+          "先检查例句是否自然，再讨论复杂辅音群的语音过程。"
         ]
       },
       "auto_scoring": false,
@@ -938,11 +1179,35 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 last minute 单一未释放结论的证据缺口",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练同时审查语言自然度与语音变体，避免接受无证据口诀。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -957,48 +1222,49 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "四选一：识别这段发音变化属于哪类现象。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "这段 kept quiet 的讲解有一个核心音段定位错误。哪项修正最准确？",
+        "task_prompt": "先按单词内部和跨词边界排列音素，再选择。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "修正音段定位错误",
+          "focus": "核对讲解所指的两个音是否真正相邻",
+          "success_criteria": "能依据词内与跨词顺序排除错误解释"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001210.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "答案：C。解析：这是词尾辅音失爆导致的衔接压缩。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：In kept quiet, the p in kept is lightly released before q, creating a clipped transition in fast speech."
+        "text": "答案：B\n\n解析：跨词直接相邻的是 kept 末尾 /t/ 与 quiet 开头 /k/。",
+        "explanation": "正确答案是 B。kept 的音段顺序是 /kɛpt/，quiet 以 /k/ 开头；跨词边界直接相邻的是 kept 末尾 /t/ 与 quiet 开头 /k/。/p/ 位于 kept 内部，后面还有 /t/，不能说它直接在 quiet 前；英语拼写 q 在这里也不代表独立的 /q/ 音。A、C、D 都与实际音段不符。现有音频正是在讲错误规则，因此必须用自然语料重写并重新生成，不能因本卡能指出错误就把旧音频视为合格。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：四选一先判关系类型，再排除对象错位和范围错位选项。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“In kept quiet, the p in kept is lightly released before q, creating a clipped transition in fast speech.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "正确答案是 B。kept 的音段顺序是 /kɛpt/，quiet 以 /k/ 开头；跨词边界直接相邻的是 kept 末尾 /t/ 与 quiet 开头 /k/。/p/ 位于 kept 内部，后面还有 /t/，不能说它直接在 quiet 前；英语拼写 q 在这里也不代表独立的 /q/ 音。A、C、D 都与实际音段不符。现有音频正是在讲错误规则，因此必须用自然语料重写并重新生成，不能因本卡能指出错误就把旧音频视为合格。",
         "tips": [
-          "失爆常让语流听起来更“短促”。",
-          "不要把短促误判为断句。"
+          "判断跨词现象前，先写出前一词最后一个实际音素。",
+          "字母 q 不是英语 quiet 开头的独立音标。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "弱读",
+          "text": "quiet 以元音开头，因此不存在辅音边界",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "连读",
-          "is_correct": false
-        },
-        {
-          "key": "C",
-          "text": "失去爆破",
+          "text": "直接相邻的是 kept 末尾 /t/ 与 quiet 开头 /k/",
           "is_correct": true
         },
         {
+          "key": "C",
+          "text": "kept 中没有 /p/，只有 /t/",
+          "is_correct": false
+        },
+        {
           "key": "D",
-          "text": "吞音省略",
+          "text": "/t/ 与 /k/ 的发音部位完全相同",
           "is_correct": false
         }
       ],
@@ -1012,12 +1278,12 @@
         "transcript": "In kept quiet, the p in kept is lightly released before q, creating a clipped transition in fast speech."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -1033,22 +1299,44 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "四选一：识别这段发音变化属于哪类现象。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "这段 kept quiet 的讲解有一个核心音段定位错误。哪项修正最准确？",
+        "task_prompt": "先按单词内部和跨词边界排列音素，再选择。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+          "action": "修正音段定位错误",
+          "focus": "核对讲解所指的两个音是否真正相邻",
+          "success_criteria": "能依据词内与跨词顺序排除错误解释"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "quiet 以元音开头，因此不存在辅音边界",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "直接相邻的是 kept 末尾 /t/ 与 quiet 开头 /k/",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "kept 中没有 /p/，只有 /t/",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "/t/ 与 /k/ 的发音部位完全相同",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：四选一先判关系类型，再排除对象错位和范围错位选项。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“In kept quiet, the p in kept is lightly released before q, creating a clipped transition in fast speech.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "正确答案是 B。kept 的音段顺序是 /kɛpt/，quiet 以 /k/ 开头；跨词边界直接相邻的是 kept 末尾 /t/ 与 quiet 开头 /k/。/p/ 位于 kept 内部，后面还有 /t/，不能说它直接在 quiet 前；英语拼写 q 在这里也不代表独立的 /q/ 音。A、C、D 都与实际音段不符。现有音频正是在讲错误规则，因此必须用自然语料重写并重新生成，不能因本卡能指出错误就把旧音频视为合格。",
         "tips": [
-          "失爆常让语流听起来更“短促”。",
-          "不要把短促误判为断句。"
+          "判断跨词现象前，先写出前一词最后一个实际音素。",
+          "字母 q 不是英语 quiet 开头的独立音标。"
         ]
       },
       "auto_scoring": true,
@@ -1058,14 +1346,38 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "answer_key": {
-        "correct_option": "C"
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "修正 kept quiet 的跨词音段定位",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移用真实音段顺序审查语音讲解，避免被拼写和错误旁白带偏。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1080,27 +1392,28 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "在失爆造成边界压缩的瞬间点击。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "听完后判断：big class 中听不到 /g/ 的独立爆破，是否等于 /g/ 被删除？",
+        "task_prompt": "翻面前先考虑两个软腭塞音的闭塞是否可以重叠。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查同部位塞音的听感",
+          "focus": "区分共享闭塞与 /g/ 删除",
+          "success_criteria": "能说明无独立爆破仍可能保留词尾音段线索"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001211.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "结论：big class 中 g 在 k 前常失爆。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：When saying big class, many speakers do not release g fully before k, so the boundary becomes tighter."
+        "text": "结论：不等于 /g/ 被删除。\n\n同部位 /g/ + /k/ 可共享或重叠闭塞。",
+        "explanation": "big 末尾 /g/ 与 class 开头 /k/ 都是软腭塞音。自然语流中，两次闭塞可以重叠或近似合并，前一个 /g/ 未必有独立爆破，浊音也可能弱化；这仍不能单凭听感断言 /g/ 被删除。现有旁白只解释规则，没有自然语境和独立声学证据，且旧题面的点击动作与 canonical flip 冲突。卡面已收口为翻面诊断，但正式脚本和音频仍须重写、重生成并完成 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“When saying big class, many speakers do not release g fully before k, so the boundary becomes tighter.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "big 末尾 /g/ 与 class 开头 /k/ 都是软腭塞音。自然语流中，两次闭塞可以重叠或近似合并，前一个 /g/ 未必有独立爆破，浊音也可能弱化；这仍不能单凭听感断言 /g/ 被删除。现有旁白只解释规则，没有自然语境和独立声学证据，且旧题面的点击动作与 canonical flip 冲突。卡面已收口为翻面诊断，但正式脚本和音频仍须重写、重生成并完成 QC。",
         "tips": [
-          "同部位或近部位辅音更易失爆。",
-          "失爆不影响语义，只影响听感边界。"
+          "同部位塞音相接时可共享或重叠闭塞，前者未必有独立释放。",
+          "无独立爆破与音段删除不能画等号。"
         ]
       },
       "options": null,
@@ -1114,12 +1427,12 @@
         "transcript": "When saying big class, many speakers do not release g fully before k, so the boundary becomes tighter."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3000,
@@ -1139,22 +1452,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "在失爆造成边界压缩的瞬间点击。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "听完后判断：big class 中听不到 /g/ 的独立爆破，是否等于 /g/ 被删除？",
+        "task_prompt": "翻面前先考虑两个软腭塞音的闭塞是否可以重叠。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查同部位塞音的听感",
+          "focus": "区分共享闭塞与 /g/ 删除",
+          "success_criteria": "能说明无独立爆破仍可能保留词尾音段线索"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“When saying big class, many speakers do not release g fully before k, so the boundary becomes tighter.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "big 末尾 /g/ 与 class 开头 /k/ 都是软腭塞音。自然语流中，两次闭塞可以重叠或近似合并，前一个 /g/ 未必有独立爆破，浊音也可能弱化；这仍不能单凭听感断言 /g/ 被删除。现有旁白只解释规则，没有自然语境和独立声学证据，且旧题面的点击动作与 canonical flip 冲突。卡面已收口为翻面诊断，但正式脚本和音频仍须重写、重生成并完成 QC。",
         "tips": [
-          "同部位或近部位辅音更易失爆。",
-          "失爆不影响语义，只影响听感边界。"
+          "同部位塞音相接时可共享或重叠闭塞，前者未必有独立释放。",
+          "无独立爆破与音段删除不能画等号。"
         ]
       },
       "auto_scoring": false,
@@ -1164,11 +1477,35 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分 big class 中共享闭塞与 /g/ 删除",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移识别同部位塞音边界，同时保持词形恢复的谨慎。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1183,27 +1520,28 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "长按直到失爆与简化段结束，再松手。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "听完后判断：把 stopped by 听写成 stop by，为什么不能直接证明只是“失去爆破”？",
+        "task_prompt": "翻面前先比较词尾辅音群、过去式标记和正字法含义。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查辅音群简化的语法后果",
+          "focus": "区分无可闻爆破、省音与过去式丢失",
+          "success_criteria": "能说明伪拼写改变了动词的语法信息"
         },
         "audio_first": true,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0012/001212.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "audio_first"
       },
       "back_content": {
-        "text": "结论：stopped by 的词尾辅音群会被压缩处理。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：The phrase stopped by is often heard as stop by, where the final p-t cluster is simplified in rapid delivery."
+        "text": "结论：stop by 的写法改变了词形，不能诊断唯一语音过程。",
+        "explanation": "stopped /stɒpt/ 含词尾 /pt/ 辅音群和过去式标记 /t/，后面再接 by 的 /b/。快速语流中可能出现无可闻爆破、手势重叠或辅音群简化，但把 stopped 写成 stop 会把过去式词形改成原形，超出了声学证据能直接支持的范围。现有音频是元教学旁白，没有自然上下文帮助恢复时态，也没有正式听感证据；必须重写自然句、重新生成并完成 transcript、语法恢复和听感 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The phrase stopped by is often heard as stop by, where the final p-t cluster is simplified in rapid delivery.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "stopped /stɒpt/ 含词尾 /pt/ 辅音群和过去式标记 /t/，后面再接 by 的 /b/。快速语流中可能出现无可闻爆破、手势重叠或辅音群简化，但把 stopped 写成 stop 会把过去式词形改成原形，超出了声学证据能直接支持的范围。现有音频是元教学旁白，没有自然上下文帮助恢复时态，也没有正式听感证据；必须重写自然句、重新生成并完成 transcript、语法恢复和听感 QC。",
         "tips": [
-          "辅音群越复杂，越可能出现简化。",
-          "听不全时优先还原动词原形。"
+          "听写简化不能以丢掉语法词尾为代价。",
+          "先恢复句法时态，再判断词尾辅音如何实现。"
         ]
       },
       "options": null,
@@ -1217,12 +1555,12 @@
         "transcript": "The phrase stopped by is often heard as stop by, where the final p-t cluster is simplified in rapid delivery."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 4200,
       "track_index": 0,
@@ -1239,22 +1577,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "长按直到失爆与简化段结束，再松手。",
-        "task_prompt": "先听音频，再完成失去爆破训练。",
+        "text": "听完后判断：把 stopped by 听写成 stop by，为什么不能直接证明只是“失去爆破”？",
+        "task_prompt": "翻面前先比较词尾辅音群、过去式标记和正字法含义。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查辅音群简化的语法后果",
+          "focus": "区分无可闻爆破、省音与过去式丢失",
+          "success_criteria": "能说明伪拼写改变了动词的语法信息"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练“失去爆破”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The phrase stopped by is often heard as stop by, where the final p-t cluster is simplified in rapid delivery.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "stopped /stɒpt/ 含词尾 /pt/ 辅音群和过去式标记 /t/，后面再接 by 的 /b/。快速语流中可能出现无可闻爆破、手势重叠或辅音群简化，但把 stopped 写成 stop 会把过去式词形改成原形，超出了声学证据能直接支持的范围。现有音频是元教学旁白，没有自然上下文帮助恢复时态，也没有正式听感证据；必须重写自然句、重新生成并完成 transcript、语法恢复和听感 QC。",
         "tips": [
-          "辅音群越复杂，越可能出现简化。",
-          "听不全时优先还原动词原形。"
+          "听写简化不能以丢掉语法词尾为代价。",
+          "先恢复句法时态，再判断词尾辅音如何实现。"
         ]
       },
       "auto_scoring": false,
@@ -1264,11 +1602,35 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分 stopped by 的释放变化与过去式词形丢失",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移把语音压缩与语法恢复结合，避免因听不到爆破而漏掉过去式。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],
