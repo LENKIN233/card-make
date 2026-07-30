@@ -1,0 +1,503 @@
+{
+  "review_id": "20260730-cet6-grammar-1614-full-remediation",
+  "created_at": "2026-07-30T15:37:30.167Z",
+  "agent": "codex",
+  "scope": {
+    "library": "语法",
+    "group": "复杂句",
+    "box": "强调句",
+    "box_prefixes": [
+      "1614"
+    ],
+    "card_ids": [
+      "161401",
+      "161402",
+      "161403",
+      "161404",
+      "161405",
+      "161406",
+      "161407",
+      "161408"
+    ],
+    "closure_reason": "User-authorized full-track remediation: correct answer leakage, missing canonical options, a content-clause misclassification, ambiguous correction rules, an invalid mechanical question reduction, a time-as-place error, weak transfer, and untraced provenance while preserving eight IDs and the interaction sequence.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal",
+      "parallel_read_only_review_1614"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-grammar-1614-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "6513c90053effc933081f742b624d617adb7b5f8cc79ccda1d1cc8c4fad6004b",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "161401",
+        "161402",
+        "161403",
+        "161404",
+        "161405",
+        "161406",
+        "161407",
+        "161408"
+      ],
+      "card_count": 8,
+      "issue_count": 8,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 8
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 8,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1614 matches 语法 / 复杂句 / 强调句 and the catalog-owned eight-card count.",
+    "independent_tasks": "Passed: all fronts are independently answerable and scoped audit reports no answer-path leak.",
+    "cleft_logic": "Passed: ordinary-order restoration, focus category, not-A-but-B correction, cleft/relative/content/extraposition distinction, unambiguous error correction, wh-cleft question reconstruction, contextual cause correction, and time-focus writing transfer were manually checked.",
+    "classification_corrections": "Passed: complete that clauses after abstract nouns are treated as content/appositive clauses rather than relatives, and stage/time phrases are not mislabeled as locations.",
+    "question_reconstruction": "Passed: removing the emphatic shell from a why-question also restores did + subject + base verb; no mechanical deletion is taught.",
+    "unique_answers": "Passed: disputed which/who variants were not used as absolute error distractors; every multiple-choice item has one contextually and grammatically best answer.",
+    "canonical_option_migration": "Passed: former form cards 161403 and 161407 have canonical options matching form_options and answer_key.",
+    "interaction_parity": "Passed: five multiple-choice answer_keys match sole correct options, elimination correct_items match two true items, and flip cards remain unscored.",
+    "metadata_enum": "Passed: every weak_point_tag is in card-metadata.schema and every difficulty/progression role is valid.",
+    "progression": "Passed: 161401-161402 recognition/foundation, 161403-161406 application/pass, 161407-161408 transfer/high_score.",
+    "source_and_audio_boundary": "Passed: examples are synthetic simulations, claim no true-exam source, contain no audio, and use audio_generation_method none."
+  },
+  "cards": [
+    {
+      "card_id": "161401",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "4",
+        "box_name": "强调句",
+        "box_prefix": "1614"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别强调句的焦点与普通命题",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 cleft-sentence grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读中还原强调句并识别作者对比焦点。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161402",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "4",
+        "box_name": "强调句",
+        "box_prefix": "1614"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别强调句中的时间或阶段焦点",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 cleft-sentence grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级强调句中不同焦点成分的快速分类。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161403",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "4",
+        "box_name": "强调句",
+        "box_prefix": "1614"
+      },
+      "quality_metadata": {
+        "main_training_goal": "掌握 not A but B 强调结构",
+        "weak_point_tags": [
+          "grammar_weak",
+          "writing_output_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 cleft-sentence grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级写作中用对比强调纠正常见误解。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161404",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "4",
+        "box_name": "强调句",
+        "box_prefix": "1614"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分强调句与三类相似 that 结构",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 cleft-sentence grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级复杂句中避免见 it/that 就误判强调句。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161405",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "4",
+        "box_name": "强调句",
+        "box_prefix": "1614"
+      },
+      "quality_metadata": {
+        "main_training_goal": "校对强调句的壳层与焦点连接",
+        "weak_point_tags": [
+          "grammar_weak",
+          "writing_output_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 cleft-sentence grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级写作中强调句的可靠自检。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161406",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "4",
+        "box_name": "强调句",
+        "box_prefix": "1614"
+      },
+      "quality_metadata": {
+        "main_training_goal": "在普通疑问句与强调疑问句之间保义转换",
+        "weak_point_tags": [
+          "grammar_weak",
+          "writing_output_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 cleft-sentence grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读与写作中的疑问强调结构。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161407",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "4",
+        "box_name": "强调句",
+        "box_prefix": "1614"
+      },
+      "quality_metadata": {
+        "main_training_goal": "在短文语境中迁移使用对比强调句",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 cleft-sentence grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读推断与写作纠错中的焦点重组。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161408",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "4",
+        "box_name": "强调句",
+        "box_prefix": "1614"
+      },
+      "quality_metadata": {
+        "main_training_goal": "在写作改写中精准突出时间焦点",
+        "weak_point_tags": [
+          "grammar_weak",
+          "writing_output_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 cleft-sentence grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级写作中按交际目的使用强调句且不改变事实。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "2 recognition/foundation, 4 application/pass, 2 transfer/high-score cards.",
+    "repetition_or_gap_risks": [
+      "Synthetic examples still require final user whole-track approval.",
+      "No true-exam provenance is claimed."
+    ],
+    "representative_cards": [
+      "161404",
+      "161406",
+      "161408"
+    ],
+    "next_step": "Park the validated branch without a PR while the five candidate-content PR slots remain occupied."
+  }
+}
