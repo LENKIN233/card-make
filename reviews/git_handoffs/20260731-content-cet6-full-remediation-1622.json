@@ -1,0 +1,77 @@
+{
+  "handoff_id": "20260731-content-cet6-full-remediation-1622",
+  "created_at": "2026-07-31T01:10:26+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-full-remediation-1622",
+  "base_branch": "main",
+  "commit_sha": "afb8d98715ce6340b13e83f3fb427ffe0e3dea77",
+  "push_ref": "origin/content/cet6-full-remediation-1622",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1622",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate",
+    "box_prefixes": [
+      "1622"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_grammar_1622.json",
+      "reviews/agent_self_review/20260731-cet6-grammar-1622-full-remediation.json",
+      "reviews/audit_scopes/20260731-cet6-grammar-1622-full-remediation-scope-audit.json"
+    ],
+    "patch_sha256": "93623c18d300a6830cbfc5f18472452f6bf48c33ee571ba84a7c558b3d96cca5"
+  },
+  "summary": [
+    "Rebuilt all eight subjunctive-translation cards around bilingual equivalence, mixed-time mapping, current counterfactual distance, past counterfactual results, modal stance, open-condition boundaries, Had inversion, and integrated transfer.",
+    "Removed answer leakage, repeated template analysis, missing metadata, untraced provenance, and isolated-form drills while preserving IDs and the original interaction sequence.",
+    "Three independent read-only review passes corrected bilingual omissions/additions, answer ambiguity, adjacent-box form repetition, task-schema cues, modal wording, Chinese fluency, and foundation-tier justification; final replay found no residual P0, P1, or P2.",
+    "Added canonical/form and elimination mirrors, schema-valid metadata, declared synthetic provenance, no-audio boundaries, and a justified 2/4/2 progression."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path /tmp/1622-final-cards.json",
+      "result": "passed: 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 162201,...,162208 --write-scope-report reviews/audit_scopes/20260731-cet6-grammar-1622-full-remediation-scope-audit.json",
+      "result": "passed: corpus digest d320867e1061ce702473fc19420a83535b3b1d1fea01ebd06d6f990b8b8f67c7; 0 hard blockers, 0 content risks, 0 review gaps, 8 declared synthetic-source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with recorded upstream-version and group-alignment warnings only"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed: no audio records in scope"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base main --head HEAD",
+      "result": "passed: primary scope prefix 1622; current scoped audit replay found no hard blockers"
+    },
+    {
+      "command": "node scripts/validate_delivery_boundary.mjs --base main --head HEAD",
+      "result": "passed: one card file and two review-evidence files, no approval or audio files"
+    },
+    {
+      "command": "manual assertions for placement/count, front and analysis mirrors, option/form and elimination parity, metadata enum, source/audio boundary, self-review fingerprint, and 2/4/2 progression",
+      "result": "passed"
+    },
+    {
+      "command": "three independent read-only content reviews and post-fix replay",
+      "result": "passed after semantic and wording corrections; no residual P0, P1, or P2"
+    },
+    {
+      "command": "git verify-commit afb8d98715ce6340b13e83f3fb427ffe0e3dea77",
+      "result": "passed: good ED25519 signature"
+    }
+  ],
+  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PR slots already occupy the WIP limit.",
+  "remaining_risks": [
+    "All eight cards are synthetic candidate content and require final user whole-track approval before integration.",
+    "Eight CET6 hard-blocker prefixes remain unresolved after 1622: 1030, 1100, 1101, 1102, 1110, 1111, 1620, and 1623.",
+    "Previously parked branches 1522 and 1610-1613 require schema-enum weak-point-tag repair before whole-track delivery.",
+    "Prefix 1620 additionally requires eight newly generated audio assets and genuine per-card human listening QC; legacy assets cannot be reused.",
+    "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
