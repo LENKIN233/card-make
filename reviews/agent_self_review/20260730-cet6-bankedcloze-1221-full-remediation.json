@@ -1,0 +1,612 @@
+{
+  "review_id": "20260730-cet6-bankedcloze-1221-full-remediation",
+  "created_at": "2026-07-30T14:14:02.343Z",
+  "agent": "codex",
+  "scope": {
+    "library": "选词填空",
+    "group": "固定搭配",
+    "box": "形容词+名词",
+    "box_prefixes": [
+      "1221"
+    ],
+    "card_ids": [
+      "122101",
+      "122102",
+      "122103",
+      "122104",
+      "122105",
+      "122106",
+      "122107",
+      "122108",
+      "122109",
+      "122110"
+    ],
+    "closure_reason": "User-authorized full-track remediation: restore catalog-owned group and box placement, close three answer-path leaks by making option payloads match the blank, strengthen all ten analyses and task schemas, remove ambiguous lock distractors, align the 122109 dual-answer explanation, and add synthetic provenance plus proportional 3/5/2 progression metadata without adding or deleting cards.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-bankedcloze-1221-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "dceb3da690e554435c4f7727c8a2603511fe82e73f4b8c7bb5f073bd46e95d39",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "122101",
+        "122102",
+        "122103",
+        "122104",
+        "122105",
+        "122106",
+        "122107",
+        "122108",
+        "122109",
+        "122110"
+      ],
+      "card_count": 10,
+      "issue_count": 10,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 10
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 10,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1221 now matches 选词填空 / 固定搭配 / 形容词+名词 in box-catalog at file, card, and knowledge_ref levels.",
+    "answer_path": "Passed: multiple-choice options now contain only the missing modifier rather than repeating pressure, market sentiment, gaps, risk, or crisis from the visible sentence.",
+    "collocation_logic": "Passed: systemic/systematic risk, robust framework, liquidity pressure, capital adequacy, positive market sentiment, fiscal discipline, compliance gaps, defensive/guarded stance, and liquidity crisis distinctions were checked manually.",
+    "dual_answer_boundary": "Passed: 122109 explicitly accepts and explains defensive and guarded; back text, blank_answers, lock_pattern, and word bank agree.",
+    "interaction_parity": "Passed: every multiple-choice answer_key matches the sole is_correct option text; every lock_pattern matches blank_answers and all answers occur in the word bank.",
+    "task_schema_parity": "Passed: front.task_schema and front_content.task_schema are identical for every card.",
+    "progression": "Passed: 122101-122103 recognition/foundation, 122104-122108 application/pass, 122109-122110 transfer/high_score.",
+    "source_boundary": "Passed: all examples are simulation/synthetic and are not represented as true-exam material.",
+    "audio_boundary": "Not applicable: banked-cloze collocation cards contain no audio and use audio_generation_method none."
+  },
+  "cards": [
+    {
+      "card_id": "122101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "1",
+        "box_name": "形容词+名词",
+        "box_prefix": "1221"
+      },
+      "quality_metadata": {
+        "main_training_goal": "建立形容词或名词修饰语与中心名词的搭配判断流程",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze adjective/noun collocation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练先锚定中心名词的专业语域，再按固定词块和上下文筛选前置修饰语。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "122102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "1",
+        "box_name": "形容词+名词",
+        "box_prefix": "1221"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分 systemic 与 systematic risk",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze adjective/noun collocation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在金融稳定语境中依据风险传染范围选择标准术语。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "122103",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "1",
+        "box_name": "形容词+名词",
+        "box_prefix": "1221"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 robust framework 的政策搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze adjective/noun collocation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练联合比较结构、中心名词搭配和监管任务强度选择修饰语。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "122104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "1",
+        "box_name": "形容词+名词",
+        "box_prefix": "1221"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 liquidity pressure 的银行业搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze adjective/noun collocation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练把存款外流和融资渠道线索映射为银行流动性压力术语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "122105",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "1",
+        "box_name": "形容词+名词",
+        "box_prefix": "1221"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 capital adequacy 的审慎监管术语",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze adjective/noun collocation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用损失吸收和压力情景线索定位资本充足性术语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "122106",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "1",
+        "box_name": "形容词+名词",
+        "box_prefix": "1221"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 positive market sentiment 的评价搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze adjective/noun collocation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用让步逻辑和金融语域共同确定市场情绪的评价修饰语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "122107",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "1",
+        "box_name": "形容词+名词",
+        "box_prefix": "1221"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 fiscal discipline 的宏观政策搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze adjective/noun collocation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练利用预算赤字和公共债务线索区分 fiscal 与 financial。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "122108",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "1",
+        "box_name": "形容词+名词",
+        "box_prefix": "1221"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 compliance gaps 的监管审计表达",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze adjective/noun collocation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练把压力测试和数据治理问题映射为合规缺口，而非日常语义拼接。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "122109",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "1",
+        "box_name": "形容词+名词",
+        "box_prefix": "1221"
+      },
+      "quality_metadata": {
+        "main_training_goal": "处理 defensive 与 guarded stance 的双答案",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze adjective/noun collocation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在多个自然搭配都成立时保留合法答案，并比较风险姿态的语义侧重。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "122110",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "1",
+        "box_name": "形容词+名词",
+        "box_prefix": "1221"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 liquidity crisis 的系统性资金场景",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze adjective/noun collocation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练把局部融资紧张与支付传导后果连接为流动性危机术语。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "3 recognition/foundation, 5 application/pass, 2 transfer/high-score cards.",
+    "repetition_or_gap_risks": [
+      "Synthetic examples still require final user whole-track approval.",
+      "No true-exam provenance is claimed."
+    ],
+    "representative_cards": [
+      "122102",
+      "122109",
+      "122110"
+    ],
+    "next_step": "Park the validated branch without a PR while the five candidate-content PR slots remain occupied."
+  }
+}
