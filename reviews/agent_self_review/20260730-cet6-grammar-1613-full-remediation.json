@@ -49,7 +49,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260730-cet6-grammar-1613-full-remediation-scope-audit.json",
-    "corpus_fingerprint": "053ffa2a341b7b250240eff6b2054f27c1d85b80fdf66dfc20f05cce533e81d7",
+    "corpus_fingerprint": "a1a7ae7ad6b5e69d82a5f021c9bd1f4353b3fa1686cc9e41dc41af13ced787cc",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -94,8 +94,9 @@
     "polarity_correction": "Passed: 161304 now treats were unconvinced as grammatically affirmative, selects so rather than neither, copies be rather than do, and agrees was with the singular new subject.",
     "scope_and_tense": "Passed: subordinate clauses remain in statement order where required; do-support restores base verbs; conditional inversion preserves past perfect, negation, voice, and modal-perfect result.",
     "canonical_option_migration": "Passed: 161303 and 161307 contain canonical four-option arrays matching their legacy form_options and answer_key.",
-    "interaction_parity": "Passed: five multiple-choice cards have sole correct options, elimination correct_items match two true items, and flips remain unscored.",
+    "interaction_parity": "Passed after P1 repair: five multiple-choice cards have sole correct options; 161305 eliminable_items and canonical elimination_items are object-for-object identical with item_no, text, and correctness, and answer_key.correct_items exactly matches their two true items; flips remain unscored.",
     "task_schema_parity": "Passed: normalized and legacy task schemas are identical for all cards.",
+    "metadata_enum": "Passed after schema repair: 161303, 161305, and 161307 use writing_output_weak, while 161304 uses exam_strategy_weak; no legacy writing_weak or logic_weak tag remains in card metadata or the mirrored self-review.",
     "progression": "Passed: 161301-161302 recognition/foundation, 161303-161306 application/pass, 161307-161308 transfer/high_score.",
     "source_and_audio_boundary": "Passed: rewritten examples are synthetic simulations, claim no true-exam source, contain no audio, and use audio_generation_method none."
   },
@@ -213,7 +214,7 @@
         "main_training_goal": "掌握 no sooner 倒装结构及其连词配对",
         "weak_point_tags": [
           "grammar_weak",
-          "writing_weak"
+          "writing_output_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -261,7 +262,7 @@
         "main_training_goal": "准确使用 so/neither 附和倒装",
         "weak_point_tags": [
           "grammar_weak",
-          "logic_weak"
+          "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -309,7 +310,7 @@
         "main_training_goal": "综合排查倒装触发与谓语形式",
         "weak_point_tags": [
           "grammar_weak",
-          "writing_weak"
+          "writing_output_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -405,7 +406,7 @@
         "main_training_goal": "迁移完成过去反事实条件句的等义倒装",
         "weak_point_tags": [
           "grammar_weak",
-          "writing_weak"
+          "writing_output_weak"
         ],
         "difficulty": {
           "primary": "high_score",
