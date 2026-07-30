@@ -1,0 +1,45 @@
+{
+  "handoff_id": "20260730-content-cet6-full-remediation-1501",
+  "created_at": "2026-07-30T22:25:36+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-full-remediation-1501",
+  "base_branch": "main",
+  "commit_sha": "113aeb96bcfaa8e6ba01a404a0752e68ea6412aa",
+  "push_ref": "origin/content/cet6-full-remediation-1501",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1501",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate",
+    "box_prefixes": ["1501"],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_vocabulary_1501.json",
+      "reviews/agent_self_review/20260730-cet6-vocabulary-1501-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet6-vocabulary-1501-full-remediation-scope-audit.json"
+    ],
+    "patch_sha256": "afe1695a129be141a68b9fd515d1fbdc45c5506ba7f1d4ef684fb2800cbd4981"
+  },
+  "summary": [
+    "Replaced ten repeated placeholder fronts and four blank-only lock tasks with twelve independently answerable CET6 word-class transformation exercises.",
+    "Built explicit coverage of adverb/adjective, verb/noun, predicate/abstract-noun, light-verb, causality, polarity, modality, argument-role, degree, and time-boundary preservation.",
+    "Closed visible answer-path leaks by using bounded structural descriptions for rewrite choices while moving completed rewrite examples to the back side.",
+    "Added action-oriented task schemas, synthetic provenance, complete quality metadata, and a 3/6/3 progression without changing card count or interaction count."
+  ],
+  "validation": [
+    {"command":"node scripts/validate_cards.mjs --report-path /tmp/1501-postcommit-cards.json","result":"passed: 2414 cards, 0 errors, 0 warnings"},
+    {"command":"node scripts/audit_card_quality.mjs --scope-card-ids 150101,...,150112 --write-scope-report reviews/audit_scopes/20260730-cet6-vocabulary-1501-full-remediation-scope-audit.json","result":"passed: 0 hard blockers, 0 content risks, 0 review gaps, 12 declared synthetic-source risks"},
+    {"command":"node scripts/validate_harness.mjs","result":"passed with recorded upstream-version and group-alignment warnings only"},
+    {"command":"node scripts/validate_audio_qc.mjs","result":"passed: no audio records in scope"},
+    {"command":"node scripts/validate_pr_scope.mjs --base main --head HEAD","result":"passed: primary scope prefix 1501"},
+    {"command":"node scripts/validate_delivery_boundary.mjs --base main --head HEAD","result":"passed: one card file and two review-evidence files, no approval or audio files"},
+    {"command":"manual assertions for independent task completeness, transformation logic, answer-key and lock-pattern parity, task-schema parity, source metadata, and 3/6/3 progression","result":"passed"},
+    {"command":"git verify-commit 113aeb96bcfaa8e6ba01a404a0752e68ea6412aa","result":"passed: good ED25519 signature"}
+  ],
+  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "remaining_risks": [
+    "All twelve cards are synthetic candidate content and require final user whole-track approval before integration.",
+    "Twenty-two CET6 hard-blocker prefixes remain unresolved after 1501, including the blocked 1030 authority conflict.",
+    "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
