@@ -1,0 +1,86 @@
+{
+  "handoff_id": "20260730-content-cet4-full-remediation-0512",
+  "created_at": "2026-07-30T15:55:20+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-remediation-0512",
+  "base_branch": "main",
+  "commit_sha": "9cf0ce9850634f8ae3d3ae0f7844f602ac9d61d5",
+  "push_ref": "origin/content/cet4-full-remediation-0512",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0512",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_full_box_remediation",
+    "track": "cet4",
+    "library": "词汇",
+    "group": "中国特色词汇",
+    "box": "文化",
+    "box_prefix": "0512",
+    "card_ids": [
+      "051201",
+      "051202",
+      "051203",
+      "051204",
+      "051205",
+      "051206",
+      "051207",
+      "051208",
+      "051209",
+      "051210",
+      "051211",
+      "051212"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0512.json",
+      "reviews/agent_self_review/20260730-cet4-vocabulary-0512-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet4-vocabulary-0512-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet4-full-remediation-0512.json"
+    ],
+    "patch_sha256": "46f278f2dc6e452139034b3683fa00d28f62f7791abb2a448944d7d9f1eed58c"
+  },
+  "summary": [
+    "Closed two saved answer-path blockers and replaced template analyses across box 0512.",
+    "Replaced stiff cultural-inheritance phrasing with natural action expressions, repaired under-specified cultural-resource wording, and removed internal production labels and mismatched explanations.",
+    "Preserved stable public-cultural terms while adding synchronized rendered/canonical fields, complete 3/6/3 quality metadata, and honest simulation/synthetic provenance."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 051201,051202,051203,051204,051205,051206,051207,051208,051209,051210,051211,051212 --write-scope-report reviews/audit_scopes/20260730-cet4-vocabulary-0512-full-remediation-scope-audit.json",
+      "result": "passed; 0 hard blockers, 0 content risks, 0 review gaps, 12 explained source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; errors=0, only recorded upstream warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; current scoped audit accepted"
+    },
+    {
+      "command": "canonical prompt, analysis, lock-answer, terminology, provenance, internal-label, and 3/6/3 progression assertions",
+      "result": "passed; rendered/canonical fields and lock answers match, internal labels are absent, and stiff cultural inheritance phrasing is absent"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "git verify-commit 9cf0ce9850634f8ae3d3ae0f7844f602ac9d61d5",
+      "result": "passed; good ED25519 signature"
+    }
+  ],
+  "local_status": "Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks": [
+    "All passages are simulation/synthetic, not true-exam claims.",
+    "The box remains candidate content; no approved-batch record or formal user approval is claimed.",
+    "Official or conventional public-cultural terminology can evolve and must be rechecked against the approved terminology list before publication.",
+    "The branch-local global corpus still contains 225 hard blockers, 2242 content risks, 2387 review gaps, and 2285 source risks after this scoped remediation.",
+    "Remaining CET4 boxes still require remediation and human review.",
+    "Branch remains parked until one of PRs #99-#103 leaves the queue."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
