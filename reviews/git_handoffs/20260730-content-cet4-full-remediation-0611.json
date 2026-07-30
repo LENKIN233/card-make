@@ -1,0 +1,43 @@
+{
+  "handoff_id":"20260730-content-cet4-full-remediation-0611",
+  "created_at":"2026-07-30T16:27:30+08:00",
+  "agent":"codex",
+  "branch":"content/cet4-full-remediation-0611",
+  "base_branch":"main",
+  "commit_sha":"489ff1ad052a4344fbe2de1720130ac599471275",
+  "push_ref":"origin/content/cet4-full-remediation-0611",
+  "PR_url":"https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0611",
+  "PR_state":"PARKED_NO_PR_WIP_LIMIT",
+  "is_draft":false,
+  "scope":{
+    "change_type":"content_candidate_full_box_remediation",
+    "track":"cet4","library":"语法","group":"复杂句","box":"定语从句","box_prefix":"0611",
+    "card_ids":["061101","061102","061103","061104","061105","061106"],
+    "touched_paths":["card_boxes_json/card_boxes_seed_cet4_grammar_0611.json","reviews/agent_self_review/20260730-cet4-grammar-0611-full-remediation.json","reviews/audit_scopes/20260730-cet4-grammar-0611-full-remediation-scope-audit.json","reviews/git_handoffs/20260730-content-cet4-full-remediation-0611.json"],
+    "patch_sha256":"fb462dcb56916eb7614a9c33249ddc1035405235ed793f5addb08bc0e5cd5d97"
+  },
+  "summary":[
+    "Closed two answer-path leaks and replaced three generic analyses in relative-clause box 0611.",
+    "Reframed the final rule from vague antecedent agreement to antecedent type plus the relation word's clause role, preventing an inaccurate grammar shortcut.",
+    "Added synchronized canonical fields, complete 2/2/2 quality metadata, and honest simulation/synthetic provenance."
+  ],
+  "validation":[
+    {"command":"node scripts/validate_cards.mjs --report-path exports/card_validation_report.json","result":"passed; cards=2414, errors=0, warnings=0"},
+    {"command":"node scripts/audit_card_quality.mjs --scope-card-ids 061101,061102,061103,061104,061105,061106 --write-scope-report reviews/audit_scopes/20260730-cet4-grammar-0611-full-remediation-scope-audit.json","result":"passed; 0 hard blockers, 0 content risks, 0 review gaps, 6 explained source risks"},
+    {"command":"node scripts/validate_harness.mjs","result":"passed; errors=0, only recorded upstream warnings"},
+    {"command":"node scripts/validate_pr_scope.mjs --base origin/main --head HEAD","result":"passed; current scoped audit accepted"},
+    {"command":"canonical prompt, analysis, multiple-choice, elimination-answer, provenance, grammar-rule, and 2/2/2 progression assertions","result":"passed; rendered/canonical fields and all answer structures match"},
+    {"command":"git diff --check","result":"passed"},
+    {"command":"git verify-commit 489ff1ad052a4344fbe2de1720130ac599471275","result":"passed; good ED25519 signature"}
+  ],
+  "local_status":"Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks":[
+    "All passages are simulation/synthetic, not true-exam claims.",
+    "The box remains candidate content; no approved-batch record or formal user approval is claimed.",
+    "The compact six-card progression should be checked against adjacent complex-sentence boxes during whole-track review.",
+    "The branch-local global corpus still contains 225 hard blockers, 2250 content risks, 2393 review gaps, and 2285 source risks after this scoped remediation.",
+    "Remaining CET4 boxes still require remediation and human review.",
+    "Branch remains parked until one of PRs #99-#103 leaves the queue."
+  ],
+  "merge_authority":"no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
