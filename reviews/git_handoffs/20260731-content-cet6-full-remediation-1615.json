@@ -1,0 +1,76 @@
+{
+  "handoff_id": "20260731-content-cet6-full-remediation-1615",
+  "created_at": "2026-07-31T00:03:42+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-full-remediation-1615",
+  "base_branch": "main",
+  "commit_sha": "dc8e69491df0e19917a7cd99c9a91fe142b4db48",
+  "push_ref": "origin/content/cet6-full-remediation-1615",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1615",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate",
+    "box_prefixes": [
+      "1615"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_grammar_1615.json",
+      "reviews/agent_self_review/20260730-cet6-grammar-1615-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet6-grammar-1615-full-remediation-scope-audit.json"
+    ],
+    "patch_sha256": "dc44ec5f7f9ce942d2fc158f2c2587716968ccdc893152ee91736c5c324d590d"
+  },
+  "summary": [
+    "Rebuilt all eight comparison-structure cards around object, dimension, direction, scope, paired comparatives, correction, argumentative comparison, and multi-metric evidence.",
+    "Removed answer-path leaks, disputed absolute-adjective claims, duplicated superior-to drills, ambiguous ellipsis, missing canonical options, missing metadata, and untraced provenance.",
+    "Independent content review then neutralized three task-schema answer hints, corrected response-time units, and limited the final data claim to directly supported accuracy and per-run energy evidence.",
+    "Preserved IDs and interaction sequence; added canonical/form and elimination mirrors, schema-valid metadata, synthetic provenance, and a 2/4/2 progression."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path /tmp/1615-final-cards.json",
+      "result": "passed: 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 161501,...,161508 --write-scope-report reviews/audit_scopes/20260730-cet6-grammar-1615-full-remediation-scope-audit.json",
+      "result": "passed: 0 hard blockers, 0 content risks, 0 review gaps, 8 declared synthetic-source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with recorded upstream-version and group-alignment warnings only"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed: no audio records in scope"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base main --head HEAD",
+      "result": "passed: primary scope prefix 1615; current scoped audit replay found no hard blockers"
+    },
+    {
+      "command": "node scripts/validate_delivery_boundary.mjs --base main --head HEAD",
+      "result": "passed: one card file and two review-evidence files, no approval or audio files"
+    },
+    {
+      "command": "manual assertions for placement/count, canonical/legacy parity, metadata enum, comparison semantics, evidence bounds, source/audio boundary, and 2/4/2 progression",
+      "result": "passed"
+    },
+    {
+      "command": "independent read-only agent content review",
+      "result": "passed after all five P1 findings were corrected; no P0 or residual P1/P2 reported"
+    },
+    {
+      "command": "git verify-commit dc8e69491df0e19917a7cd99c9a91fe142b4db48",
+      "result": "passed: good ED25519 signature"
+    }
+  ],
+  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "remaining_risks": [
+    "All eight cards are synthetic candidate content and require final user whole-track approval before integration.",
+    "Eleven CET6 hard-blocker prefixes remain unresolved after 1615, including the blocked 1030 authority conflict and five open sample prefixes.",
+    "Previously parked branches 1522 and 1610-1613 require schema-enum weak-point-tag repair before whole-track delivery.",
+    "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
