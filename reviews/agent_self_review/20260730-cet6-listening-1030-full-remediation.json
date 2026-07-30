@@ -1,0 +1,824 @@
+{
+  "review_id": "20260730-cet6-listening-1030-full-remediation",
+  "created_at": "2026-07-30T19:20:50+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "深度理解（legacy card label）",
+    "box": "识别同义替换（legacy card label）",
+    "authoritative_catalog_placement": {
+      "group_id": "3",
+      "group_name": "细节捕捉",
+      "box_id": "0",
+      "box_name": "人物类",
+      "source": "../softbook_cet/spec/box-catalog.json"
+    },
+    "box_prefixes": [
+      "1030"
+    ],
+    "card_ids": [
+      "103001",
+      "103002",
+      "103003",
+      "103004",
+      "103005",
+      "103006",
+      "103007",
+      "103008",
+      "103009",
+      "103010",
+      "103011",
+      "103012"
+    ],
+    "closure_reason": "User-authorized full-track remediation closed the inherited 103009 answer-path leak, generic task schemas, paraphrase overreach, relation errors, and provenance gaps without modifying legacy audio. Manual authority review then found that the entire legacy 1030 file targets paraphrase recognition while the authoritative box catalog assigns 1030 to listening detail capture / people; the branch is therefore blocked from candidate acceptance pending explicit catalog reconciliation or a full-box rewrite.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "spec/audio-generation-contract.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/platform-contract.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/knowledge-map.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/runtime-boundaries.json",
+    "../softbook_cet/infra/cloudbase/content-manifest-v1-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "audio_boundary": {
+    "audio_objects_unchanged": true,
+    "canonical_audio_object_sha256_before_and_after": "9d27d13ce589c2c77fca7e64c6ff799c743551ba1c79cdfb9b0d3a95c471153f",
+    "audio_assets_changed": false,
+    "transcript_manual_reviewed_for_natural_spoken_english_and_task_alignment": true,
+    "audio_file_human_qc_completed": false,
+    "formal_audio_approval_claimed": false,
+    "usage_boundary": "legacy TTS assets retained for candidate sample only",
+    "tts_audio_reviewed": false
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-listening-1030-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "4f966c0cac2fa6ad38264f68a348253b957a7f5be17a689f801faaf495db1a9d",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "103001",
+        "103002",
+        "103003",
+        "103004",
+        "103005",
+        "103006",
+        "103007",
+        "103008",
+        "103009",
+        "103010",
+        "103011",
+        "103012"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_authority_review": {
+    "status": "blocked",
+    "blocker_id": "not_meeting_requirement",
+    "finding": "All twelve legacy 1030 cards and their knowledge_ref labels train 深度理解 / 识别同义替换, but the authoritative box catalog and knowledge map assign group 3 / box 0 to 细节捕捉 / 人物类.",
+    "why_automated_audit_is_insufficient": "The scoped audit validates card-local structure, leakage, metadata, and source risk; it does not prove exact box-catalog semantic ownership.",
+    "required_resolution": "Do not accept or merge this branch as a completed 1030 remediation. Obtain explicit user direction on the catalog conflict, then either reconcile product specs in a separate task or rewrite the full 1030 card and audio scope to the authoritative 人物类 target."
+  },
+  "cards": [
+    {
+      "card_id": "103001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "识别动词短语到名词短语的等义改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在词性变化后保留动作方向和对象。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "103002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "匹配主体—动作—对象三槽改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练同义词替换后仍核对事件是否一致。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "103003",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "将量化时长改写为有证据边界的投入程度",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练避免同义改写中的范围升级。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "103004",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "联合改写频率、强度与人群范围",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练多词组等义且不丢限定。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "103005",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "识别动作、对象与原因联合改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练排除引入、改善或忽视反对等方向变化。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "103006",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "用行为证据解释抽象同义表达",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练把 resilience 与快速复苏连接，而非只背近义词。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "103007",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "区分词义改写与下游因果后果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保持描述对象和逻辑关系。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "103008",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "改写怀疑态度并保留质疑对象",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练态度词精确度而非泛化负面情绪。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "103009",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "匹配优先级关系和批评立场的完整改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练避免只凭 memorization 词面选项。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "103010",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "迁移程度强化与功能失败的整体改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保留机制对象和问题范围。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "103011",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "迁移揭示动作、剥削行为与伦理评价",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练多层同义改写中的角色与持续性。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "103012",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "深度理解",
+        "box_id": "0",
+        "box_name": "识别同义替换",
+        "box_prefix": "1030"
+      },
+      "status": "block",
+      "quality_metadata": {
+        "main_training_goal": "迁移抽象科学冲突及限定条件的改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保留 apparent 和 respective domains。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    }
+  ],
+  "batch_review": {
+    "status": "blocked",
+    "box_progression": "Within the inherited, non-authoritative paraphrase scope, 103001-103003 recognize phrase-class, multi-slot, and bounded quantity paraphrases; 103004-103009 apply multi-phrase, event-plus-reason, evidence, attitude, relation, and priority paraphrases; 103010-103012 transfer intensified evaluation, role-preserving ethical description, and abstract scientific-conflict paraphrases. This progression does not satisfy the authoritative 人物类 box assignment.",
+    "repetition_or_gap_risks": [
+      "BLOCKER: the legacy card labels and all twelve task goals conflict with the authoritative box-catalog placement 细节捕捉 / 人物类 for prefix 1030.",
+      "All twelve analyses are unique and transcript-specific.",
+      "103009 no longer exposes rote memorization through the front-side prompt or schema.",
+      "103003 preserves the explicit twelve-hour evidence instead of inflating it to an unbounded most-of-time claim.",
+      "103007 separates same-meaning data-quality wording from the downstream policy-reliability consequence.",
+      "103008 maps skepticism to doubts/reservations rather than the broader attitude of pessimism.",
+      "All examples are constructed simulation/synthetic content, not true-exam claims; unverified provenance was removed.",
+      "The twelve-card box uses a proportional 3/6/3 progression; legacy TTS remains sample-only with no audio QC or formal approval claim."
+    ],
+    "representative_cards": [
+      "103003",
+      "103004",
+      "103007",
+      "103008",
+      "103009",
+      "103012"
+    ],
+    "next_step": "Sign and park the branch as blocked evidence only; do not count 1030 as remediated or open a candidate PR. Resolve the catalog conflict explicitly before any full-box card/audio rewrite."
+  }
+}
