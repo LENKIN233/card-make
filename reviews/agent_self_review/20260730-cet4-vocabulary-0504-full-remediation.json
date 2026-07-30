@@ -1,0 +1,643 @@
+{
+  "review_id": "20260730-cet4-vocabulary-0504-full-remediation",
+  "created_at": "2026-07-30T17:44:27+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "词汇",
+    "group": "同义替换",
+    "box": "翻译否定",
+    "box_prefixes": [
+      "0504"
+    ],
+    "card_ids": [
+      "050401",
+      "050402",
+      "050403",
+      "050404",
+      "050405",
+      "050406",
+      "050407",
+      "050408",
+      "050409",
+      "050410",
+      "050411",
+      "050412"
+    ],
+    "closure_reason": "User-authorized CET4 full-track remediation: close the 050410 answer-path leak, replace template analyses with card-specific reasoning, repair ambiguous or overstrong paraphrase examples, remove internal supplemental labels and unsupported adapted-exam provenance claims, and complete synthetic source, quality, text-only material, and 3/6/3 progression metadata for the full box.",
+    "source_issue_refs": [
+      "exports/cet4-card-quality-audit-20260729.json",
+      "user_requested_cet4_full_track_remediation_plan"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet4-vocabulary-0504-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "4fcd86c03f26d2f3d5ed648d7f2840b382e7d4e5a1a4a1e6b6b379b10f8f0583",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "050401",
+        "050402",
+        "050403",
+        "050404",
+        "050405",
+        "050406",
+        "050407",
+        "050408",
+        "050409",
+        "050410",
+        "050411",
+        "050412"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "050401",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立否定语义保义改写的三项核验框架",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练极性、对象和限定边界的联合判断。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "050402",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 never helpful 到 contributes little 的弱化重述",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练显性否定与低程度评价的同向判断。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "050403",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 cannot alone 到 insufficient by itself 的边界保留",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练单一手段不足型否定的等值识别。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "050404",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 hardly reflect 到 fail to represent fully 的否定显化",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练隐性否定与显性否定之间的保义转换。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "050405",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "核验证据不足改写中的时间边界",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练 at present 等限定词对结论强度的约束。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "050406",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在填空中保留单一手段不足的否定边界",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练否定方向与数量范围的同步回填。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "050407",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在同句法候选中识别低贡献型否定",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练弱肯定词形下的否定极性识别。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "050408",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "把 barely 的隐性否定显化且不绝对化",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练程度边界在否定改写中的保留。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "050409",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在证据不足改写中保留当前时间边界",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练证据强度与时间范围的联合判断。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "050410",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "综合识别否定改写中的边界丢失",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "迁移极性、范围和真值条件核验。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "050411",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "把有限样本边界迁移为谨慎否定表达",
+        "weak_point_tags": [
+          "translation_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练从证据范围生成合适的否定性结论。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "050412",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "5",
+        "library": "词汇",
+        "group_id": "0",
+        "group": "同义替换",
+        "box_id": "4",
+        "box": "翻译否定",
+        "box_prefix": "0504"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "将汉语弱否定迁移为自然英语审慎表达",
+        "weak_point_tags": [
+          "translation_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练否定语气强度的跨语言保持。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "050401-050403 recognize polarity, low-contribution restatement, and single-method insufficiency; 050404-050409 apply implicit-negation, evidence-strength, lock-fill, quantity, and time-boundary checks; 050410-050412 transfer truth-condition comparison, cautious claims from limited evidence, and cross-language weak-negation tone.",
+    "repetition_or_gap_risks": [
+      "All examples are constructed simulation/synthetic content, not true-exam claims; legacy adapted-exam source labels were removed.",
+      "050404 and 050405 were rewritten to remove identity-category ambiguity and an overstrong evidence-to-nonsense inference.",
+      "All cards are intentionally text-only; audio_generation_method=none and no audio approval is claimed.",
+      "No formal content approval is created; final whole-track approval remains with the user."
+    ],
+    "representative_cards": [
+      "050405",
+      "050410",
+      "050412"
+    ],
+    "next_step": "Validate, sign, and park this content branch under the five-content-PR WIP limit, then continue the remaining uncovered hard-blocker boxes."
+  }
+}
