@@ -1,0 +1,86 @@
+{
+  "handoff_id": "20260730-content-cet4-full-remediation-0505",
+  "created_at": "2026-07-30T15:50:24+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-remediation-0505",
+  "base_branch": "main",
+  "commit_sha": "3313535d78e21b221949be98e2a69ad9eb6f82ee",
+  "push_ref": "origin/content/cet4-full-remediation-0505",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0505",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_full_box_remediation",
+    "track": "cet4",
+    "library": "词汇",
+    "group": "同义词替换",
+    "box": "解释性替换",
+    "box_prefix": "0505",
+    "card_ids": [
+      "050501",
+      "050502",
+      "050503",
+      "050504",
+      "050505",
+      "050506",
+      "050507",
+      "050508",
+      "050509",
+      "050510",
+      "050511",
+      "050512"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0505.json",
+      "reviews/agent_self_review/20260730-cet4-vocabulary-0505-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet4-vocabulary-0505-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet4-full-remediation-0505.json"
+    ],
+    "patch_sha256": "e751876539cbb746727a93375fb165c7ff0a884f2dd5f3a63ef9edd84449ee98"
+  },
+  "summary": [
+    "Closed two saved answer-path blockers and replaced seven repeated template analyses in box 0505.",
+    "Repaired an ungrammatical follow-up phrasal-verb task, naturalized definition word banks, and removed internal production labels and mismatched explanations.",
+    "Added synchronized rendered/canonical fields, complete 3/6/3 quality metadata, and honest simulation/synthetic provenance."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 050501,050502,050503,050504,050505,050506,050507,050508,050509,050510,050511,050512 --write-scope-report reviews/audit_scopes/20260730-cet4-vocabulary-0505-full-remediation-scope-audit.json",
+      "result": "passed; 0 hard blockers, 0 content risks, 0 review gaps, 12 explained source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; errors=0, only recorded upstream warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; current scoped audit accepted"
+    },
+    {
+      "command": "canonical prompt, analysis, lock-answer, provenance, internal-label, grammar, and 3/6/3 progression assertions",
+      "result": "passed; rendered/canonical fields and lock answers match, internal labels are absent, and follow it up with is grammatical"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "git verify-commit 3313535d78e21b221949be98e2a69ad9eb6f82ee",
+      "result": "passed; good ED25519 signature"
+    }
+  ],
+  "local_status": "Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks": [
+    "All passages are simulation/synthetic, not true-exam claims.",
+    "The box remains candidate content; no approved-batch record or formal user approval is claimed.",
+    "Repeated emotional-labor, planned-obsolescence, time-credit, and surface-acting examples should be checked for productive progression during whole-track review.",
+    "The branch-local global corpus still contains 225 hard blockers, 2241 content risks, 2387 review gaps, and 2285 source risks after this scoped remediation.",
+    "Remaining CET4 boxes still require remediation and human review.",
+    "Branch remains parked until one of PRs #99-#103 leaves the queue."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
