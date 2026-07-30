@@ -1,0 +1,718 @@
+{
+  "review_id": "20260730-cet6-reading-1131-full-remediation",
+  "created_at": "2026-07-30T21:12:53+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "仔细阅读",
+    "group": "长难句关键修饰",
+    "box": "状语",
+    "box_prefixes": [
+      "1131"
+    ],
+    "card_ids": [
+      "113101",
+      "113102",
+      "113103",
+      "113104",
+      "113105",
+      "113106",
+      "113107",
+      "113108",
+      "113109",
+      "113110",
+      "113111",
+      "113112"
+    ],
+    "closure_reason": "User-authorized full-track remediation: close the 113105 answer-path leak, replace generic analyses, correct the false equivalence between given that and conditional if, constrain overbroad adverbial diagnostics, and add synthetic provenance plus proportional 3/6/3 progression metadata without adding or deleting cards.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-reading-1131-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "44e8d3cbddab277b79d03cf5bb05cbb8f90da9b5979eac0f9594b0d7653d9300",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "113101",
+        "113102",
+        "113103",
+        "113104",
+        "113105",
+        "113106",
+        "113107",
+        "113108",
+        "113109",
+        "113110",
+        "113111",
+        "113112"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1131 matches 仔细阅读 / 长难句关键修饰 / 状语 in box-catalog and every card knowledge_ref.",
+    "answer_path": "Passed: 113105 now uses a bounded Chinese paraphrase rather than copying the English source-answer path.",
+    "adverbial_logic": "Passed: concession, time/cause, with-background, condition, regardless-of concession, while contrast, absolute construction, result, degree-scope, and reason contrast were checked manually.",
+    "corrected_findings": "Passed: 113106 keeps provided/providing that as conditional while identifying given that as normally causal/background; 113109 and 113112 no longer state overbroad absolute diagnostics.",
+    "interaction_parity": "Passed: answer keys match option flags, elimination items mirror eliminable_items, and swipe states match Boolean answers.",
+    "progression": "Passed: 113101-113103 recognition/foundation, 113104-113109 application/pass, 113110-113112 transfer/high_score.",
+    "source_boundary": "Passed: all examples are simulation/synthetic and are not represented as true-exam material.",
+    "audio_boundary": "Not applicable: no audio object or asset change."
+  },
+  "cards": [
+    {
+      "card_id": "113101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "建立状语逻辑与作用域定位流程",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练先闭合主干再判断状语逻辑，避免把背景、条件或让步当核心事实。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "113102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分让步与时因状语层",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在 although 与 as 共现时保持主句结论和两层逻辑方向。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "113103",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "拆解 with 背景结构与嵌套时间状语",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练分清整句背景、when 时间层及其内部 during 修饰。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "113104",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "纠正句首介词结构只修饰邻近名词的误判",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练依据位置和删除测试识别全句背景状语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "113105",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "分离主干、时间与让步三层",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练跨过 after 和 even though 从句提取学校报告的核心结果。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "113106",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 provided that 条件前提",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练区分条件连接表达与原因背景连接表达。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "113107",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "完整提取含嵌套定语的让步块",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练整体识别 regardless of 状语及其内部关系从句。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "113108",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分 while 让步与并列关系",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练通过 although 替换和主句独立性识别从属让步层。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "113109",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分宾语从句与独立主格状语",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练识别独立逻辑主语及其原因或背景功能。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "113110",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "还原 so...that 倒装与结果状语",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在倒装长句中恢复主句语序并锁定 that 结果层。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "113111",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别正式程度限制状语",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练整体处理 to the extent that 对主句推断范围的约束。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "113112",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分原因状语与宾语从句",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练识别 not because A but because B 的否定范围和原因对比。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "3 recognition/foundation, 6 application/pass, 3 transfer/high_score cards.",
+    "repetition_or_gap_risks": [
+      "Synthetic examples still require final user whole-track approval.",
+      "No true-exam provenance is claimed."
+    ],
+    "representative_cards": [
+      "113102",
+      "113106",
+      "113110"
+    ],
+    "next_step": "Park the validated branch without a PR while the five candidate-content PR slots remain occupied."
+  }
+}
+
