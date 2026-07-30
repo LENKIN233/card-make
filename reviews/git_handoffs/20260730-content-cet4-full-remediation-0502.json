@@ -1,0 +1,86 @@
+{
+  "handoff_id": "20260730-content-cet4-full-remediation-0502",
+  "created_at": "2026-07-30T15:43:20+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-remediation-0502",
+  "base_branch": "main",
+  "commit_sha": "f9f3a245a0cbd152040e9a2c8db1276a31a074f4",
+  "push_ref": "origin/content/cet4-full-remediation-0502",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0502",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_full_box_remediation",
+    "track": "cet4",
+    "library": "词汇",
+    "group": "同义词替换",
+    "box": "短语类替换",
+    "box_prefix": "0502",
+    "card_ids": [
+      "050201",
+      "050202",
+      "050203",
+      "050204",
+      "050205",
+      "050206",
+      "050207",
+      "050208",
+      "050209",
+      "050210",
+      "050211",
+      "050212"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0502.json",
+      "reviews/agent_self_review/20260730-cet4-vocabulary-0502-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet4-vocabulary-0502-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet4-full-remediation-0502.json"
+    ],
+    "patch_sha256": "8081d5244c85905938f9646b3afb14001fffd22e7cd2a9748922d80a3bf942b5"
+  },
+  "summary": [
+    "Closed two saved answer-path blockers in box 0502 by removing duplicated options and replacing a source-sentence leak with a semantic task.",
+    "Removed a double-answer ambiguity, corrected the over-broad anticipate equivalence, and repaired internal production labels and mismatched explanations.",
+    "Preserved the already-strong card-specific analyses while adding complete 3/6/3 quality metadata and honest simulation/synthetic provenance."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 050201,050202,050203,050204,050205,050206,050207,050208,050209,050210,050211,050212 --write-scope-report reviews/audit_scopes/20260730-cet4-vocabulary-0502-full-remediation-scope-audit.json",
+      "result": "passed; 0 hard blockers, 0 content risks, 0 review gaps, 12 explained source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; errors=0, only recorded upstream warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; current scoped audit accepted"
+    },
+    {
+      "command": "canonical prompt, analysis, lock-answer, provenance, and 3/6/3 progression assertions",
+      "result": "passed; rendered/canonical fields match, ambiguous lock answers removed, and no internal labels remain"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "git verify-commit f9f3a245a0cbd152040e9a2c8db1276a31a074f4",
+      "result": "passed; good ED25519 signature"
+    }
+  ],
+  "local_status": "Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks": [
+    "All passages are simulation/synthetic, not true-exam claims.",
+    "The box remains candidate content; no approved-batch record or formal user approval is claimed.",
+    "Repeated devise and conduct mappings should be checked for productive progression during later whole-track review.",
+    "The branch-local global corpus still contains 225 hard blockers, 2255 content risks, 2387 review gaps, and 2285 source risks after this scoped remediation.",
+    "Remaining CET4 boxes still require remediation and human review.",
+    "Branch remains parked until one of PRs #99-#103 leaves the queue."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
