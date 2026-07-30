@@ -609,9 +609,12 @@ function validateAudioGenerationContract(errors) {
   const activePaths = new Set((manifest.active_docs || []).map(doc => doc.path));
   for (const path of [
     'spec/audio-generation-contract.json',
+    'spec/audio-perceptual-worklist.schema.json',
+    'scripts/manage_audio_perceptual_worklist.mjs',
     'scripts/validate_audio_qc.mjs',
     'reviews/audio_qc/README.md',
     'reviews/audio_qc/TEMPLATE.json',
+    'reviews/audio_perceptual_worklists/README.md',
   ]) {
     if (!activePaths.has(path)) {
       pushIssue(errors, 'audio_generation_manifest_entry_missing', { path });
@@ -627,6 +630,14 @@ function validateAudioGenerationContract(errors) {
   if (authorityMap.owners?.audio_qc_records !== 'reviews/audio_qc/TEMPLATE.json') {
     pushIssue(errors, 'audio_qc_records_owner_drift', {
       owner: authorityMap.owners?.audio_qc_records,
+    });
+  }
+  if (
+    authorityMap.owners?.audio_perceptual_worklists !==
+    'spec/audio-perceptual-worklist.schema.json'
+  ) {
+    pushIssue(errors, 'audio_perceptual_worklist_owner_drift', {
+      owner: authorityMap.owners?.audio_perceptual_worklists,
     });
   }
 
@@ -714,6 +725,49 @@ function validateAudioGenerationContract(errors) {
   }
   if (contract.formal_audio_qc?.required_before_formal_audio_use !== true) {
     pushIssue(errors, 'formal_audio_qc_not_required', {});
+  }
+  const worklist = contract.perceptual_review_worklist || {};
+  if (
+    worklist.schema !== 'spec/audio-perceptual-worklist.schema.json' ||
+    worklist.manager !== 'scripts/manage_audio_perceptual_worklist.mjs' ||
+    worklist.reviewed_worklist_dir !== 'reviews/audio_perceptual_worklists/'
+  ) {
+    pushIssue(errors, 'audio_perceptual_worklist_paths_drift', {});
+  }
+  for (const field of [
+    'source_requires_passing_technical_audit',
+    'one_card_per_review_action',
+    'human_reviewer_required',
+    'full_asset_listening_attestation_required',
+    'reviewed_identity_change_fails_closed',
+    'passing_worklist_is_not_formal_audio_qc',
+    'formal_audio_qc_record_still_required',
+  ]) {
+    if (worklist[field] !== true) {
+      pushIssue(errors, 'audio_perceptual_worklist_guard_missing', {field});
+    }
+  }
+  if (worklist.agent_may_mark_passed !== false) {
+    pushIssue(errors, 'audio_perceptual_worklist_agent_pass_boundary_missing', {});
+  }
+  if (!exists('scripts/manage_audio_perceptual_worklist.mjs')) {
+    pushIssue(errors, 'audio_perceptual_worklist_manager_missing', {});
+  } else {
+    const manager = readText('scripts/manage_audio_perceptual_worklist.mjs');
+    for (const token of [
+      'audio-perceptual-worklist.v1',
+      'agent_may_mark_passed',
+      'one_card_per_review_action',
+      'Reviewed audio identity changed',
+      'Terminal audio review entries cannot be overwritten',
+      '--allow-reviewed-reset',
+      '--attest-listened',
+      '--require-complete',
+    ]) {
+      if (!manager.includes(token)) {
+        pushIssue(errors, 'audio_perceptual_worklist_manager_guard_missing', {token});
+      }
+    }
   }
   for (const check of REQUIRED_AUDIO_QC_CHECKS) {
     if (!(contract.formal_audio_qc?.required_checks || []).includes(check)) {

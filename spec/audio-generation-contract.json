@@ -141,6 +141,19 @@
     "authority_boundary": "A passing technical audit does not prove speech-to-transcript match, clipping/noise absence, pronunciation, rhythm, stress, pauses, source authenticity, or formal audio readiness; those remain perceptual per-card QC.",
     "must_not_create_formal_qc_records": true
   },
+  "perceptual_review_worklist": {
+    "schema": "spec/audio-perceptual-worklist.schema.json",
+    "manager": "scripts/manage_audio_perceptual_worklist.mjs",
+    "reviewed_worklist_dir": "reviews/audio_perceptual_worklists/",
+    "source_requires_passing_technical_audit": true,
+    "one_card_per_review_action": true,
+    "human_reviewer_required": true,
+    "full_asset_listening_attestation_required": true,
+    "agent_may_mark_passed": false,
+    "reviewed_identity_change_fails_closed": true,
+    "passing_worklist_is_not_formal_audio_qc": true,
+    "formal_audio_qc_record_still_required": true
+  },
   "asset_change_policy": {
     "do_not_replace_audio_in_content_sample_PRs": true,
     "audio_asset_changes_belong_in_audio_or_tooling_branch": true,
@@ -149,7 +162,9 @@
   },
   "validation_commands": [
     "node --test scripts/test_audio_technical_audit.mjs",
+    "node --test scripts/test_audio_perceptual_worklist.mjs",
     "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json",
+    "node scripts/manage_audio_perceptual_worklist.mjs validate --file exports/cet4-audio-perceptual-worklist.json",
     "node scripts/validate_audio_qc.mjs",
     "node scripts/validate_harness.mjs"
   ]
