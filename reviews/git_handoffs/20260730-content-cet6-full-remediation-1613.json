@@ -1,0 +1,35 @@
+{
+  "handoff_id": "20260730-content-cet6-full-remediation-1613",
+  "created_at": "2026-07-30T23:31:16+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-full-remediation-1613",
+  "base_branch": "main",
+  "commit_sha": "adf8ca82181f5404137f5effdc98d925e94e77f6",
+  "push_ref": "origin/content/cet6-full-remediation-1613",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1613",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": true,
+  "scope": {"change_type":"content_candidate","box_prefixes":["1613"],"touched_paths":["card_boxes_json/card_boxes_seed_cet6_grammar_1613.json","reviews/agent_self_review/20260730-cet6-grammar-1613-full-remediation.json","reviews/audit_scopes/20260730-cet6-grammar-1613-full-remediation-scope-audit.json"],"patch_sha256":"7bde3a6ca6578a867202d63e1816446d22faadfab1341fea034dd4d4890e92e4"},
+  "summary": [
+    "Corrected the materially wrong and non-unique so/neither card by applying grammatical polarity, be-auxiliary copying, and singular agreement rather than negative word meaning.",
+    "Rebuilt eight inversion tasks around Only scope, negative-adverb do-support, no-sooner pairing, agreement inversion, trigger correction, Had conditionals, past-counterfactual equivalence, and Not-until scope.",
+    "Preserved IDs and interaction sequence; added canonical options with legacy-form parity, synthetic provenance, quality metadata, and a 2/4/2 progression."
+  ],
+  "validation": [
+    {"command":"node scripts/validate_cards.mjs --report-path /tmp/1613-final-cards.json","result":"passed: 2414 cards, 0 errors, 0 warnings"},
+    {"command":"node scripts/audit_card_quality.mjs --scope-card-ids 161301,...,161308 --write-scope-report reviews/audit_scopes/20260730-cet6-grammar-1613-full-remediation-scope-audit.json","result":"passed: 0 hard blockers, 0 content risks, 0 review gaps, 8 declared synthetic-source risks"},
+    {"command":"node scripts/validate_harness.mjs","result":"passed with recorded upstream-version and group-alignment warnings only"},
+    {"command":"node scripts/validate_audio_qc.mjs","result":"passed: no audio records in scope"},
+    {"command":"node scripts/validate_pr_scope.mjs --base main --head HEAD","result":"passed: primary scope prefix 1613"},
+    {"command":"node scripts/validate_delivery_boundary.mjs --base main --head HEAD","result":"passed: one card file and two review-evidence files, no approval or audio files"},
+    {"command":"manual assertions for placement/count, option and form parity, inversion scope, tense/modal preservation, corrected so/be polarity, source/audio boundary, and 2/4/2 progression","result":"passed"},
+    {"command":"git verify-commit adf8ca82181f5404137f5effdc98d925e94e77f6","result":"passed: good ED25519 signature"}
+  ],
+  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "remaining_risks": [
+    "All eight cards are synthetic candidate content and require final user whole-track approval before integration.",
+    "Thirteen CET6 hard-blocker prefixes remain unresolved after 1613, including the blocked 1030 authority conflict and five open sample prefixes.",
+    "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
