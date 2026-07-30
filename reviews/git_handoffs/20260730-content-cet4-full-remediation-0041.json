@@ -1,0 +1,52 @@
+{
+  "handoff_id":"20260730-content-cet4-full-remediation-0041",
+  "created_at":"2026-07-30T16:24:14+08:00",
+  "agent":"codex",
+  "branch":"content/cet4-full-remediation-0041",
+  "base_branch":"main",
+  "commit_sha":"77ae0e42b88121792207eb612fa155895f99e719",
+  "push_ref":"origin/content/cet4-full-remediation-0041",
+  "PR_url":"https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0041",
+  "PR_state":"PARKED_NO_PR_WIP_LIMIT",
+  "is_draft":false,
+  "scope":{
+    "change_type":"content_candidate_full_box_remediation",
+    "track":"cet4",
+    "library":"听力",
+    "group":"推理判断",
+    "box":"观点、态度",
+    "box_prefix":"0041",
+    "card_ids":["004101","004102","004103","004104","004105","004106","004107","004108","004109","004110","004111","004112"],
+    "touched_paths":[
+      "card_boxes_json/card_boxes_seed_cet4_listening_0041.json",
+      "reviews/agent_self_review/20260730-cet4-listening-0041-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet4-listening-0041-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet4-full-remediation-0041.json"
+    ],
+    "patch_sha256":"108c7a79f26f4f7f650d567fe37945c89f69182de7776901060175cff683da6e"
+  },
+  "summary":[
+    "Closed two hidden task-schema answer leaks and replaced the six generic analyses in listening attitude box 0041.",
+    "Removed an impossible timing interval, corrected an unsupported claim about pilot outcomes, aligned flip prompts with actual flip behavior, and distinguished multi-speaker attitude targets.",
+    "Added synchronized canonical fields, complete 3/6/3 quality metadata, honest simulation/synthetic provenance, and explicit AI-TTS text-reviewed/audio-unreviewed status."
+  ],
+  "validation":[
+    {"command":"node scripts/validate_cards.mjs --report-path exports/card_validation_report.json","result":"passed; cards=2414, errors=0, warnings=0"},
+    {"command":"node scripts/audit_card_quality.mjs --scope-card-ids 004101,004102,004103,004104,004105,004106,004107,004108,004109,004110,004111,004112 --write-scope-report reviews/audit_scopes/20260730-cet4-listening-0041-full-remediation-scope-audit.json","result":"passed; 0 hard blockers, 0 content risks, 0 review gaps, 12 explained source risks"},
+    {"command":"node scripts/validate_harness.mjs","result":"passed; errors=0, only recorded upstream warnings"},
+    {"command":"node scripts/validate_pr_scope.mjs --base origin/main --head HEAD","result":"passed; current scoped audit accepted"},
+    {"command":"canonical prompt/schema, analysis, answer-key, audio-metadata, leak, interaction, and 3/6/3 progression assertions","result":"passed; rendered/canonical fields match and AI TTS remains explicitly unreviewed"},
+    {"command":"git diff --check","result":"passed"},
+    {"command":"git verify-commit 77ae0e42b88121792207eb612fa155895f99e719","result":"passed; good ED25519 signature"}
+  ],
+  "local_status":"Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks":[
+    "All passages and audio are simulation/synthetic, not true-exam claims.",
+    "Existing AI TTS provider/voice provenance and human audio QC remain unverified; no formal audio approval is claimed.",
+    "The box remains candidate content; no approved-batch record or formal user approval is claimed.",
+    "The branch-local global corpus still contains 225 hard blockers, 2245 content risks, 2387 review gaps, and 2285 source risks after this scoped remediation.",
+    "Remaining CET4 boxes still require remediation and human review.",
+    "Branch remains parked until one of PRs #99-#103 leaves the queue."
+  ],
+  "merge_authority":"no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
