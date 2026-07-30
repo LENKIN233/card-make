@@ -4,7 +4,8 @@
   "agent": "codex",
   "branch": "content/cet6-full-remediation-1610",
   "base_branch": "main",
-  "commit_sha": "beabe94a6140024ad25e94a04be91a5f5bc8a946",
+  "commit_sha": "6e0a2ba07515c4e03d7adf64528ad8d24e539198",
+  "original_content_commit_sha": "beabe94a6140024ad25e94a04be91a5f5bc8a946",
   "push_ref": "origin/content/cet6-full-remediation-1610",
   "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1610",
   "PR_state": "PARKED_NO_PR_WIP_LIMIT",
@@ -17,13 +18,14 @@
       "reviews/agent_self_review/20260730-cet6-grammar-1610-full-remediation.json",
       "reviews/audit_scopes/20260730-cet6-grammar-1610-full-remediation-scope-audit.json"
     ],
-    "patch_sha256": "6ac8207f52772c85d8254cb6a67673b8f3a26d84b1859b1c3066ee34470228ce"
+    "patch_sha256": "df5310e53f04845cdcbe2f0b3d78c6493c7636a60139e00af6d8450aa7d58df3"
   },
   "summary": [
     "Preserved the authoritative eight-card 名词性从句 scope while replacing untraced examples with independently answerable simulations.",
     "Removed three answer-path leaks, supplied two missing multiple-choice option sets, and replaced the unsupported fixed word-count rule for dummy it with a conditional readability test.",
     "Covered what/that completeness, whether alternatives, recommendation subjunctive passive, appositive versus relative clauses, connector stacking, dummy-it information flow, prepositional complements, and nested clause parsing.",
-    "Added complete task schemas, synthetic provenance, quality metadata, and a 2/4/2 recognition/application/transfer progression without changing the interaction sequence."
+    "Added complete task schemas, synthetic provenance, quality metadata, and a 2/4/2 recognition/application/transfer progression without changing the interaction sequence.",
+    "Repaired the later schema-enum drift by replacing legacy writing_weak with authority-owned writing_output_weak on cards 161003, 161005, and 161006 and in the mirrored self-review."
   ],
   "validation": [
     {"command": "node scripts/validate_cards.mjs --report-path /tmp/1610-final-cards.json", "result": "passed: 2414 cards, 0 errors, 0 warnings"},
@@ -33,9 +35,11 @@
     {"command": "node scripts/validate_pr_scope.mjs --base main --head HEAD", "result": "passed: primary scope prefix 1610"},
     {"command": "node scripts/validate_delivery_boundary.mjs --base main --head HEAD", "result": "passed: one card file and two review-evidence files, no approval or audio files"},
     {"command": "manual assertions for catalog placement/count, normalized/legacy parity, MC/elimination/flip answer parity, source/audio boundary, and 2/4/2 progression", "result": "passed"},
-    {"command": "git verify-commit beabe94a6140024ad25e94a04be91a5f5bc8a946", "result": "passed: good ED25519 signature"}
+    {"command": "git verify-commit beabe94a6140024ad25e94a04be91a5f5bc8a946", "result": "passed: good ED25519 signature"},
+    {"command": "allowed weak_point_tags assertion plus self-review/scoped-audit fingerprint parity", "result": "passed: all 1610 tags belong to the authority enum; no legacy tag remains in metadata; corpus digest 8c1f729cbe6a937f496d1c30e4ee71312ff790fe66a8831aad02a357b888dbd4"},
+    {"command": "git verify-commit 6e0a2ba07515c4e03d7adf64528ad8d24e539198", "result": "passed: good ED25519 signature"}
   ],
-  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "local_status": "Original content and handoff commits were already pushed; signed schema-enum repair commit prepared, with refreshed handoff commit pending at record update. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
   "remaining_risks": [
     "All eight cards are synthetic candidate content and require final user whole-track approval before integration.",
     "Sixteen CET6 hard-blocker prefixes remain unresolved after 1610, including the blocked 1030 authority conflict and five open sample prefixes.",
