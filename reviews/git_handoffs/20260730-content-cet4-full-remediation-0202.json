@@ -1,0 +1,68 @@
+{
+  "handoff_id": "20260730-content-cet4-full-remediation-0202",
+  "created_at": "2026-07-30T09:34:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-remediation-0202",
+  "base_branch": "main",
+  "commit_sha": "489f6e46a15146f6170088f12e2c9f85afc9879c",
+  "push_ref": "origin/content/cet4-full-remediation-0202",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0202",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_full_box_remediation",
+    "track": "cet4",
+    "library": "选词填空",
+    "group": "词性判断",
+    "box": "动词",
+    "box_prefix": "0202",
+    "card_ids": ["020201", "020202", "020203", "020204", "020205", "020206", "020207", "020208", "020209", "020210"],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_bankedcloze_0202.json",
+      "reviews/agent_self_review/20260730-cet4-bankedcloze-0202-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet4-bankedcloze-0202-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet4-full-remediation-0202.json"
+    ],
+    "patch_sha256": "96931b024bbb2654aabbbc919f45af0a2f1b694c6667b3181156470ff1804caf"
+  },
+  "summary": [
+    "Closed seven saved front-answer or analysis-conclusion blocker findings across six cards in CET4 box 0202.",
+    "Corrected additional human-review findings, including the seem-to explanation, a misleading modal hint, a lock-card gloss leak, and an ambiguous adjust-for distractor.",
+    "Added complete quality metadata to all ten cards and classified all material as simulation/synthetic with no true-exam claim.",
+    "Recorded a recognition-to-application-to-transfer progression of three, five, and two cards."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; ok=true, cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 020201,020202,020203,020204,020205,020206,020207,020208,020209,020210 --write-scope-report reviews/audit_scopes/20260730-cet4-bankedcloze-0202-full-remediation-scope-audit.json",
+      "result": "passed; 10 cards, 0 hard blockers, 0 content risks, 0 review gaps, 10 explained synthetic-source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; errors=0, only recorded upstream version and group-alignment warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; one box prefix, current scoped audit linked, no issues or warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "git log -1 --show-signature --format=fuller",
+      "result": "passed; good ED25519 git signature on content commit 489f6e46a15146f6170088f12e2c9f85afc9879c"
+    }
+  ],
+  "local_status": "Content commit pushed; handoff record added on the same branch. No pull request opened because five active candidate-content PRs already occupy the repository WIP limit.",
+  "remaining_risks": [
+    "The ten cards are simulation/synthetic material and are not represented as true exam questions.",
+    "This closes only box 0202; the remaining CET4 corpus still requires content remediation and human content review.",
+    "No reviews/approved_batches record was created and no formal user approval is claimed.",
+    "The branch is parked without a PR until one of active candidate-content PRs #99-#103 is formally parked or completed."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
