@@ -36,12 +36,13 @@
     {"command": "manual assertions for placement/count, canonical and legacy parity, unique MC/elimination answers, flip scoring, source/audio boundary, and 2/4/2 progression", "result": "passed"},
     {"command": "git verify-commit da28022c87b2a3dd27e0b165f6a05c25a6797471", "result": "passed: good ED25519 signature"},
     {"command": "allowed weak_point_tags assertion plus self-review/scoped-audit fingerprint parity", "result": "passed: all 1612 tags belong to the authority enum; no legacy tag remains in metadata; corpus digest f85ed902819ff9f8257912d90efd06537ff5e50c0c8b0985449f8f1a57aae810"},
-    {"command": "git verify-commit d6519df2c1f846524f9ae54acdf6179a1e27358e", "result": "passed: good ED25519 signature"}
+    {"command": "git verify-commit d6519df2c1f846524f9ae54acdf6179a1e27358e", "result": "passed: good ED25519 signature"},
+    {"command": "git diff --binary main...d6519df2c1f846524f9ae54acdf6179a1e27358e -- <three declared scope paths> | shasum -a 256", "result": "passed: full recoverable scope digest cc6e31dc6d17eb23911e49b866e6155402dbfe3a1244bbca582cca9e03fdf75e"}
   ],
-  "local_status": "Original content and handoff commits were already pushed; signed schema-enum repair commit prepared, with refreshed handoff commit pending at record update. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "local_status": "Content, schema-enum repair, and handoff evidence are committed on this branch. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
   "remaining_risks": [
     "All eight cards are synthetic candidate content and require final user whole-track approval before integration.",
-    "Fourteen CET6 hard-blocker prefixes remain unresolved after 1612, including the blocked 1030 authority conflict and five open sample prefixes.",
+    "Six CET6 hard-blocker prefixes remain outside this repaired candidate scope: 1030, 1100, 1101, 1102, 1110, and 1111; 1620 formal audio additionally awaits named-human QC.",
     "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
   ],
   "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
