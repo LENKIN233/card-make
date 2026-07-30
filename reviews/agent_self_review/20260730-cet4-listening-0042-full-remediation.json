@@ -1,0 +1,805 @@
+{
+  "review_id": "20260730-cet4-listening-0042-full-remediation",
+  "created_at": "2026-07-30T19:02:18+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "推理判断 / 深层理解",
+    "box": "因果逻辑 / 分析因果逻辑",
+    "box_prefixes": [
+      "0042"
+    ],
+    "card_ids": [
+      "004201",
+      "004202",
+      "004203",
+      "004204",
+      "004205",
+      "004206",
+      "004207",
+      "004208",
+      "004209",
+      "004210",
+      "004211",
+      "004212"
+    ],
+    "closure_reason": "User-authorized CET4 full-track remediation: close the 004205 answer-path leak, replace generic repeated analyses and interaction-mismatched timing prompts with transcript-specific causal reasoning, remove unverified provenance, and complete synthetic source, sample-only audio material, and proportional 3/6/3 progression metadata without modifying any legacy audio object.",
+    "source_issue_refs": [
+      "exports/cet4-card-quality-audit-20260729.json",
+      "user_requested_cet4_full_track_remediation_plan"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "spec/audio-generation-contract.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/platform-contract.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/runtime-boundaries.json",
+    "../softbook_cet/infra/cloudbase/content-manifest-v1-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "audio_boundary": {
+    "audio_objects_unchanged": true,
+    "canonical_audio_object_sha256_before_and_after": "eecf3eb21b30a4cfbe7cf06b8a8047787cac333b9aca1da812698d0846f089ad",
+    "audio_assets_changed": false,
+    "transcript_manual_reviewed_for_natural_spoken_english_and_task_alignment": true,
+    "audio_file_human_qc_completed": false,
+    "formal_audio_approval_claimed": false,
+    "usage_boundary": "legacy TTS assets retained for candidate sample only",
+    "tts_audio_reviewed": false
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet4-listening-0042-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "b14cc3e765cac2a2b167864bcaffbad975f66888fab618c581f31af8144bbe15",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "004201",
+        "004202",
+        "004203",
+        "004204",
+        "004205",
+        "004206",
+        "004207",
+        "004208",
+        "004209",
+        "004210",
+        "004211",
+        "004212"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "004201",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "2",
+        "box_name": "因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "提取 because 连接的原因与量化结果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保留 nearly 与百分比范围。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "004202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "2",
+        "box_name": "因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别干预后的直接数据变化",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练区分原句观察与额外因果夸大。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "004203",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "2",
+        "box_name": "因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 as a result 复述原因到结果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保留未按期完成的时间限定。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "004204",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "2",
+        "box_name": "因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "提取单一结果后的两个并列原因",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练长语义段中的并列信息完整性。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "004205",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "2",
+        "box_name": "因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "判断同期变化允许的因果推断强度",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练拒绝唯一原因和反向因果等过度结论。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "004206",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "推理判断",
+        "box_id": "2",
+        "box_name": "因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "复述两项证据到分阶段决策的链条",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保留 first 与 instead of 的决策边界。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "004207",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "深层理解",
+        "box_id": "2",
+        "box_name": "分析因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分直接原因与连锁下游影响",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练多层因果链的设问定位。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "004208",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "深层理解",
+        "box_id": "2",
+        "box_name": "分析因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "沿 resulted in 与 prompting 追踪多级因果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练从下游反应回溯直接触发点。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "004209",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "深层理解",
+        "box_id": "2",
+        "box_name": "分析因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 Since 引出的三段因果链",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练直接结果与次级事故结果的分层。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "004210",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "深层理解",
+        "box_id": "2",
+        "box_name": "分析因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "迁移 not A but rather B 的真因判断",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在显式排除结构中抵抗先出现干扰项。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "004211",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "深层理解",
+        "box_id": "2",
+        "box_name": "分析因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "迁移正向原因到直接与最终结果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练利用 Thanks to 和 eventually 分层。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "004212",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "4",
+        "group_name": "深层理解",
+        "box_id": "2",
+        "box_name": "分析因果逻辑",
+        "box_prefix": "0042"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "迁移直接后果与最终影响的分层",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用 ultimately 识别下游层级。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "004201-004203 recognize explicit cause, temporal observation, and result connectors; 004204-004209 apply parallel causes, bounded inference, evidence-to-decision, and multistage chains; 004210-004212 transfer rejected-cause, positive-cause, and direct-versus-ultimate-effect reasoning.",
+    "repetition_or_gap_risks": [
+      "All twelve analyses are unique and grounded in their own unchanged transcript evidence.",
+      "Flip prompts describe flip behavior only; legacy click and long-hold wording was removed.",
+      "004205 no longer exposes the correct option through likely in the front-side schema.",
+      "All examples are constructed simulation/synthetic content, not true-exam claims; unverified content-pool provenance was removed.",
+      "The twelve-card box uses a proportional 3/6/3 recognition-application-transfer progression.",
+      "All transcripts are natural and task-aligned, but legacy TTS remains sample-only; no audio object, asset, human audio QC, or formal approval is claimed."
+    ],
+    "representative_cards": [
+      "004202",
+      "004205",
+      "004207",
+      "004210",
+      "004212"
+    ],
+    "next_step": "Validate, sign, and park this content branch under the five-content-PR WIP limit, then continue the final uncovered CET4 listening hard-blocker box 0043."
+  }
+}
