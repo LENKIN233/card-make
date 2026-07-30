@@ -23,9 +23,9 @@
         "text": "任务：先听音频，判断你最该提前锁定哪个信号词。",
         "task_prompt": "任务：先听音频，判断你最该提前锁定哪个信号词。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后定位逻辑转向",
+          "focus": "前后评价变化与重点更新",
+          "success_criteria": "能说明后半句转为软件限制，并用逻辑连接词解释转向"
         },
         "audio_first": true,
         "image_url": null,
@@ -44,12 +44,12 @@
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "audio": {
         "url": "ai_tts/cet6/1002/100201.mp3",
@@ -80,9 +80,9 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后定位逻辑转向",
+          "focus": "前后评价变化与重点更新",
+          "success_criteria": "能说明后半句转为软件限制，并用逻辑连接词解释转向"
         }
       },
       "analysis": {
@@ -99,11 +99,41 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "positive points; connector; limiting point",
+        "topic_signal": "evaluation_reversal",
+        "key_word_cn": "正面评价转限制",
+        "source_origin": "constructed_listening_signal_word_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别评价反转后的信息重点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用逻辑连接词更新初始判断，而非机械锁定单词。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -121,9 +151,9 @@
         "text": "任务：先听音频，再判断最该锁定哪个结构信号词。",
         "task_prompt": "任务：先听音频，再判断最该锁定哪个结构信号词。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：识别条件骨架",
+          "focus": "例外条件与默认后果",
+          "success_criteria": "能选择决定条件方向的结构词，并完整复述未满足条件时的后果"
         },
         "audio_first": true,
         "image_url": null,
@@ -142,12 +172,12 @@
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "options": [
         {
@@ -200,9 +230,9 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：识别条件骨架",
+          "focus": "例外条件与默认后果",
+          "success_criteria": "能选择决定条件方向的结构词，并完整复述未满足条件时的后果"
         }
       },
       "analysis": {
@@ -219,7 +249,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -227,6 +257,36 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "extra_fields": {
+        "focus_expression": "Unless condition, consequence",
+        "topic_signal": "negative_condition",
+        "key_word_cn": "否定条件与默认后果",
+        "source_origin": "constructed_listening_signal_word_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 unless 控制的条件—后果骨架",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练排除时间词和内容词干扰。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -244,9 +304,9 @@
         "text": "任务：先听音频，再在时限内复述：哪个信号词决定了句子的逻辑方向。",
         "task_prompt": "任务：先听音频，再在时限内复述：哪个信号词决定了句子的逻辑方向。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后复述结果关系",
+          "focus": "设备升级与两项运行结果",
+          "success_criteria": "能用结果连接结构串联升级原因、噪声下降和耗电减少"
         },
         "audio_first": true,
         "image_url": null,
@@ -265,12 +325,12 @@
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3300,
@@ -305,9 +365,9 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后复述结果关系",
+          "focus": "设备升级与两项运行结果",
+          "success_criteria": "能用结果连接结构串联升级原因、噪声下降和耗电减少"
         }
       },
       "analysis": {
@@ -324,11 +384,41 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "cause. As a result, effect A and effect B",
+        "topic_signal": "explicit_result_chain",
+        "key_word_cn": "原因到并列结果",
+        "source_origin": "constructed_listening_signal_word_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "利用结果信号复述一因两果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保留 quieter 与 less electricity 两项同层结果。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -346,9 +436,9 @@
         "text": "任务：先听音频，再进行影子跟读，重读真正的逻辑信号词。",
         "task_prompt": "任务：先听音频，再进行影子跟读，重读真正的逻辑信号词。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后跟读并定位纠偏",
+          "focus": "常见假设与真实翻修范围",
+          "success_criteria": "能说明只有大厅重做，并保留供暖系统仍陈旧这一纠偏信息"
         },
         "audio_first": true,
         "image_url": null,
@@ -367,12 +457,12 @@
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 5400,
       "audio": {
@@ -404,9 +494,9 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后跟读并定位纠偏",
+          "focus": "常见假设与真实翻修范围",
+          "success_criteria": "能说明只有大厅重做，并保留供暖系统仍陈旧这一纠偏信息"
         }
       },
       "analysis": {
@@ -423,11 +513,39 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "assumption. In fact, correction while remaining limitation",
+        "topic_signal": "assumption_correction",
+        "key_word_cn": "假设纠偏与范围限制",
+        "source_origin": "constructed_listening_signal_word_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别纠偏信号后的真实范围",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练抵抗前句假设和 renovated 熟词干扰。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -445,9 +563,9 @@
         "text": "任务：先听音频，再判断哪个信号词最值得优先锁定。",
         "task_prompt": "任务：先听音频，再判断哪个信号词最值得优先锁定。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：识别决策原因入口",
+          "focus": "菜单缩减与食材浪费的关系",
+          "success_criteria": "能选择建立 why 关系的结构词，并复述实际原因"
         },
         "audio_first": true,
         "image_url": null,
@@ -466,12 +584,12 @@
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "options": [
         {
@@ -524,9 +642,9 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据选项预测信号词",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：识别决策原因入口",
+          "focus": "菜单缩减与食材浪费的关系",
+          "success_criteria": "能选择建立 why 关系的结构词，并复述实际原因"
         }
       },
       "analysis": {
@@ -543,7 +661,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -551,6 +669,34 @@
       },
       "answer_key": {
         "correct_option": "A"
+      },
+      "extra_fields": {
+        "focus_expression": "decision because reason before deadline",
+        "topic_signal": "explicit_reason",
+        "key_word_cn": "决策与原因",
+        "source_origin": "constructed_listening_signal_word_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 because 引出的决策原因",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练从季节、工作日等场景词中筛出逻辑骨架。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -568,9 +714,9 @@
         "text": "任务：先听音频，再判断 however 出现后应触发的预测策略。",
         "task_prompt": "任务：先听音频，再判断 however 出现后应触发的预测策略。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后说明转折预测策略",
+          "focus": "逻辑方向变化与后文复核",
+          "success_criteria": "能说明转折后需更新假设，并依据具体设问核对两侧信息"
         },
         "audio_first": true,
         "image_url": null,
@@ -578,23 +724,23 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：however 后接转折，该内容比之前更重要，是考查重点。",
-        "explanation": "语境揭示：When you hear the word 'however', immediately expect a contrast or reversal of the previous idea. The information after 'however' is typically the more important and exam-focused content."
+        "text": "策略：听到转折连接词后，立即检查后文如何修正或限制前文；后文通常信息权重上升，但最终答案仍取决于设问。",
+        "explanation": "转折词是注意力重新分配信号，不是“后一句必然等于答案”的机械规则。"
       },
       "analysis_content": {
-        "text": "① 识别信号：however = 转折信号，后文是对前文的否定或修正，逻辑权重更高。② 核心规律：CET6 however/but/yet/nevertheless = 转折后内容往往是考题答案所在，前文是背景铺垫。③ 验证与迁移：听到 however，集中注意力于后一句；选项中常见 \"contrary to what was expected\" 类表达。",
+        "text": "① 预测作用：however 预告对前述观点的修正、限制或反向评价。\n\n② 注意力更新：听者应提高对后文的记录优先级，同时保留前文作为对照对象。\n\n③ 边界：题目可能问转折前内容、后内容或二者差异，因此信号词只能指导复核，不能替代理解。",
         "tips": [
-          "however 出现 = 前文是干扰，后文是重点，立即提升注意力等级。",
-          "转折词强度：however > but > yet > although（让步）——强度越高，转折越完全。"
+          "听到转折词先写 A→B，再按设问选择所需部分。",
+          "“后文通常更重要”是策略概率，不是绝对答案规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         2800,
@@ -629,16 +775,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后说明转折预测策略",
+          "focus": "逻辑方向变化与后文复核",
+          "success_criteria": "能说明转折后需更新假设，并依据具体设问核对两侧信息"
         }
       },
       "analysis": {
-        "text": "① 识别信号：however = 转折信号，后文是对前文的否定或修正，逻辑权重更高。② 核心规律：CET6 however/but/yet/nevertheless = 转折后内容往往是考题答案所在，前文是背景铺垫。③ 验证与迁移：听到 however，集中注意力于后一句；选项中常见 \"contrary to what was expected\" 类表达。",
+        "text": "① 预测作用：however 预告对前述观点的修正、限制或反向评价。\n\n② 注意力更新：听者应提高对后文的记录优先级，同时保留前文作为对照对象。\n\n③ 边界：题目可能问转折前内容、后内容或二者差异，因此信号词只能指导复核，不能替代理解。",
         "tips": [
-          "however 出现 = 前文是干扰，后文是重点，立即提升注意力等级。",
-          "转折词强度：however > but > yet > although（让步）——强度越高，转折越完全。"
+          "听到转折词先写 A→B，再按设问选择所需部分。",
+          "“后文通常更重要”是策略概率，不是绝对答案规则。"
         ]
       },
       "auto_scoring": false,
@@ -648,11 +794,39 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "connector predicts revision, then verify both sides",
+        "topic_signal": "contrast_attention_update",
+        "key_word_cn": "转折后的假设更新",
+        "source_origin": "constructed_listening_strategy_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "把转折词转化为可验证的注意力更新",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening-strategy narration; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练避免信号词等于答案的机械化策略。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -670,9 +844,9 @@
         "text": "任务：先听音频，再判断 as a result 出现时应追溯的内容是什么。",
         "task_prompt": "任务：先听音频，再判断 as a result 出现时应追溯的内容是什么。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后说明结果词的双向追踪",
+          "focus": "前因回溯与后果定位",
+          "success_criteria": "能说明连接词前通常提供原因、后通常提供结果，并按设问选择方向"
         },
         "audio_first": true,
         "image_url": null,
@@ -680,23 +854,23 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：as a result 后是结果，应向前追溯对应的原因。",
-        "explanation": "语境揭示：Phrases like 'as a result' and 'consequently' signal the conclusion of a causal chain. Train yourself to ask: what was the cause? The answer to the previous step is now being resolved."
+        "text": "策略：结果连接词前通常是原因或依据，后通常是结果或结论。先建立 C→R，再根据题目问 cause 还是 result 选择答案范围。",
+        "explanation": "向前追溯原因和向后定位结果是同一因果链的两个方向。"
       },
       "analysis_content": {
-        "text": "① 识别信号：as a result / consequently / therefore = 结果信号，前面是原因。② 核心规律：CET6 逻辑链追踪：看到结果信号词，立即回激活前一句，找到 cause。③ 验证与迁移：这类题目问 \"What happened as a result?\" — 答案直接在 as a result 之后的句子中。",
+        "text": "① 结果入口：as a result / consequently 宣布后文是因果链结果。\n\n② 反向追溯：若设问问 why，应回到连接词前找原因。\n\n③ 正向定位：若设问问 what happened，应保留连接词后的结果；不能把“总是向前找”误当固定答案策略。",
         "tips": [
-          "as a result/consequently = 后接结果，前接原因，\"问结果\" 接这里，\"问原因\" 看前面。",
-          "因果信号词的方向性：because/due to 引导原因；therefore/thus 引导结果——方向相反。"
+          "先画 C→R，再读取设问决定回答 C 还是 R。",
+          "结果词提供结构边界，不保证单个相邻句包含全部原因。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 4800,
       "audio": {
@@ -728,16 +902,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后说明结果词的双向追踪",
+          "focus": "前因回溯与后果定位",
+          "success_criteria": "能说明连接词前通常提供原因、后通常提供结果，并按设问选择方向"
         }
       },
       "analysis": {
-        "text": "① 识别信号：as a result / consequently / therefore = 结果信号，前面是原因。② 核心规律：CET6 逻辑链追踪：看到结果信号词，立即回激活前一句，找到 cause。③ 验证与迁移：这类题目问 \"What happened as a result?\" — 答案直接在 as a result 之后的句子中。",
+        "text": "① 结果入口：as a result / consequently 宣布后文是因果链结果。\n\n② 反向追溯：若设问问 why，应回到连接词前找原因。\n\n③ 正向定位：若设问问 what happened，应保留连接词后的结果；不能把“总是向前找”误当固定答案策略。",
         "tips": [
-          "as a result/consequently = 后接结果，前接原因，\"问结果\" 接这里，\"问原因\" 看前面。",
-          "因果信号词的方向性：because/due to 引导原因；therefore/thus 引导结果——方向相反。"
+          "先画 C→R，再读取设问决定回答 C 还是 R。",
+          "结果词提供结构边界，不保证单个相邻句包含全部原因。"
         ]
       },
       "auto_scoring": false,
@@ -747,11 +921,39 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "cause; result connector; result",
+        "topic_signal": "bidirectional_causal_tracking",
+        "key_word_cn": "因果链双向追踪",
+        "source_origin": "constructed_listening_strategy_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "利用结果词双向追踪因果链",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening-strategy narration; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练根据设问切换原因或结果答案范围。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -769,9 +971,9 @@
         "text": "任务：先听音频，再判断 for example/such as 出现时的信息层级。",
         "task_prompt": "任务：先听音频，再判断 for example/such as 出现时的信息层级。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后区分观点与例证",
+          "focus": "一般观点、举例入口与具体细节",
+          "success_criteria": "能说明例子支撑前述观点，并按主旨题或细节题选择不同层级"
         },
         "audio_first": true,
         "image_url": null,
@@ -779,23 +981,23 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：for example/such as 引导例证，是支撑细节而非核心论点。",
-        "explanation": "语境揭示：Whenever you hear 'for example' or 'such as', the speaker is illustrating a general point rather than introducing new information. These examples are supporting details, not the main answer."
+        "text": "策略：举例连接词后的内容通常具体化前述观点。主旨题优先回到例子前的概括，细节题则可能直接考例子本身。",
+        "explanation": "例证是支持层而不是全新论点，但“不是主答案”不能被绝对化到所有题型。"
       },
       "analysis_content": {
-        "text": "① 识别信号：for example / such as / to illustrate = 举例信号，后接具体例子，不是新观点。② 核心规律：CET6 举例型信号：例子是对前述观点的支撑，主旨题答案在观点句（例子之前），细节题答案可在例子中。③ 验证与迁移：主旨题 = 找例子之前的观点句；细节题 = 找例子中的具体描述。",
+        "text": "① 层级入口：for example / such as 将一般观点切换为具体实例。\n\n② 主旨任务：向前回溯例子所说明的共同观点。\n\n③ 细节任务：记录例子中的对象、数字或行为；例证虽非新主旨，仍可能成为细节答案。",
         "tips": [
-          "for example 后接例子，是支撑而非核心，主旨题答案在例子之前。",
-          "如果四个选项都是具体例子，答案是 for example 前那个句子的概括。"
+          "给观点标 G、例子标 E，保留 G←E 的支撑关系。",
+          "题型决定答案层级，不能一概忽略例子。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "audio": {
         "url": "ai_tts/cet6/1002/100208.mp3",
@@ -826,16 +1028,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后区分观点与例证",
+          "focus": "一般观点、举例入口与具体细节",
+          "success_criteria": "能说明例子支撑前述观点，并按主旨题或细节题选择不同层级"
         }
       },
       "analysis": {
-        "text": "① 识别信号：for example / such as / to illustrate = 举例信号，后接具体例子，不是新观点。② 核心规律：CET6 举例型信号：例子是对前述观点的支撑，主旨题答案在观点句（例子之前），细节题答案可在例子中。③ 验证与迁移：主旨题 = 找例子之前的观点句；细节题 = 找例子中的具体描述。",
+        "text": "① 层级入口：for example / such as 将一般观点切换为具体实例。\n\n② 主旨任务：向前回溯例子所说明的共同观点。\n\n③ 细节任务：记录例子中的对象、数字或行为；例证虽非新主旨，仍可能成为细节答案。",
         "tips": [
-          "for example 后接例子，是支撑而非核心，主旨题答案在例子之前。",
-          "如果四个选项都是具体例子，答案是 for example 前那个句子的概括。"
+          "给观点标 G、例子标 E，保留 G←E 的支撑关系。",
+          "题型决定答案层级，不能一概忽略例子。"
         ]
       },
       "auto_scoring": false,
@@ -845,11 +1047,39 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "general point; example marker; supporting detail",
+        "topic_signal": "claim_example_hierarchy",
+        "key_word_cn": "观点与例证层级",
+        "source_origin": "constructed_listening_strategy_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分一般观点与例证的信息层级",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening-strategy narration; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练主旨与细节题的答案范围切换。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -864,12 +1094,12 @@
       "card_box_name": "根据信号词预测逻辑",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，再判断 in contrast/on the other hand 出现时的听音任务。",
-        "task_prompt": "任务：先听音频，再判断 in contrast/on the other hand 出现时的听音任务。",
+        "text": "听完说明后，选出最完整的听音记录动作。",
+        "task_prompt": "选择能保留双方对象和关系维度的做法。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：选择逻辑记录动作",
+          "focus": "两方对象与关系维度",
+          "success_criteria": "选择同时记录双方和比较维度、且不偏废任一侧的策略"
         },
         "audio_first": true,
         "image_url": null,
@@ -881,19 +1111,19 @@
         "explanation": "语境揭示：Signal words like 'in contrast' or 'on the other hand' indicate that the speaker is about to compare two opposing items. Be ready to identify what is being compared and the nature of the contrast."
       },
       "analysis_content": {
-        "text": "① 识别信号：in contrast / on the other hand / whereas / while = 对比信号，两侧各有一个比较对象。② 核心规律：CET6 对比题：考查两个事物在某维度上的差异，错误选项常混淆两者的特征。③ 验证与迁移：听到对比词，在草纸标注 A vs B，分别记录各自特征，防止混淆。",
+        "text": "① 结构预告：音频说明一类连接词会引出两个相对对象。\n\n② 记录任务：先标 A 与 B，再记录它们在哪个维度上不同。\n\n③ 选项核验：B 同时保留双方与维度；A/C 只保留一侧，D 则放弃音频明确要求的关系。",
         "tips": [
-          "in contrast/on the other hand = 对比结构，两侧特征归属不同主语，混淆即错。",
-          "听到对比词立即做 A vs B 笔记，选项中常出现属于 A 的特征被错误归给 B。"
+          "关系型听力笔记要记录对象 A、对象 B、维度 D。",
+          "不要预设第二项一定更重要；比较题常考特征错配。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "options": [
         {
@@ -940,22 +1170,22 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断 in contrast/on the other hand 出现时的听音任务。",
-        "task_prompt": "任务：先听音频，再判断 in contrast/on the other hand 出现时的听音任务。",
+        "text": "听完说明后，选出最完整的听音记录动作。",
+        "task_prompt": "选择能保留双方对象和关系维度的做法。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：选择逻辑记录动作",
+          "focus": "两方对象与关系维度",
+          "success_criteria": "选择同时记录双方和比较维度、且不偏废任一侧的策略"
         }
       },
       "analysis": {
-        "text": "① 识别信号：in contrast / on the other hand / whereas / while = 对比信号，两侧各有一个比较对象。② 核心规律：CET6 对比题：考查两个事物在某维度上的差异，错误选项常混淆两者的特征。③ 验证与迁移：听到对比词，在草纸标注 A vs B，分别记录各自特征，防止混淆。",
+        "text": "① 结构预告：音频说明一类连接词会引出两个相对对象。\n\n② 记录任务：先标 A 与 B，再记录它们在哪个维度上不同。\n\n③ 选项核验：B 同时保留双方与维度；A/C 只保留一侧，D 则放弃音频明确要求的关系。",
         "tips": [
-          "in contrast/on the other hand = 对比结构，两侧特征归属不同主语，混淆即错。",
-          "听到对比词立即做 A vs B 笔记，选项中常出现属于 A 的特征被错误归给 B。"
+          "关系型听力笔记要记录对象 A、对象 B、维度 D。",
+          "不要预设第二项一定更重要；比较题常考特征错配。"
         ]
       },
       "auto_scoring": true,
@@ -965,7 +1195,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -973,6 +1203,34 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "extra_fields": {
+        "focus_expression": "item A versus item B on dimension D",
+        "topic_signal": "two_sided_comparison",
+        "key_word_cn": "双方对象与比较维度",
+        "source_origin": "constructed_listening_strategy_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "选择双方对象与关系维度完整的记录策略",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening-strategy narration; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练避免单侧注意和特征错配。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -990,9 +1248,9 @@
         "text": "任务：先听音频，再说出 in addition/furthermore 出现时的信息走向。",
         "task_prompt": "任务：先听音频，再说出 in addition/furthermore 出现时的信息走向。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后说明同向累积策略",
+          "focus": "新增论点与共同结论",
+          "success_criteria": "能说明后文沿同一方向增加信息，并归纳多个论点共同支撑的结论"
         },
         "audio_first": true,
         "image_url": null,
@@ -1004,19 +1262,19 @@
         "explanation": "语境揭示：The phrase 'in addition' or 'furthermore' tells you the speaker is adding information in the same direction. There is no reversal — look for cumulative points building toward a conclusion."
       },
       "analysis_content": {
-        "text": "① 识别信号：in addition / furthermore / moreover / besides = 递进信号，方向与前文一致，无转折。② 核心规律：CET6 递进结构：多个同向论据 → 共同支撑一个大结论，选项中含 \"in addition to... the speaker also\" = 正确方向。③ 验证与迁移：递进结构的全文结论 = 所有论点的最大公约数，选择涵盖所有点的选项。",
+        "text": "① 方向信号：in addition / furthermore 预告后文继续增加同向信息。\n\n② 笔记动作：把新增点并列到前述论据，而不是覆盖或反转原内容。\n\n③ 归纳边界：多个论点可能共同支撑一个结论，但结论必须由具体内容归纳，不能只凭连接词猜出。",
         "tips": [
-          "in addition / furthermore = 同向叠加，无反转；however = 方向反转——两者不可混淆。",
-          "递进结构答案选项应体现 \"both X and Y\" 而非 \"X but not Y\"。"
+          "递进连接词后继续添加 P2/P3，不要删除 P1。",
+          "共同结论要覆盖各论点的交集，避免只复述最后一点。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3000,
@@ -1051,16 +1309,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后说明同向累积策略",
+          "focus": "新增论点与共同结论",
+          "success_criteria": "能说明后文沿同一方向增加信息，并归纳多个论点共同支撑的结论"
         }
       },
       "analysis": {
-        "text": "① 识别信号：in addition / furthermore / moreover / besides = 递进信号，方向与前文一致，无转折。② 核心规律：CET6 递进结构：多个同向论据 → 共同支撑一个大结论，选项中含 \"in addition to... the speaker also\" = 正确方向。③ 验证与迁移：递进结构的全文结论 = 所有论点的最大公约数，选择涵盖所有点的选项。",
+        "text": "① 方向信号：in addition / furthermore 预告后文继续增加同向信息。\n\n② 笔记动作：把新增点并列到前述论据，而不是覆盖或反转原内容。\n\n③ 归纳边界：多个论点可能共同支撑一个结论，但结论必须由具体内容归纳，不能只凭连接词猜出。",
         "tips": [
-          "in addition / furthermore = 同向叠加，无反转；however = 方向反转——两者不可混淆。",
-          "递进结构答案选项应体现 \"both X and Y\" 而非 \"X but not Y\"。"
+          "递进连接词后继续添加 P2/P3，不要删除 P1。",
+          "共同结论要覆盖各论点的交集，避免只复述最后一点。"
         ]
       },
       "auto_scoring": false,
@@ -1070,11 +1328,41 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "point A; addition connector; point B toward shared conclusion",
+        "topic_signal": "cumulative_support",
+        "key_word_cn": "同向信息累积",
+        "source_origin": "constructed_listening_strategy_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "迁移同向递进与共同结论归纳",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening-strategy narration; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练累积论据而非末项偏差。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1092,9 +1380,9 @@
         "text": "任务：先听音频，再判断 in other words/to put it another way 出现时应关注什么。",
         "task_prompt": "任务：先听音频，再判断 in other words/to put it another way 出现时应关注什么。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后说明释义对齐策略",
+          "focus": "原表达与简化改写的语义等值",
+          "success_criteria": "能把前后表达配对，并通过对象、关系和范围核验同义而非盲选后句"
         },
         "audio_first": true,
         "image_url": null,
@@ -1102,23 +1390,23 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：释义信号词出现后接的是更简洁清晰的改写，是答案的最佳来源。",
-        "explanation": "语境揭示：When you hear a speaker say 'to put it another way' or 'in other words', they are about to paraphrase something they already said. The paraphrase is usually a simpler and clearer version of the exam answer."
+        "text": "策略：释义连接词后的表达通常更清晰，可用来解码前句；仍需核对对象、关系和范围是否等值，不能把后句机械视为答案。",
+        "explanation": "释义结构提供同义改写证据，适合处理术语密集句和选项改写题。"
       },
       "analysis_content": {
-        "text": "① 识别信号：in other words / to put it another way / that is to say = 释义信号，后接更清晰的表达。② 核心规律：CET6 释义结构：前文是原始表达（可能术语密集），后文是简化版——选择简化版作为答案。③ 验证与迁移：选项通常是 in other words 之后句子的同义改写，而非之前的原始术语。",
+        "text": "① 释义入口：in other words / to put it another way 预告语义重述。\n\n② 对齐动作：把前句术语与后句通俗表达一一映射。\n\n③ 核验边界：后句通常更易懂，但若设问询问术语、原措辞或细节范围，仍需保留前句，不能只记简化版。",
         "tips": [
-          "in other words 后接的版本更简洁，通常与选项表达方式更匹配。",
-          "如果听不懂前面的专业表达，等到 in other words 出现，后面一定有更易懂的版本。"
+          "用 E1≈E2 记录释义对，不把两句当新旧观点。",
+          "选择同义改写时核对主语、关系和限定范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 5200,
       "audio": {
@@ -1150,16 +1438,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后说明释义对齐策略",
+          "focus": "原表达与简化改写的语义等值",
+          "success_criteria": "能把前后表达配对，并通过对象、关系和范围核验同义而非盲选后句"
         }
       },
       "analysis": {
-        "text": "① 识别信号：in other words / to put it another way / that is to say = 释义信号，后接更清晰的表达。② 核心规律：CET6 释义结构：前文是原始表达（可能术语密集），后文是简化版——选择简化版作为答案。③ 验证与迁移：选项通常是 in other words 之后句子的同义改写，而非之前的原始术语。",
+        "text": "① 释义入口：in other words / to put it another way 预告语义重述。\n\n② 对齐动作：把前句术语与后句通俗表达一一映射。\n\n③ 核验边界：后句通常更易懂，但若设问询问术语、原措辞或细节范围，仍需保留前句，不能只记简化版。",
         "tips": [
-          "in other words 后接的版本更简洁，通常与选项表达方式更匹配。",
-          "如果听不懂前面的专业表达，等到 in other words 出现，后面一定有更易懂的版本。"
+          "用 E1≈E2 记录释义对，不把两句当新旧观点。",
+          "选择同义改写时核对主语、关系和限定范围。"
         ]
       },
       "auto_scoring": false,
@@ -1169,11 +1457,41 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "technical expression; paraphrase connector; clearer equivalent",
+        "topic_signal": "paraphrase_equivalence",
+        "key_word_cn": "释义等值映射",
+        "source_origin": "constructed_listening_strategy_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "迁移释义结构的双向语义对齐",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening-strategy narration; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用简化改写解码术语并保留范围。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1191,9 +1509,9 @@
         "text": "任务：先听音频，再判断 provided that/as long as 出现时的逻辑任务。",
         "task_prompt": "任务：先听音频，再判断 provided that/as long as 出现时的逻辑任务。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后说明条件核验策略",
+          "focus": "前提、结论与条件是否满足",
+          "success_criteria": "能提取成立前提，并核对音频是确认、否定还是未说明该条件"
         },
         "audio_first": true,
         "image_url": null,
@@ -1205,19 +1523,19 @@
         "explanation": "语境揭示：Conditional connectors like 'provided that' or 'as long as' signal restrictions or requirements. If these appear in a question option, watch for whether the passage confirms or contradicts the condition."
       },
       "analysis_content": {
-        "text": "① 识别信号：provided that / as long as / on condition that = 条件信号，后接行为成立的前提。② 核心规律：CET6 条件型逻辑：条件是否被满足决定结论是否成立，考题常问 \"under what condition\" 。③ 验证与迁移：答案选项含条件从句时，确认音频是否明确了该条件；不确定条件的选项通常为干扰。",
+        "text": "① 条件入口：provided that / as long as 设定后续结论成立的前提。\n\n② 核验动作：检查材料是否确认条件、否定条件，或根本未说明。\n\n③ 推理边界：只有条件成立且关系方向正确时，才可推出相应结论；选项出现条件词本身不能证明它正确。",
         "tips": [
-          "provided that / as long as = 设条件，听时重点记录条件内容 + 对应的结果。",
-          "选项中含条件从句 = 此选项答案有条件限制，确认音频中该条件是否成立。"
+          "将条件记为 C，将结论记为 R，再核对 C 的状态。",
+          "未说明条件不等于条件已满足，也不等于已否定。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_signal_word_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "audio": {
         "url": "ai_tts/cet6/1002/100212.mp3",
@@ -1248,16 +1566,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "根据信号词预测逻辑",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后说明条件核验策略",
+          "focus": "前提、结论与条件是否满足",
+          "success_criteria": "能提取成立前提，并核对音频是确认、否定还是未说明该条件"
         }
       },
       "analysis": {
-        "text": "① 识别信号：provided that / as long as / on condition that = 条件信号，后接行为成立的前提。② 核心规律：CET6 条件型逻辑：条件是否被满足决定结论是否成立，考题常问 \"under what condition\" 。③ 验证与迁移：答案选项含条件从句时，确认音频是否明确了该条件；不确定条件的选项通常为干扰。",
+        "text": "① 条件入口：provided that / as long as 设定后续结论成立的前提。\n\n② 核验动作：检查材料是否确认条件、否定条件，或根本未说明。\n\n③ 推理边界：只有条件成立且关系方向正确时，才可推出相应结论；选项出现条件词本身不能证明它正确。",
         "tips": [
-          "provided that / as long as = 设条件，听时重点记录条件内容 + 对应的结果。",
-          "选项中含条件从句 = 此选项答案有条件限制，确认音频中该条件是否成立。"
+          "将条件记为 C，将结论记为 R，再核对 C 的状态。",
+          "未说明条件不等于条件已满足，也不等于已否定。"
         ]
       },
       "auto_scoring": false,
@@ -1267,11 +1585,41 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "provided condition C, result R; verify C status",
+        "topic_signal": "conditional_verification",
+        "key_word_cn": "条件状态核验",
+        "source_origin": "constructed_listening_strategy_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "迁移条件前提与成立状态核验",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening-strategy narration; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练避免仅凭条件词词面选择答案。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],
