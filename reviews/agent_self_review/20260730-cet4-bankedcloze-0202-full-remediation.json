@@ -1,0 +1,287 @@
+{
+  "review_id": "20260730-cet4-bankedcloze-0202-full-remediation",
+  "created_at": "2026-07-30T09:25:32+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "选词填空",
+    "group": "词性判断",
+    "box": "动词",
+    "box_prefixes": ["0202"],
+    "card_ids": ["020201", "020202", "020203", "020204", "020205", "020206", "020207", "020208", "020209", "020210"],
+    "closure_reason": "User-authorized CET4 full-track remediation: close seven saved hard-blocker findings across six cards and complete quality, source, and progression metadata for all ten cards in box 0202.",
+    "source_issue_refs": [
+      "exports/cet4-card-quality-audit-20260729.json",
+      "user_requested_cet4_full_track_remediation_plan"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet4-bankedcloze-0202-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "b31be20c3f17979a3f8199c9ce6867faebe6e12a6a6c6ee3245af0f080df19f3",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": ["020201", "020202", "020203", "020204", "020205", "020206", "020207", "020208", "020209", "020210"],
+      "card_count": 10,
+      "issue_count": 10,
+      "by_severity": {"hard_blocker": 0, "content_risk": 0, "review_gap": 0, "source_risk": 10},
+      "by_rule": {
+        "multiple_choice_no_options": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "front_leaks_correct_answer": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_missing_or_too_short": 0,
+        "analysis_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "template_analysis_pattern": 0,
+        "exact_repeated_front": 0,
+        "exact_repeated_analysis": 0,
+        "missing_quality_metadata": 0,
+        "unverified_source": 0,
+        "synthetic_source": 10
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "020201",
+      "interaction_id": "flip",
+      "knowledge_ref": {"library_id": "2", "library": "选词填空", "group_id": "0", "group": "词性判断", "box_id": "2", "box": "动词", "box_prefix": "0202"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 seem to 后的动词原形位置",
+        "secondary_training_goals": ["用及物性和句意排除其他动词"],
+        "weak_point_tags": ["grammar_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "foundation", "secondary": ["pass"]},
+        "card_prototype": "knowledge_explanation",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy untraced content_pool item reclassified as CET4 simulation; not a true-exam claim.", "audio_generation_method": "none"},
+        "exam_value": "先用不定式结构缩小词库范围，再用搭配完成选词。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": ["Material is intentionally classified as simulation/synthetic and carries no true-exam claim."],
+      "recommendation": "Retain as the first recognition card; the explanation now distinguishes word-form filtering from semantic validation."
+    },
+    {
+      "card_id": "020202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"library_id": "2", "library": "选词填空", "group_id": "0", "group": "词性判断", "box_id": "2", "box": "动词", "box_prefix": "0202"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别并列不定式中的动词原形",
+        "secondary_training_goals": ["利用 and 两侧结构对称判断词形"],
+        "weak_point_tags": ["grammar_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "foundation", "secondary": ["pass"]},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy untraced content_pool item reclassified as CET4 simulation; not a true-exam claim.", "audio_generation_method": "none"},
+        "exam_value": "训练用并列对称快速确定词性，减少选词填空逐词翻译。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": ["Material is intentionally classified as simulation/synthetic and carries no true-exam claim."],
+      "recommendation": "Retain after removal of the explicit answer from the front."
+    },
+    {
+      "card_id": "020203",
+      "interaction_id": "lock",
+      "knowledge_ref": {"library_id": "2", "library": "选词填空", "group_id": "0", "group": "词性判断", "box_id": "2", "box": "动词", "box_prefix": "0202"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别主语后的谓语动词位置",
+        "secondary_training_goals": ["根据第三人称单数选择谓语词形"],
+        "weak_point_tags": ["grammar_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "foundation", "secondary": ["pass"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy untraced content_pool item reclassified as CET4 simulation; not a true-exam claim.", "audio_generation_method": "none"},
+        "exam_value": "训练在长句中先定位主干谓语，再根据主谓一致选词。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": ["Material is intentionally classified as simulation/synthetic and carries no true-exam claim."],
+      "recommendation": "Retain as the final recognition card before application tasks."
+    },
+    {
+      "card_id": "020204",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"library_id": "2", "library": "选词填空", "group_id": "0", "group": "词性判断", "box_id": "2", "box": "动词", "box_prefix": "0202"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "定位关系从句中的限定谓语",
+        "secondary_training_goals": ["利用历史时间范围判断过去时"],
+        "weak_point_tags": ["grammar_weak", "reading_slow"],
+        "difficulty": {"primary": "pass", "secondary": []},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy untraced content_pool item reclassified as CET4 simulation; not a true-exam claim.", "audio_generation_method": "none"},
+        "exam_value": "帮助用户在关系从句中同时判断谓语位置与时态词形。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": ["Material is intentionally classified as simulation/synthetic and carries no true-exam claim."],
+      "recommendation": "Retain after removal of the explicit answer from the front."
+    },
+    {
+      "card_id": "020205",
+      "interaction_id": "lock",
+      "knowledge_ref": {"library_id": "2", "library": "选词填空", "group_id": "0", "group": "词性判断", "box_id": "2", "box": "动词", "box_prefix": "0202"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合谓语位置与转折语义选动词",
+        "secondary_training_goals": ["利用 but 前后逻辑检验候选词"],
+        "weak_point_tags": ["grammar_weak", "reading_slow"],
+        "difficulty": {"primary": "pass", "secondary": []},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy untraced content_pool item reclassified as CET4 simulation; not a true-exam claim.", "audio_generation_method": "none"},
+        "exam_value": "训练先用句法过滤词性，再通过转折逻辑确定语义。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": ["Material is intentionally classified as simulation/synthetic and carries no true-exam claim."],
+      "recommendation": "Retain with the corrected hint; no modal-verb clue is claimed."
+    },
+    {
+      "card_id": "020206",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"library_id": "2", "library": "选词填空", "group_id": "0", "group": "词性判断", "box_id": "2", "box": "动词", "box_prefix": "0202"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合主谓一致与资源语境选动词",
+        "secondary_training_goals": ["在多个动词候选中用不及物用法排除"],
+        "weak_point_tags": ["grammar_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": []},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy untraced content_pool item reclassified as CET4 simulation; not a true-exam claim.", "audio_generation_method": "none"},
+        "exam_value": "训练在词性相同的候选中，用及物性和上下文做精确选择。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": ["Material is intentionally classified as simulation/synthetic and carries no true-exam claim."],
+      "recommendation": "Retain after moving answer candidates out of the prompt and keeping them only in visible options."
+    },
+    {
+      "card_id": "020207",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"library_id": "2", "library": "选词填空", "group_id": "0", "group": "词性判断", "box_id": "2", "box": "动词", "box_prefix": "0202"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "判断介词后动词的动名词形式",
+        "secondary_training_goals": ["用 dip into 搭配排除语义不合候选"],
+        "weak_point_tags": ["grammar_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": []},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy untraced content_pool item reclassified as CET4 simulation; not a true-exam claim.", "audio_generation_method": "none"},
+        "exam_value": "帮助用户识别介词后的动名词形式，避免将其误判为限定谓语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": ["Material is intentionally classified as simulation/synthetic and carries no true-exam claim."],
+      "recommendation": "Retain after removing the front-side conclusion and completing the elliptical noun phrase."
+    },
+    {
+      "card_id": "020208",
+      "interaction_id": "lock",
+      "knowledge_ref": {"library_id": "2", "library": "选词填空", "group_id": "0", "group": "词性判断", "box_id": "2", "box": "动词", "box_prefix": "0202"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分谓语动词与前置副词位置",
+        "secondary_training_goals": ["用反预期语义检验语气副词"],
+        "weak_point_tags": ["grammar_weak", "reading_slow"],
+        "difficulty": {"primary": "pass", "secondary": []},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy untraced content_pool item reclassified as CET4 simulation; not a true-exam claim.", "audio_generation_method": "none"},
+        "exam_value": "训练用完整谓语排除动词候选，并识别副词对谓语的修饰。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": ["Material is intentionally classified as simulation/synthetic and carries no true-exam claim."],
+      "recommendation": "Retain after removing the Chinese gloss that disclosed the locked word."
+    },
+    {
+      "card_id": "020209",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"library_id": "2", "library": "选词填空", "group_id": "0", "group": "词性判断", "box_id": "2", "box": "动词", "box_prefix": "0202"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "综合宾语类型与 with 短语选动词",
+        "secondary_training_goals": ["识别 approach 表示处理问题的搭配"],
+        "weak_point_tags": ["reading_slow", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["high_score"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy untraced content_pool item reclassified as CET4 simulation; not a true-exam claim.", "audio_generation_method": "none"},
+        "exam_value": "训练在词性全部通过后，继续用宾语类型和方式状语精选动词。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": ["Material is intentionally classified as simulation/synthetic and carries no true-exam claim."],
+      "recommendation": "Retain as a transfer task after removing answer-bearing candidate glosses and source ambiguity."
+    },
+    {
+      "card_id": "020210",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"library_id": "2", "library": "选词填空", "group_id": "0", "group": "词性判断", "box_id": "2", "box": "动词", "box_prefix": "0202"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在研究语境中识别 account for 搭配",
+        "secondary_training_goals": ["联合不定式词形与专业语义完成选词"],
+        "weak_point_tags": ["reading_slow", "exam_strategy_weak"],
+        "difficulty": {"primary": "high_score", "secondary": ["pass"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy untraced content_pool item reclassified as CET4 simulation; not a true-exam claim.", "audio_generation_method": "none"},
+        "exam_value": "训练在科研类阅读中识别动词介词搭配及其变量考量含义。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": ["Material is intentionally classified as simulation/synthetic and carries no true-exam claim."],
+      "recommendation": "Retain as the final transfer task; the ambiguous adjust-for distractor was replaced and the answer path is no longer exposed."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "Cards 020201-020203 establish recognition of infinitive, parallel, and finite-verb positions; 020204-020208 apply those signals with tense, agreement, contrast, gerund, and adverb distinctions; 020209-020210 transfer the method to collocation and research-register decisions.",
+    "repetition_or_gap_risks": [
+      "All ten texts are intentionally classified as simulation/synthetic; this is an explained source risk, not a true-exam claim.",
+      "This record closes one box only; the remaining CET4 corpus still requires the same remediation and final human content review.",
+      "No formal batch approval is created here; the user retains one final CET4 whole-track approval."
+    ],
+    "representative_cards": ["020201", "020206", "020210"],
+    "next_step": "Continue the user-authorized CET4 remediation with the next highest-blocker box, while keeping this branch parked if the five active candidate-content PR limit remains full."
+  }
+}
