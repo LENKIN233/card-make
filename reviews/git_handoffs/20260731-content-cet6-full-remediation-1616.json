@@ -1,0 +1,76 @@
+{
+  "handoff_id": "20260731-content-cet6-full-remediation-1616",
+  "created_at": "2026-07-31T00:15:03+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-full-remediation-1616",
+  "base_branch": "main",
+  "commit_sha": "8523b9094da7538ef5d71ffcc22d0b7e65455b68",
+  "push_ref": "origin/content/cet6-full-remediation-1616",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1616",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate",
+    "box_prefixes": [
+      "1616"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_grammar_1616.json",
+      "reviews/agent_self_review/20260731-cet6-grammar-1616-full-remediation.json",
+      "reviews/audit_scopes/20260731-cet6-grammar-1616-full-remediation-scope-audit.json"
+    ],
+    "patch_sha256": "d0784aa448799da4c06b856e5620ce9294c48dc25024d4ddc2612eeb87156c9f"
+  },
+  "summary": [
+    "Rebuilt all eight fixed-pattern cards around stance-frame evidence boundaries, would-rather parallelism, cannot-help variants, unambiguous correction, correlative parallelism, conditional no-point usage, and combined writing transfer.",
+    "Removed answer leakage, missing canonical options, low-value isolated forms, adjacent-box duplication, missing metadata, and untraced provenance.",
+    "Independent review neutralized the visible parallelism conclusion in 161606 and removed repeat/again redundancy in 161607; the replay found no residual P0, P1, or P2.",
+    "Preserved IDs and interaction sequence; added canonical/form and elimination mirrors, schema-valid metadata, synthetic provenance, and a 2/4/2 progression."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path /tmp/1616-final-cards.json",
+      "result": "passed: 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 161601,...,161608 --write-scope-report reviews/audit_scopes/20260731-cet6-grammar-1616-full-remediation-scope-audit.json",
+      "result": "passed: 0 hard blockers, 0 content risks, 0 review gaps, 8 declared synthetic-source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with recorded upstream-version and group-alignment warnings only"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed: no audio records in scope"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base main --head HEAD",
+      "result": "passed: primary scope prefix 1616; current scoped audit replay found no hard blockers"
+    },
+    {
+      "command": "node scripts/validate_delivery_boundary.mjs --base main --head HEAD",
+      "result": "passed: one card file and two review-evidence files, no approval or audio files"
+    },
+    {
+      "command": "manual assertions for placement/count, option/form and elimination parity, metadata enum, valid fixed-pattern variants, source/audio boundary, and 2/4/2 progression",
+      "result": "passed"
+    },
+    {
+      "command": "independent read-only agent content review and post-fix replay",
+      "result": "passed after two P1 corrections; no residual P0, P1, or P2"
+    },
+    {
+      "command": "git verify-commit 8523b9094da7538ef5d71ffcc22d0b7e65455b68",
+      "result": "passed: good ED25519 signature"
+    }
+  ],
+  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "remaining_risks": [
+    "All eight cards are synthetic candidate content and require final user whole-track approval before integration.",
+    "Ten CET6 hard-blocker prefixes remain unresolved after 1616, including the blocked 1030 authority conflict and five open sample prefixes.",
+    "Previously parked branches 1522 and 1610-1613 require schema-enum weak-point-tag repair before whole-track delivery.",
+    "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
