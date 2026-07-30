@@ -1,0 +1,87 @@
+{
+  "handoff_id": "20260730-content-cet4-full-remediation-0511",
+  "created_at": "2026-07-30T16:45:01+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-remediation-0511",
+  "base_branch": "main",
+  "commit_sha": "7d20bd330a4731eb7689150ccdb6652c13d84b41",
+  "push_ref": "origin/content/cet4-full-remediation-0511",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0511",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_full_box_remediation",
+    "track": "cet4",
+    "library": "词汇",
+    "group": "中国特色词汇",
+    "box": "经济",
+    "box_prefix": "0511",
+    "card_ids": [
+      "051101",
+      "051102",
+      "051103",
+      "051104",
+      "051105",
+      "051106",
+      "051107",
+      "051108",
+      "051109",
+      "051110",
+      "051111",
+      "051112"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0511.json",
+      "reviews/agent_self_review/20260730-cet4-vocabulary-0511-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet4-vocabulary-0511-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet4-full-remediation-0511.json"
+    ],
+    "patch_sha256": "11ff06e79ac9602cf056ad7147fe425da332ca975c63f87d88dc9fac7c93f02b"
+  },
+  "summary": [
+    "Closed the 051110 answer-path leak and replaced ten generic analyses with card-specific recognition, rule, and verification reasoning.",
+    "Replaced four nonsense lock-card word banks with plausible semantic distractors and synchronized the visible front, task prompt, canonical front content, structured word bank, and answer fields.",
+    "Repaired supplemental-card metadata for 051111 and 051112, completed 3/6/3 progression plus source and text-only material metadata, and verified private economy/private sector/high-quality development usage against official English government pages without claiming the constructed sentences are true-exam material."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 051101,051102,051103,051104,051105,051106,051107,051108,051109,051110,051111,051112 --write-scope-report reviews/audit_scopes/20260730-cet4-vocabulary-0511-full-remediation-scope-audit.json",
+      "result": "passed; 0 hard blockers, 0 content risks, 0 review gaps, 12 explained synthetic source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; errors=0, only recorded upstream warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; current scoped audit accepted"
+    },
+    {
+      "command": "canonical prompt, analysis/tips, multiple-choice, lock-answer, visible/structured word-bank, provenance, material, answer-leak, metadata, and 3/6/3 progression assertions",
+      "result": "passed; canonical fields, visible word banks, and answer structures match"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "git verify-commit 7d20bd330a4731eb7689150ccdb6652c13d84b41",
+      "result": "passed; good ED25519 signature"
+    }
+  ],
+  "local_status": "Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks": [
+    "All card sentences are simulation/synthetic, not true-exam claims; official English pages only informed terminology usage.",
+    "The box remains candidate content; no approved-batch record or formal user approval is claimed.",
+    "Private economy and private sector are context-sensitive alternatives and should be checked against adjacent policy-vocabulary boxes during whole-track review.",
+    "All cards are intentionally text-only; no audio generation or audio approval is claimed.",
+    "The branch-local global corpus still contains 226 hard blockers, 2236 content risks, 2387 review gaps, and 2285 source risks after this scoped remediation.",
+    "Remaining CET4 boxes still require remediation and human review.",
+    "Branch remains parked until one of PRs #99-#103 leaves the candidate-content queue."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
