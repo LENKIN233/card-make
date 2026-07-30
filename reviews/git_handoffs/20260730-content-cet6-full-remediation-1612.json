@@ -4,7 +4,8 @@
   "agent": "codex",
   "branch": "content/cet6-full-remediation-1612",
   "base_branch": "main",
-  "commit_sha": "da28022c87b2a3dd27e0b165f6a05c25a6797471",
+  "commit_sha": "d6519df2c1f846524f9ae54acdf6179a1e27358e",
+  "original_content_commit_sha": "da28022c87b2a3dd27e0b165f6a05c25a6797471",
   "push_ref": "origin/content/cet6-full-remediation-1612",
   "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1612",
   "PR_state": "PARKED_NO_PR_WIP_LIMIT",
@@ -17,12 +18,13 @@
       "reviews/agent_self_review/20260730-cet6-grammar-1612-full-remediation.json",
       "reviews/audit_scopes/20260730-cet6-grammar-1612-full-remediation-scope-audit.json"
     ],
-    "patch_sha256": "0911f6e7d14da90ad1d386949d4e83d66d35d56da02213244d4a27d078e62ed6"
+    "patch_sha256": "cc6e31dc6d17eb23911e49b866e6155402dbfe3a1244bbca582cca9e03fdf75e"
   },
   "summary": [
     "Replaced eight untraced adverbial-clause cards after review found answer leaks, non-unique causal and concessive items, missing canonical options, inversion-topic spillover, weak distractors, and migration labels.",
     "Covered clause function, temporal versus contrast while, unique causal relation, unless equivalence, connector stacking, future time clauses, fact versus hypothetical concession, and combined concession/condition logic.",
-    "Preserved card IDs and the original interaction sequence, added canonical options with legacy-form parity where required, synthetic provenance, quality metadata, and a 2/4/2 progression."
+    "Preserved card IDs and the original interaction sequence, added canonical options with legacy-form parity where required, synthetic provenance, quality metadata, and a 2/4/2 progression.",
+    "Repaired later schema-enum drift semantically: reading_slow for clause-relation decoding, exam_strategy_weak for connective-selection procedure, and writing_output_weak for correction or tense output, mirrored in the self-review."
   ],
   "validation": [
     {"command": "node scripts/validate_cards.mjs --report-path /tmp/1612-final-cards.json", "result": "passed: 2414 cards, 0 errors, 0 warnings"},
@@ -32,9 +34,11 @@
     {"command": "node scripts/validate_pr_scope.mjs --base main --head HEAD", "result": "passed: primary scope prefix 1612"},
     {"command": "node scripts/validate_delivery_boundary.mjs --base main --head HEAD", "result": "passed: one card file and two review-evidence files, no approval or audio files"},
     {"command": "manual assertions for placement/count, canonical and legacy parity, unique MC/elimination answers, flip scoring, source/audio boundary, and 2/4/2 progression", "result": "passed"},
-    {"command": "git verify-commit da28022c87b2a3dd27e0b165f6a05c25a6797471", "result": "passed: good ED25519 signature"}
+    {"command": "git verify-commit da28022c87b2a3dd27e0b165f6a05c25a6797471", "result": "passed: good ED25519 signature"},
+    {"command": "allowed weak_point_tags assertion plus self-review/scoped-audit fingerprint parity", "result": "passed: all 1612 tags belong to the authority enum; no legacy tag remains in metadata; corpus digest f85ed902819ff9f8257912d90efd06537ff5e50c0c8b0985449f8f1a57aae810"},
+    {"command": "git verify-commit d6519df2c1f846524f9ae54acdf6179a1e27358e", "result": "passed: good ED25519 signature"}
   ],
-  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "local_status": "Original content and handoff commits were already pushed; signed schema-enum repair commit prepared, with refreshed handoff commit pending at record update. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
   "remaining_risks": [
     "All eight cards are synthetic candidate content and require final user whole-track approval before integration.",
     "Fourteen CET6 hard-blocker prefixes remain unresolved after 1612, including the blocked 1030 authority conflict and five open sample prefixes.",
