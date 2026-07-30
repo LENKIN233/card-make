@@ -1,0 +1,98 @@
+{
+  "handoff_id": "20260730-content-cet4-full-remediation-0010",
+  "created_at": "2026-07-30T13:20:47+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-remediation-0010",
+  "base_branch": "main",
+  "commit_sha": "663cedc367fd135ea2fda03b767fd39e33200880",
+  "push_ref": "origin/content/cet4-full-remediation-0010",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0010",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_full_box_remediation_with_audio_block_evidence",
+    "track": "cet4",
+    "library": "听力",
+    "group": "语音现象",
+    "box": "连读",
+    "box_prefix": "0010",
+    "card_ids": [
+      "001001",
+      "001002",
+      "001003",
+      "001004",
+      "001005",
+      "001006",
+      "001007",
+      "001008",
+      "001009",
+      "001010",
+      "001011",
+      "001012"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0010.json",
+      "reviews/agent_self_review/20260730-cet4-listening-0010-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet4-listening-0010-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet4-full-remediation-0010.json"
+    ],
+    "patch_sha256": "d06ca5f954a74205e8b89be82e3bf5a4d20b573858fdf061260ce1230fa53e82"
+  },
+  "summary": [
+    "Closed the three saved front-answer-leak blockers in box 0010 and synchronized canonical and compatibility front fields.",
+    "Replaced generic analyses, corrected missing or inaccurate phonetic boundaries, and separated connected-speech links from grammar boundaries.",
+    "Added complete simulation-source, quality, audio-review, and 3/6/3 progression metadata.",
+    "Recorded a split result instead of overclaiming readiness: 001001-001006 content text passes with perceptual QC pending; 001007-001012 remain formally blocked by unsuitable legacy TTS scripts."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 001001,001002,001003,001004,001005,001006,001007,001008,001009,001010,001011,001012 --write-scope-report reviews/audit_scopes/20260730-cet4-listening-0010-full-remediation-scope-audit.json",
+      "result": "passed; 0 hard blockers, 0 content risks, 0 review gaps, 12 explained source risks"
+    },
+    {
+      "command": "node scripts/validate_audio_lfs.mjs",
+      "result": "passed; all referenced audio assets satisfy repository LFS validation"
+    },
+    {
+      "command": "afinfo -r -b --warnings ai_tts/cet4/0010/*.mp3",
+      "result": "passed; 12/12 parse as mono 24 kHz MP3 and durations match card metadata"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; errors=0, only eight recorded upstream warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; one content prefix 0010 and no scope issues"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "git verify-commit 663cedc367fd135ea2fda03b767fd39e33200880",
+      "result": "passed; good ED25519 signature"
+    }
+  ],
+  "independent_review": {
+    "reviewer": "/root/review_0010",
+    "content_result": "001001-001006 pass after revisions; 001007-001012 text logic repaired but formal audio remains blocked",
+    "audio_result": "offline ASR matched 001001-001006 transcripts, but no perceptual pronunciation approval was inferred"
+  },
+  "formal_readiness": "blocked_by_legacy_tts_script_rewrite_and_audio_qc",
+  "local_status": "Content/evidence commit pushed; branch parked without a PR because five active candidate-content PRs occupy the WIP limit. This checkpoint is not eligible for formal release until the recorded audio blockers are closed.",
+  "remaining_risks": [
+    "001007-001012 use meta-teaching TTS transcripts with informal pseudo-respellings; rewrite and regenerate them after provider selection.",
+    "All 12 assets have tts_audio_reviewed=false; technical parsing and ASR matching do not prove pronunciation, speed, rhythm, stress, clipping, volume, or real-device playback quality.",
+    "All passages are simulation/synthetic, not true-exam claims.",
+    "Legacy interaction fields remain migration evidence; runtimes must use interaction_id as the canonical authority.",
+    "Remaining CET4 boxes still require remediation and human review.",
+    "No approved-batch record or formal user approval is claimed.",
+    "Branch remains parked until one of PRs #99-#103 leaves the content-review queue and the audio dependency is resolved."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
