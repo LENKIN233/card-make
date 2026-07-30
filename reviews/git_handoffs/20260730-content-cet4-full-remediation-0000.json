@@ -1,0 +1,56 @@
+{
+  "handoff_id": "20260730-content-cet4-full-remediation-0000",
+  "created_at": "2026-07-30T18:47:24+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-remediation-0000",
+  "base_branch": "main",
+  "commit_sha": "ec68f00362fa36eb9b57a9a39aca067ad90b382b",
+  "push_ref": "origin/content/cet4-full-remediation-0000",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0000",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_full_box_remediation",
+    "track": "cet4",
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测话题",
+    "box_prefix": "0000",
+    "card_ids": ["000001", "000002", "000003", "000004", "000005", "000006", "000007", "000008", "000009", "000010", "000011", "000012"],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0000.json",
+      "reviews/agent_self_review/20260730-cet4-listening-0000-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet4-listening-0000-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet4-full-remediation-0000.json"
+    ],
+    "patch_sha256": "77beabc6f657f65b8121621138ee556408477ca62ae1b24212dc4ca2a98fd289"
+  },
+  "summary": [
+    "Closed the 000001 answer-path leak by replacing answer-specific success criteria with an evidence-based prediction and playback-review criterion.",
+    "Replaced generic or interaction-mismatched prompts and analyses with twelve transcript-specific topic-prediction exercises and a proportional 3/6/3 recognition-application-transfer progression.",
+    "Removed unverified provenance, marked all content synthetic, and retained every legacy TTS asset strictly as a candidate sample without modifying any audio object or claiming human audio QC."
+  ],
+  "validation": [
+    {"command": "node scripts/validate_cards.mjs --report-path /tmp/0000-postcommit-cards.json", "result": "passed; cards=2414, errors=0, warnings=0"},
+    {"command": "node scripts/audit_card_quality.mjs --scope-card-ids 000001,000002,000003,000004,000005,000006,000007,000008,000009,000010,000011,000012 --write-scope-report reviews/audit_scopes/20260730-cet4-listening-0000-full-remediation-scope-audit.json", "result": "passed; 0 hard blockers, 0 content risks, 0 review gaps, 12 explained synthetic source risks"},
+    {"command": "node scripts/validate_harness.mjs", "result": "passed; errors=0, only 8 recorded upstream warnings"},
+    {"command": "node scripts/validate_audio_qc.mjs", "result": "passed; errors=0, warnings=0; no formal audio-QC records claimed"},
+    {"command": "node scripts/validate_pr_scope.mjs --base main --head HEAD", "result": "passed; current scoped audit accepted"},
+    {"command": "node scripts/validate_delivery_boundary.mjs", "result": "passed; 1 card file, 0 audio files, 0 approval files"},
+    {"command": "canonical prompt, unique analysis, interaction-answer, provenance, sample-only material, answer-leak, flip-prompt, metadata, and 3/6/3 progression assertions", "result": "passed"},
+    {"command": "canonical audio object hash before and after", "result": "passed; unchanged sha256 92c7675d21f342926d281290af18fdf5a12b7245989c6b8f169321038c9bea7f"},
+    {"command": "git diff --check", "result": "passed"},
+    {"command": "git verify-commit ec68f00362fa36eb9b57a9a39aca067ad90b382b", "result": "passed; good ED25519 signature"}
+  ],
+  "local_status": "Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks": [
+    "All twelve examples are simulation/synthetic, not true-exam claims; unverified content-pool provenance was removed rather than promoted.",
+    "The box remains candidate content; no approved-batch record or formal user approval is claimed.",
+    "Legacy TTS assets remain candidate samples only; tts_audio_reviewed is false, no audio file was changed, and no formal audio readiness is claimed.",
+    "The branch-local global corpus still contains 226 hard blockers, 2249 content risks, 2390 review gaps, and 2282 source risks after this scoped remediation.",
+    "CET4 listening boxes 0034, 0042, and 0043 remain uncovered hard-blocker scopes; CET6 remediation also remains outstanding.",
+    "Other unmerged remediation branches already close many main-branch audit findings but remain parked pending review capacity.",
+    "Branch remains parked until one of PRs #99-#103 leaves the candidate-content queue."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
