@@ -1,0 +1,717 @@
+{
+  "review_id": "20260730-cet6-reading-1112-full-remediation",
+  "created_at": "2026-07-30T19:39:45+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "仔细阅读",
+    "group": "干扰项排除",
+    "box": "与原文相反",
+    "box_prefixes": [
+      "1112"
+    ],
+    "card_ids": [
+      "111201",
+      "111202",
+      "111203",
+      "111204",
+      "111205",
+      "111206",
+      "111207",
+      "111208",
+      "111209",
+      "111210",
+      "111211",
+      "111212"
+    ],
+    "closure_reason": "User-authorized full-track remediation: close answer-path leaks in 111202 and 111205, replace template or short analyses, restore visible statement content for elimination cards 111207 and 111211, remove unverified provenance, and complete card-specific schemas plus proportional 3/6/3 progression metadata without adding or deleting cards.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-reading-1112-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "ca4cb191f66475b06429e1df581e130ae2067505b3642669fb8799f70e37c586",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "111201",
+        "111202",
+        "111203",
+        "111204",
+        "111205",
+        "111206",
+        "111207",
+        "111208",
+        "111209",
+        "111210",
+        "111211",
+        "111212"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1112 matches 仔细阅读 / 干扰项排除 / 与原文相反 in box-catalog and card knowledge_ref.",
+    "answer_path": "Passed: 111202 and 111205 correct options use bounded paraphrases rather than reproducing the source sentence.",
+    "elimination_visibility": "Passed: 111207 and 111211 now expose complete statements in both elimination_items and eliminable_items; answer_key text matches the visible correct statements.",
+    "semantic_correctness": "Passed: all answer keys preserve subject, direction, statistical scope, probability, and significance boundaries.",
+    "progression": "Passed: cards 111201-111203 recognition/foundation, 111204-111209 application/pass, and 111210-111212 transfer/high_score.",
+    "source_boundary": "Passed: all twelve examples are declared simulation/synthetic and are not represented as true exam material.",
+    "audio_boundary": "Not applicable: this reading box contains no audio object or audio asset change."
+  },
+  "cards": [
+    {
+      "card_id": "111201",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立方向反转干扰项的基础识别顺序",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "建立先判命题方向、再看词面重合的稳定做题顺序。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "核对并列命题中的下降与稳定方向",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练不被相同名词吸引，完整核对两个结果谓词。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111203",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从双方向文本中消除相反陈述",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在多选题中按证据方向逐项保留或消除。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111204",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "避免用关键词重合掩盖极性反转",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练识别最常见的升降极性偷换。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111205",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "核对转折句中两个独立结果方向",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练处理 but 连接的双结果，避免只核对其中一半。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111206",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "对双指标命题执行逐项方向验证",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练双指标句逐项验证，任一方向错误即可排除。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111207",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分同句中一降一升的变量方向",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练 mixed trend 句型中分变量判断升降。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111208",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别概率表达 more/less likely 的反转",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练概率方向词的精确语义判断。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111209",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "形成方向—对象—回填的三步排错流程",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "把反转项识别压缩成可重复执行的三步流程。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111210",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "迁移核对概率变化与无显著变化",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在专业语境中保留概率与显著性限定。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111211",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "同时核对统计口径与变化方向",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练识别总量与人均口径不同导致的伪反转。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111212",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用文本证据校验绝对词经验规则",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练区分高风险词形与真正的文本矛盾证据。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "111201-111203 establish polarity recognition and supported-statement elimination; 111204-111209 apply subject/relation/scope/polarity checks and a repeatable three-step method; 111210-111212 transfer the method to probability, statistical denominator, significance, and absolute-word boundary cases.",
+    "repetition_or_gap_risks": [
+      "All twelve analyses and task schemas are card-specific; automated scope audit reports no repeated front or analysis and no template analysis.",
+      "111202 and 111205 no longer leak correct-answer wording through source-to-option overlap.",
+      "111207 and 111211 no longer present bare option letters without statement content.",
+      "All material is constructed simulation/synthetic content, not true-exam evidence.",
+      "The branch is candidate content only and does not create user approval or formal usability."
+    ],
+    "representative_cards": [
+      "111202",
+      "111205",
+      "111207",
+      "111209",
+      "111211",
+      "111212"
+    ],
+    "next_step": "Validate, sign, and park this branch without a PR because candidate-content PRs #99-#103 occupy the five-slot WIP limit; final whole-track approval remains user-only."
+  }
+}
+
