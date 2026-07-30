@@ -1,0 +1,86 @@
+{
+  "handoff_id": "20260730-content-cet4-full-remediation-0522",
+  "created_at": "2026-07-30T15:33:29+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-remediation-0522",
+  "base_branch": "main",
+  "commit_sha": "bb8e2e3b1cce7ef296802fd9dbb9608b2c591651",
+  "push_ref": "origin/content/cet4-full-remediation-0522",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0522",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_full_box_remediation",
+    "track": "cet4",
+    "library": "词汇",
+    "group": "高频词",
+    "box": "写作高级词汇",
+    "box_prefix": "0522",
+    "card_ids": [
+      "052201",
+      "052202",
+      "052203",
+      "052204",
+      "052205",
+      "052206",
+      "052207",
+      "052208",
+      "052209",
+      "052210",
+      "052211",
+      "052212"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0522.json",
+      "reviews/agent_self_review/20260730-cet4-vocabulary-0522-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet4-vocabulary-0522-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet4-full-remediation-0522.json"
+    ],
+    "patch_sha256": "da26af756c53f76ee65e70c38c3d00e70ca52b35379b67775d364354277748d9"
+  },
+  "summary": [
+    "Closed two saved answer-path blockers in box 0522, including duplicated option text and a connector-name leak.",
+    "Removed direct answer hints, pseudo-word distractors, internal production labels, generic analyses, and mismatched back explanations.",
+    "Added synchronized rendered/canonical prompts, natural word banks, complete 3/6/3 quality metadata, and honest simulation/synthetic provenance."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; cards=2414, errors=0, warnings=0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 052201,052202,052203,052204,052205,052206,052207,052208,052209,052210,052211,052212 --write-scope-report reviews/audit_scopes/20260730-cet4-vocabulary-0522-full-remediation-scope-audit.json",
+      "result": "passed; 0 hard blockers, 0 content risks, 0 review gaps, 12 explained source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; errors=0, only recorded upstream warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; current scoped audit accepted"
+    },
+    {
+      "command": "canonical prompt, analysis, word-bank, provenance, and 3/6/3 progression assertions",
+      "result": "passed; rendered and canonical fields match and no internal labels or pseudo-word distractors remain"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "git verify-commit bb8e2e3b1cce7ef296802fd9dbb9608b2c591651",
+      "result": "passed; good ED25519 signature"
+    }
+  ],
+  "local_status": "Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks": [
+    "All passages are simulation/synthetic, not true-exam claims.",
+    "The box remains candidate content; no approved-batch record or formal user approval is claimed.",
+    "The deliberately repeated connector set should be checked for overlap during later whole-track review.",
+    "The global legacy corpus still contains 225 hard blockers, 2236 content risks, 2387 review gaps, and 2285 source risks after this scoped remediation.",
+    "Remaining CET4 boxes still require remediation and human review.",
+    "Branch remains parked until one of PRs #99-#103 leaves the queue."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
