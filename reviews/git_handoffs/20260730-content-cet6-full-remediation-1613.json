@@ -4,16 +4,18 @@
   "agent": "codex",
   "branch": "content/cet6-full-remediation-1613",
   "base_branch": "main",
-  "commit_sha": "adf8ca82181f5404137f5effdc98d925e94e77f6",
+  "commit_sha": "6e648a5e7cbb5f27cdb0643ae9e2c59592e25275",
+  "original_content_commit_sha": "adf8ca82181f5404137f5effdc98d925e94e77f6",
   "push_ref": "origin/content/cet6-full-remediation-1613",
   "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1613",
   "PR_state": "PARKED_NO_PR_WIP_LIMIT",
   "is_draft": true,
-  "scope": {"change_type":"content_candidate","box_prefixes":["1613"],"touched_paths":["card_boxes_json/card_boxes_seed_cet6_grammar_1613.json","reviews/agent_self_review/20260730-cet6-grammar-1613-full-remediation.json","reviews/audit_scopes/20260730-cet6-grammar-1613-full-remediation-scope-audit.json"],"patch_sha256":"7bde3a6ca6578a867202d63e1816446d22faadfab1341fea034dd4d4890e92e4"},
+  "scope": {"change_type":"content_candidate","box_prefixes":["1613"],"touched_paths":["card_boxes_json/card_boxes_seed_cet6_grammar_1613.json","reviews/agent_self_review/20260730-cet6-grammar-1613-full-remediation.json","reviews/audit_scopes/20260730-cet6-grammar-1613-full-remediation-scope-audit.json"],"patch_sha256":"8debe9de20b67cfa58bc6b476ecbe486006476287151247a56239060451681e8"},
   "summary": [
     "Corrected the materially wrong and non-unique so/neither card by applying grammatical polarity, be-auxiliary copying, and singular agreement rather than negative word meaning.",
     "Rebuilt eight inversion tasks around Only scope, negative-adverb do-support, no-sooner pairing, agreement inversion, trigger correction, Had conditionals, past-counterfactual equivalence, and Not-until scope.",
-    "Preserved IDs and interaction sequence; added canonical options with legacy-form parity, synthetic provenance, quality metadata, and a 2/4/2 progression."
+    "Preserved IDs and interaction sequence; added canonical options with legacy-form parity, synthetic provenance, quality metadata, and a 2/4/2 progression.",
+    "Repaired later schema-enum drift on 161303, 161304, 161305, and 161307 and closed a hidden P1 on 161305 by making eliminable_items, canonical elimination_items, and answer_key.correct_items agree exactly."
   ],
   "validation": [
     {"command":"node scripts/validate_cards.mjs --report-path /tmp/1613-final-cards.json","result":"passed: 2414 cards, 0 errors, 0 warnings"},
@@ -23,9 +25,11 @@
     {"command":"node scripts/validate_pr_scope.mjs --base main --head HEAD","result":"passed: primary scope prefix 1613"},
     {"command":"node scripts/validate_delivery_boundary.mjs --base main --head HEAD","result":"passed: one card file and two review-evidence files, no approval or audio files"},
     {"command":"manual assertions for placement/count, option and form parity, inversion scope, tense/modal preservation, corrected so/be polarity, source/audio boundary, and 2/4/2 progression","result":"passed"},
-    {"command":"git verify-commit adf8ca82181f5404137f5effdc98d925e94e77f6","result":"passed: good ED25519 signature"}
+    {"command":"git verify-commit adf8ca82181f5404137f5effdc98d925e94e77f6","result":"passed: good ED25519 signature"},
+    {"command":"allowed weak_point_tags plus 161305 elimination parity and card/self-review metadata assertions","result":"passed: all tags are authority-owned; both elimination arrays are object-identical and their two true texts equal answer_key.correct_items; corpus digest a1a7ae7ad6b5e69d82a5f021c9bd1f4353b3fa1686cc9e41dc41af13ced787cc"},
+    {"command":"git verify-commit 6e648a5e7cbb5f27cdb0643ae9e2c59592e25275","result":"passed: good ED25519 signature"}
   ],
-  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "local_status": "Original content and handoff commits were already pushed; signed schema-enum and parity repair commit prepared, with refreshed handoff commit pending at record update. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
   "remaining_risks": [
     "All eight cards are synthetic candidate content and require final user whole-track approval before integration.",
     "Thirteen CET6 hard-blocker prefixes remain unresolved after 1613, including the blocked 1030 authority conflict and five open sample prefixes.",
