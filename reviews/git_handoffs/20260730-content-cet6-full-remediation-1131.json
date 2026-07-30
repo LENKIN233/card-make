@@ -1,0 +1,71 @@
+{
+  "handoff_id": "20260730-content-cet6-full-remediation-1131",
+  "created_at": "2026-07-30T21:13:57+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-full-remediation-1131",
+  "base_branch": "main",
+  "commit_sha": "658bf328259185848735b846bfd040ff8ae03067",
+  "push_ref": "origin/content/cet6-full-remediation-1131",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1131",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate",
+    "box_prefixes": [
+      "1131"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_reading_1131.json",
+      "reviews/agent_self_review/20260730-cet6-reading-1131-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet6-reading-1131-full-remediation-scope-audit.json"
+    ],
+    "patch_sha256": "3081c748b4b1700a80793f2e9bfd8cc12a89a8e64d43f225772d6f9b42788d12"
+  },
+  "summary": [
+    "Closed the 113105 answer-path leak with a bounded Chinese paraphrase and replaced generic analyses with sentence-specific adverbial logic and scope checks.",
+    "Corrected 113106 so provided/providing that remain conditional while given that is identified as normally causal or background rather than a blanket if substitute.",
+    "Constrained overbroad independent-absolute and because-clause diagnostics in 113109 and 113112.",
+    "Added complete task schemas, synthetic provenance, quality metadata, and a proportional 3/6/3 progression without adding cards, deleting cards, or changing audio."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path /tmp/1131-postcommit-cards.json",
+      "result": "passed: 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 113101,...,113112 --write-scope-report reviews/audit_scopes/20260730-cet6-reading-1131-full-remediation-scope-audit.json",
+      "result": "passed: 0 hard blockers, 0 content risks, 0 review gaps, 12 declared synthetic-source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with recorded upstream-version and group-alignment warnings only"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed: no audio records in scope"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base main --head HEAD",
+      "result": "passed: primary scope prefix 1131"
+    },
+    {
+      "command": "node scripts/validate_delivery_boundary.mjs",
+      "result": "passed: one card file and two review-evidence files, no approval or audio files"
+    },
+    {
+      "command": "manual assertions for adverbial logic, conditional/causal distinction, task-schema parity, source metadata, answer keys, elimination parity, swipe answers, and 3/6/3 progression",
+      "result": "passed"
+    },
+    {
+      "command": "git verify-commit 658bf328259185848735b846bfd040ff8ae03067",
+      "result": "passed: good ED25519 signature"
+    }
+  ],
+  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "remaining_risks": [
+    "All twelve cards are synthetic candidate content and require final user whole-track approval before integration.",
+    "Twenty-eight CET6 hard-blocker prefixes remain unresolved after 1131, including the blocked 1030 authority conflict.",
+    "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
