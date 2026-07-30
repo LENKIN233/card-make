@@ -1,0 +1,52 @@
+{
+  "handoff_id": "20260730-content-cet4-full-remediation-0220",
+  "created_at": "2026-07-30T16:18:05+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-remediation-0220",
+  "base_branch": "main",
+  "commit_sha": "5b1e84d6e518ebf6a8d11eac037fb703ff97b17a",
+  "push_ref": "origin/content/cet4-full-remediation-0220",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0220",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_full_box_remediation",
+    "track": "cet4",
+    "library": "选词填空",
+    "group": "固定搭配",
+    "box": "动词+介词/副词",
+    "box_prefix": "0220",
+    "card_ids": ["022001", "022002", "022003", "022004", "022005", "022006", "022007", "022008", "022009", "022010"],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_bankedcloze_0220.json",
+      "reviews/agent_self_review/20260730-cet4-bankedcloze-0220-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet4-bankedcloze-0220-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet4-full-remediation-0220.json"
+    ],
+    "patch_sha256": "93ca35600a87beb6515d96195508ef341e6595e58ecd4fced58332cb20e3934a"
+  },
+  "summary": [
+    "Closed two answer-path leaks in cards 022008 and 022010 and replaced all ten generic analyses with collocation-specific reasoning.",
+    "Added explicit syntax, verb-particle, object, and causality checks for rely on, carry out, point to, keep up with, result from, take into account, come up with, point out, and weigh up.",
+    "Added synchronized canonical fields, complete 3/4/3 quality metadata, and honest simulation/synthetic provenance."
+  ],
+  "validation": [
+    {"command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json", "result": "passed; cards=2414, errors=0, warnings=0"},
+    {"command": "node scripts/audit_card_quality.mjs --scope-card-ids 022001,022002,022003,022004,022005,022006,022007,022008,022009,022010 --write-scope-report reviews/audit_scopes/20260730-cet4-bankedcloze-0220-full-remediation-scope-audit.json", "result": "passed; 0 hard blockers, 0 content risks, 0 review gaps, 10 explained source risks"},
+    {"command": "node scripts/validate_harness.mjs", "result": "passed; errors=0, only recorded upstream warnings"},
+    {"command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD", "result": "passed; current scoped audit accepted"},
+    {"command": "canonical prompt, analysis, answer-key, lock-word-bank, provenance, leak, and 3/4/3 progression assertions", "result": "passed; rendered/canonical fields, multiple-choice keys, lock answers, and repaired prompts match"},
+    {"command": "git diff --check", "result": "passed"},
+    {"command": "git verify-commit 5b1e84d6e518ebf6a8d11eac037fb703ff97b17a", "result": "passed; good ED25519 signature"}
+  ],
+  "local_status": "Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks": [
+    "All passages are simulation/synthetic, not true-exam claims.",
+    "The box remains candidate content; no approved-batch record or formal user approval is claimed.",
+    "Adjacent fixed-collocation boxes should be checked for productive rather than redundant progression during whole-track review.",
+    "The branch-local global corpus still contains 225 hard blockers, 2236 content risks, 2389 review gaps, and 2285 source risks after this scoped remediation.",
+    "Remaining CET4 boxes still require remediation and human review.",
+    "Branch remains parked until one of PRs #99-#103 leaves the queue."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
