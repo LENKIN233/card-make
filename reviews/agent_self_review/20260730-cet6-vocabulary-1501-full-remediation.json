@@ -1,0 +1,716 @@
+{
+  "review_id": "20260730-cet6-vocabulary-1501-full-remediation",
+  "created_at": "2026-07-30T14:24:30.266Z",
+  "agent": "codex",
+  "scope": {
+    "library": "词汇",
+    "group": "同义词替换",
+    "box": "词性转换",
+    "box_prefixes": [
+      "1501"
+    ],
+    "card_ids": [
+      "150101",
+      "150102",
+      "150103",
+      "150104",
+      "150105",
+      "150106",
+      "150107",
+      "150108",
+      "150109",
+      "150110",
+      "150111",
+      "150112"
+    ],
+    "closure_reason": "User-authorized full-track remediation: replace ten repeated placeholder prompts, four blank-only lock tasks, generic analyses, and the 150112 answer leak with twelve independent CET6 word-class transformation tasks; preserve interaction count, add synthetic provenance, and establish a 3/6/3 progression without adding or deleting cards.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-vocabulary-1501-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "184a36c1f2bfb8579a537b68c301e1b0ff8272123f46ac7e6d1f84b6652ea8ff",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "150101",
+        "150102",
+        "150103",
+        "150104",
+        "150105",
+        "150106",
+        "150107",
+        "150108",
+        "150109",
+        "150110",
+        "150111",
+        "150112"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1501 matches 词汇 / 同义词替换 / 词性转换 in box-catalog and every card knowledge_ref.",
+    "placeholder_removal": "Passed: every front is independently answerable; no repeated generic front or blank-only lock task remains.",
+    "transformation_logic": "Passed: argument roles, polarity, causality, degree, modality, time boundaries, light-verb structures, and required prepositions were checked across all twelve rewrites.",
+    "answer_path": "Passed: visible multiple-choice options use bounded structural descriptions where source-text overlap would otherwise reveal the correct rewrite.",
+    "interaction_parity": "Passed: every multiple-choice answer_key matches the sole is_correct option key; every lock_pattern matches blank_answers and all answers occur in the word bank.",
+    "task_schema_parity": "Passed: front.task_schema and front_content.task_schema are identical for every card.",
+    "progression": "Passed: 150101-150103 recognition/foundation, 150104-150109 application/pass, 150110-150112 transfer/high_score.",
+    "source_boundary": "Passed: all examples are simulation/synthetic and are not represented as true-exam material.",
+    "audio_boundary": "Not applicable: vocabulary transformation cards contain no audio and use audio_generation_method none."
+  },
+  "cards": [
+    {
+      "card_id": "150101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "建立词性转换等值改写的四项核对流程",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在选词、阅读改写和写作表达中同时控制词性、命题边界与学术语体。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别副词到形容词加名词结构的等值转换",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用动作名词承接原谓语，同时避免名词化造成因果或对象漂移。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150103",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别形容词到介词名词结构的等值转换",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练区分态度方式与结论立场，避免词性转换时增加原句没有的判断。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别形容词表语到副词谓语的等值转换",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在写作和阅读改写中用副词压缩表语结构，同时保持范围限定。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150105",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别副词动词到形容词名词结构的转换",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练动词名词化时正确选择介词并保留行动者与态度强度。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150106",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "把方式副词转换为名词短语中的形容词",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在句型重组中选择同词族正确形式，而不丢失动作参与者。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150107",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "把形容词表语转换为抽象名词",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练从表语形容词构造抽象名词结构，并保持证据强度和语义极性。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150108",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "把决定动词转换为轻动词加名词结构",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练识别轻动词名词化结构，并检查时间和事件完成性是否保持。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150109",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "把形容词可信度评价转换为抽象名词",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在多个抽象名词中保持评价属性与因果角色，不做词面近似替换。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150110",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "在动词名词化中保留不确定性范围",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在复杂改写中保留认识强度，避免把审慎表述过度确定化。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150111",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "把方式副词和解释动词共同重组为名词短语",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练双重词性转换并保持解释行为、内容从句和程度评价。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150112",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "1",
+        "box_name": "词性转换",
+        "box_prefix": "1501"
+      },
+      "quality_metadata": {
+        "main_training_goal": "综合判断跨词族与句型的等值改写",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary word-class transformation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在不依赖词面重合的情况下识别高质量等值改写。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "3 recognition/foundation, 6 application/pass, 3 transfer/high-score cards.",
+    "repetition_or_gap_risks": [
+      "Synthetic examples still require final user whole-track approval.",
+      "No true-exam provenance is claimed."
+    ],
+    "representative_cards": [
+      "150102",
+      "150109",
+      "150112"
+    ],
+    "next_step": "Park the validated branch without a PR while the five candidate-content PR slots remain occupied."
+  }
+}
