@@ -1,0 +1,718 @@
+{
+  "review_id": "20260730-cet6-reading-1123-full-remediation",
+  "created_at": "2026-07-30T20:18:30+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "仔细阅读",
+    "group": "长难句主干",
+    "box": "主谓双宾",
+    "box_prefixes": [
+      "1123"
+    ],
+    "card_ids": [
+      "112301",
+      "112302",
+      "112303",
+      "112304",
+      "112305",
+      "112306",
+      "112307",
+      "112308",
+      "112309",
+      "112310",
+      "112311",
+      "112312"
+    ],
+    "closure_reason": "User-authorized full-track remediation: close answer-path leaks in 112302, 112305, and 112310, replace generic analyses, restore complete coordinated direct objects in 112307 and 112311, remove unverified provenance, and complete sentence-specific schemas plus proportional 3/6/3 progression metadata without adding or deleting cards.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-reading-1123-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "4bcda61f54a34b713cfecb3f622f210d80116facb711b027fc891ab2048ff212",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "112301",
+        "112302",
+        "112303",
+        "112304",
+        "112305",
+        "112306",
+        "112307",
+        "112308",
+        "112309",
+        "112310",
+        "112311",
+        "112312"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1123 matches 仔细阅读 / 长难句主干 / 主谓双宾 in box-catalog and card knowledge_ref.",
+    "answer_path": "Passed: correct options use bounded semantic SVOO paraphrases and no longer copy source answer phrases; back sides retain exact evidence.",
+    "coordinated_direct_objects": "Passed: 112307 and 112311 now retain each complete coordinated DO as one correct selection rather than incorrectly eliminating the second conjunct.",
+    "grammar_correctness": "Passed: give/offer/grant/deny/promise patterns, IO/DO order, abstract-DO complements, to/for alternation, comparison, and adjunct boundaries were checked manually.",
+    "progression": "Passed: 112301-112303 recognition/foundation, 112304-112309 application/pass, 112310-112312 transfer/high_score.",
+    "source_boundary": "Passed: all examples are simulation/synthetic and are not represented as true exam material.",
+    "audio_boundary": "Not applicable: no audio object or asset change."
+  },
+  "cards": [
+    {
+      "card_id": "112301",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立主谓双宾四槽定位流程",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练快速判断谁向谁提供什么，避免宾语层级缺失。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "112302",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "跨过插入语识别接收者与内容",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练不被试点背景插入语打断双宾闭合。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "112303",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分双宾与用途介词修饰",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练 funding 与用途短语的支配层级。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "112304",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "拒绝用 for/to 存在与否机械判断双宾",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练以谓语支配而非介词词形判断双宾。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "112305",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "分离双宾主干与伴随分词链",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练 give 双宾与 while 伴随动作分层。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "112306",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分抽象 DO 与其 to 内容补足",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练 access 类抽象内容后的补足边界。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "112307",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "完整识别并列直接宾语",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练并列 DO 不漏项并保持接收者对应。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "112308",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分直接宾语与名词后的不定式补足",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练名词内容补足不冒充直接宾语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "112309",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别抽象 DO 与 over 范围修饰",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练抽象 DO 与其适用范围分离。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "112310",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 deny 的接收者与被拒内容",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练 deny 双宾和条件附加信息分层。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "112311",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 clinics 对应的完整并列 DO",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练双宾中的并列内容完整提取。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "112312",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "保持比较结构中直接宾语身份",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练比较省略不改变双宾角色。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "112301-112303 establish the S-V-IO-DO slots and distinguish purpose modifiers; 112304-112309 apply the method across unrelated prepositions, adjuncts, abstract direct objects, infinitive complements, and coordinated DOs; 112310-112312 transfer it to deny, promise, policy-condition, and comparison structures.",
+    "repetition_or_gap_risks": [
+      "All analyses and task schemas are sentence-specific; automated scope audit reports no template, duplicate, or short analysis risk.",
+      "Correct options no longer reproduce source SVOO phrases while back sides preserve exact evidence.",
+      "112307 and 112311 preserve complete coordinated direct objects.",
+      "All material is constructed simulation/synthetic content, not true-exam evidence.",
+      "The branch is candidate content only and does not create user approval or formal usability."
+    ],
+    "representative_cards": [
+      "112302",
+      "112303",
+      "112306",
+      "112307",
+      "112309",
+      "112310",
+      "112311"
+    ],
+    "next_step": "Validate, sign, and park without a PR because candidate-content PRs #99-#103 occupy the five-slot WIP limit; final whole-track approval remains user-only."
+  }
+}
+
