@@ -1,0 +1,714 @@
+{
+  "review_id": "20260730-cet6-vocabulary-1521-full-remediation",
+  "created_at": "2026-07-30T14:44:53.437Z",
+  "agent": "codex",
+  "scope": {
+    "library": "词汇",
+    "group": "高频词",
+    "box": "阅读高频词",
+    "box_prefixes": [
+      "1521"
+    ],
+    "card_ids": [
+      "152101",
+      "152102",
+      "152103",
+      "152104",
+      "152105",
+      "152106",
+      "152107",
+      "152108",
+      "152109",
+      "152110",
+      "152111",
+      "152112"
+    ],
+    "closure_reason": "User-authorized full-track remediation: restore catalog-owned box naming, replace ten repeated placeholder prompts, four blank-only lock tasks, generic analyses, and the final-card answer leak with twelve independent CET6 reading high-frequency vocabulary tasks; preserve interaction count, add synthetic provenance, and establish a 3/6/3 progression.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-vocabulary-1521-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "95e92e3bf9474864337fa69ce19a1780591dc9ceeb27630b10be7748d2c6c4f7",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "152101",
+        "152102",
+        "152103",
+        "152104",
+        "152105",
+        "152106",
+        "152107",
+        "152108",
+        "152109",
+        "152110",
+        "152111",
+        "152112"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1521 now matches 词汇 / 高频词 / 阅读高频词 in box-catalog at file, card, and knowledge_ref levels.",
+    "placeholder_removal": "Passed: every front is independently answerable; no repeated generic front or blank-only lock task remains.",
+    "vocabulary_logic": "Passed: address, account for, compelling, arbitrary, constrain, diminish, derive, undermine, conventional wisdom, feasible, and imply were checked for syntax, collocation, context direction, scope, and evidence strength.",
+    "answer_path": "Passed: visible choices remain bounded to the context and do not expose hidden answer text.",
+    "interaction_parity": "Passed: every multiple-choice answer_key matches the sole is_correct option key; every lock_pattern matches blank_answers and all answers occur in the word bank.",
+    "task_schema_parity": "Passed: front.task_schema and front_content.task_schema are identical for every card.",
+    "progression": "Passed: 152101-152103 recognition/foundation, 152104-152109 application/pass, 152110-152112 transfer/high_score.",
+    "source_boundary": "Passed: all examples are simulation/synthetic and are not represented as true-exam material.",
+    "audio_boundary": "Not applicable: reading-vocabulary cards contain no audio and use audio_generation_method none."
+  },
+  "cards": [
+    {
+      "card_id": "152101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "建立阅读高频词的语境义判定流程",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练 CET6 阅读中高频多义词的快速、受约束判义。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "152102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 address a concern 的处理义",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练通过抽象宾语识别高频动词的学术义。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "152103",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 account for 的解释与占比义",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练 account for 在研究因果与比例语境中的边界。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "152104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 compelling evidence 的有说服力义",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练评价证据强度的高频形容词与推断边界。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "152105",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 arbitrary threshold 的缺乏原则依据义",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练通过解释从句确定评价性高频词的准确范围。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "152106",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "掌握 constrain 对能力范围的限制义",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练资源约束语境中的高频动词选择。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "152107",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "掌握 diminish 的逐渐减弱义",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练阅读中变化趋势动词与时间线索的结合。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "152108",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "掌握 derive estimates from data 的推导义",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练研究方法语境中的结果—来源搭配。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "152109",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "掌握 undermine trust 的逐步削弱义",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练评价结果的渐进性动词与让步线索。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "152110",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 conventional wisdom 的普遍接受观点义",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练阅读中区分社会共识、正式规则与经验证据。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "152111",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "掌握 feasible 的约束内可行义",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练可行性词汇与模态、让步限制的联合判断。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "152112",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "2",
+        "group_name": "高频词",
+        "box_id": "1",
+        "box_name": "阅读高频词",
+        "box_prefix": "1521"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 imply 的暗示而非证明义",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading high-frequency vocabulary simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练阅读推断中暗示、支持与证明的强度分层。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "3 recognition/foundation, 6 application/pass, 3 transfer/high-score cards.",
+    "repetition_or_gap_risks": [
+      "Synthetic examples still require final user whole-track approval.",
+      "No true-exam provenance is claimed."
+    ],
+    "representative_cards": [
+      "152103",
+      "152109",
+      "152112"
+    ],
+    "next_step": "Park the validated branch without a PR while the five candidate-content PR slots remain occupied."
+  }
+}
