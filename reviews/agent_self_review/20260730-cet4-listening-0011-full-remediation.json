@@ -1,0 +1,783 @@
+{
+  "review_id": "20260730-cet4-listening-0011-full-remediation",
+  "created_at": "2026-07-30T13:35:50+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "语音现象",
+    "box": "弱读",
+    "box_prefixes": [
+      "0011"
+    ],
+    "card_ids": [
+      "001101",
+      "001102",
+      "001103",
+      "001104",
+      "001105",
+      "001106",
+      "001107",
+      "001108",
+      "001109",
+      "001110",
+      "001111",
+      "001112"
+    ],
+    "closure_reason": "User-authorized CET4 full-track remediation: close three saved answer-leak blockers, replace generic/self-referential tasks, repair weak-form and stress terminology, complete source/quality/progression metadata, and explicitly separate content-text acceptance from unresolved script and perceptual-audio blockers for box 0011.",
+    "source_issue_refs": [
+      "exports/cet4-card-quality-audit-20260729.json",
+      "user_requested_cet4_full_track_remediation_plan",
+      "independent_agent_review:/root/review_0011",
+      "independent_phonetics_review:/root/phonetics_0011"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "spec/audio-generation-contract.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/runtime-boundaries.json",
+    "../softbook_cet/infra/cloudbase/content-manifest-v1-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "review_dimensions": {
+    "content_text": "001101-001106 pass; 001107-001112 have corrected review logic but remain blocked from formal use by meta-teaching legacy TTS scripts.",
+    "audio_technical": "12/12 paths exist; Git LFS validation passes; local SHA-256 hashes were observed; afinfo parses each as mono 24 kHz MP3 and durations match card metadata.",
+    "audio_text_and_perceptual": "001101-001106 transcript text is reviewed, but no independent ASR transcript proof or human perceptual QC exists; 001107-001112 text and audio are both unreviewed and require rewrite/regeneration.",
+    "formal_release": "blocked; no audio QC record, approved batch, or user approval is claimed."
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet4-listening-0011-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "6f5949b30e5f4560dc28229a54b295387373de75695b7f63d02250d1e2da536f",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "001101",
+        "001102",
+        "001103",
+        "001104",
+        "001105",
+        "001106",
+        "001107",
+        "001108",
+        "001109",
+        "001110",
+        "001111",
+        "001112"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "audio_evidence": {
+    "referenced_assets": 12,
+    "paths_present": 12,
+    "lfs_validation": "pass",
+    "decode_probe": "pass_afinfo_mono_24000_hz_duration_matches_metadata",
+    "local_hashes_observed": 12,
+    "hash_policy": "formal legacy_adoption/QC records were not created in this content branch",
+    "offline_asr": "not_available; transcript-to-audio matching is not independently proven",
+    "tts_text_reviewed_true": 6,
+    "tts_text_reviewed_false": 6,
+    "tts_audio_reviewed_true": 0,
+    "tts_audio_reviewed_false": 12
+  },
+  "cards": [
+    {
+      "card_id": "001101",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "区分义务结构与方向短语中 to 的语法角色",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在相同弱式听感下恢复不同的 to 结构。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script is suitable for content review, but transcript matching was not independently ASR-proven and target weak-form realization remains unverified by human perceptual QC."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the asset until transcript matching and perceptual QC are recorded."
+    },
+    {
+      "card_id": "001102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "区分不定式 to 与定冠词 the 的弱读角色",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练从轻短功能词恢复动作链和名词短语。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script is suitable for content review, but transcript matching was not independently ASR-proven and target weak-form realization remains unverified by human perceptual QC."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the asset until transcript matching and perceptual QC are recorded."
+    },
+    {
+      "card_id": "001103",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "识别中性语境中情态助动词 could 的弱式候选",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在条件语境中恢复轻读情态词及其语法意义。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script is suitable for content review, but transcript matching was not independently ASR-proven and target weak-form realization remains unverified by human perceptual QC."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the asset until transcript matching and perceptual QC are recorded."
+    },
+    {
+      "card_id": "001104",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "从转折语流恢复 was supposed to 与 had to 结构",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练依靠内容词和句法槽位补回弱读功能词。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script is suitable for content review, but transcript matching was not independently ASR-proven and target weak-form realization remains unverified by human perceptual QC."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the asset until transcript matching and perceptual QC are recorded."
+    },
+    {
+      "card_id": "001105",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "在完整条件句中识别 can 的弱读候选位置",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练同时恢复情态条件和动作结果。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script is suitable for content review, but transcript matching was not independently ASR-proven and target weak-form realization remains unverified by human perceptual QC."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the asset until transcript matching and perceptual QC are recorded."
+    },
+    {
+      "card_id": "001106",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "从完整句子按顺序恢复七个弱读功能词",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在功能词密集的语流中恢复完整句法链。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script is suitable for content review, but transcript matching was not independently ASR-proven and target weak-form realization remains unverified by human perceptual QC."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the asset until transcript matching and perceptual QC are recorded."
+    },
+    {
+      "card_id": "001107",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "block",
+      "review_dimension": "content_logic_repaired_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "识别 can you 弱读讲解缺失的声学与语境证据",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练区分可迁移规则与未经验证的单例断言。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The meta-teaching transcript does not provide the claimed following content word or a natural focus context.",
+        "tts_text_reviewed and tts_audio_reviewed are false; natural-script rewrite, regeneration, transcript matching, perceptual QC, and app playback evidence are required before release."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with a natural CET-context sentence or dialogue, rewrite the learning task around the new evidence, regenerate after provider selection, and complete formal QC."
+    },
+    {
+      "card_id": "001108",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "block",
+      "review_dimension": "content_logic_repaired_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "区分弱式语法预测与录音中的实际实现",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练审查弱读规则是否被音频证据真正支持。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The meta-teaching transcript asserts was/to reduction and call prominence without a natural utterance or perceptual evidence.",
+        "tts_text_reviewed and tts_audio_reviewed are false; natural-script rewrite, regeneration, transcript matching, perceptual QC, and app playback evidence are required before release."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with a natural CET-context sentence or dialogue, rewrite the learning task around the new evidence, regenerate after provider selection, and complete formal QC."
+    },
+    {
+      "card_id": "001109",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "block",
+      "review_dimension": "content_logic_repaired_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "区分功能词弱化、内容词突出与篇章主题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练避免把语音现象直接误写成篇章结论。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The transcript is unnatural and incorrectly jumps from function-word reduction to a discourse-topic conclusion.",
+        "tts_text_reviewed and tts_audio_reviewed are false; natural-script rewrite, regeneration, transcript matching, perceptual QC, and app playback evidence are required before release."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with a natural CET-context sentence or dialogue, rewrite the learning task around the new evidence, regenerate after provider selection, and complete formal QC."
+    },
+    {
+      "card_id": "001110",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "block",
+      "review_dimension": "content_logic_repaired_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "用对比语境检验句子核重音的绝对化结论",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移判断语音规则的证据范围与适用条件。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The isolated meta fragment cannot establish actual auxiliary reduction or sentence nuclear stress.",
+        "tts_text_reviewed and tts_audio_reviewed are false; natural-script rewrite, regeneration, transcript matching, perceptual QC, and app playback evidence are required before release."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with a natural CET-context sentence or dialogue, rewrite the learning task around the new evidence, regenerate after provider selection, and complete formal QC."
+    },
+    {
+      "card_id": "001111",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "block",
+      "review_dimension": "content_logic_repaired_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "区分冠词弱式、词内重音、句子核重音与态度",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移避免由单个重读词过度推断说话者态度。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "No natural dialogue or verifiable intonation supports the claimed sentence prominence and attitude.",
+        "tts_text_reviewed and tts_audio_reviewed are false; natural-script rewrite, regeneration, transcript matching, perceptual QC, and app playback evidence are required before release."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with a natural CET-context sentence or dialogue, rewrite the learning task around the new evidence, regenerate after provider selection, and complete formal QC."
+    },
+    {
+      "card_id": "001112",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "1",
+        "group": "语音现象",
+        "box_id": "1",
+        "box": "弱读",
+        "box_prefix": "0011"
+      },
+      "status": "block",
+      "review_dimension": "content_logic_repaired_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "区分地点短语弱读、语法信息与句子焦点",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移同时保留弱读功能词与地点核心信息。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The meta narration cannot prove a unique location-information anchor and does not preserve the roles of at and the.",
+        "tts_text_reviewed and tts_audio_reviewed are false; natural-script rewrite, regeneration, transcript matching, perceptual QC, and app playback evidence are required before release."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with a natural CET-context sentence or dialogue, rewrite the learning task around the new evidence, regenerate after provider selection, and complete formal QC."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "001101-001103 recognize grammatical roles behind weak-form candidates; 001104-001106 apply grammar-slot restoration to natural sentences; 001107-001109 are corrected diagnostic placeholders that expose unsupported legacy audio claims; 001110-001112 transfer by separating weak forms, lexical stress, sentence nuclear stress, attitude, and discourse inference, but remain formally blocked until natural scripts and audio replace the legacy assets.",
+    "repetition_or_gap_risks": [
+      "All 12 materials are simulation/synthetic, not true-exam claims.",
+      "The three saved front-answer leaks are closed and machine audit reports no scoped hard blockers, content risks, or review gaps.",
+      "001107-001112 remain formal script blockers: meta-teaching narration is not natural CET listening material and cannot be adopted as legacy audio.",
+      "All 12 assets have tts_audio_reviewed=false; technical decoding and hashes do not prove transcript match, weak-form realization, rhythm, sentence nuclear stress, volume, or real-device playback quality.",
+      "The apparent 3/6/3 metadata progression is not a formal learning-chain pass while six cards remain audio-script blocked.",
+      "Canonical interaction_id is aligned with flip or multiple_choice, while legacy timing/hold fields remain migration evidence; runtimes must not consume them as a second interaction authority.",
+      "No formal approval is created; final whole-track approval remains with the user."
+    ],
+    "representative_cards": [
+      "001102",
+      "001106",
+      "001110"
+    ],
+    "next_step": "Commit and park the content/evidence checkpoint; route 001107-001112 into natural-script rewrite and provider-selection, then run transcript matching, 12/12 perceptual QC, and app playback verification before updating this box for release review."
+  }
+}
