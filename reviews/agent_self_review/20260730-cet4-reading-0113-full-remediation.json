@@ -1,0 +1,642 @@
+{
+  "review_id": "20260730-cet4-reading-0113-full-remediation",
+  "created_at": "2026-07-30T11:07:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "仔细阅读",
+    "group": "干扰项排除",
+    "box": "偷换概念",
+    "box_prefixes": [
+      "0113"
+    ],
+    "card_ids": [
+      "011301",
+      "011302",
+      "011303",
+      "011304",
+      "011305",
+      "011306",
+      "011307",
+      "011308",
+      "011309",
+      "011310",
+      "011311",
+      "011312"
+    ],
+    "closure_reason": "User-authorized CET4 full-track remediation: close four answer-leak findings and complete source, quality, and progression metadata for box 0113.",
+    "source_issue_refs": [
+      "exports/cet4-card-quality-audit-20260729.json",
+      "user_requested_cet4_full_track_remediation_plan"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet4-reading-0113-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "030cab1c44a08cbc2295773926d81caf29309929fb0b3c6306619d7eb69e2d6d",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "011301",
+        "011302",
+        "011303",
+        "011304",
+        "011305",
+        "011306",
+        "011307",
+        "011308",
+        "011309",
+        "011310",
+        "011311",
+        "011312"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "011301",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分同一话题下的信息存在与解释充分性",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "建立偷换概念的基本识别框架。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "011302",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别判断任务被相邻任务替换",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练核对选项与原文是否回答同一个问题。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "011303",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别主因、唯一原因与结果判断之间的换义",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练守住程度词和因果范围。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "011304",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别具体商业宣称被扩大为整个研究领域",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练检查具体对象与上位类别的边界。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "011305",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别外部职场问题被改写为个人能力问题",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练核对判断对象是否从环境转向个人。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "011306",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分同一结果下的不同原因机制",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练从结果词回查因果机制是否被替换。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "011307",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分制度信任与总体生活满意度",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练识别相邻正向指标之间的概念替换。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "011308",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分参与率与能力水平",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练按测量指标判断选项是否越界。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "011309",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分政策的直接效果与更广泛公平结果",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练拆分同一政策领域中的不同目标变量。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "011310",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分透明度动作与信任、声誉等结果",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "迁移识别过程指标与结果指标的偷换。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "011311",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分学习信心与实际掌握程度",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "迁移识别心理变量与能力变量的替换。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "011312",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "1",
+        "library": "仔细阅读",
+        "group_id": "1",
+        "group": "干扰项排除",
+        "box_id": "3",
+        "box": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分具体接入障碍与更广泛参与障碍",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "迁移检查障碍类型和结论范围是否同时扩大。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "011301-011303 recognize object, task, degree, and causal-scope substitutions; 011304-011309 apply boundary checks across category, actor, mechanism, metric, and policy targets; 011310-011312 transfer the method to process/result, psychology/mastery, and access/participation distinctions.",
+    "repetition_or_gap_risks": [
+      "All passages are simulation/synthetic, not true-exam claims.",
+      "Four copied-answer paths were converted to transferable concept-boundary descriptions.",
+      "No formal approval is created; final whole-track approval remains with the user."
+    ],
+    "representative_cards": [
+      "011301",
+      "011306",
+      "011312"
+    ],
+    "next_step": "Validate, sign, and park this branch, then continue the next blocker-priority CET4 box."
+  }
+}
