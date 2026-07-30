@@ -1,0 +1,834 @@
+{
+  "review_id": "20260730-cet4-listening-0034-full-remediation",
+  "created_at": "2026-07-30T18:54:15+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "细节捕捉",
+    "box": "时间因果",
+    "box_prefixes": [
+      "0034"
+    ],
+    "card_ids": [
+      "003401",
+      "003402",
+      "003403",
+      "003404",
+      "003405",
+      "003406",
+      "003407",
+      "003408",
+      "003409",
+      "003410",
+      "003411",
+      "003412"
+    ],
+    "closure_reason": "User-authorized CET4 full-track remediation: close the 003405 answer-path leak, replace repeated and interaction-mismatched prompts and analyses with transcript-specific time/cause work, remove unverified provenance, and document the six natural versus six rejected legacy-placeholder TTS texts without modifying any audio object or claiming formal audio readiness.",
+    "source_issue_refs": [
+      "exports/cet4-card-quality-audit-20260729.json",
+      "user_requested_cet4_full_track_remediation_plan"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "spec/audio-generation-contract.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/platform-contract.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/runtime-boundaries.json",
+    "../softbook_cet/infra/cloudbase/content-manifest-v1-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "audio_boundary": {
+    "audio_objects_unchanged": true,
+    "canonical_audio_object_sha256_before_and_after": "e75f4de5a5a2ef1b052742f6706bd78d2b9e88735c3b9bc6a9dee05f1a5fa21d",
+    "audio_assets_changed": false,
+    "transcript_review": {
+      "natural_and_task_aligned": [
+        "003401",
+        "003402",
+        "003403",
+        "003404",
+        "003405",
+        "003406"
+      ],
+      "rejected_as_unnatural_legacy_placeholders": [
+        "003407",
+        "003408",
+        "003409",
+        "003410",
+        "003411",
+        "003412"
+      ]
+    },
+    "audio_file_human_qc_completed": false,
+    "formal_audio_approval_claimed": false,
+    "usage_boundary": "all legacy TTS assets remain candidate-sample-only; 003407-003412 require text and audio replacement before formal use",
+    "tts_audio_reviewed": false
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet4-listening-0034-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "c92df4f7c7356615fa2c5c86c9af9c0225ca850eb500a8f8dae3db99b9c9bf88",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "003401",
+        "003402",
+        "003403",
+        "003404",
+        "003405",
+        "003406",
+        "003407",
+        "003408",
+        "003409",
+        "003410",
+        "003411",
+        "003412"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "003401",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分 because 两侧的结果与完整原因",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保留导致缺席的关键时长信息。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": false
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "003402",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 to do 目的与 end up doing 结果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练按设问角度排除尾部结果干扰。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": false
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "003403",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "提取 due to 引出的完整原因短语",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练原因范围与后续处理信息的分离。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": false
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "003404",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "提取 hoping to 引出的并列目的",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练跨较长语义段保留两项同层信息。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": false
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "003405",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用目的关系与语义覆盖度识别同义改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练排除添加无证据人物或事件的选项。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": false
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "003406",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "复述外部依据、主观推断与实际结果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练识别原因链中的事实层和判断层。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": true,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": false
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "003407",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 but 引起的信息权重更新",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy placeholder TTS text retained unchanged for auditability; candidate sample only; text and audio require replacement before formal use.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练从干扰背景切换到答案相关信息。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": false,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "003408",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "复述 because 连接的因果方向",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy placeholder TTS text retained unchanged for auditability; candidate sample only; text and audio require replacement before formal use.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保留 only once 这一限制条件。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": false,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "003409",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分重复背景与 yet 后的选择重点",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy placeholder TTS text retained unchanged for auditability; candidate sample only; text and audio require replacement before formal use.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练利用显式权重词更新答案候选。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": false,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "003410",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "迁移时间背景与主句动作的联合概括",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy placeholder TTS text retained unchanged for auditability; candidate sample only; text and audio require replacement before formal use.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在不自然占位文本中仍保持结构判断，同时识别发布阻断。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": false,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "003411",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "迁移 Although 让步背景与主句结果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy placeholder TTS text retained unchanged for auditability; candidate sample only; text and audio require replacement before formal use.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在多项事实干扰下保留逻辑反差。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": false,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    },
+    {
+      "card_id": "003412",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "4",
+        "box_name": "时间因果",
+        "box_prefix": "0034"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "迁移并列动作与因果关系的区分",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy placeholder TTS text retained unchanged for auditability; candidate sample only; text and audio require replacement before formal use.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练分别锁定主语、动作和逻辑连接。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio_review": {
+        "transcript_reviewed": true,
+        "task_alignment_reviewed": true,
+        "text_quality_accepted": false,
+        "audio_object_unchanged": true,
+        "audio_file_reviewed": false,
+        "sample_only": true,
+        "replacement_required": true
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      }
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "003401-003403 recognize explicit cause and purpose boundaries; 003404-003409 apply parallel-purpose, paraphrase, inference-chain, contrast, cause-direction, and focus-shift extraction; 003410-003412 transfer temporal background, concession, and parallel-action logic.",
+    "repetition_or_gap_risks": [
+      "All twelve analyses are unique and grounded in their own unchanged transcript evidence.",
+      "Flip prompts describe flip behavior only; legacy click and long-hold wording was removed.",
+      "All examples are constructed simulation/synthetic content, not true-exam claims; unverified content-pool provenance was removed.",
+      "The twelve-card box uses a proportional 3/6/3 recognition-application-transfer progression.",
+      "003401-003406 have natural task-aligned transcripts; 003407-003412 are explicitly rejected as unnatural legacy placeholders with tts_text_reviewed=false.",
+      "No audio object or asset changed; no human audio QC, formal content approval, or formal audio readiness is claimed."
+    ],
+    "representative_cards": [
+      "003403",
+      "003405",
+      "003408",
+      "003410",
+      "003412"
+    ],
+    "next_step": "Validate, sign, and park this content branch under the five-content-PR WIP limit; regenerate 003407-003412 only in a separate audio/tooling workflow after approved replacement text, then continue CET4 listening boxes 0042 and 0043."
+  }
+}
