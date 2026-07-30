@@ -1,0 +1,718 @@
+{
+  "review_id": "20260730-cet6-reading-1113-full-remediation",
+  "created_at": "2026-07-30T19:46:45+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "仔细阅读",
+    "group": "干扰项排除",
+    "box": "偷换概念",
+    "box_prefixes": [
+      "1113"
+    ],
+    "card_ids": [
+      "111301",
+      "111302",
+      "111303",
+      "111304",
+      "111305",
+      "111306",
+      "111307",
+      "111308",
+      "111309",
+      "111310",
+      "111311",
+      "111312"
+    ],
+    "closure_reason": "User-authorized full-track remediation: close answer-path leaks in 111302 and 111305, replace generic or short analyses, restore complete visible statements for elimination cards 111307 and 111311, remove unverified provenance, and complete concept-specific task schemas plus proportional 3/6/3 progression metadata without adding or deleting cards.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-reading-1113-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "1ddae868323a0ca0c2645a35ba2f4175089fa9922cc735ca731392a3346a73cc",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "111301",
+        "111302",
+        "111303",
+        "111304",
+        "111305",
+        "111306",
+        "111307",
+        "111308",
+        "111309",
+        "111310",
+        "111311",
+        "111312"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1113 matches 仔细阅读 / 干扰项排除 / 偷换概念 in box-catalog and card knowledge_ref.",
+    "answer_path": "Passed: 111302 and 111305 correct options paraphrase the supported boundaries without reproducing source answer phrases.",
+    "elimination_visibility": "Passed: 111307 and 111311 expose complete statements in both elimination arrays and answer_key text matches visible correct statements.",
+    "concept_boundaries": "Passed: access versus quality, correlation versus causation, pilot versus rollout, reporting rate versus incident prevalence, and short-term sentiment versus long-term structure remain distinct.",
+    "progression": "Passed: 111301-111303 recognition/foundation, 111304-111309 application/pass, 111310-111312 transfer/high_score.",
+    "source_boundary": "Passed: all examples are simulation/synthetic and are not represented as true exam material.",
+    "audio_boundary": "Not applicable: no audio object or asset change."
+  },
+  "cards": [
+    {
+      "card_id": "111301",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立概念偷换的四维边界检查法",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练先确认“说的是不是同一件事”，再比较选项方向。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111302",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分资源可获得性与学习质量",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练保留已测结果与未评估结果的证据边界。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111303",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分相关证据与因果证明",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读高频的相关不等于因果判断。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111304",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "拒绝用共现关系替代概念等价",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练不把相关概念误当同义表达。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111305",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分政策试点与全面实施",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练识别政策阶段、范围和用途的概念升级。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111306",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "核对相关性与因果机制证据等级",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练精确读取 association 与 causal uncertainty。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111307",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别试点范围被升级为正式推广",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练多选题中排除试点被偷换成全面实施。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111308",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分 access 与 quality 的测量维度",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练识别获得机会与效果质量的维度差异。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111309",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "诊断概念偷换与方向反转的差异",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "建立先概念、后方向的可重复排错顺序。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111310",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分报告率与真实事件发生率",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练区分可观测报告指标与潜在真实状态。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111311",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分短期态度与长期结构变化",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练保留时间尺度和结构层级的双边界。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "111312",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用概念对齐而非术语复杂度判断正确性",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练抵抗更专业术语制造的虚假正确感。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "111301-111303 establish concept-boundary recognition through access/quality and correlation/causation; 111304-111309 apply boundary checks to co-occurrence, policy stage, evidence level, and diagnostic ordering; 111310-111312 transfer the method to proxy metrics, time-scale/structure distinctions, and misleading terminology specificity.",
+    "repetition_or_gap_risks": [
+      "All analyses and task schemas are concept-specific; automated scope audit reports no template, duplicate, or short analysis risk.",
+      "111302 and 111305 no longer leak correct-answer wording.",
+      "111307 and 111311 no longer present bare option letters without statement content.",
+      "All material is constructed simulation/synthetic content, not true-exam evidence.",
+      "The branch is candidate content only and does not create user approval or formal usability."
+    ],
+    "representative_cards": [
+      "111302",
+      "111303",
+      "111305",
+      "111307",
+      "111310",
+      "111311",
+      "111312"
+    ],
+    "next_step": "Validate, sign, and park without a PR because candidate-content PRs #99-#103 occupy the five-slot WIP limit; final whole-track approval remains user-only."
+  }
+}
+
