@@ -18,7 +18,7 @@
       "reviews/agent_self_review/20260730-cet6-grammar-1610-full-remediation.json",
       "reviews/audit_scopes/20260730-cet6-grammar-1610-full-remediation-scope-audit.json"
     ],
-    "patch_sha256": "df5310e53f04845cdcbe2f0b3d78c6493c7636a60139e00af6d8450aa7d58df3"
+    "patch_sha256": "81cfe0ce7237f396de46e9e2317c2678145eb7273d07783291d50cc2c0337cbc"
   },
   "summary": [
     "Preserved the authoritative eight-card 名词性从句 scope while replacing untraced examples with independently answerable simulations.",
@@ -37,12 +37,13 @@
     {"command": "manual assertions for catalog placement/count, normalized/legacy parity, MC/elimination/flip answer parity, source/audio boundary, and 2/4/2 progression", "result": "passed"},
     {"command": "git verify-commit beabe94a6140024ad25e94a04be91a5f5bc8a946", "result": "passed: good ED25519 signature"},
     {"command": "allowed weak_point_tags assertion plus self-review/scoped-audit fingerprint parity", "result": "passed: all 1610 tags belong to the authority enum; no legacy tag remains in metadata; corpus digest 8c1f729cbe6a937f496d1c30e4ee71312ff790fe66a8831aad02a357b888dbd4"},
-    {"command": "git verify-commit 6e0a2ba07515c4e03d7adf64528ad8d24e539198", "result": "passed: good ED25519 signature"}
+    {"command": "git verify-commit 6e0a2ba07515c4e03d7adf64528ad8d24e539198", "result": "passed: good ED25519 signature"},
+    {"command": "git diff --binary main...6e0a2ba07515c4e03d7adf64528ad8d24e539198 -- <three declared scope paths> | shasum -a 256", "result": "passed: full recoverable scope digest 81cfe0ce7237f396de46e9e2317c2678145eb7273d07783291d50cc2c0337cbc"}
   ],
-  "local_status": "Original content and handoff commits were already pushed; signed schema-enum repair commit prepared, with refreshed handoff commit pending at record update. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "local_status": "Content, schema-enum repair, and handoff evidence are committed on this branch. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
   "remaining_risks": [
     "All eight cards are synthetic candidate content and require final user whole-track approval before integration.",
-    "Sixteen CET6 hard-blocker prefixes remain unresolved after 1610, including the blocked 1030 authority conflict and five open sample prefixes.",
+    "Six CET6 hard-blocker prefixes remain outside this repaired candidate scope: 1030, 1100, 1101, 1102, 1110, and 1111; 1620 formal audio additionally awaits named-human QC.",
     "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
   ],
   "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
