@@ -1,0 +1,17 @@
+{
+  "handoff_id":"20260730-content-cet4-full-remediation-0203","created_at":"2026-07-30T16:30:55+08:00","agent":"codex","branch":"content/cet4-full-remediation-0203","base_branch":"main","commit_sha":"1b711142846f696d5ad90f75d631c2fe3d7283da","push_ref":"origin/content/cet4-full-remediation-0203","PR_url":"https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0203","PR_state":"PARKED_NO_PR_WIP_LIMIT","is_draft":false,
+  "scope":{"change_type":"content_candidate_full_box_remediation","track":"cet4","library":"选词填空","group":"词性判断","box":"副词","box_prefix":"0203","card_ids":["020301","020302","020303","020304","020305","020306","020307","020308","020309","020310"],"touched_paths":["card_boxes_json/card_boxes_seed_cet4_bankedcloze_0203.json","reviews/agent_self_review/20260730-cet4-bankedcloze-0203-full-remediation.json","reviews/audit_scopes/20260730-cet4-bankedcloze-0203-full-remediation-scope-audit.json","reviews/git_handoffs/20260730-content-cet4-full-remediation-0203.json"],"patch_sha256":"f5d7321679fb6347721e25a1154214cc5dfc2bce27175746ad8d2b4a7ff22399"},
+  "summary":["Closed two answer-path leaks and completed source, quality, and 3/4/3 progression metadata for adverb box 0203.","Split a contradictory two-task prompt into one coherent rarely-versus-rare decision and tightened the predicate-first adverb framework.","Changed 020309 from consequently to notably because the second proposition is an emphasized comparison rather than a causal result."],
+  "validation":[
+    {"command":"node scripts/validate_cards.mjs --report-path exports/card_validation_report.json","result":"passed; cards=2414, errors=0, warnings=0"},
+    {"command":"node scripts/audit_card_quality.mjs --scope-card-ids 020301,020302,020303,020304,020305,020306,020307,020308,020309,020310 --write-scope-report reviews/audit_scopes/20260730-cet4-bankedcloze-0203-full-remediation-scope-audit.json","result":"passed; 0 hard blockers, 0 content risks, 0 review gaps, 10 explained source risks"},
+    {"command":"node scripts/validate_harness.mjs","result":"passed; errors=0, only recorded upstream warnings"},
+    {"command":"node scripts/validate_pr_scope.mjs --base origin/main --head HEAD","result":"passed; current scoped audit accepted"},
+    {"command":"canonical prompt, analysis, multiple-choice, lock-word-bank, logic-relation, provenance, and 3/4/3 progression assertions","result":"passed; rendered/canonical fields and all answer structures match"},
+    {"command":"git diff --check","result":"passed"},
+    {"command":"git verify-commit 1b711142846f696d5ad90f75d631c2fe3d7283da","result":"passed; good ED25519 signature"}
+  ],
+  "local_status":"Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks":["All passages are simulation/synthetic, not true-exam claims.","The box remains candidate content; no approved-batch record or formal user approval is claimed.","Discourse-adverb coverage should be checked against adjacent boxes during whole-track review.","The branch-local global corpus still contains 225 hard blockers, 2255 content risks, 2389 review gaps, and 2285 source risks after this scoped remediation.","Remaining CET4 boxes still require remediation and human review.","Branch remains parked until one of PRs #99-#103 leaves the queue."],
+  "merge_authority":"no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
