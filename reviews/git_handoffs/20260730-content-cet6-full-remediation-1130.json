@@ -1,0 +1,71 @@
+{
+  "handoff_id": "20260730-content-cet6-full-remediation-1130",
+  "created_at": "2026-07-30T21:05:58+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-full-remediation-1130",
+  "base_branch": "main",
+  "commit_sha": "adcdd93529cce879772a5ea73f74f30956a7f246",
+  "push_ref": "origin/content/cet6-full-remediation-1130",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1130",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate",
+    "box_prefixes": [
+      "1130"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_reading_1130.json",
+      "reviews/agent_self_review/20260730-cet6-reading-1130-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet6-reading-1130-full-remediation-scope-audit.json"
+    ],
+    "patch_sha256": "25e95f17daefde7178d8e39da651ea8b8dcbd7710897ae20dfe1c283c3223af7"
+  },
+  "summary": [
+    "Closed four answer-path leaks with bounded modifier descriptions and replaced generic analyses with sentence-specific bracketing and attachment reasoning.",
+    "Corrected 113006 to use plural agreement for the relative-clause antecedent and resolved 113007's direct-versus-nested modifier contradiction.",
+    "Removed the unsupported true-exam-rewrite claim from 113009 and corrected formal subject-verb agreement to data were in 113010.",
+    "Added complete task schemas, synthetic provenance, quality metadata, and a proportional 3/6/3 progression without adding cards, deleting cards, or changing audio."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path /tmp/1130-postcommit-cards.json",
+      "result": "passed: 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 113001,...,113012 --write-scope-report reviews/audit_scopes/20260730-cet6-reading-1130-full-remediation-scope-audit.json",
+      "result": "passed: 0 hard blockers, 0 content risks, 0 review gaps, 12 declared synthetic-source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with recorded upstream-version and group-alignment warnings only"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed: no audio records in scope"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base main --head HEAD",
+      "result": "passed: primary scope prefix 1130"
+    },
+    {
+      "command": "node scripts/validate_delivery_boundary.mjs",
+      "result": "passed: one card file and two review-evidence files, no approval or audio files"
+    },
+    {
+      "command": "manual assertions for modifier attachment, agreement, task-schema parity, source claims, answer keys, elimination parity, swipe answers, and 3/6/3 progression",
+      "result": "passed"
+    },
+    {
+      "command": "git verify-commit adcdd93529cce879772a5ea73f74f30956a7f246",
+      "result": "passed: good ED25519 signature"
+    }
+  ],
+  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "remaining_risks": [
+    "All twelve cards are synthetic candidate content and require final user whole-track approval before integration.",
+    "Twenty-nine CET6 hard-blocker prefixes remain unresolved after 1130, including the blocked 1030 authority conflict.",
+    "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
