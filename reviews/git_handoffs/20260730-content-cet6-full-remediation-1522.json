@@ -4,7 +4,8 @@
   "agent": "codex",
   "branch": "content/cet6-full-remediation-1522",
   "base_branch": "main",
-  "commit_sha": "677d12b45c81f77d0af14ae77a497e66dbc633f4",
+  "commit_sha": "feebc691d321eadb326a84e977a42eecc5d586e3",
+  "original_content_commit_sha": "677d12b45c81f77d0af14ae77a497e66dbc633f4",
   "push_ref": "origin/content/cet6-full-remediation-1522",
   "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1522",
   "PR_state": "PARKED_NO_PR_WIP_LIMIT",
@@ -19,13 +20,14 @@
       "reviews/agent_self_review/20260730-cet6-vocabulary-1522-full-remediation.json",
       "reviews/audit_scopes/20260730-cet6-vocabulary-1522-full-remediation-scope-audit.json"
     ],
-    "patch_sha256": "5b45638f6363232ed744923f7097d7f59afada4faf2ef62a292ef2251fe74bd8"
+    "patch_sha256": "05ee8ee1c1a81fe8f9d9dd75dcca24773359f0a846ac5e13e12e08701d87cd39"
   },
   "summary": [
     "Restored the catalog-owned box name from 高频词-写作高级词汇 to 写作高级词汇 at file, card, and knowledge_ref levels.",
     "Replaced repeated placeholder prompts and blank-only lock tasks with twelve independently answerable CET6 advanced-writing vocabulary tasks.",
     "Covered precise register upgrades, non-absolute causality, formal collocations, bounded quantification, policy effects, risk language, resource allocation, cautious conclusions, and discourse connection.",
-    "Preserved the interaction sequence, declared synthetic provenance, and established a 3/6/3 recognition/application/transfer progression."
+    "Preserved the interaction sequence, declared synthetic provenance, and established a 3/6/3 recognition/application/transfer progression.",
+    "Repaired later schema drift by mapping writing output and evidence-strategy tags to authority-owned enums, removing redundant collocation aliases already owned by vocabulary_weak, and replacing three illegal challenge levels with high_score in cards and self-review."
   ],
   "validation": [
     {
@@ -59,12 +61,20 @@
     {
       "command": "git verify-commit 677d12b45c81f77d0af14ae77a497e66dbc633f4",
       "result": "passed: good ED25519 signature"
+    },
+    {
+      "command": "allowed weak_point_tags and difficulty assertions plus card/self-review metadata and scoped-audit fingerprint parity",
+      "result": "passed: all 1522 metadata values belong to authority enums; corpus digest 2a59f03d8a5ccbb453a685574cb683166dc36c5df19f0585f74801ee8340405d"
+    },
+    {
+      "command": "git verify-commit feebc691d321eadb326a84e977a42eecc5d586e3",
+      "result": "passed: good ED25519 signature"
     }
   ],
-  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "local_status": "Original content and handoff commits were already pushed; signed metadata-enum repair commit prepared, with refreshed handoff commit pending at record update. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
   "remaining_risks": [
     "All twelve cards are synthetic candidate content and require final user whole-track approval before integration.",
-    "Seventeen CET6 hard-blocker prefixes remain unresolved after 1522, including the blocked 1030 authority conflict and five open sample prefixes.",
+    "Six CET6 hard-blocker prefixes remain outside this repaired candidate scope: 1030, 1100, 1101, 1102, 1110, and 1111; 1620 formal audio additionally awaits named-human QC.",
     "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
   ],
   "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
