@@ -1,0 +1,829 @@
+{
+  "review_id": "20260730-cet4-listening-0002-full-remediation",
+  "created_at": "2026-07-30T13:51:58+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测信号词",
+    "box_prefixes": [
+      "0002"
+    ],
+    "card_ids": [
+      "000201",
+      "000202",
+      "000203",
+      "000204",
+      "000205",
+      "000206",
+      "000207",
+      "000208",
+      "000209",
+      "000210",
+      "000211",
+      "000212"
+    ],
+    "closure_reason": "User-authorized CET4 full-track remediation: close two saved front-answer-leak blockers, replace generic and interaction-mismatched tasks, correct signal-word overgeneralizations, complete source/quality/progression metadata, and explicitly separate content-text acceptance from unresolved audio-script and perceptual-QC blockers for box 0002.",
+    "source_issue_refs": [
+      "exports/cet4-card-quality-audit-20260729.json",
+      "user_requested_cet4_full_track_remediation_plan",
+      "independent_baseline_review:/root/review_0002",
+      "independent_audio_review:/root/audio_0002",
+      "independent_final_quality_review:/root/quality_0002"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "spec/audio-generation-contract.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/runtime-boundaries.json",
+    "../softbook_cet/infra/cloudbase/content-manifest-v1-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "review_dimensions": {
+    "content_text": "000201-000206 pass after leak, prediction-flow, signal-function, and interaction corrections; 000207-000212 diagnostic card logic is corrected but the legacy meta-teaching TTS scripts remain blocked from formal use.",
+    "audio_technical": "12/12 paths exist and are uniquely referenced; Git LFS validation passes; local SHA-256 hashes were observed; afinfo parses every file as mono 24 kHz 48 kbps MP3 and JSON durations match.",
+    "audio_text_and_perceptual": "000201-000206 transcript text is reviewed, but no independent transcript-to-audio proof or human perceptual QC exists; 000207-000212 text and audio both require natural-script replacement and regeneration.",
+    "formal_release": "blocked; no audio QC record, human CET content-review sign-off, approved batch, or final user approval is claimed."
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet4-listening-0002-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "bea5f5a2ef69f31ca527b6c36b90c854655eb9ab8d89936fb1c5d7cd304083b5",
+    "scope_has_no_hard_blockers": true,
+    "scoped_audit_interpretation": "The mechanical scoped audit is clean; it does not override the six machine-readable not_meeting_requirement audio-script blockers recorded below.",
+    "scope_summary": {
+      "card_ids": [
+        "000201",
+        "000202",
+        "000203",
+        "000204",
+        "000205",
+        "000206",
+        "000207",
+        "000208",
+        "000209",
+        "000210",
+        "000211",
+        "000212"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "audio_evidence": {
+    "referenced_assets": 12,
+    "paths_present": 12,
+    "unique_references": 12,
+    "lfs_validation": "pass",
+    "decode_probe": "pass_afinfo_mono_24000_hz_48_kbps_duration_matches_metadata",
+    "total_duration_ms": 92256,
+    "local_sha256_by_card_id": {
+      "000201": "e5e33d0a7f069cb24c2413e145dc4f32fc5f0d5a46defa71de66f9da69f3eab0",
+      "000202": "d23ff311decaea54f6d78fc97297a387bc286e1129fc5b5f6380736c502571a4",
+      "000203": "90cbeb2fe01ce91918c0feff23ad584c84ecc1324c593826fb6c80700f97ef28",
+      "000204": "5e46dc96496a9c8ed230cf0c0a7c0252b2009853715f4b48f1c7707a6f072c52",
+      "000205": "4808f938e6be97e241e4e1ed817f422cebf6756ab70fed2d41863ca2e7828c75",
+      "000206": "313f0fbcb2a70abde233c3a18306a09b59b944cfb0f6912e7beba4da9756a114",
+      "000207": "e33ef37e2c84e3e45b77c9f8c0c7919e74925aa7e0fdfdf18f81e9ef41dc883a",
+      "000208": "9c1069e72b5db097c8a58923128190a27aebc4011b89de13f469b3d885b4c107",
+      "000209": "66ac15b47753c50e1ff346e3a4679ef7e8436132c398efe4e3c07a73985ad5e1",
+      "000210": "4d12d4d8a062cc24c4adb80b6eb49db641a75738cbbcce358e9980654fd5b71a",
+      "000211": "84856d7945ab3a416e0b2c2cb06a52972974740ad7f0ee473d2e80b134c9092e",
+      "000212": "375ce4df84a4bce4c31e960c9286473d7baf99abe199b7fefbaba48ca89dfce6"
+    },
+    "hash_policy": "Local hashes are technical evidence only; no formal legacy_adoption or audio QC record was created in this content branch.",
+    "runtime_audio_contract_gap": "All 12 card audio objects still use legacy path/url references and lack release asset_id and sha256 descriptors.",
+    "reproducibility_gap": "000201-000206 lack voice/rate metadata; 000207-000212 name a voice and rate but lack provider, model/generator version, and generation time.",
+    "transcript_match": "pending_12_of_12",
+    "perceptual_qc": "pending_12_of_12",
+    "formal_audio_ready": 0,
+    "script_text_blocked_card_ids": [
+      "000207",
+      "000208",
+      "000209",
+      "000210",
+      "000211",
+      "000212"
+    ],
+    "tts_text_reviewed_true": 6,
+    "tts_text_reviewed_false": 6,
+    "tts_audio_reviewed_true": 0,
+    "tts_audio_reviewed_false": 12
+  },
+  "cards": [
+    {
+      "card_id": "000201",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_transcript_and_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "根据语义冲突与原因层级预判双连接结构",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练把选项中的连接词按逻辑功能分组，减少长句播放后的临时判断负担。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script text is suitable for candidate content review, but transcript-to-audio matching, pronunciation, rhythm, stress, noise/clipping, volume consistency, and real-device playback are not independently approved.",
+        "The legacy path/url audio reference still requires release asset_id and sha256 migration after formal QC; no formal audio readiness is claimed."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the existing asset until transcript matching, human perceptual QC, release-manifest binding, and app playback evidence are recorded."
+    },
+    {
+      "card_id": "000202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_transcript_and_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "根据评价方向变化预判转折信号词",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在播放前识别评价反转风险，并在听到边界词后及时更新判断。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script text is suitable for candidate content review, but transcript-to-audio matching, pronunciation, rhythm, stress, noise/clipping, volume consistency, and real-device playback are not independently approved.",
+        "The legacy path/url audio reference still requires release asset_id and sha256 migration after formal QC; no formal audio readiness is claimed."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the existing asset until transcript matching, human perceptual QC, release-manifest binding, and app playback evidence are recorded."
+    },
+    {
+      "card_id": "000203",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_transcript_and_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "根据因果顺序预判句首原因信号",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练利用选项语义关系区分 Since 的原因义和时间义。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script text is suitable for candidate content review, but transcript-to-audio matching, pronunciation, rhythm, stress, noise/clipping, volume consistency, and real-device playback are not independently approved.",
+        "The legacy path/url audio reference still requires release asset_id and sha256 migration after formal QC; no formal audio readiness is claimed."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the existing asset until transcript matching, human perceptual QC, release-manifest binding, and app playback evidence are recorded."
+    },
+    {
+      "card_id": "000204",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_transcript_and_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "根据默认规则与例外条件预判条件信号",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练从选项关系恢复例外条件，避免把 unless 从句当成普通否定。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script text is suitable for candidate content review, but transcript-to-audio matching, pronunciation, rhythm, stress, noise/clipping, volume consistency, and real-device playback are not independently approved.",
+        "The legacy path/url audio reference still requires release asset_id and sha256 migration after formal QC; no formal audio readiness is claimed."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the existing asset until transcript matching, human perceptual QC, release-manifest binding, and app playback evidence are recorded."
+    },
+    {
+      "card_id": "000205",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_transcript_and_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "根据并列收益预判递进连接结构",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练从选项里的平行信息提前锁定成对连接结构，并完整核对两端。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script text is suitable for candidate content review, but transcript-to-audio matching, pronunciation, rhythm, stress, noise/clipping, volume consistency, and real-device playback are not independently approved.",
+        "The legacy path/url audio reference still requires release asset_id and sha256 migration after formal QC; no formal audio readiness is claimed."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the existing asset until transcript matching, human perceptual QC, release-manifest binding, and app playback evidence are recorded."
+    },
+    {
+      "card_id": "000206",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "review_dimension": "content_text_pass_audio_transcript_and_perceptual_qc_pending",
+      "quality_metadata": {
+        "main_training_goal": "根据理由与结论关系预判结果信号",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用选项判断句子在篇章中的角色，并追踪结论词回指的前文证据。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The script text is suitable for candidate content review, but transcript-to-audio matching, pronunciation, rhythm, stress, noise/clipping, volume consistency, and real-device playback are not independently approved.",
+        "The legacy path/url audio reference still requires release asset_id and sha256 migration after formal QC; no formal audio readiness is claimed."
+      ],
+      "recommendation": "Keep the content-text revision; do not release the existing asset until transcript matching, human perceptual QC, release-manifest binding, and app playback evidence are recorded."
+    },
+    {
+      "card_id": "000207",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "block",
+      "review_dimension": "content_diagnostic_logic_pass_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "区分转折提示与答案保证",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练把转折词当作更新判断的提示，而不是机械押答案。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The transcript is meta-teaching narration that names however and describes a cost-to-safety shift without presenting two natural propositions.",
+        "The legacy script overstates a contrast cue as a key answer moment; natural-script rewrite, regeneration, transcript matching, perceptual QC, and app playback evidence are required."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with natural CET-context listening material, rewrite the task around the new evidence, regenerate only after the text gate passes, and complete formal audio and app playback QC."
+    },
+    {
+      "card_id": "000208",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "block",
+      "review_dimension": "content_diagnostic_logic_pass_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "区分结果信号与时间先后",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在预判结果词前先核对选项是否真的构成因果链。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The transcript explains as a result without presenting any concrete preceding cause or resulting event.",
+        "The legacy script cannot distinguish causal support from mere sequence; natural-script rewrite, regeneration, transcript matching, perceptual QC, and app playback evidence are required."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with natural CET-context listening material, rewrite the task around the new evidence, regenerate only after the text gate passes, and complete formal audio and app playback QC."
+    },
+    {
+      "card_id": "000209",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "block",
+      "review_dimension": "content_diagnostic_logic_pass_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "识别 in fact 功能的语境边界",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练拒绝信号词万能口诀，改用上下文验证纠正或强调功能。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The transcript asserts that in fact corrects a common assumption without providing the assumption or contrasting fact.",
+        "It overgeneralizes in fact as an answer-bearing correction cue; natural-script rewrite, regeneration, transcript matching, perceptual QC, and app playback evidence are required."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with natural CET-context listening material, rewrite the task around the new evidence, regenerate only after the text gate passes, and complete formal audio and app playback QC."
+    },
+    {
+      "card_id": "000210",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "block",
+      "review_dimension": "content_diagnostic_logic_pass_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "识别会自答的元教学音频脚本",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移判断一段听力材料是否真正要求预测，而不是让旁白直接揭示答案。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The transcript directly states for example and announces illustration rather than conclusion, so the multiple-choice task is answered by the audio narration.",
+        "A natural claim-and-example script, regeneration, transcript matching, perceptual QC, and app playback evidence are required."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with natural CET-context listening material, rewrite the task around the new evidence, regenerate only after the text gate passes, and complete formal audio and app playback QC."
+    },
+    {
+      "card_id": "000211",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "block",
+      "review_dimension": "content_diagnostic_logic_pass_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "区分并行关系与必然比较",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移判断并行信号的实际语篇功能，避免把所有同时信息都当作比较。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The transcript provides no two real simultaneous developments and overgeneralizes meanwhile as comparison.",
+        "A natural parallel-event script, regeneration, transcript matching, perceptual QC, and app playback evidence are required."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with natural CET-context listening material, rewrite the task around the new evidence, regenerate only after the text gate passes, and complete formal audio and app playback QC."
+    },
+    {
+      "card_id": "000212",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "library_id": "0",
+        "library": "听力",
+        "group_id": "0",
+        "group": "听前预测",
+        "box_id": "2",
+        "box": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "block",
+      "review_dimension": "content_diagnostic_logic_pass_but_audio_script_blocks_formal_use",
+      "quality_metadata": {
+        "main_training_goal": "识别释义信号的适用边界",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移利用释义信号核对同义关系，同时避免机械押中后句。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": true,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [
+        "The transcript claims a restatement is simpler and answer-bearing without presenting an original proposition and reformulation pair.",
+        "A natural reformulation pair, regeneration, transcript matching, perceptual QC, and app playback evidence are required."
+      ],
+      "minor_issues": [],
+      "recommendation": "Replace the meta-teaching narration with natural CET-context listening material, rewrite the task around the new evidence, regenerate only after the text gate passes, and complete formal audio and app playback QC."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "000201-000203 recognize concession/cause, contrast, and causal signal choices before playback; 000204-000209 apply exception, additive, result, and evidence-boundary reasoning; 000210-000212 transfer by diagnosing self-answering illustration narration and overgeneralized parallel or reformulation cues. The metadata distribution is 3 recognition / 6 application / 3 transfer, but the learning chain is not formally complete while six scripts remain blocked.",
+    "repetition_or_gap_risks": [
+      "All 12 materials are simulation/synthetic and make no true-exam claim.",
+      "The two saved front-answer leaks are closed; machine audit reports no scoped hard blockers, content risks, or review gaps.",
+      "000207-000212 remain formal script blockers because meta-teaching narration is not natural CET listening material and cannot be adopted as legacy audio.",
+      "All 12 assets have tts_audio_reviewed=false; technical decoding and hashes do not prove transcript match, pronunciation, rhythm, stress, pauses, noise/clipping, volume consistency, or real-device playback.",
+      "The clean scoped audit does not make the whole box release-ready; per-card status=block and blocker_scan.not_meeting_requirement=true preserve the six audio-script blockers.",
+      "No qualified human CET content reviewer has signed this box in the current run.",
+      "Canonical interaction_id is aligned with flip or multiple_choice; legacy timing/hold fields remain migration evidence and must not become a second runtime authority.",
+      "No formal approval is created; final whole-track approval remains with the user."
+    ],
+    "representative_cards": [
+      "000201",
+      "000206",
+      "000210"
+    ],
+    "next_step": "Commit and park the content/evidence checkpoint; route 000207-000212 into natural-script rewrite and provider selection, complete transcript matching and 12/12 human perceptual QC, bind formal asset_id/sha256 descriptors, and verify app playback before release review."
+  }
+}
