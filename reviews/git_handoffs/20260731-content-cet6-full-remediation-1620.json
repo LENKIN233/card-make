@@ -1,0 +1,82 @@
+{
+  "handoff_id": "20260731-content-cet6-full-remediation-1620",
+  "created_at": "2026-07-31T02:10:34+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-full-remediation-1620",
+  "base_branch": "main",
+  "commit_sha": "323b8698653611383a89a3ee39c25373c05d81f7",
+  "push_ref": "origin/content/cet6-full-remediation-1620",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1620",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate",
+    "box_prefixes": [
+      "1620"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_grammar_1620.json",
+      "reviews/agent_self_review/20260731-cet6-grammar-1620-full-remediation.json",
+      "reviews/audit_scopes/20260731-cet6-grammar-1620-full-remediation-scope-audit.json"
+    ],
+    "patch_sha256": "4cd4365964d8ac622b41373e2f6e526266f54caf63920827f3bf990b9c8e4ef7"
+  },
+  "summary": [
+    "Rebuilt all eight subjunctive-listening cards as audio-first candidate tasks covering weak-form recovery, counterfactual reality restoration, overdue-action stance, appearance-versus-fact correction, modal-strength control, retrospective preference, and integrated long-audio transfer.",
+    "Removed answer leakage, repeated template analysis, missing metadata, untraced provenance, written-form-only shortcuts, and non-functional audio references while preserving all IDs and the original interaction sequence.",
+    "Independent read-only reviews corrected four task-schema answer leaks, one unnatural distractor, one role-inference overreach, three Chinese wording issues, and one top-level contract-metadata regression; final content replay found no residual P0, P1, or P2.",
+    "Added canonical audio descriptors, schema-valid metadata, declared synthetic provenance, canonical/form and elimination mirrors, and a strict 2/4/2 recognition-application-transfer progression.",
+    "Kept formal_audio_ready false: candidate descriptors match eight temporary generated MP3s, but repository asset delivery and named-human two-pass perceptual QC remain separate mandatory gates."
+  ],
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path /tmp/1620-cards-final-text.json",
+      "result": "passed: 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 162001,...,162008 --write-scope-report reviews/audit_scopes/20260731-cet6-grammar-1620-full-remediation-scope-audit.json",
+      "result": "passed: corpus digest 31df09e44b9b3715cff7719ddf1e2ace8a4f846da88109cc5a415b49e1f8885c; 0 hard blockers, 0 content risks, 0 review gaps, 8 declared synthetic-source risks"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with recorded upstream-version and group-alignment warnings only"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "technical validator returned ok with records_checked=0; explicitly not accepted as human perceptual-QC evidence"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base main --head HEAD",
+      "result": "passed: primary scope prefix 1620; current scoped audit replay found no hard blockers"
+    },
+    {
+      "command": "node scripts/validate_delivery_boundary.mjs --base main --head HEAD",
+      "result": "passed: one card file and two review-evidence files, no approval or audio files"
+    },
+    {
+      "command": "manual assertions for placement/count, contract metadata, front/task and analysis mirrors, audio-first/no-front-transcript boundary, exact audio descriptor keys, option/form and elimination parity, metadata enum, source boundary, and 2/4/2 progression",
+      "result": "passed"
+    },
+    {
+      "command": "temporary-asset SHA256 and duration comparison against all eight card audio descriptors",
+      "result": "passed 8/8 as candidate identity evidence only; no formal repository-asset or perceptual-QC claim"
+    },
+    {
+      "command": "independent read-only content and audio-boundary reviews plus post-fix replay",
+      "result": "passed after semantic, answer-leak, role-strength, metadata, and wording corrections; requested content scope has no residual P0, P1, or P2"
+    },
+    {
+      "command": "git verify-commit 323b8698653611383a89a3ee39c25373c05d81f7",
+      "result": "passed: good ED25519 signature"
+    }
+  ],
+  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PR slots already occupy the WIP limit.",
+  "remaining_risks": [
+    "All eight scripts are synthetic candidate content and require final user whole-track approval before integration.",
+    "Prefix 1620 is not formal-audio-ready: the matching eight MP3s must be delivered on a separate audio-only branch and a named human must complete blind plus transcript-assisted listening passes before tts_audio_reviewed may become true.",
+    "Six other CET6 hard-blocker prefixes remain after this content closure: 1030, 1100, 1101, 1102, 1110, and 1111.",
+    "Previously parked branches 1522 and 1610-1613 require schema-enum weak-point-tag repair before whole-track delivery.",
+    "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
