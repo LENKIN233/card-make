@@ -1,0 +1,502 @@
+{
+  "review_id": "20260730-cet6-grammar-1611-full-remediation",
+  "created_at": "2026-07-30T15:15:21.525Z",
+  "agent": "codex",
+  "scope": {
+    "library": "语法",
+    "group": "复杂句",
+    "box": "定语从句",
+    "box_prefixes": [
+      "1611"
+    ],
+    "card_ids": [
+      "161101",
+      "161102",
+      "161103",
+      "161104",
+      "161105",
+      "161106",
+      "161107",
+      "161108"
+    ],
+    "closure_reason": "User-authorized full-track remediation: replace eight untraced relative-clause cards after review found answer leaks, short analyses, non-unique answers, over-absolute rules, incorrect diagnostic shortcuts, and user-visible migration labels; preserve IDs and interaction sequence while adding complete evidence and a 2/4/2 progression.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal",
+      "parallel_read_only_review_1611"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-grammar-1611-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "e71ba23e11112798aab21149fb45a12f34b5c475b1a72d1531aa4fe455424c5b",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "161101",
+        "161102",
+        "161103",
+        "161104",
+        "161105",
+        "161106",
+        "161107",
+        "161108"
+      ],
+      "card_count": 8,
+      "issue_count": 8,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 8
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 8,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1611 matches 语法 / 复杂句 / 定语从句 and the catalog-owned eight-card count.",
+    "independent_tasks": "Passed: all eight fronts are independently answerable; option text is carried by visible interaction fields and scoped audit reports no answer-path leak.",
+    "relative_clause_logic": "Passed: restrictive scope, non-restrictive punctuation, pronoun-versus-adverb gaps, preposition fronting, who/whom/whose roles, controlled reduction, partitive of which, and relative-versus-appositive diagnostics were manually parsed.",
+    "over_absolute_rule_removal": "Passed: removed claims that highest-degree or unique antecedents always require that, that place antecedents automatically require where, and that object who is categorically wrong.",
+    "unique_answers": "Passed: every multiple-choice card has one grammatically and contextually best answer; distractors test the intended relation rather than unrelated malformed strings.",
+    "reduction_boundary": "Passed: reduced relatives are taught only when voice, time, modality, negation, logical relation, and reference remain recoverable.",
+    "interaction_parity": "Passed: five multiple-choice answer_keys match the sole is_correct option, the elimination correct_items match its two true items, and two flip cards remain unscored.",
+    "task_schema_parity": "Passed: front.task_schema and front_content.task_schema are identical for all cards.",
+    "progression": "Passed: 161101-161102 recognition/foundation, 161103-161106 application/pass, 161107-161108 transfer/high_score.",
+    "source_and_audio_boundary": "Passed: rewritten examples are declared synthetic simulations, make no true-exam claim, contain no audio, and use audio_generation_method none."
+  },
+  "cards": [
+    {
+      "card_id": "161101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "1611"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用指称范围区分限制性与非限制性定语从句",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 relative-clause grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级长句中逗号对定语从句范围和论断强度的影响。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "1611"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据语境选择非限制性定语从句",
+        "weak_point_tags": [
+          "grammar_weak",
+          "writing_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 relative-clause grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级写作中以标点和关系词准确组织附加信息。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161103",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "1611"
+      },
+      "quality_metadata": {
+        "main_training_goal": "按从句成分缺口选择关系代词或关系副词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 relative-clause grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级定语从句填空中以句法缺口而非先行词词义作答。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "1611"
+      },
+      "quality_metadata": {
+        "main_training_goal": "掌握前置介词加关系代词结构",
+        "weak_point_tags": [
+          "grammar_weak",
+          "writing_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 relative-clause grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读与写作中的介词前置定语从句。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161105",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "1611"
+      },
+      "quality_metadata": {
+        "main_training_goal": "按从句功能准确判断 who、whom 与 whose",
+        "weak_point_tags": [
+          "grammar_weak",
+          "writing_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 relative-clause grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级语法纠错中避免过时且过度绝对的格规则。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161106",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "1611"
+      },
+      "quality_metadata": {
+        "main_training_goal": "在不丢失语义的前提下缩减定语从句",
+        "weak_point_tags": [
+          "grammar_weak",
+          "writing_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 relative-clause grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级写作中准确而非机械地使用分词短语。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161107",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "1611"
+      },
+      "quality_metadata": {
+        "main_training_goal": "迁移使用数量词加 of 的非限制性定语从句",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 relative-clause grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级数据描述中连接整体与部分的复杂定语从句。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161108",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "1611"
+      },
+      "quality_metadata": {
+        "main_training_goal": "综合区分定语从句与抽象名词后的同位语从句",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 relative-clause grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级复杂句中 that 从句的边界和功能判断。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "2 recognition/foundation, 4 application/pass, 2 transfer/high-score cards.",
+    "repetition_or_gap_risks": [
+      "Synthetic examples still require final user whole-track approval.",
+      "No true-exam provenance is claimed."
+    ],
+    "representative_cards": [
+      "161103",
+      "161105",
+      "161108"
+    ],
+    "next_step": "Park the validated branch without a PR while the five candidate-content PR slots remain occupied."
+  }
+}
