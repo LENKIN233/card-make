@@ -1,0 +1,53 @@
+{
+  "handoff_id": "20260730-content-cet4-full-remediation-0514",
+  "created_at": "2026-07-30T16:59:57+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-remediation-0514",
+  "base_branch": "main",
+  "commit_sha": "d5fa1da40de68b990b1a7d2f7ab99846163608a4",
+  "push_ref": "origin/content/cet4-full-remediation-0514",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet4-full-remediation-0514",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_full_box_remediation",
+    "track": "cet4",
+    "library": "词汇",
+    "group": "中国特色词汇",
+    "box": "生态",
+    "box_prefix": "0514",
+    "card_ids": ["051401","051402","051403","051404","051405","051406","051407","051408","051409","051410","051411","051412"],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0514.json",
+      "reviews/agent_self_review/20260730-cet4-vocabulary-0514-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet4-vocabulary-0514-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet4-full-remediation-0514.json"
+    ],
+    "patch_sha256": "32b67a270f78d61da1e705422c6d13d37a4ad38e345de2f3a6e47ae1b218219a"
+  },
+  "summary": [
+    "Closed the 051410 answer-path leak and replaced template-heavy analyses across all twelve cards with card-specific object, action, policy-goal, grammar, and verification reasoning.",
+    "Replaced four nonsense lock-card word banks with plausible ecological-policy distractors and synchronized visible prompts, canonical front content, structured word banks, and answer fields.",
+    "Calibrated humanity-nature wording against official English usage, using harmony between humanity and nature as the compact nominal policy goal while retaining harmonious coexistence as valid descriptive wording; repaired supplemental metadata and completed 3/6/3 progression, source, and text-only material metadata."
+  ],
+  "validation": [
+    {"command":"node scripts/validate_cards.mjs --report-path exports/card_validation_report.json","result":"passed; cards=2414, errors=0, warnings=0"},
+    {"command":"node scripts/audit_card_quality.mjs --scope-card-ids 051401,051402,051403,051404,051405,051406,051407,051408,051409,051410,051411,051412 --write-scope-report reviews/audit_scopes/20260730-cet4-vocabulary-0514-full-remediation-scope-audit.json","result":"passed; 0 hard blockers, 0 content risks, 0 review gaps, 12 explained synthetic source risks"},
+    {"command":"node scripts/validate_harness.mjs","result":"passed; errors=0, only recorded upstream warnings"},
+    {"command":"node scripts/validate_pr_scope.mjs --base origin/main --head HEAD","result":"passed; current scoped audit accepted"},
+    {"command":"canonical prompt, unique analysis/tips, multiple-choice, lock-answer, visible/structured word-bank, provenance, material, answer-leak, terminology, metadata, and 3/6/3 progression assertions","result":"passed; canonical fields, official-use terminology, visible word banks, and answer structures match"},
+    {"command":"git diff --check","result":"passed"},
+    {"command":"git verify-commit d5fa1da40de68b990b1a7d2f7ab99846163608a4","result":"passed; good ED25519 signature"}
+  ],
+  "local_status": "Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks": [
+    "All card sentences are simulation/synthetic, not true-exam claims; official English sources only informed terminology usage.",
+    "Harmony between humanity and nature is taught as a compact nominal policy goal, while harmonious coexistence wording remains valid in descriptive contexts; adjacent ecology boxes should be checked for consistent context labels.",
+    "The box remains candidate content; no approved-batch record or formal user approval is claimed.",
+    "All cards are intentionally text-only; no audio generation or audio approval is claimed.",
+    "The branch-local global corpus still contains 226 hard blockers, 2236 content risks, 2387 review gaps, and 2285 source risks after this scoped remediation.",
+    "Remaining CET4 boxes still require remediation and human review.",
+    "Branch remains parked until one of PRs #99-#103 leaves the candidate-content queue."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
