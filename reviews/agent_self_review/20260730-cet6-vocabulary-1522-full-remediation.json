@@ -52,7 +52,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260730-cet6-vocabulary-1522-full-remediation-scope-audit.json",
-    "corpus_fingerprint": "7ed105ee621a0a2588e610aa9e7dae0b4fdae121e99effb850b7367a74bde8ce",
+    "corpus_fingerprint": "2a59f03d8a5ccbb453a685574cb683166dc36c5df19f0585f74801ee8340405d",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -101,7 +101,8 @@
     "answer_path": "Passed: scoped audit confirms that no front text or task schema reveals the correct answer path outside the visible options.",
     "interaction_parity": "Passed: each multiple-choice answer_key matches the sole is_correct option; each lock_pattern, blank_answers, lock_slots expected value, and word-bank answer agree.",
     "task_schema_parity": "Passed: front.task_schema and front_content.task_schema are identical for all twelve cards.",
-    "progression": "Passed: 152201-152203 recognition/foundation, 152204-152209 application/pass, 152210-152212 transfer/challenge.",
+    "metadata_enum": "Passed after schema repair: writing-output tasks use writing_output_weak, evidence-strength and option-logic tasks use exam_strategy_weak, vocabulary_weak alone owns collocation weaknesses, and transfer cards 152210-152212 use high_score. No legacy writing_weak, logic_weak, collocation_weak, or challenge value remains in card metadata or the mirrored self-review.",
+    "progression": "Passed: 152201-152203 recognition/foundation, 152204-152209 application/pass, 152210-152212 transfer/high_score.",
     "source_boundary": "Passed: every example is simulation/synthetic and is not represented as true-exam material.",
     "audio_boundary": "Not applicable: writing-vocabulary cards contain no audio and use audio_generation_method none."
   },
@@ -123,7 +124,7 @@
         "main_training_goal": "建立六级写作词汇精准升级的检查流程",
         "weak_point_tags": [
           "vocabulary_weak",
-          "writing_weak"
+          "writing_output_weak"
         ],
         "difficulty": {
           "primary": "foundation",
@@ -171,7 +172,7 @@
         "main_training_goal": "控制正式词汇替换中的强度边界",
         "weak_point_tags": [
           "vocabulary_weak",
-          "writing_weak"
+          "writing_output_weak"
         ],
         "difficulty": {
           "primary": "foundation",
@@ -219,7 +220,7 @@
         "main_training_goal": "掌握 contribute to 的受约束因果表达",
         "weak_point_tags": [
           "vocabulary_weak",
-          "logic_weak"
+          "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "foundation",
@@ -266,8 +267,7 @@
       "quality_metadata": {
         "main_training_goal": "掌握 enhance access 的正式搭配",
         "weak_point_tags": [
-          "vocabulary_weak",
-          "collocation_weak"
+          "vocabulary_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -314,8 +314,8 @@
       "quality_metadata": {
         "main_training_goal": "用精确量化替代模糊写作词汇",
         "weak_point_tags": [
-          "writing_weak",
-          "logic_weak"
+          "writing_output_weak",
+          "exam_strategy_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -362,8 +362,7 @@
       "quality_metadata": {
         "main_training_goal": "掌握 mitigate 与 burden 的正式搭配",
         "weak_point_tags": [
-          "vocabulary_weak",
-          "collocation_weak"
+          "vocabulary_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -458,8 +457,7 @@
       "quality_metadata": {
         "main_training_goal": "掌握 pose a risk 的正式风险表达",
         "weak_point_tags": [
-          "vocabulary_weak",
-          "collocation_weak"
+          "vocabulary_weak"
         ],
         "difficulty": {
           "primary": "pass",
@@ -554,11 +552,11 @@
       "quality_metadata": {
         "main_training_goal": "在结论句中控制正式评价的强度",
         "weak_point_tags": [
-          "writing_weak",
-          "logic_weak"
+          "writing_output_weak",
+          "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "challenge",
+          "primary": "high_score",
           "secondary": []
         },
         "card_prototype": "solving_action",
@@ -603,10 +601,10 @@
         "main_training_goal": "迁移使用 exacerbate 表达问题加剧",
         "weak_point_tags": [
           "vocabulary_weak",
-          "logic_weak"
+          "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "challenge",
+          "primary": "high_score",
           "secondary": []
         },
         "card_prototype": "integrated_micro_drill",
@@ -650,11 +648,11 @@
       "quality_metadata": {
         "main_training_goal": "在完整论证中迁移使用正式衔接词",
         "weak_point_tags": [
-          "writing_weak",
-          "logic_weak"
+          "writing_output_weak",
+          "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "challenge",
+          "primary": "high_score",
           "secondary": []
         },
         "card_prototype": "solving_action",
@@ -685,7 +683,7 @@
   ],
   "batch_review": {
     "status": "documented_residual_closure",
-    "box_progression": "3 recognition/foundation, 6 application/pass, 3 transfer/challenge cards.",
+    "box_progression": "3 recognition/foundation, 6 application/pass, 3 transfer/high-score cards.",
     "repetition_or_gap_risks": [
       "Synthetic examples still require final user whole-track approval.",
       "No true-exam provenance is claimed."
