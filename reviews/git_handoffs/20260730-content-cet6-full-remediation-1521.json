@@ -1,0 +1,45 @@
+{
+  "handoff_id": "20260730-content-cet6-full-remediation-1521",
+  "created_at": "2026-07-30T22:45:46+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-full-remediation-1521",
+  "base_branch": "main",
+  "commit_sha": "a24ce2935454765039def58280c204671f4ab264",
+  "push_ref": "origin/content/cet6-full-remediation-1521",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1521",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate",
+    "box_prefixes": ["1521"],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_vocabulary_1521.json",
+      "reviews/agent_self_review/20260730-cet6-vocabulary-1521-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet6-vocabulary-1521-full-remediation-scope-audit.json"
+    ],
+    "patch_sha256": "76f22ceac5130e17c83c3a7ea35a7206f696df3cafbf9a970b43f7b44c7de5f2"
+  },
+  "summary": [
+    "Restored catalog-owned box naming from 高频词-阅读高频词 to 阅读高频词 at file, card, and knowledge_ref levels.",
+    "Replaced ten repeated placeholder fronts and four blank-only lock tasks with twelve independently answerable CET6 reading-vocabulary tasks.",
+    "Covered address, account for, compelling, arbitrary, constrain, diminish, derive, undermine, conventional wisdom, feasible, and imply with context, syntax, scope, and evidence-strength controls.",
+    "Added task schemas, synthetic provenance, complete quality metadata, and a 3/6/3 progression without changing card or interaction counts."
+  ],
+  "validation": [
+    {"command":"node scripts/validate_cards.mjs --report-path /tmp/1521-postcommit-cards.json","result":"passed: 2414 cards, 0 errors, 0 warnings"},
+    {"command":"node scripts/audit_card_quality.mjs --scope-card-ids 152101,...,152112 --write-scope-report reviews/audit_scopes/20260730-cet6-vocabulary-1521-full-remediation-scope-audit.json","result":"passed: 0 hard blockers, 0 content risks, 0 review gaps, 12 declared synthetic-source risks"},
+    {"command":"node scripts/validate_harness.mjs","result":"passed with recorded upstream-version and group-alignment warnings only"},
+    {"command":"node scripts/validate_audio_qc.mjs","result":"passed: no audio records in scope"},
+    {"command":"node scripts/validate_pr_scope.mjs --base main --head HEAD","result":"passed: primary scope prefix 1521"},
+    {"command":"node scripts/validate_delivery_boundary.mjs --base main --head HEAD","result":"passed: one card file and two review-evidence files, no approval or audio files"},
+    {"command":"manual assertions for catalog placement, context-specific vocabulary logic, range/evidence strength, answer-key and lock-pattern parity, source metadata, and 3/6/3 progression","result":"passed"},
+    {"command":"git verify-commit a24ce2935454765039def58280c204671f4ab264","result":"passed: good ED25519 signature"}
+  ],
+  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "remaining_risks": [
+    "All twelve cards are synthetic candidate content and require final user whole-track approval before integration.",
+    "Eighteen CET6 hard-blocker prefixes remain unresolved after 1521, including the blocked 1030 authority conflict.",
+    "Candidate PR slots remain fully occupied by open sample PRs 99 through 103."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
