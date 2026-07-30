@@ -1,0 +1,54 @@
+{
+  "handoff_id": "20260730-content-cet6-full-remediation-1121",
+  "created_at": "2026-07-30T20:00:49+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-full-remediation-1121",
+  "base_branch": "main",
+  "commit_sha": "6bbc8695ddea74414e3958b56dc63b2b4e365ece",
+  "push_ref": "origin/content/cet6-full-remediation-1121",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1121",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_full_box_remediation",
+    "track": "cet6",
+    "library": "仔细阅读",
+    "group": "长难句主干",
+    "box": "主谓宾",
+    "box_prefix": "1121",
+    "card_ids": ["112101", "112102", "112103", "112104", "112105", "112106", "112107", "112108", "112109", "112110", "112111", "112112"],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_reading_1121.json",
+      "reviews/agent_self_review/20260730-cet6-reading-1121-full-remediation.json",
+      "reviews/audit_scopes/20260730-cet6-reading-1121-full-remediation-scope-audit.json",
+      "reviews/git_handoffs/20260730-content-cet6-full-remediation-1121.json"
+    ],
+    "patch_sha256": "2d464717979500396a0f648031386e2a9ee55140e9ef4308ebc03ca90ad791e9"
+  },
+  "summary": [
+    "Closed answer-path leaks with bounded semantic SVO paraphrases while retaining exact source-token evidence on card backs.",
+    "Rewrote 112105 from an inherited give + double-object sentence to framework expands access so the card stays within the authoritative 主谓宾 box instead of pre-empting 主谓双宾.",
+    "Replaced generic analyses, completed sentence-specific schemas and proportional 3/6/3 metadata, and replaced unverified provenance with simulation/synthetic declarations without adding or deleting cards."
+  ],
+  "validation": [
+    {"command": "node scripts/validate_cards.mjs --report-path /tmp/1121-postcommit-cards.json", "result": "passed; cards=2414, errors=0, warnings=0"},
+    {"command": "node scripts/audit_card_quality.mjs --scope-card-ids 112101,112102,112103,112104,112105,112106,112107,112108,112109,112110,112111,112112 --write-scope-report reviews/audit_scopes/20260730-cet6-reading-1121-full-remediation-scope-audit.json", "result": "passed; 0 hard blockers, 0 content risks, 0 review gaps, 12 explained synthetic source risks"},
+    {"command": "node scripts/validate_harness.mjs", "result": "passed; errors=0, only recorded upstream warnings"},
+    {"command": "node scripts/validate_audio_qc.mjs", "result": "passed; errors=0, warnings=0; box contains no audio scope"},
+    {"command": "node scripts/validate_pr_scope.mjs --base main --head HEAD", "result": "passed; current scoped audit accepted"},
+    {"command": "node scripts/validate_delivery_boundary.mjs", "result": "passed; 1 card file, 0 audio files, 0 approval files"},
+    {"command": "knowledge-ref, task-schema parity, single-object scope, source, metadata, answer-key, elimination parity, and 3/6/3 progression assertions", "result": "passed"},
+    {"command": "git diff --check", "result": "passed"},
+    {"command": "git verify-commit 6bbc8695ddea74414e3958b56dc63b2b4e365ece", "result": "passed; good ED25519 signature"}
+  ],
+  "local_status": "Content commit pushed; branch parked without a PR because five active candidate-content PRs (#99-#103) occupy the WIP limit.",
+  "remaining_risks": [
+    "All twelve examples are simulation/synthetic, not true-exam claims; unverified legacy provenance was removed rather than promoted.",
+    "The box remains candidate content; no approved-batch record or formal user approval is claimed.",
+    "Thirty-three CET6 hard-blocker prefixes remain unresolved, including the separately parked 1030 authority conflict.",
+    "Existing sample PRs #99-#103 still require user confirmation and must not be overwritten by full-box remediation branches.",
+    "Other unmerged remediation branches remain parked pending review capacity and final whole-track approval.",
+    "Branch remains parked until one of PRs #99-#103 leaves the candidate-content queue."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_final_user_whole_track_approval_required"
+}
