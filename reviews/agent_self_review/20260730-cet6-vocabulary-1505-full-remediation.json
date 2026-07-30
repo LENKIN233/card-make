@@ -1,0 +1,714 @@
+{
+  "review_id": "20260730-cet6-vocabulary-1505-full-remediation",
+  "created_at": "2026-07-30T14:39:52.157Z",
+  "agent": "codex",
+  "scope": {
+    "library": "词汇",
+    "group": "同义词替换",
+    "box": "解释性替换",
+    "box_prefixes": [
+      "1505"
+    ],
+    "card_ids": [
+      "150501",
+      "150502",
+      "150503",
+      "150504",
+      "150505",
+      "150506",
+      "150507",
+      "150508",
+      "150509",
+      "150510",
+      "150511",
+      "150512"
+    ],
+    "closure_reason": "User-authorized full-track remediation: replace ten repeated placeholder prompts, four blank-only lock tasks, generic analyses, and the final-card answer leak with twelve independent CET6 explanatory-replacement tasks; preserve interaction count, add synthetic provenance, and establish a 3/6/3 progression without adding or deleting cards.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-vocabulary-1505-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "5b511f42a3b772cce995a38d57746f62ee8ca52ff4e4272011213629e91519d8",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "150501",
+        "150502",
+        "150503",
+        "150504",
+        "150505",
+        "150506",
+        "150507",
+        "150508",
+        "150509",
+        "150510",
+        "150511",
+        "150512"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1505 matches 词汇 / 同义词替换 / 解释性替换 in box-catalog and every card knowledge_ref.",
+    "placeholder_removal": "Passed: every front is independently answerable; no repeated generic front or blank-only lock task remains.",
+    "explanatory_logic": "Passed: mixed benefit, double-edged effect, incompatibility, part-whole metaphor, preliminary evidence, adjustability, standard shortfall, clarification, generalization with exceptions, evidence basis, and inconclusive evidence were checked manually.",
+    "answer_path": "Passed: visible choices remain bounded to the current interpretation task and do not copy hidden answer phrasing.",
+    "interaction_parity": "Passed: every multiple-choice answer_key matches the sole is_correct option key; every lock_pattern matches blank_answers and all answers occur in the word bank.",
+    "task_schema_parity": "Passed: front.task_schema and front_content.task_schema are identical for every card.",
+    "progression": "Passed: 150501-150503 recognition/foundation, 150504-150509 application/pass, 150510-150512 transfer/high_score.",
+    "source_boundary": "Passed: all examples are simulation/synthetic and are not represented as true-exam material.",
+    "audio_boundary": "Not applicable: explanatory-replacement cards contain no audio and use audio_generation_method none."
+  },
+  "cards": [
+    {
+      "card_id": "150501",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "建立语境解释替换的边界核对流程",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在 CET6 阅读中准确解释隐喻、限定语和学术评价表达。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150502",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "解释 mixed blessing 的利弊并存",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练根据例证解释评价性隐喻，而非按 blessing 单词作单向判断。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150503",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "解释 double-edged sword 的双向作用",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练识别常见隐喻的逻辑结构与未明示的强度边界。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150504",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "解释 be at odds with 的不一致关系",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练根据主语类型选择固定短语的合适解释层级。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150505",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "解释 tip of the iceberg 的部分整体关系",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练隐喻释义中的范围与证据强度控制。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150506",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 preliminary 解释 early indication",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用上下文结果判断学术证据的成熟度。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150507",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 adjustable 解释 not set in stone",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练利用同位解释和结果句推断固定表达。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150508",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 fail to meet 解释 fall short of",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练把评价性短语转为直接、精确的标准判断。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150509",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 clarify 解释 shed light on",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练区分证据帮助理解与证据改变现实对象。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150510",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "解释 by and large 的总体限定",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练概括题中总体判断与局部例外的同时保留。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150511",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "使用 in light of 表达基于新证据",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "writing_output_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练正式写作中的依据连接表达。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "150512",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "5",
+        "box_name": "解释性替换",
+        "box_prefix": "1505"
+      },
+      "quality_metadata": {
+        "main_training_goal": "解释 far from conclusive 的证据强度",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 vocabulary explanatory-replacement simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练阅读中对证据限定、样本限制和结论强度的精确解释。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "3 recognition/foundation, 6 application/pass, 3 transfer/high-score cards.",
+    "repetition_or_gap_risks": [
+      "Synthetic examples still require final user whole-track approval.",
+      "No true-exam provenance is claimed."
+    ],
+    "representative_cards": [
+      "150505",
+      "150509",
+      "150512"
+    ],
+    "next_step": "Park the validated branch without a PR while the five candidate-content PR slots remain occupied."
+  }
+}
