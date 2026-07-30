@@ -1,0 +1,610 @@
+{
+  "review_id": "20260730-cet6-bankedcloze-1200-full-remediation",
+  "created_at": "2026-07-30T14:00:34.035Z",
+  "agent": "codex",
+  "scope": {
+    "library": "选词填空",
+    "group": "词性判断",
+    "box": "名词",
+    "box_prefixes": [
+      "1200"
+    ],
+    "card_ids": [
+      "120001",
+      "120002",
+      "120003",
+      "120004",
+      "120005",
+      "120006",
+      "120007",
+      "120008",
+      "120009",
+      "120010"
+    ],
+    "closure_reason": "User-authorized full-track remediation: close three answer-path leaks, replace the repeated template analysis, correct misleading tips, add action-oriented task schemas, and declare synthetic provenance plus a proportional 3/5/2 progression without adding or deleting cards.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-bankedcloze-1200-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "468c7660b2aa4eb2a12fb5622a8233e8a871376cea9b0f1cf32d60259b4830c1",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "120001",
+        "120002",
+        "120003",
+        "120004",
+        "120005",
+        "120006",
+        "120007",
+        "120008",
+        "120009",
+        "120010"
+      ],
+      "card_count": 10,
+      "issue_count": 10,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 10
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 10,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1200 matches 选词填空 / 词性判断 / 名词 in box-catalog and every card knowledge_ref.",
+    "answer_path": "Passed: 120003, 120007, and 120009 use bounded structural descriptions rather than copying distinctive answer phrases into visible prompts or correct options.",
+    "noun_logic": "Passed: possessive, article-adjective, coordination, verb-noun-preposition, content-clause, source-preposition, quantification, and research-method constraints were checked manually.",
+    "analysis_and_tips": "Passed: the repeated 120002 template analysis was replaced and misleading modal, infinitive, linking-verb, and determiner tips were corrected.",
+    "interaction_parity": "Passed: every multiple-choice answer_key matches the sole is_correct option; every lock_pattern matches blank_answers and the visible word bank.",
+    "task_schema_parity": "Passed: front.task_schema and front_content.task_schema are identical for every card.",
+    "progression": "Passed: 120001-120003 recognition/foundation, 120004-120008 application/pass, 120009-120010 transfer/high_score.",
+    "source_boundary": "Passed: all examples are simulation/synthetic and are not represented as true-exam material.",
+    "audio_boundary": "Not applicable: banked-cloze noun cards contain no audio and use audio_generation_method none."
+  },
+  "cards": [
+    {
+      "card_id": "120001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别物主限定词后的名词短语核心",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze noun simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练先用物主限定词和后置 of 短语锁定词性，再检查高频搭配。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "120002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据冠词与形容词定位核心名词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze noun simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在长名词短语中先定中心词位置，避免被谓语和后置从句干扰。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "120003",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "quality_metadata": {
+        "main_training_goal": "利用并列对等关系确定名词位",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze noun simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练借助并列项的句法功能快速筛出名词候选，并用语义完成复核。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "120004",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 play a ... in doing 的名词搭配",
+        "weak_point_tags": [
+          "grammar_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze noun simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练词性过滤后继续核对动词—名词—介词的完整搭配链。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "120005",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别冠词形容词后的核心名词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze noun simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在含 of 后置修饰的主语中快速找到名词核心，避免跨成分误判。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "120006",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "quality_metadata": {
+        "main_training_goal": "在名词位中区分数据规模与相邻概念",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze noun simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在词性确定后用量化语义和 of 搭配排除同词性干扰项。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "120007",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别可承载 that 内容从句的抽象名词位",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze noun simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练联合前置修饰和内容从句判断抽象名词，避免只看单个词。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "120008",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 under ... from 的压力来源搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze noun simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练把介词框架、前置修饰和来源短语合并为一条选词证据链。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "120009",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "quality_metadata": {
+        "main_training_goal": "联合量化谓语与 of 短语选择事件名词",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze noun simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在多个名词候选间联合使用句法、搭配和事件语义完成迁移判断。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "120010",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "0",
+        "box_name": "名词",
+        "box_prefix": "1200"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用研究方法边界选择宾语名词",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 banked-cloze noun simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练把语法宾语位与研究方法边界结合，避免仅凭词面熟悉度选择。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "3 recognition/foundation, 5 application/pass, 2 transfer/high-score cards.",
+    "repetition_or_gap_risks": [
+      "Synthetic examples still require final user whole-track approval.",
+      "No true-exam provenance is claimed."
+    ],
+    "representative_cards": [
+      "120002",
+      "120006",
+      "120009"
+    ],
+    "next_step": "Park the validated branch without a PR while the five candidate-content PR slots remain occupied."
+  }
+}
