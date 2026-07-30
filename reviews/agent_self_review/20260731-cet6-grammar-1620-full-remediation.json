@@ -1,0 +1,217 @@
+{
+  "review_id": "20260731-cet6-grammar-1620-full-remediation",
+  "created_at": "2026-07-31T02:06:18+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "语法",
+    "group": "虚拟语气",
+    "box": "听力",
+    "box_prefixes": [
+      "1620"
+    ],
+    "card_ids": [
+      "162001",
+      "162002",
+      "162003",
+      "162004",
+      "162005",
+      "162006",
+      "162007",
+      "162008"
+    ],
+    "closure_reason": "User-authorized launch-quality remediation: replace answer-path leakage, repeated template analysis, missing quality metadata, untraced provenance, and non-functional listening tasks with eight evidence-bounded audio-first candidate cards while preserving all card IDs and the interaction sequence. Content-text review is complete; formal audio-asset delivery and named-human perceptual QC remain separate required gates.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal",
+      "parallel_read_only_reviews_status_softbook_design_1621_design_1622"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "spec/audio-generation-contract.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/platform-contract.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/runtime-boundaries.json",
+    "../softbook_cet/infra/cloudbase/content-manifest-v1-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260731-cet6-grammar-1620-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "31df09e44b9b3715cff7719ddf1e2ace8a4f846da88109cc5a415b49e1f8885c",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "162001",
+        "162002",
+        "162003",
+        "162004",
+        "162005",
+        "162006",
+        "162007",
+        "162008"
+      ],
+      "card_count": 8,
+      "issue_count": 8,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 8
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 8,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1620 matches CET6 语法 / 虚拟语气 / 听力 and the catalog-owned eight-card count; top-level track and contract metadata are preserved.",
+    "independent_tasks": "Passed: every front omits transcript text and requires playback; neutral task schemas no longer reveal the answer or semantic conclusion before listening.",
+    "independent_content_review": "Passed after remediation: independent read-only reviews found and closed four task-schema answer leaks, one unnatural distractor, one role-inference overreach, three Chinese phrasing issues, and one top-level contract-metadata regression. Final content-text replay found no residual P0, P1, or P2.",
+    "listening_ownership": "Passed for candidate content: the cards train weak-form recovery, counterfactual reality restoration, overdue-action stance, appearance-versus-fact correction, modal-strength control, and multi-layer listening integration rather than written-form recognition alone.",
+    "audio_first_boundary": "Passed for card payload: all eight fronts are audio-first/audio-then-options, contain no transcript or subtitle, allow explicit user replay, and use only asset_id, sha256, duration_ms, and transcript in the product-truth audio descriptor.",
+    "candidate_asset_identity": "Technically matched only: all eight descriptors exactly match the generated temporary MP3 hashes and durations. This does not constitute formal repository asset delivery or perceptual review.",
+    "formal_audio_gate": "Open and not waived: the repository audio bytes are not delivered on this content branch, the first six legacy files do not match the new descriptors, files 162007 and 162008 are absent on main, and no named human has completed the required blind plus transcript-assisted listening passes.",
+    "tts_review_flags": "Correctly conservative: tts_text_reviewed is true after independent script review; tts_audio_reviewed remains false for every card until named-human perceptual QC is recorded.",
+    "unique_answers": "Passed: each multiple-choice item has one contextually and grammatically best answer; the elimination target is uniquely ②⑤; flip tasks require evidence-bounded free recall.",
+    "canonical_option_migration": "Passed: type-8 cards 162003 and 162007 have options matching form_options in text, order, and correctness, with synchronized answer_key values.",
+    "interaction_parity": "Passed: four multiple-choice answer_keys match sole correct options, elimination correct_items match exactly two target items, and flip cards remain unscored.",
+    "metadata_enum": "Passed: every weak_point_tag, difficulty, prototype, material type, review state, and progression role is schema-valid.",
+    "progression": "Passed: 162001-162002 recognition/foundation, 162003-162006 application/pass, and 162007-162008 transfer/high_score.",
+    "adjacent_box_separation": "Passed: 1620 owns audio-first listening recovery without duplicating 1621 reading inference, 1622 bilingual equivalence/form encoding, or 1623 writing argument construction.",
+    "source_boundary": "Passed: all scripts are declared synthetic simulations, explicitly claim no true-exam provenance, and do not imply official CET source material."
+  },
+  "cards": [
+    {
+      "card_id": "162001",
+      "interaction_id": "flip",
+      "knowledge_ref": {"track": "cet6", "library_id": "6", "library_name": "语法", "group_id": "2", "group_name": "虚拟语气", "box_id": "0", "box_name": "听力", "box_prefix": "1620"},
+      "quality_metadata": {"main_training_goal": "从 would've 弱读恢复过去未实现的参加结果", "secondary_training_goals": ["结合 but 后事实还原真实阻碍"], "weak_point_tags": ["grammar_weak", "listening_weak"], "difficulty": {"primary": "foundation", "secondary": []}, "card_prototype": "context_input", "material": {"text_source_type": "simulation", "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练六级听力从情态完成式弱读与转折中恢复未发生的过去结果。", "box_progression_role": "recognition", "review_status": "draft"},
+      "status": "pass",
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending separate formal audio delivery, named-human QC, and final user whole-track approval."
+    },
+    {
+      "card_id": "162002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet6", "library_id": "6", "library_name": "语法", "group_id": "2", "group_name": "虚拟语气", "box_id": "0", "box_name": "听力", "box_prefix": "1620"},
+      "quality_metadata": {"main_training_goal": "从 if it weren't for 反推真实存在的支撑条件", "secondary_training_goals": ["区分虚拟结果与现实能力"], "weak_point_tags": ["grammar_weak", "listening_weak"], "difficulty": {"primary": "foundation", "secondary": []}, "card_prototype": "solving_action", "material": {"text_source_type": "simulation", "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练六级听力把 if it weren't for 的假设反转为现实支撑关系。", "box_progression_role": "recognition", "review_status": "draft"},
+      "status": "pass",
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending separate formal audio delivery, named-human QC, and final user whole-track approval."
+    },
+    {
+      "card_id": "162003",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet6", "library_id": "6", "library_name": "语法", "group_id": "2", "group_name": "虚拟语气", "box_id": "0", "box_name": "听力", "box_prefix": "1620"},
+      "quality_metadata": {"main_training_goal": "听辨 would've had to 弱读并恢复 otherwise 隐含条件", "secondary_training_goals": ["区分过去未发生必要与当前必要"], "weak_point_tags": ["grammar_weak", "listening_weak"], "difficulty": {"primary": "pass", "secondary": []}, "card_prototype": "integrated_micro_drill", "material": {"text_source_type": "simulation", "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练六级听力把情态完成式弱读、隐含条件和现实结果连成一条证据链。", "box_progression_role": "application", "review_status": "draft"},
+      "status": "pass",
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending separate formal audio delivery, named-human QC, and final user whole-track approval."
+    },
+    {
+      "card_id": "162004",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet6", "library_id": "6", "library_name": "语法", "group_id": "2", "group_name": "虚拟语气", "box_id": "0", "box_name": "听力", "box_prefix": "1620"},
+      "quality_metadata": {"main_training_goal": "听辨 It's time + past form 的当前催促立场", "secondary_training_goals": ["结合持续状态判断行动是否逾期"], "weak_point_tags": ["grammar_weak", "listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "pass", "secondary": []}, "card_prototype": "solving_action", "material": {"text_source_type": "simulation", "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练六级听力不把虚拟过去形式误听成已完成事实。", "box_progression_role": "application", "review_status": "draft"},
+      "status": "pass",
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending separate formal audio delivery, named-human QC, and final user whole-track approval."
+    },
+    {
+      "card_id": "162005",
+      "interaction_id": "elimination",
+      "knowledge_ref": {"track": "cet6", "library_id": "6", "library_name": "语法", "group_id": "2", "group_name": "虚拟语气", "box_id": "0", "box_name": "听力", "box_prefix": "1620"},
+      "quality_metadata": {"main_training_goal": "结合 as if/as though 与事实校正排除失实记录", "secondary_training_goals": ["区分说话人批评的表象与确认事实"], "weak_point_tags": ["grammar_weak", "listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "pass", "secondary": ["high_score"]}, "card_prototype": "error_correction", "material": {"text_source_type": "simulation", "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练六级听力区分 as if/as though 营造的表象与后续事实校正。", "box_progression_role": "application", "review_status": "draft"},
+      "status": "pass",
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending separate formal audio delivery, named-human QC, and final user whole-track approval."
+    },
+    {
+      "card_id": "162006",
+      "interaction_id": "flip",
+      "knowledge_ref": {"track": "cet6", "library_id": "6", "library_name": "语法", "group_id": "2", "group_name": "虚拟语气", "box_id": "0", "box_name": "听力", "box_prefix": "1620"},
+      "quality_metadata": {"main_training_goal": "从 but for + might have 恢复真实帮助与未发生风险", "secondary_training_goals": ["保留情态可能性而不升级为必然"], "weak_point_tags": ["grammar_weak", "listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "pass", "secondary": []}, "card_prototype": "context_input", "material": {"text_source_type": "simulation", "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练六级听力恢复 but for 隐含条件并保持 might have 的证据强度。", "box_progression_role": "application", "review_status": "draft"},
+      "status": "pass",
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending separate formal audio delivery, named-human QC, and final user whole-track approval."
+    },
+    {
+      "card_id": "162007",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet6", "library_id": "6", "library_name": "语法", "group_id": "2", "group_name": "虚拟语气", "box_id": "0", "box_name": "听力", "box_prefix": "1620"},
+      "quality_metadata": {"main_training_goal": "整合 would rather + had done 与已发生对话时间线", "secondary_training_goals": ["区分事后偏好与未来建议"], "weak_point_tags": ["grammar_weak", "listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "high_score", "secondary": []}, "card_prototype": "exam_strategy", "material": {"text_source_type": "simulation", "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练六级听力结合上下文判断 would rather 的事后偏好，而非只认 had done。", "box_progression_role": "transfer", "review_status": "draft"},
+      "status": "pass",
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending separate formal audio delivery, named-human QC, and final user whole-track approval."
+    },
+    {
+      "card_id": "162008",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet6", "library_id": "6", "library_name": "语法", "group_id": "2", "group_name": "虚拟语气", "box_id": "0", "box_name": "听力", "box_prefix": "1620"},
+      "quality_metadata": {"main_training_goal": "综合追踪活动说明中的事实、过去反事实与未发生风险", "secondary_training_goals": ["保留 might have 的不确定性"], "weak_point_tags": ["grammar_weak", "listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "high_score", "secondary": []}, "card_prototype": "integrated_micro_drill", "material": {"text_source_type": "simulation", "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练六级听力在较长语段中合并现实校正、反事实和情态风险。", "box_progression_role": "transfer", "review_status": "draft"},
+      "status": "pass",
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending separate formal audio delivery, named-human QC, and final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "2 recognition/foundation, 4 application/pass, 2 transfer/high-score audio-first cards.",
+    "repetition_or_gap_risks": [
+      "Synthetic scripts still require final user whole-track approval.",
+      "No true-exam provenance is claimed.",
+      "Formal repository audio delivery and named-human two-pass perceptual QC remain open and cannot be substituted by technical hash, duration, decode, clipping, or loudness checks."
+    ],
+    "representative_cards": [
+      "162001",
+      "162005",
+      "162008"
+    ],
+    "next_step": "Commit and park the content-only branch without a PR while the five candidate-content PR slots remain occupied; deliver matching audio assets on a separate branch and keep formal_audio_ready false until named-human QC is recorded."
+  }
+}
