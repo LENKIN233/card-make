@@ -4,7 +4,8 @@
   "agent": "codex",
   "branch": "content/cet6-full-remediation-1611",
   "base_branch": "main",
-  "commit_sha": "5a58113a5617de957996d17588ed4bd85095f86e",
+  "commit_sha": "fa622653a29b43c298fbed12f150df91fdd4289d",
+  "original_content_commit_sha": "5a58113a5617de957996d17588ed4bd85095f86e",
   "push_ref": "origin/content/cet6-full-remediation-1611",
   "PR_url": "https://github.com/LENKIN233/card-make/compare/main...content/cet6-full-remediation-1611",
   "PR_state": "PARKED_NO_PR_WIP_LIMIT",
@@ -17,12 +18,13 @@
       "reviews/agent_self_review/20260730-cet6-grammar-1611-full-remediation.json",
       "reviews/audit_scopes/20260730-cet6-grammar-1611-full-remediation-scope-audit.json"
     ],
-    "patch_sha256": "9ec5736394b0d229d145277f8525d28663ab92fd5bf2a35cd9e76c6af284877b"
+    "patch_sha256": "e84c8aaa99eb332810fe1ac2b433c0d159df9d6383ece9d780efa47ecddd05c4"
   },
   "summary": [
     "Replaced eight untraced relative-clause cards after independent review found answer leaks, non-unique options, false diagnostic shortcuts, over-absolute rules, and user-visible migration labels.",
     "Covered restrictive scope, non-restrictive punctuation, pronoun-versus-adverb gaps, preposition fronting, who/whom/whose roles, controlled reduction, partitive of which, and relative-versus-appositive diagnostics.",
-    "Preserved all card IDs and the original interaction sequence while adding unique canonical answers, complete task schemas, synthetic provenance, quality metadata, and a 2/4/2 progression."
+    "Preserved all card IDs and the original interaction sequence while adding unique canonical answers, complete task schemas, synthetic provenance, quality metadata, and a 2/4/2 progression.",
+    "Repaired the later schema-enum drift by replacing legacy writing_weak with authority-owned writing_output_weak on cards 161102, 161104, 161105, and 161106 and in the mirrored self-review."
   ],
   "validation": [
     {"command": "node scripts/validate_cards.mjs --report-path /tmp/1611-final-cards.json", "result": "passed: 2414 cards, 0 errors, 0 warnings"},
@@ -32,9 +34,11 @@
     {"command": "node scripts/validate_pr_scope.mjs --base main --head HEAD", "result": "passed: primary scope prefix 1611"},
     {"command": "node scripts/validate_delivery_boundary.mjs --base main --head HEAD", "result": "passed: one card file and two review-evidence files, no approval or audio files"},
     {"command": "manual assertions for catalog placement/count, normalized/legacy parity, unique MC/elimination answers, flip scoring, source/audio boundary, and 2/4/2 progression", "result": "passed"},
-    {"command": "git verify-commit 5a58113a5617de957996d17588ed4bd85095f86e", "result": "passed: good ED25519 signature"}
+    {"command": "git verify-commit 5a58113a5617de957996d17588ed4bd85095f86e", "result": "passed: good ED25519 signature"},
+    {"command": "allowed weak_point_tags assertion plus self-review/scoped-audit fingerprint parity", "result": "passed: all 1611 tags belong to the authority enum; no legacy tag remains in metadata; corpus digest 98b775ebe9378651e122b9da0679f2a7967f72333a013ed576c731cf6f544a00"},
+    {"command": "git verify-commit fa622653a29b43c298fbed12f150df91fdd4289d", "result": "passed: good ED25519 signature"}
   ],
-  "local_status": "Content commit pushed; handoff commit pending at record creation. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
+  "local_status": "Original content and handoff commits were already pushed; signed schema-enum repair commit prepared, with refreshed handoff commit pending at record update. No PR opened because five active candidate-content PRs already occupy the WIP limit.",
   "remaining_risks": [
     "All eight cards are synthetic candidate content and require final user whole-track approval before integration.",
     "Fifteen CET6 hard-blocker prefixes remain unresolved after 1611, including the blocked 1030 authority conflict and five open sample prefixes.",
