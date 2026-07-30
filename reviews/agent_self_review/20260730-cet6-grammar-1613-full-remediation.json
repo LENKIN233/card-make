@@ -1,0 +1,502 @@
+{
+  "review_id": "20260730-cet6-grammar-1613-full-remediation",
+  "created_at": "2026-07-30T15:29:34.271Z",
+  "agent": "codex",
+  "scope": {
+    "library": "语法",
+    "group": "复杂句",
+    "box": "倒装句",
+    "box_prefixes": [
+      "1613"
+    ],
+    "card_ids": [
+      "161301",
+      "161302",
+      "161303",
+      "161304",
+      "161305",
+      "161306",
+      "161307",
+      "161308"
+    ],
+    "closure_reason": "User-authorized full-track remediation: correct a materially wrong and non-unique so/neither answer, remove answer leakage and migration labels, migrate two legacy-form cards to canonical options, strengthen distractors and transfer tasks, rewrite untraced examples as simulations, and add complete 2/4/2 evidence while preserving IDs and interaction sequence.",
+    "source_issue_refs": [
+      "exports/card-quality-audit-current.json",
+      "user_requested_launch_quality_goal",
+      "parallel_read_only_review_1613"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet6-grammar-1613-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "053ffa2a341b7b250240eff6b2054f27c1d85b80fdf66dfc20f05cce533e81d7",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "161301",
+        "161302",
+        "161303",
+        "161304",
+        "161305",
+        "161306",
+        "161307",
+        "161308"
+      ],
+      "card_count": 8,
+      "issue_count": 8,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 8
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 8,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "manual_quality_checks": {
+    "authoritative_placement": "Passed: prefix 1613 matches 语法 / 复杂句 / 倒装句 and the catalog-owned eight-card count.",
+    "independent_tasks": "Passed: all fronts are independently answerable and scoped audit reports no answer-path leak.",
+    "inversion_logic": "Passed: Only-adverbial main-clause inversion, negative-adverb do-support, no-sooner/than pairing, so/neither agreement, trigger correction, Had conditional inversion, past-counterfactual equivalence, and Not-until scope were manually derived.",
+    "polarity_correction": "Passed: 161304 now treats were unconvinced as grammatically affirmative, selects so rather than neither, copies be rather than do, and agrees was with the singular new subject.",
+    "scope_and_tense": "Passed: subordinate clauses remain in statement order where required; do-support restores base verbs; conditional inversion preserves past perfect, negation, voice, and modal-perfect result.",
+    "canonical_option_migration": "Passed: 161303 and 161307 contain canonical four-option arrays matching their legacy form_options and answer_key.",
+    "interaction_parity": "Passed: five multiple-choice cards have sole correct options, elimination correct_items match two true items, and flips remain unscored.",
+    "task_schema_parity": "Passed: normalized and legacy task schemas are identical for all cards.",
+    "progression": "Passed: 161301-161302 recognition/foundation, 161303-161306 application/pass, 161307-161308 transfer/high_score.",
+    "source_and_audio_boundary": "Passed: rewritten examples are synthetic simulations, claim no true-exam source, contain no audio, and use audio_generation_method none."
+  },
+  "cards": [
+    {
+      "card_id": "161301",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "3",
+        "box_name": "倒装句",
+        "box_prefix": "1613"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 Only 加状语前置触发的主句部分倒装",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 inversion grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读中快速还原 Only 前置长句的主干。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161302",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "3",
+        "box_name": "倒装句",
+        "box_prefix": "1613"
+      },
+      "quality_metadata": {
+        "main_training_goal": "掌握否定副词前置时的助动词选择",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 inversion grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级倒装填空中保留原句时态与谓语类型。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161303",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "3",
+        "box_name": "倒装句",
+        "box_prefix": "1613"
+      },
+      "quality_metadata": {
+        "main_training_goal": "掌握 no sooner 倒装结构及其连词配对",
+        "weak_point_tags": [
+          "grammar_weak",
+          "writing_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 inversion grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级写作中表达两个过去动作紧接发生。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161304",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "3",
+        "box_name": "倒装句",
+        "box_prefix": "1613"
+      },
+      "quality_metadata": {
+        "main_training_goal": "准确使用 so/neither 附和倒装",
+        "weak_point_tags": [
+          "grammar_weak",
+          "logic_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 inversion grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级语法中避免按词义极性误判附和结构。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161305",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "3",
+        "box_name": "倒装句",
+        "box_prefix": "1613"
+      },
+      "quality_metadata": {
+        "main_training_goal": "综合排查倒装触发与谓语形式",
+        "weak_point_tags": [
+          "grammar_weak",
+          "writing_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 inversion grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级写作中的倒装句自检与纠错。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161306",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "3",
+        "box_name": "倒装句",
+        "box_prefix": "1613"
+      },
+      "quality_metadata": {
+        "main_training_goal": "还原省略 if 的过去反事实条件倒装",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 inversion grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读中快速识别正式虚拟条件倒装。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161307",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "3",
+        "box_name": "倒装句",
+        "box_prefix": "1613"
+      },
+      "quality_metadata": {
+        "main_training_goal": "迁移完成过去反事实条件句的等义倒装",
+        "weak_point_tags": [
+          "grammar_weak",
+          "writing_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 inversion grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级写作中正式条件倒装的保义改写。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    },
+    {
+      "card_id": "161308",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "3",
+        "box_name": "倒装句",
+        "box_prefix": "1613"
+      },
+      "quality_metadata": {
+        "main_training_goal": "综合判断 Not until 倒装位置与作用域",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 inversion grammar simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级长句中 Not until 的主干还原和否定范围判断。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "status": "pass",
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [],
+      "recommendation": "Keep as candidate draft pending final user whole-track approval."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "2 recognition/foundation, 4 application/pass, 2 transfer/high-score cards.",
+    "repetition_or_gap_risks": [
+      "Synthetic examples still require final user whole-track approval.",
+      "No true-exam provenance is claimed."
+    ],
+    "representative_cards": [
+      "161304",
+      "161307",
+      "161308"
+    ],
+    "next_step": "Park the validated branch without a PR while the five candidate-content PR slots remain occupied."
+  }
+}
