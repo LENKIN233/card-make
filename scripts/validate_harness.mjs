@@ -4,6 +4,12 @@ import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import {isDeepStrictEqual} from 'node:util';
+import {
+  isHumanReviewerIdentity,
+  loadIntegrityPolicy,
+  validateChangedCardSelfReviewParity,
+} from './lib/card_integrity.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
@@ -64,7 +70,9 @@ const REQUIRED_QUALITY_AUDIT_RULES = [
 ];
 const REQUIRED_SAMPLE_GATE_FIELDS = [
   'quality_metadata_per_card',
+  'changed_candidate_card_integrity',
   'agent_self_review_record',
+  'self_review_quality_metadata_matches_current_card_corpus',
   'blocker_scan_per_card',
   'card_quality_audit_no_hard_blockers',
   'scoped_card_quality_audit_report',
@@ -72,6 +80,12 @@ const REQUIRED_SAMPLE_GATE_FIELDS = [
   'TTS_audio_QC_plan_when_audio_exists',
   'no_standalone_hint_layer_interaction',
 ];
+const REVIEW_RECORD_TEMPLATE_PATHS = new Set([
+  'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+  'reviews/agent_self_review/TEMPLATE.json',
+  'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
+  'reviews/approved_batches/TEMPLATE.json',
+]);
 const REQUIRED_GIT_HANDOFF_FIELDS = [
   'branch',
   'base_branch',
@@ -112,8 +126,10 @@ const SELF_REVIEW_SCOPE_TYPES = ['three_card_sample_per_box', 'residual_blocker_
 const STANDARD_SELF_REVIEW_BATCH_STATUSES = ['recommend_user_confirmation', 'revise_before_user_review', 'blocked'];
 const RESIDUAL_BLOCKER_CLOSURE_STATUS = 'documented_residual_closure';
 const FULL_TRACK_READY_STATUS = 'ready_for_full_track_user_approval';
-const PR_SCOPE_VALIDATION_COMMAND = 'node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract';
+const PR_SCOPE_VALIDATION_COMMAND = 'node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract --head HEAD';
 const SCOPED_AUDIT_VALIDATION_COMMAND = 'node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json';
+const CARD_INTEGRITY_TEST_COMMAND = 'node --test scripts/test_card_integrity.mjs';
+const PR_SCOPE_TEST_COMMAND = 'node --test scripts/test_validate_pr_scope.mjs';
 
 function resolveWorkspacePath(specPath) {
   return path.resolve(ROOT, specPath);
@@ -177,6 +193,64 @@ function computeCardCorpusFingerprint() {
 
 let cachedCurrentFingerprint = null;
 let cachedCurrentScopedAuditFiles = null;
+let cachedCurrentCardsById = null;
+let cachedIntegrityPolicy = null;
+const cachedCurrentTrackScopes = new Map();
+
+function currentIntegrityPolicy() {
+  if (!cachedIntegrityPolicy) cachedIntegrityPolicy = loadIntegrityPolicy(ROOT);
+  return cachedIntegrityPolicy;
+}
+
+function currentCardsById() {
+  if (cachedCurrentCardsById) return cachedCurrentCardsById;
+  const cardsById = new Map();
+  for (const file of listCardFiles()) {
+    const data = JSON.parse(fs.readFileSync(path.join(CARD_DIR, file), 'utf8'));
+    for (const card of data.cards || []) {
+      if (!hasText(card?.card_id)) continue;
+      const matches = cardsById.get(card.card_id) || [];
+      matches.push({card, file});
+      cardsById.set(card.card_id, matches);
+    }
+  }
+  cachedCurrentCardsById = cardsById;
+  return cachedCurrentCardsById;
+}
+
+function currentTrackCorpusScope(track) {
+  if (cachedCurrentTrackScopes.has(track)) {
+    return cachedCurrentTrackScopes.get(track);
+  }
+
+  const cardIds = [];
+  const boxPrefixes = [];
+  const cardsMissingId = [];
+  const cardsMissingBoxPrefix = [];
+  for (const file of listCardFiles()) {
+    const data = JSON.parse(fs.readFileSync(path.join(CARD_DIR, file), 'utf8'));
+    for (const card of data.cards || []) {
+      if (card?.track !== track) continue;
+      if (hasText(card.card_id)) cardIds.push(card.card_id);
+      else cardsMissingId.push(file);
+      if (hasText(card.knowledge_ref?.box_prefix)) {
+        boxPrefixes.push(card.knowledge_ref.box_prefix);
+      } else {
+        cardsMissingBoxPrefix.push(card.card_id || file);
+      }
+    }
+  }
+
+  const result = {
+    cardIds,
+    boxPrefixes: [...new Set(boxPrefixes)].sort(),
+    duplicateCardIds: cardIds.filter((cardId, index) => cardIds.indexOf(cardId) !== index),
+    cardsMissingId,
+    cardsMissingBoxPrefix,
+  };
+  cachedCurrentTrackScopes.set(track, result);
+  return result;
+}
 
 function currentCardCorpusFingerprint() {
   if (!cachedCurrentFingerprint) cachedCurrentFingerprint = computeCardCorpusFingerprint();
@@ -217,13 +291,17 @@ function currentScopedAuditReportFiles() {
 
   const currentDigest = currentCardCorpusFingerprint().digest;
   cachedCurrentScopedAuditFiles = listScopedAuditReportFiles().filter(file => {
-    const report = readJson(file);
-    return report.report_type === 'scoped_card_quality_audit' &&
-      report.corpus_fingerprint?.digest === currentDigest &&
-      Array.isArray(report.scope?.card_ids) &&
-      report.scope.card_ids.length > 0 &&
-      report.scoped_card_issue_index &&
-      typeof report.scoped_card_issue_index === 'object';
+    try {
+      const report = readJson(file);
+      return report.report_type === 'scoped_card_quality_audit' &&
+        report.corpus_fingerprint?.digest === currentDigest &&
+        Array.isArray(report.scope?.card_ids) &&
+        report.scope.card_ids.length > 0 &&
+        report.scoped_card_issue_index &&
+        typeof report.scoped_card_issue_index === 'object';
+    } catch {
+      return false;
+    }
   });
   return cachedCurrentScopedAuditFiles;
 }
@@ -241,9 +319,86 @@ function hasOwn(object, key) {
 }
 
 let cachedPreCutoverReportIndex = null;
+let cachedPreCutoverIntroduction = undefined;
+const cachedPreCutoverRecords = new Map();
 
 function canonicalJsonSha256(value) {
   return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
+}
+
+function bytesSha256(value) {
+  return crypto.createHash('sha256').update(value).digest('hex');
+}
+
+function gitOutput(args, {encoding = 'utf8'} = {}) {
+  return execFileSync('git', args, {
+    cwd: ROOT,
+    encoding,
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+}
+
+function preCutoverIntroduction() {
+  if (cachedPreCutoverIntroduction !== undefined) {
+    return cachedPreCutoverIntroduction;
+  }
+  try {
+    const commits = gitOutput([
+      'log',
+      '--format=%H',
+      '--diff-filter=A',
+      '--',
+      PRE_CUTOVER_REPORT_INDEX,
+    ])
+      .trim()
+      .split('\n')
+      .filter(Boolean);
+    if (commits.length !== 1) {
+      cachedPreCutoverIntroduction = {commit: null, commits};
+      return cachedPreCutoverIntroduction;
+    }
+    const commit = commits[0];
+    const indexBytes = gitOutput(
+      ['show', `${commit}:${PRE_CUTOVER_REPORT_INDEX}`],
+      {encoding: 'buffer'},
+    );
+    cachedPreCutoverIntroduction = {
+      commit,
+      commits,
+      indexBytes,
+      index: JSON.parse(indexBytes.toString('utf8')),
+    };
+  } catch (error) {
+    cachedPreCutoverIntroduction = {
+      commit: null,
+      commits: [],
+      error: error.message,
+    };
+  }
+  return cachedPreCutoverIntroduction;
+}
+
+function preCutoverRecord(recordPath) {
+  if (cachedPreCutoverRecords.has(recordPath)) {
+    return cachedPreCutoverRecords.get(recordPath);
+  }
+  const introduction = preCutoverIntroduction();
+  if (!introduction.commit) return null;
+  try {
+    const bytes = gitOutput(
+      ['show', `${introduction.commit}:${recordPath}`],
+      {encoding: 'buffer'},
+    );
+    const result = {
+      bytes,
+      record: JSON.parse(bytes.toString('utf8')),
+    };
+    cachedPreCutoverRecords.set(recordPath, result);
+    return result;
+  } catch {
+    cachedPreCutoverRecords.set(recordPath, null);
+    return null;
+  }
 }
 
 function preCutoverReportIndex() {
@@ -251,6 +406,17 @@ function preCutoverReportIndex() {
     cachedPreCutoverReportIndex = readJson(PRE_CUTOVER_REPORT_INDEX);
   }
   return cachedPreCutoverReportIndex;
+}
+
+function isImmutablePreCutoverRecord(source, record) {
+  const index = preCutoverReportIndex();
+  const reference = (index?.legacy_references || []).find(entry => entry.record === source);
+  const cutoverRecord = reference ? preCutoverRecord(source) : null;
+  return Boolean(
+    reference &&
+    cutoverRecord &&
+    isDeepStrictEqual(record, cutoverRecord.record),
+  );
 }
 
 function validatePreCutoverReportIndex(errors) {
@@ -267,6 +433,21 @@ function validatePreCutoverReportIndex(errors) {
   }
   if (!/^[0-9a-f]{64}$/.test(String(index.archive?.sha256 || '')) || !Number.isInteger(index.archive?.size_bytes)) {
     pushIssue(errors, 'pre_cutover_report_index_archive_invalid', {});
+  }
+  const introduction = preCutoverIntroduction();
+  if (!introduction.commit) {
+    pushIssue(errors, 'pre_cutover_report_index_introduction_unprovable', {
+      commits: introduction.commits,
+      error: introduction.error,
+    });
+  } else {
+    const currentIndexBytes = fs.readFileSync(resolveWorkspacePath(PRE_CUTOVER_REPORT_INDEX));
+    if (bytesSha256(currentIndexBytes) !== bytesSha256(introduction.indexBytes)) {
+      pushIssue(errors, 'pre_cutover_report_index_not_immutable', {
+        path: PRE_CUTOVER_REPORT_INDEX,
+        introduction_commit: introduction.commit,
+      });
+    }
   }
   const reports = Array.isArray(index.reports) ? index.reports : [];
   for (const reportPath of ['reports/card_quality_audit_report.json', 'reports/card_validation_report.json']) {
@@ -289,6 +470,33 @@ function validatePreCutoverReportIndex(errors) {
     }
     if (reference.audit_record_sha256 !== canonicalJsonSha256(auditRecord)) {
       pushIssue(errors, 'pre_cutover_report_reference_hash_mismatch', {record: reference.record});
+    }
+    const cutoverRecord = preCutoverRecord(reference.record);
+    if (!cutoverRecord) {
+      pushIssue(errors, 'pre_cutover_report_reference_cutover_record_missing', {
+        record: reference.record,
+        introduction_commit: introduction.commit,
+      });
+      continue;
+    }
+    const cutoverAuditRecord =
+      cutoverRecord.record.quality_audit || cutoverRecord.record.card_quality_audit;
+    if (
+      reference.report !== cutoverAuditRecord?.report ||
+      reference.corpus_fingerprint !== cutoverAuditRecord?.corpus_fingerprint ||
+      reference.audit_record_sha256 !== canonicalJsonSha256(cutoverAuditRecord)
+    ) {
+      pushIssue(errors, 'pre_cutover_report_reference_not_proven_at_cutover', {
+        record: reference.record,
+        introduction_commit: introduction.commit,
+      });
+    }
+    const currentRecordBytes = fs.readFileSync(resolveWorkspacePath(reference.record));
+    if (bytesSha256(currentRecordBytes) !== bytesSha256(cutoverRecord.bytes)) {
+      pushIssue(errors, 'pre_cutover_report_reference_record_not_immutable', {
+        record: reference.record,
+        introduction_commit: introduction.commit,
+      });
     }
   }
 }
@@ -316,6 +524,10 @@ function hasText(value) {
 
 function hasNonEmptyTextArray(value) {
   return Array.isArray(value) && value.length > 0 && value.every(hasText);
+}
+
+function hasUniqueNonEmptyTextArray(value) {
+  return hasNonEmptyTextArray(value) && new Set(value).size === value.length;
 }
 
 function stringSet(values) {
@@ -601,6 +813,84 @@ function validateContentQuality(errors) {
     if (!(quality.allowed_card_prototypes || []).includes(prototype)) {
       pushIssue(errors, 'card_prototype_missing', { prototype });
     }
+  }
+
+  const integrity = quality.candidate_integrity_policy || {};
+  if (!String(integrity.legacy_metadata_compatibility || '').includes('Untouched legacy cards')) {
+    pushIssue(errors, 'candidate_integrity_legacy_boundary_missing', {});
+  }
+  if (!String(integrity.changed_candidate_detection || '').includes('merge-base-to-head')) {
+    pushIssue(errors, 'candidate_integrity_diff_discovery_missing', {});
+  }
+  if (
+    !String(integrity.governed_review_path_detection || '').includes('without') ||
+    !String(integrity.governed_review_path_detection || '').includes('four-digit box prefix') ||
+    !String(integrity.governed_review_path_detection || '').includes('four exact repository-declared templates') ||
+    !String(integrity.governed_review_path_detection || '').includes('reviews/approved_batches') ||
+    !String(integrity.governed_review_path_detection || '').includes('approval records') ||
+    !String(integrity.governed_review_path_detection || '').includes('unknown filenames')
+  ) {
+    pushIssue(errors, 'candidate_integrity_unprefixed_review_path_boundary_missing', {});
+  }
+  if (
+    !String(integrity.current_scoped_audit_snapshot || '').includes('complete card_boxes_json tree') ||
+    !String(integrity.current_scoped_audit_snapshot || '').includes('immutable HEAD commit')
+  ) {
+    pushIssue(errors, 'candidate_integrity_head_audit_snapshot_missing', {});
+  }
+  if (integrity.self_review_parity?.changed_self_review_required !== true) {
+    pushIssue(errors, 'candidate_integrity_changed_self_review_not_required', {});
+  }
+  if (integrity.self_review_parity?.exactly_one_review_coverage_per_changed_card !== true) {
+    pushIssue(errors, 'candidate_integrity_unique_review_coverage_not_required', {});
+  }
+  if (integrity.self_review_parity?.standard_review_snapshot_required !== true) {
+    pushIssue(errors, 'candidate_integrity_standard_snapshot_not_required', {});
+  }
+  if (integrity.self_review_parity?.every_changed_self_review_entry_checked_against_head !== true) {
+    pushIssue(errors, 'candidate_integrity_review_only_parity_not_required', {});
+  }
+  if (integrity.self_review_parity?.scope_omission_cannot_bypass_validation !== true) {
+    pushIssue(errors, 'candidate_integrity_scope_bypass_not_forbidden', {});
+  }
+  const fullTrackBoundary = String(integrity.self_review_parity?.full_track_aggregate_boundary || '');
+  if (
+    !fullTrackBoundary.includes('coverage.reviewed_card_ids') ||
+    !fullTrackBoundary.includes('exactly-one review coverage') ||
+    !fullTrackBoundary.includes('without a cards property') ||
+    !fullTrackBoundary.includes('complete declared track') ||
+    !fullTrackBoundary.includes('merge-base and HEAD card ID sets')
+  ) {
+    pushIssue(errors, 'candidate_integrity_full_track_aggregate_boundary_missing', {});
+  }
+  const parityDescription = String(integrity.self_review_parity?.quality_metadata_comparison || '');
+  const statusSemantics = String(integrity.self_review_parity?.review_status_semantics || '');
+  if (!parityDescription.includes('every quality_metadata field except review_status')) {
+    pushIssue(errors, 'candidate_integrity_metadata_parity_incomplete', {});
+  }
+  if (!statusSemantics.includes('only parity exclusion')) {
+    pushIssue(errors, 'candidate_integrity_review_status_exception_unbounded', {});
+  }
+  if (integrity.elimination_integrity?.canonical_items_field !== 'elimination_items') {
+    pushIssue(errors, 'candidate_integrity_elimination_canonical_field_drift', {});
+  }
+  if (integrity.elimination_integrity?.legacy_preview_mirror_field !== 'eliminable_items') {
+    pushIssue(errors, 'candidate_integrity_elimination_mirror_field_drift', {});
+  }
+  if (integrity.elimination_integrity?.legacy_preview_mirror_required_while_reader_depends_on_it !== true) {
+    pushIssue(errors, 'candidate_integrity_elimination_mirror_not_required', {});
+  }
+  if (!String(integrity.elimination_integrity?.canonical_item_shape || '').includes('{id,text}')) {
+    pushIssue(errors, 'candidate_integrity_elimination_runtime_id_shape_missing', {});
+  }
+  if (!String(integrity.elimination_integrity?.answer_truth || '').includes('runtime IDs')) {
+    pushIssue(errors, 'candidate_integrity_elimination_id_answer_truth_missing', {});
+  }
+  if (!String(integrity.elimination_integrity?.untouched_legacy_compatibility || '').includes('global read-only validation')) {
+    pushIssue(errors, 'candidate_integrity_elimination_legacy_boundary_missing', {});
+  }
+  if (integrity.elimination_integrity?.duplicate_item_identity !== 'forbidden') {
+    pushIssue(errors, 'candidate_integrity_elimination_duplicate_identity_not_forbidden', {});
   }
 }
 
@@ -904,7 +1194,7 @@ function validateCardQualityAudit(errors, warnings) {
   if (audit.scoped_report_contract?.report_type !== 'scoped_card_quality_audit') {
     pushIssue(errors, 'card_quality_audit_scoped_report_contract_missing', {});
   }
-  for (const field of ['ok', 'report_type', 'corpus_fingerprint', 'scope', 'scope_summary', 'scoped_card_issue_index', 'scoped_hard_blocker_issues']) {
+  for (const field of ['ok', 'audit_version', 'mode', 'report_type', 'corpus_fingerprint', 'scope', 'scope_summary', 'scoped_card_issue_index', 'scoped_hard_blocker_issues']) {
     if (!(audit.scoped_report_contract?.must_include || []).includes(field)) {
       pushIssue(errors, 'card_quality_audit_scoped_report_field_missing', { field });
     }
@@ -960,16 +1250,28 @@ function validateCardQualityAudit(errors, warnings) {
   ];
   for (const requirement of [
     'scoped_report_must_match_current_card_corpus_fingerprint',
-    'agent_self_review_must_link_current_scoped_or_global_quality_audit_report',
+    'agent_self_review_must_link_current_scoped_quality_audit_report',
     'agent_self_review_must_include_scoped_quality_audit_summary',
     'scope_must_have_no_hard_blocker_issues',
     'no_hard_blocker_issues',
+    'approval_record_must_link_current_scoped_quality_audit_report',
     'linked_current_quality_audit_report',
     'explicit_user_confirmation',
   ]) {
     if (!candidatePolicy.includes(requirement)) {
       pushIssue(errors, 'card_quality_audit_candidate_policy_missing', { requirement });
     }
+  }
+  if (audit.pre_cutover_report_archive?.new_or_changed_review_records_must_use_current_scoped_report !== true) {
+    pushIssue(errors, 'pre_cutover_new_review_scoped_audit_policy_missing', {});
+  }
+  if (
+    !String(audit.pre_cutover_report_archive?.active_repository_immutability_proof || '')
+      .includes('index bytes') ||
+    !String(audit.pre_cutover_report_archive?.active_repository_immutability_proof || '')
+      .includes('review-record byte sequence')
+  ) {
+    pushIssue(errors, 'pre_cutover_record_immutability_policy_missing', {});
   }
   if (audit.report_freshness_policy?.fingerprint_algorithm !== 'sha256') {
     pushIssue(errors, 'card_quality_audit_fingerprint_algorithm_drift', {
@@ -1072,10 +1374,318 @@ function validateCardQualityAudit(errors, warnings) {
       pushIssue(errors, 'card_quality_audit_report_rule_missing', { ruleId });
     }
   }
+  validateTrackedScopedAuditReports(report, errors);
+}
+
+function validateScopedAuditReportStructure(scopedReport, errors, source) {
+  if (!scopedReport || typeof scopedReport !== 'object' || Array.isArray(scopedReport)) {
+    pushIssue(errors, 'scoped_audit_report_not_object', {source});
+    return false;
+  }
+  if (scopedReport.report_type !== 'scoped_card_quality_audit') {
+    pushIssue(errors, 'scoped_audit_report_type_invalid', {
+      source,
+      actual: scopedReport.report_type,
+    });
+  }
+  const auditPolicy = readJson('spec/card-quality-audit.json');
+  if (scopedReport.audit_version !== auditPolicy.version) {
+    pushIssue(errors, 'scoped_audit_report_version_invalid', {
+      source,
+      expected: auditPolicy.version,
+      actual: scopedReport.audit_version,
+    });
+  }
+  if (scopedReport.mode !== auditPolicy.mode) {
+    pushIssue(errors, 'scoped_audit_report_mode_invalid', {
+      source,
+      expected: auditPolicy.mode,
+      actual: scopedReport.mode,
+    });
+  }
+  if (typeof scopedReport.ok !== 'boolean') {
+    pushIssue(errors, 'scoped_audit_report_ok_not_boolean', {source});
+  }
+  const fingerprint = scopedReport.corpus_fingerprint;
+  if (
+    fingerprint?.algorithm !== 'sha256' ||
+    fingerprint?.card_dir !== 'card_boxes_json' ||
+    !Number.isInteger(fingerprint?.file_count) ||
+    fingerprint.file_count < 0 ||
+    !Number.isInteger(fingerprint?.card_count) ||
+    fingerprint.card_count < 0 ||
+    !/^[0-9a-f]{64}$/.test(String(fingerprint?.digest || ''))
+  ) {
+    pushIssue(errors, 'scoped_audit_report_fingerprint_invalid', {
+      source,
+      actual: fingerprint,
+    });
+  }
+
+  const scopeCardIds = Array.isArray(scopedReport.scope?.card_ids)
+    ? scopedReport.scope.card_ids
+    : [];
+  if (
+    scopeCardIds.length === 0 ||
+    !scopeCardIds.every(hasText) ||
+    new Set(scopeCardIds).size !== scopeCardIds.length
+  ) {
+    pushIssue(errors, 'scoped_audit_report_scope_card_ids_invalid', {
+      source,
+      card_ids: scopeCardIds,
+    });
+    return false;
+  }
+  if (!isDeepStrictEqual(scopeCardIds, [...scopeCardIds].sort())) {
+    pushIssue(errors, 'scoped_audit_report_scope_card_ids_unsorted', {source});
+  }
+  if (scopedReport.scope?.card_dir !== 'card_boxes_json') {
+    pushIssue(errors, 'scoped_audit_report_card_dir_invalid', {
+      source,
+      actual: scopedReport.scope?.card_dir,
+    });
+  }
+  const missingCardIds = scopedReport.scope?.missing_card_ids;
+  if (
+    !Array.isArray(missingCardIds) ||
+    !missingCardIds.every(hasText) ||
+    new Set(missingCardIds).size !== missingCardIds.length ||
+    !missingCardIds.every(cardId => scopeCardIds.includes(cardId))
+  ) {
+    pushIssue(errors, 'scoped_audit_report_missing_card_ids_invalid', {
+      source,
+      missing_card_ids: missingCardIds,
+    });
+  }
+
+  const summary = scopedReport.scope_summary;
+  if (
+    !summary ||
+    typeof summary !== 'object' ||
+    Array.isArray(summary) ||
+    !setsEqual(summary.card_ids, scopeCardIds) ||
+    summary.card_count !== scopeCardIds.length ||
+    !Number.isInteger(summary.issue_count) ||
+    summary.issue_count < 0
+  ) {
+    pushIssue(errors, 'scoped_audit_report_summary_invalid', {source});
+  }
+  let severityTotal = 0;
+  for (const severity of QUALITY_AUDIT_SEVERITIES) {
+    const count = summary?.by_severity?.[severity];
+    if (!Number.isInteger(count) || count < 0) {
+      pushIssue(errors, 'scoped_audit_report_summary_severity_invalid', {
+        source,
+        severity,
+        actual: count,
+      });
+    } else {
+      severityTotal += count;
+    }
+  }
+  if (Number.isInteger(summary?.issue_count) && severityTotal !== summary.issue_count) {
+    pushIssue(errors, 'scoped_audit_report_summary_severity_total_mismatch', {
+      source,
+      expected: severityTotal,
+      actual: summary.issue_count,
+    });
+  }
+  if (
+    !summary?.by_rule ||
+    typeof summary.by_rule !== 'object' ||
+    Array.isArray(summary.by_rule) ||
+    !Object.values(summary.by_rule).every(count => Number.isInteger(count) && count >= 0)
+  ) {
+    pushIssue(errors, 'scoped_audit_report_summary_rules_invalid', {source});
+  }
+
+  const issueIndex = scopedReport.scoped_card_issue_index;
+  const expectedIndexIds = scopeCardIds.filter(cardId => !missingCardIds?.includes(cardId));
+  if (
+    !issueIndex ||
+    typeof issueIndex !== 'object' ||
+    Array.isArray(issueIndex) ||
+    !setsEqual(Object.keys(issueIndex), expectedIndexIds)
+  ) {
+    pushIssue(errors, 'scoped_audit_report_issue_index_invalid', {
+      source,
+      expected_card_ids: expectedIndexIds,
+      actual_card_ids: Object.keys(issueIndex || {}),
+    });
+  }
+  const recomputedIssueCount = Object.values(issueIndex || {})
+    .reduce((total, entry) => total + numericCount(entry?.issue_count), 0);
+  if (Number.isInteger(summary?.issue_count) && recomputedIssueCount !== summary.issue_count) {
+    pushIssue(errors, 'scoped_audit_report_issue_index_count_mismatch', {
+      source,
+      expected: recomputedIssueCount,
+      actual: summary.issue_count,
+    });
+  }
+  for (const [cardId, entry] of Object.entries(issueIndex || {})) {
+    if (entry?.card_id !== cardId) {
+      pushIssue(errors, 'scoped_audit_report_issue_index_card_id_mismatch', {
+        source,
+        card_id: cardId,
+        actual: entry?.card_id,
+      });
+    }
+  }
+
+  const hardBlockers = scopedReport.scoped_hard_blocker_issues;
+  if (
+    !Array.isArray(hardBlockers) ||
+    !hardBlockers.every(issue =>
+      issue?.severity === 'hard_blocker' && scopeCardIds.includes(issue?.card_id)
+    )
+  ) {
+    pushIssue(errors, 'scoped_audit_report_hard_blockers_invalid', {source});
+  }
+  if (
+    Number.isInteger(summary?.by_severity?.hard_blocker) &&
+    Array.isArray(hardBlockers) &&
+    summary.by_severity.hard_blocker !== hardBlockers.length
+  ) {
+    pushIssue(errors, 'scoped_audit_report_hard_blocker_count_mismatch', {
+      source,
+      expected: hardBlockers.length,
+      actual: summary.by_severity.hard_blocker,
+    });
+  }
+  const expectedOk =
+    Array.isArray(missingCardIds) &&
+    missingCardIds.length === 0 &&
+    Array.isArray(hardBlockers) &&
+    hardBlockers.length === 0;
+  if (scopedReport.ok !== expectedOk) {
+    pushIssue(errors, 'scoped_audit_report_ok_semantics_mismatch', {
+      source,
+      expected: expectedOk,
+      actual: scopedReport.ok,
+    });
+  }
+  return true;
+}
+
+function validateCurrentScopedAuditReport(scopedReport, currentReport, errors, source) {
+  if (!isDeepStrictEqual(scopedReport.corpus_fingerprint, currentReport.corpus_fingerprint)) {
+    pushIssue(errors, 'scoped_audit_report_fingerprint_mismatch', {
+      source,
+      expected: currentReport.corpus_fingerprint,
+      actual: scopedReport.corpus_fingerprint,
+    });
+  }
+  const scopeCardIds = scopedReport.scope.card_ids;
+  const {summary: expectedSummary, missingCardIds} =
+    buildScopedAuditSummary(currentReport, scopeCardIds);
+  if (!isDeepStrictEqual(scopedReport.scope?.missing_card_ids, missingCardIds)) {
+    pushIssue(errors, 'scoped_audit_report_missing_card_ids_mismatch', {
+      source,
+      expected: missingCardIds,
+      actual: scopedReport.scope?.missing_card_ids,
+    });
+  }
+  if (!isDeepStrictEqual(scopedReport.scope_summary, expectedSummary)) {
+    pushIssue(errors, 'scoped_audit_report_summary_mismatch', {
+      source,
+      expected: expectedSummary,
+      actual: scopedReport.scope_summary,
+    });
+  }
+
+  const expectedIssueIndex = {};
+  for (const cardId of scopeCardIds) {
+    if (currentReport.card_issue_index?.[cardId]) {
+      expectedIssueIndex[cardId] = currentReport.card_issue_index[cardId];
+    }
+  }
+  if (!isDeepStrictEqual(scopedReport.scoped_card_issue_index, expectedIssueIndex)) {
+    pushIssue(errors, 'scoped_audit_report_issue_index_mismatch', {source});
+  }
+  const scopedIds = new Set(scopeCardIds);
+  const expectedHardBlockers = (currentReport.hard_blocker_issues || [])
+    .filter(issue => scopedIds.has(issue.card_id));
+  if (!isDeepStrictEqual(scopedReport.scoped_hard_blocker_issues, expectedHardBlockers)) {
+    pushIssue(errors, 'scoped_audit_report_hard_blockers_mismatch', {source});
+  }
+}
+
+function validateTrackedScopedAuditReports(currentReport, errors) {
+  const auditPolicy = readJson('spec/card-quality-audit.json');
+  const legacyReports = new Map(
+    (auditPolicy.legacy_scoped_report_archive?.reports || [])
+      .map(entry => [entry.path, entry]),
+  );
+  for (const [legacyPath, legacyEntry] of legacyReports) {
+    if (
+      !isScopedQualityAuditReport(legacyPath) ||
+      !/^[0-9a-f]{64}$/.test(String(legacyEntry.sha256 || '')) ||
+      !exists(legacyPath)
+    ) {
+      pushIssue(errors, 'legacy_scoped_audit_archive_entry_invalid', {
+        source: legacyPath,
+      });
+    }
+    const cutoverArtifact = preCutoverRecord(legacyPath);
+    if (
+      !cutoverArtifact ||
+      bytesSha256(cutoverArtifact.bytes) !== legacyEntry.sha256
+    ) {
+      pushIssue(errors, 'legacy_scoped_audit_archive_not_proven_at_cutover', {
+        source: legacyPath,
+        introduction_commit: preCutoverIntroduction().commit,
+      });
+    }
+  }
+  for (const file of listReviewRecordFiles('reviews/audit_scopes')) {
+    if (!isCanonicalReviewRecordPath(file, 'reviews/audit_scopes')) {
+      pushIssue(errors, 'scoped_audit_report_path_noncanonical', {source: file});
+      continue;
+    }
+    if (hasUnsafeReviewPathCharacters(file)) {
+      pushIssue(errors, 'scoped_audit_report_path_characters_invalid', {source: file});
+      continue;
+    }
+    const fullPath = resolveWorkspacePath(file);
+    if (!fs.lstatSync(fullPath).isFile()) {
+      pushIssue(errors, 'scoped_audit_report_not_regular_file', {source: file});
+      continue;
+    }
+    const legacyEntry = legacyReports.get(file);
+    if (legacyEntry) {
+      const actualSha256 = bytesSha256(fs.readFileSync(fullPath));
+      if (actualSha256 !== legacyEntry.sha256) {
+        pushIssue(errors, 'legacy_scoped_audit_archive_hash_mismatch', {
+          source: file,
+          expected: legacyEntry.sha256,
+          actual: actualSha256,
+        });
+      }
+      continue;
+    }
+    let scopedReport;
+    try {
+      scopedReport = readJson(file);
+    } catch (error) {
+      pushIssue(errors, 'scoped_audit_report_unreadable', {
+        source: file,
+        message: error.message,
+      });
+      continue;
+    }
+    if (!validateScopedAuditReportStructure(scopedReport, errors, file)) continue;
+    if (
+      scopedReport.corpus_fingerprint?.digest ===
+      currentReport.corpus_fingerprint?.digest
+    ) {
+      validateCurrentScopedAuditReport(scopedReport, currentReport, errors, file);
+    }
+  }
 }
 
 function validateMetadataSchema(errors) {
   const schema = readJson('spec/card-metadata.schema.json');
+  const quality = readJson('spec/content-quality-contract.json');
   const rootRequired = schema.required || [];
   if (!rootRequired.includes('interaction_id')) {
     pushIssue(errors, 'metadata_root_interaction_id_not_required', {});
@@ -1098,6 +1708,50 @@ function validateMetadataSchema(errors) {
   }
   if ((schema.properties?.quality_metadata?.properties?.review_status?.enum || []).includes('user_approved')) {
     pushIssue(errors, 'metadata_review_status_allows_user_approved', {});
+  }
+
+  const metadataProperties = schema.properties?.quality_metadata?.properties || {};
+  const exactEnum = (actual, expected) => {
+    if (!Array.isArray(actual) || !Array.isArray(expected) || actual.length !== expected.length) return false;
+    const sortedActual = [...actual].sort();
+    const sortedExpected = [...expected].sort();
+    return sortedActual.every((value, index) => value === sortedExpected[index]);
+  };
+  const enumBindings = [
+    {
+      name: 'weak_point_tags',
+      actual: metadataProperties.weak_point_tags?.items?.enum,
+      expected: quality.default_user_model?.weak_point_tags,
+    },
+    {
+      name: 'difficulty.primary',
+      actual: metadataProperties.difficulty?.properties?.primary?.enum,
+      expected: quality.difficulty_policy?.tiers,
+    },
+    {
+      name: 'difficulty.secondary',
+      actual: metadataProperties.difficulty?.properties?.secondary?.items?.enum,
+      expected: quality.difficulty_policy?.tiers,
+    },
+    {
+      name: 'card_prototype',
+      actual: metadataProperties.card_prototype?.enum,
+      expected: quality.allowed_card_prototypes,
+    },
+    {
+      name: 'material.text_source_type',
+      actual: metadataProperties.material?.properties?.text_source_type?.enum,
+      expected: quality.source_policy?.allowed_text_source_types,
+    },
+  ];
+  for (const binding of enumBindings) {
+    if (!exactEnum(binding.actual, binding.expected)) {
+      pushIssue(errors, 'metadata_schema_content_quality_enum_drift', {
+        field: binding.name,
+        schema_values: binding.actual || [],
+        quality_values: binding.expected || [],
+      });
+    }
   }
 }
 
@@ -1129,6 +1783,54 @@ function validateWorkflow(errors) {
   }
   if (workflow.sample_quality_gate?.quality_metadata_schema !== 'spec/card-metadata.schema.json') {
     pushIssue(errors, 'sample_quality_gate_schema_drift', {});
+  }
+  const candidateIntegrity = workflow.changed_candidate_integrity_policy || {};
+  if (candidateIntegrity.contract !== 'spec/content-quality-contract.json#candidate_integrity_policy') {
+    pushIssue(errors, 'changed_candidate_integrity_contract_drift', {});
+  }
+  if (candidateIntegrity.validator !== 'scripts/validate_pr_scope.mjs') {
+    pushIssue(errors, 'changed_candidate_integrity_validator_drift', {});
+  }
+  if (candidateIntegrity.strict_on_any_card_change !== true) {
+    pushIssue(errors, 'changed_candidate_integrity_not_strict', {});
+  }
+  for (const requiredText of [
+    'complete schema-valid quality_metadata',
+    'exactly one changed review coverage',
+    'even when the card itself did not change',
+    'coverage.reviewed_card_ids are identical',
+    'complete declared track',
+    'same non-empty card ID set at merge-base',
+    'regardless of filename prefix',
+    'exact repository-declared template paths',
+    'approved_batches',
+    'canonical governed filename',
+    'complete immutable HEAD card_boxes_json snapshot',
+    'elimination runtime ID items',
+  ]) {
+    if (!(candidateIntegrity.requirements || []).some(requirement => requirement.includes(requiredText))) {
+      pushIssue(errors, 'changed_candidate_integrity_requirement_missing', { requiredText });
+    }
+  }
+  for (const forbiddenText of [
+    'grandfather inherited integrity defects',
+    'derive changed card scope only',
+    'missing optional metadata fields',
+    'exclude any parity field other than artifact-local review_status',
+    'self-review-only churn',
+    'unprefixed governed review filename',
+    'merely because its basename ends in TEMPLATE.json',
+    'invalid or mismatched full-track scope and coverage',
+    'partial-track aggregate',
+    'claim a track that differs',
+    'absent from merge-base',
+    'attach a cards snapshot payload to a full-track aggregate',
+    'base worktree that retains card files deleted or renamed by HEAD',
+    'without an explicit immutable head commit',
+  ]) {
+    if (!(candidateIntegrity.must_not || []).some(rule => rule.includes(forbiddenText))) {
+      pushIssue(errors, 'changed_candidate_integrity_forbidden_bypass_missing', { forbiddenText });
+    }
   }
   if (workflow.residual_blocker_closure_review_policy?.review_scope_type !== 'residual_blocker_closure') {
     pushIssue(errors, 'residual_blocker_closure_policy_missing', {});
@@ -1201,6 +1903,35 @@ function validateWorkflow(errors) {
 }
 
 function validateReviewDirs(errors) {
+  const expectedTemplateAuthorities = new Map([
+    ['reviews/agent_self_review/FULL_TRACK_TEMPLATE.json', 'full_track_review_template'],
+    ['reviews/agent_self_review/TEMPLATE.json', 'review_template'],
+    ['reviews/approved_batches/FULL_TRACK_TEMPLATE.json', 'full_track_approval_template'],
+    ['reviews/approved_batches/TEMPLATE.json', 'approval_template'],
+  ]);
+  const expectedTemplatePaths = [...expectedTemplateAuthorities.keys()];
+  if (
+    REVIEW_RECORD_TEMPLATE_PATHS.size !== expectedTemplatePaths.length ||
+    expectedTemplatePaths.some(filePath => !REVIEW_RECORD_TEMPLATE_PATHS.has(filePath))
+  ) {
+    pushIssue(errors, 'review_record_template_allowlist_drift', {
+      actual: [...REVIEW_RECORD_TEMPLATE_PATHS].sort(),
+      expected: expectedTemplatePaths.sort(),
+    });
+  }
+  const manifestEntries = new Map(
+    (readJson('spec/doc-manifest.json').active_docs || [])
+      .map(entry => [entry.path, entry]),
+  );
+  for (const [templatePath, expectedAuthority] of expectedTemplateAuthorities) {
+    if (manifestEntries.get(templatePath)?.authority !== expectedAuthority) {
+      pushIssue(errors, 'review_template_manifest_authority_mismatch', {
+        source: templatePath,
+        expected: expectedAuthority,
+        actual: manifestEntries.get(templatePath)?.authority,
+      });
+    }
+  }
   for (const dir of [
     'reviews/agent_self_review',
     'reviews/approved_batches',
@@ -1216,13 +1947,87 @@ function validateReviewDirs(errors) {
   }
 }
 
-function listReviewRecordFiles(dir) {
-  const full = resolveWorkspacePath(dir);
-  if (!fs.existsSync(full)) return [];
-  return fs.readdirSync(full)
-    .filter(file => file.endsWith('.json') && !file.endsWith('TEMPLATE.json'))
-    .sort()
-    .map(file => `${dir}/${file}`);
+function listReviewRecordFiles(dir, root = ROOT) {
+  const records = [];
+  const walk = currentDir => {
+    const full = path.resolve(root, currentDir);
+    if (!fs.existsSync(full)) return;
+    for (const entry of fs.readdirSync(full, {withFileTypes: true})) {
+      const recordPath = `${currentDir}/${entry.name}`;
+      if (entry.isDirectory()) {
+        walk(recordPath);
+      } else if (
+        entry.name.endsWith('.json') &&
+        !REVIEW_RECORD_TEMPLATE_PATHS.has(recordPath)
+      ) {
+        records.push(recordPath);
+      }
+    }
+  };
+  walk(dir);
+  return records.sort();
+}
+
+function isCanonicalReviewRecordPath(file, dir) {
+  return path.posix.dirname(file) === dir;
+}
+
+function hasUnsafeReviewPathCharacters(file) {
+  return file.includes('\\') || /[\u0001-\u001f\u007f\u2028\u2029]/.test(file);
+}
+
+function isCanonicalAgentSelfReviewRecordPath(file) {
+  return (
+    hasText(file) &&
+    file.endsWith('.json') &&
+    !REVIEW_RECORD_TEMPLATE_PATHS.has(file) &&
+    isCanonicalReviewRecordPath(file, 'reviews/agent_self_review') &&
+    !hasUnsafeReviewPathCharacters(file)
+  );
+}
+
+function isTrackedWorkspacePath(file) {
+  try {
+    const trackedPath = execFileSync(
+      'git',
+      ['ls-files', '--error-unmatch', '--', file],
+      {cwd: ROOT, encoding: 'utf8'},
+    ).trim();
+    return trackedPath === file;
+  } catch {
+    return false;
+  }
+}
+
+function validateReviewRecordDiscovery(errors) {
+  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'card-make-review-discovery-'));
+  const nestedDir = path.join(tempRoot, 'reviews/agent_self_review/nested');
+  const nestedRecord = 'reviews/agent_self_review/nested/review.json';
+  try {
+    fs.mkdirSync(nestedDir, {recursive: true});
+    fs.writeFileSync(path.join(tempRoot, nestedRecord), '{}\n');
+    const discovered = listReviewRecordFiles('reviews/agent_self_review', tempRoot);
+    if (!discovered.includes(nestedRecord)) {
+      pushIssue(errors, 'agent_self_review_recursive_discovery_missing', {});
+    }
+    if (
+      isCanonicalReviewRecordPath(nestedRecord, 'reviews/agent_self_review') ||
+      !isCanonicalReviewRecordPath(
+        'reviews/agent_self_review/review.json',
+        'reviews/agent_self_review',
+      )
+    ) {
+      pushIssue(errors, 'agent_self_review_canonical_path_classifier_invalid', {});
+    }
+    if (
+      !hasUnsafeReviewPathCharacters('reviews/agent_self_review/line\u2028break.json') ||
+      hasUnsafeReviewPathCharacters('reviews/agent_self_review/review.json')
+    ) {
+      pushIssue(errors, 'agent_self_review_path_character_classifier_invalid', {});
+    }
+  } finally {
+    fs.rmSync(tempRoot, {recursive: true, force: true});
+  }
 }
 
 function validateBlockerScan(scan, errors, source, { template }) {
@@ -1244,6 +2049,8 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
   fixture = false,
   scopeCardIds = [],
   requiredForApproval = false,
+  allowHistoricalScopedReport = false,
+  currentFingerprint = currentCardCorpusFingerprint(),
 }) {
   if (!auditRecord || typeof auditRecord !== 'object') {
     pushIssue(errors, 'quality_audit_record_missing', { source });
@@ -1261,6 +2068,24 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
     for (const field of REQUIRED_QUALITY_AUDIT_SCOPE_SUMMARY_FIELDS) {
       if (!hasOwn(scopeSummary, field)) {
         pushIssue(errors, 'quality_audit_scope_summary_field_missing', { source, field });
+      }
+    }
+    for (const severity of QUALITY_AUDIT_SEVERITIES) {
+      if (!hasOwn(scopeSummary.by_severity, severity)) {
+        pushIssue(errors, 'quality_audit_scope_summary_severity_missing', {
+          source,
+          severity,
+        });
+      }
+    }
+    if (template || fixture) {
+      for (const ruleId of REQUIRED_QUALITY_AUDIT_RULES) {
+        if (!hasOwn(scopeSummary.by_rule, ruleId)) {
+          pushIssue(errors, 'quality_audit_scope_summary_rule_missing', {
+            source,
+            ruleId,
+          });
+        }
       }
     }
   }
@@ -1294,10 +2119,11 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
   }
 
   const report = readJson(auditRecord.report);
-  const currentFingerprint = currentCardCorpusFingerprint();
   const reportDigest = report.corpus_fingerprint?.digest;
   const allowStaleGlobalReport = usesGlobalReport && allowsStaleGlobalAuditReportForScopedCandidate();
-  const expectedRecordFingerprint = allowStaleGlobalReport ? reportDigest : currentFingerprint.digest;
+  const expectedRecordFingerprint = usesScopedReport || allowStaleGlobalReport
+    ? reportDigest
+    : currentFingerprint.digest;
   if (auditRecord.corpus_fingerprint !== expectedRecordFingerprint) {
     pushIssue(errors, 'quality_audit_record_fingerprint_mismatch', {
       source,
@@ -1312,8 +2138,23 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
       report_type: report.report_type,
     });
   }
-  if (reportDigest !== currentFingerprint.digest && !allowStaleGlobalReport) {
+  if (
+    reportDigest !== currentFingerprint.digest &&
+    !usesScopedReport &&
+    !allowStaleGlobalReport
+  ) {
     pushIssue(errors, 'quality_audit_record_links_stale_report', {
+      source,
+      expected: currentFingerprint.digest,
+      actual: reportDigest,
+    });
+  }
+  if (
+    usesScopedReport &&
+    reportDigest !== currentFingerprint.digest &&
+    !allowHistoricalScopedReport
+  ) {
+    pushIssue(errors, 'quality_audit_record_links_stale_scoped_report', {
       source,
       expected: currentFingerprint.digest,
       actual: reportDigest,
@@ -1389,8 +2230,14 @@ function validateQualityAuditRecord(auditRecord, errors, source, {
       });
     }
   }
-  for (const ruleId of REQUIRED_QUALITY_AUDIT_RULES) {
-    if (numericCount(scopeSummary.by_rule?.[ruleId]) !== expectedSummary.by_rule[ruleId]) {
+  const expectedRuleIds = Object.keys(expectedSummary.by_rule || {});
+  for (const ruleId of expectedRuleIds) {
+    if (!hasOwn(scopeSummary.by_rule, ruleId)) {
+      pushIssue(errors, 'quality_audit_scope_summary_rule_missing', {
+        source,
+        ruleId,
+      });
+    } else if (numericCount(scopeSummary.by_rule?.[ruleId]) !== expectedSummary.by_rule[ruleId]) {
       pushIssue(errors, 'quality_audit_scope_summary_rule_mismatch', {
         source,
         ruleId,
@@ -1511,10 +2358,306 @@ function selfReviewScopeType(record) {
   return 'three_card_sample_per_box';
 }
 
-function validateSelfReviewRecord(record, errors, source, { template = false, fixture = false } = {}) {
+function validateStandardSampleBoxDistribution(cards, boxPrefixes, errors, source) {
+  const normalizedBoxPrefixes = Array.isArray(boxPrefixes) ? boxPrefixes : [];
+  const expectedCards = Math.max(1, normalizedBoxPrefixes.length) * 3;
+  if (cards.length !== expectedCards) {
+    pushIssue(errors, 'self_review_sample_card_count_not_three_per_box', {
+      source,
+      expectedCards,
+      actualCards: cards.length,
+    });
+  }
+  const cardsPerBox = new Map(normalizedBoxPrefixes.map(boxPrefix => [boxPrefix, 0]));
+  for (const card of cards) {
+    const boxPrefix = card?.knowledge_ref?.box_prefix;
+    if (!cardsPerBox.has(boxPrefix)) {
+      pushIssue(errors, 'self_review_card_box_prefix_outside_scope', {
+        source,
+        card_id: card?.card_id,
+        box_prefix: boxPrefix,
+      });
+      continue;
+    }
+    cardsPerBox.set(boxPrefix, cardsPerBox.get(boxPrefix) + 1);
+  }
+  for (const [boxPrefix, count] of cardsPerBox) {
+    if (count !== 3) {
+      pushIssue(errors, 'self_review_box_sample_count_not_three', {
+        source,
+        box_prefix: boxPrefix,
+        expectedCards: 3,
+        actualCards: count,
+      });
+    }
+  }
+}
+
+function validateStandardSampleBoxDistributionSelfTest(errors) {
+  const validCards = [
+    ...Array.from({length: 3}, (_, index) => ({
+      card_id: `a${index}`,
+      knowledge_ref: {box_prefix: '0000'},
+    })),
+    ...Array.from({length: 3}, (_, index) => ({
+      card_id: `b${index}`,
+      knowledge_ref: {box_prefix: '9999'},
+    })),
+  ];
+  const validErrors = [];
+  validateStandardSampleBoxDistribution(
+    validCards,
+    ['0000', '9999'],
+    validErrors,
+    'standard-box-distribution-valid-self-test',
+  );
+  if (validErrors.length > 0) {
+    pushIssue(errors, 'standard_sample_box_distribution_valid_case_failed', {
+      actual: validErrors,
+    });
+  }
+
+  const imbalancedErrors = [];
+  validateStandardSampleBoxDistribution(
+    validCards.map(card => ({
+      ...card,
+      knowledge_ref: {box_prefix: '0000'},
+    })),
+    ['0000', '9999'],
+    imbalancedErrors,
+    'standard-box-distribution-imbalanced-self-test',
+  );
+  const counts = imbalancedErrors.filter(
+    issue => issue.code === 'self_review_box_sample_count_not_three',
+  );
+  if (
+    !counts.some(issue => issue.box_prefix === '0000' && issue.actualCards === 6) ||
+    !counts.some(issue => issue.box_prefix === '9999' && issue.actualCards === 0)
+  ) {
+    pushIssue(errors, 'standard_sample_box_distribution_imbalanced_case_not_rejected', {
+      actual: imbalancedErrors,
+    });
+  }
+}
+
+function validateCurrentCardSnapshotIdentity(cards, errors, source) {
+  const cardsById = currentCardsById();
+  for (const snapshot of cards) {
+    const matches = cardsById.get(snapshot?.card_id) || [];
+    if (matches.length !== 1) {
+      pushIssue(
+        errors,
+        matches.length === 0
+          ? 'self_review_card_missing_from_current_corpus'
+          : 'self_review_card_ambiguous_in_current_corpus',
+        {
+          source,
+          card_id: snapshot?.card_id,
+          corpus_files: matches.map(match => match.file),
+        },
+      );
+      continue;
+    }
+    const currentCard = matches[0].card;
+    if (snapshot.interaction_id !== currentCard.interaction_id) {
+      pushIssue(errors, 'self_review_card_interaction_mismatch', {
+        source,
+        card_id: snapshot.card_id,
+        expected: currentCard.interaction_id,
+        actual: snapshot.interaction_id,
+      });
+    }
+    if (!isDeepStrictEqual(snapshot.knowledge_ref, currentCard.knowledge_ref)) {
+      pushIssue(errors, 'self_review_card_knowledge_ref_mismatch', {
+        source,
+        card_id: snapshot.card_id,
+        expected: currentCard.knowledge_ref,
+        actual: snapshot.knowledge_ref,
+      });
+    }
+    const parity = validateChangedCardSelfReviewParity(
+      [{card: currentCard, path: matches[0].file}],
+      [{card: snapshot, path: source}],
+      currentIntegrityPolicy(),
+      {required: true},
+    );
+    for (const parityIssue of parity.issues) {
+      const {code, ...details} = parityIssue;
+      pushIssue(errors, `self_review_current_corpus_${code}`, {
+        source,
+        ...details,
+      });
+    }
+  }
+}
+
+function validateCurrentCardSnapshotIdentitySelfTest(errors) {
+  const currentEntry = [...currentCardsById().values()]
+    .flat()
+    .find(entry => entry.card?.quality_metadata);
+  if (!currentEntry) {
+    pushIssue(errors, 'self_review_current_corpus_parity_self_test_card_missing', {});
+    return;
+  }
+  const validSnapshot = structuredClone(currentEntry.card);
+  const validErrors = [];
+  validateCurrentCardSnapshotIdentity(
+    [validSnapshot],
+    validErrors,
+    'self-review-current-corpus-valid-self-test',
+  );
+  if (validErrors.length > 0) {
+    pushIssue(errors, 'self_review_current_corpus_parity_valid_case_failed', {
+      actual: validErrors,
+    });
+  }
+
+  const driftedSnapshot = structuredClone(validSnapshot);
+  driftedSnapshot.quality_metadata.exam_value =
+    '这是一条结构有效但故意偏离当前语料卡片的考试价值说明，用于证明独立 harness 会拒绝陈旧或伪造的自审元数据。';
+  const driftErrors = [];
+  validateCurrentCardSnapshotIdentity(
+    [driftedSnapshot],
+    driftErrors,
+    'self-review-current-corpus-drift-self-test',
+  );
+  if (!driftErrors.some(
+    issue => issue.code === 'self_review_current_corpus_candidate_self_review_metadata_mismatch'
+  )) {
+    pushIssue(errors, 'self_review_current_corpus_parity_drift_case_not_rejected', {
+      actual: driftErrors,
+    });
+  }
+}
+
+function shouldValidateCurrentSelfReviewSnapshots(
+  auditRecord,
+  currentFingerprint = currentCardCorpusFingerprint(),
+) {
+  if (!isScopedQualityAuditReport(auditRecord?.report)) return true;
+  if (!exists(auditRecord.report)) return true;
+  try {
+    const report = readJson(auditRecord.report);
+    return report.corpus_fingerprint?.digest === currentFingerprint.digest;
+  } catch {
+    return true;
+  }
+}
+
+function hasCurrentScopedAuditFingerprint(
+  auditRecord,
+  currentFingerprint = currentCardCorpusFingerprint(),
+) {
+  if (!isScopedQualityAuditReport(auditRecord?.report)) return false;
+  if (!exists(auditRecord.report)) return false;
+  try {
+    const report = readJson(auditRecord.report);
+    return (
+      hasText(auditRecord.corpus_fingerprint) &&
+      auditRecord.corpus_fingerprint === report.corpus_fingerprint?.digest &&
+      report.corpus_fingerprint?.digest === currentFingerprint.digest
+    );
+  } catch {
+    return false;
+  }
+}
+
+function hasCurrentApprovalAuditFingerprint(
+  record,
+  currentFingerprint = currentCardCorpusFingerprint(),
+) {
+  return hasCurrentScopedAuditFingerprint(
+    record?.card_quality_audit,
+    currentFingerprint,
+  );
+}
+
+function validateReviewIdentityUniquenessSelfTest(errors) {
+  const standardRecord = structuredClone(
+    readJson('reviews/agent_self_review/TEMPLATE.json'),
+  );
+  standardRecord.scope = {
+    library: 'fixture-library',
+    group: 'fixture-group',
+    box: 'fixture-box',
+    box_prefixes: ['0000'],
+    card_ids: ['000001', '000002', '000003'],
+  };
+  standardRecord.specs_read = ['spec/review-workflow.json'];
+  const snapshot = structuredClone(standardRecord.cards[0]);
+  snapshot.card_id = '000001';
+  snapshot.interaction_id = 'flip';
+  snapshot.knowledge_ref.box_prefix = '0000';
+  standardRecord.cards = [
+    structuredClone(snapshot),
+    structuredClone(snapshot),
+    structuredClone(snapshot),
+  ];
+  standardRecord.batch_review.box_progression = 'fixture progression';
+  standardRecord.batch_review.representative_cards = ['000001'];
+  standardRecord.batch_review.next_step = 'fixture next step';
+  const standardErrors = [];
+  validateSelfReviewRecord(
+    standardRecord,
+    standardErrors,
+    'duplicate-standard-snapshot-self-test',
+    {fixture: true},
+  );
+  if (!standardErrors.some(
+    issue => issue.code === 'self_review_snapshot_card_ids_invalid'
+  )) {
+    pushIssue(errors, 'self_review_snapshot_identity_self_test_failed', {
+      actual: standardErrors,
+    });
+  }
+
+  const fullTrackRecord = structuredClone(
+    readJson('reviews/agent_self_review/FULL_TRACK_TEMPLATE.json'),
+  );
+  fullTrackRecord.scope = {
+    track: 'cet4',
+    box_prefixes: ['0000'],
+    card_ids: ['000001', '000002'],
+  };
+  fullTrackRecord.specs_read = ['spec/review-workflow.json'];
+  fullTrackRecord.coverage = {
+    expected_card_count: 2,
+    reviewed_card_ids: ['000001', '000001'],
+    human_reviewer: 'external:fixture-human',
+    boxes: [{
+      box_prefix: '0000',
+      status: 'pass',
+      reviewer: 'external:fixture-human',
+    }],
+  };
+  fullTrackRecord.representative_cards = ['000001'];
+  fullTrackRecord.batch_review.summary = 'fixture summary';
+  const fullTrackErrors = [];
+  validateSelfReviewRecord(
+    fullTrackRecord,
+    fullTrackErrors,
+    'duplicate-full-track-coverage-self-test',
+    {fixture: true},
+  );
+  if (!fullTrackErrors.some(
+    issue => issue.code === 'full_track_review_coverage_card_ids_invalid'
+  )) {
+    pushIssue(errors, 'full_track_review_coverage_identity_self_test_failed', {
+      actual: fullTrackErrors,
+    });
+  }
+}
+
+function validateSelfReviewRecord(record, errors, source, {
+  template = false,
+  fixture = false,
+  currentFingerprint = currentCardCorpusFingerprint(),
+} = {}) {
   const reviewScopeType = selfReviewScopeType(record);
   const isResidualBlockerClosure = reviewScopeType === 'residual_blocker_closure';
   const isFullTrackRemediation = reviewScopeType === 'full_track_remediation';
+  const isImmutableLegacyRecord =
+    !template && !fixture && isImmutablePreCutoverRecord(source, record);
 
   if (!SELF_REVIEW_SCOPE_TYPES.includes(reviewScopeType)) {
     pushIssue(errors, 'self_review_unknown_scope_type', { source, reviewScopeType });
@@ -1530,7 +2673,16 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
     if (record.sample_policy?.final_user_approval_required !== true) {
       pushIssue(errors, 'full_track_review_final_user_approval_missing', { source });
     }
+    if (!isScopedQualityAuditReport(record.quality_audit?.report)) {
+      pushIssue(errors, 'full_track_review_scoped_audit_missing', {
+        source,
+        report: record.quality_audit?.report,
+      });
+    }
   } else if (isResidualBlockerClosure) {
+    if (record.sample_policy?.review_scope_type !== 'residual_blocker_closure') {
+      pushIssue(errors, 'residual_self_review_scope_type_missing', {source});
+    }
     if (record.sample_policy?.is_three_card_sample_per_box !== false) {
       pushIssue(errors, 'residual_self_review_must_not_claim_three_card_sample', { source });
     }
@@ -1540,8 +2692,25 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
     if (record.sample_policy?.not_sample_approval !== true) {
       pushIssue(errors, 'residual_self_review_not_sample_approval_missing', { source });
     }
-  } else if (record.sample_policy?.is_three_card_sample_per_box !== true) {
-    pushIssue(errors, 'self_review_sample_policy_not_three_card', { source });
+    if (!isScopedQualityAuditReport(record.quality_audit?.report)) {
+      pushIssue(errors, 'residual_self_review_scoped_audit_missing', {
+        source,
+        report: record.quality_audit?.report,
+      });
+    }
+  } else {
+    if (record.sample_policy?.is_three_card_sample_per_box !== true) {
+      pushIssue(errors, 'self_review_sample_policy_not_three_card', { source });
+    }
+    if (
+      !isImmutableLegacyRecord &&
+      !isScopedQualityAuditReport(record.quality_audit?.report)
+    ) {
+      pushIssue(errors, 'standard_self_review_scoped_audit_missing', {
+        source,
+        report: record.quality_audit?.report,
+      });
+    }
   }
   if (record.sample_policy?.batch_generation_requires_user_confirmation !== true) {
     pushIssue(errors, 'self_review_sample_policy_user_confirmation_missing', { source });
@@ -1549,22 +2718,71 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
 
   if (isFullTrackRemediation) {
     const scopeCardIds = Array.isArray(record.scope?.card_ids) ? record.scope.card_ids : [];
+    const scopeBoxPrefixes = Array.isArray(record.scope?.box_prefixes)
+      ? record.scope.box_prefixes
+      : [];
     validateQualityAuditRecord(record.quality_audit, errors, source, {
       template,
       fixture,
       scopeCardIds,
       requiredForApproval: record.batch_review?.status === FULL_TRACK_READY_STATUS,
+      allowHistoricalScopedReport: true,
+      currentFingerprint,
     });
     if (template) return;
 
     if (!['cet4', 'cet6'].includes(record.scope?.track)) {
       pushIssue(errors, 'full_track_review_track_invalid', { source, track: record.scope?.track });
     }
-    if (!Array.isArray(record.scope?.box_prefixes) || record.scope.box_prefixes.length === 0) {
-      pushIssue(errors, 'full_track_review_box_prefixes_missing', { source });
+    if (!hasUniqueNonEmptyTextArray(scopeBoxPrefixes)) {
+      pushIssue(errors, 'full_track_review_box_prefixes_invalid', {
+        source,
+        box_prefixes: scopeBoxPrefixes,
+      });
     }
-    if (scopeCardIds.length === 0) {
-      pushIssue(errors, 'full_track_review_card_ids_missing', { source });
+    if (!hasUniqueNonEmptyTextArray(scopeCardIds)) {
+      pushIssue(errors, 'full_track_review_card_ids_invalid', {
+        source,
+        card_ids: scopeCardIds,
+      });
+    }
+    if (
+      shouldValidateCurrentSelfReviewSnapshots(
+        record.quality_audit,
+        currentFingerprint,
+      )
+    ) {
+      const currentTrackScope = currentTrackCorpusScope(record.scope?.track);
+      if (
+        currentTrackScope.cardIds.length === 0 ||
+        currentTrackScope.cardsMissingId.length > 0 ||
+        currentTrackScope.duplicateCardIds.length > 0 ||
+        scopeCardIds.length !== currentTrackScope.cardIds.length ||
+        !setsEqual(scopeCardIds, currentTrackScope.cardIds)
+      ) {
+        pushIssue(errors, 'full_track_review_card_scope_not_complete_track', {
+          source,
+          track: record.scope?.track,
+          expected_card_ids: [...new Set(currentTrackScope.cardIds)].sort(),
+          actual_card_ids: sortedStrings(scopeCardIds),
+          duplicate_head_card_ids: sortedStrings(currentTrackScope.duplicateCardIds),
+          head_cards_missing_id: currentTrackScope.cardsMissingId,
+        });
+      }
+      if (
+        currentTrackScope.boxPrefixes.length === 0 ||
+        currentTrackScope.cardsMissingBoxPrefix.length > 0 ||
+        scopeBoxPrefixes.length !== currentTrackScope.boxPrefixes.length ||
+        !setsEqual(scopeBoxPrefixes, currentTrackScope.boxPrefixes)
+      ) {
+        pushIssue(errors, 'full_track_review_box_scope_not_complete_track', {
+          source,
+          track: record.scope?.track,
+          expected_box_prefixes: currentTrackScope.boxPrefixes,
+          actual_box_prefixes: sortedStrings(scopeBoxPrefixes),
+          head_cards_missing_box_prefix: currentTrackScope.cardsMissingBoxPrefix,
+        });
+      }
     }
     if (!Array.isArray(record.specs_read) || record.specs_read.length === 0) {
       pushIssue(errors, 'self_review_specs_read_missing', { source });
@@ -1576,34 +2794,66 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
         actual: record.coverage?.expected_card_count,
       });
     }
+    if (!hasUniqueNonEmptyTextArray(record.coverage?.reviewed_card_ids)) {
+      pushIssue(errors, 'full_track_review_coverage_card_ids_invalid', {
+        source,
+        reviewed_card_ids: record.coverage?.reviewed_card_ids,
+      });
+    }
     if (!setsEqual(record.coverage?.reviewed_card_ids, scopeCardIds)) {
       pushIssue(errors, 'full_track_review_coverage_mismatch', { source });
     }
     if (!hasText(record.coverage?.human_reviewer)) {
       pushIssue(errors, 'full_track_review_human_reviewer_missing', { source });
+    } else if (!isHumanReviewerIdentity(record.coverage.human_reviewer)) {
+      pushIssue(errors, 'full_track_review_human_reviewer_invalid', {
+        source,
+        human_reviewer: record.coverage.human_reviewer,
+      });
     }
     const boxes = Array.isArray(record.coverage?.boxes) ? record.coverage.boxes : [];
-    if (boxes.length !== record.scope.box_prefixes.length) {
+    if (boxes.length !== scopeBoxPrefixes.length) {
       pushIssue(errors, 'full_track_review_box_coverage_mismatch', {
         source,
-        expected: record.scope.box_prefixes.length,
+        expected: scopeBoxPrefixes.length,
         actual: boxes.length,
       });
     }
     const reviewedPrefixes = boxes.map(box => box?.box_prefix);
-    if (!setsEqual(reviewedPrefixes, record.scope.box_prefixes)) {
+    if (!hasUniqueNonEmptyTextArray(reviewedPrefixes)) {
+      pushIssue(errors, 'full_track_review_coverage_box_prefixes_invalid', {
+        source,
+        box_prefixes: reviewedPrefixes,
+      });
+    }
+    if (!setsEqual(reviewedPrefixes, scopeBoxPrefixes)) {
       pushIssue(errors, 'full_track_review_box_prefix_mismatch', { source });
     }
     for (const box of boxes) {
-      if (box?.status !== 'pass' || !hasText(box?.reviewer)) {
+      if (box?.status !== 'pass' || !isHumanReviewerIdentity(box?.reviewer)) {
         pushIssue(errors, 'full_track_review_box_not_human_passed', {
           source,
           box_prefix: box?.box_prefix,
         });
       }
+      if (box?.reviewer !== record.coverage?.human_reviewer) {
+        pushIssue(errors, 'full_track_review_box_reviewer_mismatch', {
+          source,
+          box_prefix: box?.box_prefix,
+          expected: record.coverage?.human_reviewer,
+          actual: box?.reviewer,
+        });
+      }
     }
-    if (!isSubset(record.representative_cards, scopeCardIds)) {
-      pushIssue(errors, 'full_track_review_representative_cards_outside_scope', { source });
+    if (
+      !hasNonEmptyTextArray(record.representative_cards) ||
+      new Set(record.representative_cards).size !== record.representative_cards.length ||
+      !isSubset(record.representative_cards, scopeCardIds)
+    ) {
+      pushIssue(errors, 'full_track_review_representative_cards_invalid', {
+        source,
+        representative_cards: record.representative_cards,
+      });
     }
     if (record.batch_review?.status !== FULL_TRACK_READY_STATUS) {
       pushIssue(errors, 'full_track_review_batch_status_invalid', {
@@ -1613,6 +2863,9 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
     }
     if (!Array.isArray(record.batch_review?.remaining_risks) || record.batch_review.remaining_risks.length > 0) {
       pushIssue(errors, 'full_track_review_has_remaining_risks', { source });
+    }
+    if (!hasText(record.batch_review?.summary) || !hasText(record.batch_review?.next_step)) {
+      pushIssue(errors, 'full_track_review_batch_evidence_incomplete', {source});
     }
     return;
   }
@@ -1629,26 +2882,51 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
     fixture,
     scopeCardIds: record.scope?.card_ids || cards.map(card => card.card_id),
     requiredForApproval: !isResidualBlockerClosure && record.batch_review?.status === 'recommend_user_confirmation',
+    allowHistoricalScopedReport: true,
+    currentFingerprint,
   });
 
   if (!template) {
     const boxPrefixes = record.scope?.box_prefixes || [];
     const scopeCardIds = record.scope?.card_ids || [];
-    const expectedCards = Math.max(1, boxPrefixes.length) * 3;
     if (!Array.isArray(boxPrefixes) || boxPrefixes.length === 0) {
       pushIssue(errors, 'self_review_scope_box_prefixes_missing', { source });
     }
-    if (!Array.isArray(scopeCardIds) || scopeCardIds.length === 0) {
-      pushIssue(errors, 'self_review_scope_card_ids_missing', { source });
-    } else if (!setsEqual(scopeCardIds, cards.map(card => card.card_id))) {
+    const snapshotCardIds = cards.map(card => card?.card_id);
+    if (!hasUniqueNonEmptyTextArray(scopeCardIds)) {
+      pushIssue(errors, 'self_review_scope_card_ids_invalid', {
+        source,
+        scopeCardIds,
+      });
+    }
+    if (!hasUniqueNonEmptyTextArray(snapshotCardIds)) {
+      pushIssue(errors, 'self_review_snapshot_card_ids_invalid', {
+        source,
+        card_ids: snapshotCardIds,
+      });
+    }
+    if (
+      scopeCardIds.length !== snapshotCardIds.length ||
+      !setsEqual(scopeCardIds, snapshotCardIds)
+    ) {
       pushIssue(errors, 'self_review_scope_card_ids_mismatch', {
         source,
         scopeCardIds,
-        actualCardIds: cards.map(card => card.card_id),
+        actualCardIds: snapshotCardIds,
       });
     }
     if (!Array.isArray(record.specs_read) || record.specs_read.length === 0) {
       pushIssue(errors, 'self_review_specs_read_missing', { source });
+    }
+    if (
+      !fixture &&
+      !isImmutableLegacyRecord &&
+      shouldValidateCurrentSelfReviewSnapshots(
+        record.quality_audit,
+        currentFingerprint,
+      )
+    ) {
+      validateCurrentCardSnapshotIdentity(cards, errors, source);
     }
 
     if (isResidualBlockerClosure) {
@@ -1679,15 +2957,29 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
           pushIssue(errors, 'self_review_scope_field_missing', { source, field });
         }
       }
-      if (cards.length !== expectedCards) {
-        pushIssue(errors, 'self_review_sample_card_count_not_three_per_box', {
-          source,
-          expectedCards,
-          actualCards: cards.length,
-        });
-      }
+      validateStandardSampleBoxDistribution(cards, boxPrefixes, errors, source);
       if (!record.batch_review || !STANDARD_SELF_REVIEW_BATCH_STATUSES.includes(record.batch_review.status)) {
         pushIssue(errors, 'self_review_batch_status_invalid', { source, status: record.batch_review?.status });
+      }
+      if (!hasText(record.batch_review?.box_progression)) {
+        pushIssue(errors, 'self_review_batch_box_progression_missing', {source});
+      }
+      if (!Array.isArray(record.batch_review?.repetition_or_gap_risks)) {
+        pushIssue(errors, 'self_review_batch_risks_invalid', {source});
+      }
+      const representativeCards = record.batch_review?.representative_cards;
+      if (
+        !hasNonEmptyTextArray(representativeCards) ||
+        new Set(representativeCards).size !== representativeCards.length ||
+        !isSubset(representativeCards, scopeCardIds)
+      ) {
+        pushIssue(errors, 'self_review_batch_representative_cards_invalid', {
+          source,
+          representative_cards: representativeCards,
+        });
+      }
+      if (!hasText(record.batch_review?.next_step)) {
+        pushIssue(errors, 'self_review_batch_next_step_missing', {source});
       }
       if (record.batch_review?.status === 'recommend_user_confirmation') {
         const anyBlocked = cards.some(card => card.status !== 'pass' || Object.values(card.blocker_scan || {}).some(Boolean));
@@ -1697,7 +2989,11 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
   }
 }
 
-function validateApprovalRecord(record, errors, source, { template = false, fixture = false } = {}) {
+function validateApprovalRecord(record, errors, source, {
+  template = false,
+  fixture = false,
+  currentFingerprint = currentCardCorpusFingerprint(),
+} = {}) {
   const isFullTrackFinal = record.approval_mode === 'full_track_final';
   if (record.approved_by_user !== true) {
     pushIssue(errors, 'approval_record_not_user_approved', { source });
@@ -1715,6 +3011,8 @@ function validateApprovalRecord(record, errors, source, { template = false, fixt
     fixture,
     scopeCardIds: record.scope?.card_ids || [],
     requiredForApproval: true,
+    allowHistoricalScopedReport: true,
+    currentFingerprint,
   });
   if (isFullTrackFinal) {
     const reportSha256 = record.card_quality_audit?.report_sha256;
@@ -1742,6 +3040,19 @@ function validateApprovalRecord(record, errors, source, { template = false, fixt
     }
   }
   if (!template) {
+    if (
+      !hasText(record.approved_at) ||
+      !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(record.approved_at) ||
+      Number.isNaN(Date.parse(record.approved_at))
+    ) {
+      pushIssue(errors, 'approval_record_approved_at_invalid', {
+        source,
+        approved_at: record.approved_at,
+      });
+    }
+    if (!hasText(record.summary)) {
+      pushIssue(errors, 'approval_record_summary_missing', {source});
+    }
     if (isFullTrackFinal) {
       if (!['cet4', 'cet6'].includes(record.scope?.track)) {
         pushIssue(errors, 'full_track_approval_track_invalid', { source, track: record.scope?.track });
@@ -1753,28 +3064,75 @@ function validateApprovalRecord(record, errors, source, { template = false, fixt
         }
       }
     }
-    if (!Array.isArray(record.scope?.box_prefixes) || record.scope.box_prefixes.length === 0) {
-      pushIssue(errors, 'approval_record_scope_box_prefixes_missing', { source });
+    const scopeBoxPrefixes = record.scope?.box_prefixes;
+    if (
+      !hasNonEmptyTextArray(scopeBoxPrefixes) ||
+      new Set(scopeBoxPrefixes).size !== scopeBoxPrefixes.length
+    ) {
+      pushIssue(errors, 'approval_record_scope_box_prefixes_invalid', {
+        source,
+        box_prefixes: scopeBoxPrefixes,
+      });
     }
-    if (!Array.isArray(record.scope?.card_ids) || record.scope.card_ids.length === 0) {
-      pushIssue(errors, 'approval_record_scope_card_ids_missing', { source });
+    const scopeCardIds = record.scope?.card_ids;
+    if (
+      !hasNonEmptyTextArray(scopeCardIds) ||
+      new Set(scopeCardIds).size !== scopeCardIds.length
+    ) {
+      pushIssue(errors, 'approval_record_scope_card_ids_invalid', {
+        source,
+        card_ids: scopeCardIds,
+      });
     }
     const linkedReview = record.validation?.agent_self_review;
     let selfReview = null;
     if (!hasText(linkedReview)) {
       pushIssue(errors, 'approval_record_missing_agent_self_review', { source });
+    } else if (!isCanonicalAgentSelfReviewRecordPath(linkedReview)) {
+      pushIssue(errors, 'approval_record_agent_self_review_path_invalid', {
+        source,
+        linkedReview,
+      });
     } else if (!exists(linkedReview)) {
       pushIssue(errors, 'approval_record_agent_self_review_missing_on_disk', { source, linkedReview });
+    } else if (!fs.lstatSync(resolveWorkspacePath(linkedReview)).isFile()) {
+      pushIssue(errors, 'approval_record_agent_self_review_not_regular_file', {
+        source,
+        linkedReview,
+      });
+    } else if (!isTrackedWorkspacePath(linkedReview)) {
+      pushIssue(errors, 'approval_record_agent_self_review_not_tracked', {
+        source,
+        linkedReview,
+      });
     } else {
       selfReview = readJson(linkedReview);
       const selfReviewErrors = [];
-      validateSelfReviewRecord(selfReview, selfReviewErrors, linkedReview);
+      validateSelfReviewRecord(
+        selfReview,
+        selfReviewErrors,
+        linkedReview,
+        {currentFingerprint},
+      );
       if (selfReviewErrors.length > 0) {
         pushIssue(errors, 'approval_record_linked_self_review_invalid', {
           source,
           linkedReview,
           linkedErrors: selfReviewErrors.map(issue => issue.code),
         });
+      }
+      if (
+        hasCurrentApprovalAuditFingerprint(record, currentFingerprint) &&
+        !hasCurrentScopedAuditFingerprint(
+          selfReview.quality_audit,
+          currentFingerprint,
+        )
+      ) {
+        pushIssue(
+          errors,
+          'approval_record_current_authorization_links_historical_self_review',
+          {source, linkedReview},
+        );
       }
     }
     if (!hasText(record.validation?.harness)) {
@@ -1833,31 +3191,510 @@ function validateApprovalRecord(record, errors, source, { template = false, fixt
         }
       }
     }
-    if (!isSubset(record.representative_cards, record.scope?.card_ids)) {
-      pushIssue(errors, 'approval_record_representative_cards_outside_scope', { source });
+    if (
+      !hasNonEmptyTextArray(record.representative_cards) ||
+      new Set(record.representative_cards).size !== record.representative_cards.length ||
+      !isSubset(record.representative_cards, scopeCardIds)
+    ) {
+      pushIssue(errors, 'approval_record_representative_cards_invalid', {
+        source,
+        representative_cards: record.representative_cards,
+      });
     }
   }
 }
 
-function validateReviewTemplatesAndRecords(errors) {
-  validateSelfReviewRecord(readJson('reviews/agent_self_review/TEMPLATE.json'), errors, 'reviews/agent_self_review/TEMPLATE.json', {
-    template: true,
-  });
-  validateSelfReviewRecord(readJson('reviews/agent_self_review/FULL_TRACK_TEMPLATE.json'), errors, 'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json', {
-    template: true,
-  });
-  validateApprovalRecord(readJson('reviews/approved_batches/TEMPLATE.json'), errors, 'reviews/approved_batches/TEMPLATE.json', {
-    template: true,
-  });
-  validateApprovalRecord(readJson('reviews/approved_batches/FULL_TRACK_TEMPLATE.json'), errors, 'reviews/approved_batches/FULL_TRACK_TEMPLATE.json', {
-    template: true,
-  });
+function readGovernedReviewTemplate(file, expectedKind, errors) {
+  const fullPath = resolveWorkspacePath(file);
+  if (!fs.existsSync(fullPath)) {
+    pushIssue(errors, 'review_template_missing', {source: file});
+    return null;
+  }
+  if (!fs.lstatSync(fullPath).isFile()) {
+    pushIssue(errors, 'review_template_not_regular_file', {source: file});
+    return null;
+  }
+  let record;
+  try {
+    record = readJson(file);
+  } catch (error) {
+    pushIssue(errors, 'review_template_unreadable', {
+      source: file,
+      message: error.message,
+    });
+    return null;
+  }
+  if (
+    expectedKind === 'standard_self_review' &&
+    record.sample_policy?.review_scope_type !== 'three_card_sample_per_box'
+  ) {
+    pushIssue(errors, 'standard_self_review_template_mode_mismatch', {source: file});
+  }
+  if (
+    expectedKind === 'full_track_self_review' &&
+    record.sample_policy?.review_scope_type !== 'full_track_remediation'
+  ) {
+    pushIssue(errors, 'full_track_self_review_template_mode_mismatch', {source: file});
+  }
+  if (
+    expectedKind === 'standard_approval' &&
+    hasOwn(record, 'approval_mode')
+  ) {
+    pushIssue(errors, 'standard_approval_template_mode_mismatch', {
+      source: file,
+      approval_mode: record.approval_mode,
+    });
+  }
+  if (
+    expectedKind === 'full_track_approval' &&
+    record.approval_mode !== 'full_track_final'
+  ) {
+    pushIssue(errors, 'full_track_approval_template_mode_mismatch', {
+      source: file,
+      approval_mode: record.approval_mode,
+    });
+  }
+  const commonSelfReviewShape = [
+    ['review_id', 'string'],
+    ['created_at', 'string'],
+    ['agent', 'string'],
+    ['scope', 'object'],
+    ['scope.box_prefixes', 'array'],
+    ['scope.card_ids', 'array'],
+    ['specs_read', 'array'],
+    ['sample_policy', 'object'],
+    ['quality_audit', 'object'],
+    ['batch_review', 'object'],
+    ['batch_review.status', 'string'],
+    ['batch_review.next_step', 'string'],
+  ];
+  const requiredShape = {
+    standard_self_review: [
+      ...commonSelfReviewShape,
+      ['scope.library', 'string'],
+      ['scope.group', 'string'],
+      ['scope.box', 'string'],
+      ['cards', 'array'],
+      ['batch_review.box_progression', 'string'],
+      ['batch_review.repetition_or_gap_risks', 'array'],
+      ['batch_review.representative_cards', 'array'],
+    ],
+    full_track_self_review: [
+      ...commonSelfReviewShape,
+      ['scope.track', 'string'],
+      ['coverage', 'object'],
+      ['coverage.expected_card_count', 'number'],
+      ['coverage.reviewed_card_ids', 'array'],
+      ['coverage.human_reviewer', 'string'],
+      ['coverage.boxes', 'array'],
+      ['representative_cards', 'array'],
+      ['batch_review.summary', 'string'],
+      ['batch_review.remaining_risks', 'array'],
+    ],
+    standard_approval: [
+      ['approval_id', 'string'],
+      ['approved_at', 'string'],
+      ['scope', 'object'],
+      ['scope.library', 'string'],
+      ['scope.group', 'string'],
+      ['scope.box', 'string'],
+      ['scope.box_prefixes', 'array'],
+      ['scope.card_ids', 'array'],
+      ['summary', 'string'],
+      ['representative_cards', 'array'],
+      ['card_quality_audit', 'object'],
+      ['validation', 'object'],
+      ['approval_limits', 'array'],
+    ],
+    full_track_approval: [
+      ['approval_id', 'string'],
+      ['approved_at', 'string'],
+      ['scope', 'object'],
+      ['scope.track', 'string'],
+      ['scope.box_prefixes', 'array'],
+      ['scope.card_ids', 'array'],
+      ['summary', 'string'],
+      ['representative_cards', 'array'],
+      ['card_quality_audit', 'object'],
+      ['card_quality_audit.report_sha256', 'string'],
+      ['validation', 'object'],
+      ['approval_limits', 'array'],
+    ],
+  }[expectedKind] || [];
+  for (const [fieldPath, expectedType] of requiredShape) {
+    const value = fieldPath
+      .split('.')
+      .reduce((current, field) => current?.[field], record);
+    const valid = expectedType === 'array'
+      ? Array.isArray(value)
+      : expectedType === 'object'
+        ? Boolean(value && typeof value === 'object' && !Array.isArray(value))
+        : typeof value === expectedType;
+    if (!valid) {
+      pushIssue(errors, 'review_template_required_shape_missing', {
+        source: file,
+        expected_kind: expectedKind,
+        field: fieldPath,
+        expected_type: expectedType,
+      });
+    }
+  }
+  return record;
+}
+
+function validateApprovalRecordShapeSelfTest(errors) {
+  const record = structuredClone(readJson('reviews/approved_batches/TEMPLATE.json'));
+  record.approved_at = '';
+  record.summary = '';
+  record.scope.box_prefixes = ['0000', '0000'];
+  record.scope.card_ids = ['000001', '000001'];
+  record.representative_cards = null;
+  record.validation.agent_self_review = '../forged-review.json';
+  const shapeErrors = [];
+  validateApprovalRecord(
+    record,
+    shapeErrors,
+    'approval-record-shape-self-test',
+    {fixture: true},
+  );
+  for (const code of [
+    'approval_record_approved_at_invalid',
+    'approval_record_summary_missing',
+    'approval_record_scope_box_prefixes_invalid',
+    'approval_record_scope_card_ids_invalid',
+    'approval_record_representative_cards_invalid',
+    'approval_record_agent_self_review_path_invalid',
+  ]) {
+    if (!shapeErrors.some(issue => issue.code === code)) {
+      pushIssue(errors, 'approval_record_shape_self_test_failed', {
+        expected: code,
+        actual: shapeErrors,
+      });
+    }
+  }
+}
+
+function validateHistoricalScopedAuditRecordAgingSelfTest(errors) {
+  const reportPath =
+    'reviews/audit_scopes/20260521-front-answer-leak-proof-scope-audit.json';
+  if (!exists(reportPath)) {
+    pushIssue(errors, 'historical_scoped_audit_link_aging_self_test_missing', {
+      report: reportPath,
+    });
+    return;
+  }
+  const report = readJson(reportPath);
+  const record = {
+    report: reportPath,
+    corpus_fingerprint: report.corpus_fingerprint?.digest,
+    scope_has_no_hard_blockers:
+      report.scope_summary?.by_severity?.hard_blocker === 0,
+    scope_summary: structuredClone(report.scope_summary),
+  };
+  const agingErrors = [];
+  validateQualityAuditRecord(
+    record,
+    agingErrors,
+    'historical-scoped-audit-link-aging-self-test',
+    {
+      template: false,
+      fixture: false,
+      scopeCardIds: report.scope?.card_ids || [],
+      requiredForApproval: false,
+      allowHistoricalScopedReport: true,
+      currentFingerprint: {
+        ...report.corpus_fingerprint,
+        digest: 'f'.repeat(64),
+      },
+    },
+  );
+  if (agingErrors.length > 0) {
+    pushIssue(errors, 'historical_scoped_audit_link_aging_self_test_failed', {
+      actual: agingErrors,
+    });
+  }
+
+  const approvalArchiveErrors = [];
+  validateQualityAuditRecord(
+    record,
+    approvalArchiveErrors,
+    'historical-scoped-audit-approval-archive-self-test',
+    {
+      template: false,
+      fixture: false,
+      scopeCardIds: report.scope?.card_ids || [],
+      requiredForApproval: false,
+      allowHistoricalScopedReport: true,
+      currentFingerprint: {
+        ...report.corpus_fingerprint,
+        digest: 'f'.repeat(64),
+      },
+    },
+  );
+  if (approvalArchiveErrors.length > 0) {
+    pushIssue(errors, 'historical_scoped_audit_approval_archive_self_test_failed', {
+      actual: approvalArchiveErrors,
+    });
+  }
+  const approvalRecord = {card_quality_audit: record};
+  if (hasCurrentApprovalAuditFingerprint(
+    approvalRecord,
+    {
+      ...report.corpus_fingerprint,
+      digest: 'f'.repeat(64),
+    },
+  )) {
+    pushIssue(errors, 'historical_approval_misclassified_as_current_self_test_failed', {});
+  }
+  if (!hasCurrentApprovalAuditFingerprint(
+    approvalRecord,
+    report.corpus_fingerprint,
+  )) {
+    pushIssue(errors, 'current_approval_fingerprint_self_test_failed', {});
+  }
+}
+
+function validateHistoricalSelfReviewLifecycleSelfTest(errors) {
+  const reviewPath =
+    'reviews/agent_self_review/20260514-cet4-listening-0011-existing-sample.json';
+  const reportPath =
+    'reviews/audit_scopes/20260521-front-answer-leak-proof-scope-audit.json';
+  if (!exists(reviewPath) || !exists(reportPath)) {
+    pushIssue(errors, 'historical_self_review_lifecycle_self_test_missing', {
+      review: reviewPath,
+      report: reportPath,
+    });
+    return;
+  }
+  const record = structuredClone(readJson(reviewPath));
+  const report = readJson(reportPath);
+  record.sample_policy.review_scope_type = 'three_card_sample_per_box';
+  record.quality_audit = {
+    report: reportPath,
+    corpus_fingerprint: report.corpus_fingerprint.digest,
+    scope_has_no_hard_blockers: false,
+    scope_summary: structuredClone(report.scope_summary),
+  };
+  record.cards[0].interaction_id = 'flip';
+
+  const simulatedFutureFingerprint = {
+    ...report.corpus_fingerprint,
+    digest: 'f'.repeat(64),
+  };
+  const historicalErrors = [];
+  validateSelfReviewRecord(
+    record,
+    historicalErrors,
+    'historical-self-review-lifecycle-self-test',
+    {currentFingerprint: simulatedFutureFingerprint},
+  );
+  if (historicalErrors.length > 0) {
+    pushIssue(errors, 'historical_self_review_lifecycle_aging_self_test_failed', {
+      actual: historicalErrors,
+    });
+  }
+
+  const currentErrors = [];
+  validateSelfReviewRecord(
+    record,
+    currentErrors,
+    'current-self-review-lifecycle-self-test',
+    {currentFingerprint: report.corpus_fingerprint},
+  );
+  if (!currentErrors.some(
+    issue => issue.code === 'self_review_card_interaction_mismatch'
+  )) {
+    pushIssue(errors, 'current_self_review_lifecycle_parity_self_test_failed', {
+      actual: currentErrors,
+    });
+  }
+}
+
+function validateHistoricalFullTrackLifecycleSelfTest(errors) {
+  const reportPath =
+    'reviews/audit_scopes/20260521-front-answer-leak-proof-scope-audit.json';
+  if (!exists(reportPath)) {
+    pushIssue(errors, 'historical_full_track_lifecycle_self_test_missing', {
+      report: reportPath,
+    });
+    return;
+  }
+  const report = readJson(reportPath);
+  const record = structuredClone(
+    readJson('reviews/agent_self_review/FULL_TRACK_TEMPLATE.json'),
+  );
+  record.scope = {
+    track: 'cet4',
+    box_prefixes: ['0011'],
+    card_ids: structuredClone(report.scope.card_ids),
+  };
+  record.specs_read = ['spec/review-workflow.json'];
+  record.coverage = {
+    expected_card_count: report.scope.card_ids.length,
+    reviewed_card_ids: structuredClone(report.scope.card_ids),
+    human_reviewer: 'external:张三',
+    boxes: [{
+      box_prefix: '0011',
+      status: 'pass',
+      reviewer: 'external:张三',
+    }],
+  };
+  record.quality_audit = {
+    report: reportPath,
+    corpus_fingerprint: report.corpus_fingerprint.digest,
+    scope_has_no_hard_blockers: false,
+    scope_summary: structuredClone(report.scope_summary),
+  };
+  record.representative_cards = [report.scope.card_ids[0]];
+  record.batch_review.summary = 'historical fixture summary';
+
+  const historicalErrors = [];
+  validateSelfReviewRecord(
+    record,
+    historicalErrors,
+    'historical-full-track-lifecycle-self-test',
+    {
+      currentFingerprint: {
+        ...report.corpus_fingerprint,
+        digest: 'f'.repeat(64),
+      },
+    },
+  );
+  for (const code of [
+    'full_track_review_card_scope_not_complete_track',
+    'full_track_review_box_scope_not_complete_track',
+  ]) {
+    if (historicalErrors.some(issue => issue.code === code)) {
+      pushIssue(errors, 'historical_full_track_lifecycle_aging_self_test_failed', {
+        forbidden: code,
+        actual: historicalErrors,
+      });
+    }
+  }
+
+  const currentErrors = [];
+  validateSelfReviewRecord(
+    record,
+    currentErrors,
+    'current-full-track-lifecycle-self-test',
+    {currentFingerprint: report.corpus_fingerprint},
+  );
+  for (const code of [
+    'full_track_review_card_scope_not_complete_track',
+    'full_track_review_box_scope_not_complete_track',
+  ]) {
+    if (!currentErrors.some(issue => issue.code === code)) {
+      pushIssue(errors, 'current_full_track_lifecycle_parity_self_test_failed', {
+        expected: code,
+        actual: currentErrors,
+      });
+    }
+  }
+}
+
+function validateReviewTemplatesAndRecords(errors, warnings) {
+  validateReviewRecordDiscovery(errors);
+  validateStandardSampleBoxDistributionSelfTest(errors);
+  validateCurrentCardSnapshotIdentitySelfTest(errors);
+  validateReviewIdentityUniquenessSelfTest(errors);
+  validateApprovalRecordShapeSelfTest(errors);
+  validateHistoricalScopedAuditRecordAgingSelfTest(errors);
+  validateHistoricalSelfReviewLifecycleSelfTest(errors);
+  validateHistoricalFullTrackLifecycleSelfTest(errors);
+  const standardSelfReviewTemplate = readGovernedReviewTemplate(
+    'reviews/agent_self_review/TEMPLATE.json',
+    'standard_self_review',
+    errors,
+  );
+  const fullTrackSelfReviewTemplate = readGovernedReviewTemplate(
+    'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+    'full_track_self_review',
+    errors,
+  );
+  const standardApprovalTemplate = readGovernedReviewTemplate(
+    'reviews/approved_batches/TEMPLATE.json',
+    'standard_approval',
+    errors,
+  );
+  const fullTrackApprovalTemplate = readGovernedReviewTemplate(
+    'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
+    'full_track_approval',
+    errors,
+  );
+  if (standardSelfReviewTemplate) {
+    validateSelfReviewRecord(
+      standardSelfReviewTemplate,
+      errors,
+      'reviews/agent_self_review/TEMPLATE.json',
+      {template: true},
+    );
+  }
+  if (fullTrackSelfReviewTemplate) {
+    validateSelfReviewRecord(
+      fullTrackSelfReviewTemplate,
+      errors,
+      'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+      {template: true},
+    );
+  }
+  if (standardApprovalTemplate) {
+    validateApprovalRecord(
+      standardApprovalTemplate,
+      errors,
+      'reviews/approved_batches/TEMPLATE.json',
+      {template: true},
+    );
+  }
+  if (fullTrackApprovalTemplate) {
+    validateApprovalRecord(
+      fullTrackApprovalTemplate,
+      errors,
+      'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
+      {template: true},
+    );
+  }
 
   for (const file of listReviewRecordFiles('reviews/agent_self_review')) {
+    if (!isCanonicalReviewRecordPath(file, 'reviews/agent_self_review')) {
+      pushIssue(errors, 'agent_self_review_path_noncanonical', {
+        source: file,
+        expected_parent: 'reviews/agent_self_review',
+      });
+      continue;
+    }
+    if (hasUnsafeReviewPathCharacters(file)) {
+      pushIssue(errors, 'agent_self_review_path_characters_invalid', {source: file});
+      continue;
+    }
+    if (!fs.lstatSync(resolveWorkspacePath(file)).isFile()) {
+      pushIssue(errors, 'agent_self_review_not_regular_file', {source: file});
+      continue;
+    }
     validateSelfReviewRecord(readJson(file), errors, file);
   }
   for (const file of listReviewRecordFiles('reviews/approved_batches')) {
-    validateApprovalRecord(readJson(file), errors, file);
+    if (!isCanonicalReviewRecordPath(file, 'reviews/approved_batches')) {
+      pushIssue(errors, 'approved_batch_path_noncanonical', {
+        source: file,
+        expected_parent: 'reviews/approved_batches',
+      });
+      continue;
+    }
+    if (hasUnsafeReviewPathCharacters(file)) {
+      pushIssue(errors, 'approved_batch_path_characters_invalid', {source: file});
+      continue;
+    }
+    if (!fs.lstatSync(resolveWorkspacePath(file)).isFile()) {
+      pushIssue(errors, 'approved_batch_not_regular_file', {source: file});
+      continue;
+    }
+    const record = readJson(file);
+    validateApprovalRecord(record, errors, file);
+    if (!hasCurrentApprovalAuditFingerprint(record)) {
+      pushIssue(warnings, 'historical_approval_record_not_current_authorization', {
+        source: file,
+      });
+    }
   }
 }
 
@@ -1879,6 +3716,66 @@ function validateInteractionPolicy(errors) {
   if (/CORE_INTERACTIONS\s*=\s*new Set\(\[[^\]]*hint_layer/.test(structuralValidator)) {
     pushIssue(errors, 'card_validator_core_interactions_include_hint_layer', {});
   }
+  for (const token of [
+    'validateQualityMetadata',
+    'validateEliminationIntegrity',
+    'invalid_card_box_filename',
+    'allowLegacyContract',
+  ]) {
+    if (!structuralValidator.includes(token)) {
+      pushIssue(errors, 'card_validator_integrity_guard_missing', { token });
+    }
+  }
+
+  if (!exists('scripts/lib/card_integrity.mjs')) {
+    pushIssue(errors, 'card_integrity_library_missing', {});
+  } else {
+    const integrityLibrary = readText('scripts/lib/card_integrity.mjs');
+    for (const token of [
+      'loadIntegrityPolicy',
+      'isHumanReviewerIdentity',
+      'validateQualityMetadata',
+      'validateEliminationIntegrity',
+      'validateChangedCardSelfReviewParity',
+      'validateCurrentApprovalRecordReference',
+      'loadCurrentCardQualityAudit',
+      'buildCurrentScopedAuditReplay',
+      'captureGitAuthorizationSnapshot',
+      'committedGitFileState',
+      'isDirectApprovalRecordPath',
+      'isDirectSelfReviewRecordPath',
+      'not_committed_at_head',
+      'approval_audit_report_replay_mismatch',
+      'approval_linked_self_review_audit_replay_mismatch',
+      'approval_linked_self_review_not_current',
+      'approval_current_corpus_changed_during_validation',
+      'approval_git_snapshot_changed_during_validation',
+      'approval_authorization_file_changed_during_validation',
+      'candidate_quality_metadata_missing',
+      'candidate_self_review_metadata_mismatch',
+      'elimination_legacy_mirror_mismatch',
+      'elimination_correct_items_truth_mismatch',
+    ]) {
+      if (!integrityLibrary.includes(token)) {
+        pushIssue(errors, 'card_integrity_library_guard_missing', { token });
+      }
+    }
+  }
+  if (!exists('scripts/migrate_cards_to_softbook_contract.mjs')) {
+    pushIssue(errors, 'card_contract_migration_missing', {});
+  } else {
+    const migration = readText('scripts/migrate_cards_to_softbook_contract.mjs');
+    for (const token of [
+      'buildEliminationContract',
+      'elimination_items',
+      'correct_items',
+      'item.id',
+    ]) {
+      if (!migration.includes(token)) {
+        pushIssue(errors, 'card_contract_migration_runtime_id_guard_missing', {token});
+      }
+    }
+  }
 }
 
 function validateGitWorkflow(errors) {
@@ -1893,12 +3790,34 @@ function validateGitWorkflow(errors) {
   if (gitWorkflow.status !== 'active') {
     pushIssue(errors, 'git_workflow_not_active', { status: gitWorkflow.status });
   }
-  if (!activePaths.has('scripts/validate_pr_scope.mjs')) {
-    pushIssue(errors, 'pr_scope_validator_manifest_entry_missing', {});
+  for (const requiredPath of [
+    'scripts/lib/card_integrity.mjs',
+    'scripts/validate_cards.mjs',
+    'scripts/migrate_cards_to_softbook_contract.mjs',
+    'scripts/validate_pr_scope.mjs',
+  ]) {
+    if (!activePaths.has(requiredPath)) {
+      pushIssue(errors, 'integrity_validator_manifest_entry_missing', { requiredPath });
+    }
   }
   if (authorityMap.owners?.content_pr_scope_gate !== 'scripts/validate_pr_scope.mjs') {
     pushIssue(errors, 'pr_scope_validator_owner_drift', {
       owner: authorityMap.owners?.content_pr_scope_gate,
+    });
+  }
+  if (authorityMap.owners?.candidate_card_integrity !== 'scripts/lib/card_integrity.mjs') {
+    pushIssue(errors, 'candidate_card_integrity_owner_drift', {
+      owner: authorityMap.owners?.candidate_card_integrity,
+    });
+  }
+  if (authorityMap.owners?.candidate_card_structural_validation !== 'scripts/validate_cards.mjs') {
+    pushIssue(errors, 'candidate_card_validator_owner_drift', {
+      owner: authorityMap.owners?.candidate_card_structural_validation,
+    });
+  }
+  if (authorityMap.owners?.legacy_card_contract_migration !== 'scripts/migrate_cards_to_softbook_contract.mjs') {
+    pushIssue(errors, 'legacy_card_contract_migration_owner_drift', {
+      owner: authorityMap.owners?.legacy_card_contract_migration,
     });
   }
   if (!exists('scripts/validate_pr_scope.mjs')) {
@@ -1920,11 +3839,111 @@ function validateGitWorkflow(errors) {
       'resolved_head',
       'reports/card_quality_audit_report.json',
       'reports/card_validation_report.json',
+      'validateChangedCardSelfReviewParity',
+      'candidate_quality_metadata_missing',
+      'candidate_self_review_missing',
+      'candidate_self_review_metadata_mismatch',
+      'candidate_card_box_path_invalid',
+      'changed_self_review_current_corpus_parity_invalid',
+      'changed_self_review_deleted',
+      'changed_self_review_path_noncanonical',
+      'changed_self_review_not_regular_file',
+      'changed_self_review_per_box_card_count_invalid',
+      'changed_self_review_card_knowledge_ref_mismatch',
+      'changed_self_review_scope_type_required',
+      'changed_self_review_residual_scoped_audit_required',
+      'changed_self_review_standard_scoped_audit_required',
+      'changed_self_review_batch_box_progression_missing',
+      'changed_added_card_requires_standard_sample_review',
+      'changed_full_track_review_scope_coverage_mismatch',
+      'changed_full_track_review_cards_forbidden',
+      'changed_full_track_review_human_reviewer_invalid',
+      'changed_full_track_review_quality_audit_summary_invalid',
+      'changed_full_track_review_scoped_audit_required',
+      'changed_full_track_review_batch_status_invalid',
+      'changed_full_track_review_track_card_scope_mismatch',
+      'changed_full_track_review_track_box_scope_mismatch',
+      'changed_full_track_review_track_membership_changed',
+      'pre_cutover_report_index_immutable',
+      'changed_scoped_audit_invalid',
+      'changed_scoped_audit_replay_mismatch',
+      'changed_scoped_audit_deleted_or_renamed',
+      'changed_legacy_scoped_audit_immutable',
+      'changed_review_current_scoped_audit_required',
+      'changed_review_scoped_audit_replay_mismatch',
+      'changed_approval_deleted',
+      'changed_approval_linked_self_review_path_invalid',
+      'changed_approval_linked_self_review_scope_mismatch',
+      'git_diff_path_noncanonical',
+      'content_candidate_explicit_head_required',
+      'isCardBoxDirectoryPath',
+      'isReviewTemplatePath',
+      'isSelfReviewJsonPath',
+      'isApprovedBatchPath',
+      'changedSelfReviewScopeType',
+      'isRegularFileAtCommit',
+      'isHumanReviewer',
+      'REVIEW_TEMPLATE_PATHS',
+      'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+      'materializeHeadCardCorpus',
+      "'-z'",
+      'merge-base',
     ]) {
       if (!prScopeValidator.includes(token)) {
         pushIssue(errors, 'pr_scope_validator_guard_missing', { token });
       }
     }
+  }
+  for (const consumerPath of [
+    'scripts/validate_candidate_review_queue.mjs',
+    'scripts/plan_release_gap_samples.mjs',
+  ]) {
+    if (
+      !exists(consumerPath) ||
+      !readText(consumerPath).includes('validateCurrentApprovalRecordReference')
+    ) {
+      pushIssue(errors, 'current_approval_consumer_guard_missing', {
+        consumer: consumerPath,
+      });
+    }
+  }
+  const currentApprovalTest = readText('scripts/test_card_integrity.mjs');
+  if (
+    !currentApprovalTest.includes('forged replay') ||
+    !currentApprovalTest.includes('approval_audit_report_replay_mismatch') ||
+    !currentApprovalTest.includes(
+      'approval_linked_self_review_audit_replay_mismatch',
+    ) ||
+    !currentApprovalTest.includes('approval_record_not_committed_at_head') ||
+    !currentApprovalTest.includes(
+      'approval_linked_self_review_not_committed_at_head',
+    ) ||
+    !currentApprovalTest.includes(
+      'approval_linked_self_review_audit_not_committed_at_head',
+    ) ||
+    !currentApprovalTest.includes(
+      'approval_current_fingerprint_override_mismatch',
+    ) ||
+    !currentApprovalTest.includes(
+      'approval_current_audit_replay_unavailable',
+    ) ||
+    !currentApprovalTest.includes('uncommitted authority drift') ||
+    !currentApprovalTest.includes('staged authority drift') ||
+    !currentApprovalTest.includes(
+      'approval_git_snapshot_changed_during_validation',
+    ) ||
+    !currentApprovalTest.includes(
+      'approval_authorization_file_changed_during_validation',
+    ) ||
+    !currentApprovalTest.includes(
+      'approval_current_corpus_changed_during_validation',
+    ) ||
+    !currentApprovalTest.includes('beforeFinalConsistencyCheck') ||
+    !currentApprovalTest.includes('blocked-current-oracle') ||
+    !currentApprovalTest.includes("'restore', '--staged'") ||
+    !currentApprovalTest.includes('fs.chmodSync')
+  ) {
+    pushIssue(errors, 'current_approval_replay_regression_test_missing', {});
   }
   if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
     guardrail.includes('global report refreshes') && guardrail.includes('non-scope self-review')
@@ -1935,6 +3954,91 @@ function validateGitWorkflow(errors) {
     guardrail.includes('multi-prefix content') && guardrail.includes('explicit handoff')
   )) {
     pushIssue(errors, 'agent_harness_multi_prefix_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('merge-base-to-head') && guardrail.includes('canonical governed filename')
+  )) {
+    pushIssue(errors, 'agent_harness_candidate_diff_path_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('exact repository-declared template paths') &&
+    guardrail.includes('filename prefix') &&
+    guardrail.includes('approved_batches') &&
+    guardrail.includes('approval records') &&
+    guardrail.includes('direct regular JSON children') &&
+    guardrail.includes('Git paths are preserved exactly')
+  )) {
+    pushIssue(errors, 'agent_harness_unprefixed_review_path_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('complete immutable HEAD card_boxes_json tree') &&
+    guardrail.includes('deleted or renamed base paths')
+  )) {
+    pushIssue(errors, 'agent_harness_head_audit_snapshot_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('HEAD corpus card') && guardrail.includes('review_status')
+  )) {
+    pushIssue(errors, 'agent_harness_candidate_metadata_parity_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('standalone harness validation') &&
+    guardrail.includes('all quality_metadata except review_status')
+  )) {
+    pushIssue(errors, 'agent_harness_standalone_snapshot_parity_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('every new or changed standard, residual-closure, or full-track review') &&
+    guardrail.includes('byte-for-byte immutable')
+  )) {
+    pushIssue(errors, 'agent_harness_pre_cutover_immutability_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('every new or changed direct scoped-audit JSON artifact') &&
+    guardrail.includes('structurally valid unchanged historical fingerprints') &&
+    guardrail.includes('current-track parity') &&
+    guardrail.includes('historical approval') &&
+    guardrail.includes('current authorization') &&
+    guardrail.includes('evidence churn')
+  )) {
+    pushIssue(errors, 'agent_harness_scoped_audit_artifact_lifecycle_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('current-authorization consumers') &&
+    guardrail.includes('direct canonical non-template approval') &&
+    guardrail.includes('complete linked self-review') &&
+    guardrail.includes('regular committed evidence') &&
+    guardrail.includes('active audit script') &&
+    guardrail.includes('active audit rule spec') &&
+    guardrail.includes('worktree, index, and one fixed HEAD modes and bytes agree') &&
+    guardrail.includes('regenerate the complete current card-quality audit') &&
+    guardrail.includes('both scoped reports to be exact replays') &&
+    guardrail.includes('recheck the fixed HEAD/index snapshot') &&
+    guardrail.includes('historical records remain archive-only')
+  )) {
+    pushIssue(errors, 'agent_harness_current_approval_authorization_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('exactly three immutable-HEAD-matching snapshots') &&
+    guardrail.includes('explicit residual scope type and direct scoped audit') &&
+    guardrail.includes('cannot authorize a newly added card')
+  )) {
+    pushIssue(errors, 'agent_harness_standard_sample_box_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('aggregate human-review evidence') &&
+    guardrail.includes('structured non-automation human identity') &&
+    guardrail.includes('quality_audit summary') &&
+    guardrail.includes('complete declared track card and box-prefix sets') &&
+    guardrail.includes('merge-base plus HEAD track membership') &&
+    guardrail.includes('no cards property')
+  )) {
+    pushIssue(errors, 'agent_harness_full_track_aggregate_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('elimination_items IDs') && guardrail.includes('answer_key.correct_items')
+  )) {
+    pushIssue(errors, 'agent_harness_elimination_integrity_guardrail_missing', {});
   }
   if (!agentEntry.includes('## Agent-Managed Git')) {
     pushIssue(errors, 'agent_entry_missing_git_section', {});
@@ -1992,9 +4096,43 @@ function validateGitWorkflow(errors) {
   }
 
   const validationCommands = (gitWorkflow.validation_policy?.before_commit || []).map(entry => entry.command);
-  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_audio_qc.mjs', 'node scripts/validate_cards.mjs --report-path exports/card_validation_report.json', SCOPED_AUDIT_VALIDATION_COMMAND, PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
+  for (const command of [
+    'node scripts/validate_harness.mjs',
+    'node scripts/validate_audio_qc.mjs',
+    'node scripts/validate_cards.mjs --report-path exports/card_validation_report.json',
+    CARD_INTEGRITY_TEST_COMMAND,
+    SCOPED_AUDIT_VALIDATION_COMMAND,
+    PR_SCOPE_VALIDATION_COMMAND,
+    PR_SCOPE_TEST_COMMAND,
+    'git diff --check',
+  ]) {
     if (!validationCommands.includes(command)) {
       pushIssue(errors, 'git_validation_command_missing', { command });
+    }
+  }
+  const contentPrScopeGate = (gitWorkflow.validation_policy?.before_commit || [])
+    .find(entry => entry.scope === 'content_sample_pr_scope');
+  if (!(contentPrScopeGate?.blocks || []).some(block =>
+    block.includes('candidate-queue or release-gap consumers') &&
+    block.includes('historical approvals') &&
+    block.includes('dirty/staged/mode-drifted audit authority or approval/review/audit evidence') &&
+    block.includes('concurrent HEAD/index/file/corpus drift') &&
+    block.includes('forged current-digest audits') &&
+    block.includes('stale linked self-reviews') &&
+    block.includes('one fixed worktree/index/HEAD snapshot') &&
+    block.includes('regenerating the complete current audit') &&
+    block.includes('exactly replaying both scoped reports') &&
+    block.includes('current authorization')
+  )) {
+    pushIssue(errors, 'git_current_approval_consumer_block_missing', {});
+  }
+  const prGatesWorkflow = readText('.github/workflows/pr-gates.yml');
+  for (const command of [
+    CARD_INTEGRITY_TEST_COMMAND,
+    PR_SCOPE_TEST_COMMAND,
+  ]) {
+    if (!prGatesWorkflow.includes(command)) {
+      pushIssue(errors, 'github_pr_gate_integrity_test_missing', { command });
     }
   }
   if (gitWorkflow.completion_policy?.agent_authored_tracked_changes_default !== 'validated_commit_push_draft_PR') {
@@ -2029,6 +4167,14 @@ function validateGitWorkflow(errors) {
     }
   }
 
+  for (const requiredPath of [
+    'scripts/test_card_integrity.mjs',
+    'scripts/test_validate_pr_scope.mjs',
+  ]) {
+    if (!exists(requiredPath)) {
+      pushIssue(errors, 'integrity_regression_test_missing', { requiredPath });
+    }
+  }
   if (gitWorkflow.handoff_policy?.directory !== 'reviews/git_handoffs/') {
     pushIssue(errors, 'git_handoff_directory_drift', {});
   }
@@ -2059,16 +4205,67 @@ function validateEvalsAndPerturbation(errors) {
       pushIssue(errors, 'golden_task_missing', { id });
     }
   }
+  const sampleGateTask = (evals.golden_tasks || []).find(task => task.id === 'GT-CARD-004');
+  for (const expected of [
+    'derives_changed_cards_from_merge_base_to_head_objects',
+    'requires_exactly_one_changed_review_coverage_per_changed_card',
+    'requires_all_quality_metadata_fields_except_independently_validated_artifact_review_status_to_match_current_card_corpus',
+    'validates_self_review_only_changes_against_the_unique_HEAD_corpus_card',
+    'treats_unprefixed_governed_review_paths_as_content_candidate_changes',
+    'excludes_only_exact_repository_declared_review_template_paths',
+    'accepts_strict_full_track_aggregate_as_changed_card_review_coverage_without_cards',
+    'rejects_semantically_incomplete_standard_or_full_track_review_coverage',
+    'requires_exactly_three_HEAD_matching_snapshots_per_declared_standard_sample_box',
+    'classifies_historical_approval_as_archive_evidence_not_current_authorization',
+    'requires_every_changed_approval_record_to_link_an_exact_current_scoped_audit_replay',
+    'requires_current_approval_consumers_to_reject_templates_traversal_symlinks_incomplete_shapes_stale_audits_and_stale_linked_reviews',
+    'requires_current_approval_consumers_to_regenerate_the_complete_current_audit_and_exactly_replay_both_scoped_reports',
+    'requires_current_approval_consumers_to_reject_uncommitted_or_staged_approval_review_and_audit_evidence',
+    'requires_current_approval_consumers_to_fail_closed_when_audit_replay_is_unavailable_or_the_caller_fingerprint_is_forged',
+    'binds_current_audit_script_and_rule_spec_to_committed_authority_and_rechecks_one_fixed_authorization_snapshot',
+    'rejects_residual_closure_coverage_for_newly_added_cards',
+    'requires_structured_non_automation_human_identity_for_full_track_review',
+    'rejects_nested_symlinked_or_unusual_path_self_review_evidence',
+    'rejects_partial_or_wrong_track_full_track_aggregate_coverage',
+    'rejects_full_track_aggregate_coverage_for_cards_absent_from_merge_base',
+    'replays_scoped_audit_against_the_complete_immutable_HEAD_card_corpus',
+    'rejects_noncanonical_card_box_paths',
+    'requires_elimination_runtime_IDs_and_matching_preview_answer_projection',
+  ]) {
+    if (!(sampleGateTask?.expected || []).includes(expected)) {
+      pushIssue(errors, 'sample_gate_integrity_eval_missing', { expected });
+    }
+  }
   if (evals.fixture_suite !== 'spec/eval-fixtures.json') {
     pushIssue(errors, 'eval_fixture_suite_missing', {});
   }
 
   const perturbation = readJson('spec/perturbation-audit.json');
   const guards = new Set((perturbation.anti_drift_guards || []).map(guard => guard.id));
-  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009']) {
+  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009', 'PA-CARD-010', 'PA-CARD-012', 'PA-CARD-013']) {
     if (!guards.has(id)) {
       pushIssue(errors, 'anti_drift_guard_missing', { id });
     }
+  }
+  const currentApprovalGuard = (perturbation.anti_drift_guards || [])
+    .find(guard => guard.id === 'PA-CARD-013');
+  if (
+    !String(currentApprovalGuard?.reject || '').includes('candidate-queue or release-gap consumers') ||
+    !String(currentApprovalGuard?.reject || '').includes('historical approvals') ||
+    !String(currentApprovalGuard?.reject || '').includes('dirty/staged/mode-drifted audit authority or approval/review/audit evidence') ||
+    !String(currentApprovalGuard?.reject || '').includes('concurrent HEAD/index/file/corpus drift') ||
+    !String(currentApprovalGuard?.reject || '').includes('forged current-digest audits') ||
+    !String(currentApprovalGuard?.reject || '').includes('stale linked self-reviews') ||
+    !String(currentApprovalGuard?.recovery || '').includes('current-authorization consumer') ||
+    !String(currentApprovalGuard?.recovery || '').includes('direct canonical non-template approval and linked review evidence') ||
+    !String(currentApprovalGuard?.recovery || '').includes('active audit script') ||
+    !String(currentApprovalGuard?.recovery || '').includes('active audit rule spec') ||
+    !String(currentApprovalGuard?.recovery || '').includes('one fixed HEAD modes and bytes agree') ||
+    !String(currentApprovalGuard?.recovery || '').includes('regenerate the complete current card-quality audit') ||
+    !String(currentApprovalGuard?.recovery || '').includes('exactly replay both scoped reports') ||
+    !String(currentApprovalGuard?.recovery || '').includes('recheck the fixed HEAD/index snapshot')
+  ) {
+    pushIssue(errors, 'current_approval_perturbation_guard_incomplete', {});
   }
 }
 
@@ -2360,7 +4557,7 @@ validateCardQualityAudit(errors, warnings);
 validateMetadataSchema(errors);
 validateWorkflow(errors);
 validateReviewDirs(errors);
-validateReviewTemplatesAndRecords(errors);
+validateReviewTemplatesAndRecords(errors, warnings);
 validateInteractionPolicy(errors);
 validateGitWorkflow(errors);
 validateEvalsAndPerturbation(errors);

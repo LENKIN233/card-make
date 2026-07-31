@@ -4,6 +4,9 @@ import assert from 'node:assert/strict';
 import {existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {dirname, join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {
+  validateCurrentApprovalRecordReference,
+} from './lib/card_integrity.mjs';
 
 const TRACKS = ['cet4', 'cet6'];
 const DEFAULT_LIMIT = 12;
@@ -204,8 +207,18 @@ function loadLocalCoverage(root) {
   }
 
   if (existsSync(approvalDir)) {
+    let currentApprovalFingerprint = null;
     for (const file of readdirSync(approvalDir).filter(name => name.endsWith('.json') && name !== 'TEMPLATE.json').sort()) {
-      const approval = readJson(join(approvalDir, file));
+      const approvalPath = `reviews/approved_batches/${file}`;
+      const approvalValidation = validateCurrentApprovalRecordReference({
+        root,
+        approvalPath,
+        currentFingerprint: currentApprovalFingerprint,
+      });
+      currentApprovalFingerprint =
+        currentApprovalFingerprint || approvalValidation.current_fingerprint;
+      if (!approvalValidation.ok) continue;
+      const approval = approvalValidation.approval;
       const prefixes = approval.scope?.box_prefixes || approval.scope?.prefixes || [];
       for (const prefix of prefixes) {
         const track = approval.scope?.track || inferTrack(approval, prefix);

@@ -55,7 +55,9 @@
     "approval_record_directory": "reviews/approved_batches/",
     "required_before_user_confirmation": [
       "quality_metadata_per_card",
+      "changed_candidate_card_integrity",
       "agent_self_review_record",
+      "self_review_quality_metadata_matches_current_card_corpus",
       "blocker_scan_per_card",
       "card_quality_audit_no_hard_blockers",
       "scoped_card_quality_audit_report",
@@ -69,6 +71,51 @@
       "harness_validation",
       "card_validation",
       "card_quality_audit_report"
+    ]
+  },
+  "changed_candidate_integrity_policy": {
+    "contract": "spec/content-quality-contract.json#candidate_integrity_policy",
+    "validator": "scripts/validate_pr_scope.mjs",
+    "discovery": "compare merge-base and head card objects by card_id rather than trusting declared scope",
+    "strict_on_any_card_change": true,
+    "requirements": [
+      "every added or modified card has complete schema-valid quality_metadata",
+      "every added or modified card has exactly one changed review coverage: either one standard per-card snapshot or one validated full-track aggregate scope+coverage entry",
+      "standard three-card samples contain exactly three snapshots for each declared scope.box_prefixes value, and every snapshot interaction_id plus knowledge_ref exactly matches its unique immutable HEAD corpus card",
+      "every new or changed standard, residual-closure, or full-track self-review or approval record links a direct current scoped audit under reviews/audit_scopes; global audit references belong only to immutable pre-cutover records",
+      "every new or changed scoped-audit artifact is a direct regular JSON file that exactly matches the current immutable-HEAD audit replay for its declared scope; malformed unlinked artifacts and deletion or mutation of archived evidence fail closed",
+      "standard sample batch_review carries non-empty box_progression, an explicit repetition_or_gap_risks array, non-empty unique representative_cards drawn from scope.card_ids, and a non-empty next_step",
+      "newly added cards require standard three-card sample coverage; residual blocker closure evidence applies only to pre-existing cards",
+      "every entry in every changed self-review resolves to exactly one HEAD corpus card and all quality_metadata fields except artifact-local review_status are deeply equal, even when the card itself did not change",
+      "a changed full-track aggregate record may omit cards; its exact sample flags, structured human reviewer identity, per-box human pass, complete quality_audit summary, ready batch status, non-empty unique scope.card_ids, and coverage.reviewed_card_ids are validated before its scope can count as review evidence",
+      "for a semantically valid full-track aggregate, scope.card_ids and coverage.reviewed_card_ids are identical, both equal the complete declared track, and immutable HEAD has the same non-empty card ID set at merge-base",
+      "every JSON change under agent_self_review, approved_batches, drafts, or audit_scopes enters the content gate regardless of filename prefix, except the four exact repository-declared template paths; agent_self_review and approved_batches records must be direct regular JSON children and nested records fail closed",
+      "Git paths are interpreted exactly without rewriting literal backslashes as separators, and review paths containing backslashes, controls, or Unicode line separators fail closed",
+      "all files under card_boxes_json use the canonical governed filename and are included in changed-candidate detection",
+      "the replayed scoped audit reads the complete immutable HEAD card_boxes_json snapshot, including deletions and rename sources",
+      "elimination runtime ID items, preview compatibility projection, and ID-based answer truth remain mutually consistent"
+    ],
+    "legacy_boundary": "Untouched cards without quality_metadata remain readable legacy corpus; touching a card opts the complete head object into current candidate integrity requirements.",
+    "must_not": [
+      "grandfather inherited integrity defects on a changed card",
+      "derive changed card scope only from self-review or handoff declarations",
+      "allow missing optional metadata fields to pass parity",
+      "exclude any parity field other than artifact-local review_status",
+      "treat object key order as a metadata mismatch",
+      "allow self-review-only churn to avoid HEAD corpus parity",
+      "allow an unprefixed governed review filename to avoid content-candidate validation",
+      "treat an unknown record as a template merely because its basename ends in TEMPLATE.json",
+      "count invalid or mismatched full-track scope and coverage as changed-card review evidence",
+      "allow a partial-track aggregate to satisfy changed-card review coverage",
+      "allow a full-track record to claim a track that differs from any covered HEAD card",
+      "allow a full-track remediation aggregate to authorize a card absent from merge-base",
+      "attach a cards snapshot payload to a full-track aggregate instead of using its canonical scope and coverage evidence",
+      "count a nested, symlinked, semantically incomplete, or automation-reviewed self-review record as changed-card coverage",
+      "count a box as sampled when it lacks exactly three matching immutable HEAD card snapshots",
+      "use residual blocker closure evidence to authorize newly generated cards",
+      "rewrite unusual Git path characters into a different governed evidence path",
+      "replay a scoped audit on a base worktree that retains card files deleted or renamed by HEAD",
+      "run content-candidate validation without an explicit immutable head commit"
     ]
   },
   "full_track_remediation_policy": {
@@ -93,8 +140,20 @@
       "coverage.human_reviewer",
       "coverage.boxes",
       "quality_audit",
-      "batch_review.status=ready_for_full_track_user_approval"
+      "representative_cards=non_empty_unique_scope_subset",
+      "batch_review.status=ready_for_full_track_user_approval",
+      "batch_review.summary",
+      "batch_review.remaining_risks=[]",
+      "batch_review.next_step"
     ],
+    "human_reviewer_identity": {
+      "format": "github:<id>|team:<id>|external:<id>",
+      "id_characters": "one to 64 characters, starting with a Unicode letter or number and followed only by Unicode letters, numbers, or . _ @ - separators, with no whitespace",
+      "forbidden_identity_tokens": ["agent", "bot", "codex", "automation", "ci"],
+      "coverage_boxes_reviewer": "must equal coverage.human_reviewer",
+      "coverage_boxes_status": "pass"
+    },
+    "quality_audit_semantics": "The record must name a direct current scoped report under reviews/audit_scopes and a non-empty current corpus fingerprint, declare scope_has_no_hard_blockers=true, and carry a scope_summary whose unique card IDs/count match the full scope, whose required non-negative severity and rule counts are complete, whose hard_blocker count is zero, and whose issue_count equals the severity total.",
     "approval_model": "execution_team_remediates_and_reviews_the_full_track; user_performs_one_final_complete_batch_approval",
     "does_not_authorize": [
       "new_bulk_card_generation",
@@ -175,6 +234,24 @@
       "representative_cards",
       "validation"
     ],
+    "field_semantics": {
+      "approved_at": "non-empty ISO-8601 timestamp with an explicit timezone",
+      "summary": "non-empty approval conclusion",
+      "scope.box_prefixes": "non-empty unique string array",
+      "scope.card_ids": "non-empty unique string array",
+      "representative_cards": "non-empty unique string array contained in scope.card_ids"
+    },
+    "new_or_changed_record_audit_policy": "Every new or changed approval record must link a direct current scoped audit whose immutable-HEAD replay exactly matches the declared scope.",
+    "historical_linked_audit_aging": "Unchanged historical review and approval records remain immutable archive evidence bound to their recorded scoped artifact and rule set. Historical self-review skips current-card parity and historical approval does not count as current authorization; current formal authorization additionally requires the consumer to independently regenerate the complete current audit and exactly replay both scoped reports.",
+    "current_authorization_consumers": "Candidate queue and release-gap planning accept only direct canonical non-template approval records with complete formal fields and exact current scope, plus a direct canonical complete linked self-review with matching scope. The approval, linked review, both scoped reports, active audit script, and active audit rule spec must be regular committed evidence or authority whose worktree, index, and one fixed HEAD modes and bytes agree. The consumer independently regenerates the complete current card-quality audit, requires both scoped reports to be exact replays, and rechecks the fixed HEAD/index snapshot, captured file modes/bytes, and corpus fingerprint before returning; merely being tracked, matching a current corpus digest, using a self-declared summary, or claiming zero blockers cannot authorize. Historical approvals, templates, traversal, nested paths, symlinks, incomplete records, dirty/staged/mode-drifted authority or evidence, concurrent snapshot drift, forged or stale audits, and stale linked reviews remain non-authorizing.",
+    "template_mode_mapping": {
+      "reviews/agent_self_review/TEMPLATE.json": "three_card_sample_per_box with complete standard placeholder shape",
+      "reviews/agent_self_review/FULL_TRACK_TEMPLATE.json": "full_track_remediation with complete aggregate placeholder shape",
+      "reviews/approved_batches/TEMPLATE.json": "standard approval without approval_mode and with complete placeholder shape",
+      "reviews/approved_batches/FULL_TRACK_TEMPLATE.json": "approval_mode=full_track_final with complete placeholder shape",
+      "all_template_paths_must_be_regular_files": true,
+      "manifest_authority_must_match_path": true
+    },
     "full_track_final_mode": {
       "approval_mode": "full_track_final",
       "requires_linked_review_scope_type": "full_track_remediation",

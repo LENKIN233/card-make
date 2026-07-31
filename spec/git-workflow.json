@@ -85,18 +85,43 @@
         "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json"
       },
       {
+        "scope": "card_integrity_harness",
+        "command": "node --test scripts/test_card_integrity.mjs"
+      },
+      {
         "scope": "candidate_sample_scoped_audit",
         "command": "node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json"
       },
       {
         "scope": "content_sample_pr_scope",
-        "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract",
+        "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract --head HEAD",
+        "execution_phase": "after_payload_commit_before_push",
         "blocks": [
           "global report refreshes in content PRs",
           "non-scope self-review or scoped-audit churn",
+          "unprefixed self-review, draft, or scoped-audit paths bypassing content-candidate validation",
+          "nested, symlinked, semantically incomplete, or automation-reviewed self-review evidence counting as changed-card coverage",
+          "standard samples without exactly three immutable-HEAD-matching snapshots per declared box, or residual closure evidence used for newly added cards",
+          "new or changed review evidence reusing an archived global audit, or any mutation of the immutable pre-cutover report index and its referenced legacy review records",
+          "empty, malformed, forged, deleted, renamed, or non-replayed scoped-audit artifacts, including unlinked files",
+          "swapped, incomplete, symlinked, or mode-drifted review authority templates and formally approved records with empty or duplicate approval evidence",
+          "candidate-queue or release-gap consumers counting templates, traversal, symlinks, incomplete records, historical approvals, dirty/staged/mode-drifted audit authority or approval/review/audit evidence, concurrent HEAD/index/file/corpus drift, forged current-digest audits, stale audits, or stale linked self-reviews as current authorization without proving one fixed worktree/index/HEAD snapshot, regenerating the complete current audit, and exactly replaying both scoped reports",
+          "literal backslash, control, or Unicode line-separator Git paths being rewritten or misclassified as governed evidence",
+          "self-review-only metadata drift from the immutable HEAD corpus",
+          "noncanonical or Unicode card-box paths that are not part of the governed corpus filename contract",
           "multi-prefix content PRs without explicit handoff or residual-closure evidence",
-          "current scoped card-quality audit hard blockers, even when changed scoped-audit evidence was generated under older rules"
+          "current scoped card-quality audit hard blockers, even when changed scoped-audit evidence was generated under older rules",
+          "current scoped audits replayed against a partial overlay instead of the complete immutable HEAD card corpus",
+          "changed cards without current schema-valid quality metadata",
+          "changed cards without exactly one changed self-review snapshot",
+          "changed card and self-review quality_metadata mismatch",
+          "elimination runtime ID, preview projection, or answer truth mismatch",
+          "worktree-only validation without an explicit immutable head commit"
         ]
+      },
+      {
+        "scope": "content_pr_scope_harness",
+        "command": "node --test scripts/test_validate_pr_scope.mjs"
       },
       {
         "scope": "front_leak_candidate_queue",
