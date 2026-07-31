@@ -65,6 +65,7 @@ After editing harness files, run:
 node scripts/validate_harness.mjs
 node --test scripts/test_card_integrity.mjs
 node --test scripts/test_validate_pr_scope.mjs
+node --test scripts/test_validate_delivery_record.mjs
 ```
 
 After editing card JSON or the preview reader, also run:
@@ -120,6 +121,25 @@ next-step evidence. They must not attach a separate `cards` payload or authorize
 The four exact review/approval templates are regular-file authorities with fixed, complete standard
 or full-track placeholder shapes. Formal approvals require a timezone-qualified timestamp,
 non-empty summary, unique non-empty scope arrays, and non-empty in-scope representative cards.
+Git handoff discovery excludes only `reviews/git_handoffs/TEMPLATE.json`.
+The current record must be one direct, safe, non-executable `100644` JSON blob
+at the fixed PR head; symlinks, executable blobs, gitlinks, nested or anomalous
+paths, legacy/no-hash evidence, and Git replace refs fail closed. The complete
+record schema is type-checked, its authority must match its change type, and the
+record is append-only: it cannot overwrite, delete/re-add, or rename historical
+handoffs. All Git semantic reads resolve fixed commit OIDs under the canonical
+no-replace/no-grafts environment; a non-empty common-dir `info/grafts` fails
+closed, including from linked worktrees. Mandatory v2 patch evidence uses the canonical Git config, diff
+options, and commit-sourced attributes declared by `spec/git-workflow.json`,
+fatally and byte-preservingly decodes Git paths as UTF-8, forces
+gitlink-inclusive path discovery, audits the full reachable pre- and post-payload
+history including merged side branches, rejects transient/restored paths, and fails closed on repository info
+attributes or custom diff-driver config.
+The GitHub delivery-record job passes the exact pull-request head SHA plus PR
+number, URL, state, draft, branch, and repository metadata to its history
+validator; parked records instead require a remote-tracking ref at the exact
+head. The other PR jobs retain the default synthetic-merge
+checkout for base-integration coverage.
 
 ## Agent-Managed Git
 
