@@ -55,6 +55,7 @@ jobs:
           node scripts/validate_audio_lfs.mjs
           node --test scripts/test_card_integrity.mjs
           node --test scripts/test_validate_pr_scope.mjs
+          node --test scripts/test_validate_delivery_record.mjs
           node --test scripts/test_audio_technical_audit.mjs
           node --test scripts/test_audio_perceptual_worklist.mjs
           git diff --check
@@ -133,7 +134,7 @@ jobs:
         env:
           HEAD_BRANCH: ${{ github.head_ref }}
           BASE_BRANCH: ${{ github.base_ref }}
-        run: node scripts/validate_delivery_record.mjs --base "origin/${{ github.base_ref }}" --head HEAD
+        run: node scripts/validate_delivery_record.mjs --base "origin/${{ github.base_ref }}" --head "${{ github.event.pull_request.head.sha }}"
 
   repo-health:
     runs-on: ubuntu-latest

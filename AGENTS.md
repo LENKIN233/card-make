@@ -65,6 +65,7 @@ After editing harness files, run:
 node scripts/validate_harness.mjs
 node --test scripts/test_card_integrity.mjs
 node --test scripts/test_validate_pr_scope.mjs
+node --test scripts/test_validate_delivery_record.mjs
 ```
 
 After editing card JSON or the preview reader, also run:
@@ -93,6 +94,15 @@ full-track records instead use strict equal aggregate scope/coverage IDs bound
 to the complete declared track card and box-prefix sets in immutable HEAD, and
 the track membership must remain the same non-empty set from merge-base to
 HEAD. They must not attach a separate `cards` payload or authorize added cards.
+Git handoff discovery excludes only `reviews/git_handoffs/TEMPLATE.json`; v2
+patch evidence uses the canonical environment, Git config, diff options, and
+commit-sourced attributes declared by `spec/git-workflow.json`, fatally and
+byte-preservingly decodes Git paths as UTF-8, forces gitlink-inclusive path discovery, audits the full
+reachable post-payload history including merged side branches, and fails closed
+on repository info attributes or custom diff-driver config.
+The GitHub delivery-record job passes the exact pull-request head SHA to its
+history validator, while the other PR jobs retain the default synthetic-merge
+checkout for base-integration coverage.
 
 ## Agent-Managed Git
 

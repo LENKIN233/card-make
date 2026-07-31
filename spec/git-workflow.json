@@ -59,6 +59,7 @@
     "default_for_harness_followups": "use_existing_PR_for_same_harness_domain; create_stacked_PR_for_distinct_git_workflow_or_quality_gate_domains"
   },
   "validation_policy": {
+    "delivery_record_head_policy": "The delivery-record gate passes github.event.pull_request.head.sha explicitly to payload-history validation while other pull-request jobs retain the default synthetic merge checkout for base-integration coverage.",
     "required_github_checks": [
       "contract-harness",
       "content-scope",
@@ -115,6 +116,10 @@
       {
         "scope": "content_pr_scope_harness",
         "command": "node --test scripts/test_validate_pr_scope.mjs"
+      },
+      {
+        "scope": "delivery_record_integrity",
+        "command": "node --test scripts/test_validate_delivery_record.mjs"
       },
       {
         "scope": "front_leak_candidate_queue",
@@ -191,6 +196,7 @@
   },
   "handoff_policy": {
     "directory": "reviews/git_handoffs/",
+    "template_path": "reviews/git_handoffs/TEMPLATE.json",
     "record_required_when": "agent_publishes_tracked_file_changes",
     "required_fields": [
       "branch",
@@ -204,6 +210,98 @@
       "local_status",
       "remaining_risks",
       "merge_authority"
-    ]
+    ],
+    "payload_commit_policy": {
+      "commit_sha_meaning": "the final payload commit before the handoff-only commit",
+      "base_commit": "merge-base of the recorded base ref and commit_sha",
+      "payload_path_set": "all non-handoff paths changed from base_commit through commit_sha must exactly equal sorted unique scope.touched_paths",
+      "post_payload_changes": "the full commit set reachable from the explicit PR head but not from commit_sha may change only the current handoff record; this includes merged side histories, and a later tree restoration or identical-tree merge does not erase an intervening payload mutation"
+    },
+    "touched_paths_policy": {
+      "required": true,
+      "non_empty": true,
+      "repository_relative": true,
+      "sorted": true,
+      "unique": true,
+      "must_exclude_current_handoff": true,
+      "must_name_changed_payload_paths_only": true,
+      "path_encoding": "Git path output must be valid UTF-8 and is decoded fatally and byte-preservingly; any non-UTF-8 path bytes fail closed, and a leading UTF-8 BOM is preserved as the U+FEFF filename character instead of being stripped or aliased.",
+      "path_discovery": "Every payload and post-payload path walk forces --no-ext-diff and --ignore-submodules=none so local diff settings cannot hide a gitlink or invoke an external helper.",
+      "git_pathspec_handling": "All touched paths are passed to Git with --literal-pathspecs so pathspec magic and glob characters are hashed as literal tracked filenames."
+    },
+    "patch_integrity": {
+      "legacy_default_when_patch_format_missing": "git-diff-binary-scoped-v1",
+      "legacy_algorithm": "sha256 of raw git --literal-pathspecs diff --binary <merge-base> <commit_sha> -- <sorted scope.touched_paths>",
+      "new_format": "git-diff-binary-v2",
+      "new_format_requires": [
+        "scope.base_commit_sha",
+        "scope.patch_sha256"
+      ],
+      "new_algorithm": "sha256 of the exact stdout bytes returned by scripts/validate_delivery_record.mjs buildPatchBytes for git-diff-binary-v2, using the ordered canonical_environment, canonical_git_config, and canonical_diff_options below before <scope.base_commit_sha> <commit_sha> -- <sorted scope.touched_paths>",
+      "canonical_null_device": "the platform null device returned by node:os.devNull",
+      "canonical_environment": [
+        "start from an empty child environment",
+        "inherit only PATH, Path, PATHEXT, SystemRoot, SYSTEMROOT, WINDIR, COMSPEC, ComSpec, TMPDIR, TMP, and TEMP when present",
+        "do not inherit any other ambient variable, including GIT_* injection variables",
+        "GIT_ATTR_NOSYSTEM=1",
+        "GIT_ATTR_SOURCE=<commit_sha>",
+        "GIT_CONFIG_NOSYSTEM=1",
+        "GIT_CONFIG_GLOBAL=<canonical_null_device>",
+        "GIT_CONFIG_SYSTEM=<canonical_null_device>",
+        "GIT_NO_REPLACE_OBJECTS=1",
+        "LC_ALL=C",
+        "LANG=C"
+      ],
+      "canonical_git_config": [
+        "color.ui=false",
+        "core.bigFileThreshold=512m",
+        "core.quotePath=true",
+        "core.attributesFile=<canonical_null_device>",
+        "diff.noprefix=false",
+        "diff.mnemonicPrefix=false",
+        "diff.relative=false",
+        "diff.algorithm=myers",
+        "diff.compactionHeuristic=false",
+        "diff.indentHeuristic=false",
+        "diff.context=3",
+        "diff.interHunkContext=0",
+        "diff.suppressBlankEmpty=false",
+        "diff.orderFile=<canonical_null_device>"
+      ],
+      "canonical_diff_options": [
+        "--literal-pathspecs",
+        "diff",
+        "--binary",
+        "--full-index",
+        "--no-ext-diff",
+        "--no-textconv",
+        "--no-renames",
+        "--no-color",
+        "--src-prefix=a/",
+        "--dst-prefix=b/",
+        "--line-prefix=",
+        "--unified=3",
+        "--diff-algorithm=myers",
+        "--no-indent-heuristic",
+        "--inter-hunk-context=0",
+        "--no-relative",
+        "--ignore-submodules=none",
+        "--submodule=short",
+        "--output-indicator-new=+",
+        "--output-indicator-old=-",
+        "--output-indicator-context= "
+      ],
+      "attribute_policy": "Attributes are read from commit_sha via GIT_ATTR_SOURCE; a non-empty repository info/attributes file or any repository-local/worktree diff.<driver>.* config key fails closed instead of producing environment-dependent bytes.",
+      "compatibility_golden": {
+        "fixture": "the fixed text-plus-binary payload in scripts/test_validate_delivery_record.mjs",
+        "sha256": "4fa4d17ca8633b5313260f144fffaf7230b9c19adc5246e34e99685c25578fed",
+        "requirement": "a Git/runtime environment must reproduce this digest before it may create or validate git-diff-binary-v2 evidence"
+      }
+    },
+    "locator_policy": {
+      "pull_request": "OPEN, CLOSED, or MERGED records use a repository-matching /pull/<number> URL",
+      "parked_compare": "PARKED_NO_PR_WIP_LIMIT records may use the legacy PR_url field for a repository-matching /compare/<base_branch>...<branch> locator whose decoded refs exactly match the record; the compare page is not a pull request",
+      "push_ref": "must equal origin/<branch>"
+    }
   }
 }

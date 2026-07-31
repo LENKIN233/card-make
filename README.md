@@ -65,6 +65,7 @@ Run this after editing harness files:
 node scripts/validate_harness.mjs
 node --test scripts/test_card_integrity.mjs
 node --test scripts/test_validate_pr_scope.mjs
+node --test scripts/test_validate_delivery_record.mjs
 ```
 
 Candidate PR scope validation uses NUL-delimited Git paths, discovers changed cards from the
@@ -85,6 +86,15 @@ Run it against an immutable commit after the payload commit:
 ```bash
 node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract --head HEAD
 ```
+
+Git handoffs bind the complete payload path set to the final payload commit, read the handoff from
+the requested HEAD snapshot, fatally and byte-preservingly decode Git paths as UTF-8, audit the full reachable post-payload
+history (including merged side branches), force gitlink-inclusive path discovery, and exclude only the
+exact repository template.
+The v2 patch digest uses the canonical environment, Git config, diff options, and commit-sourced
+attributes declared by `spec/git-workflow.json`; repository info attributes and custom diff drivers fail closed.
+The delivery-record gate validates the explicit true PR head SHA so payload history cannot absorb
+unrelated base movement; the other PR jobs keep GitHub's synthetic merge checkout for integration coverage.
 
 Run this after editing card JSON, review records, or the quality-audit harness:
 

@@ -93,6 +93,59 @@ const REQUIRED_GIT_HANDOFF_FIELDS = [
   'remaining_risks',
   'merge_authority',
 ];
+const GIT_HANDOFF_TEMPLATE_PATH = 'reviews/git_handoffs/TEMPLATE.json';
+const V2_CANONICAL_ENVIRONMENT = [
+  'start from an empty child environment',
+  'inherit only PATH, Path, PATHEXT, SystemRoot, SYSTEMROOT, WINDIR, COMSPEC, ComSpec, TMPDIR, TMP, and TEMP when present',
+  'do not inherit any other ambient variable, including GIT_* injection variables',
+  'GIT_ATTR_NOSYSTEM=1',
+  'GIT_ATTR_SOURCE=<commit_sha>',
+  'GIT_CONFIG_NOSYSTEM=1',
+  'GIT_CONFIG_GLOBAL=<canonical_null_device>',
+  'GIT_CONFIG_SYSTEM=<canonical_null_device>',
+  'GIT_NO_REPLACE_OBJECTS=1',
+  'LC_ALL=C',
+  'LANG=C',
+];
+const V2_CANONICAL_GIT_CONFIG = [
+  'color.ui=false',
+  'core.bigFileThreshold=512m',
+  'core.quotePath=true',
+  'core.attributesFile=<canonical_null_device>',
+  'diff.noprefix=false',
+  'diff.mnemonicPrefix=false',
+  'diff.relative=false',
+  'diff.algorithm=myers',
+  'diff.compactionHeuristic=false',
+  'diff.indentHeuristic=false',
+  'diff.context=3',
+  'diff.interHunkContext=0',
+  'diff.suppressBlankEmpty=false',
+  'diff.orderFile=<canonical_null_device>',
+];
+const V2_CANONICAL_DIFF_OPTIONS = [
+  '--literal-pathspecs',
+  'diff',
+  '--binary',
+  '--full-index',
+  '--no-ext-diff',
+  '--no-textconv',
+  '--no-renames',
+  '--no-color',
+  '--src-prefix=a/',
+  '--dst-prefix=b/',
+  '--line-prefix=',
+  '--unified=3',
+  '--diff-algorithm=myers',
+  '--no-indent-heuristic',
+  '--inter-hunk-context=0',
+  '--no-relative',
+  '--ignore-submodules=none',
+  '--submodule=short',
+  '--output-indicator-new=+',
+  '--output-indicator-old=-',
+  '--output-indicator-context= ',
+];
 const REQUIRED_APPROVAL_FIELDS = [
   'approved_by_user',
   'approved_at',
@@ -124,6 +177,7 @@ const PR_SCOPE_VALIDATION_COMMAND = 'node scripts/validate_pr_scope.mjs --base o
 const SCOPED_AUDIT_VALIDATION_COMMAND = 'node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json';
 const CARD_INTEGRITY_TEST_COMMAND = 'node --test scripts/test_card_integrity.mjs';
 const PR_SCOPE_TEST_COMMAND = 'node --test scripts/test_validate_pr_scope.mjs';
+const DELIVERY_RECORD_TEST_COMMAND = 'node --test scripts/test_validate_delivery_record.mjs';
 
 function resolveWorkspacePath(specPath) {
   return path.resolve(ROOT, specPath);
@@ -2208,6 +2262,7 @@ function validateGitWorkflow(errors) {
     'scripts/validate_cards.mjs',
     'scripts/migrate_cards_to_softbook_contract.mjs',
     'scripts/validate_pr_scope.mjs',
+    'scripts/validate_delivery_record.mjs',
   ]) {
     if (!activePaths.has(requiredPath)) {
       pushIssue(errors, 'integrity_validator_manifest_entry_missing', { requiredPath });
@@ -2323,6 +2378,36 @@ function validateGitWorkflow(errors) {
   )) {
     pushIssue(errors, 'agent_harness_elimination_integrity_guardrail_missing', {});
   }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('literal-pathspec') && guardrail.includes('explicit HEAD snapshot')
+  )) {
+    pushIssue(errors, 'agent_harness_delivery_payload_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('exact repository-declared handoff template path') &&
+    guardrail.includes('fatal byte-preserving UTF-8 decoding') &&
+    guardrail.includes('leading U+FEFF') &&
+    guardrail.includes('no-ignore gitlink discovery') &&
+    guardrail.includes('full reachable post-payload commit set') &&
+    guardrail.includes('merged side histories') &&
+    guardrail.includes('identical-tree merge')
+  )) {
+    pushIssue(errors, 'agent_harness_delivery_history_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('deterministic environment') &&
+    guardrail.includes('commit-sourced attributes') &&
+    guardrail.includes('custom diff-driver config fail closed')
+  )) {
+    pushIssue(errors, 'agent_harness_delivery_v2_canonicalization_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('delivery-record gate') &&
+    guardrail.includes('exact pull_request head SHA') &&
+    guardrail.includes('synthetic merge coverage')
+  )) {
+    pushIssue(errors, 'agent_harness_exact_pr_head_guardrail_missing', {});
+  }
   if (!agentEntry.includes('## Agent-Managed Git')) {
     pushIssue(errors, 'agent_entry_missing_git_section', {});
   }
@@ -2387,6 +2472,7 @@ function validateGitWorkflow(errors) {
     SCOPED_AUDIT_VALIDATION_COMMAND,
     PR_SCOPE_VALIDATION_COMMAND,
     PR_SCOPE_TEST_COMMAND,
+    DELIVERY_RECORD_TEST_COMMAND,
     'git diff --check',
   ]) {
     if (!validationCommands.includes(command)) {
@@ -2394,9 +2480,27 @@ function validateGitWorkflow(errors) {
     }
   }
   const prGatesWorkflow = readText('.github/workflows/pr-gates.yml');
+  const pullRequestHeadPolicy = String(gitWorkflow.validation_policy?.delivery_record_head_policy || '');
+  if (
+    !pullRequestHeadPolicy.includes('github.event.pull_request.head.sha') ||
+    !pullRequestHeadPolicy.includes('synthetic merge checkout')
+  ) {
+    pushIssue(errors, 'git_validation_exact_pr_head_policy_missing', {});
+  }
+  if (
+    !prGatesWorkflow.includes(
+      'node scripts/validate_delivery_record.mjs --base "origin/${{ github.base_ref }}" --head "${{ github.event.pull_request.head.sha }}"',
+    )
+  ) {
+    pushIssue(errors, 'github_delivery_record_exact_head_missing', {});
+  }
+  if (prGatesWorkflow.includes('ref: ${{ github.event.pull_request.head.sha')) {
+    pushIssue(errors, 'github_pr_gate_synthetic_merge_coverage_removed', {});
+  }
   for (const command of [
     CARD_INTEGRITY_TEST_COMMAND,
     PR_SCOPE_TEST_COMMAND,
+    DELIVERY_RECORD_TEST_COMMAND,
   ]) {
     if (!prGatesWorkflow.includes(command)) {
       pushIssue(errors, 'github_pr_gate_integrity_test_missing', { command });
@@ -2437,13 +2541,87 @@ function validateGitWorkflow(errors) {
   for (const requiredPath of [
     'scripts/test_card_integrity.mjs',
     'scripts/test_validate_pr_scope.mjs',
+    'scripts/test_validate_delivery_record.mjs',
   ]) {
     if (!exists(requiredPath)) {
       pushIssue(errors, 'integrity_regression_test_missing', { requiredPath });
     }
   }
+  if (!exists('scripts/validate_delivery_record.mjs')) {
+    pushIssue(errors, 'delivery_record_validator_missing', {});
+  } else {
+    const deliveryValidator = readText('scripts/validate_delivery_record.mjs');
+    for (const token of [
+      'git-diff-binary-v2',
+      'patch_sha256',
+      'base_commit_sha',
+      'touched_paths',
+      'PARKED_NO_PR_WIP_LIMIT',
+      '/pull/',
+      '/compare/',
+      '--literal-pathspecs',
+      "gitText(root, ['show'",
+      'HANDOFF_TEMPLATE_PATH',
+      'changedPathsAcrossCommits',
+      'FATAL_UTF8_DECODER',
+      'decodeGitUtf8',
+      'ignoreBOM: true',
+      'V2_INHERITED_ENV_KEYS',
+      'V2_GIT_CONFIG',
+      'V2_DIFF_OPTIONS',
+      'GIT_ATTR_SOURCE',
+      'GIT_NO_REPLACE_OBJECTS',
+      '--ignore-submodules=none',
+      'assertNoRepositoryInfoAttributes',
+      'assertNoCustomDiffDriverConfig',
+      "['core.bigFileThreshold', '512m']",
+      "['diff.compactionHeuristic', 'false']",
+      "['diff.orderFile', os.devNull]",
+    ]) {
+      if (!deliveryValidator.includes(token)) {
+        pushIssue(errors, 'delivery_record_integrity_guard_missing', { token });
+      }
+    }
+    if (deliveryValidator.includes("'--ancestry-path'")) {
+      pushIssue(errors, 'delivery_record_reachable_history_narrowed', {});
+    }
+    for (const option of ['--no-ext-diff', '--ignore-submodules=none']) {
+      const occurrences = deliveryValidator.split(option).length - 1;
+      if (occurrences < 3) {
+        pushIssue(errors, 'delivery_record_path_walk_option_missing', {option, occurrences});
+      }
+    }
+  }
+  if (exists('scripts/test_validate_delivery_record.mjs')) {
+    const deliveryTests = readText('scripts/test_validate_delivery_record.mjs');
+    for (const token of [
+      'V2_GOLDEN_SHA256',
+      '4fa4d17ca8633b5313260f144fffaf7230b9c19adc5246e34e99685c25578fed',
+      'an arbitrary TEMPLATE suffix remains a governed handoff record',
+      'a post-payload mutation even when a later commit restores the payload tree',
+      'mutations hidden in a pre-payload side branch with an identical-tree merge',
+      'a non-UTF-8 payload path instead of hashing a lossy alias',
+      'a leading UTF-8 BOM in a payload path instead of accepting its stripped alias',
+      'a restored non-UTF-8 path in post-payload history',
+      'the explicit pull-request head when the base branch advances',
+      'ignores ambient diff formatting and attribute config',
+      'prechecks ignore malformed injected Git config environment',
+      'rejects non-empty repository info attributes',
+      'rejects ambient custom diff-driver config',
+      'rejects worktree custom diff-driver config',
+      'includes gitlinks despite ambient submodule ignore config',
+      'payload completeness rejects an omitted gitlink despite ambient submodule ignore config',
+    ]) {
+      if (!deliveryTests.includes(token)) {
+        pushIssue(errors, 'delivery_record_regression_coverage_missing', {token});
+      }
+    }
+  }
   if (gitWorkflow.handoff_policy?.directory !== 'reviews/git_handoffs/') {
     pushIssue(errors, 'git_handoff_directory_drift', {});
+  }
+  if (gitWorkflow.handoff_policy?.template_path !== GIT_HANDOFF_TEMPLATE_PATH) {
+    pushIssue(errors, 'git_handoff_template_path_drift', {});
   }
   for (const field of REQUIRED_GIT_HANDOFF_FIELDS) {
     if (!(gitWorkflow.handoff_policy?.required_fields || []).includes(field)) {
@@ -2461,6 +2639,121 @@ function validateGitWorkflow(errors) {
   }
   if (handoffTemplate.is_draft !== false) {
     pushIssue(errors, 'git_handoff_template_draft_state_drift', {});
+  }
+  const handoffPolicy = gitWorkflow.handoff_policy || {};
+  if (handoffPolicy.payload_commit_policy?.commit_sha_meaning !== 'the final payload commit before the handoff-only commit') {
+    pushIssue(errors, 'git_handoff_payload_commit_policy_drift', {});
+  }
+  if (!String(handoffPolicy.payload_commit_policy?.payload_path_set || '').includes('exactly equal')) {
+    pushIssue(errors, 'git_handoff_payload_path_completeness_missing', {});
+  }
+  const postPayloadPolicy = String(handoffPolicy.payload_commit_policy?.post_payload_changes || '');
+  if (
+    !postPayloadPolicy.includes('full commit set reachable') ||
+    !postPayloadPolicy.includes('not from commit_sha') ||
+    !postPayloadPolicy.includes('only the current handoff record') ||
+    !postPayloadPolicy.includes('merged side histories') ||
+    !postPayloadPolicy.includes('identical-tree merge')
+  ) {
+    pushIssue(errors, 'git_handoff_post_payload_restriction_missing', {});
+  }
+  for (const field of [
+    'required',
+    'non_empty',
+    'repository_relative',
+    'sorted',
+    'unique',
+    'must_exclude_current_handoff',
+    'must_name_changed_payload_paths_only',
+  ]) {
+    if (handoffPolicy.touched_paths_policy?.[field] !== true) {
+      pushIssue(errors, 'git_handoff_touched_paths_policy_missing', { field });
+    }
+  }
+  if (handoffPolicy.patch_integrity?.legacy_default_when_patch_format_missing !== 'git-diff-binary-scoped-v1') {
+    pushIssue(errors, 'git_handoff_legacy_patch_format_drift', {});
+  }
+  if (handoffPolicy.patch_integrity?.new_format !== 'git-diff-binary-v2') {
+    pushIssue(errors, 'git_handoff_v2_patch_format_drift', {});
+  }
+  if (!String(handoffPolicy.touched_paths_policy?.git_pathspec_handling || '').includes('--literal-pathspecs')) {
+    pushIssue(errors, 'git_handoff_literal_pathspec_policy_missing', {});
+  }
+  const pathEncodingPolicy = String(handoffPolicy.touched_paths_policy?.path_encoding || '');
+  if (
+    !pathEncodingPolicy.includes('valid UTF-8') ||
+    !pathEncodingPolicy.includes('decoded fatally') ||
+    !pathEncodingPolicy.includes('byte-preservingly') ||
+    !pathEncodingPolicy.includes('leading UTF-8 BOM') ||
+    !pathEncodingPolicy.includes('U+FEFF') ||
+    !pathEncodingPolicy.includes('fail closed')
+  ) {
+    pushIssue(errors, 'git_handoff_path_encoding_policy_missing', {});
+  }
+  const pathDiscoveryPolicy = String(handoffPolicy.touched_paths_policy?.path_discovery || '');
+  for (const token of ['Every payload and post-payload path walk', '--no-ext-diff', '--ignore-submodules=none', 'gitlink']) {
+    if (!pathDiscoveryPolicy.includes(token)) {
+      pushIssue(errors, 'git_handoff_path_discovery_policy_missing', {token});
+    }
+  }
+  const v2PatchPolicy = handoffPolicy.patch_integrity || {};
+  const v2Algorithm = String(v2PatchPolicy.new_algorithm || '');
+  if (
+    !v2Algorithm.includes('exact stdout bytes') ||
+    !v2Algorithm.includes('buildPatchBytes') ||
+    !v2Algorithm.includes('canonical_environment') ||
+    !v2Algorithm.includes('canonical_git_config') ||
+    !v2Algorithm.includes('canonical_diff_options')
+  ) {
+    pushIssue(errors, 'git_handoff_v2_algorithm_under_specified', {});
+  }
+  if (v2PatchPolicy.canonical_null_device !== 'the platform null device returned by node:os.devNull') {
+    pushIssue(errors, 'git_handoff_v2_null_device_policy_drift', {});
+  }
+  for (const [field, expected] of [
+    ['canonical_environment', V2_CANONICAL_ENVIRONMENT],
+    ['canonical_git_config', V2_CANONICAL_GIT_CONFIG],
+    ['canonical_diff_options', V2_CANONICAL_DIFF_OPTIONS],
+  ]) {
+    if (JSON.stringify(v2PatchPolicy[field]) !== JSON.stringify(expected)) {
+      pushIssue(errors, 'git_handoff_v2_canonicalization_drift', {field});
+    }
+  }
+  const attributePolicy = String(v2PatchPolicy.attribute_policy || '');
+  for (const token of ['GIT_ATTR_SOURCE', 'non-empty repository info/attributes', 'diff.<driver>.*', 'fails closed']) {
+    if (!attributePolicy.includes(token)) {
+      pushIssue(errors, 'git_handoff_v2_attribute_policy_missing', {token});
+    }
+  }
+  const v2Golden = v2PatchPolicy.compatibility_golden || {};
+  if (
+    v2Golden.fixture !== 'the fixed text-plus-binary payload in scripts/test_validate_delivery_record.mjs' ||
+    v2Golden.sha256 !== '4fa4d17ca8633b5313260f144fffaf7230b9c19adc5246e34e99685c25578fed' ||
+    !String(v2Golden.requirement || '').includes('must reproduce this digest')
+  ) {
+    pushIssue(errors, 'git_handoff_v2_compatibility_golden_drift', {});
+  }
+  for (const field of ['scope.base_commit_sha', 'scope.patch_sha256']) {
+    if (!(handoffPolicy.patch_integrity?.new_format_requires || []).includes(field)) {
+      pushIssue(errors, 'git_handoff_v2_patch_field_missing', { field });
+    }
+  }
+  if (!String(handoffPolicy.locator_policy?.pull_request || '').includes('/pull/<number>')) {
+    pushIssue(errors, 'git_handoff_pull_locator_policy_missing', {});
+  }
+  if (!String(handoffPolicy.locator_policy?.parked_compare || '').includes('/compare/<base_branch>...<branch>')) {
+    pushIssue(errors, 'git_handoff_compare_locator_policy_missing', {});
+  }
+  if (handoffPolicy.locator_policy?.push_ref !== 'must equal origin/<branch>') {
+    pushIssue(errors, 'git_handoff_push_ref_policy_missing', {});
+  }
+  if (handoffTemplate.scope?.patch_format !== 'git-diff-binary-v2') {
+    pushIssue(errors, 'git_handoff_template_patch_format_drift', {});
+  }
+  for (const field of ['base_commit_sha', 'patch_sha256']) {
+    if (!(field in (handoffTemplate.scope || {}))) {
+      pushIssue(errors, 'git_handoff_template_patch_field_missing', { field });
+    }
   }
 }
 
@@ -2497,9 +2790,31 @@ function validateEvalsAndPerturbation(errors) {
 
   const perturbation = readJson('spec/perturbation-audit.json');
   const guards = new Set((perturbation.anti_drift_guards || []).map(guard => guard.id));
-  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009', 'PA-CARD-010', 'PA-CARD-012']) {
+  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009', 'PA-CARD-010', 'PA-CARD-011', 'PA-CARD-012']) {
     if (!guards.has(id)) {
       pushIssue(errors, 'anti_drift_guard_missing', { id });
+    }
+  }
+  const deliveryPerturbation = (perturbation.anti_drift_guards || [])
+    .find(guard => guard.id === 'PA-CARD-011');
+  const deliveryRecovery = String(deliveryPerturbation?.recovery || '');
+  for (const token of [
+    'exact handoff template path',
+    'fatally and byte-preservingly decode Git path bytes as UTF-8',
+    'leading U+FEFF',
+    '--ignore-submodules=none',
+    '--no-ext-diff',
+    'explicit PR-head snapshot',
+    'deterministic environment/config/options',
+    'commit-sourced attributes',
+    'custom diff-driver config',
+    'full reachable post-payload commit set',
+    'merged side histories',
+    'reverted mutation',
+    'identical-tree merge',
+  ]) {
+    if (!deliveryRecovery.includes(token)) {
+      pushIssue(errors, 'delivery_perturbation_recovery_missing', {token});
     }
   }
 }
