@@ -1,0 +1,46 @@
+{
+  "handoff_id": "20260731-dependabot-setup-node-7",
+  "created_at": "2026-07-31T16:09:10+08:00",
+  "agent": "codex",
+  "branch": "dependabot/github_actions/actions/setup-node-7",
+  "base_branch": "main",
+  "commit_sha": "46e8f3fff94f197d6a3724e3b191642e26c57e51",
+  "push_ref": "origin/dependabot/github_actions/actions/setup-node-7",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/107",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "tooling",
+    "touched_paths": [
+      ".github/workflows/pr-gates.yml"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed on payload commit 46e8f3fff94f197d6a3724e3b191642e26c57e51; only six recorded upstream catalog warnings remain"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed; zero formal QC records and no approval inferred"
+    },
+    {
+      "command": "node scripts/validate_audio_lfs.mjs",
+      "result": "passed"
+    },
+    {
+      "command": "node --test scripts/test_audio_technical_audit.mjs scripts/test_audio_perceptual_worklist.mjs",
+      "result": "passed; 9/9 tests"
+    },
+    {
+      "command": "git diff --check origin/main..HEAD",
+      "result": "passed on the exact payload commit"
+    }
+  ],
+  "local_status": "The Dependabot payload changes only actions/setup-node from v6 to v7. This handoff-only commit supplies the required delivery record without changing content, audio, approval, or runtime behavior.",
+  "remaining_risks": [
+    "Green tooling checks do not approve any card or audio content.",
+    "The handoff is valid only while PR #107 retains payload commit 46e8f3fff94f197d6a3724e3b191642e26c57e51 beneath this handoff-only commit."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
