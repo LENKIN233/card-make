@@ -5,6 +5,9 @@ import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {
+  validateCurrentApprovalRecordReference,
+} from './lib/card_integrity.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT_QUEUE_PATH = path.join(ROOT, 'reviews', 'candidate-review-queue.json');
@@ -89,7 +92,13 @@ if (!result.ok) process.exit(1);
 
 function validateQueue(
   queue,
-  {remoteError = null, remotePrs = null, requireFive = false, verifyRemote = false} = {},
+  {
+    remoteError = null,
+    remotePrs = null,
+    requireFive = false,
+    root = ROOT,
+    verifyRemote = false,
+  } = {},
 ) {
   const errors = [];
   if (queue?.schema_version !== 'candidate-review-queue.v1') errors.push('schema_version must be candidate-review-queue.v1');
@@ -104,6 +113,7 @@ function validateQueue(
   const activePrNumbers = new Map();
   const activeBoxPrefixes = new Map();
   const activeCardIds = new Map();
+  let currentApprovalFingerprint = null;
 
   for (const entry of entries) {
     if (!entry || typeof entry !== 'object') {
@@ -150,10 +160,17 @@ function validateQueue(
     }
 
     if (entry.formal_approval === true) {
-      if (typeof entry.approval_record !== 'string' || !entry.approval_record.startsWith('reviews/approved_batches/')) {
-        errors.push(`${queueId}: formal approval requires an approved_batches record`);
-      } else if (!fs.existsSync(path.join(ROOT, entry.approval_record))) {
-        errors.push(`${queueId}: approval record does not exist`);
+      const approvalValidation = validateCurrentApprovalRecordReference({
+        root,
+        approvalPath: entry.approval_record,
+        expectedCardIds: entry.scope?.card_ids,
+        expectedBoxPrefixes: entry.scope?.box_prefixes,
+        currentFingerprint: currentApprovalFingerprint,
+      });
+      currentApprovalFingerprint =
+        currentApprovalFingerprint || approvalValidation.current_fingerprint;
+      for (const issue of approvalValidation.issues) {
+        errors.push(`${queueId}: current approval invalid (${issue.code})`);
       }
     } else if (entry.formal_approval !== false) {
       errors.push(`${queueId}: formal_approval must be boolean`);
@@ -262,7 +279,31 @@ function runSelfTest() {
     }).ok,
     false,
   );
-  console.log('PASS: candidate queue uniqueness and remote mapping self-test.');
+
+  const templateApproval = structuredClone(queue);
+  templateApproval.entries[0].formal_approval = true;
+  templateApproval.entries[0].approval_record =
+    'reviews/approved_batches/TEMPLATE.json';
+  const templateApprovalResult = validateQueue(templateApproval, {
+    requireFive: true,
+  });
+  assert.equal(templateApprovalResult.ok, false);
+  assert.ok(templateApprovalResult.errors.some(
+    error => error.includes('approval_record_path_invalid'),
+  ));
+
+  const traversalApproval = structuredClone(queue);
+  traversalApproval.entries[0].formal_approval = true;
+  traversalApproval.entries[0].approval_record =
+    'reviews/approved_batches/../forged.json';
+  const traversalApprovalResult = validateQueue(traversalApproval, {
+    requireFive: true,
+  });
+  assert.equal(traversalApprovalResult.ok, false);
+  assert.ok(traversalApprovalResult.errors.some(
+    error => error.includes('approval_record_path_invalid'),
+  ));
+  console.log('PASS: candidate queue uniqueness, remote mapping, and current approval boundary self-test.');
 }
 
 function option(name, fallback) {

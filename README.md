@@ -71,15 +71,40 @@ Candidate PR scope validation uses NUL-delimited Git paths, discovers changed ca
 merge-base-to-head objects, requires exactly one changed self-review snapshot for each changed card,
 and compares every entry in every changed self-review with its unique HEAD corpus card. The only
 parity exception is the independently validated artifact-local `review_status`. JSON under
-`reviews/agent_self_review/`, `reviews/drafts/`, or `reviews/audit_scopes/` enters this gate even
+`reviews/agent_self_review/`, `reviews/approved_batches/`, `reviews/drafts/`, or
+`reviews/audit_scopes/` enters this gate even
 when the filename has no four-digit box prefix; only the exact repository-declared template paths
-are excluded, not arbitrary names ending in `TEMPLATE.json`. The replayed scoped audit materializes
+are excluded, not arbitrary names ending in `TEMPLATE.json`. Self-review and approval evidence must
+be direct regular JSON children of their governed directories; nested or symlinked records fail
+closed. Git paths
+are preserved exactly, and literal backslashes, controls, or Unicode line separators are rejected
+instead of rewritten. The replayed scoped audit materializes
 the complete `HEAD:card_boxes_json` tree, so a renamed or deleted base path cannot leak into the result.
-Standard reviews carry per-card metadata snapshots. Canonical `full_track_remediation` records carry
+Every new or changed review or approval uses a direct current scoped audit; global audit references are limited
+to byte-for-byte immutable records in the immutable pre-cutover index. Every new or changed scoped
+report, linked or unlinked, must exactly match a current immutable-HEAD replay. The standalone
+harness rejects malformed tracked reports but allows structurally valid unchanged historical
+fingerprints. An unchanged historical self-review remains historical evidence bound to its recorded
+artifact and skips current-card parity; a changed review must prove current parity, and formal
+approval records with historical fingerprints remain immutable archive evidence rather than current
+authorization. Only an approval whose linked audit fingerprint is current may authorize current
+formal use. Standard reviews must carry
+their complete sample policy, scoped audit, blocker scans, and batch conclusion (progression, risks,
+representative cards, and next step) before their per-card metadata snapshots can count. A standard
+sample proves exactly three snapshots per declared box, with interaction, knowledge, and all
+quality metadata except review status matching the current corpus in both gates; residual
+closure evidence requires its explicit scope type and a direct scoped audit, and cannot authorize
+newly added cards. Canonical `full_track_remediation` records carry
 aggregate human-review coverage instead: strict equal, unique, non-empty scope/reviewed card IDs and
 the expected count must match the complete declared track card and box-prefix sets in immutable HEAD,
 the track ID set must be the same non-empty set at merge-base and HEAD, and the record must not attach
-a separate `cards` payload. Newly added cards use the standard per-card workflow in a separate unit.
+a separate `cards` payload. They also require exact policy flags, a structured non-automation human
+reviewer identity, matching per-box human passes, a complete zero-hard-blocker audit summary,
+non-empty in-scope representative cards, and complete ready-for-user-approval summary, empty-risk,
+and next-step evidence. Newly added cards use the standard per-card workflow in a separate unit.
+The four exact review/approval templates are regular-file authorities with fixed, complete standard
+or full-track placeholder shapes. Formal approvals require a timezone-qualified timestamp,
+non-empty summary, unique non-empty scope arrays, and non-empty in-scope representative cards.
 Run it against an immutable commit after the payload commit:
 
 ```bash
@@ -108,8 +133,10 @@ The 627 tracked MP3 files are managed by Git LFS. Their pre-cutover byte hashes
 are recorded in `ai_tts/audio-lfs-manifest.json` and checked with
 `node scripts/validate_audio_lfs.mjs`. Generated global validation reports remain
 ignored; immutable legacy review references resolve through
-`reports/pre-cutover-report-index.json`, while new candidate work must commit a
-current scoped audit under `reviews/audit_scopes/`.
+`reports/pre-cutover-report-index.json`. The index and every referenced legacy
+record are byte-frozen against the active repository commit that introduced the
+index, while new candidate work must commit a current scoped audit under
+`reviews/audit_scopes/`.
 
 Run the read-only technical audio audit before perceptual QC:
 
@@ -160,9 +187,17 @@ formal QC record or content approval; it must be converted into validated
 Candidate review WIP is capped at five active content PRs plus one separate
 tooling or harness PR. Passing checks do not create formal content approval.
 
-Agent self-review and approval records must link the current audit fingerprint
-and include a scoped audit summary for their own `card_ids`; corpus-level totals
-alone are not enough to support sample review.
+New or changed self-review and approval records must link the current audit
+fingerprint and include a scoped audit summary for their own `card_ids`;
+corpus-level totals alone are not enough. Historical records remain archive
+evidence, and queue/release-gap consumers count current authorization only after
+the complete direct approval, complete linked self-review, both scoped reports,
+the active audit script, and the active audit rule spec are regular committed
+evidence or authority whose worktree, index, and one fixed `HEAD` modes and bytes
+agree. Their scope must match, both reports must exactly replay an independently
+regenerated complete current audit, and the snapshot is rechecked before return.
+Tracked status, a current corpus digest, or a self-declared zero-blocker summary
+alone is not authorization.
 
 Formal content usability requires explicit user approval recorded under
 `reviews/approved_batches/`. Agent self-review records belong under

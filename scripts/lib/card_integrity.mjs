@@ -1,4 +1,7 @@
+import crypto from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import {isDeepStrictEqual} from 'node:util';
 
@@ -6,6 +9,1062 @@ const REVIEW_STATUS_PARITY_EXCEPTION = Object.freeze({
   excluded_fields: ['review_status'],
   reason: 'card_authoring_status_and_self_review_snapshot_status_are_distinct; both remain independently schema-validated',
 });
+const CURRENT_APPROVAL_BLOCKER_FIELDS = [
+  'logic_error',
+  'language_error',
+  'inappropriate_wording',
+  'low_knowledge_density',
+  'not_meeting_requirement',
+  'reverse_engineered_front',
+  'fake_source_claim',
+  'low_quality_variation',
+];
+
+export function isHumanReviewerIdentity(value) {
+  if (typeof value !== 'string') return false;
+  const match = /^(?:github|team|external):(.+)$/u.exec(value);
+  if (!match) return false;
+  const reviewerId = match[1];
+  if (
+    Array.from(reviewerId).length > 64 ||
+    !/^[\p{L}\p{N}][\p{L}\p{N}._@-]{0,63}$/u.test(reviewerId)
+  ) {
+    return false;
+  }
+  if (/(?:agent|bot|codex|automation)/iu.test(reviewerId)) return false;
+  if (
+    /(?:^|[._@-])ci(?:$|[._@-]|\d)/iu.test(reviewerId) ||
+    /^ci(?:build|runner|job|pipeline|workflow)/iu.test(reviewerId)
+  ) {
+    return false;
+  }
+  return true;
+}
+
+function hasText(value) {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function hasUniqueNonEmptyTextArray(value) {
+  return Array.isArray(value) &&
+    value.length > 0 &&
+    value.every(hasText) &&
+    new Set(value).size === value.length;
+}
+
+function sameStringSet(left, right) {
+  if (!Array.isArray(left) || !Array.isArray(right)) return false;
+  if (left.length !== right.length) return false;
+  const rightSet = new Set(right);
+  return new Set(left).size === left.length && left.every(value => rightSet.has(value));
+}
+
+function isDirectGovernedJsonPath(value, directory, templatePaths = []) {
+  if (!hasText(value) || value.includes('\\')) return false;
+  if (/[\u0000-\u001f\u007f\u2028\u2029]/u.test(value)) return false;
+  if (templatePaths.includes(value)) return false;
+  if (path.posix.dirname(value) !== directory) return false;
+  return /^[\p{L}\p{N}][\p{L}\p{N}._@-]*\.json$/u.test(
+    path.posix.basename(value),
+  );
+}
+
+export function isDirectApprovalRecordPath(value) {
+  return isDirectGovernedJsonPath(
+    value,
+    'reviews/approved_batches',
+    [
+      'reviews/approved_batches/TEMPLATE.json',
+      'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
+    ],
+  );
+}
+
+export function isDirectSelfReviewRecordPath(value) {
+  return isDirectGovernedJsonPath(
+    value,
+    'reviews/agent_self_review',
+    [
+      'reviews/agent_self_review/TEMPLATE.json',
+      'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+    ],
+  );
+}
+
+export function isDirectScopedAuditRecordPath(value) {
+  return isDirectGovernedJsonPath(value, 'reviews/audit_scopes');
+}
+
+export function computeCardCorpusFingerprint(root) {
+  const cardDir = path.join(root, 'card_boxes_json');
+  const files = fs.readdirSync(cardDir)
+    .filter(file => file.endsWith('.json'))
+    .sort();
+  const hash = crypto.createHash('sha256');
+  let cardCount = 0;
+  for (const file of files) {
+    const bytes = fs.readFileSync(path.join(cardDir, file));
+    hash.update(file);
+    hash.update('\0');
+    hash.update(bytes);
+    hash.update('\0');
+    const payload = JSON.parse(bytes.toString('utf8'));
+    if (Array.isArray(payload.cards)) cardCount += payload.cards.length;
+  }
+  return {
+    algorithm: 'sha256',
+    card_dir: 'card_boxes_json',
+    file_count: files.length,
+    card_count: cardCount,
+    digest: hash.digest('hex'),
+  };
+}
+
+const currentAuditReportCache = new Map();
+
+function loadCurrentCardQualityAudit(
+  root,
+  fingerprint,
+  {
+    requireCommittedAuthority = true,
+    headRevision = 'HEAD',
+    authoritySnapshots = null,
+  } = {},
+) {
+  const auditScript = path.join(root, 'scripts', 'audit_card_quality.mjs');
+  const auditSpec = path.join(root, 'spec', 'card-quality-audit.json');
+  const authorities = [
+    ['scripts/audit_card_quality.mjs', auditScript],
+    ['spec/card-quality-audit.json', auditSpec],
+  ].map(([relativePath, absolutePath]) => {
+    const stats = fs.lstatSync(absolutePath);
+    if (!stats.isFile()) {
+      throw new Error(
+        `current card-quality audit authority is not a regular file: ${relativePath}`,
+      );
+    }
+    const bytes = fs.readFileSync(absolutePath);
+    const mode = (stats.mode & 0o111) === 0 ? '100644' : '100755';
+    authoritySnapshots?.set(relativePath, {bytes, mode});
+    if (requireCommittedAuthority) {
+      const gitState = committedGitFileState(
+        root,
+        relativePath,
+        bytes,
+        mode,
+        headRevision,
+      );
+      if (!gitState.tracked || !gitState.committed) {
+        throw new Error(
+          `current card-quality audit authority is not committed at HEAD: ${relativePath}`,
+        );
+      }
+    }
+    return {relativePath, bytes, mode};
+  });
+  if (
+    !isDeepStrictEqual(computeCardCorpusFingerprint(root), fingerprint)
+  ) {
+    throw new Error('card corpus changed before current audit replay');
+  }
+  const cacheKey = [
+    path.resolve(root),
+    fingerprint.digest,
+    ...authorities.map(authority =>
+      crypto
+        .createHash('sha256')
+        .update(authority.mode)
+        .update('\0')
+        .update(authority.bytes)
+        .digest('hex')
+    ),
+  ].join('\0');
+  if (currentAuditReportCache.has(cacheKey)) {
+    if (
+      !isDeepStrictEqual(computeCardCorpusFingerprint(root), fingerprint)
+    ) {
+      throw new Error('card corpus changed during cached audit replay');
+    }
+    return currentAuditReportCache.get(cacheKey);
+  }
+
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'card-current-audit-'));
+  const reportPath = path.join(tempDir, 'card_quality_audit_report.json');
+  try {
+    execFileSync(
+      process.execPath,
+      [auditScript, '--report-path', reportPath],
+      {
+        cwd: root,
+        encoding: 'utf8',
+        maxBuffer: 10 * 1024 * 1024,
+        stdio: ['ignore', 'pipe', 'pipe'],
+      },
+    );
+    const report = readJson(reportPath);
+    const policy = readJson(auditSpec);
+    const policyRules = Array.isArray(policy.rules) ? policy.rules : [];
+    const policyRuleIds = policyRules.map(rule => rule?.id);
+    const reportRuleIds = Object.keys(report.summary?.by_rule || {});
+    const cardIssueEntries = Object.entries(report.card_issue_index || {});
+    if (
+      report.ok !== true ||
+      policy.status !== 'active' ||
+      report.audit_version !== policy.version ||
+      report.mode !== policy.mode ||
+      !isDeepStrictEqual(report.corpus_fingerprint, fingerprint) ||
+      report.scope?.card_dir !== 'card_boxes_json' ||
+      report.scope?.files !== fingerprint.file_count ||
+      report.scope?.cards !== fingerprint.card_count ||
+      report.summary?.total_files !== fingerprint.file_count ||
+      report.summary?.total_cards !== fingerprint.card_count ||
+      !hasUniqueNonEmptyTextArray(policyRuleIds) ||
+      !sameStringSet(reportRuleIds, policyRuleIds) ||
+      policyRules.some(rule =>
+        !Number.isInteger(report.summary?.by_rule?.[rule.id]?.count) ||
+        report.summary.by_rule[rule.id].count < 0 ||
+        report.summary.by_rule[rule.id].severity !== rule.severity
+      ) ||
+      !report.card_issue_index ||
+      typeof report.card_issue_index !== 'object' ||
+      Array.isArray(report.card_issue_index) ||
+      cardIssueEntries.length !== fingerprint.card_count ||
+      cardIssueEntries.some(([cardId, entry]) =>
+        entry?.card_id !== cardId ||
+        !Number.isInteger(entry?.issue_count) ||
+        entry.issue_count < 0 ||
+        !entry.by_severity ||
+        typeof entry.by_severity !== 'object' ||
+        Array.isArray(entry.by_severity) ||
+        Object.values(entry.by_severity).some(
+          count => !Number.isInteger(count) || count < 0,
+        ) ||
+        !entry.by_rule ||
+        typeof entry.by_rule !== 'object' ||
+        Array.isArray(entry.by_rule) ||
+        Object.values(entry.by_rule).some(
+          count => !Number.isInteger(count) || count < 0,
+        )
+      ) ||
+      !Array.isArray(report.hard_blocker_issues)
+    ) {
+      throw new Error('current card-quality audit replay is structurally invalid');
+    }
+    if (
+      !isDeepStrictEqual(computeCardCorpusFingerprint(root), fingerprint)
+    ) {
+      throw new Error('card corpus changed during current audit replay');
+    }
+    currentAuditReportCache.set(cacheKey, report);
+    return report;
+  } finally {
+    fs.rmSync(tempDir, {recursive: true, force: true});
+  }
+}
+
+function numericCount(value) {
+  return Number.isFinite(Number(value)) ? Number(value) : 0;
+}
+
+function emptyAuditSeverityCounts() {
+  return {
+    hard_blocker: 0,
+    content_risk: 0,
+    review_gap: 0,
+    source_risk: 0,
+  };
+}
+
+function buildCurrentScopedAuditReplay(currentAudit, scopeCardIds) {
+  const cardIds = [...new Set(
+    (scopeCardIds || []).map(value => String(value).trim()).filter(Boolean),
+  )].sort();
+  const ruleIds = Object.keys(currentAudit.summary?.by_rule || {}).sort();
+  const scopedCardIssueIndex = {};
+  const missingCardIds = [];
+  const scopedIds = new Set(cardIds);
+  const scopeSummary = {
+    card_ids: cardIds,
+    card_count: cardIds.length,
+    issue_count: 0,
+    by_severity: emptyAuditSeverityCounts(),
+    by_rule: Object.fromEntries(ruleIds.map(ruleId => [ruleId, 0])),
+  };
+
+  for (const cardId of cardIds) {
+    const record = currentAudit.card_issue_index?.[cardId];
+    if (!record) {
+      missingCardIds.push(cardId);
+      continue;
+    }
+    scopedCardIssueIndex[cardId] = record;
+    scopeSummary.issue_count += numericCount(record.issue_count);
+    for (const severity of Object.keys(scopeSummary.by_severity)) {
+      scopeSummary.by_severity[severity] += numericCount(
+        record.by_severity?.[severity],
+      );
+    }
+    for (const ruleId of ruleIds) {
+      scopeSummary.by_rule[ruleId] += numericCount(record.by_rule?.[ruleId]);
+    }
+  }
+
+  const scopedHardBlockers = currentAudit.hard_blocker_issues
+    .filter(issue => scopedIds.has(issue.card_id));
+  return {
+    ok: missingCardIds.length === 0 && scopedHardBlockers.length === 0,
+    audit_version: currentAudit.audit_version,
+    mode: currentAudit.mode,
+    report_type: 'scoped_card_quality_audit',
+    corpus_fingerprint: currentAudit.corpus_fingerprint,
+    scope: {
+      card_dir: currentAudit.scope.card_dir,
+      card_ids: cardIds,
+      missing_card_ids: missingCardIds,
+    },
+    scope_summary: scopeSummary,
+    scoped_card_issue_index: scopedCardIssueIndex,
+    scoped_hard_blocker_issues: scopedHardBlockers,
+  };
+}
+
+function parseExactGitEntry(output, relativePath, kind) {
+  const entries = output.split('\0').filter(Boolean);
+  if (entries.length !== 1) return null;
+  const separator = entries[0].indexOf('\t');
+  if (separator < 0 || entries[0].slice(separator + 1) !== relativePath) {
+    return null;
+  }
+  const fields = entries[0].slice(0, separator).split(' ');
+  if (kind === 'index') {
+    const [mode, objectId, stage] = fields;
+    if (
+      !['100644', '100755'].includes(mode) ||
+      !/^[0-9a-f]{40}$/.test(objectId || '') ||
+      stage !== '0'
+    ) {
+      return null;
+    }
+    return {mode, objectId};
+  }
+  const [mode, type, objectId] = fields;
+  if (
+    !['100644', '100755'].includes(mode) ||
+    type !== 'blob' ||
+    !/^[0-9a-f]{40}$/.test(objectId || '')
+  ) {
+    return null;
+  }
+  return {mode, objectId};
+}
+
+function captureGitAuthorizationSnapshot(root) {
+  const headCommit = execFileSync(
+    'git',
+    ['rev-parse', '--verify', 'HEAD^{commit}'],
+    {cwd: root, encoding: 'utf8'},
+  ).trim();
+  if (!/^[0-9a-f]{40}$/.test(headCommit)) {
+    throw new Error('authorization HEAD commit is invalid');
+  }
+  const indexBytes = execFileSync(
+    'git',
+    ['ls-files', '--stage', '-z'],
+    {cwd: root, maxBuffer: 50 * 1024 * 1024},
+  );
+  return {
+    headCommit,
+    indexDigest: crypto
+      .createHash('sha256')
+      .update(indexBytes)
+      .digest('hex'),
+  };
+}
+
+function committedGitFileState(
+  root,
+  relativePath,
+  worktreeBytes,
+  worktreeMode,
+  headRevision = 'HEAD',
+) {
+  let indexEntry = null;
+  let headEntry = null;
+  try {
+    indexEntry = parseExactGitEntry(
+      execFileSync(
+        'git',
+        ['ls-files', '--stage', '-z', '--error-unmatch', '--', relativePath],
+        {cwd: root, encoding: 'utf8'},
+      ),
+      relativePath,
+      'index',
+    );
+  } catch {
+    indexEntry = null;
+  }
+  try {
+    headEntry = parseExactGitEntry(
+      execFileSync(
+        'git',
+        ['ls-tree', '-z', headRevision, '--', relativePath],
+        {cwd: root, encoding: 'utf8'},
+      ),
+      relativePath,
+      'head',
+    );
+  } catch {
+    headEntry = null;
+  }
+  if (!indexEntry || !headEntry) {
+    return {
+      tracked: indexEntry !== null,
+      committed: false,
+      worktree_mode: worktreeMode,
+      index_mode: indexEntry?.mode || null,
+      head_mode: headEntry?.mode || null,
+    };
+  }
+  try {
+    const headBytes = execFileSync(
+      'git',
+      ['cat-file', 'blob', headEntry.objectId],
+      {cwd: root, encoding: 'buffer', maxBuffer: 10 * 1024 * 1024},
+    );
+    return {
+      tracked: true,
+      committed:
+        indexEntry.mode === headEntry.mode &&
+        worktreeMode === headEntry.mode &&
+        indexEntry.objectId === headEntry.objectId &&
+        Buffer.isBuffer(worktreeBytes) &&
+        worktreeBytes.equals(headBytes),
+      worktree_mode: worktreeMode,
+      index_mode: indexEntry.mode,
+      head_mode: headEntry.mode,
+    };
+  } catch {
+    return {
+      tracked: true,
+      committed: false,
+      worktree_mode: worktreeMode,
+      index_mode: indexEntry.mode,
+      head_mode: headEntry.mode,
+    };
+  }
+}
+
+/**
+ * Validates whether an immutable approval record can authorize the current
+ * corpus. Historical records remain valid archive evidence. Current
+ * authorization additionally requires committed worktree/index/HEAD-identical
+ * approval, linked-review, and scoped-audit evidence plus exact replay of the
+ * complete current card-quality audit.
+ */
+export function validateCurrentApprovalRecordReference({
+  root,
+  approvalPath,
+  expectedCardIds = null,
+  expectedBoxPrefixes = null,
+  currentFingerprint = null,
+  requireTracked = true,
+  beforeFinalConsistencyCheck = null,
+}) {
+  const issues = [];
+  const recordBytesByPath = new Map();
+  const authorizationFileSnapshots = new Map();
+  const add = (code, details = {}) => issues.push({code, ...details});
+  let validationGitSnapshot = null;
+  if (requireTracked) {
+    try {
+      validationGitSnapshot = captureGitAuthorizationSnapshot(root);
+    } catch (error) {
+      add('approval_git_snapshot_unavailable', {
+        message: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+  const checkRecordFile = (relativePath, validator, codePrefix) => {
+    if (!validator(relativePath)) {
+      add(`${codePrefix}_path_invalid`, {path: relativePath});
+      return null;
+    }
+    let worktreeStats;
+    try {
+      worktreeStats = fs.lstatSync(path.join(root, relativePath));
+    } catch {
+      worktreeStats = null;
+    }
+    if (!worktreeStats?.isFile()) {
+      add(`${codePrefix}_not_regular_file`, {path: relativePath});
+      return null;
+    }
+    let bytes;
+    try {
+      bytes = fs.readFileSync(path.join(root, relativePath));
+    } catch {
+      add(`${codePrefix}_unreadable`, {path: relativePath});
+      return null;
+    }
+    recordBytesByPath.set(relativePath, bytes);
+    const worktreeMode =
+      (worktreeStats.mode & 0o111) === 0
+        ? '100644'
+        : '100755';
+    authorizationFileSnapshots.set(relativePath, {
+      bytes,
+      mode: worktreeMode,
+    });
+    if (requireTracked) {
+      const gitState = committedGitFileState(
+        root,
+        relativePath,
+        bytes,
+        worktreeMode,
+        validationGitSnapshot?.headCommit || 'HEAD',
+      );
+      if (!gitState.tracked) {
+        add(`${codePrefix}_not_tracked`, {path: relativePath});
+      }
+      if (!gitState.committed) {
+        add(`${codePrefix}_not_committed_at_head`, {
+          path: relativePath,
+          worktree_mode: gitState.worktree_mode,
+          index_mode: gitState.index_mode,
+          head_mode: gitState.head_mode,
+        });
+      }
+    }
+    try {
+      return JSON.parse(bytes.toString('utf8'));
+    } catch {
+      add(`${codePrefix}_unreadable`, {path: relativePath});
+      return null;
+    }
+  };
+
+  const approval = checkRecordFile(
+    approvalPath,
+    isDirectApprovalRecordPath,
+    'approval_record',
+  );
+  if (!approval) return {ok: false, issues};
+  const isFullTrackFinal = approval.approval_mode === 'full_track_final';
+  if (!hasText(approval.approval_id)) add('approval_record_id_missing');
+  if (approval.approved_by_user !== true) add('approval_record_not_user_approved');
+  if (
+    !hasText(approval.approved_at) ||
+    !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(
+      approval.approved_at,
+    ) ||
+    Number.isNaN(Date.parse(approval.approved_at))
+  ) {
+    add('approval_record_approved_at_invalid');
+  }
+  if (!hasText(approval.summary)) add('approval_record_summary_missing');
+  if (!hasUniqueNonEmptyTextArray(approval.scope?.card_ids)) {
+    add('approval_record_card_scope_invalid');
+  }
+  if (!hasUniqueNonEmptyTextArray(approval.scope?.box_prefixes)) {
+    add('approval_record_box_scope_invalid');
+  }
+  if (
+    expectedCardIds &&
+    !sameStringSet(approval.scope?.card_ids, expectedCardIds)
+  ) {
+    add('approval_record_card_scope_mismatch');
+  }
+  if (
+    expectedBoxPrefixes &&
+    !sameStringSet(approval.scope?.box_prefixes, expectedBoxPrefixes)
+  ) {
+    add('approval_record_box_scope_mismatch');
+  }
+  if (isFullTrackFinal) {
+    if (!['cet4', 'cet6'].includes(approval.scope?.track)) {
+      add('approval_record_track_invalid');
+    }
+  } else {
+    for (const field of ['library', 'group', 'box']) {
+      if (!hasText(approval.scope?.[field])) {
+        add('approval_record_scope_field_missing', {field});
+      }
+    }
+  }
+  if (
+    !hasUniqueNonEmptyTextArray(approval.representative_cards) ||
+    !approval.representative_cards.every(cardId =>
+      approval.scope?.card_ids?.includes(cardId)
+    )
+  ) {
+    add('approval_record_representative_cards_invalid');
+  }
+  if (
+    !Array.isArray(approval.approval_limits) ||
+    approval.approval_limits.length < 3 ||
+    !approval.approval_limits.every(hasText)
+  ) {
+    add('approval_record_limits_invalid');
+  }
+  for (const field of ['harness', 'cards', 'card_quality_audit']) {
+    if (!hasText(approval.validation?.[field])) {
+      add('approval_record_validation_missing', {field});
+    }
+  }
+  if (
+    approval.validation?.card_quality_audit_report !==
+    'reports/card_quality_audit_report.json'
+  ) {
+    add('approval_record_validation_report_invalid');
+  }
+
+  const auditRecord = approval.card_quality_audit;
+  const auditReport = checkRecordFile(
+    auditRecord?.report,
+    isDirectScopedAuditRecordPath,
+    'approval_audit_report',
+  );
+  const computedFingerprint = computeCardCorpusFingerprint(root);
+  if (
+    currentFingerprint &&
+    !isDeepStrictEqual(currentFingerprint, computedFingerprint)
+  ) {
+    add('approval_current_fingerprint_override_mismatch');
+  }
+  const activeFingerprint = computedFingerprint;
+  let currentAudit = null;
+  if (typeof beforeFinalConsistencyCheck === 'function') {
+    try {
+      beforeFinalConsistencyCheck();
+    } catch (error) {
+      add('approval_final_consistency_hook_failed', {
+        message: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+  try {
+    currentAudit = loadCurrentCardQualityAudit(root, activeFingerprint, {
+      requireCommittedAuthority: requireTracked,
+      headRevision: validationGitSnapshot?.headCommit || 'HEAD',
+      authoritySnapshots: authorizationFileSnapshots,
+    });
+  } catch (error) {
+    add('approval_current_audit_replay_unavailable', {
+      message: error instanceof Error ? error.message : String(error),
+    });
+  }
+  const currentCardEntries = [];
+  try {
+    const cardDir = path.join(root, 'card_boxes_json');
+    for (const file of fs.readdirSync(cardDir)
+      .filter(name => name.endsWith('.json'))
+      .sort()) {
+      const payload = readJson(path.join(cardDir, file));
+      for (const card of payload.cards || []) {
+        currentCardEntries.push({
+          card,
+          path: `card_boxes_json/${file}`,
+        });
+      }
+    }
+  } catch {
+    add('approval_current_corpus_unreadable');
+  }
+  const currentScopeEntries = [];
+  for (const cardId of approval.scope?.card_ids || []) {
+    const matches = currentCardEntries.filter(entry => entry.card?.card_id === cardId);
+    if (matches.length !== 1) {
+      add('approval_current_corpus_card_identity_invalid', {
+        card_id: cardId,
+        matches: matches.length,
+      });
+    } else {
+      currentScopeEntries.push(matches[0]);
+    }
+  }
+  if (auditReport) {
+    if (
+      currentAudit &&
+      !isDeepStrictEqual(
+        auditReport,
+        buildCurrentScopedAuditReplay(
+          currentAudit,
+          approval.scope?.card_ids,
+        ),
+      )
+    ) {
+      add('approval_audit_report_replay_mismatch');
+    }
+    const reportDigest = auditReport.corpus_fingerprint?.digest;
+    if (
+      !hasText(auditRecord?.corpus_fingerprint) ||
+      auditRecord.corpus_fingerprint !== reportDigest
+    ) {
+      add('approval_audit_record_fingerprint_mismatch');
+    }
+    if (reportDigest !== activeFingerprint.digest) {
+      add('approval_audit_report_not_current');
+    }
+    if (auditReport.report_type !== 'scoped_card_quality_audit') {
+      add('approval_audit_report_type_invalid');
+    }
+    if (!sameStringSet(auditReport.scope?.card_ids, approval.scope?.card_ids)) {
+      add('approval_audit_report_scope_mismatch');
+    }
+    if (
+      !isDeepStrictEqual(auditRecord?.scope_summary, auditReport.scope_summary)
+    ) {
+      add('approval_audit_record_summary_mismatch');
+    }
+    if (
+      !sameStringSet(
+        auditRecord?.scope_summary?.card_ids,
+        approval.scope?.card_ids,
+      ) ||
+      auditRecord?.scope_summary?.card_count !== approval.scope?.card_ids?.length
+    ) {
+      add('approval_audit_record_scope_summary_invalid');
+    }
+    if (
+      auditRecord?.scope_has_no_hard_blockers !== true ||
+      auditReport.ok !== true ||
+      (auditReport.scope?.missing_card_ids || []).length !== 0 ||
+      auditReport.scope_summary?.by_severity?.hard_blocker !== 0 ||
+      (auditReport.scoped_hard_blocker_issues || []).length !== 0
+    ) {
+      add('approval_audit_scope_not_clear');
+    }
+    if (isFullTrackFinal) {
+      const expectedHash = `sha256:${crypto
+        .createHash('sha256')
+        .update(recordBytesByPath.get(auditRecord.report))
+        .digest('hex')}`;
+      if (auditRecord.report_sha256 !== expectedHash) {
+        add('approval_audit_report_hash_mismatch');
+      }
+    }
+  }
+
+  const linkedReviewPath = approval.validation?.agent_self_review;
+  const linkedReview = checkRecordFile(
+    linkedReviewPath,
+    isDirectSelfReviewRecordPath,
+    'approval_linked_self_review',
+  );
+  if (linkedReview) {
+    if (!hasText(linkedReview.review_id)) {
+      add('approval_linked_self_review_id_missing');
+    }
+    if (
+      !hasText(linkedReview.created_at) ||
+      Number.isNaN(Date.parse(linkedReview.created_at))
+    ) {
+      add('approval_linked_self_review_created_at_invalid');
+    }
+    if (
+      !Array.isArray(linkedReview.specs_read) ||
+      linkedReview.specs_read.length === 0 ||
+      !linkedReview.specs_read.every(hasText)
+    ) {
+      add('approval_linked_self_review_specs_missing');
+    }
+    if (!sameStringSet(linkedReview.scope?.card_ids, approval.scope?.card_ids)) {
+      add('approval_linked_self_review_card_scope_mismatch');
+    }
+    if (!sameStringSet(
+      linkedReview.scope?.box_prefixes,
+      approval.scope?.box_prefixes,
+    )) {
+      add('approval_linked_self_review_box_scope_mismatch');
+    }
+    for (const field of isFullTrackFinal
+      ? ['track']
+      : ['library', 'group', 'box']) {
+      if (linkedReview.scope?.[field] !== approval.scope?.[field]) {
+        add('approval_linked_self_review_scalar_scope_mismatch', {field});
+      }
+    }
+    if (isFullTrackFinal) {
+      if (
+        linkedReview.sample_policy?.review_scope_type !==
+          'full_track_remediation' ||
+        linkedReview.sample_policy?.is_three_card_sample_per_box !== false ||
+        linkedReview.sample_policy?.full_track_remediation !== true ||
+        linkedReview.sample_policy?.final_user_approval_required !== true ||
+        hasOwn(linkedReview, 'cards')
+      ) {
+        add('approval_linked_full_track_review_policy_invalid');
+      }
+      if (
+        linkedReview.batch_review?.status !==
+          'ready_for_full_track_user_approval' ||
+        !hasText(linkedReview.batch_review?.summary) ||
+        !Array.isArray(linkedReview.batch_review?.remaining_risks) ||
+        linkedReview.batch_review.remaining_risks.length !== 0 ||
+        !hasText(linkedReview.batch_review?.next_step)
+      ) {
+        add('approval_linked_full_track_review_batch_invalid');
+      }
+      if (
+        linkedReview.coverage?.expected_card_count !==
+          approval.scope?.card_ids?.length ||
+        !sameStringSet(
+          linkedReview.coverage?.reviewed_card_ids,
+          approval.scope?.card_ids,
+        ) ||
+        !isHumanReviewerIdentity(linkedReview.coverage?.human_reviewer)
+      ) {
+        add('approval_linked_full_track_review_coverage_invalid');
+      }
+      const boxes = linkedReview.coverage?.boxes;
+      if (
+        !Array.isArray(boxes) ||
+        !sameStringSet(
+          boxes.map(box => box?.box_prefix),
+          approval.scope?.box_prefixes,
+        ) ||
+        boxes.some(box =>
+          box?.status !== 'pass' ||
+          box?.reviewer !== linkedReview.coverage?.human_reviewer
+        )
+      ) {
+        add('approval_linked_full_track_review_boxes_invalid');
+      }
+      if (
+        !hasUniqueNonEmptyTextArray(linkedReview.representative_cards) ||
+        !linkedReview.representative_cards.every(cardId =>
+          approval.scope?.card_ids?.includes(cardId)
+        )
+      ) {
+        add('approval_linked_full_track_review_representatives_invalid');
+      }
+      const currentTrackEntries = currentCardEntries.filter(
+        entry => entry.card?.track === approval.scope?.track,
+      );
+      const currentTrackCardIds = currentTrackEntries.map(
+        entry => entry.card?.card_id,
+      );
+      const currentTrackBoxPrefixes = [
+        ...new Set(currentTrackEntries.map(
+          entry => entry.card?.knowledge_ref?.box_prefix,
+        )),
+      ];
+      if (
+        !hasUniqueNonEmptyTextArray(currentTrackCardIds) ||
+        !sameStringSet(currentTrackCardIds, approval.scope?.card_ids) ||
+        currentTrackBoxPrefixes.some(prefix => !hasText(prefix)) ||
+        !sameStringSet(
+          currentTrackBoxPrefixes,
+          approval.scope?.box_prefixes,
+        )
+      ) {
+        add('approval_linked_full_track_review_not_complete_current_track');
+      }
+    } else {
+      if (
+        linkedReview.sample_policy?.review_scope_type !==
+          'three_card_sample_per_box' ||
+        linkedReview.sample_policy?.is_three_card_sample_per_box !== true ||
+        linkedReview.sample_policy?.batch_generation_requires_user_confirmation !==
+          true
+      ) {
+        add('approval_linked_standard_review_policy_invalid');
+      }
+      const cards = linkedReview.cards;
+      const snapshotIds = Array.isArray(cards)
+        ? cards.map(card => card?.card_id)
+        : [];
+      if (
+        !hasUniqueNonEmptyTextArray(snapshotIds) ||
+        !sameStringSet(snapshotIds, approval.scope?.card_ids) ||
+        cards.some(card =>
+          card?.status !== 'pass' ||
+          !card?.quality_metadata ||
+          !card?.blocker_scan ||
+          CURRENT_APPROVAL_BLOCKER_FIELDS.some(
+            field => card.blocker_scan?.[field] !== false,
+          )
+        )
+      ) {
+        add('approval_linked_standard_review_cards_invalid');
+      } else {
+        const requiredMetadataFields = [
+          'main_training_goal',
+          'weak_point_tags',
+          'difficulty',
+          'card_prototype',
+          'material',
+          'exam_value',
+          'box_progression_role',
+          'review_status',
+        ];
+        for (const currentEntry of currentScopeEntries) {
+          const snapshot = cards.find(
+            card => card.card_id === currentEntry.card.card_id,
+          );
+          if (
+            !snapshot ||
+            snapshot.interaction_id !== currentEntry.card.interaction_id ||
+            !isDeepStrictEqual(
+              snapshot.knowledge_ref,
+              currentEntry.card.knowledge_ref,
+            ) ||
+            requiredMetadataFields.some(
+              field => !hasOwn(snapshot.quality_metadata, field),
+            ) ||
+            requiredMetadataFields.some(
+              field => !hasOwn(currentEntry.card?.quality_metadata, field),
+            ) ||
+            !deepEqualQualityMetadata(
+              currentEntry.card.quality_metadata,
+              snapshot.quality_metadata,
+            )
+          ) {
+            add('approval_linked_standard_review_current_corpus_mismatch', {
+              card_id: currentEntry.card.card_id,
+            });
+          }
+        }
+        for (const boxPrefix of approval.scope.box_prefixes) {
+          if (
+            cards.filter(
+              card => card?.knowledge_ref?.box_prefix === boxPrefix,
+            ).length !== 3
+          ) {
+            add('approval_linked_standard_review_box_sample_invalid', {
+              box_prefix: boxPrefix,
+            });
+          }
+        }
+      }
+      if (
+        linkedReview.batch_review?.status !== 'recommend_user_confirmation' ||
+        !hasText(linkedReview.batch_review?.box_progression) ||
+        !Array.isArray(linkedReview.batch_review?.repetition_or_gap_risks) ||
+        !hasUniqueNonEmptyTextArray(
+          linkedReview.batch_review?.representative_cards,
+        ) ||
+        !linkedReview.batch_review.representative_cards.every(cardId =>
+          approval.scope?.card_ids?.includes(cardId)
+        ) ||
+        !hasText(linkedReview.batch_review?.next_step)
+      ) {
+        add('approval_linked_standard_review_batch_invalid');
+      }
+    }
+    const linkedAudit = linkedReview.quality_audit;
+    const linkedReport = checkRecordFile(
+      linkedAudit?.report,
+      isDirectScopedAuditRecordPath,
+      'approval_linked_self_review_audit',
+    );
+    if (linkedReport) {
+      if (
+        currentAudit &&
+        !isDeepStrictEqual(
+          linkedReport,
+          buildCurrentScopedAuditReplay(
+            currentAudit,
+            linkedReview.scope?.card_ids,
+          ),
+        )
+      ) {
+        add('approval_linked_self_review_audit_replay_mismatch');
+      }
+      const linkedDigest = linkedReport.corpus_fingerprint?.digest;
+      if (
+        !hasText(linkedAudit?.corpus_fingerprint) ||
+        linkedAudit.corpus_fingerprint !== linkedDigest
+      ) {
+        add('approval_linked_self_review_fingerprint_mismatch');
+      }
+      if (linkedDigest !== activeFingerprint.digest) {
+        add('approval_linked_self_review_not_current');
+      }
+      if (!sameStringSet(
+        linkedReport.scope?.card_ids,
+        linkedReview.scope?.card_ids,
+      )) {
+        add('approval_linked_self_review_audit_scope_mismatch');
+      }
+      if (
+        linkedAudit?.scope_has_no_hard_blockers !== true ||
+        linkedReport.ok !== true ||
+        linkedReport.scope_summary?.by_severity?.hard_blocker !== 0 ||
+        (linkedReport.scoped_hard_blocker_issues || []).length !== 0 ||
+        !isDeepStrictEqual(
+          linkedAudit?.scope_summary,
+          linkedReport.scope_summary,
+        )
+      ) {
+        add('approval_linked_self_review_audit_not_clear');
+      }
+    }
+  }
+
+  try {
+    if (
+      !isDeepStrictEqual(
+        computeCardCorpusFingerprint(root),
+        activeFingerprint,
+      )
+    ) {
+      add('approval_current_corpus_changed_during_validation');
+    }
+  } catch (error) {
+    add('approval_current_corpus_changed_during_validation', {
+      message: error instanceof Error ? error.message : String(error),
+    });
+  }
+  if (requireTracked && validationGitSnapshot) {
+    try {
+      const finalGitSnapshot = captureGitAuthorizationSnapshot(root);
+      if (
+        !isDeepStrictEqual(finalGitSnapshot, validationGitSnapshot)
+      ) {
+        add('approval_git_snapshot_changed_during_validation', {
+          expected_head: validationGitSnapshot.headCommit,
+          actual_head: finalGitSnapshot.headCommit,
+        });
+      }
+    } catch (error) {
+      add('approval_git_snapshot_changed_during_validation', {
+        message: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+  for (const [relativePath, captured] of authorizationFileSnapshots) {
+    try {
+      const finalStats = fs.lstatSync(path.join(root, relativePath));
+      const finalMode =
+        (finalStats.mode & 0o111) === 0 ? '100644' : '100755';
+      const finalBytes = finalStats.isFile()
+        ? fs.readFileSync(path.join(root, relativePath))
+        : null;
+      if (
+        !finalStats.isFile() ||
+        finalMode !== captured.mode ||
+        !Buffer.isBuffer(finalBytes) ||
+        !captured.bytes.equals(finalBytes)
+      ) {
+        add('approval_authorization_file_changed_during_validation', {
+          path: relativePath,
+        });
+      }
+    } catch {
+      add('approval_authorization_file_changed_during_validation', {
+        path: relativePath,
+      });
+    }
+  }
+
+  return {
+    ok: issues.length === 0,
+    approval: approval || null,
+    current_fingerprint: activeFingerprint,
+    issues,
+  };
+}
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));

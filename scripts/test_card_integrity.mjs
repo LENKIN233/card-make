@@ -1,10 +1,16 @@
 import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
 import {
+  computeCardCorpusFingerprint,
   deepEqualQualityMetadata,
+  isHumanReviewerIdentity,
   loadIntegrityPolicy,
+  validateCurrentApprovalRecordReference,
   validateChangedCardSelfReviewParity,
   validateEliminationIntegrity,
   validateQualityMetadata,
@@ -13,6 +19,32 @@ import {buildEliminationContract} from './migrate_cards_to_softbook_contract.mjs
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const POLICY = loadIntegrityPolicy(ROOT);
+
+test('structured human reviewer identities allow real short and Unicode IDs but reject automation identities', () => {
+  for (const identity of [
+    'external:张三',
+    'github:x',
+    'team:qa',
+    'external:Alice.Wu',
+  ]) {
+    assert.equal(isHumanReviewerIdentity(identity), true, identity);
+  }
+  for (const identity of [
+    'external:codexagent',
+    'github:buildbot123',
+    'team:automationRunner',
+    'team:ci',
+    'team:ci-runner',
+    'external:',
+    'external:Alice Wu',
+    'external:-',
+    'external:_',
+    'external:@',
+    'external:...',
+  ]) {
+    assert.equal(isHumanReviewerIdentity(identity), false, identity);
+  }
+});
 
 function clone(value) {
   return structuredClone(value);
@@ -344,4 +376,685 @@ test('metadata parity rejects missing and ambiguous changed self-review snapshot
   const snapshot = {card_id: card.card_id, quality_metadata: validMetadata('agent_pass')};
   result = validateChangedCardSelfReviewParity(card, [snapshot, clone(snapshot)], POLICY, {required: true});
   assert.ok(codes(result).has('candidate_self_review_ambiguous'));
+});
+
+test('current approval consumers reject forged replay, stale, template, traversal, and symlink evidence', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'card-approval-integrity-'));
+  const writeJson = (relativePath, value) => {
+    const fullPath = path.join(root, relativePath);
+    fs.mkdirSync(path.dirname(fullPath), {recursive: true});
+    fs.writeFileSync(fullPath, `${JSON.stringify(value, null, 2)}\n`);
+  };
+  try {
+    const cardIds = ['000001', '000002', '000003'];
+    const currentCards = cardIds.map(cardId => validCard({
+      card_id: cardId,
+      interaction_id: 'flip',
+      knowledge_ref: {
+        library_id: '0',
+        library: 'fixture-library',
+        group_id: '0',
+        group: 'fixture-group',
+        box_id: '0',
+        box: 'fixture-box',
+        box_prefix: '0000',
+      },
+    }));
+    writeJson('card_boxes_json/card_boxes_seed_cet4_fixture_0000.json', {
+      cards: currentCards,
+    });
+    const currentFingerprint = computeCardCorpusFingerprint(root);
+    fs.mkdirSync(path.join(root, 'scripts'), {recursive: true});
+    fs.mkdirSync(path.join(root, 'spec'), {recursive: true});
+    fs.copyFileSync(
+      path.join(ROOT, 'scripts/audit_card_quality.mjs'),
+      path.join(root, 'scripts/audit_card_quality.mjs'),
+    );
+    fs.copyFileSync(
+      path.join(ROOT, 'spec/card-quality-audit.json'),
+      path.join(root, 'spec/card-quality-audit.json'),
+    );
+    execFileSync(
+      process.execPath,
+      [
+        'scripts/audit_card_quality.mjs',
+        '--scope-card-ids',
+        cardIds.join(','),
+        '--write-scope-report',
+        'reviews/audit_scopes/current-approval-audit.json',
+      ],
+      {cwd: root, encoding: 'utf8'},
+    );
+    fs.copyFileSync(
+      path.join(root, 'reviews/audit_scopes/current-approval-audit.json'),
+      path.join(root, 'reviews/audit_scopes/current-review-audit.json'),
+    );
+    const currentScopedReport = JSON.parse(fs.readFileSync(
+      path.join(root, 'reviews/audit_scopes/current-approval-audit.json'),
+      'utf8',
+    ));
+    writeJson('reviews/agent_self_review/current-review.json', {
+      review_id: 'current-review',
+      created_at: '2026-07-31T12:00:00+08:00',
+      scope: {
+        library: 'fixture-library',
+        group: 'fixture-group',
+        box: 'fixture-box',
+        box_prefixes: ['0000'],
+        card_ids: cardIds,
+      },
+      specs_read: ['spec/review-workflow.json'],
+      sample_policy: {
+        review_scope_type: 'three_card_sample_per_box',
+        is_three_card_sample_per_box: true,
+        batch_generation_requires_user_confirmation: true,
+      },
+      quality_audit: {
+        report: 'reviews/audit_scopes/current-review-audit.json',
+        corpus_fingerprint: currentFingerprint.digest,
+        scope_has_no_hard_blockers: true,
+        scope_summary: structuredClone(currentScopedReport.scope_summary),
+      },
+      cards: currentCards.map(card => ({
+        card_id: card.card_id,
+        interaction_id: 'flip',
+        knowledge_ref: structuredClone(card.knowledge_ref),
+        status: 'pass',
+        quality_metadata: {
+          ...structuredClone(card.quality_metadata),
+          review_status: 'agent_pass',
+        },
+        blocker_scan: {
+          logic_error: false,
+          language_error: false,
+          inappropriate_wording: false,
+          low_knowledge_density: false,
+          not_meeting_requirement: false,
+          reverse_engineered_front: false,
+          fake_source_claim: false,
+          low_quality_variation: false,
+        },
+      })),
+      batch_review: {
+        status: 'recommend_user_confirmation',
+        box_progression: 'fixture progression',
+        repetition_or_gap_risks: [],
+        representative_cards: ['000001'],
+        next_step: 'request user confirmation',
+      },
+    });
+    const approvalPath = 'reviews/approved_batches/current-approval.json';
+    writeJson(approvalPath, {
+      approval_id: 'current-approval',
+      approved_by_user: true,
+      approved_at: '2026-07-31T12:00:00+08:00',
+      scope: {
+        library: 'fixture-library',
+        group: 'fixture-group',
+        box: 'fixture-box',
+        box_prefixes: ['0000'],
+        card_ids: cardIds,
+      },
+      summary: 'Fixture current approval.',
+      representative_cards: ['000001'],
+      card_quality_audit: {
+        report: 'reviews/audit_scopes/current-approval-audit.json',
+        corpus_fingerprint: currentFingerprint.digest,
+        scope_has_no_hard_blockers: true,
+        scope_summary: structuredClone(currentScopedReport.scope_summary),
+      },
+      validation: {
+        harness: 'node scripts/validate_harness.mjs',
+        cards: 'node scripts/validate_cards.mjs',
+        card_quality_audit: 'node scripts/audit_card_quality.mjs',
+        card_quality_audit_report: 'reports/card_quality_audit_report.json',
+        agent_self_review: 'reviews/agent_self_review/current-review.json',
+      },
+      approval_limits: [
+        'Only the listed scope is approved.',
+        'No unrelated generation is approved.',
+        'No product specification change is approved.',
+      ],
+    });
+    execFileSync('git', ['init', '-q'], {cwd: root});
+    execFileSync('git', ['config', 'user.name', 'Fixture Reviewer'], {
+      cwd: root,
+    });
+    execFileSync('git', ['config', 'user.email', 'fixture@example.test'], {
+      cwd: root,
+    });
+    execFileSync('git', ['add', '--all'], {cwd: root});
+    execFileSync('git', ['commit', '-qm', 'fixture current approval'], {
+      cwd: root,
+    });
+
+    let result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, true, JSON.stringify(result.issues));
+
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint: {
+        ...currentFingerprint,
+        digest: 'e'.repeat(64),
+      },
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code === 'approval_current_fingerprint_override_mismatch',
+    ));
+
+    fs.renameSync(
+      path.join(root, 'scripts/audit_card_quality.mjs'),
+      path.join(root, 'scripts/audit_card_quality.mjs.unavailable'),
+    );
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code === 'approval_current_audit_replay_unavailable',
+    ));
+    fs.renameSync(
+      path.join(root, 'scripts/audit_card_quality.mjs.unavailable'),
+      path.join(root, 'scripts/audit_card_quality.mjs'),
+    );
+
+    const restoreHeadFile = relativePath => {
+      fs.writeFileSync(
+        path.join(root, relativePath),
+        execFileSync('git', ['show', `HEAD:${relativePath}`], {cwd: root}),
+      );
+    };
+    const assertAuditAuthorityRejected = () => {
+      const authorityResult = validateCurrentApprovalRecordReference({
+        root,
+        approvalPath,
+        currentFingerprint,
+      });
+      assert.equal(authorityResult.ok, false);
+      assert.ok(authorityResult.issues.some(
+        issue => issue.code === 'approval_current_audit_replay_unavailable',
+      ));
+    };
+
+    const snapshotProbe = path.join(root, 'snapshot-probe.txt');
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+      beforeFinalConsistencyCheck: () => {
+        fs.writeFileSync(snapshotProbe, 'staged during validation\n');
+        execFileSync('git', ['add', '--', 'snapshot-probe.txt'], {cwd: root});
+      },
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code ===
+        'approval_git_snapshot_changed_during_validation',
+    ));
+    execFileSync(
+      'git',
+      ['restore', '--staged', '--', 'snapshot-probe.txt'],
+      {cwd: root},
+    );
+    fs.unlinkSync(snapshotProbe);
+
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+      beforeFinalConsistencyCheck: () => {
+        fs.appendFileSync(
+          path.join(root, 'reviews/audit_scopes/current-approval-audit.json'),
+          '\n',
+        );
+      },
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code ===
+        'approval_authorization_file_changed_during_validation',
+    ));
+    restoreHeadFile('reviews/audit_scopes/current-approval-audit.json');
+
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+      beforeFinalConsistencyCheck: () => {
+        fs.appendFileSync(
+          path.join(
+            root,
+            'card_boxes_json/card_boxes_seed_cet4_fixture_0000.json',
+          ),
+          '\n',
+        );
+      },
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code ===
+        'approval_current_corpus_changed_during_validation',
+    ));
+    restoreHeadFile(
+      'card_boxes_json/card_boxes_seed_cet4_fixture_0000.json',
+    );
+
+    fs.appendFileSync(
+      path.join(root, 'scripts/audit_card_quality.mjs'),
+      '\n// uncommitted authority drift\n',
+    );
+    assertAuditAuthorityRejected();
+    restoreHeadFile('scripts/audit_card_quality.mjs');
+
+    fs.appendFileSync(
+      path.join(root, 'scripts/audit_card_quality.mjs'),
+      '\n// staged authority drift\n',
+    );
+    execFileSync(
+      'git',
+      ['add', '--', 'scripts/audit_card_quality.mjs'],
+      {cwd: root},
+    );
+    restoreHeadFile('scripts/audit_card_quality.mjs');
+    assertAuditAuthorityRejected();
+    execFileSync(
+      'git',
+      ['restore', '--staged', '--', 'scripts/audit_card_quality.mjs'],
+      {cwd: root},
+    );
+
+    fs.chmodSync(path.join(root, 'scripts/audit_card_quality.mjs'), 0o755);
+    assertAuditAuthorityRejected();
+    fs.chmodSync(path.join(root, 'scripts/audit_card_quality.mjs'), 0o644);
+
+    fs.renameSync(
+      path.join(root, 'scripts/audit_card_quality.mjs'),
+      path.join(root, 'scripts/audit_card_quality.mjs.target'),
+    );
+    fs.symlinkSync(
+      'audit_card_quality.mjs.target',
+      path.join(root, 'scripts/audit_card_quality.mjs'),
+    );
+    assertAuditAuthorityRejected();
+    fs.unlinkSync(path.join(root, 'scripts/audit_card_quality.mjs'));
+    fs.renameSync(
+      path.join(root, 'scripts/audit_card_quality.mjs.target'),
+      path.join(root, 'scripts/audit_card_quality.mjs'),
+    );
+
+    fs.appendFileSync(
+      path.join(root, 'spec/card-quality-audit.json'),
+      '\n',
+    );
+    assertAuditAuthorityRejected();
+    restoreHeadFile('spec/card-quality-audit.json');
+
+    const forgedApprovalAudit = structuredClone(currentScopedReport);
+    delete forgedApprovalAudit.audit_version;
+    forgedApprovalAudit.scope_summary.by_rule = {};
+    delete forgedApprovalAudit.scoped_card_issue_index;
+    writeJson(
+      'reviews/audit_scopes/current-approval-audit.json',
+      forgedApprovalAudit,
+    );
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code === 'approval_audit_report_replay_mismatch',
+    ));
+    assert.ok(result.issues.some(
+      issue => issue.code === 'approval_audit_report_not_committed_at_head',
+    ));
+    writeJson(
+      'reviews/audit_scopes/current-approval-audit.json',
+      currentScopedReport,
+    );
+
+    const forgedLinkedAudit = structuredClone(currentScopedReport);
+    delete forgedLinkedAudit.mode;
+    forgedLinkedAudit.scope.card_dir = 'forged_card_dir';
+    writeJson(
+      'reviews/audit_scopes/current-review-audit.json',
+      forgedLinkedAudit,
+    );
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue =>
+        issue.code ===
+        'approval_linked_self_review_audit_replay_mismatch',
+    ));
+    assert.ok(result.issues.some(
+      issue =>
+        issue.code ===
+        'approval_linked_self_review_audit_not_committed_at_head',
+    ));
+    writeJson(
+      'reviews/audit_scopes/current-review-audit.json',
+      currentScopedReport,
+    );
+
+    fs.appendFileSync(
+      path.join(root, 'reviews/audit_scopes/current-review-audit.json'),
+      '\n',
+    );
+    execFileSync(
+      'git',
+      ['add', '--', 'reviews/audit_scopes/current-review-audit.json'],
+      {cwd: root},
+    );
+    writeJson(
+      'reviews/audit_scopes/current-review-audit.json',
+      currentScopedReport,
+    );
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue =>
+        issue.code ===
+        'approval_linked_self_review_audit_not_committed_at_head',
+    ));
+    execFileSync(
+      'git',
+      ['restore', '--staged', '--', 'reviews/audit_scopes/current-review-audit.json'],
+      {cwd: root},
+    );
+
+    fs.chmodSync(
+      path.join(root, 'reviews/audit_scopes/current-review-audit.json'),
+      0o755,
+    );
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue =>
+        issue.code ===
+        'approval_linked_self_review_audit_not_committed_at_head',
+    ));
+    fs.chmodSync(
+      path.join(root, 'reviews/audit_scopes/current-review-audit.json'),
+      0o644,
+    );
+
+    const validApproval = JSON.parse(fs.readFileSync(
+      path.join(root, approvalPath),
+      'utf8',
+    ));
+    const incompleteApproval = structuredClone(validApproval);
+    delete incompleteApproval.summary;
+    writeJson(approvalPath, incompleteApproval);
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code === 'approval_record_summary_missing',
+    ));
+    assert.ok(result.issues.some(
+      issue => issue.code === 'approval_record_not_committed_at_head',
+    ));
+    writeJson(approvalPath, validApproval);
+
+    const validLinkedReview = JSON.parse(fs.readFileSync(
+      path.join(root, 'reviews/agent_self_review/current-review.json'),
+      'utf8',
+    ));
+    const blockedLinkedReview = structuredClone(validLinkedReview);
+    blockedLinkedReview.batch_review.status = 'blocked';
+    writeJson(
+      'reviews/agent_self_review/current-review.json',
+      blockedLinkedReview,
+    );
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code === 'approval_linked_standard_review_batch_invalid',
+    ));
+    assert.ok(result.issues.some(
+      issue => issue.code === 'approval_linked_self_review_not_committed_at_head',
+    ));
+    writeJson('reviews/agent_self_review/current-review.json', validLinkedReview);
+
+    const emptyMetadataReview = structuredClone(validLinkedReview);
+    emptyMetadataReview.cards[0].quality_metadata = {};
+    writeJson(
+      'reviews/agent_self_review/current-review.json',
+      emptyMetadataReview,
+    );
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code ===
+        'approval_linked_standard_review_current_corpus_mismatch',
+    ));
+
+    const staleSnapshotReview = structuredClone(validLinkedReview);
+    staleSnapshotReview.cards[0].quality_metadata.exam_value =
+      '这是一条结构完整但与当前卡片不同的陈旧审批快照。';
+    writeJson(
+      'reviews/agent_self_review/current-review.json',
+      staleSnapshotReview,
+    );
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code ===
+        'approval_linked_standard_review_current_corpus_mismatch',
+    ));
+
+    const scalarMismatchReview = structuredClone(validLinkedReview);
+    scalarMismatchReview.scope.library = 'wrong-library';
+    writeJson(
+      'reviews/agent_self_review/current-review.json',
+      scalarMismatchReview,
+    );
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code ===
+        'approval_linked_self_review_scalar_scope_mismatch',
+    ));
+    writeJson('reviews/agent_self_review/current-review.json', validLinkedReview);
+
+    const staleDigest = 'f'.repeat(64);
+    writeJson(
+      'reviews/audit_scopes/current-review-audit.json',
+      {
+        ...structuredClone(currentScopedReport),
+        corpus_fingerprint: {
+          ...structuredClone(currentScopedReport.corpus_fingerprint),
+          digest: staleDigest,
+        },
+      },
+    );
+    const linkedReview = structuredClone(validLinkedReview);
+    linkedReview.quality_audit.corpus_fingerprint = staleDigest;
+    writeJson('reviews/agent_self_review/current-review.json', linkedReview);
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code === 'approval_linked_self_review_not_current',
+    ));
+
+    for (const invalidPath of [
+      'reviews/approved_batches/TEMPLATE.json',
+      'reviews/approved_batches/../forged.json',
+    ]) {
+      result = validateCurrentApprovalRecordReference({
+        root,
+        approvalPath: invalidPath,
+        currentFingerprint,
+      });
+      assert.equal(result.ok, false);
+      assert.equal(result.issues[0].code, 'approval_record_path_invalid');
+    }
+
+    const symlinkPath = path.join(
+      root,
+      'reviews/approved_batches/symlink-approval.json',
+    );
+    fs.symlinkSync('current-approval.json', symlinkPath);
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath: 'reviews/approved_batches/symlink-approval.json',
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.equal(result.issues[0].code, 'approval_record_not_regular_file');
+    fs.unlinkSync(symlinkPath);
+
+    const blockedCards = structuredClone(currentCards);
+    blockedCards[0].interaction_id = 'multiple_choice';
+    writeJson('card_boxes_json/card_boxes_seed_cet4_fixture_0000.json', {
+      cards: blockedCards,
+    });
+    const blockedFingerprint = computeCardCorpusFingerprint(root);
+    const blockedOraclePath =
+      'reviews/audit_scopes/blocked-current-oracle.json';
+    try {
+      execFileSync(
+        process.execPath,
+        [
+          'scripts/audit_card_quality.mjs',
+          '--scope-card-ids',
+          cardIds.join(','),
+          '--write-scope-report',
+          blockedOraclePath,
+        ],
+        {cwd: root, encoding: 'utf8'},
+      );
+      assert.fail('hard-blocked scoped audit must exit non-zero');
+    } catch (error) {
+      assert.equal(error.status, 1);
+    }
+    const blockedOracle = JSON.parse(fs.readFileSync(
+      path.join(root, blockedOraclePath),
+      'utf8',
+    ));
+    assert.ok(
+      blockedOracle.scope_summary.by_severity.hard_blocker > 0,
+    );
+    fs.unlinkSync(path.join(root, blockedOraclePath));
+
+    const forgedClearReport = structuredClone(blockedOracle);
+    forgedClearReport.ok = true;
+    forgedClearReport.scope_summary.issue_count = 0;
+    for (const severity of Object.keys(
+      forgedClearReport.scope_summary.by_severity,
+    )) {
+      forgedClearReport.scope_summary.by_severity[severity] = 0;
+    }
+    for (const ruleId of Object.keys(
+      forgedClearReport.scope_summary.by_rule,
+    )) {
+      forgedClearReport.scope_summary.by_rule[ruleId] = 0;
+    }
+    for (const entry of Object.values(
+      forgedClearReport.scoped_card_issue_index,
+    )) {
+      entry.issue_count = 0;
+      for (const severity of Object.keys(entry.by_severity)) {
+        entry.by_severity[severity] = 0;
+      }
+      entry.by_rule = {};
+    }
+    forgedClearReport.scoped_hard_blocker_issues = [];
+    writeJson(
+      'reviews/audit_scopes/current-approval-audit.json',
+      forgedClearReport,
+    );
+    writeJson(
+      'reviews/audit_scopes/current-review-audit.json',
+      forgedClearReport,
+    );
+    const blockedReview = structuredClone(validLinkedReview);
+    blockedReview.cards[0].interaction_id = 'multiple_choice';
+    blockedReview.quality_audit.corpus_fingerprint =
+      blockedFingerprint.digest;
+    blockedReview.quality_audit.scope_summary =
+      structuredClone(forgedClearReport.scope_summary);
+    writeJson(
+      'reviews/agent_self_review/current-review.json',
+      blockedReview,
+    );
+    const blockedApproval = structuredClone(validApproval);
+    blockedApproval.card_quality_audit.corpus_fingerprint =
+      blockedFingerprint.digest;
+    blockedApproval.card_quality_audit.scope_summary =
+      structuredClone(forgedClearReport.scope_summary);
+    writeJson(approvalPath, blockedApproval);
+    execFileSync('git', ['add', '--all'], {cwd: root});
+    execFileSync(
+      'git',
+      ['commit', '-qm', 'fixture forged current digest evidence'],
+      {cwd: root},
+    );
+
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint: blockedFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code === 'approval_audit_report_replay_mismatch',
+    ));
+    assert.ok(result.issues.some(
+      issue =>
+        issue.code ===
+        'approval_linked_self_review_audit_replay_mismatch',
+    ));
+    assert.equal(
+      result.issues.some(issue => issue.code.endsWith('_not_committed_at_head')),
+      false,
+    );
+  } finally {
+    fs.rmSync(root, {recursive: true, force: true});
+  }
 });

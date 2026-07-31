@@ -276,7 +276,7 @@
         "summary": "Intentionally incomplete fixture: user approval exists without a linked agent self-review record.",
         "representative_cards": ["003191", "003192", "003193"],
         "card_quality_audit": {
-          "report": "reports/card_quality_audit_report.json",
+          "report": "reviews/audit_scopes/fixture-missing-self-review-scope-audit.json",
           "corpus_fingerprint": "FIXTURE_CARD_CORPUS_SHA256",
           "scope_has_no_hard_blockers": true,
           "scope_summary": {
@@ -292,6 +292,8 @@
             "by_rule": {
               "multiple_choice_no_options": 0,
               "multiple_choice_answer_not_in_options": 0,
+              "front_leaks_correct_answer": 0,
+              "front_leaks_analysis_conclusion": 0,
               "front_missing_or_too_short": 0,
               "analysis_missing_or_too_short": 0,
               "generic_front_pattern": 0,
@@ -346,7 +348,7 @@
           "batch_generation_requires_user_confirmation": true
         },
         "quality_audit": {
-          "report": "reports/card_quality_audit_report.json",
+          "report": "reviews/audit_scopes/fixture-residual-closure-scope-audit.json",
           "corpus_fingerprint": "FIXTURE_CARD_CORPUS_SHA256",
           "scope_has_no_hard_blockers": true,
           "scope_summary": {
@@ -363,6 +365,7 @@
               "multiple_choice_no_options": 0,
               "multiple_choice_answer_not_in_options": 0,
               "front_leaks_correct_answer": 0,
+              "front_leaks_analysis_conclusion": 0,
               "front_missing_or_too_short": 0,
               "analysis_missing_or_too_short": 0,
               "generic_front_pattern": 0,
@@ -536,17 +539,17 @@
         "coverage": {
           "expected_card_count": 2,
           "reviewed_card_ids": [],
-          "human_reviewer": "",
+          "human_reviewer": "external:codex-agent",
           "boxes": [
             {
               "box_prefix": "0000",
               "status": "pass",
-              "reviewer": "fixture-reviewer"
+              "reviewer": "external:codex-agent"
             }
           ]
         },
         "quality_audit": {
-          "report": "reports/card_quality_audit_report.json",
+          "report": "reviews/audit_scopes/fixture-incomplete-full-track-scope-audit.json",
           "corpus_fingerprint": "FIXTURE_CARD_CORPUS_SHA256",
           "scope_has_no_hard_blockers": true,
           "scope_summary": {
@@ -591,8 +594,10 @@
           "full_track_review_card_scope_not_complete_track",
           "full_track_review_box_scope_not_complete_track",
           "full_track_review_expected_count_mismatch",
+          "full_track_review_coverage_card_ids_invalid",
           "full_track_review_coverage_mismatch",
-          "full_track_review_human_reviewer_missing"
+          "full_track_review_human_reviewer_invalid",
+          "full_track_review_box_not_human_passed"
         ]
       }
     },

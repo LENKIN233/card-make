@@ -114,6 +114,314 @@ test('a changed card with complete matching changed self-review passes', () => {
   assert.deepEqual(result.report.changed_card_integrity.changed_card_ids, ['000001']);
 });
 
+test('a complete three-card standard sample can authorize its changed candidates', () => {
+  const repo = createRepository();
+  const cards = [
+    completeCard(),
+    {
+      ...completeCard(),
+      card_id: '000002',
+      front: {text: 'second changed prompt'},
+    },
+    {
+      ...completeCard(),
+      card_id: '000003',
+      front: {text: 'third changed prompt'},
+    },
+  ];
+  writeCardBox(repo.root, cards);
+  writeSelfReview(
+    repo.root,
+    'standard-sample.json',
+    cards.map(card => card.card_id),
+    cards.map(reviewEntry),
+    {reviewScopeType: 'three_card_sample_per_box'},
+  );
+  commit(repo.root, 'add complete three-card standard sample');
+
+  const result = validate(repo);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.deepEqual(
+    result.report.changed_card_integrity.changed_card_ids,
+    ['000001', '000002', '000003'],
+  );
+});
+
+test('a changed standard sample must use current scoped audit evidence', () => {
+  const repo = createRepository();
+  const cards = [
+    completeCard(),
+    {...completeCard(), card_id: '000002', front: {text: 'second changed prompt'}},
+    {...completeCard(), card_id: '000003', front: {text: 'third changed prompt'}},
+  ];
+  writeCardBox(repo.root, cards);
+  const reviewPath = writeSelfReview(
+    repo.root,
+    'global-audit-standard-sample.json',
+    cards.map(card => card.card_id),
+    cards.map(reviewEntry),
+    {reviewScopeType: 'three_card_sample_per_box'},
+  );
+  const review = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
+  review.quality_audit.report = 'reports/card_quality_audit_report.json';
+  writeJson(reviewPath, review);
+  commit(repo.root, 'try archived global audit for current standard sample');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_self_review_standard_scoped_audit_required');
+  for (const card of cards) {
+    const coverageIssue = result.report.issues.find(
+      issue => issue.code === 'changed_card_self_review_count_invalid' &&
+        issue.card_id === card.card_id,
+    );
+    assert.ok(coverageIssue, card.card_id);
+    assert.equal(coverageIssue.review_count, 0);
+  }
+});
+
+test('a standard sample needs a complete batch-level review conclusion', async t => {
+  const cases = [
+    ['box_progression', 'changed_self_review_batch_box_progression_missing'],
+    ['repetition_or_gap_risks', 'changed_self_review_batch_risks_invalid'],
+    ['representative_cards', 'changed_self_review_batch_representative_cards_invalid'],
+    ['next_step', 'changed_self_review_batch_next_step_missing'],
+  ];
+  for (const [field, issueCode] of cases) {
+    await t.test(`missing ${field}`, () => {
+      const repo = createRepository();
+      const cards = [
+        completeCard(),
+        {...completeCard(), card_id: '000002', front: {text: 'second changed prompt'}},
+        {...completeCard(), card_id: '000003', front: {text: 'third changed prompt'}},
+      ];
+      writeCardBox(repo.root, cards);
+      const reviewPath = writeSelfReview(
+        repo.root,
+        `missing-${field}-standard-sample.json`,
+        cards.map(card => card.card_id),
+        cards.map(reviewEntry),
+        {reviewScopeType: 'three_card_sample_per_box'},
+      );
+      const review = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
+      delete review.batch_review[field];
+      writeJson(reviewPath, review);
+      commit(repo.root, `omit standard batch ${field}`);
+
+      const result = validate(repo);
+      assert.notEqual(result.status, 0, result.stdout);
+      assertIssue(result.report, issueCode);
+      const coverageIssue = result.report.issues.find(
+        issue => issue.code === 'changed_card_self_review_count_invalid',
+      );
+      assert.ok(coverageIssue);
+      assert.equal(coverageIssue.review_count, 0);
+    });
+  }
+});
+
+test('the pre-cutover report index is immutable even outside a content diff', () => {
+  const repo = createRepository();
+  writeJson(path.join(repo.root, 'reports/pre-cutover-report-index.json'), {
+    schema_version: 'pre-cutover-report-index.v1',
+    legacy_references: [],
+  });
+  commit(repo.root, 'try to extend pre-cutover archive index');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assert.equal(result.report.content_candidate_diff, false);
+  assertIssue(result.report, 'pre_cutover_report_index_immutable');
+});
+
+test('invalid standard sample shape cannot count as changed-card coverage', async t => {
+  await t.test('not three cards per box', () => {
+    const repo = createRepository();
+    const card = completeCard();
+    writeCardBox(repo.root, [card]);
+    writeSelfReview(
+      repo.root,
+      'short-standard-sample.json',
+      ['000001'],
+      [reviewEntry(card)],
+      {reviewScopeType: 'three_card_sample_per_box'},
+    );
+    commit(repo.root, 'add short standard sample');
+
+    const result = validate(repo);
+    assert.notEqual(result.status, 0, result.stdout);
+    assertIssue(result.report, 'changed_self_review_sample_card_count_invalid');
+    const coverageIssue = assertIssue(result.report, 'changed_card_self_review_count_invalid');
+    assert.equal(coverageIssue.review_count, 0);
+  });
+
+  await t.test('invalid card status', () => {
+    const repo = createRepository();
+    const cards = [
+      completeCard(),
+      {...completeCard(), card_id: '000002', front: {text: 'second prompt'}},
+      {...completeCard(), card_id: '000003', front: {text: 'third prompt'}},
+    ];
+    const reviews = cards.map(reviewEntry);
+    reviews[0].status = 'approved';
+    writeCardBox(repo.root, cards);
+    writeSelfReview(
+      repo.root,
+      'invalid-status-standard-sample.json',
+      cards.map(card => card.card_id),
+      reviews,
+      {reviewScopeType: 'three_card_sample_per_box'},
+    );
+    commit(repo.root, 'add invalid standard review status');
+
+    const result = validate(repo);
+    assert.notEqual(result.status, 0, result.stdout);
+    assertIssue(result.report, 'changed_self_review_card_status_invalid');
+    for (const cardId of cards.map(card => card.card_id)) {
+      const coverageIssue = result.report.issues.find(
+        issue => issue.code === 'changed_card_self_review_count_invalid' &&
+          issue.card_id === cardId,
+      );
+      assert.ok(coverageIssue, cardId);
+      assert.equal(coverageIssue.review_count, 0);
+    }
+  });
+
+  await t.test('six snapshots cannot all come from one of two declared boxes', () => {
+    const repo = createRepository();
+    const cards = Array.from({length: 6}, (_, index) => ({
+      ...completeCard(),
+      card_id: String(index + 1).padStart(6, '0'),
+      front: {text: `changed prompt ${index + 1}`},
+    }));
+    writeCardBox(repo.root, cards);
+    writeSelfReview(
+      repo.root,
+      'imbalanced-two-box-standard-sample.json',
+      cards.map(card => card.card_id),
+      cards.map(reviewEntry),
+      {
+        reviewScopeType: 'three_card_sample_per_box',
+        boxPrefixes: ['0000', '9999'],
+      },
+    );
+    commit(repo.root, 'add imbalanced two-box standard sample');
+
+    const result = validate(repo);
+    assert.notEqual(result.status, 0, result.stdout);
+    const counts = result.report.issues.filter(
+      issue => issue.code === 'changed_self_review_per_box_card_count_invalid',
+    );
+    assert.deepEqual(
+      counts.map(issue => [issue.box_prefix, issue.actual]).sort(),
+      [['0000', 6], ['9999', 0]],
+    );
+  });
+
+  await t.test('snapshot box identity must match the immutable HEAD card', () => {
+    const repo = createRepository();
+    const cards = Array.from({length: 6}, (_, index) => ({
+      ...completeCard(),
+      card_id: String(index + 1).padStart(6, '0'),
+      knowledge_ref: {box_prefix: index < 3 ? '0000' : '9999'},
+      front: {text: `two-box changed prompt ${index + 1}`},
+    }));
+    const reviews = cards.map(reviewEntry);
+    reviews[0].knowledge_ref = {box_prefix: '9999'};
+    reviews[3].knowledge_ref = {box_prefix: '0000'};
+    writeCardBox(repo.root, cards);
+    writeSelfReview(
+      repo.root,
+      'falsified-box-standard-sample.json',
+      cards.map(card => card.card_id),
+      reviews,
+      {
+        reviewScopeType: 'three_card_sample_per_box',
+        boxPrefixes: ['0000', '9999'],
+      },
+    );
+    commit(repo.root, 'add falsified snapshot box identities');
+
+    const result = validate(repo);
+    assert.notEqual(result.status, 0, result.stdout);
+    const mismatches = result.report.issues.filter(
+      issue => issue.code === 'changed_self_review_card_knowledge_ref_mismatch',
+    );
+    assert.deepEqual(mismatches.map(issue => issue.card_id).sort(), ['000001', '000004']);
+  });
+});
+
+test('a newly added card cannot use residual-closure evidence as generation approval', () => {
+  const repo = createRepository();
+  const addedCard = {
+    ...completeCard(),
+    card_id: '000002',
+    front: {text: 'new card cannot be disguised as residual closure'},
+  };
+  writeCardBox(repo.root, [legacyCard(), addedCard]);
+  writeSelfReview(
+    repo.root,
+    'added-card-residual.json',
+    ['000002'],
+    [reviewEntry(addedCard)],
+  );
+  commit(repo.root, 'add card under residual closure evidence');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_added_card_requires_standard_sample_review');
+  const coverageIssue = assertIssue(result.report, 'changed_card_self_review_count_invalid');
+  assert.equal(coverageIssue.card_id, '000002');
+  assert.equal(coverageIssue.review_count, 0);
+  assert.equal(coverageIssue.ineligible_review_count, 1);
+});
+
+test('changed residual closure evidence requires its explicit type and scoped audit', async t => {
+  await t.test('missing explicit review scope type', () => {
+    const repo = createRepository();
+    const card = completeCard();
+    writeCardBox(repo.root, [card]);
+    const reviewPath = writeSelfReview(
+      repo.root,
+      'inferred-residual.json',
+      ['000001'],
+      [reviewEntry(card)],
+    );
+    const review = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
+    delete review.sample_policy.review_scope_type;
+    writeJson(reviewPath, review);
+    commit(repo.root, 'omit residual review scope type');
+
+    const result = validate(repo);
+    assert.notEqual(result.status, 0, result.stdout);
+    assertIssue(result.report, 'changed_self_review_scope_type_required');
+    const coverageIssue = assertIssue(result.report, 'changed_card_self_review_count_invalid');
+    assert.equal(coverageIssue.review_count, 0);
+  });
+
+  await t.test('global audit instead of scoped audit', () => {
+    const repo = createRepository();
+    const card = completeCard();
+    writeCardBox(repo.root, [card]);
+    const reviewPath = writeSelfReview(
+      repo.root,
+      'global-audit-residual.json',
+      ['000001'],
+      [reviewEntry(card)],
+    );
+    const review = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
+    review.quality_audit.report = 'reports/card_quality_audit_report.json';
+    writeJson(reviewPath, review);
+    commit(repo.root, 'use global audit for residual closure');
+
+    const result = validate(repo);
+    assert.notEqual(result.status, 0, result.stdout);
+    assertIssue(result.report, 'changed_self_review_residual_scoped_audit_required');
+    const coverageIssue = assertIssue(result.report, 'changed_card_self_review_count_invalid');
+    assert.equal(coverageIssue.review_count, 0);
+  });
+});
+
 test('a changed card cannot be hidden by omitting its id from self-review scope', () => {
   const repo = createRepository();
   const card = completeCard();
@@ -232,23 +540,172 @@ test('deleting an unprefixed full-track self-review fails closed', () => {
   assertIssue(result.report, 'changed_self_review_deleted');
 });
 
-test('unprefixed draft and scoped-audit JSON changes enter content scope', async t => {
-  for (const relativePath of [
-    'reviews/drafts/full-track-remediation.json',
-    'reviews/audit_scopes/full-track-remediation.json',
-  ]) {
-    await t.test(relativePath, () => {
-      const repo = createRepository();
-      writeJson(path.join(repo.root, relativePath), {
-        scope: {card_ids: ['000001']},
-      });
-      commit(repo.root, `add ${relativePath}`);
+test('an unprefixed draft JSON change enters content scope', () => {
+  const repo = createRepository();
+  const relativePath = 'reviews/drafts/full-track-remediation.json';
+  writeJson(path.join(repo.root, relativePath), {
+    scope: {card_ids: ['000001']},
+  });
+  commit(repo.root, `add ${relativePath}`);
 
-      const result = validate(repo);
-      assert.equal(result.status, 0, result.stderr || result.stdout);
-      assert.equal(result.report.content_candidate_diff, true);
-    });
-  }
+  const result = validate(repo);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(result.report.content_candidate_diff, true);
+});
+
+test('an empty unlinked scoped-audit artifact is rejected', () => {
+  const repo = createRepository();
+  writeJson(
+    path.join(repo.root, 'reviews/audit_scopes/9999-forged.json'),
+    {},
+  );
+  commit(repo.root, 'add empty unlinked scoped audit');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assert.equal(result.report.content_candidate_diff, true);
+  assertIssue(result.report, 'changed_scoped_audit_invalid');
+});
+
+test('a structurally plausible unlinked scoped audit must match current replay', () => {
+  const repo = createRepository();
+  writeJson(
+    path.join(repo.root, 'reviews/audit_scopes/9999-forged.json'),
+    {
+      ok: true,
+      audit_version: 'card-make-quality-audit-v1',
+      mode: 'read_only_non_blocking_for_legacy_corpus',
+      report_type: 'scoped_card_quality_audit',
+      corpus_fingerprint: {
+        algorithm: 'sha256',
+        card_dir: 'card_boxes_json',
+        file_count: 1,
+        card_count: 1,
+        digest: '0'.repeat(64),
+      },
+      scope: {
+        card_dir: 'card_boxes_json',
+        card_ids: ['000001'],
+        missing_card_ids: [],
+      },
+      scope_summary: qualityAuditSummary(['000001']),
+      scoped_card_issue_index: {},
+      scoped_hard_blocker_issues: [],
+    },
+  );
+  commit(repo.root, 'add plausible but forged unlinked scoped audit');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_scoped_audit_replay_mismatch');
+});
+
+test('a changed approval cannot link the archived global audit', () => {
+  const repo = createRepository();
+  establishApprovalReviewBase(repo);
+  writeApprovalFile(repo.root, 'global-audit-approval.json', {
+    report: 'reports/card_quality_audit_report.json',
+  });
+  commit(repo.root, 'add approval linked to archived global audit');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_review_current_scoped_audit_required');
+});
+
+test('a changed approval can link an exact current scoped-audit replay', () => {
+  const repo = createRepository();
+  establishApprovalReviewBase(repo);
+  writeApprovalFile(repo.root, 'current-scoped-audit-approval.json');
+  commit(repo.root, 'add approval with current scoped audit');
+
+  const result = validate(repo);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(result.report.content_candidate_diff, true);
+});
+
+test('formal approval evidence cannot be deleted', () => {
+  const repo = createRepository();
+  establishApprovalReviewBase(repo);
+  const approvalPath = writeApprovalFile(
+    repo.root,
+    'immutable-approval-evidence.json',
+  );
+  commit(repo.root, 'establish formal approval evidence');
+  repo.base = git(repo.root, 'rev-parse', 'HEAD');
+
+  fs.rmSync(approvalPath);
+  commit(repo.root, 'delete formal approval evidence');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_approval_deleted');
+});
+
+test('a changed approval cannot link review evidence outside the governed direct path', () => {
+  const repo = createRepository();
+  establishApprovalReviewBase(repo);
+  writeJson(path.join(repo.root, 'misc/forged-review.json'), {
+    scope: {
+      box_prefixes: ['0000'],
+      card_ids: ['000001'],
+    },
+    quality_audit: {
+      report: 'reviews/audit_scopes/fixture-approval-review-scope-audit.json',
+    },
+  });
+  writeApprovalFile(repo.root, 'forged-review-link-approval.json', {
+    linkedReview: 'misc/forged-review.json',
+  });
+  commit(repo.root, 'link approval to review outside governed path');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_approval_linked_self_review_path_invalid');
+});
+
+test('a changed approval cannot reuse an unchanged stale linked self-review audit', () => {
+  const repo = createRepository();
+  establishApprovalReviewBase(repo);
+  const linkedReportPath = path.join(
+    repo.root,
+    'reviews/audit_scopes/fixture-approval-review-scope-audit.json',
+  );
+  const linkedReport = JSON.parse(fs.readFileSync(linkedReportPath, 'utf8'));
+  linkedReport.forged_historical_claim = true;
+  writeJson(linkedReportPath, linkedReport);
+  commit(repo.root, 'establish stale linked review audit');
+  repo.base = git(repo.root, 'rev-parse', 'HEAD');
+
+  writeApprovalFile(repo.root, 'stale-linked-review-approval.json');
+  commit(repo.root, 'add approval reusing stale linked review');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  const issue = assertIssue(
+    result.report,
+    'changed_review_scoped_audit_replay_mismatch',
+  );
+  assert.equal(
+    issue.path,
+    'reviews/agent_self_review/fixture-approval-current-review.json',
+  );
+});
+
+test('tracked scoped-audit evidence cannot be deleted', () => {
+  const repo = createRepository();
+  const auditPath = path.join(repo.root, 'reviews/audit_scopes/9999-history.json');
+  writeJson(auditPath, {
+    scope: {card_ids: ['000001']},
+  });
+  commit(repo.root, 'establish tracked scoped audit');
+  repo.base = git(repo.root, 'rev-parse', 'HEAD');
+  fs.rmSync(auditPath);
+  commit(repo.root, 'delete tracked scoped audit');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_scoped_audit_deleted_or_renamed');
 });
 
 test('review templates remain outside content-candidate scope', () => {
@@ -295,6 +752,7 @@ test('strict full-track aggregate coverage can review a changed card without car
   writeCardBox(repo.root, [card]);
   writeFullTrackReview(repo.root, {
     scopeCardIds: ['000001'],
+    humanReviewer: 'external:张三',
   });
   commit(repo.root, 'change card under full-track aggregate review');
 
@@ -305,6 +763,312 @@ test('strict full-track aggregate coverage can review a changed card without car
     result.report.changed_card_integrity.changed_full_track_review_paths,
     ['reviews/agent_self_review/20260731-cet4-full-track-remediation.json'],
   );
+});
+
+test('full-track aggregate semantics fail closed before coverage can count', async t => {
+  const cases = [
+    {
+      name: 'sample policy flag',
+      mutate(record) {
+        delete record.sample_policy.final_user_approval_required;
+      },
+      issue: 'changed_full_track_review_sample_policy_invalid',
+    },
+    {
+      name: 'automation reviewer identity',
+      mutate(record) {
+        record.coverage.human_reviewer = 'external:codex-agent';
+        record.coverage.boxes[0].reviewer = 'external:codex-agent';
+      },
+      issue: 'changed_full_track_review_human_reviewer_invalid',
+    },
+    {
+      name: 'per-box human pass',
+      mutate(record) {
+        record.coverage.boxes[0].status = 'pending';
+      },
+      issue: 'changed_full_track_review_box_human_pass_invalid',
+    },
+    {
+      name: 'per-box reviewer mismatch',
+      mutate(record) {
+        record.coverage.boxes[0].reviewer = 'external:other-reviewer';
+      },
+      issue: 'changed_full_track_review_box_human_pass_invalid',
+    },
+    {
+      name: 'quality audit',
+      mutate(record) {
+        delete record.quality_audit;
+      },
+      issue: 'changed_full_track_review_quality_audit_invalid',
+    },
+    {
+      name: 'quality audit report path',
+      mutate(record) {
+        record.quality_audit.report = '../unscoped-report.json';
+      },
+      issue: 'changed_full_track_review_scoped_audit_required',
+    },
+    {
+      name: 'archived global audit',
+      mutate(record) {
+        record.quality_audit.report = 'reports/card_quality_audit_report.json';
+      },
+      issue: 'changed_full_track_review_scoped_audit_required',
+    },
+    {
+      name: 'quality audit fingerprint',
+      mutate(record) {
+        record.quality_audit.corpus_fingerprint = '';
+      },
+      issue: 'changed_full_track_review_quality_audit_fingerprint_invalid',
+    },
+    {
+      name: 'quality audit scope flag',
+      mutate(record) {
+        record.quality_audit.scope_has_no_hard_blockers = false;
+      },
+      issue: 'changed_full_track_review_quality_audit_not_clear',
+    },
+    {
+      name: 'quality audit summary scope',
+      mutate(record) {
+        record.quality_audit.scope_summary.card_ids = [];
+      },
+      issue: 'changed_full_track_review_quality_audit_scope_mismatch',
+    },
+    {
+      name: 'quality audit hard blocker',
+      mutate(record) {
+        record.quality_audit.scope_summary.issue_count = 1;
+        record.quality_audit.scope_summary.by_severity.hard_blocker = 1;
+      },
+      issue: 'changed_full_track_review_quality_audit_has_hard_blockers',
+    },
+    {
+      name: 'quality audit severity total',
+      mutate(record) {
+        record.quality_audit.scope_summary.issue_count = 1;
+      },
+      issue: 'changed_full_track_review_quality_audit_severity_total_mismatch',
+    },
+    {
+      name: 'quality audit rule coverage',
+      mutate(record) {
+        delete record.quality_audit.scope_summary.by_rule.synthetic_source;
+      },
+      issue: 'changed_full_track_review_quality_audit_rule_invalid',
+    },
+    {
+      name: 'batch status',
+      mutate(record) {
+        delete record.batch_review;
+      },
+      issue: 'changed_full_track_review_batch_status_invalid',
+    },
+    {
+      name: 'remaining risks',
+      mutate(record) {
+        record.batch_review.remaining_risks = ['unresolved fixture risk'];
+      },
+      issue: 'changed_full_track_review_remaining_risks_invalid',
+    },
+    {
+      name: 'batch summary',
+      mutate(record) {
+        delete record.batch_review.summary;
+      },
+      issue: 'changed_full_track_review_batch_evidence_incomplete',
+    },
+    {
+      name: 'batch next step',
+      mutate(record) {
+        delete record.batch_review.next_step;
+      },
+      issue: 'changed_full_track_review_batch_evidence_incomplete',
+    },
+    {
+      name: 'empty representative cards',
+      mutate(record) {
+        record.representative_cards = [];
+      },
+      issue: 'changed_full_track_review_representative_cards_invalid',
+    },
+    {
+      name: 'representative card scope',
+      mutate(record) {
+        record.representative_cards = ['999999'];
+      },
+      issue: 'changed_full_track_review_representative_cards_invalid',
+    },
+  ];
+
+  for (const testCase of cases) {
+    await t.test(testCase.name, () => {
+      const repo = createRepository();
+      const card = completeCard();
+      writeCardBox(repo.root, [card]);
+      const reviewPath = writeFullTrackReview(repo.root, {
+        scopeCardIds: ['000001'],
+      });
+      const record = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
+      testCase.mutate(record);
+      writeJson(reviewPath, record);
+      commit(repo.root, `invalidate full-track ${testCase.name}`);
+
+      const result = validate(repo);
+      assert.notEqual(result.status, 0, result.stdout);
+      assertIssue(result.report, testCase.issue);
+      const coverageIssue = assertIssue(
+        result.report,
+        'changed_card_self_review_count_invalid',
+      );
+      assert.equal(coverageIssue.review_count, 0);
+    });
+  }
+});
+
+test('a minimal standard self-review cannot count as changed-card coverage', () => {
+  const repo = createRepository();
+  const card = completeCard();
+  writeCardBox(repo.root, [card]);
+  writeJson(
+    path.join(repo.root, 'reviews/agent_self_review/minimal.json'),
+    {
+      scope: {box_prefixes: ['0000'], card_ids: ['000001']},
+      cards: [{
+        card_id: '000001',
+        interaction_id: card.interaction_id,
+        knowledge_ref: card.knowledge_ref,
+        status: 'pass',
+        quality_metadata: {
+          ...structuredClone(card.quality_metadata),
+          review_status: 'agent_pass',
+        },
+      }],
+    },
+  );
+  commit(repo.root, 'add incomplete standard review');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_self_review_quality_audit_invalid');
+  assertIssue(result.report, 'changed_self_review_blocker_scan_invalid');
+  const coverageIssue = assertIssue(result.report, 'changed_card_self_review_count_invalid');
+  assert.equal(coverageIssue.review_count, 0);
+});
+
+test('nested self-review JSON cannot authorize standard or full-track coverage', async t => {
+  await t.test('standard', () => {
+    const repo = createRepository();
+    const card = completeCard();
+    writeCardBox(repo.root, [card]);
+    writeSelfReviewFile(
+      repo.root,
+      'nested/standard.json',
+      ['000001'],
+      [reviewEntry(card)],
+    );
+    commit(repo.root, 'add nested standard review');
+
+    const result = validate(repo);
+    assert.notEqual(result.status, 0, result.stdout);
+    assertIssue(result.report, 'changed_self_review_path_noncanonical');
+    const coverageIssue = assertIssue(result.report, 'changed_card_self_review_count_invalid');
+    assert.equal(coverageIssue.review_count, 0);
+  });
+
+  await t.test('full-track', () => {
+    const repo = createRepository();
+    const card = completeCard();
+    writeCardBox(repo.root, [card]);
+    const reviewPath = writeFullTrackReview(repo.root, {
+      scopeCardIds: ['000001'],
+    });
+    const nestedDir = path.join(repo.root, 'reviews/agent_self_review/nested');
+    fs.mkdirSync(nestedDir, {recursive: true});
+    fs.renameSync(reviewPath, path.join(nestedDir, path.basename(reviewPath)));
+    commit(repo.root, 'add nested full-track review');
+
+    const result = validate(repo);
+    assert.notEqual(result.status, 0, result.stdout);
+    assertIssue(result.report, 'changed_self_review_path_noncanonical');
+    const coverageIssue = assertIssue(result.report, 'changed_card_self_review_count_invalid');
+    assert.equal(coverageIssue.review_count, 0);
+  });
+});
+
+test('Git evidence paths are preserved exactly and unusual separators fail closed', async t => {
+  await t.test('literal backslash', () => {
+    const repo = createRepository();
+    const card = completeCard();
+    writeCardBox(repo.root, [card]);
+    const reviewPath = writeSelfReview(
+      repo.root,
+      'collision.json',
+      ['000001'],
+      [reviewEntry(card)],
+    );
+    commit(repo.root, 'establish canonical review path');
+    repo.base = git(repo.root, 'rev-parse', 'HEAD');
+
+    writeCardBox(repo.root, [{
+      ...card,
+      analysis: {text: 'Changed card body must require genuinely changed evidence.'},
+    }]);
+    const relativeReviewPath = path.relative(repo.root, reviewPath);
+    writeJson(
+      path.join(repo.root, relativeReviewPath.replaceAll('/', '\\')),
+      {scope: {card_ids: ['000001']}},
+    );
+    commit(repo.root, 'add colliding literal backslash path');
+
+    const result = validate(repo);
+    assert.notEqual(result.status, 0, result.stdout);
+    assertIssue(result.report, 'git_diff_path_noncanonical');
+    const coverageIssue = assertIssue(result.report, 'changed_card_self_review_count_invalid');
+    assert.equal(coverageIssue.review_count, 0);
+  });
+
+  await t.test('Unicode line separator', () => {
+    const repo = createRepository();
+    const card = completeCard();
+    writeCardBox(repo.root, [card]);
+    writeSelfReviewFile(
+      repo.root,
+      'line\u2028separator.json',
+      ['000001'],
+      [reviewEntry(card)],
+    );
+    commit(repo.root, 'add Unicode line separator review');
+
+    const result = validate(repo);
+    assert.notEqual(result.status, 0, result.stdout);
+    assert.equal(result.report.content_candidate_diff, true);
+    assertIssue(result.report, 'git_diff_path_noncanonical');
+  });
+});
+
+test('a symlinked self-review cannot authorize changed-card coverage', () => {
+  const repo = createRepository();
+  const card = completeCard();
+  writeCardBox(repo.root, [card]);
+  const targetPath = writeSelfReviewFile(
+    repo.root,
+    'target.txt',
+    ['000001'],
+    [reviewEntry(card)],
+  );
+  const symlinkPath = path.join(repo.root, 'reviews/agent_self_review/review.json');
+  fs.symlinkSync(path.basename(targetPath), symlinkPath);
+  commit(repo.root, 'add symlinked review');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_self_review_not_regular_file');
+  const coverageIssue = assertIssue(result.report, 'changed_card_self_review_count_invalid');
+  assert.equal(coverageIssue.review_count, 0);
 });
 
 test('full-track aggregate cannot shrink to only the changed card', () => {
@@ -558,6 +1322,32 @@ test('a changed self-review cannot name a card missing from the HEAD corpus', ()
   assertIssue(result.report, 'changed_self_review_scope_card_missing_from_head_corpus');
 });
 
+test('a changed review cannot reuse an unchanged forged scoped audit', () => {
+  const repo = createRepository();
+  const card = completeCard();
+  writeCardBox(repo.root, [card]);
+  const reviewPath = writeSelfReview(
+    repo.root,
+    'unchanged-forged-audit.json',
+    ['000001'],
+    [reviewEntry(card)],
+  );
+  const review = JSON.parse(fs.readFileSync(reviewPath, 'utf8'));
+  const reportPath = path.join(repo.root, review.quality_audit.report);
+  const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+  report.forged_historical_claim = true;
+  writeJson(reportPath, report);
+  commit(repo.root, 'establish forged historical scoped audit');
+  repo.base = git(repo.root, 'rev-parse', 'HEAD');
+
+  changeReviewId(reviewPath, 'changed-review-reusing-forged-audit');
+  commit(repo.root, 'change review while reusing forged scoped audit');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_review_scoped_audit_replay_mismatch');
+});
+
 test('rename and modify audit materializes the complete HEAD corpus for an R diff', () => {
   const repo = createRepository();
   const {card, reviewPath} = establishCompleteCandidateBase(repo);
@@ -630,6 +1420,29 @@ test('worktree-only content validation fails closed without an explicit head com
   const result = validateWorktree(repo);
   assert.notEqual(result.status, 0, result.stdout);
   assertIssue(result.report, 'content_candidate_explicit_head_required');
+});
+
+test('worktree validation preserves untracked paths without a stale normalizer call', () => {
+  const repo = createRepository();
+  fs.writeFileSync(path.join(repo.root, 'UNTRACKED.md'), 'untracked fixture\n');
+
+  const result = validateWorktree(repo);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.deepEqual(
+    result.report.changed_paths.find(entry => entry.status === '??')?.paths,
+    ['UNTRACKED.md'],
+  );
+});
+
+test('worktree validation rejects an untracked literal-backslash path without rewriting it', () => {
+  const repo = createRepository();
+  const unsafePath = 'reviews\\agent_self_review\\untracked.json';
+  writeJson(path.join(repo.root, unsafePath), {scope: {card_ids: ['000001']}});
+
+  const result = validateWorktree(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  const issue = assertIssue(result.report, 'git_diff_path_noncanonical');
+  assert.equal(issue.path, unsafePath);
 });
 
 function createRepository() {
@@ -713,6 +1526,16 @@ function reviewEntry(card) {
       ...structuredClone(card.quality_metadata),
       review_status: 'agent_pass',
     },
+    blocker_scan: {
+      logic_error: false,
+      language_error: false,
+      inappropriate_wording: false,
+      low_knowledge_density: false,
+      not_meeting_requirement: false,
+      reverse_engineered_front: false,
+      fake_source_claim: false,
+      low_quality_variation: false,
+    },
   };
 }
 
@@ -723,26 +1546,198 @@ function writeCardBox(root, cards) {
   );
 }
 
-function writeSelfReview(root, suffix, cardIds, cards) {
+function writeSelfReview(root, suffix, cardIds, cards, options = {}) {
   return writeSelfReviewFile(
     root,
     `20260731-cet4-listening-0000-${suffix}`,
     cardIds,
     cards,
+    options,
   );
 }
 
-function writeSelfReviewFile(root, filename, cardIds, cards) {
+function writeSelfReviewFile(
+  root,
+  filename,
+  cardIds,
+  cards,
+  {
+    reviewScopeType = 'residual_blocker_closure',
+    boxPrefixes = ['0000'],
+  } = {},
+) {
   const filePath = path.join(root, 'reviews/agent_self_review', filename);
+  const isResidualClosure = reviewScopeType === 'residual_blocker_closure';
+  const auditReportPath = isResidualClosure
+    ? 'reviews/audit_scopes/fixture-residual-scope-audit.json'
+    : 'reviews/audit_scopes/fixture-standard-scope-audit.json';
   writeJson(
     filePath,
     {
       review_id: filename,
-      scope: { box_prefixes: ['0000'], card_ids: cardIds },
+      created_at: '2026-07-31T12:00:00+08:00',
+      agent: 'codex',
+      scope: {
+        library: 'fixture-library',
+        group: 'fixture-group',
+        box: 'fixture-box',
+        box_prefixes: boxPrefixes,
+        card_ids: cardIds,
+        ...(isResidualClosure
+          ? {
+              closure_reason: 'Fixture closes a previously identified candidate issue.',
+              source_issue_refs: ['fixture:changed-card'],
+            }
+          : {}),
+      },
+      specs_read: ['spec/review-workflow.json'],
+      sample_policy: isResidualClosure
+        ? {
+            review_scope_type: 'residual_blocker_closure',
+            is_three_card_sample_per_box: false,
+            residual_blocker_closure: true,
+            not_sample_approval: true,
+            batch_generation_requires_user_confirmation: true,
+          }
+        : {
+            review_scope_type: 'three_card_sample_per_box',
+            is_three_card_sample_per_box: true,
+            batch_generation_requires_user_confirmation: true,
+      },
+      quality_audit: {
+        report: auditReportPath,
+        corpus_fingerprint: 'fixture-fingerprint',
+        scope_has_no_hard_blockers: true,
+        scope_summary: qualityAuditSummary(cardIds),
+      },
       cards,
+      batch_review: {
+        status: isResidualClosure
+          ? 'documented_residual_closure'
+          : 'recommend_user_confirmation',
+        box_progression: 'fixture progression',
+        repetition_or_gap_risks: [],
+        representative_cards: cardIds.slice(0, 1),
+        next_step: 'Request user confirmation.',
+      },
     },
   );
+  writeJson(
+    path.join(root, auditReportPath),
+    fixtureScopedAuditReport(cardIds),
+  );
   return filePath;
+}
+
+function fixtureScopedAuditReport(cardIds) {
+  return {
+    scope: {card_ids: [...new Set(cardIds)].sort()},
+    scope_summary: {by_severity: {hard_blocker: 0}},
+    scoped_hard_blocker_issues: [],
+  };
+}
+
+function qualityAuditSummary(cardIds) {
+  return {
+    card_ids: cardIds,
+    card_count: new Set(cardIds).size,
+    issue_count: 0,
+    by_severity: {
+      hard_blocker: 0,
+      content_risk: 0,
+      review_gap: 0,
+      source_risk: 0,
+    },
+    by_rule: {
+      multiple_choice_no_options: 0,
+      multiple_choice_answer_not_in_options: 0,
+      front_leaks_correct_answer: 0,
+      front_leaks_analysis_conclusion: 0,
+      front_missing_or_too_short: 0,
+      analysis_missing_or_too_short: 0,
+      generic_front_pattern: 0,
+      template_analysis_pattern: 0,
+      exact_repeated_front: 0,
+      exact_repeated_analysis: 0,
+      missing_quality_metadata: 0,
+      unverified_source: 0,
+      synthetic_source: 0,
+    },
+  };
+}
+
+function writeApprovalFile(
+  root,
+  filename,
+  {
+    cardIds = ['000001'],
+    linkedReview =
+      'reviews/agent_self_review/fixture-approval-current-review.json',
+    report = 'reviews/audit_scopes/fixture-approval-scope-audit.json',
+  } = {},
+) {
+  const filePath = path.join(root, 'reviews/approved_batches', filename);
+  writeJson(filePath, {
+    approved_by_user: true,
+    approved_at: '2026-07-31T12:00:00+08:00',
+    scope: {
+      library: 'fixture-library',
+      group: 'fixture-group',
+      box: 'fixture-box',
+      box_prefixes: ['0000'],
+      card_ids: cardIds,
+    },
+    summary: 'Fixture approval evidence.',
+    card_quality_audit: {
+      report,
+      corpus_fingerprint: 'fixture-fingerprint',
+      scope_has_no_hard_blockers: true,
+      scope_summary: qualityAuditSummary(cardIds),
+    },
+    representative_cards: cardIds.slice(0, 1),
+    validation: {
+      agent_self_review: linkedReview,
+      harness: 'pass',
+      cards: 'pass',
+      audit: 'pass',
+    },
+    approval_limits: [
+      'scope only',
+      'no bulk generation',
+      'no automatic merge',
+    ],
+  });
+  if (report.startsWith('reviews/audit_scopes/')) {
+    writeJson(path.join(root, report), fixtureScopedAuditReport(cardIds));
+  }
+  return filePath;
+}
+
+function establishApprovalReviewBase(repo, cardIds = ['000001']) {
+  const reviewPath =
+    'reviews/agent_self_review/fixture-approval-current-review.json';
+  const reportPath =
+    'reviews/audit_scopes/fixture-approval-review-scope-audit.json';
+  writeJson(path.join(repo.root, reviewPath), {
+    review_id: 'fixture-approval-current-review',
+    scope: {
+      box_prefixes: ['0000'],
+      card_ids: cardIds,
+    },
+    quality_audit: {
+      report: reportPath,
+      corpus_fingerprint: 'fixture-fingerprint',
+      scope_has_no_hard_blockers: true,
+      scope_summary: qualityAuditSummary(cardIds),
+    },
+  });
+  writeJson(
+    path.join(repo.root, reportPath),
+    fixtureScopedAuditReport(cardIds),
+  );
+  commit(repo.root, 'establish current linked approval review');
+  repo.base = git(repo.root, 'rev-parse', 'HEAD');
+  return reviewPath;
 }
 
 function writeFullTrackReview(root, {
@@ -752,6 +1747,7 @@ function writeFullTrackReview(root, {
   track = 'cet4',
   boxPrefixes = ['0000'],
   coverageBoxPrefixes = boxPrefixes,
+  humanReviewer = 'external:fixture-reviewer',
   cards,
 }) {
   const filePath = path.join(
@@ -778,17 +1774,18 @@ function writeFullTrackReview(root, {
     coverage: {
       expected_card_count: expectedCount,
       reviewed_card_ids: reviewedCardIds,
-      human_reviewer: 'fixture-reviewer',
+      human_reviewer: humanReviewer,
       boxes: coverageBoxPrefixes.map(boxPrefix => ({
         box_prefix: boxPrefix,
         status: 'pass',
-        reviewer: 'fixture-reviewer',
+        reviewer: humanReviewer,
       })),
     },
     quality_audit: {
-      report: 'reports/card_quality_audit_report.json',
+      report: 'reviews/audit_scopes/fixture-full-track-scope-audit.json',
       corpus_fingerprint: 'fixture-fingerprint',
       scope_has_no_hard_blockers: true,
+      scope_summary: qualityAuditSummary(scopeCardIds),
     },
     representative_cards: scopeCardIds.slice(0, 1),
     batch_review: {
@@ -800,6 +1797,10 @@ function writeFullTrackReview(root, {
   };
   if (cards !== undefined) record.cards = cards;
   writeJson(filePath, record);
+  writeJson(
+    path.join(root, record.quality_audit.report),
+    fixtureScopedAuditReport(scopeCardIds),
+  );
   return filePath;
 }
 
@@ -906,7 +1907,10 @@ import path from 'node:path';
 
 const reportIndex = process.argv.indexOf('--write-scope-report');
 const reportPath = process.argv[reportIndex + 1];
+const scopeIndex = process.argv.indexOf('--scope-card-ids');
+const cardIds = process.argv[scopeIndex + 1].split(',').filter(Boolean).sort();
 const report = {
+  scope: {card_ids: [...new Set(cardIds)]},
   scope_summary: { by_severity: { hard_blocker: 0 } },
   scoped_hard_blocker_issues: [],
 };
@@ -921,6 +1925,8 @@ import path from 'node:path';
 
 const reportIndex = process.argv.indexOf('--write-scope-report');
 const reportPath = process.argv[reportIndex + 1];
+const scopeIndex = process.argv.indexOf('--scope-card-ids');
+const cardIds = process.argv[scopeIndex + 1].split(',').filter(Boolean).sort();
 const oldPath = path.join(
   process.cwd(),
   'card_boxes_json/card_boxes_seed_cet4_listening_0000.json',
@@ -931,6 +1937,7 @@ const newPath = path.join(
 );
 const invalidHeadSnapshot = fs.existsSync(oldPath) || !fs.existsSync(newPath);
 const report = {
+  scope: {card_ids: [...new Set(cardIds)]},
   scope_summary: {
     by_severity: {hard_blocker: invalidHeadSnapshot ? 1 : 0},
   },

@@ -5,6 +5,7 @@ import path from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
 
 import {
+  isHumanReviewerIdentity,
   loadIntegrityPolicy,
   validateChangedCardSelfReviewParity,
   validateEliminationIntegrity,
@@ -16,12 +17,15 @@ const GLOBAL_REPORT_PATHS = new Set([
   'reports/card_quality_audit_report.json',
   'reports/card_validation_report.json',
 ]);
+const PRE_CUTOVER_REPORT_INDEX = 'reports/pre-cutover-report-index.json';
 const MULTI_PREFIX_CONTENT_CHANGE_TYPES = new Set([
   'content_candidate_front_answer_leak_queue',
   'content_candidate_residual_blocker_closure',
 ]);
 const CONTENT_NO_AUTO_MERGE_AUTHORITY = 'no_auto_merge_content_candidate_user_confirmation_required';
 const REVIEW_TEMPLATE_PATHS = new Set([
+  'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
+  'reviews/approved_batches/TEMPLATE.json',
   'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
   'reviews/agent_self_review/TEMPLATE.json',
 ]);
@@ -39,6 +43,41 @@ const CURRENT_AUDIT_OVERLAY_PATHS = [
   'scripts/audit_card_quality.mjs',
   'spec/card-quality-audit.json',
 ];
+const FULL_TRACK_READY_STATUS = 'ready_for_full_track_user_approval';
+const QUALITY_AUDIT_SEVERITIES = ['hard_blocker', 'content_risk', 'review_gap', 'source_risk'];
+const REQUIRED_QUALITY_AUDIT_RULES = [
+  'multiple_choice_no_options',
+  'multiple_choice_answer_not_in_options',
+  'front_leaks_correct_answer',
+  'front_leaks_analysis_conclusion',
+  'front_missing_or_too_short',
+  'analysis_missing_or_too_short',
+  'generic_front_pattern',
+  'template_analysis_pattern',
+  'exact_repeated_front',
+  'exact_repeated_analysis',
+  'missing_quality_metadata',
+  'unverified_source',
+  'synthetic_source',
+];
+const REQUIRED_BLOCKERS = [
+  'logic_error',
+  'language_error',
+  'inappropriate_wording',
+  'low_knowledge_density',
+  'not_meeting_requirement',
+  'reverse_engineered_front',
+  'fake_source_claim',
+  'low_quality_variation',
+];
+const STANDARD_SELF_REVIEW_BATCH_STATUSES = [
+  'recommend_user_confirmation',
+  'revise_before_user_review',
+  'blocked',
+];
+const RESIDUAL_BLOCKER_CLOSURE_STATUS = 'documented_residual_closure';
+const CORE_INTERACTION_IDS = ['flip', 'multiple_choice', 'lock', 'elimination', 'swipe'];
+const SELF_REVIEW_CARD_STATUSES = ['pass', 'revise', 'block'];
 
 function readOption(name, fallback) {
   const index = process.argv.indexOf(name);
@@ -68,10 +107,6 @@ function resolveCommit(ref) {
   return runGit(['rev-parse', '--verify', `${ref}^{commit}`]).trim();
 }
 
-function normalizePath(value) {
-  return value.replaceAll('\\', '/');
-}
-
 function changedEntries(base, head) {
   const range = head ? `${base}...${head}` : base;
   const output = runGit(['diff', '--name-status', '-z', '--find-renames', range, '--']);
@@ -84,8 +119,7 @@ function changedEntries(base, head) {
     index += 1;
     const pathCount = /^[RC]/.test(status) ? 2 : 1;
     const paths = fields
-      .slice(index, index + pathCount)
-      .map(normalizePath);
+      .slice(index, index + pathCount);
     index += pathCount;
     if (paths.length !== pathCount) {
       throw new Error(`unable to parse NUL-delimited git diff entry for status ${status}`);
@@ -102,8 +136,8 @@ function changedEntries(base, head) {
       .filter(Boolean)
       .map(filePath => ({
         status: '??',
-        paths: [normalizePath(filePath)],
-        path: normalizePath(filePath),
+        paths: [filePath],
+        path: filePath,
       }));
     entries.push(...untracked);
   }
@@ -128,28 +162,66 @@ function isReviewTemplatePath(filePath) {
   return REVIEW_TEMPLATE_PATHS.has(filePath);
 }
 
+function isJsonBelow(filePath, directory) {
+  if (typeof filePath !== 'string') return false;
+  const prefix = `${directory}/`;
+  return filePath.startsWith(prefix) &&
+    filePath.length > prefix.length + '.json'.length &&
+    filePath.endsWith('.json');
+}
+
 function isDraftPath(filePath) {
-  return /^reviews\/drafts\/.+\.json$/.test(filePath) &&
+  return isJsonBelow(filePath, 'reviews/drafts') &&
+    !isReviewTemplatePath(filePath);
+}
+
+function isSelfReviewJsonPath(filePath) {
+  return isJsonBelow(filePath, 'reviews/agent_self_review') &&
     !isReviewTemplatePath(filePath);
 }
 
 function isSelfReviewPath(filePath) {
-  return /^reviews\/agent_self_review\/.+\.json$/.test(filePath) &&
+  if (!isSelfReviewJsonPath(filePath)) return false;
+  const relativePath = filePath.slice('reviews/agent_self_review/'.length);
+  return !relativePath.includes('/');
+}
+
+function isNoncanonicalSelfReviewPath(filePath) {
+  return isSelfReviewJsonPath(filePath) && !isSelfReviewPath(filePath);
+}
+
+function isApprovedBatchJsonPath(filePath) {
+  return isJsonBelow(filePath, 'reviews/approved_batches') &&
     !isReviewTemplatePath(filePath);
 }
 
+function isApprovedBatchPath(filePath) {
+  if (!isApprovedBatchJsonPath(filePath)) return false;
+  const relativePath = filePath.slice('reviews/approved_batches/'.length);
+  return !relativePath.includes('/');
+}
+
+function isNoncanonicalApprovedBatchPath(filePath) {
+  return isApprovedBatchJsonPath(filePath) && !isApprovedBatchPath(filePath);
+}
+
 function isHandoffPath(filePath) {
-  return /^reviews\/git_handoffs\/.+\.json$/.test(filePath) &&
+  return isJsonBelow(filePath, 'reviews/git_handoffs') &&
     !filePath.endsWith('/TEMPLATE.json');
 }
 
 function isScopedAuditPath(filePath) {
-  return /^reviews\/audit_scopes\/.+\.json$/.test(filePath) &&
+  return isJsonBelow(filePath, 'reviews/audit_scopes') &&
     !isReviewTemplatePath(filePath);
 }
 
 function isContentReviewPath(filePath) {
-  if (isDraftPath(filePath) || isSelfReviewPath(filePath) || isScopedAuditPath(filePath)) {
+  if (
+    isDraftPath(filePath) ||
+    isSelfReviewJsonPath(filePath) ||
+    isApprovedBatchJsonPath(filePath) ||
+    isScopedAuditPath(filePath)
+  ) {
     return true;
   }
   return Boolean(pathPrefix(filePath)) && isHandoffPath(filePath);
@@ -169,6 +241,43 @@ function setsEqual(left, right) {
     if (!right.has(value)) return false;
   }
   return true;
+}
+
+function hasText(value) {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function isNonNegativeInteger(value) {
+  return Number.isInteger(value) && value >= 0;
+}
+
+function isQualityAuditReportPath(value) {
+  if (value === 'reports/card_quality_audit_report.json') return true;
+  return isScopedQualityAuditReportPath(value);
+}
+
+function isScopedQualityAuditReportPath(value) {
+  if (typeof value !== 'string' || !isJsonBelow(value, 'reviews/audit_scopes')) return false;
+  return !value.slice('reviews/audit_scopes/'.length).includes('/');
+}
+
+function hasUnsafeGitPathCharacters(filePath) {
+  return filePath.includes('\\') || /[\u0001-\u001f\u007f\u2028\u2029]/.test(filePath);
+}
+
+function isRegularFileAtCommit(commit, filePath) {
+  if (!commit) return true;
+  const output = runGit([
+    '--literal-pathspecs',
+    'ls-tree',
+    '-z',
+    commit,
+    '--',
+    filePath,
+  ]);
+  const metadata = output.split('\t', 1)[0] || '';
+  const [mode, type] = metadata.split(' ');
+  return type === 'blob' && (mode === '100644' || mode === '100755');
 }
 
 function readChangedJson(filePath, head) {
@@ -223,9 +332,8 @@ function hasCardBoxDiff(entries) {
 }
 
 function cardBoxPathsAtCommit(commit) {
-  return runGit(['ls-tree', '-r', '--name-only', commit, '--', 'card_boxes_json'])
-    .split('\n')
-    .map(filePath => normalizePath(filePath.trim()))
+  return runGit(['ls-tree', '-r', '-z', '--name-only', commit, '--', 'card_boxes_json'])
+    .split('\0')
     .filter(isCardBoxPath)
     .sort();
 }
@@ -318,6 +426,627 @@ function appendLibraryIssues(target, libraryIssues, context) {
   }
 }
 
+function validateFullTrackAggregateSemantics({
+  record,
+  filePath,
+  scopeCardIds,
+  scopeBoxPrefixes,
+}) {
+  const issues = [];
+  const push = (code, message, details = {}) => {
+    issues.push({code, path: filePath, message, ...details});
+  };
+  const samplePolicy = record.sample_policy;
+  const requiredSampleFlags = [
+    ['is_three_card_sample_per_box', false],
+    ['full_track_remediation', true],
+    ['batch_generation_requires_user_confirmation', true],
+    ['final_user_approval_required', true],
+  ];
+  for (const [field, expected] of requiredSampleFlags) {
+    if (samplePolicy?.[field] !== expected) {
+      push(
+        'changed_full_track_review_sample_policy_invalid',
+        `A changed full-track aggregate must set sample_policy.${field}=${expected}.`,
+        {field, expected, actual: samplePolicy?.[field] ?? null},
+      );
+    }
+  }
+
+  if (
+    !Array.isArray(record.specs_read) ||
+    record.specs_read.length === 0 ||
+    !record.specs_read.every(hasText)
+  ) {
+    push(
+      'changed_full_track_review_specs_read_invalid',
+      'A changed full-track aggregate must name the governing specs it read.',
+    );
+  }
+
+  const aggregateReviewer = record.coverage?.human_reviewer;
+  if (!isHumanReviewerIdentity(aggregateReviewer)) {
+    push(
+      'changed_full_track_review_human_reviewer_invalid',
+      'A changed full-track aggregate must identify a named human reviewer as github:<id>, team:<id>, or external:<id>; agent, bot, Codex, automation, and CI identities are forbidden.',
+      {human_reviewer: aggregateReviewer ?? null},
+    );
+  }
+
+  const boxes = Array.isArray(record.coverage?.boxes) ? record.coverage.boxes : [];
+  for (let index = 0; index < boxes.length; index += 1) {
+    const box = boxes[index];
+    if (
+      box?.status !== 'pass' ||
+      !isHumanReviewerIdentity(box?.reviewer) ||
+      box.reviewer !== aggregateReviewer
+    ) {
+      push(
+        'changed_full_track_review_box_human_pass_invalid',
+        'Every covered box must be marked pass by the same named human reviewer declared for the aggregate.',
+        {
+          box_index: index,
+          box_prefix: box?.box_prefix ?? null,
+          status: box?.status ?? null,
+          reviewer: box?.reviewer ?? null,
+          expected_reviewer: aggregateReviewer ?? null,
+        },
+      );
+    }
+  }
+
+  const qualityAudit = record.quality_audit;
+  if (!qualityAudit || typeof qualityAudit !== 'object' || Array.isArray(qualityAudit)) {
+    push(
+      'changed_full_track_review_quality_audit_invalid',
+      'A changed full-track aggregate must carry a structured quality_audit record.',
+    );
+  } else {
+    if (!isScopedQualityAuditReportPath(qualityAudit.report)) {
+      push(
+        'changed_full_track_review_scoped_audit_required',
+        'A changed full-track aggregate must link one direct current scoped audit report under reviews/audit_scopes; archived global reports are immutable legacy evidence only.',
+        {report: qualityAudit.report ?? null},
+      );
+    }
+    if (!hasText(qualityAudit.corpus_fingerprint)) {
+      push(
+        'changed_full_track_review_quality_audit_fingerprint_invalid',
+        'quality_audit.corpus_fingerprint must be non-empty.',
+      );
+    }
+    if (qualityAudit.scope_has_no_hard_blockers !== true) {
+      push(
+        'changed_full_track_review_quality_audit_not_clear',
+        'quality_audit.scope_has_no_hard_blockers must be true before full-track coverage can authorize a changed card.',
+        {actual: qualityAudit.scope_has_no_hard_blockers ?? null},
+      );
+    }
+
+    const summary = qualityAudit.scope_summary;
+    if (!summary || typeof summary !== 'object' || Array.isArray(summary)) {
+      push(
+        'changed_full_track_review_quality_audit_summary_invalid',
+        'quality_audit.scope_summary must be a structured complete-track summary.',
+      );
+    } else {
+      const summaryCardIds = Array.isArray(summary.card_ids) ? summary.card_ids : [];
+      const validSummaryCardIds = summaryCardIds.every(hasText);
+      const uniqueSummaryCardIds = new Set(summaryCardIds);
+      if (
+        summaryCardIds.length !== scopeCardIds.size ||
+        !validSummaryCardIds ||
+        uniqueSummaryCardIds.size !== summaryCardIds.length ||
+        !setsEqual(uniqueSummaryCardIds, scopeCardIds)
+      ) {
+        push(
+          'changed_full_track_review_quality_audit_scope_mismatch',
+          'quality_audit.scope_summary.card_ids must exactly equal the unique full-track scope.card_ids.',
+          {
+            expected_card_ids: [...scopeCardIds].sort(),
+            actual_card_ids: summaryCardIds,
+          },
+        );
+      }
+      if (summary.card_count !== scopeCardIds.size) {
+        push(
+          'changed_full_track_review_quality_audit_count_mismatch',
+          'quality_audit.scope_summary.card_count must equal the unique full-track scope size.',
+          {expected: scopeCardIds.size, actual: summary.card_count ?? null},
+        );
+      }
+      if (!isNonNegativeInteger(summary.issue_count)) {
+        push(
+          'changed_full_track_review_quality_audit_issue_count_invalid',
+          'quality_audit.scope_summary.issue_count must be a non-negative integer.',
+          {actual: summary.issue_count ?? null},
+        );
+      }
+
+      let severityTotal = 0;
+      for (const severity of QUALITY_AUDIT_SEVERITIES) {
+        const count = summary.by_severity?.[severity];
+        if (!isNonNegativeInteger(count)) {
+          push(
+            'changed_full_track_review_quality_audit_severity_invalid',
+            'Every required quality_audit severity count must be a non-negative integer.',
+            {severity, actual: count ?? null},
+          );
+        } else {
+          severityTotal += count;
+        }
+      }
+      if (summary.by_severity?.hard_blocker !== 0) {
+        push(
+          'changed_full_track_review_quality_audit_has_hard_blockers',
+          'The full-track quality_audit summary must contain zero hard blockers.',
+          {actual: summary.by_severity?.hard_blocker ?? null},
+        );
+      }
+      if (isNonNegativeInteger(summary.issue_count) && severityTotal !== summary.issue_count) {
+        push(
+          'changed_full_track_review_quality_audit_severity_total_mismatch',
+          'quality_audit.scope_summary.issue_count must equal the sum of required severity counts.',
+          {expected: severityTotal, actual: summary.issue_count},
+        );
+      }
+      for (const ruleId of REQUIRED_QUALITY_AUDIT_RULES) {
+        const count = summary.by_rule?.[ruleId];
+        if (!isNonNegativeInteger(count)) {
+          push(
+            'changed_full_track_review_quality_audit_rule_invalid',
+            'Every governed quality_audit rule count must be a non-negative integer.',
+            {rule_id: ruleId, actual: count ?? null},
+          );
+        }
+      }
+    }
+  }
+
+  if (record.batch_review?.status !== FULL_TRACK_READY_STATUS) {
+    push(
+      'changed_full_track_review_batch_status_invalid',
+      `A changed full-track aggregate batch_review.status must be ${FULL_TRACK_READY_STATUS}.`,
+      {actual: record.batch_review?.status ?? null},
+    );
+  }
+  if (
+    !Array.isArray(record.batch_review?.remaining_risks) ||
+    record.batch_review.remaining_risks.length !== 0
+  ) {
+    push(
+      'changed_full_track_review_remaining_risks_invalid',
+      'A full-track aggregate ready for user approval must declare an empty batch_review.remaining_risks array.',
+    );
+  }
+  if (!hasText(record.batch_review?.summary) || !hasText(record.batch_review?.next_step)) {
+    push(
+      'changed_full_track_review_batch_evidence_incomplete',
+      'A changed full-track aggregate must include non-empty batch_review.summary and batch_review.next_step.',
+    );
+  }
+  if (
+    !Array.isArray(record.representative_cards) ||
+    record.representative_cards.length === 0 ||
+    !record.representative_cards.every(hasText) ||
+    new Set(record.representative_cards).size !== record.representative_cards.length ||
+    record.representative_cards.some(cardId => !scopeCardIds.has(cardId))
+  ) {
+    push(
+      'changed_full_track_review_representative_cards_invalid',
+      'representative_cards must be a non-empty unique array containing only card IDs from the declared full-track scope.',
+    );
+  }
+
+  if (boxes.length !== scopeBoxPrefixes.size) {
+    push(
+      'changed_full_track_review_box_count_mismatch',
+      'coverage.boxes must contain exactly one entry for every unique scope.box_prefixes value.',
+      {expected: scopeBoxPrefixes.size, actual: boxes.length},
+    );
+  }
+
+  return issues;
+}
+
+function changedSelfReviewScopeType(record) {
+  if (hasText(record.sample_policy?.review_scope_type)) {
+    return record.sample_policy.review_scope_type;
+  }
+  if (record.sample_policy?.residual_blocker_closure === true) {
+    return 'residual_blocker_closure';
+  }
+  return 'three_card_sample_per_box';
+}
+
+function validateStandardReviewSemantics({
+  record,
+  filePath,
+  scopeCardIds,
+}) {
+  const issues = [];
+  const push = (code, message, details = {}) => {
+    issues.push({code, path: filePath, message, ...details});
+  };
+  const samplePolicy = record.sample_policy;
+  const reviewScopeType = changedSelfReviewScopeType(record);
+  const isResidualClosure = reviewScopeType === 'residual_blocker_closure';
+  if (!hasText(samplePolicy?.review_scope_type)) {
+    push(
+      'changed_self_review_scope_type_required',
+      'Every changed self-review must explicitly declare sample_policy.review_scope_type before it can count as candidate coverage.',
+    );
+  }
+  if (!['three_card_sample_per_box', 'residual_blocker_closure'].includes(reviewScopeType)) {
+    push(
+      'changed_self_review_scope_type_invalid',
+      'A changed non-full-track self-review must use the standard sample or residual blocker closure scope type.',
+      {actual: reviewScopeType},
+    );
+  }
+  if (isResidualClosure) {
+    for (const [field, expected] of [
+      ['is_three_card_sample_per_box', false],
+      ['residual_blocker_closure', true],
+      ['not_sample_approval', true],
+    ]) {
+      if (samplePolicy?.[field] !== expected) {
+        push(
+          'changed_self_review_sample_policy_invalid',
+          `Residual closure evidence must set sample_policy.${field}=${expected}.`,
+          {field, expected, actual: samplePolicy?.[field] ?? null},
+        );
+      }
+    }
+    if (
+      !hasText(record.scope?.closure_reason) ||
+      !Array.isArray(record.scope?.source_issue_refs) ||
+      record.scope.source_issue_refs.length === 0 ||
+      !record.scope.source_issue_refs.every(hasText)
+    ) {
+      push(
+        'changed_self_review_residual_scope_invalid',
+        'Residual closure evidence must name a closure reason and non-empty source issue references.',
+      );
+    }
+    if (!isScopedQualityAuditReportPath(record.quality_audit?.report)) {
+      push(
+        'changed_self_review_residual_scoped_audit_required',
+        'Residual blocker closure evidence must link one direct scoped audit report under reviews/audit_scopes.',
+        {report: record.quality_audit?.report ?? null},
+      );
+    }
+    if (record.batch_review?.status !== RESIDUAL_BLOCKER_CLOSURE_STATUS) {
+      push(
+        'changed_self_review_batch_status_invalid',
+        `Residual closure evidence batch_review.status must be ${RESIDUAL_BLOCKER_CLOSURE_STATUS}.`,
+        {actual: record.batch_review?.status ?? null},
+      );
+    }
+  } else {
+    if (samplePolicy?.is_three_card_sample_per_box !== true) {
+      push(
+        'changed_self_review_sample_policy_invalid',
+        'A standard changed self-review must set sample_policy.is_three_card_sample_per_box=true.',
+      );
+    }
+    for (const field of ['library', 'group', 'box']) {
+      if (!hasText(record.scope?.[field])) {
+        push(
+          'changed_self_review_scope_field_missing',
+          `A standard changed self-review must declare scope.${field}.`,
+          {field},
+        );
+      }
+    }
+    if (!STANDARD_SELF_REVIEW_BATCH_STATUSES.includes(record.batch_review?.status)) {
+      push(
+        'changed_self_review_batch_status_invalid',
+        'A standard changed self-review must use a governed batch_review.status.',
+        {actual: record.batch_review?.status ?? null},
+      );
+    }
+    if (!isScopedQualityAuditReportPath(record.quality_audit?.report)) {
+      push(
+        'changed_self_review_standard_scoped_audit_required',
+        'A changed standard sample must link one direct current scoped audit report under reviews/audit_scopes; archived global reports are immutable legacy evidence only.',
+        {report: record.quality_audit?.report ?? null},
+      );
+    }
+    if (!hasText(record.batch_review?.box_progression)) {
+      push(
+        'changed_self_review_batch_box_progression_missing',
+        'A changed standard sample must explain the batch box progression before its snapshots can count as coverage.',
+      );
+    }
+    if (!Array.isArray(record.batch_review?.repetition_or_gap_risks)) {
+      push(
+        'changed_self_review_batch_risks_invalid',
+        'A changed standard sample must carry a repetition_or_gap_risks array, including an empty array when no risks remain.',
+      );
+    }
+    const representativeCards = Array.isArray(record.batch_review?.representative_cards)
+      ? record.batch_review.representative_cards
+      : [];
+    if (
+      representativeCards.length === 0 ||
+      !representativeCards.every(hasText) ||
+      new Set(representativeCards).size !== representativeCards.length ||
+      !representativeCards.every(cardId => scopeCardIds.has(cardId))
+    ) {
+      push(
+        'changed_self_review_batch_representative_cards_invalid',
+        'A changed standard sample must name non-empty unique representative_cards drawn only from scope.card_ids.',
+        {representative_cards: representativeCards},
+      );
+    }
+    if (!hasText(record.batch_review?.next_step)) {
+      push(
+        'changed_self_review_batch_next_step_missing',
+        'A changed standard sample must state its next-step recommendation.',
+      );
+    }
+  }
+  if (samplePolicy?.batch_generation_requires_user_confirmation !== true) {
+    push(
+      'changed_self_review_user_confirmation_policy_missing',
+      'A changed self-review must preserve explicit user confirmation before batch generation or formal use.',
+    );
+  }
+  if (
+    !Array.isArray(record.specs_read) ||
+    record.specs_read.length === 0 ||
+    !record.specs_read.every(hasText)
+  ) {
+    push(
+      'changed_self_review_specs_read_invalid',
+      'A changed self-review must name the governing specs it read.',
+    );
+  }
+  const scopeBoxPrefixes = Array.isArray(record.scope?.box_prefixes)
+    ? record.scope.box_prefixes
+    : [];
+  if (
+    scopeBoxPrefixes.length === 0 ||
+    !scopeBoxPrefixes.every(hasText) ||
+    new Set(scopeBoxPrefixes).size !== scopeBoxPrefixes.length
+  ) {
+    push(
+      'changed_self_review_scope_box_prefixes_invalid',
+      'A changed self-review must declare non-empty unique string scope.box_prefixes.',
+    );
+  }
+
+  const qualityAudit = record.quality_audit;
+  if (!qualityAudit || typeof qualityAudit !== 'object' || Array.isArray(qualityAudit)) {
+    push(
+      'changed_self_review_quality_audit_invalid',
+      'A changed self-review must carry a structured quality_audit record.',
+    );
+  } else {
+    if (!isQualityAuditReportPath(qualityAudit.report)) {
+      push(
+        'changed_self_review_quality_audit_report_invalid',
+        'quality_audit.report must name the governed global report or one direct scoped-audit JSON record.',
+        {report: qualityAudit.report ?? null},
+      );
+    }
+    if (!hasText(qualityAudit.corpus_fingerprint)) {
+      push(
+        'changed_self_review_quality_audit_fingerprint_invalid',
+        'quality_audit.corpus_fingerprint must be non-empty.',
+      );
+    }
+    if (typeof qualityAudit.scope_has_no_hard_blockers !== 'boolean') {
+      push(
+        'changed_self_review_quality_audit_scope_flag_invalid',
+        'quality_audit.scope_has_no_hard_blockers must be boolean.',
+      );
+    }
+    if (
+      record.batch_review?.status === 'recommend_user_confirmation' &&
+      qualityAudit.scope_has_no_hard_blockers !== true
+    ) {
+      push(
+        'changed_self_review_quality_audit_not_clear',
+        'A self-review recommending user confirmation must declare zero scoped hard blockers.',
+      );
+    }
+    const summary = qualityAudit.scope_summary;
+    if (!summary || typeof summary !== 'object' || Array.isArray(summary)) {
+      push(
+        'changed_self_review_quality_audit_summary_invalid',
+        'quality_audit.scope_summary must be a structured scoped summary.',
+      );
+    } else {
+      const summaryCardIds = Array.isArray(summary.card_ids) ? summary.card_ids : [];
+      const summaryCardIdSet = new Set(summaryCardIds);
+      if (
+        summaryCardIds.length !== scopeCardIds.size ||
+        !summaryCardIds.every(hasText) ||
+        summaryCardIdSet.size !== summaryCardIds.length ||
+        !setsEqual(summaryCardIdSet, scopeCardIds)
+      ) {
+        push(
+          'changed_self_review_quality_audit_scope_mismatch',
+          'quality_audit.scope_summary.card_ids must exactly equal the unique self-review scope.card_ids.',
+          {
+            expected_card_ids: [...scopeCardIds].sort(),
+            actual_card_ids: summaryCardIds,
+          },
+        );
+      }
+      if (summary.card_count !== scopeCardIds.size || !isNonNegativeInteger(summary.issue_count)) {
+        push(
+          'changed_self_review_quality_audit_counts_invalid',
+          'quality_audit scope card_count must match and issue_count must be a non-negative integer.',
+          {
+            expected_card_count: scopeCardIds.size,
+            actual_card_count: summary.card_count ?? null,
+            issue_count: summary.issue_count ?? null,
+          },
+        );
+      }
+      let severityTotal = 0;
+      let severitiesValid = true;
+      for (const severity of QUALITY_AUDIT_SEVERITIES) {
+        const count = summary.by_severity?.[severity];
+        if (!isNonNegativeInteger(count)) {
+          severitiesValid = false;
+          push(
+            'changed_self_review_quality_audit_severity_invalid',
+            'Every required quality_audit severity count must be a non-negative integer.',
+            {severity, actual: count ?? null},
+          );
+        } else {
+          severityTotal += count;
+        }
+      }
+      if (
+        record.batch_review?.status === 'recommend_user_confirmation' &&
+        summary.by_severity?.hard_blocker !== 0
+      ) {
+        push(
+          'changed_self_review_quality_audit_has_hard_blockers',
+          'A self-review recommending user confirmation must report zero hard blockers.',
+        );
+      }
+      if (
+        severitiesValid &&
+        isNonNegativeInteger(summary.issue_count) &&
+        severityTotal !== summary.issue_count
+      ) {
+        push(
+          'changed_self_review_quality_audit_severity_total_mismatch',
+          'quality_audit.scope_summary.issue_count must equal the sum of required severity counts.',
+        );
+      }
+      for (const ruleId of REQUIRED_QUALITY_AUDIT_RULES) {
+        if (!isNonNegativeInteger(summary.by_rule?.[ruleId])) {
+          push(
+            'changed_self_review_quality_audit_rule_invalid',
+            'Every governed quality_audit rule count must be a non-negative integer.',
+            {rule_id: ruleId, actual: summary.by_rule?.[ruleId] ?? null},
+          );
+        }
+      }
+    }
+  }
+
+  const cards = Array.isArray(record.cards) ? record.cards : [];
+  if (isResidualClosure) {
+    if (cards.length !== scopeCardIds.size) {
+      push(
+        'changed_self_review_residual_card_count_invalid',
+        'Residual closure evidence must carry exactly one card snapshot for every unique scope.card_ids entry.',
+        {expected: scopeCardIds.size, actual: cards.length},
+      );
+    }
+  } else {
+    const expectedCardCount = scopeBoxPrefixes.length * 3;
+    if (cards.length !== expectedCardCount) {
+      push(
+        'changed_self_review_sample_card_count_invalid',
+        'A standard changed self-review must contain exactly three card snapshots per scoped box.',
+        {expected: expectedCardCount, actual: cards.length},
+      );
+    }
+    const cardsPerBox = new Map(scopeBoxPrefixes.map(boxPrefix => [boxPrefix, 0]));
+    for (let index = 0; index < cards.length; index += 1) {
+      const boxPrefix = cards[index]?.knowledge_ref?.box_prefix;
+      if (!cardsPerBox.has(boxPrefix)) {
+        push(
+          'changed_self_review_card_box_prefix_invalid',
+          'Every standard self-review snapshot must belong to one declared scope.box_prefixes value.',
+          {review_index: index, card_id: cards[index]?.card_id ?? null, box_prefix: boxPrefix ?? null},
+        );
+        continue;
+      }
+      cardsPerBox.set(boxPrefix, cardsPerBox.get(boxPrefix) + 1);
+    }
+    for (const [boxPrefix, count] of cardsPerBox) {
+      if (count !== 3) {
+        push(
+          'changed_self_review_per_box_card_count_invalid',
+          'Every standard sample box must contain exactly three card snapshots.',
+          {box_prefix: boxPrefix, expected: 3, actual: count},
+        );
+      }
+    }
+  }
+  for (let index = 0; index < cards.length; index += 1) {
+    const card = cards[index];
+    for (const field of [
+      'card_id',
+      'interaction_id',
+      'knowledge_ref',
+      'status',
+      'quality_metadata',
+      'blocker_scan',
+    ]) {
+      if (!Object.hasOwn(card || {}, field)) {
+        push(
+          'changed_self_review_card_evidence_incomplete',
+          `Every changed self-review card snapshot must include ${field}.`,
+          {review_index: index, card_id: card?.card_id ?? null, field},
+        );
+      }
+    }
+    if (!CORE_INTERACTION_IDS.includes(card?.interaction_id)) {
+      push(
+        'changed_self_review_card_interaction_invalid',
+        'Every changed self-review card snapshot must use a core interaction ID.',
+        {review_index: index, card_id: card?.card_id ?? null, actual: card?.interaction_id ?? null},
+      );
+    }
+    if (!SELF_REVIEW_CARD_STATUSES.includes(card?.status)) {
+      push(
+        'changed_self_review_card_status_invalid',
+        'Every changed self-review card status must be pass, revise, or block.',
+        {review_index: index, card_id: card?.card_id ?? null, actual: card?.status ?? null},
+      );
+    }
+    if (card?.quality_metadata?.review_status === 'user_approved') {
+      push(
+        'changed_self_review_card_claims_user_approval',
+        'Agent self-review metadata cannot claim user_approved status.',
+        {review_index: index, card_id: card?.card_id ?? null},
+      );
+    }
+    let hasBlocker = false;
+    for (const blocker of REQUIRED_BLOCKERS) {
+      if (typeof card?.blocker_scan?.[blocker] !== 'boolean') {
+        push(
+          'changed_self_review_blocker_scan_invalid',
+          'Every governed blocker scan field must be boolean.',
+          {review_index: index, card_id: card?.card_id ?? null, blocker},
+        );
+      } else if (card.blocker_scan[blocker]) {
+        hasBlocker = true;
+      }
+    }
+    if (card?.status === 'pass' && hasBlocker) {
+      push(
+        'changed_self_review_pass_card_has_blocker',
+        'A changed self-review card marked pass cannot carry a true blocker.',
+        {review_index: index, card_id: card?.card_id ?? null},
+      );
+    }
+    if (
+      record.batch_review?.status === 'recommend_user_confirmation' &&
+      (card?.status !== 'pass' || hasBlocker)
+    ) {
+      push(
+        'changed_self_review_recommends_confirmation_with_blocked_card',
+        'A self-review cannot recommend user confirmation while an included card is non-pass or blocked.',
+        {review_index: index, card_id: card?.card_id ?? null},
+      );
+    }
+  }
+
+  return issues;
+}
+
 function runChangedCardIntegrity({ base, head, entries }) {
   if (!head) {
     return {
@@ -363,7 +1092,11 @@ function runChangedCardIntegrity({ base, head, entries }) {
 
       const baseOccurrences = baseCorpus.cardsById.get(cardId) || [];
       if (baseOccurrences.length !== 1 || !isDeepStrictEqual(baseOccurrences[0].card, headOccurrences[0].card)) {
-        changedCards.push({ card_id: cardId, ...headOccurrences[0] });
+        changedCards.push({
+          card_id: cardId,
+          added: baseOccurrences.length === 0,
+          ...headOccurrences[0],
+        });
       }
     }
 
@@ -383,6 +1116,14 @@ function runChangedCardIntegrity({ base, head, entries }) {
   const reviewsByCardId = new Map();
   const fullTrackReviewPaths = [];
   for (const filePath of reviewPaths) {
+    if (!isRegularFileAtCommit(head, filePath)) {
+      issues.push({
+        code: 'changed_self_review_not_regular_file',
+        path: filePath,
+        message: 'Each changed self-review must be a direct regular JSON file, not a symlink or another Git object type.',
+      });
+      continue;
+    }
     const record = readChangedJson(filePath, head);
     if (!record || typeof record !== 'object' || Array.isArray(record)) {
       issues.push({
@@ -472,6 +1213,13 @@ function runChangedCardIntegrity({ base, head, entries }) {
         validCoverageBoxPrefixes.length === rawCoverageBoxes.length;
       const coverageBoxPrefixesUnique =
         coverageBoxPrefixes.size === validCoverageBoxPrefixes.length;
+      const semanticIssues = validateFullTrackAggregateSemantics({
+        record,
+        filePath,
+        scopeCardIds,
+        scopeBoxPrefixes,
+      });
+      issues.push(...semanticIssues);
       const trackCardScopeEqual =
         trackValid &&
         headTrackScope.cardIds.size > 0 &&
@@ -616,6 +1364,7 @@ function runChangedCardIntegrity({ base, head, entries }) {
         scopeBoxPrefixesUnique &&
         coverageBoxPrefixesValid &&
         coverageBoxPrefixesUnique &&
+        semanticIssues.length === 0 &&
         trackCardScopeEqual &&
         trackMembershipStable &&
         trackBoxScopeEqual &&
@@ -663,6 +1412,14 @@ function runChangedCardIntegrity({ base, head, entries }) {
       continue;
     }
 
+    const standardSemanticIssues = validateStandardReviewSemantics({
+      record,
+      filePath,
+      scopeCardIds,
+    });
+    issues.push(...standardSemanticIssues);
+    const standardSemanticsValid = standardSemanticIssues.length === 0;
+
     if (!Array.isArray(record.cards)) {
       issues.push({
         code: 'changed_self_review_cards_missing',
@@ -687,16 +1444,6 @@ function runChangedCardIntegrity({ base, head, entries }) {
       }
       recordCardIds.push(cardId);
 
-      const matches = reviewsByCardId.get(cardId) || [];
-      matches.push({
-        review,
-        path: filePath,
-        review_index: index,
-        scope_card_ids: scopeCardIds,
-        mode: 'standard_snapshot',
-      });
-      reviewsByCardId.set(cardId, matches);
-
       if (!scopeCardIds.has(cardId)) {
         issues.push({
           code: 'changed_self_review_card_missing_from_scope',
@@ -707,6 +1454,7 @@ function runChangedCardIntegrity({ base, head, entries }) {
       }
 
       const corpusOccurrences = headCorpus.cardsById.get(cardId) || [];
+      let snapshotIdentityValid = corpusOccurrences.length === 1;
       if (corpusOccurrences.length !== 1) {
         issues.push({
           code: corpusOccurrences.length === 0
@@ -717,6 +1465,44 @@ function runChangedCardIntegrity({ base, head, entries }) {
           corpus_occurrences: corpusOccurrences.map(occurrence => occurrence.path),
           message: 'Every changed self-review card entry must resolve to exactly one card in the HEAD corpus.',
         });
+      } else {
+        const corpusCard = corpusOccurrences[0].card;
+        if (review.interaction_id !== corpusCard?.interaction_id) {
+          snapshotIdentityValid = false;
+          issues.push({
+            code: 'changed_self_review_card_interaction_mismatch',
+            card_id: cardId,
+            path: filePath,
+            expected: corpusCard?.interaction_id ?? null,
+            actual: review.interaction_id ?? null,
+            message: 'A standard self-review snapshot interaction_id must match its unique immutable HEAD corpus card.',
+          });
+        }
+        if (!isDeepStrictEqual(review.knowledge_ref, corpusCard?.knowledge_ref)) {
+          snapshotIdentityValid = false;
+          issues.push({
+            code: 'changed_self_review_card_knowledge_ref_mismatch',
+            card_id: cardId,
+            path: filePath,
+            expected: corpusCard?.knowledge_ref ?? null,
+            actual: review.knowledge_ref ?? null,
+            message: 'A standard self-review snapshot knowledge_ref must exactly match its unique immutable HEAD corpus card.',
+          });
+        }
+      }
+
+      if (standardSemanticsValid && snapshotIdentityValid) {
+        const matches = reviewsByCardId.get(cardId) || [];
+        matches.push({
+          review,
+          path: filePath,
+          review_index: index,
+          scope_card_ids: scopeCardIds,
+          mode: changedSelfReviewScopeType(record) === 'residual_blocker_closure'
+            ? 'residual_snapshot'
+            : 'standard_snapshot',
+        });
+        reviewsByCardId.set(cardId, matches);
       }
     }
 
@@ -751,7 +1537,9 @@ function runChangedCardIntegrity({ base, head, entries }) {
 
   const policy = loadIntegrityPolicy(process.cwd());
   for (const [cardId, matches] of reviewsByCardId) {
-    const snapshotMatches = matches.filter(match => match.mode === 'standard_snapshot');
+    const snapshotMatches = matches.filter(match =>
+      match.mode === 'standard_snapshot' || match.mode === 'residual_snapshot'
+    );
     if (snapshotMatches.length === 0) continue;
     const corpusOccurrences = headCorpus.cardsById.get(cardId) || [];
     if (corpusOccurrences.length !== 1) continue;
@@ -791,15 +1579,33 @@ function runChangedCardIntegrity({ base, head, entries }) {
     });
 
     const matchingReviews = reviewsByCardId.get(changedCard.card_id) || [];
-    const scopedMatchingReviews = matchingReviews.filter(match => match.scope_card_ids.has(changedCard.card_id));
-    if (matchingReviews.length !== 1 || scopedMatchingReviews.length !== 1) {
+    const eligibleMatchingReviews = changedCard.added
+      ? matchingReviews.filter(match => match.mode === 'standard_snapshot')
+      : matchingReviews;
+    const scopedMatchingReviews = eligibleMatchingReviews.filter(match =>
+      match.scope_card_ids.has(changedCard.card_id)
+    );
+    if (
+      changedCard.added &&
+      matchingReviews.some(match => match.mode !== 'standard_snapshot')
+    ) {
+      issues.push({
+        code: 'changed_added_card_requires_standard_sample_review',
+        card_id: changedCard.card_id,
+        review_paths: matchingReviews.map(match => match.path),
+        review_modes: matchingReviews.map(match => match.mode),
+        message: 'A newly added candidate card requires canonical three-card sample coverage; residual closure or aggregate evidence cannot authorize new generation.',
+      });
+    }
+    if (eligibleMatchingReviews.length !== 1 || scopedMatchingReviews.length !== 1) {
       issues.push({
         code: 'changed_card_self_review_count_invalid',
-        library_code: matchingReviews.length === 0
+        library_code: eligibleMatchingReviews.length === 0
           ? CARD_INTEGRITY_ISSUE_CODES.selfReviewMissing
           : 'candidate_self_review_ambiguous',
         card_id: changedCard.card_id,
-        review_count: matchingReviews.length,
+        review_count: eligibleMatchingReviews.length,
+        ineligible_review_count: matchingReviews.length - eligibleMatchingReviews.length,
         scoped_review_count: scopedMatchingReviews.length,
         review_paths: matchingReviews.map(match => match.path),
         review_modes: matchingReviews.map(match => match.mode),
@@ -905,6 +1711,328 @@ function runCurrentScopedAudit({ base, head, entries }) {
       // Best-effort cleanup only.
     }
   }
+}
+
+function replayScopedAuditAtHead({base, head, scopeCardIds}) {
+  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'card-make-scoped-audit-replay-'));
+  const worktreePath = path.join(tempRoot, 'worktree');
+  const scopedReportPath = 'reviews/audit_scopes/__validate_changed_scoped_audit.json';
+  let worktreeAdded = false;
+  try {
+    runGit(['worktree', 'add', '--detach', worktreePath, base]);
+    worktreeAdded = true;
+    materializeHeadCardCorpus(worktreePath, head);
+    copyCurrentAuditHarness(worktreePath);
+    const execution = spawnSync(process.execPath, [
+      'scripts/audit_card_quality.mjs',
+      '--scope-card-ids',
+      scopeCardIds.join(','),
+      '--write-scope-report',
+      scopedReportPath,
+      '--max-examples',
+      '20',
+    ], {
+      cwd: worktreePath,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    const fullReportPath = path.join(worktreePath, scopedReportPath);
+    if (!fs.existsSync(fullReportPath)) {
+      return {
+        ok: false,
+        message: execution.stderr.trim() ||
+          execution.stdout.trim() ||
+          'Current scoped audit replay did not produce a report.',
+      };
+    }
+    return {
+      ok: true,
+      report: readJsonFile(fullReportPath),
+      exit_status: execution.status,
+    };
+  } catch (error) {
+    return {ok: false, message: error.message};
+  } finally {
+    if (worktreeAdded) {
+      try {
+        runGit(['worktree', 'remove', '--force', worktreePath]);
+      } catch {
+        // Best-effort cleanup only.
+      }
+    }
+    try {
+      fs.rmSync(tempRoot, {recursive: true, force: true});
+    } catch {
+      // Best-effort cleanup only.
+    }
+  }
+}
+
+function immutableLegacyScopedAuditPathsAtCommit(head) {
+  const policy = readChangedJson('spec/card-quality-audit.json', head);
+  return new Set(
+    (policy?.legacy_scoped_report_archive?.reports || [])
+      .map(entry => entry?.path)
+      .filter(hasText),
+  );
+}
+
+function validateChangedScopedAuditReports({base, head, entries}) {
+  const issues = [];
+  const immutableLegacyPaths = immutableLegacyScopedAuditPathsAtCommit(head);
+  for (const entry of entries) {
+    const statusType = entry.status[0] === '?' ? 'A' : entry.status[0];
+    const sourcePath = entry.paths[0];
+    const changedLegacyPath = entry.paths.find(filePath =>
+      immutableLegacyPaths.has(filePath)
+    );
+    if (changedLegacyPath) {
+      issues.push({
+        code: 'changed_legacy_scoped_audit_immutable',
+        path: changedLegacyPath,
+        status: entry.status,
+        message: 'Archived legacy scoped-audit artifacts are byte-immutable; current evidence must use a new direct scoped-report path.',
+      });
+      continue;
+    }
+    if (
+      (statusType === 'D' && isScopedAuditPath(entry.path)) ||
+      (statusType === 'R' && isScopedAuditPath(sourcePath))
+    ) {
+      issues.push({
+        code: 'changed_scoped_audit_deleted_or_renamed',
+        path: sourcePath || entry.path,
+        status: entry.status,
+        message: 'Tracked scoped-audit evidence must not be deleted or renamed by a candidate PR.',
+      });
+    }
+    if (statusType === 'D' || !isScopedAuditPath(entry.path)) continue;
+    const filePath = entry.path;
+    if (!isScopedQualityAuditReportPath(filePath)) {
+      issues.push({
+        code: 'changed_scoped_audit_path_noncanonical',
+        path: filePath,
+        status: entry.status,
+        message: 'Scoped-audit evidence must be one direct JSON child of reviews/audit_scopes.',
+      });
+      continue;
+    }
+    if (!isRegularFileAtCommit(head, filePath)) {
+      issues.push({
+        code: 'changed_scoped_audit_not_regular_file',
+        path: filePath,
+        status: entry.status,
+        message: 'Changed scoped-audit evidence must resolve to a regular Git blob at immutable HEAD.',
+      });
+      continue;
+    }
+    const report = readChangedJson(filePath, head);
+    const scopeCardIds = Array.isArray(report?.scope?.card_ids)
+      ? report.scope.card_ids
+      : [];
+    if (
+      !report ||
+      typeof report !== 'object' ||
+      Array.isArray(report) ||
+      scopeCardIds.length === 0 ||
+      !scopeCardIds.every(hasText) ||
+      new Set(scopeCardIds).size !== scopeCardIds.length
+    ) {
+      issues.push({
+        code: 'changed_scoped_audit_invalid',
+        path: filePath,
+        message: 'A changed scoped-audit file must be a readable report with non-empty unique scope.card_ids.',
+      });
+      continue;
+    }
+    const replay = replayScopedAuditAtHead({base, head, scopeCardIds});
+    if (!replay.ok) {
+      issues.push({
+        code: 'changed_scoped_audit_replay_failed',
+        path: filePath,
+        message: replay.message,
+      });
+      continue;
+    }
+    if (!isDeepStrictEqual(report, replay.report)) {
+      issues.push({
+        code: 'changed_scoped_audit_replay_mismatch',
+        path: filePath,
+        replay_exit_status: replay.exit_status,
+        message: 'Changed scoped-audit evidence must exactly match a replay of the current audit against immutable HEAD for its declared scope.',
+      });
+    }
+  }
+  return issues;
+}
+
+function validateChangedReviewScopedAuditReferences({base, head, entries}) {
+  const issues = [];
+  const replayCache = new Map();
+  const validateScopedReference = ({recordPath, record, auditRecord}) => {
+    const reportPath = auditRecord?.report;
+    if (!isScopedQualityAuditReportPath(reportPath)) {
+      issues.push({
+        code: 'changed_review_current_scoped_audit_required',
+        path: recordPath,
+        report: reportPath ?? null,
+        message: 'Every changed self-review or approval record, and every self-review linked by a changed approval, must link one direct current scoped audit report.',
+      });
+      return;
+    }
+    if (!isRegularFileAtCommit(head, reportPath)) {
+      issues.push({
+        code: 'changed_review_scoped_audit_not_regular_file',
+        path: recordPath,
+        report: reportPath,
+        message: 'A changed review must link a direct scoped-audit regular Git blob at immutable HEAD.',
+      });
+      return;
+    }
+    const scopeCardIds = Array.isArray(record.scope?.card_ids)
+      ? record.scope.card_ids
+      : [];
+    if (
+      scopeCardIds.length === 0 ||
+      !scopeCardIds.every(hasText) ||
+      new Set(scopeCardIds).size !== scopeCardIds.length
+    ) {
+      issues.push({
+        code: 'changed_review_scope_card_ids_invalid',
+        path: recordPath,
+        message: 'A changed review must declare non-empty unique string scope.card_ids before its audit reference can be replayed.',
+      });
+      return;
+    }
+    const report = readChangedJson(reportPath, head);
+    if (
+      !report ||
+      typeof report !== 'object' ||
+      Array.isArray(report) ||
+      !setsEqual(new Set(report.scope?.card_ids || []), new Set(scopeCardIds))
+    ) {
+      issues.push({
+        code: 'changed_review_scoped_audit_scope_mismatch',
+        path: recordPath,
+        report: reportPath,
+        expected_card_ids: [...scopeCardIds].sort(),
+        actual_card_ids: [...(report?.scope?.card_ids || [])].sort(),
+        message: 'A changed review scoped audit must cover exactly its declared scope.card_ids.',
+      });
+      return;
+    }
+    const replayKey = JSON.stringify([...scopeCardIds].sort());
+    let replay = replayCache.get(replayKey);
+    if (!replay) {
+      replay = replayScopedAuditAtHead({base, head, scopeCardIds});
+      replayCache.set(replayKey, replay);
+    }
+    if (!replay.ok) {
+      issues.push({
+        code: 'changed_review_scoped_audit_replay_failed',
+        path: recordPath,
+        report: reportPath,
+        message: replay.message,
+      });
+      return;
+    }
+    if (!isDeepStrictEqual(report, replay.report)) {
+      issues.push({
+        code: 'changed_review_scoped_audit_replay_mismatch',
+        path: recordPath,
+        report: reportPath,
+        replay_exit_status: replay.exit_status,
+        message: 'Every changed review must link a scoped report that exactly matches the current immutable-HEAD audit replay for its declared scope.',
+      });
+    }
+  };
+
+  for (const entry of entries) {
+    const statusType = entry.status[0] === '?' ? 'A' : entry.status[0];
+    if (statusType === 'D') continue;
+    const filePath = entry.path;
+    if (!isSelfReviewPath(filePath) && !isApprovedBatchPath(filePath)) continue;
+    if (!isRegularFileAtCommit(head, filePath)) {
+      issues.push({
+        code: 'changed_review_not_regular_file',
+        path: filePath,
+        status: entry.status,
+        message: 'Changed review and approval evidence must resolve to a regular Git blob at immutable HEAD.',
+      });
+      continue;
+    }
+    const record = readChangedJson(filePath, head);
+    if (!record || typeof record !== 'object' || Array.isArray(record)) {
+      issues.push({
+        code: 'changed_review_unreadable',
+        path: filePath,
+        message: 'Changed review and approval evidence must be a readable JSON object.',
+      });
+      continue;
+    }
+
+    if (isApprovedBatchPath(filePath)) {
+      const linkedReviewPath = record.validation?.agent_self_review;
+      if (!isSelfReviewPath(linkedReviewPath)) {
+        issues.push({
+          code: 'changed_approval_linked_self_review_path_invalid',
+          path: filePath,
+          linked_review: linkedReviewPath ?? null,
+          message: 'A changed approval must link one direct canonical non-template record under reviews/agent_self_review.',
+        });
+      } else if (!isRegularFileAtCommit(head, linkedReviewPath)) {
+        issues.push({
+          code: 'changed_approval_linked_self_review_not_regular_file',
+          path: filePath,
+          linked_review: linkedReviewPath,
+          message: 'A changed approval must link a regular self-review Git blob at immutable HEAD.',
+        });
+      } else {
+        const linkedReview = readChangedJson(linkedReviewPath, head);
+        if (
+          !linkedReview ||
+          typeof linkedReview !== 'object' ||
+          Array.isArray(linkedReview)
+        ) {
+          issues.push({
+            code: 'changed_approval_linked_self_review_unreadable',
+            path: filePath,
+            linked_review: linkedReviewPath,
+          });
+        } else {
+          if (
+            !setsEqual(
+              new Set(linkedReview.scope?.card_ids || []),
+              new Set(record.scope?.card_ids || []),
+            ) ||
+            !setsEqual(
+              new Set(linkedReview.scope?.box_prefixes || []),
+              new Set(record.scope?.box_prefixes || []),
+            )
+          ) {
+            issues.push({
+              code: 'changed_approval_linked_self_review_scope_mismatch',
+              path: filePath,
+              linked_review: linkedReviewPath,
+            });
+          }
+          validateScopedReference({
+            recordPath: linkedReviewPath,
+            record: linkedReview,
+            auditRecord: linkedReview.quality_audit,
+          });
+        }
+      }
+    }
+    validateScopedReference({
+      recordPath: filePath,
+      record,
+      auditRecord: isApprovedBatchPath(filePath)
+        ? record.card_quality_audit
+        : record.quality_audit,
+    });
+  }
+  return issues;
 }
 
 function readJsonFile(filePath) {
@@ -1050,10 +2178,47 @@ function validate({ base, head }) {
   let currentScopedAudit = null;
   let changedCardIntegrity = null;
 
+  for (const entry of entries) {
+    for (const filePath of entry.paths) {
+      if (hasUnsafeGitPathCharacters(filePath)) {
+        issues.push({
+          code: 'git_diff_path_noncanonical',
+          path: filePath,
+          status: entry.status,
+          message: 'Changed Git paths must not contain a literal backslash, control character, or Unicode line separator; path evidence is interpreted exactly and never rewritten.',
+        });
+      }
+      if (filePath === PRE_CUTOVER_REPORT_INDEX) {
+        issues.push({
+          code: 'pre_cutover_report_index_immutable',
+          path: filePath,
+          status: entry.status,
+          message: 'The pre-cutover report index is an immutable legacy archive boundary and must not be added, changed, deleted, or renamed by a current PR.',
+        });
+      }
+    }
+  }
+
   if (contentCandidate) {
     for (const entry of entries) {
       const statusType = entry.status[0] === '?' ? 'A' : entry.status[0];
       for (const filePath of entry.paths) {
+        if (isNoncanonicalSelfReviewPath(filePath)) {
+          issues.push({
+            code: 'changed_self_review_path_noncanonical',
+            path: filePath,
+            status: entry.status,
+            message: 'Agent self-review records must be direct JSON children of reviews/agent_self_review; nested records cannot authorize candidate coverage.',
+          });
+        }
+        if (isNoncanonicalApprovedBatchPath(filePath)) {
+          issues.push({
+            code: 'changed_approval_path_noncanonical',
+            path: filePath,
+            status: entry.status,
+            message: 'Approval records must be direct JSON children of reviews/approved_batches.',
+          });
+        }
         if (isCardBoxDirectoryPath(filePath) && !isCardBoxPath(filePath)) {
           issues.push({
             code: 'candidate_card_box_path_invalid',
@@ -1078,6 +2243,21 @@ function validate({ base, head }) {
           message: 'Agent self-review evidence must not be deleted or renamed out of its governed directory by a candidate PR.',
         });
       }
+      const removesApproval = (
+        statusType === 'D' && isApprovedBatchPath(entry.path)
+      ) || (
+        statusType === 'R' &&
+        isApprovedBatchPath(entry.paths[0]) &&
+        !isApprovedBatchPath(entry.path)
+      );
+      if (removesApproval) {
+        issues.push({
+          code: 'changed_approval_deleted',
+          path: entry.paths[0] || entry.path,
+          status: entry.status,
+          message: 'Formal approval evidence must not be deleted or renamed out of its governed directory.',
+        });
+      }
     }
 
     if (!resolvedHead) {
@@ -1085,6 +2265,19 @@ function validate({ base, head }) {
         code: 'content_candidate_explicit_head_required',
         message: 'Content-candidate scope validation requires --head <commit>; worktree-only mode cannot prove the complete HEAD corpus or current self-review parity.',
       });
+    }
+
+    if (resolvedHead) {
+      issues.push(...validateChangedScopedAuditReports({
+        base,
+        head: resolvedHead,
+        entries,
+      }));
+      issues.push(...validateChangedReviewScopedAuditReferences({
+        base,
+        head: resolvedHead,
+        entries,
+      }));
     }
 
     changedCardIntegrity = runChangedCardIntegrity({ base, head: resolvedHead, entries });
