@@ -1,0 +1,90 @@
+{
+  "handoff_id": "20260731-harness-candidate-integrity",
+  "created_at": "2026-07-31T10:34:46+08:00",
+  "agent": "codex",
+  "branch": "harness/candidate-integrity",
+  "base_branch": "harness/full-track-remediation",
+  "commit_sha": "6fd066ade620c1600b5c5eb37ede671bb95c7c71",
+  "push_ref": "origin/harness/candidate-integrity",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/harness/full-track-remediation...harness/candidate-integrity",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "purpose": "Harden card integrity and immutable candidate review-scope validation without changing card, audio, or approval records.",
+    "referenced_specs": [
+      "../softbook_cet/spec/interactions.json",
+      "spec/authority-map.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json",
+      "spec/git-workflow.json",
+      "spec/agent-harness.json",
+      "spec/evals.json",
+      "spec/perturbation-audit.json"
+    ],
+    "touched_paths": [
+      ".github/workflows/pr-gates.yml",
+      "AGENTS.md",
+      "README.md",
+      "scripts/lib/card_integrity.mjs",
+      "scripts/migrate_cards_to_softbook_contract.mjs",
+      "scripts/test_card_integrity.mjs",
+      "scripts/test_validate_pr_scope.mjs",
+      "scripts/validate_cards.mjs",
+      "scripts/validate_harness.mjs",
+      "scripts/validate_pr_scope.mjs",
+      "spec/agent-harness.json",
+      "spec/authority-map.json",
+      "spec/content-quality-contract.json",
+      "spec/doc-manifest.json",
+      "spec/eval-fixtures.json",
+      "spec/evals.json",
+      "spec/git-workflow.json",
+      "spec/perturbation-audit.json",
+      "spec/review-workflow.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node --test scripts/test_card_integrity.mjs scripts/test_validate_pr_scope.mjs",
+      "result": "passed on the exact payload commit; 53/53 tests"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed on the exact payload commit; only the six recorded upstream catalog warnings remain"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed on the exact payload commit; 2414 cards, zero errors, zero warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/harness/full-track-remediation --head HEAD",
+      "result": "passed against immutable payload commit 6fd066ade620c1600b5c5eb37ede671bb95c7c71; harness-only scope"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed; zero formal audio QC records and no approval inferred"
+    },
+    {
+      "command": "node scripts/validate_audio_lfs.mjs",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_candidate_review_queue.mjs",
+      "result": "passed; 49 entries, 5 active, 0 formally approved"
+    },
+    {
+      "command": "git diff --check 4a710fb932b0ad301be00f2b4907cc561348cb96..HEAD",
+      "result": "passed"
+    }
+  ],
+  "local_status": "The signed candidate-integrity payload and handoff-only commit are published at origin/harness/candidate-integrity. No PR was opened because PR #108 occupies the single active harness/tooling PR slot; the GitHub compare URL is the recoverable review locator.",
+  "remaining_risks": [
+    "This parked unit has no required GitHub check evidence; PR #108 occupies the single harness/tooling slot and its jobs remain blocked before runner start by the billing or spending-limit state.",
+    "The branch is stacked on the unmerged harness/full-track-remediation branch and must retain or re-establish that ancestry before review and merge.",
+    "This unit changes validation only; it does not remediate or formally approve card content, audio, or a release.",
+    "The current elimination corpus remains accepted through read-only legacy compatibility; migration of corpus payloads to runtime IDs is outside this unit.",
+    "Cryptographic delivery patch binding is intentionally absent under the baseline v1 validator; it belongs to the separate delivery-integrity review unit."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
