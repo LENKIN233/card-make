@@ -1,0 +1,87 @@
+{
+  "handoff_id": "20260731-harness-delivery-integrity",
+  "created_at": "2026-07-31T11:21:47+08:00",
+  "agent": "codex",
+  "branch": "harness/delivery-integrity",
+  "base_branch": "harness/candidate-integrity",
+  "commit_sha": "d13d75c611ff9c9e3459dc8cd5822fb215dd6537",
+  "push_ref": "origin/harness/delivery-integrity",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/harness/candidate-integrity...harness/delivery-integrity",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "purpose": "Bind handoff recovery to the exact payload commit, complete path set, deterministic patch bytes, explicit pull-request head, and full post-payload history without changing card, audio, or approval records.",
+    "referenced_specs": [
+      "spec/authority-map.json",
+      "spec/workspace-contract.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json",
+      "spec/git-workflow.json",
+      "spec/agent-harness.json",
+      "spec/evals.json",
+      "spec/perturbation-audit.json"
+    ],
+    "touched_paths": [
+      ".github/workflows/pr-gates.yml",
+      "AGENTS.md",
+      "README.md",
+      "reviews/git_handoffs/TEMPLATE.json",
+      "scripts/test_validate_delivery_record.mjs",
+      "scripts/validate_delivery_record.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/agent-harness.json",
+      "spec/git-workflow.json",
+      "spec/perturbation-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "5c3d0d365733f05d2ef812b9c74ede4a93f6f945",
+    "patch_sha256": "649d82f7dfbe4f9f0443251ac569c9f7d85baa64dd407f3cbb1d17c5d46e1e3e"
+  },
+  "validation": [
+    {
+      "command": "node --test scripts/test_card_integrity.mjs scripts/test_validate_pr_scope.mjs scripts/test_validate_delivery_record.mjs",
+      "result": "passed on the exact payload commit; 91/91 tests, including 38/38 delivery-integrity regressions"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed on the exact payload commit; only the six recorded upstream catalog warnings remain"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --report-path /tmp/card-validation-delivery-payload-d13d75c.json",
+      "result": "passed on the exact payload commit; 2414 cards, zero errors, zero warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base 5c3d0d365733f05d2ef812b9c74ede4a93f6f945 --head d13d75c611ff9c9e3459dc8cd5822fb215dd6537",
+      "result": "passed against immutable payload and base commits; harness-only scope with exactly the ten declared payload paths"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed; zero formal audio QC records and no approval inferred"
+    },
+    {
+      "command": "node scripts/validate_audio_lfs.mjs",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_candidate_review_queue.mjs",
+      "result": "passed; 49 entries, 5 active, 0 formally approved"
+    },
+    {
+      "command": "node --check scripts/validate_delivery_record.mjs && node --check scripts/test_validate_delivery_record.mjs && node --check scripts/validate_harness.mjs",
+      "result": "passed on the exact payload commit"
+    },
+    {
+      "command": "git diff --check 5c3d0d365733f05d2ef812b9c74ede4a93f6f945..d13d75c611ff9c9e3459dc8cd5822fb215dd6537",
+      "result": "passed"
+    }
+  ],
+  "local_status": "The signed delivery-integrity payload and handoff-only commit are published at origin/harness/delivery-integrity. No PR was opened because PR #108 occupies the single active harness/tooling PR slot; the GitHub compare URL is the recoverable review locator.",
+  "remaining_risks": [
+    "This parked unit has no required GitHub check evidence; PR #108 occupies the single harness/tooling slot and its jobs remain blocked before runner start by the billing or spending-limit state.",
+    "The branch is stacked on harness/candidate-integrity, which is itself parked above harness/full-track-remediation; the ancestry must be retained or re-established before review and merge.",
+    "GitHub's required delivery-record check cannot exercise the exact pull-request head path until the branch can enter a PR.",
+    "This unit changes validation only; it does not remediate or formally approve card content, perceptual audio quality, external release evidence, or launch readiness."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
