@@ -1,0 +1,63 @@
+{
+  "handoff_id": "20260731-harness-delivery-integrity-v2",
+  "created_at": "2026-07-31T20:09:30+08:00",
+  "agent": "codex",
+  "branch": "harness/delivery-integrity-v2",
+  "base_branch": "main",
+  "commit_sha": "4d4ff512b96db033f40b8f8bc9659f32c5a69e77",
+  "push_ref": "origin/harness/delivery-integrity-v2",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/110",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      ".github/workflows/pr-gates.yml",
+      "AGENTS.md",
+      "README.md",
+      "reviews/git_handoffs/TEMPLATE.json",
+      "scripts/test_validate_delivery_record.mjs",
+      "scripts/validate_delivery_record.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/agent-harness.json",
+      "spec/git-workflow.json",
+      "spec/perturbation-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "bb672198053bdee2bae9882333ea235b824c8994",
+    "patch_sha256": "814a23e4ecb921b3a6d435168e33853893ece6a2efd52f7b3506f40e3190ca30"
+  },
+  "validation": [
+    {
+      "command": "node --test scripts/test_card_integrity.mjs scripts/test_validate_pr_scope.mjs scripts/test_validate_delivery_record.mjs",
+      "result": "passed; 184/184 tests, including 75/75 delivery-record tests"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with zero errors; only six recorded upstream group-alignment warnings remain"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "passed; 218 files, 2414 cards, zero errors, zero warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed on signed payload commit; content_candidate_diff=false"
+    },
+    {
+      "command": "node scripts/validate_candidate_review_queue.mjs --self-test && node scripts/plan_release_gap_samples.mjs --self-test",
+      "result": "passed; queue uniqueness and release-gap planning boundaries remain intact"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs && node scripts/validate_audio_lfs.mjs && git diff --check",
+      "result": "passed; no audio records changed and tracked LFS evidence remains valid"
+    }
+  ],
+  "local_status": "The signed payload commit is pushed and attached to draft PR #110. Independent adversarial findings were closed with dedicated regressions; this handoff-only commit completes the delivery record before required checks rerun.",
+  "remaining_risks": [
+    "PR #110 must remain unmerged until it is ready, GitHub reports it mergeable, and all five required checks pass.",
+    "The six recorded upstream group-alignment warnings remain non-blocking catalog debt.",
+    "Existing candidate PRs remain draft-only and may require refreshed current handoffs; this PR does not approve or merge their content."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
