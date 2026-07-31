@@ -1,0 +1,89 @@
+{
+  "handoff_id": "20260729-harness-full-track-remediation",
+  "created_at": "2026-07-29T11:20:00+08:00",
+  "agent": "codex",
+  "branch": "harness/full-track-remediation",
+  "base_branch": "main",
+  "commit_sha": "5ab8366d4c511c957ffa62374b7450817c979049",
+  "push_ref": "origin/harness/full-track-remediation",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/108",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "purpose": "Add full-track remediation, one-time final user approval, explicit legacy-audio adoption governance, a read-only technical audio audit, and a resumable human-only perceptual review worklist without changing any card or audio asset.",
+    "referenced_specs": [
+      "spec/authority-map.json",
+      "spec/workspace-contract.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json",
+      "spec/audio-generation-contract.json",
+      "spec/audio-perceptual-worklist.schema.json",
+      "../softbook_cet/spec/card-system.json",
+      "../softbook_cet/spec/box-catalog.json"
+    ],
+    "touched_paths": [
+      "reviews/agent_self_review/FULL_TRACK_TEMPLATE.json",
+      "reviews/approved_batches/FULL_TRACK_TEMPLATE.json",
+      "reviews/audio_qc/TEMPLATE.json",
+      "reviews/audio_perceptual_worklists/README.md",
+      "scripts/audit_audio_technical.mjs",
+      "scripts/manage_audio_perceptual_worklist.mjs",
+      "scripts/build_full_track_remediation_baseline.mjs",
+      "scripts/test_audio_technical_audit.mjs",
+      "scripts/test_audio_perceptual_worklist.mjs",
+      "scripts/validate_audio_qc.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/audio-generation-contract.json",
+      "spec/doc-manifest.json",
+      "spec/eval-fixtures.json",
+      "spec/review-workflow.json"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream version and group-alignment warnings remain"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed; zero formal QC records exist and the legacy-adoption template guards validate"
+    },
+    {
+      "command": "node --test scripts/test_audio_technical_audit.mjs",
+      "result": "passed; probe parsing, exact byte/transcript binding, formal-QC non-claim, and duration drift failure are covered"
+    },
+    {
+      "command": "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json",
+      "result": "passed; 301 unique referenced assets decode as mono 24 kHz 48 kbps MP3, all hashes/transcripts/durations bind, while perceptual and speech-match checks remain explicitly unverified"
+    },
+    {
+      "command": "node --test scripts/test_audio_perceptual_worklist.mjs",
+      "result": "passed; human-only one-card review, resumable progress, terminal immutability, reviewed-identity reset protection, and transcript/audio tamper failures are covered"
+    },
+    {
+      "command": "node scripts/manage_audio_perceptual_worklist.mjs build --track cet4 --technical-audit exports/cet4-audio-technical-audit.json --output exports/cet4-audio-perceptual-worklist.json && node scripts/manage_audio_perceptual_worklist.mjs validate --file exports/cet4-audio-perceptual-worklist.json",
+      "result": "passed; generated 301 pending entries across 27 box prefixes, preserved zero false human verdicts, and exposed 286 missing training-goal/progression contexts with formal_content_context_ready=false"
+    },
+    {
+      "command": "node scripts/build_full_track_remediation_baseline.mjs --track cet4 --report-path exports/cet4-full-track-remediation-baseline-20260729.json",
+      "result": "passed; reports 1180 cards, 108 boxes, 137 cards with hard blockers, 301 audio cards, and ready_for_full_track_user_approval=false"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Governance/tooling branch is locally green, including the real 301-entry pending perceptual worklist generation and fail-closed completion check; GitHub required jobs remain blocked before runner start by the account billing/spending limit.",
+  "remaining_risks": [
+    "No CET4 card has been remediated or approved by this PR.",
+    "No legacy audio is adopted automatically; every asset still requires text, hash, perceptual, and per-card QC evidence.",
+    "The technical audit does not perform ASR or perceptual listening and cannot create formal QC records.",
+    "The generated worklist truthfully remains 301 pending; no Agent or automation has marked any perceptual check passed.",
+    "286 audio cards still lack explicit main training goals and box progression roles, so formal content context is not ready even if future listening checks pass.",
+    "The final approval record must bind the exact card-quality audit bytes with SHA-256 before release publication.",
+    "The required human CET reviewer and final complete-track user approval remain future evidence.",
+    "Green checks do not create formal content approval."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}

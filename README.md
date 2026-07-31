@@ -83,6 +83,52 @@ ignored; immutable legacy review references resolve through
 `reports/pre-cutover-report-index.json`, while new candidate work must commit a
 current scoped audit under `reviews/audit_scopes/`.
 
+Run the read-only technical audio audit before perceptual QC:
+
+```bash
+node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json
+```
+
+The audit verifies exact bytes, manifest hashes, decoder metadata, declared
+duration, and transcript presence. It deliberately does not claim that speech
+matches the transcript or that pronunciation, noise, clipping, rhythm, stress,
+or pauses pass; those require records under `reviews/audio_qc/`.
+
+Build the human perceptual-review queue from that exact passing audit:
+
+```bash
+node scripts/manage_audio_perceptual_worklist.mjs build \
+  --track cet4 \
+  --technical-audit exports/cet4-audio-technical-audit.json \
+  --output exports/cet4-audio-perceptual-worklist.json
+
+node scripts/manage_audio_perceptual_worklist.mjs next \
+  --file exports/cet4-audio-perceptual-worklist.json
+```
+
+The `next` result contains one local audio path, its bound transcript, box
+context, and seven pending perceptual checks. After listening, record only that
+card with a human reviewer identity. Run without `--apply` first; append
+`--apply` only when the proposed review state is correct:
+
+```bash
+node scripts/manage_audio_perceptual_worklist.mjs review \
+  --file exports/cet4-audio-perceptual-worklist.json \
+  --card-id <card-id> \
+  --reviewer github:<human-account> \
+  --attest-listened \
+  --check audio_matches_text=pass \
+  --check target_signal_audible=pass
+```
+
+The queue supports partial `in_progress` reviews and resumes them before the
+next pending card. It has no bulk-pass command, rejects Agent/bot reviewers,
+re-hashes current audio bytes, and refuses to preserve a human verdict when the
+card transcript or asset identity changes. Validate with `--require-complete`
+only after all 301 entries are terminal. A completed worklist is still not a
+formal QC record or content approval; it must be converted into validated
+`reviews/audio_qc/` evidence and remain bound to the final user-approved batch.
+
 Candidate review WIP is capped at five active content PRs plus one separate
 tooling or harness PR. Passing checks do not create formal content approval.
 

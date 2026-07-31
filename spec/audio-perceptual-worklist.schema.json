@@ -1,0 +1,89 @@
+{
+  "version": "audio-perceptual-worklist-v1",
+  "status": "active",
+  "schema_version": "audio-perceptual-worklist.v1",
+  "purpose": "Turn a passing technical audio audit into a resumable, one-card-at-a-time human perceptual review queue without creating formal QC or content approval evidence.",
+  "authority_boundary": {
+    "owns": [
+      "perceptual_review_queue_identity",
+      "human_review_progress",
+      "per_card_perceptual_check_outcomes",
+      "replacement_required_signal"
+    ],
+    "does_not_own": [
+      "formal_audio_qc_readiness",
+      "text_source_authenticity",
+      "formal_card_content_approval",
+      "audio_generation_provider_selection"
+    ],
+    "formal_audio_qc_owner": "reviews/audio_qc/TEMPLATE.json",
+    "final_content_approval_owner": "reviews/approved_batches/FULL_TRACK_TEMPLATE.json"
+  },
+  "source_requirements": {
+    "technical_audit_schema": "audio-technical-audit.v1",
+    "technical_audit_must_pass": true,
+    "technical_audit_error_count": 0,
+    "technical_audit_file_sha256_required": true,
+    "technical_assets_fingerprint_required": true,
+    "current_card_transcript_and_asset_identity_must_match": true,
+    "audio_asset_bytes_rehashed_during_validation": true
+  },
+  "entry_identity_fields": [
+    "card_id",
+    "card_source_file",
+    "knowledge_ref",
+    "training_context",
+    "audio.asset_path",
+    "audio.file_sha256",
+    "audio.size_bytes",
+    "audio.declared_duration_ms",
+    "audio.probed_duration_ms",
+    "audio.transcript",
+    "audio.transcript_sha256"
+  ],
+  "perceptual_checks": [
+    "audio_matches_text",
+    "target_signal_audible",
+    "accurate_pronunciation",
+    "suitable_speed",
+    "natural_rhythm",
+    "stress_and_pauses_do_not_mislead",
+    "no_unwanted_noise_or_clipping"
+  ],
+  "check_states": ["pending", "pass", "fail"],
+  "review_states": ["pending", "in_progress", "passed", "failed"],
+  "review_policy": {
+    "human_reviewer_required_for_any_non_pending_state": true,
+    "full_asset_listening_attestation_required_for_any_non_pending_state": true,
+    "agent_or_automation_reviewer_forbidden": true,
+    "one_card_per_review_action": true,
+    "terminal_review_requires_every_check_resolved": true,
+    "failed_review_requires_notes": true,
+    "failed_review_requires_replacement": true,
+    "terminal_review_is_immutable": true,
+    "reviewed_identity_change_fails_without_explicit_human_acknowledged_reset": true,
+    "passing_worklist_entry_is_not_formal_audio_qc": true
+  },
+  "context_quality_summary": {
+    "required_fields": [
+      "entries_with_complete_training_context",
+      "missing_main_training_goal",
+      "missing_box_progression_role",
+      "formal_content_context_ready"
+    ],
+    "policy": "Missing training goals or box progression roles remain explicit content blockers even when technical and perceptual audio checks pass."
+  },
+  "operational_paths": {
+    "default_generated_worklist": "exports/cet4-audio-perceptual-worklist.json",
+    "reviewed_worklist_directory": "reviews/audio_perceptual_worklists/",
+    "manager": "scripts/manage_audio_perceptual_worklist.mjs"
+  },
+  "commands": {
+    "build": "node scripts/manage_audio_perceptual_worklist.mjs build --track cet4 --technical-audit exports/cet4-audio-technical-audit.json --output exports/cet4-audio-perceptual-worklist.json",
+    "next": "node scripts/manage_audio_perceptual_worklist.mjs next --file exports/cet4-audio-perceptual-worklist.json",
+    "review_dry_run": "node scripts/manage_audio_perceptual_worklist.mjs review --file exports/cet4-audio-perceptual-worklist.json --card-id <card-id> --reviewer <human-id> --attest-listened --check <name=pass-or-fail>",
+    "review_apply": "append --apply only after the dry-run output is correct",
+    "validate": "node scripts/manage_audio_perceptual_worklist.mjs validate --file exports/cet4-audio-perceptual-worklist.json",
+    "require_complete": "node scripts/manage_audio_perceptual_worklist.mjs validate --file exports/cet4-audio-perceptual-worklist.json --require-complete"
+  }
+}

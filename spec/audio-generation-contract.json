@@ -34,6 +34,29 @@
     "candidate_metadata_must_keep_text_source_type_separate_from_audio_generation_method": true,
     "candidate_audio_can_support_card_review_only_when_transcript_matches_current_task": true
   },
+  "legacy_asset_adoption_policy": {
+    "purpose": "Allow a technically intact legacy candidate asset to enter a closed beta only after full text, hash, and perceptual QC without inventing missing generation provenance.",
+    "allowed_for_formal_audio_evidence": true,
+    "required_fields": [
+      "legacy_adoption.enabled=true",
+      "legacy_adoption.reviewed_at",
+      "legacy_adoption.reviewer",
+      "legacy_adoption.reproducibility_status=non_reproducible",
+      "generation_plan.provider=legacy_unknown",
+      "generation_plan.voice_or_speaker=legacy_unknown",
+      "generated_assets[].file_sha256",
+      "generated_assets[].provenance_note",
+      "per_card_qc for every scoped card"
+    ],
+    "same_quality_gate_as_new_audio": true,
+    "must_not": [
+      "invent_provider_or_voice",
+      "claim_reproducibility",
+      "skip_transcript_or_perceptual_review",
+      "treat_audio_QC_as_text_source_authenticity",
+      "bypass_final_content_approval"
+    ]
+  },
   "text_gate_before_generation": {
     "required": true,
     "required_checks": [
@@ -103,6 +126,34 @@
       "formal_audio_ready_without_user_content_approval_boundary"
     ]
   },
+  "technical_audio_audit": {
+    "script": "scripts/audit_audio_technical.mjs",
+    "report_schema": "audio-technical-audit.v1",
+    "default_report": "exports/<track>-audio-technical-audit.json",
+    "required_checks": [
+      "one_unique_asset_path_per_audio_card",
+      "manifest_size_and_sha256_match",
+      "decoder_can_probe_mp3",
+      "declared_duration_matches_probed_duration_within_50ms",
+      "transcript_is_present_and_hash_bound"
+    ],
+    "supported_probe_commands": ["afinfo", "ffprobe"],
+    "authority_boundary": "A passing technical audit does not prove speech-to-transcript match, clipping/noise absence, pronunciation, rhythm, stress, pauses, source authenticity, or formal audio readiness; those remain perceptual per-card QC.",
+    "must_not_create_formal_qc_records": true
+  },
+  "perceptual_review_worklist": {
+    "schema": "spec/audio-perceptual-worklist.schema.json",
+    "manager": "scripts/manage_audio_perceptual_worklist.mjs",
+    "reviewed_worklist_dir": "reviews/audio_perceptual_worklists/",
+    "source_requires_passing_technical_audit": true,
+    "one_card_per_review_action": true,
+    "human_reviewer_required": true,
+    "full_asset_listening_attestation_required": true,
+    "agent_may_mark_passed": false,
+    "reviewed_identity_change_fails_closed": true,
+    "passing_worklist_is_not_formal_audio_qc": true,
+    "formal_audio_qc_record_still_required": true
+  },
   "asset_change_policy": {
     "do_not_replace_audio_in_content_sample_PRs": true,
     "audio_asset_changes_belong_in_audio_or_tooling_branch": true,
@@ -110,6 +161,10 @@
     "bulk_generation_requires_user_confirmed_sample_scope": true
   },
   "validation_commands": [
+    "node --test scripts/test_audio_technical_audit.mjs",
+    "node --test scripts/test_audio_perceptual_worklist.mjs",
+    "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json",
+    "node scripts/manage_audio_perceptual_worklist.mjs validate --file exports/cet4-audio-perceptual-worklist.json",
     "node scripts/validate_audio_qc.mjs",
     "node scripts/validate_harness.mjs"
   ]

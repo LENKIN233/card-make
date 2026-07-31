@@ -46,6 +46,7 @@ function validateRecord(record, errors, source, { template = false } = {}) {
     'source_records',
     'text_gate',
     'generation_plan',
+    'legacy_adoption',
     'generated_assets',
     'qa_checks',
     'per_card_qc',
@@ -86,6 +87,25 @@ function validateRecord(record, errors, source, { template = false } = {}) {
   }
   if (record.generation_plan?.overwrite_existing_assets === true && !hasText(record.generation_plan?.replacement_reason)) {
     pushIssue(errors, 'audio_qc_overwrite_missing_replacement_reason', { source });
+  }
+
+  const legacyAdoption = record.legacy_adoption?.enabled === true;
+  if (legacyAdoption) {
+    if (!hasText(record.legacy_adoption?.reviewed_at)) {
+      pushIssue(errors, 'audio_qc_legacy_reviewed_at_missing', { source });
+    }
+    if (!hasText(record.legacy_adoption?.reviewer)) {
+      pushIssue(errors, 'audio_qc_legacy_reviewer_missing', { source });
+    }
+    if (record.legacy_adoption?.reproducibility_status !== 'non_reproducible') {
+      pushIssue(errors, 'audio_qc_legacy_reproducibility_claim_invalid', { source });
+    }
+    if (record.generation_plan?.provider !== 'legacy_unknown') {
+      pushIssue(errors, 'audio_qc_legacy_provider_must_be_unknown', { source });
+    }
+    if (record.generation_plan?.voice_or_speaker !== 'legacy_unknown') {
+      pushIssue(errors, 'audio_qc_legacy_voice_must_be_unknown', { source });
+    }
   }
 
   for (const check of spec.formal_audio_qc?.required_checks || []) {
@@ -143,6 +163,20 @@ function validateRecord(record, errors, source, { template = false } = {}) {
         card_id: asset.card_id,
         path: asset.path,
       });
+    }
+    if (!template && legacyAdoption) {
+      if (!/^[a-f0-9]{64}$/.test(String(asset.file_sha256 || ''))) {
+        pushIssue(errors, 'audio_qc_legacy_asset_hash_missing', {
+          source,
+          card_id: asset.card_id,
+        });
+      }
+      if (!hasText(asset.provenance_note)) {
+        pushIssue(errors, 'audio_qc_legacy_asset_provenance_note_missing', {
+          source,
+          card_id: asset.card_id,
+        });
+      }
     }
   }
 
