@@ -46,6 +46,16 @@
       "id": "PA-CARD-009",
       "reject": "Treating an existing ai_tts path or generated MP3 file as formal audio readiness.",
       "recovery": "Require the audio generation contract, text gate, per-card audio QC record, and explicit boundary that TTS audio is not source authenticity evidence."
+    },
+    {
+      "id": "PA-CARD-010",
+      "reject": "Trusting declared review scope or legacy status to avoid validating the complete current card object and its self-review metadata snapshot.",
+      "recovery": "Derive changed cards from merge-base to head, require current complete metadata, and compare every metadata field except the independently validated artifact-local review_status."
+    },
+    {
+      "id": "PA-CARD-012",
+      "reject": "Allowing a noncanonical card_boxes_json path, unprefixed or template-suffix-disguised governed review path, partial or wrong-track aggregate coverage, full-track remediation coverage for a card absent from merge-base, self-review-only edit, partial base-to-HEAD audit overlay, or legacy text/is_correct shape to bypass the current candidate contract.",
+      "recovery": "Govern every consumed card-box and review path, exclude only exact repository-declared template paths, compare every changed standard self-review entry with its unique HEAD corpus card, count full-track aggregate evidence only when strict internal scope/coverage equals the complete declared track in immutable HEAD and the non-empty track ID set is unchanged from merge-base, materialize the complete immutable HEAD card tree for scoped audit replay, and require explicit runtime IDs on any changed elimination candidate while grandfathering untouched legacy migrations only."
     }
   ],
   "bad_card_patterns": [

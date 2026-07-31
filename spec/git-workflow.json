@@ -85,18 +85,36 @@
         "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json"
       },
       {
+        "scope": "card_integrity_harness",
+        "command": "node --test scripts/test_card_integrity.mjs"
+      },
+      {
         "scope": "candidate_sample_scoped_audit",
         "command": "node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json"
       },
       {
         "scope": "content_sample_pr_scope",
-        "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract",
+        "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract --head HEAD",
+        "execution_phase": "after_payload_commit_before_push",
         "blocks": [
           "global report refreshes in content PRs",
           "non-scope self-review or scoped-audit churn",
+          "unprefixed self-review, draft, or scoped-audit paths bypassing content-candidate validation",
+          "self-review-only metadata drift from the immutable HEAD corpus",
+          "noncanonical or Unicode card-box paths that are not part of the governed corpus filename contract",
           "multi-prefix content PRs without explicit handoff or residual-closure evidence",
-          "current scoped card-quality audit hard blockers, even when changed scoped-audit evidence was generated under older rules"
+          "current scoped card-quality audit hard blockers, even when changed scoped-audit evidence was generated under older rules",
+          "current scoped audits replayed against a partial overlay instead of the complete immutable HEAD card corpus",
+          "changed cards without current schema-valid quality metadata",
+          "changed cards without exactly one changed self-review snapshot",
+          "changed card and self-review quality_metadata mismatch",
+          "elimination runtime ID, preview projection, or answer truth mismatch",
+          "worktree-only validation without an explicit immutable head commit"
         ]
+      },
+      {
+        "scope": "content_pr_scope_harness",
+        "command": "node --test scripts/test_validate_pr_scope.mjs"
       },
       {
         "scope": "front_leak_candidate_queue",

@@ -64,7 +64,9 @@ const REQUIRED_QUALITY_AUDIT_RULES = [
 ];
 const REQUIRED_SAMPLE_GATE_FIELDS = [
   'quality_metadata_per_card',
+  'changed_candidate_card_integrity',
   'agent_self_review_record',
+  'self_review_quality_metadata_matches_current_card_corpus',
   'blocker_scan_per_card',
   'card_quality_audit_no_hard_blockers',
   'scoped_card_quality_audit_report',
@@ -72,6 +74,12 @@ const REQUIRED_SAMPLE_GATE_FIELDS = [
   'TTS_audio_QC_plan_when_audio_exists',
   'no_standalone_hint_layer_interaction',
 ];
+const REVIEW_RECORD_TEMPLATE_PATHS = new Set([
+  'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+  'reviews/agent_self_review/TEMPLATE.json',
+  'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
+  'reviews/approved_batches/TEMPLATE.json',
+]);
 const REQUIRED_GIT_HANDOFF_FIELDS = [
   'branch',
   'base_branch',
@@ -112,8 +120,10 @@ const SELF_REVIEW_SCOPE_TYPES = ['three_card_sample_per_box', 'residual_blocker_
 const STANDARD_SELF_REVIEW_BATCH_STATUSES = ['recommend_user_confirmation', 'revise_before_user_review', 'blocked'];
 const RESIDUAL_BLOCKER_CLOSURE_STATUS = 'documented_residual_closure';
 const FULL_TRACK_READY_STATUS = 'ready_for_full_track_user_approval';
-const PR_SCOPE_VALIDATION_COMMAND = 'node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract';
+const PR_SCOPE_VALIDATION_COMMAND = 'node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract --head HEAD';
 const SCOPED_AUDIT_VALIDATION_COMMAND = 'node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json';
+const CARD_INTEGRITY_TEST_COMMAND = 'node --test scripts/test_card_integrity.mjs';
+const PR_SCOPE_TEST_COMMAND = 'node --test scripts/test_validate_pr_scope.mjs';
 
 function resolveWorkspacePath(specPath) {
   return path.resolve(ROOT, specPath);
@@ -177,6 +187,41 @@ function computeCardCorpusFingerprint() {
 
 let cachedCurrentFingerprint = null;
 let cachedCurrentScopedAuditFiles = null;
+const cachedCurrentTrackScopes = new Map();
+
+function currentTrackCorpusScope(track) {
+  if (cachedCurrentTrackScopes.has(track)) {
+    return cachedCurrentTrackScopes.get(track);
+  }
+
+  const cardIds = [];
+  const boxPrefixes = [];
+  const cardsMissingId = [];
+  const cardsMissingBoxPrefix = [];
+  for (const file of listCardFiles()) {
+    const data = JSON.parse(fs.readFileSync(path.join(CARD_DIR, file), 'utf8'));
+    for (const card of data.cards || []) {
+      if (card?.track !== track) continue;
+      if (hasText(card.card_id)) cardIds.push(card.card_id);
+      else cardsMissingId.push(file);
+      if (hasText(card.knowledge_ref?.box_prefix)) {
+        boxPrefixes.push(card.knowledge_ref.box_prefix);
+      } else {
+        cardsMissingBoxPrefix.push(card.card_id || file);
+      }
+    }
+  }
+
+  const result = {
+    cardIds,
+    boxPrefixes: [...new Set(boxPrefixes)].sort(),
+    duplicateCardIds: cardIds.filter((cardId, index) => cardIds.indexOf(cardId) !== index),
+    cardsMissingId,
+    cardsMissingBoxPrefix,
+  };
+  cachedCurrentTrackScopes.set(track, result);
+  return result;
+}
 
 function currentCardCorpusFingerprint() {
   if (!cachedCurrentFingerprint) cachedCurrentFingerprint = computeCardCorpusFingerprint();
@@ -601,6 +646,82 @@ function validateContentQuality(errors) {
     if (!(quality.allowed_card_prototypes || []).includes(prototype)) {
       pushIssue(errors, 'card_prototype_missing', { prototype });
     }
+  }
+
+  const integrity = quality.candidate_integrity_policy || {};
+  if (!String(integrity.legacy_metadata_compatibility || '').includes('Untouched legacy cards')) {
+    pushIssue(errors, 'candidate_integrity_legacy_boundary_missing', {});
+  }
+  if (!String(integrity.changed_candidate_detection || '').includes('merge-base-to-head')) {
+    pushIssue(errors, 'candidate_integrity_diff_discovery_missing', {});
+  }
+  if (
+    !String(integrity.governed_review_path_detection || '').includes('without') ||
+    !String(integrity.governed_review_path_detection || '').includes('four-digit box prefix') ||
+    !String(integrity.governed_review_path_detection || '').includes('exact repository-declared template allowlist') ||
+    !String(integrity.governed_review_path_detection || '').includes('unknown filenames')
+  ) {
+    pushIssue(errors, 'candidate_integrity_unprefixed_review_path_boundary_missing', {});
+  }
+  if (
+    !String(integrity.current_scoped_audit_snapshot || '').includes('complete card_boxes_json tree') ||
+    !String(integrity.current_scoped_audit_snapshot || '').includes('immutable HEAD commit')
+  ) {
+    pushIssue(errors, 'candidate_integrity_head_audit_snapshot_missing', {});
+  }
+  if (integrity.self_review_parity?.changed_self_review_required !== true) {
+    pushIssue(errors, 'candidate_integrity_changed_self_review_not_required', {});
+  }
+  if (integrity.self_review_parity?.exactly_one_review_coverage_per_changed_card !== true) {
+    pushIssue(errors, 'candidate_integrity_unique_review_coverage_not_required', {});
+  }
+  if (integrity.self_review_parity?.standard_review_snapshot_required !== true) {
+    pushIssue(errors, 'candidate_integrity_standard_snapshot_not_required', {});
+  }
+  if (integrity.self_review_parity?.every_changed_self_review_entry_checked_against_head !== true) {
+    pushIssue(errors, 'candidate_integrity_review_only_parity_not_required', {});
+  }
+  if (integrity.self_review_parity?.scope_omission_cannot_bypass_validation !== true) {
+    pushIssue(errors, 'candidate_integrity_scope_bypass_not_forbidden', {});
+  }
+  const fullTrackBoundary = String(integrity.self_review_parity?.full_track_aggregate_boundary || '');
+  if (
+    !fullTrackBoundary.includes('coverage.reviewed_card_ids') ||
+    !fullTrackBoundary.includes('exactly-one review coverage') ||
+    !fullTrackBoundary.includes('without a cards property') ||
+    !fullTrackBoundary.includes('complete declared track') ||
+    !fullTrackBoundary.includes('merge-base and HEAD card ID sets')
+  ) {
+    pushIssue(errors, 'candidate_integrity_full_track_aggregate_boundary_missing', {});
+  }
+  const parityDescription = String(integrity.self_review_parity?.quality_metadata_comparison || '');
+  const statusSemantics = String(integrity.self_review_parity?.review_status_semantics || '');
+  if (!parityDescription.includes('every quality_metadata field except review_status')) {
+    pushIssue(errors, 'candidate_integrity_metadata_parity_incomplete', {});
+  }
+  if (!statusSemantics.includes('only parity exclusion')) {
+    pushIssue(errors, 'candidate_integrity_review_status_exception_unbounded', {});
+  }
+  if (integrity.elimination_integrity?.canonical_items_field !== 'elimination_items') {
+    pushIssue(errors, 'candidate_integrity_elimination_canonical_field_drift', {});
+  }
+  if (integrity.elimination_integrity?.legacy_preview_mirror_field !== 'eliminable_items') {
+    pushIssue(errors, 'candidate_integrity_elimination_mirror_field_drift', {});
+  }
+  if (integrity.elimination_integrity?.legacy_preview_mirror_required_while_reader_depends_on_it !== true) {
+    pushIssue(errors, 'candidate_integrity_elimination_mirror_not_required', {});
+  }
+  if (!String(integrity.elimination_integrity?.canonical_item_shape || '').includes('{id,text}')) {
+    pushIssue(errors, 'candidate_integrity_elimination_runtime_id_shape_missing', {});
+  }
+  if (!String(integrity.elimination_integrity?.answer_truth || '').includes('runtime IDs')) {
+    pushIssue(errors, 'candidate_integrity_elimination_id_answer_truth_missing', {});
+  }
+  if (!String(integrity.elimination_integrity?.untouched_legacy_compatibility || '').includes('global read-only validation')) {
+    pushIssue(errors, 'candidate_integrity_elimination_legacy_boundary_missing', {});
+  }
+  if (integrity.elimination_integrity?.duplicate_item_identity !== 'forbidden') {
+    pushIssue(errors, 'candidate_integrity_elimination_duplicate_identity_not_forbidden', {});
   }
 }
 
@@ -1076,6 +1197,7 @@ function validateCardQualityAudit(errors, warnings) {
 
 function validateMetadataSchema(errors) {
   const schema = readJson('spec/card-metadata.schema.json');
+  const quality = readJson('spec/content-quality-contract.json');
   const rootRequired = schema.required || [];
   if (!rootRequired.includes('interaction_id')) {
     pushIssue(errors, 'metadata_root_interaction_id_not_required', {});
@@ -1098,6 +1220,50 @@ function validateMetadataSchema(errors) {
   }
   if ((schema.properties?.quality_metadata?.properties?.review_status?.enum || []).includes('user_approved')) {
     pushIssue(errors, 'metadata_review_status_allows_user_approved', {});
+  }
+
+  const metadataProperties = schema.properties?.quality_metadata?.properties || {};
+  const exactEnum = (actual, expected) => {
+    if (!Array.isArray(actual) || !Array.isArray(expected) || actual.length !== expected.length) return false;
+    const sortedActual = [...actual].sort();
+    const sortedExpected = [...expected].sort();
+    return sortedActual.every((value, index) => value === sortedExpected[index]);
+  };
+  const enumBindings = [
+    {
+      name: 'weak_point_tags',
+      actual: metadataProperties.weak_point_tags?.items?.enum,
+      expected: quality.default_user_model?.weak_point_tags,
+    },
+    {
+      name: 'difficulty.primary',
+      actual: metadataProperties.difficulty?.properties?.primary?.enum,
+      expected: quality.difficulty_policy?.tiers,
+    },
+    {
+      name: 'difficulty.secondary',
+      actual: metadataProperties.difficulty?.properties?.secondary?.items?.enum,
+      expected: quality.difficulty_policy?.tiers,
+    },
+    {
+      name: 'card_prototype',
+      actual: metadataProperties.card_prototype?.enum,
+      expected: quality.allowed_card_prototypes,
+    },
+    {
+      name: 'material.text_source_type',
+      actual: metadataProperties.material?.properties?.text_source_type?.enum,
+      expected: quality.source_policy?.allowed_text_source_types,
+    },
+  ];
+  for (const binding of enumBindings) {
+    if (!exactEnum(binding.actual, binding.expected)) {
+      pushIssue(errors, 'metadata_schema_content_quality_enum_drift', {
+        field: binding.name,
+        schema_values: binding.actual || [],
+        quality_values: binding.expected || [],
+      });
+    }
   }
 }
 
@@ -1129,6 +1295,53 @@ function validateWorkflow(errors) {
   }
   if (workflow.sample_quality_gate?.quality_metadata_schema !== 'spec/card-metadata.schema.json') {
     pushIssue(errors, 'sample_quality_gate_schema_drift', {});
+  }
+  const candidateIntegrity = workflow.changed_candidate_integrity_policy || {};
+  if (candidateIntegrity.contract !== 'spec/content-quality-contract.json#candidate_integrity_policy') {
+    pushIssue(errors, 'changed_candidate_integrity_contract_drift', {});
+  }
+  if (candidateIntegrity.validator !== 'scripts/validate_pr_scope.mjs') {
+    pushIssue(errors, 'changed_candidate_integrity_validator_drift', {});
+  }
+  if (candidateIntegrity.strict_on_any_card_change !== true) {
+    pushIssue(errors, 'changed_candidate_integrity_not_strict', {});
+  }
+  for (const requiredText of [
+    'complete schema-valid quality_metadata',
+    'exactly one changed review coverage',
+    'even when the card itself did not change',
+    'coverage.reviewed_card_ids are identical',
+    'complete declared track',
+    'same non-empty card ID set at merge-base',
+    'regardless of filename prefix',
+    'exact repository-declared template paths',
+    'canonical governed filename',
+    'complete immutable HEAD card_boxes_json snapshot',
+    'elimination runtime ID items',
+  ]) {
+    if (!(candidateIntegrity.requirements || []).some(requirement => requirement.includes(requiredText))) {
+      pushIssue(errors, 'changed_candidate_integrity_requirement_missing', { requiredText });
+    }
+  }
+  for (const forbiddenText of [
+    'grandfather inherited integrity defects',
+    'derive changed card scope only',
+    'missing optional metadata fields',
+    'exclude any parity field other than artifact-local review_status',
+    'self-review-only churn',
+    'unprefixed governed review filename',
+    'merely because its basename ends in TEMPLATE.json',
+    'invalid or mismatched full-track scope and coverage',
+    'partial-track aggregate',
+    'claim a track that differs',
+    'absent from merge-base',
+    'attach a cards snapshot payload to a full-track aggregate',
+    'base worktree that retains card files deleted or renamed by HEAD',
+    'without an explicit immutable head commit',
+  ]) {
+    if (!(candidateIntegrity.must_not || []).some(rule => rule.includes(forbiddenText))) {
+      pushIssue(errors, 'changed_candidate_integrity_forbidden_bypass_missing', { forbiddenText });
+    }
   }
   if (workflow.residual_blocker_closure_review_policy?.review_scope_type !== 'residual_blocker_closure') {
     pushIssue(errors, 'residual_blocker_closure_policy_missing', {});
@@ -1201,6 +1414,21 @@ function validateWorkflow(errors) {
 }
 
 function validateReviewDirs(errors) {
+  const expectedTemplatePaths = [
+    'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+    'reviews/agent_self_review/TEMPLATE.json',
+    'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
+    'reviews/approved_batches/TEMPLATE.json',
+  ];
+  if (
+    REVIEW_RECORD_TEMPLATE_PATHS.size !== expectedTemplatePaths.length ||
+    expectedTemplatePaths.some(filePath => !REVIEW_RECORD_TEMPLATE_PATHS.has(filePath))
+  ) {
+    pushIssue(errors, 'review_record_template_allowlist_drift', {
+      actual: [...REVIEW_RECORD_TEMPLATE_PATHS].sort(),
+      expected: expectedTemplatePaths.sort(),
+    });
+  }
   for (const dir of [
     'reviews/agent_self_review',
     'reviews/approved_batches',
@@ -1220,7 +1448,10 @@ function listReviewRecordFiles(dir) {
   const full = resolveWorkspacePath(dir);
   if (!fs.existsSync(full)) return [];
   return fs.readdirSync(full)
-    .filter(file => file.endsWith('.json') && !file.endsWith('TEMPLATE.json'))
+    .filter(file => (
+      file.endsWith('.json') &&
+      !REVIEW_RECORD_TEMPLATE_PATHS.has(`${dir}/${file}`)
+    ))
     .sort()
     .map(file => `${dir}/${file}`);
 }
@@ -1549,6 +1780,9 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
 
   if (isFullTrackRemediation) {
     const scopeCardIds = Array.isArray(record.scope?.card_ids) ? record.scope.card_ids : [];
+    const scopeBoxPrefixes = Array.isArray(record.scope?.box_prefixes)
+      ? record.scope.box_prefixes
+      : [];
     validateQualityAuditRecord(record.quality_audit, errors, source, {
       template,
       fixture,
@@ -1560,11 +1794,42 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
     if (!['cet4', 'cet6'].includes(record.scope?.track)) {
       pushIssue(errors, 'full_track_review_track_invalid', { source, track: record.scope?.track });
     }
-    if (!Array.isArray(record.scope?.box_prefixes) || record.scope.box_prefixes.length === 0) {
+    if (scopeBoxPrefixes.length === 0) {
       pushIssue(errors, 'full_track_review_box_prefixes_missing', { source });
     }
     if (scopeCardIds.length === 0) {
       pushIssue(errors, 'full_track_review_card_ids_missing', { source });
+    }
+    const currentTrackScope = currentTrackCorpusScope(record.scope?.track);
+    if (
+      currentTrackScope.cardIds.length === 0 ||
+      currentTrackScope.cardsMissingId.length > 0 ||
+      currentTrackScope.duplicateCardIds.length > 0 ||
+      scopeCardIds.length !== currentTrackScope.cardIds.length ||
+      !setsEqual(scopeCardIds, currentTrackScope.cardIds)
+    ) {
+      pushIssue(errors, 'full_track_review_card_scope_not_complete_track', {
+        source,
+        track: record.scope?.track,
+        expected_card_ids: [...new Set(currentTrackScope.cardIds)].sort(),
+        actual_card_ids: sortedStrings(scopeCardIds),
+        duplicate_head_card_ids: sortedStrings(currentTrackScope.duplicateCardIds),
+        head_cards_missing_id: currentTrackScope.cardsMissingId,
+      });
+    }
+    if (
+      currentTrackScope.boxPrefixes.length === 0 ||
+      currentTrackScope.cardsMissingBoxPrefix.length > 0 ||
+      scopeBoxPrefixes.length !== currentTrackScope.boxPrefixes.length ||
+      !setsEqual(scopeBoxPrefixes, currentTrackScope.boxPrefixes)
+    ) {
+      pushIssue(errors, 'full_track_review_box_scope_not_complete_track', {
+        source,
+        track: record.scope?.track,
+        expected_box_prefixes: currentTrackScope.boxPrefixes,
+        actual_box_prefixes: sortedStrings(scopeBoxPrefixes),
+        head_cards_missing_box_prefix: currentTrackScope.cardsMissingBoxPrefix,
+      });
     }
     if (!Array.isArray(record.specs_read) || record.specs_read.length === 0) {
       pushIssue(errors, 'self_review_specs_read_missing', { source });
@@ -1583,15 +1848,15 @@ function validateSelfReviewRecord(record, errors, source, { template = false, fi
       pushIssue(errors, 'full_track_review_human_reviewer_missing', { source });
     }
     const boxes = Array.isArray(record.coverage?.boxes) ? record.coverage.boxes : [];
-    if (boxes.length !== record.scope.box_prefixes.length) {
+    if (boxes.length !== scopeBoxPrefixes.length) {
       pushIssue(errors, 'full_track_review_box_coverage_mismatch', {
         source,
-        expected: record.scope.box_prefixes.length,
+        expected: scopeBoxPrefixes.length,
         actual: boxes.length,
       });
     }
     const reviewedPrefixes = boxes.map(box => box?.box_prefix);
-    if (!setsEqual(reviewedPrefixes, record.scope.box_prefixes)) {
+    if (!setsEqual(reviewedPrefixes, scopeBoxPrefixes)) {
       pushIssue(errors, 'full_track_review_box_prefix_mismatch', { source });
     }
     for (const box of boxes) {
@@ -1879,6 +2144,51 @@ function validateInteractionPolicy(errors) {
   if (/CORE_INTERACTIONS\s*=\s*new Set\(\[[^\]]*hint_layer/.test(structuralValidator)) {
     pushIssue(errors, 'card_validator_core_interactions_include_hint_layer', {});
   }
+  for (const token of [
+    'validateQualityMetadata',
+    'validateEliminationIntegrity',
+    'invalid_card_box_filename',
+    'allowLegacyContract',
+  ]) {
+    if (!structuralValidator.includes(token)) {
+      pushIssue(errors, 'card_validator_integrity_guard_missing', { token });
+    }
+  }
+
+  if (!exists('scripts/lib/card_integrity.mjs')) {
+    pushIssue(errors, 'card_integrity_library_missing', {});
+  } else {
+    const integrityLibrary = readText('scripts/lib/card_integrity.mjs');
+    for (const token of [
+      'loadIntegrityPolicy',
+      'validateQualityMetadata',
+      'validateEliminationIntegrity',
+      'validateChangedCardSelfReviewParity',
+      'candidate_quality_metadata_missing',
+      'candidate_self_review_metadata_mismatch',
+      'elimination_legacy_mirror_mismatch',
+      'elimination_correct_items_truth_mismatch',
+    ]) {
+      if (!integrityLibrary.includes(token)) {
+        pushIssue(errors, 'card_integrity_library_guard_missing', { token });
+      }
+    }
+  }
+  if (!exists('scripts/migrate_cards_to_softbook_contract.mjs')) {
+    pushIssue(errors, 'card_contract_migration_missing', {});
+  } else {
+    const migration = readText('scripts/migrate_cards_to_softbook_contract.mjs');
+    for (const token of [
+      'buildEliminationContract',
+      'elimination_items',
+      'correct_items',
+      'item.id',
+    ]) {
+      if (!migration.includes(token)) {
+        pushIssue(errors, 'card_contract_migration_runtime_id_guard_missing', {token});
+      }
+    }
+  }
 }
 
 function validateGitWorkflow(errors) {
@@ -1893,12 +2203,34 @@ function validateGitWorkflow(errors) {
   if (gitWorkflow.status !== 'active') {
     pushIssue(errors, 'git_workflow_not_active', { status: gitWorkflow.status });
   }
-  if (!activePaths.has('scripts/validate_pr_scope.mjs')) {
-    pushIssue(errors, 'pr_scope_validator_manifest_entry_missing', {});
+  for (const requiredPath of [
+    'scripts/lib/card_integrity.mjs',
+    'scripts/validate_cards.mjs',
+    'scripts/migrate_cards_to_softbook_contract.mjs',
+    'scripts/validate_pr_scope.mjs',
+  ]) {
+    if (!activePaths.has(requiredPath)) {
+      pushIssue(errors, 'integrity_validator_manifest_entry_missing', { requiredPath });
+    }
   }
   if (authorityMap.owners?.content_pr_scope_gate !== 'scripts/validate_pr_scope.mjs') {
     pushIssue(errors, 'pr_scope_validator_owner_drift', {
       owner: authorityMap.owners?.content_pr_scope_gate,
+    });
+  }
+  if (authorityMap.owners?.candidate_card_integrity !== 'scripts/lib/card_integrity.mjs') {
+    pushIssue(errors, 'candidate_card_integrity_owner_drift', {
+      owner: authorityMap.owners?.candidate_card_integrity,
+    });
+  }
+  if (authorityMap.owners?.candidate_card_structural_validation !== 'scripts/validate_cards.mjs') {
+    pushIssue(errors, 'candidate_card_validator_owner_drift', {
+      owner: authorityMap.owners?.candidate_card_structural_validation,
+    });
+  }
+  if (authorityMap.owners?.legacy_card_contract_migration !== 'scripts/migrate_cards_to_softbook_contract.mjs') {
+    pushIssue(errors, 'legacy_card_contract_migration_owner_drift', {
+      owner: authorityMap.owners?.legacy_card_contract_migration,
     });
   }
   if (!exists('scripts/validate_pr_scope.mjs')) {
@@ -1920,6 +2252,26 @@ function validateGitWorkflow(errors) {
       'resolved_head',
       'reports/card_quality_audit_report.json',
       'reports/card_validation_report.json',
+      'validateChangedCardSelfReviewParity',
+      'candidate_quality_metadata_missing',
+      'candidate_self_review_missing',
+      'candidate_self_review_metadata_mismatch',
+      'candidate_card_box_path_invalid',
+      'changed_self_review_current_corpus_parity_invalid',
+      'changed_self_review_deleted',
+      'changed_full_track_review_scope_coverage_mismatch',
+      'changed_full_track_review_cards_forbidden',
+      'changed_full_track_review_track_card_scope_mismatch',
+      'changed_full_track_review_track_box_scope_mismatch',
+      'changed_full_track_review_track_membership_changed',
+      'content_candidate_explicit_head_required',
+      'isCardBoxDirectoryPath',
+      'isReviewTemplatePath',
+      'REVIEW_TEMPLATE_PATHS',
+      'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+      'materializeHeadCardCorpus',
+      "'-z'",
+      'merge-base',
     ]) {
       if (!prScopeValidator.includes(token)) {
         pushIssue(errors, 'pr_scope_validator_guard_missing', { token });
@@ -1935,6 +2287,41 @@ function validateGitWorkflow(errors) {
     guardrail.includes('multi-prefix content') && guardrail.includes('explicit handoff')
   )) {
     pushIssue(errors, 'agent_harness_multi_prefix_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('merge-base-to-head') && guardrail.includes('canonical governed filename')
+  )) {
+    pushIssue(errors, 'agent_harness_candidate_diff_path_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('exact repository-declared template paths') &&
+    guardrail.includes('filename prefix')
+  )) {
+    pushIssue(errors, 'agent_harness_unprefixed_review_path_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('complete immutable HEAD card_boxes_json tree') &&
+    guardrail.includes('deleted or renamed base paths')
+  )) {
+    pushIssue(errors, 'agent_harness_head_audit_snapshot_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('HEAD corpus card') && guardrail.includes('review_status')
+  )) {
+    pushIssue(errors, 'agent_harness_candidate_metadata_parity_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('aggregate human-review evidence') &&
+    guardrail.includes('complete declared track card and box-prefix sets') &&
+    guardrail.includes('merge-base plus HEAD track membership') &&
+    guardrail.includes('no cards property')
+  )) {
+    pushIssue(errors, 'agent_harness_full_track_aggregate_guardrail_missing', {});
+  }
+  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
+    guardrail.includes('elimination_items IDs') && guardrail.includes('answer_key.correct_items')
+  )) {
+    pushIssue(errors, 'agent_harness_elimination_integrity_guardrail_missing', {});
   }
   if (!agentEntry.includes('## Agent-Managed Git')) {
     pushIssue(errors, 'agent_entry_missing_git_section', {});
@@ -1992,9 +2379,27 @@ function validateGitWorkflow(errors) {
   }
 
   const validationCommands = (gitWorkflow.validation_policy?.before_commit || []).map(entry => entry.command);
-  for (const command of ['node scripts/validate_harness.mjs', 'node scripts/validate_audio_qc.mjs', 'node scripts/validate_cards.mjs --report-path exports/card_validation_report.json', SCOPED_AUDIT_VALIDATION_COMMAND, PR_SCOPE_VALIDATION_COMMAND, 'git diff --check']) {
+  for (const command of [
+    'node scripts/validate_harness.mjs',
+    'node scripts/validate_audio_qc.mjs',
+    'node scripts/validate_cards.mjs --report-path exports/card_validation_report.json',
+    CARD_INTEGRITY_TEST_COMMAND,
+    SCOPED_AUDIT_VALIDATION_COMMAND,
+    PR_SCOPE_VALIDATION_COMMAND,
+    PR_SCOPE_TEST_COMMAND,
+    'git diff --check',
+  ]) {
     if (!validationCommands.includes(command)) {
       pushIssue(errors, 'git_validation_command_missing', { command });
+    }
+  }
+  const prGatesWorkflow = readText('.github/workflows/pr-gates.yml');
+  for (const command of [
+    CARD_INTEGRITY_TEST_COMMAND,
+    PR_SCOPE_TEST_COMMAND,
+  ]) {
+    if (!prGatesWorkflow.includes(command)) {
+      pushIssue(errors, 'github_pr_gate_integrity_test_missing', { command });
     }
   }
   if (gitWorkflow.completion_policy?.agent_authored_tracked_changes_default !== 'validated_commit_push_draft_PR') {
@@ -2029,6 +2434,14 @@ function validateGitWorkflow(errors) {
     }
   }
 
+  for (const requiredPath of [
+    'scripts/test_card_integrity.mjs',
+    'scripts/test_validate_pr_scope.mjs',
+  ]) {
+    if (!exists(requiredPath)) {
+      pushIssue(errors, 'integrity_regression_test_missing', { requiredPath });
+    }
+  }
   if (gitWorkflow.handoff_policy?.directory !== 'reviews/git_handoffs/') {
     pushIssue(errors, 'git_handoff_directory_drift', {});
   }
@@ -2059,13 +2472,32 @@ function validateEvalsAndPerturbation(errors) {
       pushIssue(errors, 'golden_task_missing', { id });
     }
   }
+  const sampleGateTask = (evals.golden_tasks || []).find(task => task.id === 'GT-CARD-004');
+  for (const expected of [
+    'derives_changed_cards_from_merge_base_to_head_objects',
+    'requires_exactly_one_changed_review_coverage_per_changed_card',
+    'requires_all_quality_metadata_fields_except_independently_validated_artifact_review_status_to_match_current_card_corpus',
+    'validates_self_review_only_changes_against_the_unique_HEAD_corpus_card',
+    'treats_unprefixed_governed_review_paths_as_content_candidate_changes',
+    'excludes_only_exact_repository_declared_review_template_paths',
+    'accepts_strict_full_track_aggregate_as_changed_card_review_coverage_without_cards',
+    'rejects_partial_or_wrong_track_full_track_aggregate_coverage',
+    'rejects_full_track_aggregate_coverage_for_cards_absent_from_merge_base',
+    'replays_scoped_audit_against_the_complete_immutable_HEAD_card_corpus',
+    'rejects_noncanonical_card_box_paths',
+    'requires_elimination_runtime_IDs_and_matching_preview_answer_projection',
+  ]) {
+    if (!(sampleGateTask?.expected || []).includes(expected)) {
+      pushIssue(errors, 'sample_gate_integrity_eval_missing', { expected });
+    }
+  }
   if (evals.fixture_suite !== 'spec/eval-fixtures.json') {
     pushIssue(errors, 'eval_fixture_suite_missing', {});
   }
 
   const perturbation = readJson('spec/perturbation-audit.json');
   const guards = new Set((perturbation.anti_drift_guards || []).map(guard => guard.id));
-  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009']) {
+  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009', 'PA-CARD-010', 'PA-CARD-012']) {
     if (!guards.has(id)) {
       pushIssue(errors, 'anti_drift_guard_missing', { id });
     }

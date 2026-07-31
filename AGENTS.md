@@ -63,6 +63,8 @@ After editing harness files, run:
 
 ```bash
 node scripts/validate_harness.mjs
+node --test scripts/test_card_integrity.mjs
+node --test scripts/test_validate_pr_scope.mjs
 ```
 
 After editing card JSON or the preview reader, also run:
@@ -76,8 +78,21 @@ For candidate sample PRs, do not commit global report refreshes from
 
 ```bash
 node scripts/audit_card_quality.mjs --scope-card-ids <comma-separated-card-ids> --write-scope-report reviews/audit_scopes/<review-id>-scope-audit.json
-node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract
+node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract --head HEAD
 ```
+
+The PR-scope command is an immutable-snapshot check and therefore runs after
+the payload commit; worktree-only content validation fails closed. Any
+JSON change under `reviews/agent_self_review/`, `reviews/drafts/`, or
+`reviews/audit_scopes/` triggers the content gate even without a four-digit box
+prefix. Only exact repository-declared template paths are excluded; a filename
+that merely ends in `TEMPLATE.json` remains governed. The current scoped audit
+replays the complete `HEAD:card_boxes_json` tree rather than overlaying only
+changed paths. Standard reviews require per-card metadata snapshots; canonical
+full-track records instead use strict equal aggregate scope/coverage IDs bound
+to the complete declared track card and box-prefix sets in immutable HEAD, and
+the track membership must remain the same non-empty set from merge-base to
+HEAD. They must not attach a separate `cards` payload or authorize added cards.
 
 ## Agent-Managed Git
 

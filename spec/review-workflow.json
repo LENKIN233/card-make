@@ -55,7 +55,9 @@
     "approval_record_directory": "reviews/approved_batches/",
     "required_before_user_confirmation": [
       "quality_metadata_per_card",
+      "changed_candidate_card_integrity",
       "agent_self_review_record",
+      "self_review_quality_metadata_matches_current_card_corpus",
       "blocker_scan_per_card",
       "card_quality_audit_no_hard_blockers",
       "scoped_card_quality_audit_report",
@@ -69,6 +71,40 @@
       "harness_validation",
       "card_validation",
       "card_quality_audit_report"
+    ]
+  },
+  "changed_candidate_integrity_policy": {
+    "contract": "spec/content-quality-contract.json#candidate_integrity_policy",
+    "validator": "scripts/validate_pr_scope.mjs",
+    "discovery": "compare merge-base and head card objects by card_id rather than trusting declared scope",
+    "strict_on_any_card_change": true,
+    "requirements": [
+      "every added or modified card has complete schema-valid quality_metadata",
+      "every added or modified card has exactly one changed review coverage: either one standard per-card snapshot or one validated full-track aggregate scope+coverage entry",
+      "every entry in every changed self-review resolves to exactly one HEAD corpus card and all quality_metadata fields except artifact-local review_status are deeply equal, even when the card itself did not change",
+      "a changed full-track aggregate record may omit cards; its non-empty unique scope.card_ids and coverage.reviewed_card_ids are identical, its expected count matches, its card IDs and box prefixes equal the complete declared track in immutable HEAD, and that track has the same non-empty card ID set at merge-base",
+      "every JSON change under agent_self_review, drafts, or audit_scopes enters the content gate regardless of filename prefix, except exact repository-declared template paths",
+      "all files under card_boxes_json use the canonical governed filename and are included in changed-candidate detection",
+      "the replayed scoped audit reads the complete immutable HEAD card_boxes_json snapshot, including deletions and rename sources",
+      "elimination runtime ID items, preview compatibility projection, and ID-based answer truth remain mutually consistent"
+    ],
+    "legacy_boundary": "Untouched cards without quality_metadata remain readable legacy corpus; touching a card opts the complete head object into current candidate integrity requirements.",
+    "must_not": [
+      "grandfather inherited integrity defects on a changed card",
+      "derive changed card scope only from self-review or handoff declarations",
+      "allow missing optional metadata fields to pass parity",
+      "exclude any parity field other than artifact-local review_status",
+      "treat object key order as a metadata mismatch",
+      "allow self-review-only churn to avoid HEAD corpus parity",
+      "allow an unprefixed governed review filename to avoid content-candidate validation",
+      "treat an unknown record as a template merely because its basename ends in TEMPLATE.json",
+      "count invalid or mismatched full-track scope and coverage as changed-card review evidence",
+      "allow a partial-track aggregate to satisfy changed-card review coverage",
+      "allow a full-track record to claim a track that differs from any covered HEAD card",
+      "allow a full-track remediation aggregate to authorize a card absent from merge-base",
+      "attach a cards snapshot payload to a full-track aggregate instead of using its canonical scope and coverage evidence",
+      "replay a scoped audit on a base worktree that retains card files deleted or renamed by HEAD",
+      "run content-candidate validation without an explicit immutable head commit"
     ]
   },
   "full_track_remediation_policy": {

@@ -58,6 +58,34 @@
     "cet4_cet6_relationship": "CET4 and CET6 may share structure, but CET6 must raise language, inference, and expression difficulty.",
     "advanced_card_in_foundation_phase": "Allowed only when labeled and justified."
   },
+  "candidate_integrity_policy": {
+    "authority_boundary": "This workspace may enforce stricter candidate integrity than the product runtime, but canonical interaction semantics remain owned by ../softbook_cet/spec/interactions.json.",
+    "legacy_metadata_compatibility": "Untouched legacy cards may omit quality_metadata; any card that already carries quality_metadata must conform to spec/card-metadata.schema.json, and any added or modified candidate card must carry conforming quality_metadata without grandfathering inherited defects.",
+    "changed_candidate_detection": "Derive added or modified card objects by card_id from the merge-base-to-head Git diff; every file consumed under card_boxes_json must use the canonical governed filename, and declared review scope is evidence but cannot narrow the validator's discovered card set.",
+    "governed_review_path_detection": "Every JSON change under reviews/agent_self_review, reviews/drafts, or reviews/audit_scopes triggers content-candidate validation without relying on a four-digit box prefix, except the exact repository-declared template allowlist reviews/agent_self_review/TEMPLATE.json and reviews/agent_self_review/FULL_TRACK_TEMPLATE.json; unknown filenames that merely end in TEMPLATE.json remain governed records. Git handoffs remain classified by their governed content scope rather than treating every delivery-only handoff as content.",
+    "current_scoped_audit_snapshot": "Replay the current audit against the complete card_boxes_json tree materialized from the immutable HEAD commit, including deletions and rename sources; overlay only the current audit harness and never leave base-only card files in the temporary audit worktree.",
+    "self_review_parity": {
+      "changed_self_review_required": true,
+      "exactly_one_review_coverage_per_changed_card": true,
+      "standard_review_snapshot_required": true,
+      "quality_metadata_comparison": "deep semantic equality of every quality_metadata field except review_status; object key order is irrelevant while array order and absent-versus-present fields remain significant",
+      "review_status_semantics": "card corpus and self-review artifacts carry different lifecycle views (for example card=draft while review snapshot=agent_pass), so each review_status is validated independently and is the only parity exclusion",
+      "every_changed_self_review_entry_checked_against_head": true,
+      "full_track_aggregate_boundary": "A changed full_track_remediation record is aggregate human-review evidence for an existing complete track and uses the canonical scope, coverage, quality_audit, and batch status shape from spec/review-workflow.json without a cards property. Its non-empty unique scope.card_ids and coverage.reviewed_card_ids must be identical, its expected count must match, and scope.card_ids plus scope.box_prefixes must equal the complete declared track in immutable HEAD. The merge-base and HEAD card ID sets for that track must also be the same non-empty set, so remediation cannot authorize added or deleted cards. Every covered ID must resolve uniquely and belong to that track. Valid complete-track aggregate coverage counts toward the exactly-one review coverage required for a modified pre-existing card, while added cards require the standard per-card workflow in a separate review unit.",
+      "scope_omission_cannot_bypass_validation": true
+    },
+    "elimination_integrity": {
+      "canonical_authority": "../softbook_cet/spec/interactions.json#interactions[id=elimination]",
+      "canonical_items_field": "elimination_items",
+      "canonical_item_shape": "{id,text}; changed candidates require an explicit non-empty unique id, while the formal runtime bridge normalizes untouched legacy items with item.id ?? item.text",
+      "legacy_preview_mirror_field": "eliminable_items",
+      "legacy_preview_mirror_required_while_reader_depends_on_it": true,
+      "legacy_preview_projection": "eliminable_items stays the local text/is_correct preview projection; each entry aligns by position and text with elimination_items, and is_correct must equal membership of that canonical runtime ID in answer_key.correct_items",
+      "untouched_legacy_compatibility": "The current migrated corpus may retain text/is_correct entries in both fields and text-as-ID correct_items only in global read-only validation; any added or modified candidate must upgrade to explicit runtime IDs.",
+      "answer_truth": "answer_key.correct_items must equal the unique runtime IDs selected by the preview projection; order alone is not significant",
+      "duplicate_item_identity": "forbidden"
+    }
+  },
   "allowed_card_prototypes": [
     "knowledge_explanation",
     "solving_action",
