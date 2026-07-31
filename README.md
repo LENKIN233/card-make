@@ -30,14 +30,21 @@ The validator enforces the product contract fields required by `softbook_cet`:
 - `front`
 - `analysis`
 
-It also checks interaction IDs, audio file references, provenance status, and visible template leakage.
+It also checks interaction IDs, audio file references, provenance status, visible template leakage,
+canonical card-box filenames, schema-valid metadata whenever `quality_metadata` is present, and
+runtime-ID/preview/answer-key consistency for elimination cards. Untouched legacy cards may still
+omit metadata and use the recorded text-as-ID elimination migration; any card changed by a
+candidate PR is validated against the complete current metadata and explicit runtime-ID contract.
 The report keeps explicit legacy flags separate from derived source-risk counts so
 `quality_metadata.material.text_source_type` can expose simulated or AI-generated
 candidate material even when legacy `source_ref.type` is still `content_pool`.
 
 ## Migration
 
-The current JSON files keep the legacy preview-reader fields for compatibility, but now also include the product contract fields. Re-run the migration only when legacy cards are added or regenerated:
+The current JSON files keep the legacy preview-reader fields for compatibility. The migration now
+emits runtime `elimination_items` as `{id,text}`, keeps `eliminable_items` as the local
+`text/is_correct` projection, and writes `answer_key.correct_items` as IDs. Re-run it only when
+legacy cards are added or regenerated:
 
 ```bash
 node scripts/migrate_cards_to_softbook_contract.mjs
@@ -56,6 +63,27 @@ Run this after editing harness files:
 
 ```bash
 node scripts/validate_harness.mjs
+node --test scripts/test_card_integrity.mjs
+node --test scripts/test_validate_pr_scope.mjs
+```
+
+Candidate PR scope validation uses NUL-delimited Git paths, discovers changed cards from the
+merge-base-to-head objects, requires exactly one changed self-review snapshot for each changed card,
+and compares every entry in every changed self-review with its unique HEAD corpus card. The only
+parity exception is the independently validated artifact-local `review_status`. JSON under
+`reviews/agent_self_review/`, `reviews/drafts/`, or `reviews/audit_scopes/` enters this gate even
+when the filename has no four-digit box prefix; only the exact repository-declared template paths
+are excluded, not arbitrary names ending in `TEMPLATE.json`. The replayed scoped audit materializes
+the complete `HEAD:card_boxes_json` tree, so a renamed or deleted base path cannot leak into the result.
+Standard reviews carry per-card metadata snapshots. Canonical `full_track_remediation` records carry
+aggregate human-review coverage instead: strict equal, unique, non-empty scope/reviewed card IDs and
+the expected count must match the complete declared track card and box-prefix sets in immutable HEAD,
+the track ID set must be the same non-empty set at merge-base and HEAD, and the record must not attach
+a separate `cards` payload. Newly added cards use the standard per-card workflow in a separate unit.
+Run it against an immutable commit after the payload commit:
+
+```bash
+node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract --head HEAD
 ```
 
 Run this after editing card JSON, review records, or the quality-audit harness:

@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
 
-const MIGRATION_VERSION = 'softbook-card-contract-2026-05-02';
+const MIGRATION_VERSION = 'softbook-card-contract-2026-07-31-elimination-ids';
 
 const TRACKS = {
   0: 'cet4',
@@ -164,6 +164,36 @@ function buildAnalysis(card) {
   };
 }
 
+export function buildEliminationContract(eliminableItems) {
+  const items = Array.isArray(eliminableItems) ? eliminableItems : [];
+  const usedIds = new Set();
+  const eliminationItems = items.map((item, index) => {
+    const preferredId = typeof item?.id === 'string' && item.id.trim().length > 0
+      ? item.id.trim()
+      : `item_${index + 1}`;
+    let id = preferredId;
+    let suffix = 2;
+    while (usedIds.has(id)) {
+      id = `${preferredId}_${suffix}`;
+      suffix += 1;
+    }
+    usedIds.add(id);
+    return {
+      id,
+      text: typeof item?.text === 'string' ? item.text : '',
+    };
+  });
+
+  return {
+    elimination_items: eliminationItems,
+    answer_key: {
+      correct_items: eliminationItems
+        .filter((_item, index) => items[index]?.is_correct === true)
+        .map(item => item.id),
+    },
+  };
+}
+
 function buildAnswerKey(card, interactionId) {
   if (interactionId === 'multiple_choice') {
     if (Array.isArray(card.options)) {
@@ -179,11 +209,7 @@ function buildAnswerKey(card, interactionId) {
   }
 
   if (interactionId === 'elimination' && Array.isArray(card.eliminable_items)) {
-    return {
-      correct_items: card.eliminable_items
-        .filter(item => item && item.is_correct)
-        .map(item => item.text),
-    };
+    return buildEliminationContract(card.eliminable_items).answer_key;
   }
 
   if (interactionId === 'lock' && Array.isArray(card.blank_answers)) {
@@ -240,7 +266,9 @@ function buildContractFields(card, fileMeta) {
   }
 
   if (mapping.id === 'elimination' && Array.isArray(card.eliminable_items)) {
-    contractFields.elimination_items = card.eliminable_items;
+    contractFields.elimination_items = buildEliminationContract(
+      card.eliminable_items,
+    ).elimination_items;
   }
 
   if (mapping.id === 'swipe') {
@@ -260,7 +288,7 @@ function buildContractFields(card, fileMeta) {
   return contractFields;
 }
 
-function migrateFile(filePath) {
+export function migrateFile(filePath) {
   const data = readJson(filePath);
   const fileMeta = { ...data };
 
@@ -288,13 +316,19 @@ function migrateFile(filePath) {
   writeJson(filePath, data);
 }
 
-const files = fs.readdirSync(CARD_DIR)
-  .filter(file => file.endsWith('.json'))
-  .sort()
-  .map(file => path.join(CARD_DIR, file));
+function runCli() {
+  const files = fs.readdirSync(CARD_DIR)
+    .filter(file => file.endsWith('.json'))
+    .sort()
+    .map(file => path.join(CARD_DIR, file));
 
-for (const file of files) {
-  migrateFile(file);
+  for (const file of files) {
+    migrateFile(file);
+  }
+
+  console.log(`Migrated ${files.length} card box files to ${MIGRATION_VERSION}.`);
 }
 
-console.log(`Migrated ${files.length} card box files to ${MIGRATION_VERSION}.`);
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  runCli();
+}

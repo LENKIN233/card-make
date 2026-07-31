@@ -1,6 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  loadIntegrityPolicy,
+  validateEliminationIntegrity,
+  validateQualityMetadata,
+} from './lib/card_integrity.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
@@ -10,6 +15,8 @@ const REQUIRED_FIELDS = ['card_id', 'track', 'knowledge_ref', 'interaction_id', 
 const SOURCE_REQUIRED_FIELDS = ['type', 'provenance_status'];
 const CORE_INTERACTIONS = new Set(['flip', 'multiple_choice', 'lock', 'elimination', 'swipe']);
 const TEMPLATE_LEAK_RE = /第\d+卡|当前素材中可优先关注|盒任务要求组织解析|CET[46]独立语料/;
+const INTEGRITY_POLICY = loadIntegrityPolicy(ROOT);
+const CARD_BOX_FILE_RE = /^card_boxes_seed_(?:cet4|cet6)_[a-z0-9_]+_\d{4}\.json$/;
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -22,6 +29,10 @@ function walkCards() {
 
   const cards = [];
   for (const file of files) {
+    if (!CARD_BOX_FILE_RE.test(file)) {
+      cards.push({file, card: null, issue: 'invalid_card_box_filename'});
+      continue;
+    }
     const filePath = path.join(CARD_DIR, file);
     const data = readJson(filePath);
     if (!Array.isArray(data.cards)) {
@@ -54,6 +65,17 @@ function validate() {
     material_text_source_type: {},
     quality_flags: {},
     derived_quality_flags: {},
+    integrity: {
+      quality_metadata_present: 0,
+      quality_metadata_absent: 0,
+      quality_metadata_valid: 0,
+      quality_metadata_invalid: 0,
+      elimination_cards: 0,
+      elimination_valid: 0,
+      elimination_invalid: 0,
+      elimination_runtime_id_contract: 0,
+      elimination_legacy_compatible: 0,
+    },
   };
 
   const files = new Set();
@@ -98,6 +120,39 @@ function validate() {
     if (card.audio?.url && !fs.existsSync(path.join(ROOT, card.audio.url))) {
       errors.push({ file, card_id: card.card_id, code: 'missing_audio_file', audio_url: card.audio.url });
     }
+
+    const metadataIntegrity = validateQualityMetadata(card, INTEGRITY_POLICY, {required: false});
+    if (metadataIntegrity.present) {
+      stats.integrity.quality_metadata_present += 1;
+      if (metadataIntegrity.ok) stats.integrity.quality_metadata_valid += 1;
+      else stats.integrity.quality_metadata_invalid += 1;
+    } else {
+      stats.integrity.quality_metadata_absent += 1;
+    }
+    errors.push(...metadataIntegrity.issues.map(integrityIssue => ({
+      file,
+      ...integrityIssue,
+    })));
+
+    const eliminationIntegrity = validateEliminationIntegrity(card, {
+      requireLegacyMirror: true,
+      allowLegacyContract: true,
+    });
+    if (eliminationIntegrity.applicable) {
+      stats.integrity.elimination_cards += 1;
+      if (eliminationIntegrity.mode === 'runtime_id_contract') {
+        stats.integrity.elimination_runtime_id_contract += 1;
+      }
+      if (eliminationIntegrity.legacy_compatible) {
+        stats.integrity.elimination_legacy_compatible += 1;
+      }
+      if (eliminationIntegrity.ok) stats.integrity.elimination_valid += 1;
+      else stats.integrity.elimination_invalid += 1;
+    }
+    errors.push(...eliminationIntegrity.issues.map(integrityIssue => ({
+      file,
+      ...integrityIssue,
+    })));
 
     const visibleText = JSON.stringify({
       front_content: card.front_content,

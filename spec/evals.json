@@ -45,8 +45,20 @@
       "prompt": "Given a 3-card candidate sample, require quality metadata, blocker scan, and an agent self-review record before approval can be recorded.",
       "expected": [
         "requires_quality_metadata_per_card",
+        "derives_changed_cards_from_merge_base_to_head_objects",
         "requires_blocker_scan_per_card",
         "requires_agent_self_review_record",
+        "requires_exactly_one_changed_review_coverage_per_changed_card",
+        "requires_all_quality_metadata_fields_except_independently_validated_artifact_review_status_to_match_current_card_corpus",
+        "validates_self_review_only_changes_against_the_unique_HEAD_corpus_card",
+        "treats_unprefixed_governed_review_paths_as_content_candidate_changes",
+        "excludes_only_exact_repository_declared_review_template_paths",
+        "accepts_strict_full_track_aggregate_as_changed_card_review_coverage_without_cards",
+        "rejects_partial_or_wrong_track_full_track_aggregate_coverage",
+        "rejects_full_track_aggregate_coverage_for_cards_absent_from_merge_base",
+        "replays_scoped_audit_against_the_complete_immutable_HEAD_card_corpus",
+        "rejects_noncanonical_card_box_paths",
+        "requires_elimination_runtime_IDs_and_matching_preview_answer_projection",
         "prevents_user_approval_without_record"
       ]
     },
