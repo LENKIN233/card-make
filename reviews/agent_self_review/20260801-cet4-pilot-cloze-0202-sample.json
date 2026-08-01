@@ -1,0 +1,244 @@
+{
+  "review_id": "20260801-cet4-pilot-cloze-0202-sample",
+  "created_at": "2026-08-01T23:00:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "选词填空",
+    "group": "词性判断",
+    "box": "动词",
+    "box_prefixes": [
+      "0202"
+    ],
+    "card_ids": [
+      "020201",
+      "020202",
+      "020203"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260801-cet4-pilot-cloze-0202-scope-audit.json",
+    "corpus_fingerprint": "6924d732f6bdc9bfb1400a8d699dba50e6c21fe0f48b37f0bf4b65307bf98cc0",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "020201",
+        "020202",
+        "020203"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "020201",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0202"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 to 不定式后的动词原形位置",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "建立选词填空的第一轮词性过滤动作，降低在词库中反复试词的成本。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance."
+      ],
+      "recommendation": "Use as the recognition entry for verb-position filtering."
+    },
+    {
+      "card_id": "020202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0202"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "利用并列谓语确定动词词性与词形",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练考场中用平行结构快速排除错误词性的稳定动作。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance."
+      ],
+      "recommendation": "Use to validate the parallel-predicate application step."
+    },
+    {
+      "card_id": "020203",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0202"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "综合谓语位置、主谓一致和动词搭配完成锁词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "把词性判断推进到可提交答案的完整链路，减少“词性正确但词形或搭配错误”。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance."
+      ],
+      "recommendation": "Use as the transfer card and lock-interaction representative."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The sample moves from recognizing an infinitive verb slot, to applying parallel-predicate structure, to integrating predicate position, subject-verb agreement, and verb complementation in a lock interaction.",
+    "repetition_or_gap_risks": [
+      "All three sentences are disclosed AI-authored simulations; they must never be marketed as true-exam excerpts.",
+      "This is one banked-cloze box sample only and does not authorize bulk expansion."
+    ],
+    "representative_cards": [
+      "020201",
+      "020202",
+      "020203"
+    ],
+    "next_step": "Include this sample in the consolidated controlled-pilot evidence pack for explicit user confirmation before box expansion."
+  }
+}
