@@ -245,6 +245,11 @@ function recordExclusiveScope(index, value, queueId, label, errors) {
 function runSelfTest() {
   const queue = JSON.parse(fs.readFileSync(DEFAULT_QUEUE_PATH, 'utf8'));
   const active = queue.entries.filter(entry => entry.status === 'active');
+  const activeIndexes = queue.entries.flatMap((entry, index) =>
+    entry.status === 'active' ? [index] : []
+  );
+  assert.ok(activeIndexes.length >= 2, 'self-test requires at least two active queue entries');
+  const [firstActiveIndex, secondActiveIndex] = activeIndexes;
   const remotePrs = active.map(entry => ({
     baseRefName: 'main',
     headRefName: entry.original.branch,
@@ -255,11 +260,13 @@ function runSelfTest() {
   assert.equal(validateQueue(queue, {remotePrs, requireFive: true, verifyRemote: true}).ok, true);
 
   const duplicatePr = structuredClone(queue);
-  duplicatePr.entries[1].new_pr_number = duplicatePr.entries[0].new_pr_number;
+  duplicatePr.entries[secondActiveIndex].new_pr_number =
+    duplicatePr.entries[firstActiveIndex].new_pr_number;
   assert.equal(validateQueue(duplicatePr, {requireFive: true}).ok, false);
 
   const duplicateScope = structuredClone(queue);
-  duplicateScope.entries[1].scope = structuredClone(duplicateScope.entries[0].scope);
+  duplicateScope.entries[secondActiveIndex].scope =
+    structuredClone(duplicateScope.entries[firstActiveIndex].scope);
   const duplicateScopeResult = validateQueue(duplicateScope, {requireFive: true});
   assert.equal(duplicateScopeResult.ok, false);
   assert.ok(duplicateScopeResult.errors.some(error => error.includes('overlaps')));
