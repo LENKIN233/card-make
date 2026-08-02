@@ -169,7 +169,7 @@ jobs:
           node scripts/validate_candidate_review_queue.mjs --self-test
           if [ "$EVENT_NAME" = "schedule" ]; then
             node scripts/report_repo_health.mjs --full-tree --remote --strict --expected-max-worktrees 1 --expected-max-stashes 0 --require-upstreams --output "$RUNNER_TEMP/repository-health.json"
-            node scripts/validate_candidate_review_queue.mjs --required --require-five --verify-remote
+            node scripts/validate_candidate_review_queue.mjs --required --require-nonempty --verify-remote
           elif git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
             node scripts/report_repo_health.mjs --base "$BASE_SHA" --strict --expected-max-worktrees 1 --expected-max-stashes 0 --require-upstreams --output "$RUNNER_TEMP/repository-health.json"
             node scripts/validate_candidate_review_queue.mjs

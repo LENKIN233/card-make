@@ -21,6 +21,7 @@ if (process.argv.includes('--self-test')) {
 
 const required = process.argv.includes('--required');
 const requireFive = process.argv.includes('--require-five');
+const requireNonempty = process.argv.includes('--require-nonempty');
 const verifyRemote = process.argv.includes('--verify-remote');
 const queuePath = path.resolve(ROOT, option('--queue-path', DEFAULT_QUEUE_PATH));
 
@@ -85,6 +86,7 @@ const result = validateQueue(queue, {
   remoteError,
   remotePrs,
   requireFive,
+  requireNonempty,
   verifyRemote,
 });
 console.log(JSON.stringify(result, null, 2));
@@ -96,6 +98,7 @@ function validateQueue(
     remoteError = null,
     remotePrs = null,
     requireFive = false,
+    requireNonempty = false,
     root = ROOT,
     verifyRemote = false,
   } = {},
@@ -130,7 +133,9 @@ function validateQueue(
     if (!Number.isInteger(entry.priority) || entry.priority < 1) errors.push(`${queueId}: priority must be positive`);
     else if (priorities.has(entry.priority)) errors.push(`${queueId}: duplicate priority ${entry.priority}`);
     else priorities.add(entry.priority);
-    if (!['active', 'parked', 'patch_pool', 'superseded'].includes(entry.status)) errors.push(`${queueId}: invalid status`);
+    if (!['active', 'merged_candidate', 'parked', 'patch_pool', 'superseded'].includes(entry.status)) {
+      errors.push(`${queueId}: invalid status`);
+    }
     if (!SHA40_RE.test(String(entry.original?.head_sha || ''))) errors.push(`${queueId}: invalid original head_sha`);
     if (typeof entry.original?.branch !== 'string' || entry.original.branch.length === 0) errors.push(`${queueId}: original branch is required`);
     if (!SHA256_RE.test(String(entry.patch_sha256 || ''))) errors.push(`${queueId}: invalid patch_sha256`);
@@ -159,6 +164,15 @@ function validateQueue(
       }
     }
 
+    if (entry.status === 'merged_candidate') {
+      if (!Number.isInteger(entry.new_pr_number) || entry.new_pr_number < 1) {
+        errors.push(`${queueId}: merged_candidate requires a positive new_pr_number`);
+      }
+      if (entry.formal_approval !== false) {
+        errors.push(`${queueId}: merged_candidate cannot claim formal approval`);
+      }
+    }
+
     if (entry.formal_approval === true) {
       const approvalValidation = validateCurrentApprovalRecordReference({
         root,
@@ -180,6 +194,7 @@ function validateQueue(
   const active = entries.filter(entry => entry?.status === 'active');
   if (active.length > 5) errors.push(`active candidate limit exceeded: ${active.length}`);
   if (requireFive && active.length !== 5) errors.push(`expected exactly five active candidates, got ${active.length}`);
+  if (requireNonempty && active.length === 0) errors.push('expected at least one active candidate');
 
   let remote = null;
   if (verifyRemote) {
@@ -219,6 +234,7 @@ function validateQueue(
     counts: {
       entries: entries.length,
       active: active.length,
+      merged_candidate: entries.filter(entry => entry?.status === 'merged_candidate').length,
       formally_approved: entries.filter(entry => entry?.formal_approval === true).length,
     },
     remote,
@@ -257,23 +273,43 @@ function runSelfTest() {
     isDraft: true,
     number: entry.new_pr_number,
   }));
-  assert.equal(validateQueue(queue, {remotePrs, requireFive: true, verifyRemote: true}).ok, true);
+  assert.equal(validateQueue(queue, {remotePrs, requireNonempty: true, verifyRemote: true}).ok, true);
+  assert.equal(validateQueue(queue, {requireFive: true}).ok, false);
+
+  const emptyActive = structuredClone(queue);
+  for (const entry of emptyActive.entries) {
+    if (entry.status === 'active') entry.status = 'parked';
+  }
+  assert.equal(validateQueue(emptyActive).ok, true);
+  assert.equal(validateQueue(emptyActive, {requireNonempty: true}).ok, false);
+
+  const invalidMergedCandidate = structuredClone(queue);
+  const mergedCandidate = invalidMergedCandidate.entries.find(
+    entry => entry.status === 'merged_candidate',
+  );
+  assert.ok(mergedCandidate, 'self-test requires one merged candidate entry');
+  mergedCandidate.new_pr_number = null;
+  const invalidMergedResult = validateQueue(invalidMergedCandidate);
+  assert.equal(invalidMergedResult.ok, false);
+  assert.ok(invalidMergedResult.errors.some(
+    error => error.includes('merged_candidate requires a positive new_pr_number'),
+  ));
 
   const duplicatePr = structuredClone(queue);
   duplicatePr.entries[secondActiveIndex].new_pr_number =
     duplicatePr.entries[firstActiveIndex].new_pr_number;
-  assert.equal(validateQueue(duplicatePr, {requireFive: true}).ok, false);
+  assert.equal(validateQueue(duplicatePr, {requireNonempty: true}).ok, false);
 
   const duplicateScope = structuredClone(queue);
   duplicateScope.entries[secondActiveIndex].scope =
     structuredClone(duplicateScope.entries[firstActiveIndex].scope);
-  const duplicateScopeResult = validateQueue(duplicateScope, {requireFive: true});
+  const duplicateScopeResult = validateQueue(duplicateScope, {requireNonempty: true});
   assert.equal(duplicateScopeResult.ok, false);
   assert.ok(duplicateScopeResult.errors.some(error => error.includes('overlaps')));
 
   const missingRemote = validateQueue(queue, {
     remotePrs: remotePrs.slice(1),
-    requireFive: true,
+    requireNonempty: true,
     verifyRemote: true,
   });
   assert.equal(missingRemote.ok, false);
@@ -281,7 +317,7 @@ function runSelfTest() {
   assert.equal(
     validateQueue(queue, {
       remoteError: 'GitHub open PR snapshot unavailable',
-      requireFive: true,
+      requireNonempty: true,
       verifyRemote: true,
     }).ok,
     false,
@@ -292,7 +328,7 @@ function runSelfTest() {
   templateApproval.entries[0].approval_record =
     'reviews/approved_batches/TEMPLATE.json';
   const templateApprovalResult = validateQueue(templateApproval, {
-    requireFive: true,
+    requireNonempty: true,
   });
   assert.equal(templateApprovalResult.ok, false);
   assert.ok(templateApprovalResult.errors.some(
@@ -304,7 +340,7 @@ function runSelfTest() {
   traversalApproval.entries[0].approval_record =
     'reviews/approved_batches/../forged.json';
   const traversalApprovalResult = validateQueue(traversalApproval, {
-    requireFive: true,
+    requireNonempty: true,
   });
   assert.equal(traversalApprovalResult.ok, false);
   assert.ok(traversalApprovalResult.errors.some(

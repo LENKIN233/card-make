@@ -1,0 +1,62 @@
+{
+  "handoff_id": "20260803-tooling-roll-forward-pilot-queue",
+  "created_at": "2026-08-03T01:10:00+08:00",
+  "agent": "codex",
+  "branch": "tooling/roll-forward-pilot-queue",
+  "base_branch": "main",
+  "commit_sha": "05d856c524c45381bd6a7eb605d1fdb7ad5f571d",
+  "push_ref": "origin/tooling/roll-forward-pilot-queue",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/120",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "tooling",
+    "purpose": "Represent merged candidate samples truthfully without counting them as active PRs or formal approvals, and verify the actual non-empty active queue instead of requiring artificial five-PR saturation.",
+    "referenced_specs": [
+      "spec/workspace-contract.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json",
+      "spec/candidate-review-queue.schema.json",
+      "spec/git-workflow.json",
+      "spec/agent-harness.json"
+    ],
+    "touched_paths": [
+      ".github/workflows/pr-gates.yml",
+      "reviews/candidate-review-queue.json",
+      "scripts/validate_candidate_review_queue.mjs",
+      "spec/candidate-review-queue.schema.json",
+      "spec/review-workflow.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "cc49b66ea039ebfa21f9cb676a143386a3f404b8",
+    "patch_sha256": "07e6276bead3b7150bb7ab8b94f2be868798f8d7e195c064fbbe7089881e0c5a"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_candidate_review_queue.mjs --self-test",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_candidate_review_queue.mjs --required --require-nonempty --verify-remote",
+      "result": "passed; 2 open candidate PRs and 2 active mappings"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with only recorded upstream warnings"
+    },
+    {
+      "command": "node --test scripts/test_validate_delivery_record.mjs scripts/test_validate_pr_scope.mjs scripts/test_card_integrity.mjs",
+      "result": "passed; 194 tests"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Ready tooling PR #120 records three merged samples separately from two active draft samples; no card or approval state changed.",
+  "remaining_risks": [
+    "The queue will be updated again after the next three candidate draft PR numbers exist.",
+    "merged_candidate remains candidate-only and cannot be used as formal content approval."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
