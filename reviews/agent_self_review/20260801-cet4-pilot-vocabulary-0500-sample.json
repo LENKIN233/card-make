@@ -1,0 +1,259 @@
+{
+  "review_id": "20260801-cet4-pilot-vocabulary-0500-sample",
+  "created_at": "2026-08-02T00:00:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "词汇",
+    "group": "同义词替换",
+    "box": "近义词替换",
+    "box_prefixes": [
+      "0500"
+    ],
+    "card_ids": [
+      "050001",
+      "050002",
+      "050003"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260801-cet4-pilot-vocabulary-0500-scope-audit.json",
+    "corpus_fingerprint": "b1159c2e2f09eeb45a2363ce9b63cb4ae830e1d4eb57a80015a945f087cdd9ea",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "050001",
+        "050002",
+        "050003"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "050001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "0",
+        "box_name": "近义词替换",
+        "box_prefix": "0500"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别不同词面下保持对象动作范围一致的保义改写",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "建立 CET 阅读近义替换的事件骨架判断，避免只靠背词表匹配。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance."
+      ],
+      "recommendation": "Use as the recognition entry for event-level paraphrase matching."
+    },
+    {
+      "card_id": "050002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "0",
+        "box_name": "近义词替换",
+        "box_prefix": "0500"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在改写选择中保持对象程度与时间限定",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练匹配题和仔细阅读中对限定范围的精确核对。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance."
+      ],
+      "recommendation": "Use to validate preservation of audience, degree, and time limits."
+    },
+    {
+      "card_id": "050003",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "0",
+        "box_name": "近义词替换",
+        "box_prefix": "0500"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分减轻与消除并保留转折限定的程度边界",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "提高对阅读题夸大、绝对化和范围偷换干扰项的识别能力。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance."
+      ],
+      "recommendation": "Use as the transfer card for degree and contrast boundaries."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The sample moves from recognizing event-level paraphrase equivalence, to preserving audience, degree, and time limits, to rejecting degree inflation across a contrast boundary.",
+    "repetition_or_gap_risks": [
+      "All passages and options are disclosed AI-authored simulations; they must never be marketed as true-exam excerpts.",
+      "This is one vocabulary box sample only and does not authorize bulk expansion."
+    ],
+    "representative_cards": [
+      "050001",
+      "050002",
+      "050003"
+    ],
+    "next_step": "Include this sample in the consolidated controlled-pilot evidence pack for explicit user confirmation before box expansion."
+  }
+}
