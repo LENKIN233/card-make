@@ -26,7 +26,7 @@
     ],
     "patch_format": "git-diff-binary-v2",
     "base_commit_sha": "ffc314702db5b1047ee8550d2b41144c532dd001",
-    "patch_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    "patch_sha256": "09bde07f7aa90b84ab498c5949d5605a9753e9efb5d3ea300d2cf9d3b5521ec9"
   },
   "validation": [
     {
@@ -48,6 +48,10 @@
     {
       "command": "git diff --check",
       "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_delivery_record.mjs --base origin/main --head HEAD",
+      "result": "passed with exact draft PR #124 event context"
     }
   ],
   "local_status": "Draft tooling PR #124 maps exactly five open CET4 candidate samples; no card, user confirmation, formal approval, import, or release state changed.",
