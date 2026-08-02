@@ -1,0 +1,47 @@
+{
+  "handoff_id": "20260803-content-cet4-pilot-grammar-0630-expansion",
+  "created_at": "2026-08-03T07:55:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-grammar-0630-expansion",
+  "base_branch": "main",
+  "commit_sha": "59427788718649642e6b19478b3f24f38031a518",
+  "push_ref": "origin/content/cet4-pilot-grammar-0630-expansion",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/132",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_grammar_0630.json",
+      "reviews/agent_self_review/20260803-cet4-pilot-grammar-0630-expansion.json",
+      "reviews/audit_scopes/20260803-cet4-pilot-grammar-0630-expansion-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "dd99421b18e0cf0787e6f63d2cb05070fed0ffe8",
+    "patch_sha256": "464c46171a9cf155b160c5ae2f7a995add4a8961565dbc632b76053ea3db6a0b"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; errors 0, warnings 0"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; exact confirmed expansion scope 063004,063005,063006 and hard blockers 0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded warnings"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #132 expands the user-confirmed grammar 0630 sample to its exact six-card target; candidate evidence remains non-formal.",
+  "remaining_risks": [
+    "The complete 120-card batch still requires all remaining box expansions and explicit final user approval.",
+    "All three expansion cards are disclosed AI-authored simulations and have no true-exam provenance claim."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
