@@ -8,7 +8,7 @@
   "push_ref": "origin/tooling/controlled-pilot-expansion-governance",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/119",
   "PR_state": "OPEN",
-  "is_draft": true,
+  "is_draft": false,
   "scope": {
     "change_type": "tooling",
     "touched_paths": [
@@ -47,6 +47,10 @@
     },
     {
       "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_delivery_record.mjs --base origin/main --head HEAD with exact PR #119 event context",
       "result": "passed"
     }
   ],
