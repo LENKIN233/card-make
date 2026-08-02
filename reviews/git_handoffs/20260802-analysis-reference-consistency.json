@@ -8,7 +8,7 @@
   "push_ref": "origin/harness/analysis-reference-consistency",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/111",
   "PR_state": "OPEN",
-  "is_draft": true,
+  "is_draft": false,
   "scope": {
     "change_type": "harness",
     "purpose": "Prevent new or changed candidate and full-track self-review evidence from silently passing when answer truth, option or word-bank references, or distractor labels have not been explicitly checked against the exact card source.",
@@ -61,7 +61,7 @@
       "result": "passed"
     }
   ],
-  "local_status": "The harness-only payload commit is pushed and attached to draft PR #111. Content-scope, approval-boundary, and repo-health checks passed on the initial head; delivery-record was expected to fail before this append-only handoff commit and must rerun.",
+  "local_status": "The harness-only payload and append-only handoff are pushed to ready PR #111. Content-scope, approval-boundary, and repo-health passed on the initial payload head; delivery-record passed locally against the exact pull-request metadata after the handoff, and all five required checks must rerun on the final non-draft head.",
   "remaining_risks": [
     "PR #111 must remain unmerged until this handoff commit is pushed, the PR is marked ready, GitHub reports it mergeable, and all five required checks pass on the final head.",
     "The attestation makes semantic checking explicit but does not claim that structural automation can prove natural-language correctness.",
