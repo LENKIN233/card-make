@@ -40,7 +40,9 @@ semantics, TLGBNN ownership, or box hierarchy.
 - Do not claim content is formally usable. The user is the only final approval
   authority.
 - Do not batch-generate formal content before a 3-card-per-box sample has passed
-  agent self-review and then user confirmation.
+  agent self-review and then user confirmation recorded under
+  `reviews/sample_confirmations/`. A confirmation authorizes only the exact
+  recorded boxes and targets; it is not formal content approval.
 - Do not edit card content without stating the concrete quality issue and the
   user-authorized scope.
 - Do not delete cards directly. Mark discard candidates and wait for user
@@ -85,10 +87,10 @@ node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contra
 The PR-scope command is an immutable-snapshot check and therefore runs after
 the payload commit; worktree-only content validation fails closed. Any
 JSON change under `reviews/agent_self_review/`, `reviews/approved_batches/`,
-`reviews/drafts/`, or `reviews/audit_scopes/` triggers the content gate even
-without a four-digit box prefix. Only the four exact repository-declared
+`reviews/sample_confirmations/`, `reviews/drafts/`, or `reviews/audit_scopes/` triggers the content gate even
+without a four-digit box prefix. Only the five exact repository-declared
 template paths are excluded; a filename that merely ends in `TEMPLATE.json`
-remains governed. Self-review and approval evidence must be direct regular JSON
+remains governed. Self-review, sample-confirmation, and approval evidence must be direct regular JSON
 children of their governed directories; nested and symlinked records fail closed. Git
 paths are preserved exactly, while literal backslashes, controls, and Unicode
 line separators are rejected. The current scoped audit
@@ -108,7 +110,11 @@ modes and bytes, regenerate the complete current audit, exactly replay both
 scoped reports, and recheck the snapshot before returning. Standard reviews require complete
 policy, audit, blocker-scan, batch progression/risk/representative-card/next-step
 conclusions, and per-card metadata evidence before coverage can count, with
-exactly three current-corpus-matching snapshots per declared box. Residual
+exactly three current-corpus-matching snapshots per declared box. A
+`confirmed_box_expansion` review may cover only one box, must link a direct
+validated sample-confirmation record, and must add exactly the recorded target
+minus the three confirmed sample cards. It remains non-formal and requires a
+later explicit user approval of the complete batch. Residual
 closure evidence requires its explicit scope type and a direct scoped audit,
 and cannot authorize newly added cards. Canonical
 full-track records instead use strict equal aggregate scope/coverage IDs bound
@@ -118,8 +124,8 @@ HEAD. They also require structured non-automation human identities, matching
 per-box human passes, a complete zero-hard-blocker audit summary, non-empty
 in-scope representative cards, and complete ready batch summary/empty-risk/
 next-step evidence. They must not attach a separate `cards` payload or authorize added cards.
-The four exact review/approval templates are regular-file authorities with fixed, complete standard
-or full-track placeholder shapes. Formal approvals require a timezone-qualified timestamp,
+The five exact review/approval/confirmation templates are regular-file authorities with fixed, complete governed
+placeholder shapes. Formal approvals require a timezone-qualified timestamp,
 non-empty summary, unique non-empty scope arrays, and non-empty in-scope representative cards.
 Git handoff discovery excludes only `reviews/git_handoffs/TEMPLATE.json`.
 The current record must be one direct, safe, non-executable `100644` JSON blob

@@ -91,6 +91,7 @@ const REVIEW_RECORD_TEMPLATE_PATHS = new Set([
   'reviews/agent_self_review/TEMPLATE.json',
   'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
   'reviews/approved_batches/TEMPLATE.json',
+  'reviews/sample_confirmations/TEMPLATE.json',
 ]);
 const REQUIRED_GIT_HANDOFF_FIELDS = [
   'handoff_id',
@@ -198,9 +199,10 @@ const REQUIRED_QUALITY_AUDIT_SCOPE_SUMMARY_FIELDS = [
   'by_rule',
 ];
 const QUALITY_AUDIT_SEVERITIES = ['hard_blocker', 'content_risk', 'review_gap', 'source_risk'];
-const SELF_REVIEW_SCOPE_TYPES = ['three_card_sample_per_box', 'residual_blocker_closure', 'full_track_remediation'];
+const SELF_REVIEW_SCOPE_TYPES = ['three_card_sample_per_box', 'confirmed_box_expansion', 'residual_blocker_closure', 'full_track_remediation'];
 const STANDARD_SELF_REVIEW_BATCH_STATUSES = ['recommend_user_confirmation', 'revise_before_user_review', 'blocked'];
 const RESIDUAL_BLOCKER_CLOSURE_STATUS = 'documented_residual_closure';
+const CONFIRMED_BOX_EXPANSION_STATUS = 'reviewed_confirmed_box_expansion';
 const FULL_TRACK_READY_STATUS = 'ready_for_full_track_user_approval';
 const PR_SCOPE_VALIDATION_COMMAND = 'node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract --head HEAD';
 const SCOPED_AUDIT_VALIDATION_COMMAND = 'node scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json';
@@ -902,8 +904,9 @@ function validateContentQuality(errors) {
   if (
     !String(integrity.governed_review_path_detection || '').includes('without') ||
     !String(integrity.governed_review_path_detection || '').includes('four-digit box prefix') ||
-    !String(integrity.governed_review_path_detection || '').includes('four exact repository-declared templates') ||
+    !String(integrity.governed_review_path_detection || '').includes('five exact repository-declared templates') ||
     !String(integrity.governed_review_path_detection || '').includes('reviews/approved_batches') ||
+    !String(integrity.governed_review_path_detection || '').includes('reviews/sample_confirmations') ||
     !String(integrity.governed_review_path_detection || '').includes('approval records') ||
     !String(integrity.governed_review_path_detection || '').includes('unknown filenames')
   ) {
@@ -1837,7 +1840,7 @@ function validateWorkflow(errors) {
   if (workflow.sample_policy?.default_size !== '3 cards per box') {
     pushIssue(errors, 'sample_size_policy_drift', {});
   }
-  if (workflow.sample_policy?.batch_generation_requires !== 'user_confirmation_of_sample') {
+  if (workflow.sample_policy?.batch_generation_requires !== 'validated_user_sample_confirmation_record') {
     pushIssue(errors, 'batch_requires_user_confirmation_missing', {});
   }
   if (workflow.approval_record_policy?.required_for_formal_use !== true) {
@@ -1923,6 +1926,16 @@ function validateWorkflow(errors) {
   if (!(workflow.self_review_output?.batch_status || []).includes(RESIDUAL_BLOCKER_CLOSURE_STATUS)) {
     pushIssue(errors, 'residual_blocker_closure_status_missing', {});
   }
+  const expansionPolicy = workflow.confirmed_box_expansion_review_policy;
+  if (expansionPolicy?.review_scope_type !== 'confirmed_box_expansion') {
+    pushIssue(errors, 'confirmed_box_expansion_policy_missing', {});
+  }
+  if (!(workflow.self_review_output?.batch_status || []).includes(CONFIRMED_BOX_EXPANSION_STATUS)) {
+    pushIssue(errors, 'confirmed_box_expansion_status_missing', {});
+  }
+  if (!String(expansionPolicy?.approval_boundary || '').includes('separate explicit user approval')) {
+    pushIssue(errors, 'confirmed_box_expansion_approval_boundary_missing', {});
+  }
   const fullTrackPolicy = workflow.full_track_remediation_policy;
   if (fullTrackPolicy?.review_scope_type !== 'full_track_remediation') {
     pushIssue(errors, 'full_track_remediation_policy_missing', {});
@@ -1990,6 +2003,7 @@ function validateReviewDirs(errors) {
     ['reviews/agent_self_review/TEMPLATE.json', 'review_template'],
     ['reviews/approved_batches/FULL_TRACK_TEMPLATE.json', 'full_track_approval_template'],
     ['reviews/approved_batches/TEMPLATE.json', 'approval_template'],
+    ['reviews/sample_confirmations/TEMPLATE.json', 'sample_confirmation_template'],
   ]);
   const expectedTemplatePaths = [...expectedTemplateAuthorities.keys()];
   if (
@@ -2017,6 +2031,7 @@ function validateReviewDirs(errors) {
   for (const dir of [
     'reviews/agent_self_review',
     'reviews/approved_batches',
+    'reviews/sample_confirmations',
     'reviews/audit_scopes',
     'reviews/audio_qc',
     'reviews/drafts',
@@ -2452,6 +2467,128 @@ function selfReviewScopeType(record) {
   return 'three_card_sample_per_box';
 }
 
+function isDirectSampleConfirmationRecordPath(value) {
+  if (!hasText(value) || !value.startsWith('reviews/sample_confirmations/') || !value.endsWith('.json')) {
+    return false;
+  }
+  if (value === 'reviews/sample_confirmations/TEMPLATE.json') return false;
+  return !value.slice('reviews/sample_confirmations/'.length).includes('/');
+}
+
+function validateSampleConfirmationRecord(record, errors, source, {template = false} = {}) {
+  if (record?.schema_version !== 'sample-confirmation.v1') {
+    pushIssue(errors, 'sample_confirmation_schema_version_invalid', {source});
+  }
+  if (!hasText(record?.confirmation_id)) {
+    pushIssue(errors, 'sample_confirmation_id_missing', {source});
+  }
+  if (!hasText(record?.recorded_at) || (!template && (Number.isNaN(Date.parse(record.recorded_at)) || !/(?:Z|[+-]\d{2}:\d{2})$/.test(record.recorded_at)))) {
+    pushIssue(errors, 'sample_confirmation_timestamp_invalid', {source});
+  }
+  if (record?.confirmed_by_user !== true) {
+    pushIssue(errors, 'sample_confirmation_user_confirmation_missing', {source});
+  }
+  for (const field of ['conversation_id', 'message', 'context']) {
+    if (!hasText(record?.confirmation_source?.[field])) {
+      pushIssue(errors, 'sample_confirmation_source_field_missing', {source, field});
+    }
+  }
+  if (!['cet4', 'cet6'].includes(record?.scope?.track)) {
+    pushIssue(errors, 'sample_confirmation_track_invalid', {source, track: record?.scope?.track});
+  }
+  if (!hasText(record?.scope?.purpose)) {
+    pushIssue(errors, 'sample_confirmation_purpose_missing', {source});
+  }
+  if (!Number.isInteger(record?.scope?.target_card_count) || record.scope.target_card_count <= 0) {
+    pushIssue(errors, 'sample_confirmation_target_count_invalid', {source});
+  }
+
+  const boxTargets = Array.isArray(record?.scope?.box_targets) ? record.scope.box_targets : [];
+  const prefixes = boxTargets.map(target => target?.box_prefix);
+  if (!hasUniqueNonEmptyTextArray(prefixes)) {
+    pushIssue(errors, 'sample_confirmation_box_targets_invalid', {source});
+  }
+  let sampleCardCount = 0;
+  let targetCardCount = 0;
+  const allSampleCardIds = [];
+  for (const target of boxTargets) {
+    const sampleCardIds = Array.isArray(target?.sample_card_ids) ? target.sample_card_ids : [];
+    if (!/^\d{4}$/.test(target?.box_prefix || '')) {
+      pushIssue(errors, 'sample_confirmation_box_prefix_invalid', {source, box_prefix: target?.box_prefix});
+    }
+    if (!Number.isInteger(target?.target_card_count) || target.target_card_count < 3) {
+      pushIssue(errors, 'sample_confirmation_box_target_count_invalid', {source, box_prefix: target?.box_prefix});
+    }
+    if (!hasUniqueNonEmptyTextArray(sampleCardIds) || sampleCardIds.length !== 3) {
+      pushIssue(errors, 'sample_confirmation_box_sample_count_invalid', {source, box_prefix: target?.box_prefix});
+    }
+    for (const cardId of sampleCardIds) {
+      if (!String(cardId).startsWith(target?.box_prefix || '__invalid__')) {
+        pushIssue(errors, 'sample_confirmation_card_prefix_mismatch', {source, box_prefix: target?.box_prefix, card_id: cardId});
+      }
+      allSampleCardIds.push(cardId);
+    }
+    sampleCardCount += sampleCardIds.length;
+    targetCardCount += Number.isInteger(target?.target_card_count) ? target.target_card_count : 0;
+  }
+  if (new Set(allSampleCardIds).size !== allSampleCardIds.length) {
+    pushIssue(errors, 'sample_confirmation_sample_card_ids_duplicate', {source});
+  }
+  if (targetCardCount !== record?.scope?.target_card_count) {
+    pushIssue(errors, 'sample_confirmation_total_target_mismatch', {source, expected: targetCardCount, actual: record?.scope?.target_card_count});
+  }
+  if (record?.sample_evidence?.sample_card_count !== sampleCardCount || record?.sample_evidence?.box_count !== boxTargets.length) {
+    pushIssue(errors, 'sample_confirmation_evidence_count_mismatch', {source});
+  }
+  if (!template && !/^sha256:[a-f0-9]{64}$/.test(record?.sample_evidence?.review_pack_sha256 || '')) {
+    pushIssue(errors, 'sample_confirmation_review_pack_hash_invalid', {source});
+  }
+  const branchHeads = Array.isArray(record?.sample_evidence?.branch_heads) ? record.sample_evidence.branch_heads : [];
+  if (branchHeads.length !== boxTargets.length || !setsEqual(branchHeads.map(item => item?.box_prefix), prefixes)) {
+    pushIssue(errors, 'sample_confirmation_branch_heads_mismatch', {source});
+  }
+  for (const item of branchHeads) {
+    if (!hasText(item?.branch) || (!template && !/^[a-f0-9]{7,40}$/.test(item?.commit_sha || ''))) {
+      pushIssue(errors, 'sample_confirmation_branch_head_invalid', {source, box_prefix: item?.box_prefix});
+    }
+  }
+  if (record?.authorizes?.confirmed_box_expansion !== true || record?.authorizes?.same_quality_contract !== true) {
+    pushIssue(errors, 'sample_confirmation_expansion_authority_missing', {source});
+  }
+  const requiredLimits = ['formal_content_approval', 'audio_perceptual_qc', 'pilot_release', 'destructive_card_changes'];
+  if (!hasUniqueNonEmptyTextArray(record?.does_not_authorize) || !requiredLimits.every(limit => record.does_not_authorize.includes(limit))) {
+    pushIssue(errors, 'sample_confirmation_limits_invalid', {source});
+  }
+  if (record?.final_user_approval_required !== true || record?.gate_eligible !== false) {
+    pushIssue(errors, 'sample_confirmation_formal_boundary_invalid', {source});
+  }
+}
+
+function confirmedBoxTarget(record, boxPrefix, errors, source, {template = false, fixture = false} = {}) {
+  const confirmationPath = record.sample_policy?.sample_confirmation_record;
+  if (!isDirectSampleConfirmationRecordPath(confirmationPath)) {
+    pushIssue(errors, 'confirmed_expansion_confirmation_path_invalid', {source, confirmationPath});
+    return null;
+  }
+  if (template || fixture) return null;
+  const absolutePath = resolveWorkspacePath(confirmationPath);
+  if (!fs.existsSync(absolutePath) || !fs.lstatSync(absolutePath).isFile()) {
+    pushIssue(errors, 'confirmed_expansion_confirmation_record_missing', {source, confirmationPath});
+    return null;
+  }
+  const confirmation = readJson(confirmationPath);
+  const confirmationErrors = [];
+  validateSampleConfirmationRecord(confirmation, confirmationErrors, confirmationPath);
+  if (confirmationErrors.length > 0) {
+    pushIssue(errors, 'confirmed_expansion_confirmation_record_invalid', {source, confirmationPath, issues: confirmationErrors});
+    return null;
+  }
+  if (confirmation.confirmation_id !== record.sample_policy?.sample_confirmation_id) {
+    pushIssue(errors, 'confirmed_expansion_confirmation_id_mismatch', {source, confirmationPath});
+  }
+  return confirmation.scope.box_targets.find(target => target.box_prefix === boxPrefix) || null;
+}
+
 function validateStandardSampleBoxDistribution(cards, boxPrefixes, errors, source) {
   const normalizedBoxPrefixes = Array.isArray(boxPrefixes) ? boxPrefixes : [];
   const expectedCards = Math.max(1, normalizedBoxPrefixes.length) * 3;
@@ -2754,6 +2891,7 @@ function validateSelfReviewRecord(record, errors, source, {
 } = {}) {
   const reviewScopeType = selfReviewScopeType(record);
   const isResidualBlockerClosure = reviewScopeType === 'residual_blocker_closure';
+  const isConfirmedBoxExpansion = reviewScopeType === 'confirmed_box_expansion';
   const isFullTrackRemediation = reviewScopeType === 'full_track_remediation';
   const isImmutableLegacyRecord =
     !template && !fixture && isImmutablePreCutoverRecord(source, record);
@@ -2777,6 +2915,23 @@ function validateSelfReviewRecord(record, errors, source, {
         source,
         report: record.quality_audit?.report,
       });
+    }
+  } else if (isConfirmedBoxExpansion) {
+    for (const [field, expected] of [
+      ['is_three_card_sample_per_box', false],
+      ['confirmed_box_expansion', true],
+      ['sample_confirmation_satisfied', true],
+      ['final_user_approval_required', true],
+    ]) {
+      if (record.sample_policy?.[field] !== expected) {
+        pushIssue(errors, 'confirmed_expansion_sample_policy_invalid', {source, field, expected});
+      }
+    }
+    if (!hasText(record.sample_policy?.sample_confirmation_id)) {
+      pushIssue(errors, 'confirmed_expansion_confirmation_id_missing', {source});
+    }
+    if (!isScopedQualityAuditReport(record.quality_audit?.report)) {
+      pushIssue(errors, 'confirmed_expansion_scoped_audit_missing', {source, report: record.quality_audit?.report});
     }
   } else if (isResidualBlockerClosure) {
     if (record.sample_policy?.review_scope_type !== 'residual_blocker_closure') {
@@ -3002,7 +3157,7 @@ function validateSelfReviewRecord(record, errors, source, {
     template,
     fixture,
     scopeCardIds: record.scope?.card_ids || cards.map(card => card.card_id),
-    requiredForApproval: !isResidualBlockerClosure && record.batch_review?.status === 'recommend_user_confirmation',
+    requiredForApproval: !isResidualBlockerClosure && !isConfirmedBoxExpansion && record.batch_review?.status === 'recommend_user_confirmation',
     allowHistoricalScopedReport: true,
     currentFingerprint,
   });
@@ -3050,7 +3205,53 @@ function validateSelfReviewRecord(record, errors, source, {
       validateCurrentCardSnapshotIdentity(cards, errors, source);
     }
 
-    if (isResidualBlockerClosure) {
+    if (isConfirmedBoxExpansion) {
+      if (boxPrefixes.length !== 1 || !/^\d{4}$/.test(boxPrefixes[0] || '')) {
+        pushIssue(errors, 'confirmed_expansion_single_box_scope_required', {source, box_prefixes: boxPrefixes});
+      }
+      for (const field of ['library', 'group', 'box']) {
+        if (!hasText(record.scope?.[field])) {
+          pushIssue(errors, 'self_review_scope_field_missing', {source, field});
+        }
+      }
+      const boxPrefix = boxPrefixes[0];
+      for (const card of cards) {
+        if (card?.knowledge_ref?.box_prefix !== boxPrefix) {
+          pushIssue(errors, 'confirmed_expansion_card_box_prefix_mismatch', {source, box_prefix: boxPrefix, card_id: card?.card_id});
+        }
+      }
+      const target = confirmedBoxTarget(record, boxPrefix, errors, source, {template, fixture});
+      if (target) {
+        const expectedExpansionCount = target.target_card_count - target.sample_card_ids.length;
+        if (cards.length !== expectedExpansionCount) {
+          pushIssue(errors, 'confirmed_expansion_card_count_mismatch', {source, box_prefix: boxPrefix, expected: expectedExpansionCount, actual: cards.length});
+        }
+        const sampleIds = new Set(target.sample_card_ids);
+        if (scopeCardIds.some(cardId => sampleIds.has(cardId))) {
+          pushIssue(errors, 'confirmed_expansion_reuses_sample_card_id', {source, box_prefix: boxPrefix});
+        }
+      }
+      if (record.batch_review?.status !== CONFIRMED_BOX_EXPANSION_STATUS) {
+        pushIssue(errors, 'confirmed_expansion_batch_status_invalid', {source, status: record.batch_review?.status});
+      }
+      const anyBlocked = cards.some(card => card.status !== 'pass' || Object.values(card.blocker_scan || {}).some(Boolean));
+      if (anyBlocked) {
+        pushIssue(errors, 'confirmed_expansion_contains_unpassed_card', {source});
+      }
+      if (!hasText(record.batch_review?.box_progression)) {
+        pushIssue(errors, 'self_review_batch_box_progression_missing', {source});
+      }
+      if (!Array.isArray(record.batch_review?.repetition_or_gap_risks)) {
+        pushIssue(errors, 'self_review_batch_risks_invalid', {source});
+      }
+      const representativeCards = record.batch_review?.representative_cards;
+      if (!hasNonEmptyTextArray(representativeCards) || new Set(representativeCards).size !== representativeCards.length || !isSubset(representativeCards, scopeCardIds)) {
+        pushIssue(errors, 'self_review_batch_representative_cards_invalid', {source, representative_cards: representativeCards});
+      }
+      if (!hasText(record.batch_review?.next_step)) {
+        pushIssue(errors, 'self_review_batch_next_step_missing', {source});
+      }
+    } else if (isResidualBlockerClosure) {
       if (!hasText(record.scope?.closure_reason)) {
         pushIssue(errors, 'residual_self_review_closure_reason_missing', { source });
       }
@@ -3742,6 +3943,11 @@ function validateReviewTemplatesAndRecords(errors, warnings) {
     'full_track_approval',
     errors,
   );
+  const sampleConfirmationTemplate = readGovernedReviewTemplate(
+    'reviews/sample_confirmations/TEMPLATE.json',
+    'sample_confirmation',
+    errors,
+  );
   if (standardSelfReviewTemplate) {
     validateSelfReviewRecord(
       standardSelfReviewTemplate,
@@ -3773,6 +3979,30 @@ function validateReviewTemplatesAndRecords(errors, warnings) {
       'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
       {template: true},
     );
+  }
+  if (sampleConfirmationTemplate) {
+    validateSampleConfirmationRecord(
+      sampleConfirmationTemplate,
+      errors,
+      'reviews/sample_confirmations/TEMPLATE.json',
+      {template: true},
+    );
+  }
+
+  for (const file of listReviewRecordFiles('reviews/sample_confirmations')) {
+    if (!isCanonicalReviewRecordPath(file, 'reviews/sample_confirmations')) {
+      pushIssue(errors, 'sample_confirmation_path_noncanonical', {source: file});
+      continue;
+    }
+    if (hasUnsafeReviewPathCharacters(file)) {
+      pushIssue(errors, 'sample_confirmation_path_characters_invalid', {source: file});
+      continue;
+    }
+    if (!fs.lstatSync(resolveWorkspacePath(file)).isFile()) {
+      pushIssue(errors, 'sample_confirmation_not_regular_file', {source: file});
+      continue;
+    }
+    validateSampleConfirmationRecord(readJson(file), errors, file);
   }
 
   for (const file of listReviewRecordFiles('reviews/agent_self_review')) {

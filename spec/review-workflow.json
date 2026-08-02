@@ -5,6 +5,7 @@
     "may": [
       "produce_candidate_cards",
       "produce_3_card_sample_per_box",
+      "expand_user_confirmed_box_samples_to_recorded_targets",
       "self_review_candidates",
       "revise_user_authorized_scope",
       "mark_discard_candidates",
@@ -35,7 +36,9 @@
   "sample_policy": {
     "default_size": "3 cards per box",
     "purpose": "prove quality before batch expansion",
-    "batch_generation_requires": "user_confirmation_of_sample"
+    "batch_generation_requires": "validated_user_sample_confirmation_record",
+    "sample_confirmation_directory": "reviews/sample_confirmations/",
+    "sample_confirmation_is_not_formal_approval": true
   },
   "candidate_review_queue": {
     "schema": "spec/candidate-review-queue.schema.json",
@@ -87,6 +90,7 @@
       "every new or changed scoped-audit artifact is a direct regular JSON file that exactly matches the current immutable-HEAD audit replay for its declared scope; malformed unlinked artifacts and deletion or mutation of archived evidence fail closed",
       "standard sample batch_review carries non-empty box_progression, an explicit repetition_or_gap_risks array, non-empty unique representative_cards drawn from scope.card_ids, and a non-empty next_step",
       "newly added cards require standard three-card sample coverage; residual blocker closure evidence applies only to pre-existing cards",
+      "newly added cards after a confirmed sample may instead use confirmed-box-expansion coverage when one immutable sample-confirmation record binds the exact box, its three sample card IDs, and its final per-box target",
       "every entry in every changed self-review resolves to exactly one HEAD corpus card and all quality_metadata fields except artifact-local review_status are deeply equal, even when the card itself did not change",
       "every new or changed standard or residual card snapshot explicitly confirms that answer truth, option or word-bank references, and distractor labels match the exact card; every new or changed full-track aggregate confirms the same checks under coverage",
       "a changed full-track aggregate record may omit cards; its exact sample flags, structured human reviewer identity, per-box human pass, complete quality_audit summary, ready batch status, non-empty unique scope.card_ids, and coverage.reviewed_card_ids are validated before its scope can count as review evidence",
@@ -116,6 +120,7 @@
       "count a nested, symlinked, semantically incomplete, or automation-reviewed self-review record as changed-card coverage",
       "count a box as sampled when it lacks exactly three matching immutable HEAD card snapshots",
       "use residual blocker closure evidence to authorize newly generated cards",
+      "treat sample confirmation or confirmed-box-expansion review as formal content approval, audio perceptual QC, pilot release authority, or permission to exceed the recorded box target",
       "rewrite unusual Git path characters into a different governed evidence path",
       "replay a scoped audit on a base worktree that retains card files deleted or renamed by HEAD",
       "run content-candidate validation without an explicit immutable head commit"
@@ -189,6 +194,35 @@
       "treat scoped audit plus handoff evidence as formal user approval"
     ]
   },
+  "confirmed_box_expansion_review_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "purpose": "Expand one user-confirmed three-card box sample to the exact target recorded for that box without converting sample confirmation into formal content approval.",
+    "allowed_when": [
+      "one direct validated record under reviews/sample_confirmations confirms the exact three sample card IDs and target for the box",
+      "the expansion self-review covers exactly one box prefix",
+      "the expansion adds exactly target_card_count minus the three confirmed sample cards",
+      "every expansion card has current per-card metadata, reference checks, blocker scan, and a direct current scoped audit"
+    ],
+    "required_fields": [
+      "sample_policy.review_scope_type=confirmed_box_expansion",
+      "sample_policy.is_three_card_sample_per_box=false",
+      "sample_policy.confirmed_box_expansion=true",
+      "sample_policy.sample_confirmation_satisfied=true",
+      "sample_policy.sample_confirmation_record",
+      "sample_policy.final_user_approval_required=true",
+      "scope.single_box_prefix",
+      "scope.card_ids=all_new_expansion_cards",
+      "batch_review.status=reviewed_confirmed_box_expansion",
+      "scoped_card_quality_audit_report"
+    ],
+    "approval_boundary": "This mode authorizes candidate production and agent review only. The complete 120-card batch still requires a separate explicit user approval record before formal use.",
+    "must_not": [
+      "create reviews/approved_batches records from sample confirmation alone",
+      "claim gate_eligible or formal usability",
+      "count unreviewed audio as approved",
+      "expand outside the recorded box prefixes or beyond a recorded target"
+    ]
+  },
   "self_review_required_checks": [
     "single_card_quality",
     "front_back_relationship",
@@ -209,7 +243,7 @@
   },
   "self_review_output": {
     "per_card_status": ["pass", "revise", "block"],
-    "batch_status": ["recommend_user_confirmation", "revise_before_user_review", "blocked", "documented_residual_closure", "ready_for_full_track_user_approval"],
+    "batch_status": ["recommend_user_confirmation", "revise_before_user_review", "blocked", "documented_residual_closure", "reviewed_confirmed_box_expansion", "ready_for_full_track_user_approval"],
     "must_include": [
       "changed_or_new_boxes",
       "representative_cards",

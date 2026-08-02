@@ -166,6 +166,70 @@ test('a complete three-card standard sample can authorize its changed candidates
   );
 });
 
+test('confirmed box expansion accepts exact remaining counts for 12, 8, and 6 card targets', async t => {
+  for (const targetCardCount of [12, 8, 6]) {
+    await t.test(`target ${targetCardCount}`, () => {
+      const {repo, expansionCards} = prepareConfirmedExpansion(targetCardCount);
+      commit(repo.root, `expand confirmed sample to ${targetCardCount}`);
+      const result = validate(repo);
+      assert.equal(result.status, 0, result.stderr || result.stdout);
+      assert.deepEqual(result.report.changed_card_integrity.changed_card_ids, expansionCards.map(card => card.card_id));
+    });
+  }
+});
+
+test('confirmed box expansion fails closed without its confirmation record', () => {
+  const {repo, confirmationPath} = prepareConfirmedExpansion(8);
+  fs.rmSync(confirmationPath);
+  commit(repo.root, 'try expansion without confirmation evidence');
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_confirmed_expansion_confirmation_missing');
+});
+
+test('confirmed box expansion cannot stop short of or exceed its recorded target', () => {
+  const {repo, expansionCards, reviewPath} = prepareConfirmedExpansion(8);
+  const cards = readJson(reviewPath).cards.slice(0, -1);
+  writeCardBox(repo.root, [
+    legacyCard(),
+    {...legacyCard(), card_id: '000002', front: {text: 'second sample prompt'}},
+    {...legacyCard(), card_id: '000003', front: {text: 'third sample prompt'}},
+    ...expansionCards.slice(0, -1),
+  ]);
+  const review = readJson(reviewPath);
+  review.cards = cards;
+  review.scope.card_ids = cards.map(card => card.card_id);
+  review.batch_review.representative_cards = [cards[0].card_id];
+  writeJson(reviewPath, review);
+  writeJson(path.join(repo.root, review.quality_audit.report), fixtureScopedAuditReport(review.scope.card_ids));
+  commit(repo.root, 'try partial confirmed expansion');
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_confirmed_expansion_count_mismatch');
+});
+
+test('confirmed box expansion cannot cross into an unconfirmed second box', () => {
+  const {repo, reviewPath} = prepareConfirmedExpansion(8);
+  const review = readJson(reviewPath);
+  review.scope.box_prefixes = ['0000', '0010'];
+  writeJson(reviewPath, review);
+  commit(repo.root, 'try cross-box confirmed expansion');
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_confirmed_expansion_single_box_required');
+});
+
+test('sample confirmation cannot claim release-gate eligibility', () => {
+  const {repo, confirmationPath} = prepareConfirmedExpansion(6);
+  const confirmation = readJson(confirmationPath);
+  confirmation.gate_eligible = true;
+  writeJson(confirmationPath, confirmation);
+  commit(repo.root, 'try gate-eligible sample confirmation');
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_sample_confirmation_formal_boundary_invalid');
+});
+
 test('a changed standard sample must use current scoped audit evidence', () => {
   const repo = createRepository();
   const cards = [
@@ -1599,6 +1663,7 @@ function writeSelfReviewFile(
 ) {
   const filePath = path.join(root, 'reviews/agent_self_review', filename);
   const isResidualClosure = reviewScopeType === 'residual_blocker_closure';
+  const isConfirmedExpansion = reviewScopeType === 'confirmed_box_expansion';
   const auditReportPath = isResidualClosure
     ? 'reviews/audit_scopes/fixture-residual-scope-audit.json'
     : 'reviews/audit_scopes/fixture-standard-scope-audit.json';
@@ -1630,7 +1695,18 @@ function writeSelfReviewFile(
             not_sample_approval: true,
             batch_generation_requires_user_confirmation: true,
           }
-        : {
+        : isConfirmedExpansion
+          ? {
+              review_scope_type: 'confirmed_box_expansion',
+              is_three_card_sample_per_box: false,
+              confirmed_box_expansion: true,
+              sample_confirmation_satisfied: true,
+              sample_confirmation_record: 'reviews/sample_confirmations/fixture-confirmation.json',
+              sample_confirmation_id: 'fixture-confirmation',
+              final_user_approval_required: true,
+              batch_generation_requires_user_confirmation: true,
+            }
+          : {
             review_scope_type: 'three_card_sample_per_box',
             is_three_card_sample_per_box: true,
             batch_generation_requires_user_confirmation: true,
@@ -1645,7 +1721,9 @@ function writeSelfReviewFile(
       batch_review: {
         status: isResidualClosure
           ? 'documented_residual_closure'
-          : 'recommend_user_confirmation',
+          : isConfirmedExpansion
+            ? 'reviewed_confirmed_box_expansion'
+            : 'recommend_user_confirmation',
         box_progression: 'fixture progression',
         repetition_or_gap_risks: [],
         representative_cards: cardIds.slice(0, 1),
@@ -1658,6 +1736,69 @@ function writeSelfReviewFile(
     fixtureScopedAuditReport(cardIds),
   );
   return filePath;
+}
+
+function sampleConfirmation(targetCardCount) {
+  return {
+    schema_version: 'sample-confirmation.v1',
+    confirmation_id: 'fixture-confirmation',
+    recorded_at: '2026-08-02T12:00:00+08:00',
+    confirmed_by_user: true,
+    confirmation_source: {
+      conversation_id: 'fixture:conversation',
+      message: 'continue',
+      context: 'The fixture confirms one three-card sample for exact target expansion.',
+    },
+    scope: {
+      track: 'cet4',
+      purpose: 'controlled_pilot',
+      target_card_count: targetCardCount,
+      box_targets: [{
+        box_prefix: '0000',
+        target_card_count: targetCardCount,
+        sample_card_ids: ['000001', '000002', '000003'],
+      }],
+    },
+    sample_evidence: {
+      review_pack_sha256: `sha256:${'a'.repeat(64)}`,
+      sample_card_count: 3,
+      box_count: 1,
+      branch_heads: [{box_prefix: '0000', branch: 'content/fixture', commit_sha: 'abcdef0'}],
+    },
+    authorizes: {confirmed_box_expansion: true, same_quality_contract: true},
+    does_not_authorize: ['formal_content_approval', 'audio_perceptual_qc', 'pilot_release', 'destructive_card_changes'],
+    final_user_approval_required: true,
+    gate_eligible: false,
+  };
+}
+
+function prepareConfirmedExpansion(targetCardCount) {
+  const repo = createRepository();
+  const sampleCards = [
+    legacyCard(),
+    {...legacyCard(), card_id: '000002', front: {text: 'second sample prompt'}},
+    {...legacyCard(), card_id: '000003', front: {text: 'third sample prompt'}},
+  ];
+  writeCardBox(repo.root, sampleCards);
+  commit(repo.root, 'establish confirmed sample baseline');
+  repo.base = git(repo.root, 'rev-parse', 'HEAD');
+
+  const expansionCards = Array.from({length: targetCardCount - 3}, (_, index) => ({
+    ...completeCard(),
+    card_id: `0000${String(index + 4).padStart(2, '0')}`,
+    front: {text: `expansion prompt ${index + 1}`},
+  }));
+  writeCardBox(repo.root, [...sampleCards, ...expansionCards]);
+  const confirmationPath = path.join(repo.root, 'reviews/sample_confirmations/fixture-confirmation.json');
+  writeJson(confirmationPath, sampleConfirmation(targetCardCount));
+  const reviewPath = writeSelfReview(
+    repo.root,
+    'confirmed-expansion.json',
+    expansionCards.map(card => card.card_id),
+    expansionCards.map(reviewEntry),
+    {reviewScopeType: 'confirmed_box_expansion'},
+  );
+  return {repo, sampleCards, expansionCards, confirmationPath, reviewPath};
 }
 
 function fixtureScopedAuditReport(cardIds) {
@@ -1870,6 +2011,10 @@ function installHeadSnapshotAuditStub(root) {
 function writeJson(filePath, value) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
+}
+
+function readJson(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
 
 function writeCompactJson(filePath, value) {
