@@ -1,0 +1,64 @@
+{
+  "handoff_id": "20260803-tooling-register-cet4-pilot-samples",
+  "created_at": "2026-08-03T01:20:14+08:00",
+  "agent": "codex",
+  "branch": "tooling/register-cet4-pilot-samples",
+  "base_branch": "main",
+  "commit_sha": "db5c589a5261ae1941197b68e36ba0a52cffdc5e",
+  "push_ref": "origin/tooling/register-cet4-pilot-samples",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/124",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "tooling",
+    "purpose": "Register the listening 0010, vocabulary 0500, and grammar 0611 draft samples so the active CET4 pilot review queue exactly maps its five open candidate PRs without changing content approval.",
+    "referenced_specs": [
+      "spec/workspace-contract.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json",
+      "spec/candidate-review-queue.schema.json",
+      "spec/git-workflow.json",
+      "spec/agent-harness.json"
+    ],
+    "touched_paths": [
+      "reviews/candidate-review-queue.json",
+      "scripts/validate_candidate_review_queue.mjs"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "ffc314702db5b1047ee8550d2b41144c532dd001",
+    "patch_sha256": "09bde07f7aa90b84ab498c5949d5605a9753e9efb5d3ea300d2cf9d3b5521ec9"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_candidate_review_queue.mjs --self-test",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_candidate_review_queue.mjs --required --require-nonempty --verify-remote",
+      "result": "passed; 5 open candidate PRs and 5 active mappings"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with only recorded upstream warnings"
+    },
+    {
+      "command": "node --test scripts/test_validate_delivery_record.mjs scripts/test_validate_pr_scope.mjs scripts/test_card_integrity.mjs",
+      "result": "passed; 194 tests"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_delivery_record.mjs --base origin/main --head HEAD",
+      "result": "passed with exact ready PR #124 event context"
+    }
+  ],
+  "local_status": "Ready tooling PR #124 maps exactly five open CET4 candidate samples; Agent review passed and no card, user confirmation, formal approval, import, or release state changed.",
+  "remaining_risks": [
+    "All five active candidate samples still require explicit user content confirmation before box expansion.",
+    "Listening sample #121 still requires perceptual audio QC.",
+    "Candidate queue status is not controlled-pilot bundle evidence or formal approval."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}

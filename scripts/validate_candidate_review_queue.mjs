@@ -274,7 +274,10 @@ function runSelfTest() {
     number: entry.new_pr_number,
   }));
   assert.equal(validateQueue(queue, {remotePrs, requireNonempty: true, verifyRemote: true}).ok, true);
-  assert.equal(validateQueue(queue, {requireFive: true}).ok, false);
+  assert.equal(
+    validateQueue(queue, {requireFive: true}).ok,
+    active.length === queue.limits.active_candidate_prs,
+  );
 
   const emptyActive = structuredClone(queue);
   for (const entry of emptyActive.entries) {
