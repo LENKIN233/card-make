@@ -1,0 +1,259 @@
+{
+  "review_id": "20260801-cet4-pilot-reading-0121-sample",
+  "created_at": "2026-08-01T22:48:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "仔细阅读",
+    "group": "长难句主干",
+    "box": "主谓宾",
+    "box_prefixes": [
+      "0121"
+    ],
+    "card_ids": [
+      "012101",
+      "012102",
+      "012104"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260801-cet4-pilot-reading-0121-scope-audit.json",
+    "corpus_fingerprint": "70fd903582e0bc7eaa87a92f3e581efbabf1c97c1451503ae1dc530cc7f98b8c",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "012101",
+        "012102",
+        "012104"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "012101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "1",
+        "box_name": "主谓宾",
+        "box_prefix": "0121"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从介词短语修饰中识别主谓宾中心词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "建立长句先抓“谁做什么”的低成本入口，减少逐词翻译造成的阅读停顿。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance."
+      ],
+      "recommendation": "Use as the low-cost recognition entry for SVO extraction."
+    },
+    {
+      "card_id": "012102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "1",
+        "box_name": "主谓宾",
+        "box_prefix": "0121"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在让步从句和定语从句夹层中提取外层主谓宾",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在 CET 阅读长句中先建立外层骨架，再回填从句信息。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance."
+      ],
+      "recommendation": "Use to confirm the nested-clause application step."
+    },
+    {
+      "card_id": "012104",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "1",
+        "box_name": "主谓宾",
+        "box_prefix": "0121"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分定语从句内部主谓宾与全句外层主谓宾",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "把主干提取迁移到双层 SVO 结构，避免阅读时把从句动作当成全句结论。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance."
+      ],
+      "recommendation": "Use as the transfer card and swipe-interaction representative."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The sample moves from stripping prepositional modifiers, to extracting the outer SVO across two subordinate-clause layers, to rejecting an inner relative-clause SVO as the sentence-level skeleton.",
+    "repetition_or_gap_risks": [
+      "All three sentences are disclosed AI-authored simulations; they must never be marketed as true-exam excerpts.",
+      "This is the second reading box sample only and does not authorize bulk expansion."
+    ],
+    "representative_cards": [
+      "012101",
+      "012102",
+      "012104"
+    ],
+    "next_step": "Include this sample in the consolidated controlled-pilot evidence pack for explicit user confirmation before box expansion."
+  }
+}
