@@ -26,6 +26,11 @@ const REQUIRED_BLOCKERS = [
   'fake_source_claim',
   'low_quality_variation',
 ];
+const ANALYSIS_REFERENCE_CHECK_FIELDS = [
+  'answer_matches_card',
+  'choice_or_bank_references_match_source',
+  'distractor_labels_match_explanations',
+];
 
 const REQUIRED_METADATA_FIELDS = [
   'main_training_goal',
@@ -74,6 +79,7 @@ const REQUIRED_SAMPLE_GATE_FIELDS = [
   'agent_self_review_record',
   'self_review_quality_metadata_matches_current_card_corpus',
   'blocker_scan_per_card',
+  'analysis_reference_consistency_attestation',
   'card_quality_audit_no_hard_blockers',
   'scoped_card_quality_audit_report',
   'box_progression_roles',
@@ -1847,6 +1853,11 @@ function validateWorkflow(errors) {
       pushIssue(errors, 'sample_quality_gate_field_missing', { field });
     }
   }
+  for (const field of ANALYSIS_REFERENCE_CHECK_FIELDS) {
+    if (!(workflow.self_review_required_checks || []).includes(field)) {
+      pushIssue(errors, 'self_review_analysis_reference_check_missing', {field});
+    }
+  }
   for (const field of ['explicit_user_confirmation', 'linked_agent_self_review_record', 'harness_validation', 'card_validation', 'card_quality_audit_report']) {
     if (!(workflow.sample_quality_gate?.approval_requires || []).includes(field)) {
       pushIssue(errors, 'sample_quality_gate_approval_requirement_missing', { field });
@@ -2362,6 +2373,18 @@ function validateSelfReviewCard(card, errors, source, { template }) {
     pushIssue(errors, 'self_review_card_claims_user_approval', { source, card_id: card.card_id });
   }
   validateBlockerScan(card.blocker_scan, errors, `${source}:${card.card_id || 'template-card'}`, { template });
+  if (template || hasOwn(card, 'analysis_reference_check')) {
+    for (const field of ANALYSIS_REFERENCE_CHECK_FIELDS) {
+      if (card.analysis_reference_check?.[field] !== true) {
+        pushIssue(errors, 'self_review_analysis_reference_check_invalid', {
+          source,
+          card_id: card.card_id,
+          field,
+          actual: card.analysis_reference_check?.[field],
+        });
+      }
+    }
+  }
 
   if (!template) {
     const quality = readJson('spec/content-quality-contract.json');
@@ -2695,6 +2718,11 @@ function validateReviewIdentityUniquenessSelfTest(errors) {
     expected_card_count: 2,
     reviewed_card_ids: ['000001', '000001'],
     human_reviewer: 'external:fixture-human',
+    analysis_reference_check: {
+      answer_matches_card: true,
+      choice_or_bank_references_match_source: true,
+      distractor_labels_match_explanations: true,
+    },
     boxes: [{
       box_prefix: '0000',
       status: 'pass',
@@ -2800,6 +2828,17 @@ function validateSelfReviewRecord(record, errors, source, {
       allowHistoricalScopedReport: true,
       currentFingerprint,
     });
+    if (template) {
+      for (const field of ANALYSIS_REFERENCE_CHECK_FIELDS) {
+        if (record.coverage?.analysis_reference_check?.[field] !== true) {
+          pushIssue(errors, 'full_track_review_analysis_reference_check_invalid', {
+            source,
+            field,
+            actual: record.coverage?.analysis_reference_check?.[field],
+          });
+        }
+      }
+    }
     if (template) return;
 
     if (!['cet4', 'cet6'].includes(record.scope?.track)) {
@@ -2881,6 +2920,17 @@ function validateSelfReviewRecord(record, errors, source, {
         source,
         human_reviewer: record.coverage.human_reviewer,
       });
+    }
+    if (template || hasOwn(record.coverage || {}, 'analysis_reference_check')) {
+      for (const field of ANALYSIS_REFERENCE_CHECK_FIELDS) {
+        if (record.coverage?.analysis_reference_check?.[field] !== true) {
+          pushIssue(errors, 'full_track_review_analysis_reference_check_invalid', {
+            source,
+            field,
+            actual: record.coverage?.analysis_reference_check?.[field],
+          });
+        }
+      }
     }
     const boxes = Array.isArray(record.coverage?.boxes) ? record.coverage.boxes : [];
     if (boxes.length !== scopeBoxPrefixes.length) {
