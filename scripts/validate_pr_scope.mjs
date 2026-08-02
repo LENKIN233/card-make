@@ -28,6 +28,7 @@ const REVIEW_TEMPLATE_PATHS = new Set([
   'reviews/approved_batches/TEMPLATE.json',
   'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
   'reviews/agent_self_review/TEMPLATE.json',
+  'reviews/sample_confirmations/TEMPLATE.json',
 ]);
 const CARD_INTEGRITY_ISSUE_CODES = Object.freeze({
   qualityMetadataMissing: 'candidate_quality_metadata_missing',
@@ -76,6 +77,7 @@ const STANDARD_SELF_REVIEW_BATCH_STATUSES = [
   'blocked',
 ];
 const RESIDUAL_BLOCKER_CLOSURE_STATUS = 'documented_residual_closure';
+const CONFIRMED_BOX_EXPANSION_STATUS = 'reviewed_confirmed_box_expansion';
 const CORE_INTERACTION_IDS = ['flip', 'multiple_choice', 'lock', 'elimination', 'swipe'];
 const SELF_REVIEW_CARD_STATUSES = ['pass', 'revise', 'block'];
 const ANALYSIS_REFERENCE_CHECK_FIELDS = [
@@ -210,6 +212,20 @@ function isNoncanonicalApprovedBatchPath(filePath) {
   return isApprovedBatchJsonPath(filePath) && !isApprovedBatchPath(filePath);
 }
 
+function isSampleConfirmationJsonPath(filePath) {
+  return isJsonBelow(filePath, 'reviews/sample_confirmations') &&
+    !isReviewTemplatePath(filePath);
+}
+
+function isSampleConfirmationPath(filePath) {
+  if (!isSampleConfirmationJsonPath(filePath)) return false;
+  return !filePath.slice('reviews/sample_confirmations/'.length).includes('/');
+}
+
+function isNoncanonicalSampleConfirmationPath(filePath) {
+  return isSampleConfirmationJsonPath(filePath) && !isSampleConfirmationPath(filePath);
+}
+
 function isHandoffPath(filePath) {
   return isJsonBelow(filePath, 'reviews/git_handoffs') &&
     !filePath.endsWith('/TEMPLATE.json');
@@ -225,6 +241,7 @@ function isContentReviewPath(filePath) {
     isDraftPath(filePath) ||
     isSelfReviewJsonPath(filePath) ||
     isApprovedBatchJsonPath(filePath) ||
+    isSampleConfirmationJsonPath(filePath) ||
     isScopedAuditPath(filePath)
   ) {
     return true;
@@ -676,10 +693,80 @@ function changedSelfReviewScopeType(record) {
   return 'three_card_sample_per_box';
 }
 
+function validateSampleConfirmationSemantics(record, filePath) {
+  const issues = [];
+  const push = (code, message, details = {}) => issues.push({code, path: filePath, message, ...details});
+  if (record?.schema_version !== 'sample-confirmation.v1' || record?.confirmed_by_user !== true) {
+    push('changed_sample_confirmation_authority_invalid', 'A sample-confirmation record must use sample-confirmation.v1 and record explicit user confirmation.');
+  }
+  if (!hasText(record?.confirmation_id) || !hasText(record?.confirmation_source?.conversation_id) || !hasText(record?.confirmation_source?.message) || !hasText(record?.confirmation_source?.context)) {
+    push('changed_sample_confirmation_source_invalid', 'A sample-confirmation record must bind a confirmation ID and non-empty conversation, message, and context evidence.');
+  }
+  if (!hasText(record?.recorded_at) || Number.isNaN(Date.parse(record.recorded_at)) || !/(?:Z|[+-]\d{2}:\d{2})$/.test(record.recorded_at)) {
+    push('changed_sample_confirmation_timestamp_invalid', 'A sample-confirmation record requires a timezone-qualified timestamp.');
+  }
+  if (!['cet4', 'cet6'].includes(record?.scope?.track) || !hasText(record?.scope?.purpose) || !Number.isInteger(record?.scope?.target_card_count) || record.scope.target_card_count <= 0) {
+    push('changed_sample_confirmation_scope_invalid', 'A sample-confirmation record must name a governed track, purpose, and positive target count.');
+  }
+  const boxTargets = Array.isArray(record?.scope?.box_targets) ? record.scope.box_targets : [];
+  const prefixes = boxTargets.map(target => target?.box_prefix);
+  const prefixSet = new Set(prefixes);
+  let sampleCount = 0;
+  let targetCount = 0;
+  const allSampleIds = [];
+  if (boxTargets.length === 0 || prefixSet.size !== boxTargets.length) {
+    push('changed_sample_confirmation_box_targets_invalid', 'Box targets must be non-empty and use unique prefixes.');
+  }
+  for (const target of boxTargets) {
+    const ids = Array.isArray(target?.sample_card_ids) ? target.sample_card_ids : [];
+    if (!/^\d{4}$/.test(target?.box_prefix || '') || !Number.isInteger(target?.target_card_count) || target.target_card_count < 3 || ids.length !== 3 || new Set(ids).size !== 3 || ids.some(id => !hasText(id) || !id.startsWith(target.box_prefix))) {
+      push('changed_sample_confirmation_box_target_invalid', 'Each box target must bind one four-digit prefix, exactly three unique matching sample IDs, and a target of at least three.', {box_prefix: target?.box_prefix ?? null});
+    }
+    sampleCount += ids.length;
+    targetCount += Number.isInteger(target?.target_card_count) ? target.target_card_count : 0;
+    allSampleIds.push(...ids);
+  }
+  if (new Set(allSampleIds).size !== allSampleIds.length || targetCount !== record?.scope?.target_card_count) {
+    push('changed_sample_confirmation_totals_invalid', 'Sample IDs must be globally unique and per-box targets must sum to the overall target.');
+  }
+  if (record?.sample_evidence?.sample_card_count !== sampleCount || record?.sample_evidence?.box_count !== boxTargets.length || !/^sha256:[a-f0-9]{64}$/.test(record?.sample_evidence?.review_pack_sha256 || '')) {
+    push('changed_sample_confirmation_evidence_invalid', 'Sample evidence counts and SHA-256 must exactly match the recorded box targets.');
+  }
+  const branchHeads = Array.isArray(record?.sample_evidence?.branch_heads) ? record.sample_evidence.branch_heads : [];
+  if (branchHeads.length !== boxTargets.length || new Set(branchHeads.map(item => item?.box_prefix)).size !== boxTargets.length || branchHeads.some(item => !prefixSet.has(item?.box_prefix) || !hasText(item?.branch) || !/^[a-f0-9]{7,40}$/.test(item?.commit_sha || ''))) {
+    push('changed_sample_confirmation_branch_heads_invalid', 'Sample evidence must bind one valid branch head for every confirmed box.');
+  }
+  const limits = Array.isArray(record?.does_not_authorize) ? record.does_not_authorize : [];
+  if (record?.authorizes?.confirmed_box_expansion !== true || record?.authorizes?.same_quality_contract !== true || record?.final_user_approval_required !== true || record?.gate_eligible !== false || !['formal_content_approval', 'audio_perceptual_qc', 'pilot_release', 'destructive_card_changes'].every(limit => limits.includes(limit))) {
+    push('changed_sample_confirmation_formal_boundary_invalid', 'Sample confirmation may authorize target-bound expansion only and must preserve every formal-use, audio, release, and destructive-change boundary.');
+  }
+  return issues;
+}
+
+function confirmedBoxTargetAtHead(record, filePath, head, issues) {
+  const confirmationPath = record.sample_policy?.sample_confirmation_record;
+  if (!isSampleConfirmationPath(confirmationPath) || !isRegularFileAtCommit(head, confirmationPath)) {
+    issues.push({code: 'changed_confirmed_expansion_confirmation_missing', path: filePath, confirmation_path: confirmationPath ?? null, message: 'Confirmed expansion must link one direct regular non-template sample-confirmation record at immutable HEAD.'});
+    return null;
+  }
+  const confirmation = readChangedJson(confirmationPath, head);
+  const confirmationIssues = validateSampleConfirmationSemantics(confirmation, confirmationPath);
+  if (confirmationIssues.length > 0) {
+    issues.push({code: 'changed_confirmed_expansion_confirmation_invalid', path: filePath, confirmation_path: confirmationPath, validation_issues: confirmationIssues, message: 'The linked sample-confirmation record is invalid.'});
+    return null;
+  }
+  if (confirmation.confirmation_id !== record.sample_policy?.sample_confirmation_id) {
+    issues.push({code: 'changed_confirmed_expansion_confirmation_id_mismatch', path: filePath, message: 'The linked sample-confirmation ID must match sample_policy.sample_confirmation_id.'});
+  }
+  const prefixes = Array.isArray(record.scope?.box_prefixes) ? record.scope.box_prefixes : [];
+  return confirmation.scope.box_targets.find(target => target.box_prefix === prefixes[0]) || null;
+}
+
 function validateStandardReviewSemantics({
   record,
   filePath,
   scopeCardIds,
+  head,
 }) {
   const issues = [];
   const push = (code, message, details = {}) => {
@@ -688,20 +775,64 @@ function validateStandardReviewSemantics({
   const samplePolicy = record.sample_policy;
   const reviewScopeType = changedSelfReviewScopeType(record);
   const isResidualClosure = reviewScopeType === 'residual_blocker_closure';
+  const isConfirmedExpansion = reviewScopeType === 'confirmed_box_expansion';
   if (!hasText(samplePolicy?.review_scope_type)) {
     push(
       'changed_self_review_scope_type_required',
       'Every changed self-review must explicitly declare sample_policy.review_scope_type before it can count as candidate coverage.',
     );
   }
-  if (!['three_card_sample_per_box', 'residual_blocker_closure'].includes(reviewScopeType)) {
+  if (!['three_card_sample_per_box', 'confirmed_box_expansion', 'residual_blocker_closure'].includes(reviewScopeType)) {
     push(
       'changed_self_review_scope_type_invalid',
       'A changed non-full-track self-review must use the standard sample or residual blocker closure scope type.',
       {actual: reviewScopeType},
     );
   }
-  if (isResidualClosure) {
+  if (isConfirmedExpansion) {
+    for (const [field, expected] of [
+      ['is_three_card_sample_per_box', false],
+      ['confirmed_box_expansion', true],
+      ['sample_confirmation_satisfied', true],
+      ['final_user_approval_required', true],
+      ['batch_generation_requires_user_confirmation', true],
+    ]) {
+      if (samplePolicy?.[field] !== expected) {
+        push('changed_confirmed_expansion_sample_policy_invalid', `Confirmed expansion must set sample_policy.${field}=${expected}.`, {field, expected});
+      }
+    }
+    const prefixes = Array.isArray(record.scope?.box_prefixes) ? record.scope.box_prefixes : [];
+    if (prefixes.length !== 1 || !/^\d{4}$/.test(prefixes[0] || '')) {
+      push('changed_confirmed_expansion_single_box_required', 'Confirmed expansion must cover exactly one four-digit box prefix.');
+    }
+    const target = confirmedBoxTargetAtHead(record, filePath, head, issues);
+    const cards = Array.isArray(record.cards) ? record.cards : [];
+    if (cards.some(card => card?.knowledge_ref?.box_prefix !== prefixes[0])) {
+      push('changed_confirmed_expansion_card_prefix_mismatch', 'Every confirmed expansion snapshot must belong to the single confirmed box prefix.');
+    }
+    if (target) {
+      const expected = target.target_card_count - target.sample_card_ids.length;
+      if (cards.length !== expected || scopeCardIds.size !== expected) {
+        push('changed_confirmed_expansion_count_mismatch', 'Confirmed expansion must contain exactly target minus the three confirmed sample cards.', {expected, actual: cards.length});
+      }
+      if ([...scopeCardIds].some(cardId => target.sample_card_ids.includes(cardId))) {
+        push('changed_confirmed_expansion_reuses_sample_card', 'Expansion coverage must contain only new expansion cards, not the three confirmed sample cards.');
+      }
+    }
+    if (record.batch_review?.status !== CONFIRMED_BOX_EXPANSION_STATUS) {
+      push('changed_self_review_batch_status_invalid', `Confirmed expansion status must be ${CONFIRMED_BOX_EXPANSION_STATUS}.`);
+    }
+    if (!isScopedQualityAuditReportPath(record.quality_audit?.report)) {
+      push('changed_confirmed_expansion_scoped_audit_required', 'Confirmed expansion must link one direct current scoped audit report.');
+    }
+    if (!hasText(record.batch_review?.box_progression) || !Array.isArray(record.batch_review?.repetition_or_gap_risks) || !hasText(record.batch_review?.next_step)) {
+      push('changed_confirmed_expansion_batch_conclusion_invalid', 'Confirmed expansion must record progression, repetition/gap risks, and the next step.');
+    }
+    const representativeCards = Array.isArray(record.batch_review?.representative_cards) ? record.batch_review.representative_cards : [];
+    if (representativeCards.length === 0 || new Set(representativeCards).size !== representativeCards.length || representativeCards.some(cardId => !scopeCardIds.has(cardId))) {
+      push('changed_confirmed_expansion_representative_cards_invalid', 'Confirmed expansion must name non-empty unique representative cards within scope.');
+    }
+  } else if (isResidualClosure) {
     for (const [field, expected] of [
       ['is_three_card_sample_per_box', false],
       ['residual_blocker_closure', true],
@@ -959,7 +1090,7 @@ function validateStandardReviewSemantics({
         {expected: scopeCardIds.size, actual: cards.length},
       );
     }
-  } else {
+  } else if (!isConfirmedExpansion) {
     const expectedCardCount = scopeBoxPrefixes.length * 3;
     if (cards.length !== expectedCardCount) {
       push(
@@ -990,6 +1121,12 @@ function validateStandardReviewSemantics({
         );
       }
     }
+  } else if (cards.length !== scopeCardIds.size) {
+    push(
+      'changed_confirmed_expansion_snapshot_count_invalid',
+      'Confirmed expansion evidence must carry exactly one snapshot for every unique scope.card_ids entry.',
+      {expected: scopeCardIds.size, actual: cards.length},
+    );
   }
   for (let index = 0; index < cards.length; index += 1) {
     const card = cards[index];
@@ -1447,6 +1584,7 @@ function runChangedCardIntegrity({ base, head, entries }) {
       record,
       filePath,
       scopeCardIds,
+      head,
     });
     issues.push(...standardSemanticIssues);
     const standardSemanticsValid = standardSemanticIssues.length === 0;
@@ -2250,6 +2388,14 @@ function validate({ base, head }) {
             message: 'Approval records must be direct JSON children of reviews/approved_batches.',
           });
         }
+        if (isNoncanonicalSampleConfirmationPath(filePath)) {
+          issues.push({
+            code: 'changed_sample_confirmation_path_noncanonical',
+            path: filePath,
+            status: entry.status,
+            message: 'Sample-confirmation records must be direct JSON children of reviews/sample_confirmations.',
+          });
+        }
         if (isCardBoxDirectoryPath(filePath) && !isCardBoxPath(filePath)) {
           issues.push({
             code: 'candidate_card_box_path_invalid',
@@ -2289,6 +2435,21 @@ function validate({ base, head }) {
           message: 'Formal approval evidence must not be deleted or renamed out of its governed directory.',
         });
       }
+      const removesSampleConfirmation = (
+        statusType === 'D' && isSampleConfirmationPath(entry.path)
+      ) || (
+        statusType === 'R' &&
+        isSampleConfirmationPath(entry.paths[0]) &&
+        !isSampleConfirmationPath(entry.path)
+      );
+      if (removesSampleConfirmation) {
+        issues.push({
+          code: 'changed_sample_confirmation_deleted',
+          path: entry.paths[0] || entry.path,
+          status: entry.status,
+          message: 'Sample-confirmation evidence must not be deleted or renamed out of its governed directory.',
+        });
+      }
     }
 
     if (!resolvedHead) {
@@ -2299,6 +2460,19 @@ function validate({ base, head }) {
     }
 
     if (resolvedHead) {
+      for (const entry of entries) {
+        const statusType = entry.status[0] === '?' ? 'A' : entry.status[0];
+        if (statusType === 'D') continue;
+        for (const filePath of entry.paths) {
+          if (!isSampleConfirmationPath(filePath)) continue;
+          if (!isRegularFileAtCommit(resolvedHead, filePath)) {
+            issues.push({code: 'changed_sample_confirmation_not_regular_file', path: filePath, message: 'Sample-confirmation evidence must be a direct regular JSON blob at immutable HEAD.'});
+            continue;
+          }
+          const record = readChangedJson(filePath, resolvedHead);
+          issues.push(...validateSampleConfirmationSemantics(record, filePath));
+        }
+      }
       issues.push(...validateChangedScopedAuditReports({
         base,
         head: resolvedHead,

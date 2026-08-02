@@ -1,0 +1,47 @@
+{
+  "schema_version": "sample-confirmation.v1",
+  "confirmation_id": "YYYYMMDD-track-purpose-samples",
+  "recorded_at": "YYYY-MM-DDTHH:mm:ss+08:00",
+  "confirmed_by_user": true,
+  "confirmation_source": {
+    "conversation_id": "codex-thread-id",
+    "message": "exact user confirmation",
+    "context": "what the user confirmed"
+  },
+  "scope": {
+    "track": "cet4",
+    "purpose": "controlled_pilot",
+    "target_card_count": 12,
+    "box_targets": [
+      {
+        "box_prefix": "0000",
+        "target_card_count": 12,
+        "sample_card_ids": ["000001", "000002", "000003"]
+      }
+    ]
+  },
+  "sample_evidence": {
+    "review_pack_sha256": "sha256:PLACEHOLDER",
+    "sample_card_count": 3,
+    "box_count": 1,
+    "branch_heads": [
+      {
+        "box_prefix": "0000",
+        "branch": "content/example",
+        "commit_sha": "COMMIT_SHA_PLACEHOLDER"
+      }
+    ]
+  },
+  "authorizes": {
+    "confirmed_box_expansion": true,
+    "same_quality_contract": true
+  },
+  "does_not_authorize": [
+    "formal_content_approval",
+    "audio_perceptual_qc",
+    "pilot_release",
+    "destructive_card_changes"
+  ],
+  "final_user_approval_required": true,
+  "gate_eligible": false
+}
