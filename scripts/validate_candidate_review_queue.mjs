@@ -260,11 +260,22 @@ function recordExclusiveScope(index, value, queueId, label, errors) {
 
 function runSelfTest() {
   const queue = JSON.parse(fs.readFileSync(DEFAULT_QUEUE_PATH, 'utf8'));
+  const initialActiveCount = queue.entries.filter(entry => entry.status === 'active').length;
+  if (initialActiveCount < 2) {
+    const promotable = queue.entries.filter(entry => entry.status === 'parked').slice(0, 2 - initialActiveCount);
+    assert.equal(promotable.length, 2 - initialActiveCount, 'self-test requires two promotable queue entries');
+    promotable.forEach((entry, index) => {
+      entry.status = 'active';
+      entry.new_pr_number = 900001 + index;
+      entry.formal_approval = false;
+      entry.approval_record = null;
+    });
+  }
   const active = queue.entries.filter(entry => entry.status === 'active');
   const activeIndexes = queue.entries.flatMap((entry, index) =>
     entry.status === 'active' ? [index] : []
   );
-  assert.ok(activeIndexes.length >= 2, 'self-test requires at least two active queue entries');
+  assert.ok(activeIndexes.length >= 2, 'self-test fixture requires at least two active queue entries');
   const [firstActiveIndex, secondActiveIndex] = activeIndexes;
   const remotePrs = active.map(entry => ({
     baseRefName: 'main',
