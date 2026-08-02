@@ -114,6 +114,25 @@ test('a changed card with complete matching changed self-review passes', () => {
   assert.deepEqual(result.report.changed_card_integrity.changed_card_ids, ['000001']);
 });
 
+test('a changed self-review must explicitly confirm answer and analysis references', () => {
+  const repo = createRepository();
+  const card = completeCard();
+  const review = reviewEntry(card);
+  review.analysis_reference_check.distractor_labels_match_explanations = false;
+  writeCardBox(repo.root, [card]);
+  writeSelfReview(repo.root, 'review.json', ['000001'], [review]);
+  commit(repo.root, 'omit semantic reference confirmation');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_self_review_analysis_reference_check_invalid');
+  const coverageIssue = assertIssue(
+    result.report,
+    'changed_card_self_review_count_invalid',
+  );
+  assert.equal(coverageIssue.review_count, 0);
+});
+
 test('a complete three-card standard sample can authorize its changed candidates', () => {
   const repo = createRepository();
   const cards = [
@@ -781,6 +800,13 @@ test('full-track aggregate semantics fail closed before coverage can count', asy
         record.coverage.boxes[0].reviewer = 'external:codex-agent';
       },
       issue: 'changed_full_track_review_human_reviewer_invalid',
+    },
+    {
+      name: 'analysis reference check',
+      mutate(record) {
+        record.coverage.analysis_reference_check.answer_matches_card = false;
+      },
+      issue: 'changed_full_track_review_analysis_reference_check_invalid',
     },
     {
       name: 'per-box human pass',
@@ -1536,6 +1562,11 @@ function reviewEntry(card) {
       fake_source_claim: false,
       low_quality_variation: false,
     },
+    analysis_reference_check: {
+      answer_matches_card: true,
+      choice_or_bank_references_match_source: true,
+      distractor_labels_match_explanations: true,
+    },
   };
 }
 
@@ -1775,6 +1806,11 @@ function writeFullTrackReview(root, {
       expected_card_count: expectedCount,
       reviewed_card_ids: reviewedCardIds,
       human_reviewer: humanReviewer,
+      analysis_reference_check: {
+        answer_matches_card: true,
+        choice_or_bank_references_match_source: true,
+        distractor_labels_match_explanations: true,
+      },
       boxes: coverageBoxPrefixes.map(boxPrefix => ({
         box_prefix: boxPrefix,
         status: 'pass',

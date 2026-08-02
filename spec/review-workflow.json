@@ -59,6 +59,7 @@
       "agent_self_review_record",
       "self_review_quality_metadata_matches_current_card_corpus",
       "blocker_scan_per_card",
+      "analysis_reference_consistency_attestation",
       "card_quality_audit_no_hard_blockers",
       "scoped_card_quality_audit_report",
       "box_progression_roles",
@@ -87,6 +88,7 @@
       "standard sample batch_review carries non-empty box_progression, an explicit repetition_or_gap_risks array, non-empty unique representative_cards drawn from scope.card_ids, and a non-empty next_step",
       "newly added cards require standard three-card sample coverage; residual blocker closure evidence applies only to pre-existing cards",
       "every entry in every changed self-review resolves to exactly one HEAD corpus card and all quality_metadata fields except artifact-local review_status are deeply equal, even when the card itself did not change",
+      "every new or changed standard or residual card snapshot explicitly confirms that answer truth, option or word-bank references, and distractor labels match the exact card; every new or changed full-track aggregate confirms the same checks under coverage",
       "a changed full-track aggregate record may omit cards; its exact sample flags, structured human reviewer identity, per-box human pass, complete quality_audit summary, ready batch status, non-empty unique scope.card_ids, and coverage.reviewed_card_ids are validated before its scope can count as review evidence",
       "for a semantically valid full-track aggregate, scope.card_ids and coverage.reviewed_card_ids are identical, both equal the complete declared track, and immutable HEAD has the same non-empty card ID set at merge-base",
       "every JSON change under agent_self_review, approved_batches, drafts, or audit_scopes enters the content gate regardless of filename prefix, except the four exact repository-declared template paths; agent_self_review and approved_batches records must be direct regular JSON children and nested records fail closed",
@@ -106,6 +108,7 @@
       "allow an unprefixed governed review filename to avoid content-candidate validation",
       "treat an unknown record as a template merely because its basename ends in TEMPLATE.json",
       "count invalid or mismatched full-track scope and coverage as changed-card review evidence",
+      "count a new or changed self-review with missing or false answer and analysis reference consistency attestations as review coverage",
       "allow a partial-track aggregate to satisfy changed-card review coverage",
       "allow a full-track record to claim a track that differs from any covered HEAD card",
       "allow a full-track remediation aggregate to authorize a card absent from merge-base",
@@ -189,11 +192,21 @@
   "self_review_required_checks": [
     "single_card_quality",
     "front_back_relationship",
+    "answer_matches_card",
+    "choice_or_bank_references_match_source",
+    "distractor_labels_match_explanations",
     "language_naturalness",
     "library_group_box_match",
     "box_progression",
     "blocker_scan"
   ],
+  "analysis_reference_check": {
+    "forward_requirement": "Every new or changed standard or residual self-review card entry must explicitly attest all three checks as true; every new or changed full-track remediation record must attest them under coverage.",
+    "answer_matches_card": "The stated answer and reasoning must match the canonical answer truth of the card.",
+    "choice_or_bank_references_match_source": "Every option key, option text, word-bank token, example, or source fragment named by the analysis must exist in and refer to the intended visible source item.",
+    "distractor_labels_match_explanations": "Whenever analysis classifies a labeled choice or bank item as correct, incorrect, target, or non-target, the label and explanation must describe that exact item.",
+    "automation_boundary": "This is explicit semantic review evidence, not a claim that regex or structural audit can prove natural-language correctness."
+  },
   "self_review_output": {
     "per_card_status": ["pass", "revise", "block"],
     "batch_status": ["recommend_user_confirmation", "revise_before_user_review", "blocked", "documented_residual_closure", "ready_for_full_track_user_approval"],

@@ -78,6 +78,11 @@ const STANDARD_SELF_REVIEW_BATCH_STATUSES = [
 const RESIDUAL_BLOCKER_CLOSURE_STATUS = 'documented_residual_closure';
 const CORE_INTERACTION_IDS = ['flip', 'multiple_choice', 'lock', 'elimination', 'swipe'];
 const SELF_REVIEW_CARD_STATUSES = ['pass', 'revise', 'block'];
+const ANALYSIS_REFERENCE_CHECK_FIELDS = [
+  'answer_matches_card',
+  'choice_or_bank_references_match_source',
+  'distractor_labels_match_explanations',
+];
 
 function readOption(name, fallback) {
   const index = process.argv.indexOf(name);
@@ -471,6 +476,18 @@ function validateFullTrackAggregateSemantics({
       'A changed full-track aggregate must identify a named human reviewer as github:<id>, team:<id>, or external:<id>; agent, bot, Codex, automation, and CI identities are forbidden.',
       {human_reviewer: aggregateReviewer ?? null},
     );
+  }
+  for (const field of ANALYSIS_REFERENCE_CHECK_FIELDS) {
+    if (record.coverage?.analysis_reference_check?.[field] !== true) {
+      push(
+        'changed_full_track_review_analysis_reference_check_invalid',
+        'A changed full-track review must explicitly confirm answer truth, option or word-bank references, and distractor labels against the reviewed source.',
+        {
+          field,
+          actual: record.coverage?.analysis_reference_check?.[field] ?? null,
+        },
+      );
+    }
   }
 
   const boxes = Array.isArray(record.coverage?.boxes) ? record.coverage.boxes : [];
@@ -1012,6 +1029,20 @@ function validateStandardReviewSemantics({
         'Agent self-review metadata cannot claim user_approved status.',
         {review_index: index, card_id: card?.card_id ?? null},
       );
+    }
+    for (const field of ANALYSIS_REFERENCE_CHECK_FIELDS) {
+      if (card?.analysis_reference_check?.[field] !== true) {
+        push(
+          'changed_self_review_analysis_reference_check_invalid',
+          'Every card entry in a changed self-review must explicitly confirm answer truth, option or word-bank references, and distractor labels against the exact card source.',
+          {
+            review_index: index,
+            card_id: card?.card_id ?? null,
+            field,
+            actual: card?.analysis_reference_check?.[field] ?? null,
+          },
+        );
+      }
     }
     let hasBlocker = false;
     for (const blocker of REQUIRED_BLOCKERS) {
