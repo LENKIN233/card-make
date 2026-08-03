@@ -1,0 +1,47 @@
+{
+  "handoff_id": "20260803-content-cet4-pilot-reading-0121-expansion",
+  "created_at": "2026-08-03T11:02:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-reading-0121-expansion",
+  "base_branch": "main",
+  "commit_sha": "a8c3e41d77b8b7769ae4adfc3ba3ef900fbe82b8",
+  "push_ref": "origin/content/cet4-pilot-reading-0121-expansion",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/144",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_reading_0121.json",
+      "reviews/agent_self_review/20260803-cet4-pilot-reading-0121-expansion.json",
+      "reviews/audit_scopes/20260803-cet4-pilot-reading-0121-expansion-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "69664a940e1e0fadd9c5178862a1062f44f384f5",
+    "patch_sha256": "d26358b22db82b168d142555752c4f819ffafb8b42360c3202f40dea106f234f"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; errors 0, warnings 0"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; exact confirmed nine-card expansion; hard blockers 0, content risks 0, review gaps 0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream warnings"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #144 expands the confirmed reading 0121 sample to its exact twelve-card target, corrects legacy grammar overgeneralizations, removes untraced sources and answer-path leaks, and keeps candidate evidence non-formal.",
+  "remaining_risks": [
+    "The complete 120-card batch still requires listening 0010 expansion plus explicit final approval.",
+    "All nine expansion cards are disclosed AI-authored simulations."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
