@@ -1,0 +1,52 @@
+{
+  "review_id": "20260803-cet4-pilot-cloze-0202-expansion",
+  "created_at": "2026-08-03T10:00:00+08:00",
+  "agent": "codex",
+  "scope": {"library": "选词填空", "group": "词性判断", "box": "动词", "box_prefixes": ["0202"], "card_ids": ["020204", "020205", "020206", "020207", "020208"]},
+  "specs_read": ["AGENTS.md", "spec/doc-manifest.json", "spec/authority-map.json", "spec/workspace-contract.json", "spec/content-quality-contract.json", "spec/review-workflow.json", "spec/card-metadata.schema.json", "spec/card-quality-audit.json", "../softbook_cet/spec/product-core.json", "../softbook_cet/spec/card-system.json", "../softbook_cet/spec/interactions.json", "../softbook_cet/spec/box-catalog.json", "reviews/sample_confirmations/20260802-cet4-controlled-pilot-14-boxes.json"],
+  "sample_policy": {"review_scope_type": "confirmed_box_expansion", "is_three_card_sample_per_box": false, "confirmed_box_expansion": true, "sample_confirmation_satisfied": true, "sample_confirmation_record": "reviews/sample_confirmations/20260802-cet4-controlled-pilot-14-boxes.json", "sample_confirmation_id": "20260802-cet4-controlled-pilot-14-boxes", "final_user_approval_required": true, "batch_generation_requires_user_confirmation": true},
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260803-cet4-pilot-cloze-0202-expansion-scope-audit.json",
+    "corpus_fingerprint": "7266fa25214ca1548eab3e3685027b40f57a566f0d25dd9c2c352dc7774bc3a6",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": ["020204", "020205", "020206", "020207", "020208"], "card_count": 5, "issue_count": 5,
+      "by_severity": {"hard_blocker": 0, "content_risk": 0, "review_gap": 0, "source_risk": 5},
+      "by_rule": {"analysis_missing_or_too_short": 0, "exact_repeated_analysis": 0, "exact_repeated_front": 0, "front_leaks_analysis_conclusion": 0, "front_leaks_correct_answer": 0, "front_missing_or_too_short": 0, "generic_front_pattern": 0, "missing_quality_metadata": 0, "multiple_choice_answer_not_in_options": 0, "multiple_choice_no_options": 0, "synthetic_source": 5, "template_analysis_pattern": 0, "unverified_source": 0}
+    }
+  },
+  "cards": [
+    {
+      "card_id": "020204", "interaction_id": "multiple_choice", "knowledge_ref": {"track": "cet4", "library_id": "2", "library_name": "选词填空", "group_id": "0", "group_name": "词性判断", "box_id": "2", "box_name": "动词", "box_prefix": "0202"}, "status": "pass",
+      "quality_metadata": {"main_training_goal": "在关系从句中识别限定动词谓语位", "weak_point_tags": ["grammar_weak", "exam_strategy_weak"], "difficulty": {"primary": "foundation", "secondary": ["pass"]}, "card_prototype": "solving_action", "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"}, "exam_value": "训练用户先识别关系从句谓语位，再用时态排除名词和非限定形式。", "box_progression_role": "recognition", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false}, "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true}, "major_issues": [], "minor_issues": ["AI-authored simulation with no true-exam provenance claim."], "recommendation": "Use as the finite-verb recognition entry."
+    },
+    {
+      "card_id": "020205", "interaction_id": "lock", "knowledge_ref": {"track": "cet4", "library_id": "2", "library_name": "选词填空", "group_id": "0", "group_name": "词性判断", "box_id": "2", "box_name": "动词", "box_prefix": "0202"}, "status": "pass",
+      "quality_metadata": {"main_training_goal": "结合谓语位置与 invest time in 搭配锁定动词", "weak_point_tags": ["grammar_weak", "exam_strategy_weak"], "difficulty": {"primary": "pass", "secondary": ["foundation"]}, "card_prototype": "integrated_micro_drill", "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"}, "exam_value": "把词性过滤推进到动词搭配确认，减少只凭中文含义选词。", "box_progression_role": "application", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false}, "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true}, "major_issues": [], "minor_issues": ["AI-authored simulation with no true-exam provenance claim."], "recommendation": "Use for predicate plus collocation application."
+    },
+    {
+      "card_id": "020206", "interaction_id": "multiple_choice", "knowledge_ref": {"track": "cet4", "library_id": "2", "library_name": "选词填空", "group_id": "0", "group_name": "词性判断", "box_id": "2", "box_name": "动词", "box_prefix": "0202"}, "status": "pass",
+      "quality_metadata": {"main_training_goal": "在同词性候选中用搭配与上下文逻辑选择动词", "weak_point_tags": ["grammar_weak", "reading_slow"], "difficulty": {"primary": "pass", "secondary": []}, "card_prototype": "solving_action", "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"}, "exam_value": "训练用户在词性筛选失去区分度后，用句间逻辑完成动词唯一选择。", "box_progression_role": "application", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false}, "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true}, "major_issues": [], "minor_issues": ["AI-authored simulation with no true-exam provenance claim."], "recommendation": "Use for same-POS semantic filtering."
+    },
+    {
+      "card_id": "020207", "interaction_id": "multiple_choice", "knowledge_ref": {"track": "cet4", "library_id": "2", "library_name": "选词填空", "group_id": "0", "group_name": "词性判断", "box_id": "2", "box_name": "动词", "box_prefix": "0202"}, "status": "pass",
+      "quality_metadata": {"main_training_goal": "结合介词后词形与 dip into 搭配选择动词", "weak_point_tags": ["grammar_weak", "exam_strategy_weak"], "difficulty": {"primary": "pass", "secondary": ["foundation"]}, "card_prototype": "integrated_micro_drill", "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"}, "exam_value": "训练用户先用词形缩小范围，再用搭配完成动词唯一选择。", "box_progression_role": "application", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false}, "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true}, "major_issues": [], "minor_issues": ["AI-authored simulation with no true-exam provenance claim."], "recommendation": "Use for form-then-collocation filtering."
+    },
+    {
+      "card_id": "020208", "interaction_id": "lock", "knowledge_ref": {"track": "cet4", "library_id": "2", "library_name": "选词填空", "group_id": "0", "group_name": "词性判断", "box_id": "2", "box_name": "动词", "box_prefix": "0202"}, "status": "pass",
+      "quality_metadata": {"main_training_goal": "排除插入语后锁定复数主语的谓语动词", "weak_point_tags": ["grammar_weak", "reading_slow"], "difficulty": {"primary": "high_score", "secondary": ["pass"]}, "card_prototype": "integrated_micro_drill", "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"}, "exam_value": "训练用户剥离插入成分后定位谓语，并用 continue to do 的语义完成锁词。", "box_progression_role": "transfer", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false}, "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true}, "major_issues": [], "minor_issues": ["AI-authored simulation with no true-exam provenance claim."], "recommendation": "Use as the transfer item; it now correctly belongs to the verb box."
+    }
+  ],
+  "batch_review": {
+    "status": "reviewed_confirmed_box_expansion",
+    "box_progression": "The expansion moves from finite-verb recognition, through predicate-plus-collocation and same-POS semantic filtering, to preposition-driven form selection and a transfer item that removes an interrupting phrase before locking the predicate.",
+    "repetition_or_gap_risks": ["All five cards are disclosed AI-authored simulations and must not be represented as true-exam excerpts.", "The prior front-answer leaks were removed and the former adverb item was replaced with a verb-owned predicate task; formal usability still requires complete-batch approval."],
+    "representative_cards": ["020204", "020206", "020208"],
+    "next_step": "Keep this exact eight-card box non-formal while expanding the remaining confirmed boxes under the same quality contract."
+  }
+}
