@@ -1,0 +1,929 @@
+{
+  "review_id": "20260803-cet4-pilot-catalog-path-closure",
+  "created_at": "2026-08-03T11:38:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "写作、语法",
+    "group": "模版句式；主/被动语态",
+    "box": "展开认证；翻译",
+    "box_prefixes": [
+      "0311",
+      "0630"
+    ],
+    "card_ids": [
+      "031101",
+      "031102",
+      "031103",
+      "031104",
+      "031105",
+      "031106",
+      "031107",
+      "031110",
+      "063001",
+      "063002",
+      "063003",
+      "063004",
+      "063005",
+      "063006"
+    ],
+    "closure_reason": "The exact controlled-pilot consumer payload failed closed because selected 0311 and 0630 cards retained historical group/box labels that did not match the active product box catalog.",
+    "source_issue_refs": [
+      "controlled-pilot candidate payload dry-run: 0311 expected 写作/模版句式/展开认证",
+      "controlled-pilot candidate payload dry-run: 0630 expected 语法/主/被动语态/翻译"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/runtime-boundaries.json",
+    "../softbook_cet/infra/cloudbase/mobile-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260803-cet4-pilot-catalog-path-closure-audit.json",
+    "corpus_fingerprint": "9208a35fbd1c81e7df422f469146c2d7f723bb04dfcba0ff4c4d9e64dc572eb2",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "031101",
+        "031102",
+        "031103",
+        "031104",
+        "031105",
+        "031106",
+        "031107",
+        "031110",
+        "063001",
+        "063002",
+        "063003",
+        "063004",
+        "063005",
+        "063006"
+      ],
+      "card_count": 14,
+      "issue_count": 14,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 14
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 14,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "031101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别观点后理由例证回扣三种不同论证功能",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "建立 CET4 议论文段落的最小展开骨架，避免观点重复和空泛堆句。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use as the recognition entry for distinct argument functions."
+    },
+    {
+      "card_id": "031102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从主张后识别可继续展开的作用机制",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练考生把赞同主张推进为可解释、可举例的理由，避免观点原地重复。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Disclosed AI-authored simulation.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use as the mechanism-recognition entry."
+    },
+    {
+      "card_id": "031103",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "诊断主张与结果之间缺失的作用机制",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练考生定位空泛段落中的因果断点，而不是靠连接词或虚构数字遮掩。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Disclosed AI-authored simulation.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use for causal-gap diagnosis."
+    },
+    {
+      "card_id": "031104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "选择具体且不过度外推的论证机制",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练考生用可推演机制增强说服力，同时规避无依据数字和绝对化结论。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Disclosed AI-authored simulation.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use for bounded-warrant selection."
+    },
+    {
+      "card_id": "031105",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "判断无精确数据的具体情境能否构成有效例证",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "纠正以虚构精确数据替代论证的习惯，建立情境证据与理由回扣意识。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Disclosed AI-authored simulation.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use for evidence-source misconception correction."
+    },
+    {
+      "card_id": "031106",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "依据句间功能完成理由例证回扣的连接",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用逻辑功能选择连接词，避免连接词正确但段落关系错误。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use to validate logic-driven connector selection."
+    },
+    {
+      "card_id": "031107",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用连接词完成让步问题替代方案结果链",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练考生按句间功能组织较复杂的论证链，而不是堆叠连接词或虚构结果数据。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Disclosed AI-authored simulation.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use as the concession-alternative-result transfer lock."
+    },
+    {
+      "card_id": "031110",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "将空泛观点迁移为无虚构数据的理由情境回扣段落",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "motivation_low"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "output_imitation",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "直接修正 CET4 写作中观点重复和编造数据两类高频低质量问题。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use as the transfer and evidence-integrity representative."
+    },
+    {
+      "card_id": "063001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "3",
+        "group_name": "主/被动语态",
+        "box_id": "0",
+        "box_name": "翻译",
+        "box_prefix": "0630"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "依据行动者与对象的信息焦点选择主动或被动语态",
+        "weak_point_tags": [
+          "grammar_weak",
+          "translation_output_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "建立 CET 翻译中以信息焦点驱动语态选择的稳定判断。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use as the recognition entry for information-focus voice choice."
+    },
+    {
+      "card_id": "063002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "3",
+        "group_name": "主/被动语态",
+        "box_id": "0",
+        "box_name": "翻译",
+        "box_prefix": "0630"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用现在完成时被动表达未说明行动者的当前部署结果",
+        "weak_point_tags": [
+          "grammar_weak",
+          "translation_output_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练语态、时态与话题结构同时对齐，减少模糊主语和宾主倒置。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use to validate the present-perfect passive in deployment context."
+    },
+    {
+      "card_id": "063003",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "3",
+        "group_name": "主/被动语态",
+        "box_id": "0",
+        "box_name": "翻译",
+        "box_prefix": "0630"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在多种语态表达中保持修缮对象与用途角色一致",
+        "weak_point_tags": [
+          "grammar_weak",
+          "translation_output_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate sample; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "把语态规则迁移到真实翻译筛错，区分形式变化与语义角色错误。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use as the transfer and semantic-role elimination representative."
+    },
+    {
+      "card_id": "063004",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "3",
+        "group_name": "主/被动语态",
+        "box_id": "0",
+        "box_name": "翻译",
+        "box_prefix": "0630"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用非人称被动报告普遍观点并匹配学术说明语域",
+        "weak_point_tags": [
+          "grammar_weak",
+          "translation_output_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练 CET 翻译中普遍观点的客观表达，并区分语法可行与语域最优。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use for academic-register application of impersonal passive reporting."
+    },
+    {
+      "card_id": "063005",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "3",
+        "group_name": "主/被动语态",
+        "box_id": "0",
+        "box_name": "翻译",
+        "box_prefix": "0630"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "排除语态选择中的绝对化规则并保持事件角色稳定",
+        "weak_point_tags": [
+          "grammar_weak",
+          "translation_output_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助考生在 CET 翻译中避免机械套用被动，并防止主动改写造成角色错位。",
+        "box_progression_role": "mixed",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use to correct absolute voice-selection rules and protect event-role meaning."
+    },
+    {
+      "card_id": "063006",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "3",
+        "group_name": "主/被动语态",
+        "box_id": "0",
+        "box_name": "翻译",
+        "box_prefix": "0630"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在复句翻译中保持话题连续、事件角色与时间顺序一致",
+        "weak_point_tags": [
+          "grammar_weak",
+          "translation_output_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练 CET 翻译复句中的语态混合、代词衔接与先后关系核验。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material is an explicitly disclosed AI-authored simulation, so it provides exam-skill practice rather than true-exam provenance.",
+        "Runtime catalog path was realigned to the active product box catalog; content and interaction semantics are unchanged."
+      ],
+      "recommendation": "Use as the transfer item for mixed voice, continuity, and timeline checking."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "No learning progression changed; the selected cards now use the exact catalog-owned Space path names for 0311 and 0630.",
+    "repetition_or_gap_risks": [
+      "This closure changes catalog metadata only and does not convert candidate content into formal approval.",
+      "Four non-pilot legacy cards in 0311 retain their historical per-card group metadata and remain outside the exact 120-card candidate selection."
+    ],
+    "representative_cards": [
+      "031101",
+      "063001"
+    ],
+    "next_step": "Re-run the exact 120-card controlled-pilot payload conversion, catalog audit, and runtime smoke."
+  }
+}
