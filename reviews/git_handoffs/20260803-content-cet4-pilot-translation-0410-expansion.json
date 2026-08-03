@@ -1,0 +1,35 @@
+{
+  "handoff_id": "20260803-content-cet4-pilot-translation-0410-expansion",
+  "created_at": "2026-08-03T10:24:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-translation-0410-expansion",
+  "base_branch": "main",
+  "commit_sha": "69391f5217b0a3382d1a2b3afeaf0bc9529d9ecb",
+  "push_ref": "origin/content/cet4-pilot-translation-0410-expansion",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/140",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_translation_0410.json",
+      "reviews/agent_self_review/20260803-cet4-pilot-translation-0410-expansion.json",
+      "reviews/audit_scopes/20260803-cet4-pilot-translation-0410-expansion-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "9320780906d4409931b6efc1b1b44f6d0e48ad88",
+    "patch_sha256": "eb21ea34064a89f87cfd3a9d74845fcd5b4fb58c7d037d8c7359fbd2aa6218d1"
+  },
+  "validation": [
+    {"command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json", "result": "passed; errors 0, warnings 0"},
+    {"command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD", "result": "passed; exact confirmed expansion scope 041004 through 041008; hard blockers 0, content risks 0, review gaps 0"},
+    {"command": "node scripts/validate_harness.mjs", "result": "passed; only recorded upstream warnings"},
+    {"command": "git diff --check origin/main...HEAD", "result": "passed"}
+  ],
+  "local_status": "PR #140 expands the confirmed translation 0410 sample to its exact eight-card target, removes unsupported historical distribution claims, and keeps candidate evidence non-formal.",
+  "remaining_risks": [
+    "The complete 120-card batch still requires remaining expansions and explicit final approval.",
+    "All five expansion cards are disclosed AI-authored simulations."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}

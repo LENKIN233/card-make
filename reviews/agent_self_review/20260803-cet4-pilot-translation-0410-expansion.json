@@ -1,0 +1,180 @@
+{
+  "review_id": "20260803-cet4-pilot-translation-0410-expansion",
+  "created_at": "2026-08-03T10:18:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "翻译",
+    "group": "主题化例句",
+    "box": "历史文化",
+    "box_prefixes": ["0410"],
+    "card_ids": ["041004", "041005", "041006", "041007", "041008"]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "is_three_card_sample_per_box": false,
+    "confirmed_box_expansion": true,
+    "sample_confirmation_satisfied": true,
+    "sample_confirmation_record": "reviews/sample_confirmations/20260802-cet4-controlled-pilot-14-boxes.json",
+    "sample_confirmation_id": "20260802-cet4-controlled-pilot-14-boxes",
+    "final_user_approval_required": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260803-cet4-pilot-translation-0410-expansion-scope-audit.json",
+    "corpus_fingerprint": "6015d3952a04ce720ee7f766b4577052fc7e6bf15d435edfdac48b36e485b781",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": ["041004", "041005", "041006", "041007", "041008"],
+      "card_count": 5,
+      "issue_count": 5,
+      "by_severity": {"hard_blocker": 0, "content_risk": 0, "review_gap": 0, "source_risk": 5},
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 5,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "041004",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "4", "library_name": "翻译", "group_id": "1", "group_name": "主题化例句", "box_id": "0", "box_name": "历史文化", "box_prefix": "0410"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "将历史文化抽象评价落实到具体实践动作",
+        "weak_point_tags": ["translation_output_weak", "vocabulary_weak"],
+        "difficulty": {"primary": "foundation", "secondary": ["pass"]},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生用 in doing 解释抽象文化评价，避免只翻主题词而丢失实践信息。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use as the abstract-value grounding entry."
+    },
+    {
+      "card_id": "041005",
+      "interaction_id": "swipe",
+      "knowledge_ref": {"track": "cet4", "library_id": "4", "library_name": "翻译", "group_id": "1", "group_name": "主题化例句", "box_id": "0", "box_name": "历史文化", "box_prefix": "0410"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "校正 since 起点与现在完成时主句的配合",
+        "weak_point_tags": ["translation_output_weak", "grammar_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["foundation"]},
+        "card_prototype": "error_correction",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练历史文化设施描述中的起点与延续时态，避免只翻出过去事实。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for since-plus-perfect correction."
+    },
+    {
+      "card_id": "041006",
+      "interaction_id": "lock",
+      "knowledge_ref": {"track": "cet4", "library_id": "4", "library_name": "翻译", "group_id": "1", "group_name": "主题化例句", "box_id": "0", "box_name": "历史文化", "box_prefix": "0410"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "按文化符号与所指含义选择 symbolize 的语态和形式",
+        "weak_point_tags": ["translation_output_weak", "vocabulary_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["foundation"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练文化象征句中的事件角色、主动语态和主谓一致。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for symbol-role and agreement locking."
+    },
+    {
+      "card_id": "041007",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "4", "library_name": "翻译", "group_id": "1", "group_name": "主题化例句", "box_id": "0", "box_name": "历史文化", "box_prefix": "0410"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "并列翻译文化传承路径与现代融合结果",
+        "weak_point_tags": ["translation_output_weak", "grammar_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["high_score"]},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生完整保留历史文化句中的对象、路径、延续和当代应用四层信息。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for preservation-path and modern-use transfer."
+    },
+    {
+      "card_id": "041008",
+      "interaction_id": "lock",
+      "knowledge_ref": {"track": "cet4", "library_id": "4", "library_name": "翻译", "group_id": "1", "group_name": "主题化例句", "box_id": "0", "box_name": "历史文化", "box_prefix": "0410"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 from A to B 保留技艺传承的方向",
+        "weak_point_tags": ["translation_output_weak", "grammar_weak"],
+        "difficulty": {"primary": "high_score", "secondary": ["pass"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生把中文传承关系中的起点、终点、被动和延续信息同时保留下来。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use as the source-to-recipient transfer lock."
+    }
+  ],
+  "batch_review": {
+    "status": "reviewed_confirmed_box_expansion",
+    "box_progression": "The expansion moves from grounding an abstract cultural value, through tense correction and symbol-role locking, to a four-layer preservation sentence and a directionally complete inheritance structure.",
+    "repetition_or_gap_risks": [
+      "All five cards are disclosed AI-authored simulations and must not be represented as true-exam excerpts.",
+      "The box intentionally combines cultural vocabulary with tense and passive constraints; formal usability still requires complete-batch approval."
+    ],
+    "representative_cards": ["041004", "041005", "041008"],
+    "next_step": "Keep this exact eight-card box non-formal while expanding the remaining confirmed boxes under the same quality contract."
+  }
+}
