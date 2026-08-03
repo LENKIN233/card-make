@@ -1,0 +1,138 @@
+{
+  "review_id": "20260803-cet4-pilot-vocabulary-0521-expansion",
+  "created_at": "2026-08-03T10:05:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "词汇",
+    "group": "高频词",
+    "box": "阅读高频词",
+    "box_prefixes": ["0521"],
+    "card_ids": ["052103", "052104", "052105"]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "is_three_card_sample_per_box": false,
+    "confirmed_box_expansion": true,
+    "sample_confirmation_satisfied": true,
+    "sample_confirmation_record": "reviews/sample_confirmations/20260802-cet4-controlled-pilot-14-boxes.json",
+    "sample_confirmation_id": "20260802-cet4-controlled-pilot-14-boxes",
+    "final_user_approval_required": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260803-cet4-pilot-vocabulary-0521-expansion-scope-audit.json",
+    "corpus_fingerprint": "04370830e525dd540ecfc1c846964aaf8c366fe9e111ba46202506d643deb930",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": ["052103", "052104", "052105"],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {"hard_blocker": 0, "content_risk": 0, "review_gap": 0, "source_risk": 3},
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "052103",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "5", "library_name": "词汇", "group_id": "2", "group_name": "高频词", "box_id": "1", "box_name": "阅读高频词", "box_prefix": "0521"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 evidence 如何把观察连接到有限度的解释",
+        "weak_point_tags": ["vocabulary_weak", "reading_slow"],
+        "difficulty": {"primary": "foundation", "secondary": ["pass"]},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练阅读中定位证据源、受支持命题与强度边界，避免把支持误判成唯一因果。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use as the evidence-function recognition item."
+    },
+    {
+      "card_id": "052104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "5", "library_name": "词汇", "group_id": "2", "group_name": "高频词", "box_id": "1", "box_name": "阅读高频词", "box_prefix": "0521"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用可见线索推出有限度的 imply 结论",
+        "weak_point_tags": ["vocabulary_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["foundation"]},
+        "card_prototype": "error_correction",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练 CET 阅读推断题从多条线索形成结论，并排除无依据与绝对化选项。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for bounded inference application."
+    },
+    {
+      "card_id": "052105",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "5", "library_name": "词汇", "group_id": "2", "group_name": "高频词", "box_id": "1", "box_name": "阅读高频词", "box_prefix": "0521"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "定位 factor 在多因素因果链中的变量角色",
+        "weak_point_tags": ["vocabulary_weak", "reading_slow"],
+        "difficulty": {"primary": "high_score", "secondary": ["pass"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练阅读因果题识别条件变量、结果与唯一原因之间的边界。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use as the multi-factor causal-role transfer item."
+    }
+  ],
+  "batch_review": {
+    "status": "reviewed_confirmed_box_expansion",
+    "box_progression": "The expansion moves from locating evidence and its supported proposition, through deriving a bounded implication from two clues, to placing factor within a multi-variable causal chain.",
+    "repetition_or_gap_risks": [
+      "All three cards are disclosed AI-authored simulations and must not be represented as true-exam excerpts.",
+      "All three use multiple choice to compare proposition roles and inference boundaries; formal usability still requires complete-batch approval."
+    ],
+    "representative_cards": ["052103", "052104", "052105"],
+    "next_step": "Keep this exact six-card box non-formal while expanding the remaining confirmed listening and reading boxes under the same quality contract."
+  }
+}
