@@ -1,0 +1,59 @@
+{
+  "handoff_id": "20260803-content-cet4-pilot-listening-0010-expansion",
+  "created_at": "2026-08-03T10:45:26+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-listening-0010-expansion",
+  "base_branch": "main",
+  "commit_sha": "288508bcd6fd1858501573db849cb59889ec948f",
+  "push_ref": "origin/content/cet4-pilot-listening-0010-expansion",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/145",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0010.json",
+      "reviews/agent_self_review/20260803-cet4-pilot-listening-0010-expansion.json",
+      "reviews/audit_scopes/20260803-cet4-pilot-listening-0010-expansion-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "7a5943341419d50245a64dbbcb8af7ead3d3df68",
+    "patch_sha256": "b7aea4becf2c65f6b3cc3b136f801dfd38c616bb880d918ef8dffc9f695a38c0"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; errors 0, warnings 0"
+    },
+    {
+      "command": "node scripts/audit_content.mjs --scope reviews/audit_scopes/20260803-cet4-pilot-listening-0010-expansion-scope.json --report-path reviews/audit_scopes/20260803-cet4-pilot-listening-0010-expansion-scope-audit.json",
+      "result": "passed; 9 cards, hard blockers 0, content risks 0, review gaps 0; 9 disclosed synthetic-source notices"
+    },
+    {
+      "command": "node scripts/audit_audio_assets.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json",
+      "result": "passed; 301/301 referenced assets verified technically; perceptual QC remains pending"
+    },
+    {
+      "command": "node scripts/manage_audio_perceptual_worklist.mjs validate --input exports/cet4-audio-perceptual-worklist.json",
+      "result": "passed; 301 pending, 0 passed, 0 failed"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; exact confirmed nine-card expansion"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream warnings"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #145 completes the exact twelve-card target for listening box 0010, aligns visible prompts with implemented interactions, and records complete technical audio verification without representing pending human listening as passed.",
+  "remaining_risks": [
+    "All 301 referenced CET4 audio assets still require contract-compliant human perceptual review.",
+    "The assembled 120-card controlled-pilot candidate still requires aggregate export, consumer dry-run/import, audit, runtime smoke, and formal content approval before it can be activated."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
