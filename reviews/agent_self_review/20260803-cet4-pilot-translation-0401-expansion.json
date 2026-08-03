@@ -1,0 +1,180 @@
+{
+  "review_id": "20260803-cet4-pilot-translation-0401-expansion",
+  "created_at": "2026-08-03T09:58:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "翻译",
+    "group": "高级句子",
+    "box": "定语从句",
+    "box_prefixes": ["0401"],
+    "card_ids": ["040104", "040105", "040106", "040107", "040108"]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "is_three_card_sample_per_box": false,
+    "confirmed_box_expansion": true,
+    "sample_confirmation_satisfied": true,
+    "sample_confirmation_record": "reviews/sample_confirmations/20260802-cet4-controlled-pilot-14-boxes.json",
+    "sample_confirmation_id": "20260802-cet4-controlled-pilot-14-boxes",
+    "final_user_approval_required": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260803-cet4-pilot-translation-0401-expansion-scope-audit.json",
+    "corpus_fingerprint": "175b39c368cf827db2f0dadeae1d789e1e69b6e2b3578bbc6270a9e10c2d23d3",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": ["040104", "040105", "040106", "040107", "040108"],
+      "card_count": 5,
+      "issue_count": 5,
+      "by_severity": {"hard_blocker": 0, "content_risk": 0, "review_gap": 0, "source_risk": 5},
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 5,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "040104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "4", "library_name": "翻译", "group_id": "0", "group_name": "高级句子", "box_id": "1", "box_name": "定语从句", "box_prefix": "0401"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "把中文补充分句挂载到明确的物类先行词",
+        "weak_point_tags": ["translation_output_weak", "grammar_weak"],
+        "difficulty": {"primary": "foundation", "secondary": ["pass"]},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生先保留汉译英主干，再用非限制性定语从句压缩补充信息。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use as the supplementary-clause recognition entry."
+    },
+    {
+      "card_id": "040105",
+      "interaction_id": "swipe",
+      "knowledge_ref": {"track": "cet4", "library_id": "4", "library_name": "翻译", "group_id": "0", "group_name": "高级句子", "box_id": "1", "box_name": "定语从句", "box_prefix": "0401"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "诊断定语从句被近邻名词错误吸附的问题",
+        "weak_point_tags": ["translation_output_weak", "grammar_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["foundation"]},
+        "card_prototype": "error_correction",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生同时核验定语从句的位置和语义归属，避免翻译逻辑错位。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for antecedent-attachment correction."
+    },
+    {
+      "card_id": "040106",
+      "interaction_id": "lock",
+      "knowledge_ref": {"track": "cet4", "library_id": "4", "library_name": "翻译", "group_id": "0", "group_name": "高级句子", "box_id": "1", "box_name": "定语从句", "box_prefix": "0401"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 some of which 表达集合中的部分",
+        "weak_point_tags": ["translation_output_weak", "grammar_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["high_score"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生把中文“其中一些”稳定转换为介词加关系代词结构。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for partitive-relative locking."
+    },
+    {
+      "card_id": "040107",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "4", "library_name": "翻译", "group_id": "0", "group_name": "高级句子", "box_id": "1", "box_name": "定语从句", "box_prefix": "0401"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在限定性从句中保持并列谓语与代词回指一致",
+        "weak_point_tags": ["translation_output_weak", "grammar_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["high_score"]},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生在较长汉译英句中同时控制关系词、并列动作和代词指向。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for predicate-and-pronoun transfer."
+    },
+    {
+      "card_id": "040108",
+      "interaction_id": "lock",
+      "knowledge_ref": {"track": "cet4", "library_id": "4", "library_name": "翻译", "group_id": "0", "group_name": "高级句子", "box_id": "1", "box_name": "定语从句", "box_prefix": "0401"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在同一句中区分部分关系与地点关系",
+        "weak_point_tags": ["translation_output_weak", "grammar_weak"],
+        "difficulty": {"primary": "high_score", "secondary": ["pass"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生逐从句判断关系词成分，避免按先行词类型机械重复 which。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use as the partitive-and-place transfer lock."
+    }
+  ],
+  "batch_review": {
+    "status": "reviewed_confirmed_box_expansion",
+    "box_progression": "The expansion moves from supplementary-clause recognition and antecedent-attachment correction, through partitive-relative locking, to predicate/pronoun control and a two-relation transfer item.",
+    "repetition_or_gap_risks": [
+      "All five cards are disclosed AI-authored simulations and must not be represented as true-exam excerpts.",
+      "The current product catalog owns 0401 as 高级句子/定语从句 despite the recorded upstream translation-group naming drift; this expansion follows the active box catalog and does not redefine it."
+    ],
+    "representative_cards": ["040104", "040105", "040108"],
+    "next_step": "Keep this exact eight-card box non-formal while expanding the remaining confirmed boxes under the same quality contract."
+  }
+}

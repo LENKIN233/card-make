@@ -1,0 +1,36 @@
+{
+  "handoff_id": "20260803-content-cet4-pilot-translation-0401-expansion",
+  "created_at": "2026-08-03T10:05:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-translation-0401-expansion",
+  "base_branch": "main",
+  "commit_sha": "3723f000ac6dd2587ea27e1cff4a61e3631be0ce",
+  "push_ref": "origin/content/cet4-pilot-translation-0401-expansion",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/139",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_translation_0401.json",
+      "reviews/agent_self_review/20260803-cet4-pilot-translation-0401-expansion.json",
+      "reviews/audit_scopes/20260803-cet4-pilot-translation-0401-expansion-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "5382c289649e67f9c9bbb51d78982c429523dae5",
+    "patch_sha256": "84423c01db121923b78c8cedd0b88cd1187cb16100ffd9abe70228f92f3a80cf"
+  },
+  "validation": [
+    {"command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json", "result": "passed; errors 0, warnings 0"},
+    {"command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD", "result": "passed; exact confirmed expansion scope 040104 through 040108; hard blockers 0, content risks 0, review gaps 0"},
+    {"command": "node scripts/validate_harness.mjs", "result": "passed; only recorded upstream warnings"},
+    {"command": "git diff --check origin/main...HEAD", "result": "passed"}
+  ],
+  "local_status": "PR #139 expands the confirmed translation 0401 sample to its exact eight-card target, removes an answer-path leak and ambiguous or unsupported relative-clause content, and keeps candidate evidence non-formal.",
+  "remaining_risks": [
+    "The complete 120-card batch still requires remaining expansions and explicit final approval.",
+    "All five expansion cards are disclosed AI-authored simulations.",
+    "The upstream translation group naming drift remains recorded and is not redefined by this content PR."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
