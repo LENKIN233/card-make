@@ -1,0 +1,56 @@
+{
+  "handoff_id": "20260803-content-cet4-pilot-catalog-path-closure",
+  "created_at": "2026-08-03T11:43:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-catalog-path-closure",
+  "base_branch": "main",
+  "commit_sha": "7ffb7794b4933a8b38e5fb117d2169158d4dc5f8",
+  "push_ref": "origin/content/cet4-pilot-catalog-path-closure",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/147",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_grammar_0630.json",
+      "card_boxes_json/card_boxes_seed_cet4_writing_0311.json",
+      "reviews/agent_self_review/20260803-cet4-pilot-catalog-path-closure.json",
+      "reviews/audit_scopes/20260803-cet4-pilot-catalog-path-closure-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "1abaf600425a9c972363b4e718f20c338f6a8eb9",
+    "patch_sha256": "c939babddc8d5d1f8a3291f1388d578c6a67c8dd9cf449c9a717303bf1f285bd"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path /private/tmp/card-validation-catalog-path.json",
+      "result": "passed; errors 0, warnings 0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids <14 exact pilot ids> --write-scope-report reviews/audit_scopes/20260803-cet4-pilot-catalog-path-closure-audit.json",
+      "result": "passed; hard blockers 0, content risks 0, review gaps 0; 14 disclosed synthetic-source notices"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; exact multi-prefix residual blocker closure"
+    },
+    {
+      "command": "softbook consumer controlled-pilot-candidate build",
+      "result": "passed; exact 120 cards, stable 60-card free prefix, 24 hash-bound audio assets, active catalog mapping valid"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream warnings"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #147 closes the exact consumer-reported catalog mismatches for the selected 0311 and 0630 pilot cards without weakening runtime validation or changing learning content.",
+  "remaining_risks": [
+    "The generated 120-card artifact remains a candidate until formal content approval is recorded.",
+    "All 24 referenced pilot audio assets still require contract-compliant human perceptual QC."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
