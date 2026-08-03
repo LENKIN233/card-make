@@ -1,0 +1,47 @@
+{
+  "handoff_id": "20260803-content-cet4-pilot-grammar-0611-expansion",
+  "created_at": "2026-08-03T08:20:32+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-grammar-0611-expansion",
+  "base_branch": "main",
+  "commit_sha": "4c0ef24ab66e661fa5610d229a18ce0149ffab2c",
+  "push_ref": "origin/content/cet4-pilot-grammar-0611-expansion",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/133",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_grammar_0611.json",
+      "reviews/agent_self_review/20260803-cet4-pilot-grammar-0611-expansion.json",
+      "reviews/audit_scopes/20260803-cet4-pilot-grammar-0611-expansion-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "b0a0df8dea187cb62ff102a182ec9324fbb3a73b",
+    "patch_sha256": "21d78ec3ce581cff2ac4b06d3bafcfaea384778e34306820dec37161ee3fabe0"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; errors 0, warnings 0"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; exact confirmed expansion scope 061104,061105,061106; hard blockers 0, content risks 0, review gaps 0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream warnings"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #133 expands the user-confirmed grammar 0611 sample to its exact six-card target; candidate evidence remains non-formal.",
+  "remaining_risks": [
+    "The complete 120-card batch still requires all remaining box expansions and explicit final approval.",
+    "All three expansion cards are disclosed AI-authored synthetic materials and have no true-exam provenance claim."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
