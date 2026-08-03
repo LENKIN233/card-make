@@ -19,7 +19,14 @@ test('a passing technical audit builds a pending human-only queue', t => {
   const fixture = createFixture(t);
   const result = buildFixtureWorklist(fixture);
 
-  assert.equal(result.worklist.schema_version, 'audio-perceptual-worklist.v1');
+  assert.equal(result.worklist.schema_version, 'audio-perceptual-worklist.v2');
+  assert.deepEqual(result.worklist.scope, {
+    mode: 'full_track',
+    card_ids: ['000001'],
+    expected_entry_count: 1,
+    full_track_audio_card_count: 1,
+    card_ids_fingerprint: digest('["000001"]'),
+  });
   assert.deepEqual(result.worklist.progress, {
     total: 1,
     pending: 1,
@@ -177,6 +184,79 @@ test('reviewed entries survive stable refresh and changed identity requires ackn
   assert.equal(reset.worklist.entries[0].review.status, 'pending');
 });
 
+test('scoped queue binds an exact subset while revalidating the full technical audit', t => {
+  const fixture = createFixture(t);
+  addSecondAudioCard(fixture);
+  const result = buildFixtureWorklist(fixture, {scopeCardIds: ['000002']});
+
+  assert.equal(result.worklist.schema_version, 'audio-perceptual-worklist.v2');
+  assert.match(result.worklist.worklist_id, /^cet4-scoped-audio-perceptual-qc-/);
+  assert.deepEqual(result.worklist.scope, {
+    mode: 'card_ids',
+    card_ids: ['000002'],
+    expected_entry_count: 1,
+    full_track_audio_card_count: 2,
+    card_ids_fingerprint: digest('["000002"]'),
+  });
+  assert.deepEqual(result.worklist.entries.map(entry => entry.card_id), ['000002']);
+  assert.deepEqual(
+    validateAudioPerceptualWorklist(result.worklist, {
+      root: fixture.root,
+      technicalAudit: fixture.audit,
+    }),
+    [],
+  );
+
+  assert.throws(
+    () => buildFixtureWorklist(fixture, {scopeCardIds: ['999999']}),
+    /unknown audio cards/,
+  );
+  assert.throws(
+    () => buildFixtureWorklist(fixture, {scopeCardIds: ['000002', '000002']}),
+    /must be unique/,
+  );
+  const changedScope = structuredClone(result.worklist);
+  changedScope.scope.card_ids = ['000001'];
+  assert.match(
+    validateAudioPerceptualWorklist(changedScope, {
+      root: fixture.root,
+      technicalAudit: fixture.audit,
+    }).join('\n'),
+    /scope does not match|entry order/,
+  );
+  assert.throws(
+    () =>
+      buildFixtureWorklist(fixture, {
+        existing: result.worklist,
+        scopeCardIds: ['000001'],
+      }),
+    /scope does not match requested scope/,
+  );
+});
+
+test('legacy v1 full-track worklists remain valid and cannot declare a subset', t => {
+  const fixture = createFixture(t);
+  const current = buildFixtureWorklist(fixture).worklist;
+  const legacy = structuredClone(current);
+  legacy.schema_version = 'audio-perceptual-worklist.v1';
+  delete legacy.scope;
+  assert.deepEqual(
+    validateAudioPerceptualWorklist(legacy, {
+      root: fixture.root,
+      technicalAudit: fixture.audit,
+    }),
+    [],
+  );
+  legacy.scope = current.scope;
+  assert.match(
+    validateAudioPerceptualWorklist(legacy, {
+      root: fixture.root,
+      technicalAudit: fixture.audit,
+    }).join('\n'),
+    /worklist keys are not exact/,
+  );
+});
+
 test('worklist validation detects transcript and audio byte tampering', t => {
   const fixture = createFixture(t);
   const worklist = buildFixtureWorklist(fixture).worklist;
@@ -234,6 +314,7 @@ test('CLI arguments preserve repeated one-card check updates', () => {
       outputPath: null,
       requireComplete: false,
       reviewer: 'github:human-reviewer',
+      scopeCardIds: null,
       technicalAuditPath: null,
       track: 'cet4',
       worklistPath: 'exports/worklist.json',
@@ -256,6 +337,29 @@ test('CLI arguments preserve repeated one-card check updates', () => {
         'audio_matches_text=fail',
       ]),
     /duplicate --check/,
+  );
+  assert.deepEqual(
+    parseArguments([
+      'build',
+      '--technical-audit',
+      'exports/audit.json',
+      '--output',
+      'exports/worklist.json',
+      '--scope-card-ids',
+      '000002,000001',
+    ]).scopeCardIds,
+    ['000002', '000001'],
+  );
+  assert.throws(
+    () =>
+      parseArguments([
+        'validate',
+        '--file',
+        'exports/worklist.json',
+        '--scope-card-ids',
+        '000001',
+      ]),
+    /valid only for build/,
   );
 });
 
@@ -337,6 +441,41 @@ function writeCardAndAudit(fixture) {
     ],
     ok: true,
   };
+  fs.writeFileSync(fixture.auditPath, `${JSON.stringify(fixture.audit, null, 2)}\n`);
+}
+
+function addSecondAudioCard(fixture) {
+  const transcript = 'However, the second speaker changes the direction.';
+  const assetBytes = Buffer.from('second-fake-mp3-audio-bytes');
+  const assetPath = path.join(fixture.root, 'ai_tts/cet4/0000/000002.mp3');
+  fs.writeFileSync(assetPath, assetBytes);
+  const cardFile = path.join(fixture.root, 'card_boxes_json/cet4.json');
+  const document = JSON.parse(fs.readFileSync(cardFile, 'utf8'));
+  const card = structuredClone(document.cards[0]);
+  card.card_id = '000002';
+  card.audio = {
+    path: 'ai_tts/cet4/0000/000002.mp3',
+    duration_ms: 1200,
+    transcript,
+  };
+  document.cards.push(card);
+  fs.writeFileSync(cardFile, `${JSON.stringify(document, null, 2)}\n`);
+  fixture.audit.assets.push({
+    asset_path: 'ai_tts/cet4/0000/000002.mp3',
+    card_id: '000002',
+    declared_duration_ms: 1200,
+    duration_delta_ms: 0,
+    file_sha256: digest(assetBytes),
+    size_bytes: assetBytes.length,
+    technical: {
+      bitrate_bps: 48000,
+      channels: 1,
+      duration_ms: 1200,
+      format: 'mp3',
+      sample_rate_hz: 24000,
+    },
+    transcript_sha256: digest(transcript),
+  });
   fs.writeFileSync(fixture.auditPath, `${JSON.stringify(fixture.audit, null, 2)}\n`);
 }
 

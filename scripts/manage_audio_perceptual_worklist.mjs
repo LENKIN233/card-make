@@ -6,7 +6,8 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const WORKLIST_SCHEMA = 'audio-perceptual-worklist.v1';
+export const LEGACY_WORKLIST_SCHEMA = 'audio-perceptual-worklist.v1';
+export const WORKLIST_SCHEMA = 'audio-perceptual-worklist.v2';
 const TECHNICAL_AUDIT_SCHEMA = 'audio-technical-audit.v1';
 const SHA256_RE = /^[0-9a-f]{64}$/;
 const REVIEW_STATUSES = new Set(['pending', 'in_progress', 'passed', 'failed']);
@@ -35,12 +36,16 @@ export function buildAudioPerceptualWorklist({
   clock = () => new Date(),
   existing = null,
   root = ROOT,
+  scopeCardIds = null,
   technicalAudit,
   technicalAuditPath,
   track = 'cet4',
 } = {}) {
   requireTrack(track);
-  const contexts = collectAudioCardContexts(root, track);
+  const allContexts = collectAudioCardContexts(root, track);
+  const scope = createWorklistScope(scopeCardIds, allContexts);
+  const contextByCard = new Map(allContexts.map(context => [context.card_id, context]));
+  const contexts = scope.card_ids.map(cardId => contextByCard.get(cardId));
   const auditFile = technicalAuditPath
     ? requireRegularFile(technicalAuditPath, root)
     : null;
@@ -51,7 +56,7 @@ export function buildAudioPerceptualWorklist({
   const auditBytes = auditFile
     ? fs.readFileSync(auditFile)
     : Buffer.from(`${JSON.stringify(audit, null, 2)}\n`, 'utf8');
-  const auditErrors = validateTechnicalAudit(audit, contexts, root, track);
+  const auditErrors = validateTechnicalAudit(audit, allContexts, root, track);
   if (auditErrors.length > 0) {
     throw new Error(`Technical audio audit is invalid: ${auditErrors.join('; ')}`);
   }
@@ -62,6 +67,15 @@ export function buildAudioPerceptualWorklist({
       ? existing.entries.map(entry => [String(entry.card_id), entry])
       : [],
   );
+  if (existing) {
+    const existingScope = resolveWorklistScope(existing, allContexts);
+    if (
+      canonicalStringify(existingScope.card_ids) !==
+      canonicalStringify(scope.card_ids)
+    ) {
+      throw new Error('Existing worklist scope does not match requested scope.');
+    }
+  }
   let preservedReviews = 0;
   let resetReviews = 0;
   const entries = contexts.map((context, index) => {
@@ -113,7 +127,7 @@ export function buildAudioPerceptualWorklist({
   const now = asIso(clock());
   const worklist = {
     schema_version: WORKLIST_SCHEMA,
-    worklist_id: `${track}-current-audio-perceptual-qc`,
+    worklist_id: worklistIdFor(track, scope),
     generated_at: now,
     track,
     authority_boundary:
@@ -128,6 +142,7 @@ export function buildAudioPerceptualWorklist({
       terminal_review_immutable: true,
       passing_worklist_is_not_formal_audio_qc: true,
     },
+    scope,
     source_technical_audit: {
       path: auditPath,
       schema_version: audit.schema_version,
@@ -224,6 +239,8 @@ export function validateAudioPerceptualWorklist(
   {requireComplete = false, root = ROOT, technicalAudit = null} = {},
 ) {
   const errors = [];
+  const isLegacy = worklist?.schema_version === LEGACY_WORKLIST_SCHEMA;
+  const isCurrent = worklist?.schema_version === WORKLIST_SCHEMA;
   exactKeys(
     worklist,
     [
@@ -233,6 +250,7 @@ export function validateAudioPerceptualWorklist(
       'track',
       'authority_boundary',
       'review_policy',
+      ...(isCurrent ? ['scope'] : []),
       'source_technical_audit',
       'corpus_fingerprint',
       'context_quality',
@@ -242,15 +260,22 @@ export function validateAudioPerceptualWorklist(
     'worklist',
     errors,
   );
-  if (worklist?.schema_version !== WORKLIST_SCHEMA) errors.push('schema_version is invalid');
+  if (!isLegacy && !isCurrent) errors.push('schema_version is invalid');
   try {
     requireTrack(worklist?.track);
   } catch (error) {
     errors.push(error.message);
   }
   if (!isIso(worklist?.generated_at)) errors.push('generated_at is invalid');
-  if (worklist?.worklist_id !== `${worklist?.track}-current-audio-perceptual-qc`) {
-    errors.push('worklist_id is invalid');
+  let resolvedScope = null;
+  try {
+    const contexts = collectAudioCardContexts(root, worklist?.track);
+    resolvedScope = resolveWorklistScope(worklist, contexts);
+    if (worklist?.worklist_id !== worklistIdFor(worklist?.track, resolvedScope)) {
+      errors.push('worklist_id is invalid');
+    }
+  } catch (error) {
+    errors.push(`scope is invalid: ${error.message}`);
   }
   if (
     typeof worklist?.authority_boundary !== 'string' ||
@@ -305,10 +330,24 @@ export function validateAudioPerceptualWorklist(
     const auditByCard = new Map(
       technicalAudit.assets.map(asset => [String(asset.card_id), asset]),
     );
-    if (worklist.entries.length !== contexts.length) {
-      errors.push('worklist entry count does not match current audio cards');
+    let scopedContexts = [];
+    try {
+      const scope = resolvedScope ?? resolveWorklistScope(worklist, contexts);
+      const contextByCard = new Map(contexts.map(context => [context.card_id, context]));
+      scopedContexts = scope.card_ids.map(cardId => contextByCard.get(cardId));
+    } catch {
+      scopedContexts = [];
     }
-    for (const context of contexts) {
+    if (worklist.entries.length !== scopedContexts.length) {
+      errors.push('worklist entry count does not match declared audio scope');
+    }
+    if (
+      canonicalStringify(worklist.entries.map(entry => entry.card_id)) !==
+      canonicalStringify(scopedContexts.map(context => context.card_id))
+    ) {
+      errors.push('worklist entry order does not match declared audio scope');
+    }
+    for (const context of scopedContexts) {
       const entry = worklist.entries.find(candidate => candidate.card_id === context.card_id);
       const asset = auditByCard.get(context.card_id);
       if (!entry || !asset) continue;
@@ -319,6 +358,81 @@ export function validateAudioPerceptualWorklist(
     }
   }
   return errors;
+}
+
+function createWorklistScope(scopeCardIds, contexts) {
+  const fullTrackCardIds = contexts.map(context => context.card_id);
+  let mode = 'full_track';
+  let cardIds = fullTrackCardIds;
+  if (scopeCardIds !== null) {
+    if (!Array.isArray(scopeCardIds) || scopeCardIds.length === 0) {
+      throw new Error('Scoped worklist requires at least one card ID.');
+    }
+    mode = 'card_ids';
+    const requested = scopeCardIds.map(value => String(value).trim());
+    if (requested.some(cardId => !/^[0-9]{6}$/.test(cardId))) {
+      throw new Error('Scoped worklist card IDs must be six digits.');
+    }
+    if (new Set(requested).size !== requested.length) {
+      throw new Error('Scoped worklist card IDs must be unique.');
+    }
+    const requestedSet = new Set(requested);
+    const unknown = requested.filter(cardId => !fullTrackCardIds.includes(cardId));
+    if (unknown.length > 0) {
+      throw new Error(`Scoped worklist contains unknown audio cards: ${unknown.join(',')}.`);
+    }
+    cardIds = fullTrackCardIds.filter(cardId => requestedSet.has(cardId));
+  }
+  const cardIdsFingerprint = sha256(canonicalStringify(cardIds));
+  return {
+    mode,
+    card_ids: cardIds,
+    expected_entry_count: cardIds.length,
+    full_track_audio_card_count: fullTrackCardIds.length,
+    card_ids_fingerprint: cardIdsFingerprint,
+  };
+}
+
+function resolveWorklistScope(worklist, contexts) {
+  if (worklist?.schema_version === LEGACY_WORKLIST_SCHEMA) {
+    return createWorklistScope(null, contexts);
+  }
+  if (worklist?.schema_version !== WORKLIST_SCHEMA) {
+    throw new Error('schema version cannot define an audio scope.');
+  }
+  exactScopeKeys(worklist.scope);
+  const requested = worklist.scope.mode === 'full_track' ? null : worklist.scope.card_ids;
+  if (!['full_track', 'card_ids'].includes(worklist.scope.mode)) {
+    throw new Error('scope.mode is invalid.');
+  }
+  const expected = createWorklistScope(requested, contexts);
+  if (canonicalStringify(worklist.scope) !== canonicalStringify(expected)) {
+    throw new Error('scope does not match the current audio corpus.');
+  }
+  return expected;
+}
+
+function exactScopeKeys(scope) {
+  const expected = [
+    'mode',
+    'card_ids',
+    'expected_entry_count',
+    'full_track_audio_card_count',
+    'card_ids_fingerprint',
+  ].sort();
+  if (!scope || typeof scope !== 'object' || Array.isArray(scope)) {
+    throw new Error('scope must be an object.');
+  }
+  const actual = Object.keys(scope).sort();
+  if (actual.length !== expected.length || actual.some((key, index) => key !== expected[index])) {
+    throw new Error('scope keys are not exact.');
+  }
+}
+
+function worklistIdFor(track, scope) {
+  return scope.mode === 'full_track'
+    ? `${track}-current-audio-perceptual-qc`
+    : `${track}-scoped-audio-perceptual-qc-${scope.card_ids_fingerprint.slice(0, 12)}`;
 }
 
 export function collectAudioCardContexts(root = ROOT, track = 'cet4') {
@@ -775,6 +889,7 @@ export function parseArguments(argv) {
     outputPath: null,
     requireComplete: false,
     reviewer: null,
+    scopeCardIds: null,
     technicalAuditPath: null,
     track: 'cet4',
     worklistPath: null,
@@ -785,7 +900,7 @@ export function parseArguments(argv) {
     else if (argument === '--attest-listened') options.attestListened = true;
     else if (argument === '--allow-reviewed-reset') options.allowReviewedReset = true;
     else if (argument === '--require-complete') options.requireComplete = true;
-    else if (['--track', '--technical-audit', '--output', '--existing', '--file', '--card-id', '--reviewer', '--notes', '--check'].includes(argument)) {
+    else if (['--track', '--technical-audit', '--output', '--existing', '--file', '--card-id', '--reviewer', '--notes', '--check', '--scope-card-ids'].includes(argument)) {
       const value = rest[index + 1];
       if (!value || value.startsWith('--')) throw new Error(`${argument} requires a value`);
       index += 1;
@@ -797,6 +912,9 @@ export function parseArguments(argv) {
       if (argument === '--card-id') options.cardId = value;
       if (argument === '--reviewer') options.reviewer = value;
       if (argument === '--notes') options.notes = value;
+      if (argument === '--scope-card-ids') {
+        options.scopeCardIds = value.split(',').map(cardId => cardId.trim());
+      }
       if (argument === '--check') {
         const match = value.match(/^([a-z_]+)=(pass|fail)$/);
         if (!match) throw new Error('--check must be name=pass|fail');
@@ -825,6 +943,9 @@ export function parseArguments(argv) {
   }
   if (command !== 'build' && options.allowReviewedReset) {
     throw new Error('--allow-reviewed-reset is valid only for build');
+  }
+  if (command !== 'build' && options.scopeCardIds !== null) {
+    throw new Error('--scope-card-ids is valid only for build');
   }
   if (command !== 'validate' && options.requireComplete) {
     throw new Error('--require-complete is valid only for validate');
@@ -859,6 +980,7 @@ async function runCli() {
         allowReviewedReset: options.allowReviewedReset,
         existing,
         root: ROOT,
+        scopeCardIds: options.scopeCardIds,
         technicalAudit: readJson(auditFile),
         technicalAuditPath: auditFile,
         track: options.track,
@@ -879,6 +1001,7 @@ async function runCli() {
           ok: true,
           output: relativeToRoot(output, ROOT),
           progress: result.worklist.progress,
+          scope: result.worklist.scope,
           preserved_reviews: result.preserved_reviews,
           reset_reviews: result.reset_reviews,
         }),
