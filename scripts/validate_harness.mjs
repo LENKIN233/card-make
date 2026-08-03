@@ -1010,6 +1010,28 @@ function validateAudioGenerationContract(errors) {
       owner: authorityMap.owners?.audio_perceptual_worklists,
     });
   }
+  const worklistSchema = readJson('spec/audio-perceptual-worklist.schema.json');
+  if (worklistSchema.schema_version !== 'audio-perceptual-worklist.v2') {
+    pushIssue(errors, 'audio_perceptual_worklist_schema_version_drift', {
+      schema_version: worklistSchema.schema_version,
+    });
+  }
+  for (const field of [
+    'full_track_technical_audit_remains_required_for_scoped_worklists',
+    'scoped_card_ids_must_be_non_empty_unique_current_audio_cards',
+    'scope_card_order_is_canonical_corpus_order',
+    'scope_expected_entry_count_required',
+    'full_track_audio_card_count_required',
+    'scope_card_ids_fingerprint_required',
+    'worklist_entries_must_exactly_equal_declared_scope',
+  ]) {
+    if (worklistSchema.scope_requirements?.[field] !== true) {
+      pushIssue(errors, 'audio_perceptual_worklist_scope_guard_missing', {field});
+    }
+  }
+  if (worklistSchema.scope_requirements?.legacy_v1_scope !== 'full_track_only') {
+    pushIssue(errors, 'audio_perceptual_worklist_legacy_scope_drift', {});
+  }
 
   const contract = readJson('spec/audio-generation-contract.json');
   if (contract.status !== 'active') {
@@ -1106,6 +1128,9 @@ function validateAudioGenerationContract(errors) {
   }
   for (const field of [
     'source_requires_passing_technical_audit',
+    'scoped_worklist_requires_complete_track_technical_audit',
+    'scoped_worklist_requires_exact_non_empty_card_ids_and_fingerprint',
+    'legacy_v1_is_full_track_only',
     'one_card_per_review_action',
     'human_reviewer_required',
     'full_asset_listening_attestation_required',
@@ -1126,6 +1151,10 @@ function validateAudioGenerationContract(errors) {
     const manager = readText('scripts/manage_audio_perceptual_worklist.mjs');
     for (const token of [
       'audio-perceptual-worklist.v1',
+      'audio-perceptual-worklist.v2',
+      '--scope-card-ids',
+      'full_track_audio_card_count',
+      'card_ids_fingerprint',
       'agent_may_mark_passed',
       'one_card_per_review_action',
       'Reviewed audio identity changed',

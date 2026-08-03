@@ -1,8 +1,8 @@
 {
-  "version": "audio-perceptual-worklist-v1",
+  "version": "audio-perceptual-worklist-v2",
   "status": "active",
-  "schema_version": "audio-perceptual-worklist.v1",
-  "purpose": "Turn a passing technical audio audit into a resumable, one-card-at-a-time human perceptual review queue without creating formal QC or content approval evidence.",
+  "schema_version": "audio-perceptual-worklist.v2",
+  "purpose": "Turn a passing full-track technical audio audit into a scope-bound, resumable, one-card-at-a-time human perceptual review queue without creating formal QC or content approval evidence.",
   "authority_boundary": {
     "owns": [
       "perceptual_review_queue_identity",
@@ -27,6 +27,20 @@
     "technical_assets_fingerprint_required": true,
     "current_card_transcript_and_asset_identity_must_match": true,
     "audio_asset_bytes_rehashed_during_validation": true
+  },
+  "scope_requirements": {
+    "modes": [
+      "full_track",
+      "card_ids"
+    ],
+    "full_track_technical_audit_remains_required_for_scoped_worklists": true,
+    "scoped_card_ids_must_be_non_empty_unique_current_audio_cards": true,
+    "scope_card_order_is_canonical_corpus_order": true,
+    "scope_expected_entry_count_required": true,
+    "full_track_audio_card_count_required": true,
+    "scope_card_ids_fingerprint_required": true,
+    "worklist_entries_must_exactly_equal_declared_scope": true,
+    "legacy_v1_scope": "full_track_only"
   },
   "entry_identity_fields": [
     "card_id",
@@ -80,6 +94,7 @@
   },
   "commands": {
     "build": "node scripts/manage_audio_perceptual_worklist.mjs build --track cet4 --technical-audit exports/cet4-audio-technical-audit.json --output exports/cet4-audio-perceptual-worklist.json",
+    "build_scoped": "append --scope-card-ids <comma-separated-current-audio-card-ids>; the complete technical audit is still validated",
     "next": "node scripts/manage_audio_perceptual_worklist.mjs next --file exports/cet4-audio-perceptual-worklist.json",
     "review_dry_run": "node scripts/manage_audio_perceptual_worklist.mjs review --file exports/cet4-audio-perceptual-worklist.json --card-id <card-id> --reviewer <human-id> --attest-listened --check <name=pass-or-fail>",
     "review_apply": "append --apply only after the dry-run output is correct",
