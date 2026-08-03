@@ -1,0 +1,35 @@
+{
+  "handoff_id": "20260803-content-cet4-pilot-vocabulary-0500-expansion",
+  "created_at": "2026-08-03T10:43:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-vocabulary-0500-expansion",
+  "base_branch": "main",
+  "commit_sha": "7b81cc812a03fff254865f31d47614490fb56e34",
+  "push_ref": "origin/content/cet4-pilot-vocabulary-0500-expansion",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/141",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0500.json",
+      "reviews/agent_self_review/20260803-cet4-pilot-vocabulary-0500-expansion.json",
+      "reviews/audit_scopes/20260803-cet4-pilot-vocabulary-0500-expansion-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "ea59dedb7e7106c06231f24a7b5059ccf9fa1131",
+    "patch_sha256": "569a97fef169fa6641b24e6f9b5d1100f69a87ae91f4c7d731dbe5b1da411fb3"
+  },
+  "validation": [
+    {"command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json", "result": "passed; errors 0, warnings 0"},
+    {"command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD", "result": "passed; exact confirmed expansion scope 050004 through 050006; hard blockers 0, content risks 0, review gaps 0"},
+    {"command": "node scripts/validate_harness.mjs", "result": "passed; only recorded upstream warnings"},
+    {"command": "git diff --check origin/main...HEAD", "result": "passed"}
+  ],
+  "local_status": "PR #141 expands the confirmed vocabulary 0500 sample to its exact six-card target, removes unverified exam claims and an answer-path leak, and keeps candidate evidence non-formal.",
+  "remaining_risks": [
+    "The complete 120-card batch still requires remaining expansions and explicit final approval.",
+    "All three expansion cards are disclosed AI-authored simulations."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
