@@ -14,5 +14,5 @@ scope remains owned by `reviews/approved_batches/`.
 A completely human-reviewed worklist may be converted with
 `scripts/build_audio_qc_drafts.mjs`. The command is dry-run by default, emits
 one record per box, verifies current technical and card identity, and refuses
-to overwrite an existing QC record. Its output still keeps the user content
-approval boundary explicit.
+untracked or dirty worklist bytes and existing QC records. Its output still
+keeps the user content approval boundary explicit.

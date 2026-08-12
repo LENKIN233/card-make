@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -22,6 +23,7 @@ test('builds one formal-ready legacy QC record per box after complete human revi
   const fixture = createFixture(t);
   const reviewed = completeWorklist(fixture.worklist, 'github:human-reviewer');
   writeWorklist(fixture, reviewed);
+  commitFixture(fixture);
 
   const result = buildAudioQcDrafts({
     attestations: ATTESTATIONS,
@@ -53,6 +55,7 @@ test('builds one formal-ready legacy QC record per box after complete human revi
 test('fails closed while any perceptual entry is pending', t => {
   const fixture = createFixture(t);
   writeWorklist(fixture, fixture.worklist);
+  commitFixture(fixture);
   assert.throws(
     () => buildAudioQcDrafts({
       attestations: ATTESTATIONS,
@@ -67,6 +70,7 @@ test('requires all three product-semantics attestations', t => {
   const fixture = createFixture(t);
   const reviewed = completeWorklist(fixture.worklist, 'team:audio-reviewer');
   writeWorklist(fixture, reviewed);
+  commitFixture(fixture);
   assert.throws(
     () => buildAudioQcDrafts({
       attestations: {
@@ -85,6 +89,7 @@ test('permits different reviewers across boxes but not within one box record', t
   let reviewed = reviewAll(fixture.worklist, '000001', 'github:first-human');
   reviewed = reviewAll(reviewed, '001001', 'external:second-human');
   writeWorklist(fixture, reviewed);
+  commitFixture(fixture);
   const result = buildAudioQcDrafts({
     attestations: ATTESTATIONS,
     root: fixture.root,
@@ -101,6 +106,7 @@ test('refuses different reviewers inside one box QC record', t => {
   let reviewed = reviewAll(fixture.worklist, '000001', 'github:first-human');
   reviewed = reviewAll(reviewed, '000002', 'external:second-human');
   writeWorklist(fixture, reviewed);
+  commitFixture(fixture);
   assert.throws(
     () => buildAudioQcDrafts({
       attestations: ATTESTATIONS,
@@ -108,6 +114,30 @@ test('refuses different reviewers inside one box QC record', t => {
       worklistPath: fixture.worklistPath,
     }),
     /same human reviewer/,
+  );
+});
+
+test('refuses an untracked or dirty reviewed worklist', t => {
+  const fixture = createFixture(t);
+  const reviewed = completeWorklist(fixture.worklist, 'github:human-reviewer');
+  writeWorklist(fixture, reviewed);
+  assert.throws(
+    () => buildAudioQcDrafts({
+      attestations: ATTESTATIONS,
+      root: fixture.root,
+      worklistPath: fixture.worklistPath,
+    }),
+    /direct tracked file in HEAD/,
+  );
+  commitFixture(fixture);
+  fs.appendFileSync(path.join(fixture.root, fixture.worklistPath), ' ');
+  assert.throws(
+    () => buildAudioQcDrafts({
+      attestations: ATTESTATIONS,
+      root: fixture.root,
+      worklistPath: fixture.worklistPath,
+    }),
+    /exactly match the tracked HEAD artifact/,
   );
 });
 
@@ -265,4 +295,25 @@ function writeWorklist(fixture, worklist) {
 
 function digest(value) {
   return crypto.createHash('sha256').update(value).digest('hex');
+}
+
+function commitFixture(fixture) {
+  const env = {
+    ...process.env,
+    GIT_AUTHOR_EMAIL: 'test@example.com',
+    GIT_AUTHOR_NAME: 'Audio QC Test',
+    GIT_COMMITTER_EMAIL: 'test@example.com',
+    GIT_COMMITTER_NAME: 'Audio QC Test',
+  };
+  for (const args of [
+    ['init', '-q'],
+    ['add', '.'],
+    ['commit', '-q', '-m', 'fixture'],
+  ]) {
+    execGit(fixture.root, args, env);
+  }
+}
+
+function execGit(cwd, args, env) {
+  execFileSync('git', args, {cwd, env, stdio: 'ignore'});
 }
