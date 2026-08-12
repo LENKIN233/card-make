@@ -87,11 +87,14 @@ node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contra
 The PR-scope command is an immutable-snapshot check and therefore runs after
 the payload commit; worktree-only content validation fails closed. Any
 JSON change under `reviews/agent_self_review/`, `reviews/approved_batches/`,
-`reviews/sample_confirmations/`, `reviews/drafts/`, or `reviews/audit_scopes/` triggers the content gate even
-without a four-digit box prefix. Only the five exact repository-declared
+`reviews/sample_confirmations/`, `reviews/controlled_pilot_reviews/`,
+`reviews/controlled_pilot_approvals/`, `reviews/drafts/`, or
+`reviews/audit_scopes/` triggers the content gate even without a four-digit box
+prefix. Only the seven exact repository-declared
 template paths are excluded; a filename that merely ends in `TEMPLATE.json`
-remains governed. Self-review, sample-confirmation, and approval evidence must be direct regular JSON
-children of their governed directories; nested and symlinked records fail closed. Git
+remains governed. Self-review, sample-confirmation, controlled-pilot aggregate
+review, and approval evidence must be direct regular JSON children of their
+governed directories; nested and symlinked records fail closed. Git
 paths are preserved exactly, while literal backslashes, controls, and Unicode
 line separators are rejected. The current scoped audit
 replays the complete `HEAD:card_boxes_json` tree rather than overlaying only
@@ -124,9 +127,13 @@ HEAD. They also require structured non-automation human identities, matching
 per-box human passes, a complete zero-hard-blocker audit summary, non-empty
 in-scope representative cards, and complete ready batch summary/empty-risk/
 next-step evidence. They must not attach a separate `cards` payload or authorize added cards.
-The five exact review/approval/confirmation templates are regular-file authorities with fixed, complete governed
+The seven exact review/approval/confirmation templates are regular-file authorities with fixed, complete governed
 placeholder shapes. Formal approvals require a timezone-qualified timestamp,
 non-empty summary, unique non-empty scope arrays, and non-empty in-scope representative cards.
+The controlled-pilot mode instead emits the exact eight-field product approval
+artifact only from a matching tracked aggregate 120-card review and an explicit
+user-approved transition; sample confirmation, audio QC, and publication remain
+separate boundaries.
 Git handoff discovery excludes only `reviews/git_handoffs/TEMPLATE.json`.
 The current record must be one direct, safe, non-executable `100644` JSON blob
 at the fixed PR head; symlinks, executable blobs, gitlinks, nested or anomalous

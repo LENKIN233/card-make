@@ -29,7 +29,10 @@ const files = git('diff', '--name-only', `${base}...${head}`).split('\n').filter
 const errors = [];
 const cardFiles = files.filter(file => file.startsWith('card_boxes_json/'));
 const toolingFiles = files.filter(file => file.startsWith('scripts/') || file.startsWith('spec/') || file.startsWith('.github/'));
-const approvalFiles = files.filter(file => file.startsWith('reviews/approved_batches/') && !file.endsWith('TEMPLATE.json'));
+const approvalFiles = files.filter(file => (
+  file.startsWith('reviews/approved_batches/') ||
+  file.startsWith('reviews/controlled_pilot_approvals/')
+) && !file.endsWith('TEMPLATE.json'));
 const reportFiles = files.filter(file => file === 'reports/card_quality_audit_report.json' || file === 'reports/card_validation_report.json');
 const audioFiles = files.filter(file => file.startsWith('ai_tts/'));
 
@@ -37,7 +40,7 @@ if (cardFiles.length > 0 && toolingFiles.length > 0) errors.push('content and to
 if (cardFiles.length > 0 && audioFiles.length > 0) errors.push('candidate card and audio asset changes must use separate PRs');
 if (reportFiles.length > 0) errors.push('generated global reports must not be committed');
 if (approvalFiles.length > 0 && !labels.includes('approval:authorized')) {
-  errors.push('approved_batches changes require the approval:authorized label and explicit user approval evidence');
+  errors.push('formal approval changes require the approval:authorized label and explicit user approval evidence');
 }
 
 const result = {

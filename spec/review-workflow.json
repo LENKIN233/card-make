@@ -96,7 +96,7 @@
       "every new or changed standard or residual card snapshot explicitly confirms that answer truth, option or word-bank references, and distractor labels match the exact card; every new or changed full-track aggregate confirms the same checks under coverage",
       "a changed full-track aggregate record may omit cards; its exact sample flags, structured human reviewer identity, per-box human pass, complete quality_audit summary, ready batch status, non-empty unique scope.card_ids, and coverage.reviewed_card_ids are validated before its scope can count as review evidence",
       "for a semantically valid full-track aggregate, scope.card_ids and coverage.reviewed_card_ids are identical, both equal the complete declared track, and immutable HEAD has the same non-empty card ID set at merge-base",
-      "every JSON change under agent_self_review, approved_batches, drafts, or audit_scopes enters the content gate regardless of filename prefix, except the four exact repository-declared template paths; agent_self_review and approved_batches records must be direct regular JSON children and nested records fail closed",
+      "every JSON change under agent_self_review, approved_batches, sample_confirmations, controlled_pilot_reviews, controlled_pilot_approvals, drafts, or audit_scopes enters the content gate regardless of filename prefix, except the seven exact repository-declared template paths; governed records must be direct regular JSON children and nested records fail closed",
       "Git paths are interpreted exactly without rewriting literal backslashes as separators, and review paths containing backslashes, controls, or Unicode line separators fail closed",
       "all files under card_boxes_json use the canonical governed filename and are included in changed-candidate detection",
       "the replayed scoped audit reads the complete immutable HEAD card_boxes_json snapshot, including deletions and rename sources",
@@ -306,6 +306,28 @@
       "requires_exact_track_card_and_box_scope_match": true,
       "requires_quality_audit_report_sha256": true,
       "requires_one_explicit_final_user_confirmation": true
+    },
+    "controlled_pilot_120_mode": {
+      "aggregate_review_schema": "controlled-pilot-review.v1",
+      "aggregate_review_template": "reviews/controlled_pilot_reviews/TEMPLATE.json",
+      "approval_artifact_schema": "controlled-pilot-approval.v1",
+      "approval_artifact_template": "reviews/controlled_pilot_approvals/TEMPLATE.json",
+      "manager": "scripts/manage_controlled_pilot_approval.mjs",
+      "track": "cet4",
+      "purpose": "controlled_pilot",
+      "exact_card_count": 120,
+      "exact_box_count": 14,
+      "sample_card_count": 42,
+      "expansion_card_count": 78,
+      "required_approval_scope": "controlled_pilot_120",
+      "requires_current_scoped_audit": true,
+      "requires_zero_hard_blockers_content_risks_and_review_gaps": true,
+      "allows_only_120_disclosed_synthetic_source_risks": true,
+      "requires_explicit_user_approval_command": true,
+      "sample_confirmation_is_not_formal_approval": true,
+      "audio_qc_required_separately": true,
+      "pilot_publication_required_separately": true,
+      "gate_eligible": false
     }
   },
   "git_policy": {
