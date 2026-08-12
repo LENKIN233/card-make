@@ -32,7 +32,7 @@ const toolingFiles = files.filter(file => file.startsWith('scripts/') || file.st
 const approvalFiles = files.filter(file => (
   file.startsWith('reviews/approved_batches/') ||
   file.startsWith('reviews/controlled_pilot_approvals/')
-) && !file.endsWith('TEMPLATE.json'));
+) && file.endsWith('.json') && !file.endsWith('/TEMPLATE.json'));
 const reportFiles = files.filter(file => file === 'reports/card_quality_audit_report.json' || file === 'reports/card_validation_report.json');
 const audioFiles = files.filter(file => file.startsWith('ai_tts/'));
 
