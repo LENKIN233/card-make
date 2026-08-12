@@ -1,0 +1,73 @@
+{
+  "handoff_id": "20260812-tooling-controlled-pilot-approval-v2",
+  "created_at": "2026-08-12T17:28:00+08:00",
+  "agent": "codex",
+  "branch": "tooling/controlled-pilot-approval-v2",
+  "base_branch": "main",
+  "commit_sha": "ec6496a903b48280d201985abff026c68d8a8ce4",
+  "push_ref": "origin/tooling/controlled-pilot-approval-v2",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/153",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "tooling",
+    "purpose": "Create a fail-closed bridge from the exact reviewed CET4 controlled-pilot 120-card scope to the product's eight-field approval artifact without inferring user approval.",
+    "referenced_specs": [
+      "spec/authority-map.json",
+      "spec/workspace-contract.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json",
+      "../softbook_cet/infra/cloudbase/controlled-pilot-v1-runtime-contract.md"
+    ],
+    "touched_paths": [
+      "AGENTS.md",
+      "reviews/controlled_pilot_approvals/README.md",
+      "reviews/controlled_pilot_approvals/TEMPLATE.json",
+      "reviews/controlled_pilot_reviews/README.md",
+      "reviews/controlled_pilot_reviews/TEMPLATE.json",
+      "scripts/manage_controlled_pilot_approval.mjs",
+      "scripts/test_manage_controlled_pilot_approval.mjs",
+      "scripts/test_validate_pr_scope.mjs",
+      "scripts/validate_delivery_boundary.mjs",
+      "scripts/validate_harness.mjs",
+      "scripts/validate_pr_scope.mjs",
+      "spec/authority-map.json",
+      "spec/content-quality-contract.json",
+      "spec/doc-manifest.json",
+      "spec/review-workflow.json",
+      "spec/workspace-contract.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "2f7e2d1ce316f582d4ae747813d9817d4ff55875",
+    "patch_sha256": "07bd78b87b6666816467fb0f7760d9eabdfe75f613cd8e20274d33ef7d3f5f50"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; zero errors and seven pre-existing upstream warnings"
+    },
+    {
+      "command": "node --test scripts/test_card_integrity.mjs scripts/test_validate_pr_scope.mjs scripts/test_validate_delivery_record.mjs scripts/test_manage_controlled_pilot_approval.mjs",
+      "result": "passed; 201 tests"
+    },
+    {
+      "command": "PR_LABELS=[] node scripts/validate_delivery_boundary.mjs --base origin/main --head HEAD",
+      "result": "passed; exact approval templates excluded and zero actual approval files"
+    },
+    {
+      "command": "real 120-card controlled-pilot build dry-run",
+      "result": "passed; 14 boxes, 120 cards, 42 sample, 78 expansion, approval false"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Tooling is ready for Agent review. No aggregate review or approval artifact is persisted, and the manager remains dry-run by default.",
+  "remaining_risks": [
+    "The user has not yet explicitly approved the exact 120-card content scope.",
+    "The 24 listening cards still require identified-human perceptual audio QC.",
+    "Pilot publication and protected environment approval remain separate product-side gates."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
