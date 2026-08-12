@@ -23,7 +23,8 @@ user-approved batch record.
 After every scoped entry has a terminal human pass, the dry-run command below
 can translate the bound results into one formal QC record per box. It rereads
 the technical audit and current card files, preserves unknown legacy generation
-provenance, and requires the three separate product-semantics attestations. Add
+provenance, requires the worklist bytes to exactly match a direct regular file
+in Git `HEAD`, and requires the three separate product-semantics attestations. Add
 `--apply` only after inspecting the reported output paths; existing records are
 never replaced.
 

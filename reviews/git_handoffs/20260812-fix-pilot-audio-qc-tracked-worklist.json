@@ -1,0 +1,56 @@
+{
+  "handoff_id": "20260812-fix-pilot-audio-qc-tracked-worklist",
+  "created_at": "2026-08-12T15:45:00+08:00",
+  "agent": "codex",
+  "branch": "fix/pilot-audio-qc-tracked-worklist",
+  "base_branch": "main",
+  "commit_sha": "377c1c0312a5ba0ec08151295f598ded3152b9f9",
+  "push_ref": "origin/fix/pilot-audio-qc-tracked-worklist",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/151",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "tooling",
+    "purpose": "Fail closed unless the human-reviewed perceptual worklist is a direct non-executable regular file whose bytes exactly match Git HEAD before formal audio QC drafts are built.",
+    "referenced_specs": [
+      "spec/workspace-contract.json",
+      "spec/review-workflow.json",
+      "spec/audio-generation-contract.json",
+      "spec/audio-perceptual-worklist.schema.json"
+    ],
+    "touched_paths": [
+      "reviews/audio_perceptual_worklists/README.md",
+      "reviews/audio_qc/README.md",
+      "scripts/build_audio_qc_drafts.mjs",
+      "scripts/test_build_audio_qc_drafts.mjs",
+      "scripts/validate_harness.mjs"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "e8284cb58cfe302d1ea26b8a01c88277bc17b735",
+    "patch_sha256": "4e0dc0e1e3ffe94a67969c1ed9ca0cf40cac7db43578df6a47b0c15dbc51a104"
+  },
+  "validation": [
+    {
+      "command": "node --test scripts/test_build_audio_qc_drafts.mjs scripts/test_audio_perceptual_worklist.mjs scripts/test_audio_technical_audit.mjs",
+      "result": "passed; 17 tests including untracked and dirty worklist rejection"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with no errors; recorded upstream warnings only"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Ready tooling fix; reviewed worklist authority now proves tracked HEAD mode and exact bytes before conversion.",
+  "remaining_risks": [
+    "The real 24-card controlled-pilot worklist remains pending human review.",
+    "Formal content approval remains user-owned and separate."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}

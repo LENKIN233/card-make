@@ -1153,6 +1153,8 @@ function validateAudioGenerationContract(errors) {
       'requireComplete: true',
       'reviews/audio_perceptual_worklists',
       'reviews/audio_qc',
+      'direct tracked file in HEAD',
+      'exactly match the tracked HEAD artifact',
       'refusing to replace existing audio QC record',
       'formal_content_approval_created: false',
       'legacy_unknown',

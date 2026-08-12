@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import crypto from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -28,6 +29,7 @@ export function buildAudioQcDrafts({
   const normalizedRoot = path.resolve(root);
   const linkedWorklist = requireReviewedWorklistPath(worklistPath, normalizedRoot);
   const sourceBytes = fs.readFileSync(linkedWorklist);
+  requireTrackedHeadBytes(linkedWorklist, sourceBytes, normalizedRoot);
   const sourceWorklist = JSON.parse(sourceBytes.toString('utf8'));
   const technicalAuditFile = requireRegularWorkspaceFile(
     sourceWorklist.source_technical_audit?.path,
@@ -287,6 +289,37 @@ function requireReviewedWorklistPath(file, root) {
     throw new Error(`Formal QC drafts require a tracked JSON worklist below ${REVIEWED_WORKLIST_DIR}/.`);
   }
   return absolute;
+}
+
+function requireTrackedHeadBytes(file, bytes, root) {
+  const relative = relativeToRoot(file, root);
+  let mode;
+  let headBytes;
+  try {
+    const treeEntry = execFileSync(
+      'git',
+      ['--literal-pathspecs', 'ls-tree', 'HEAD', '--', relative],
+      {cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe']},
+    ).trim();
+    const match = treeEntry.match(/^([0-9]{6}) blob [0-9a-f]{40}\t(.+)$/);
+    if (!match || match[2] !== relative) {
+      throw new Error('worklist is absent from HEAD');
+    }
+    mode = match[1];
+    headBytes = execFileSync(
+      'git',
+      ['--literal-pathspecs', 'show', `HEAD:${relative}`],
+      {cwd: root, encoding: null, stdio: ['ignore', 'pipe', 'pipe']},
+    );
+  } catch {
+    throw new Error('Formal QC drafts require the reviewed worklist to be a direct tracked file in HEAD.');
+  }
+  if (mode !== '100644') {
+    throw new Error('Reviewed worklist must be a non-executable regular 100644 file in HEAD.');
+  }
+  if (!Buffer.from(bytes).equals(Buffer.from(headBytes))) {
+    throw new Error('Reviewed worklist bytes must exactly match the tracked HEAD artifact.');
+  }
 }
 
 function requireRegularWorkspaceFile(file, root) {
