@@ -29,6 +29,8 @@ const REVIEW_TEMPLATE_PATHS = new Set([
   'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
   'reviews/agent_self_review/TEMPLATE.json',
   'reviews/sample_confirmations/TEMPLATE.json',
+  'reviews/controlled_pilot_reviews/TEMPLATE.json',
+  'reviews/controlled_pilot_approvals/TEMPLATE.json',
 ]);
 const CARD_INTEGRITY_ISSUE_CODES = Object.freeze({
   qualityMetadataMissing: 'candidate_quality_metadata_missing',
@@ -45,6 +47,10 @@ const CURRENT_AUDIT_OVERLAY_PATHS = [
   'spec/card-quality-audit.json',
 ];
 const FULL_TRACK_READY_STATUS = 'ready_for_full_track_user_approval';
+const CONTROLLED_PILOT_REVIEW_SCHEMA = 'controlled-pilot-review.v1';
+const CONTROLLED_PILOT_APPROVAL_SCHEMA = 'controlled-pilot-approval.v1';
+const SHA256_VALUE_RE = /^sha256:[a-f0-9]{64}$/;
+const TIMEZONE_ISO_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 const QUALITY_AUDIT_SEVERITIES = ['hard_blocker', 'content_risk', 'review_gap', 'source_risk'];
 const REQUIRED_QUALITY_AUDIT_RULES = [
   'multiple_choice_no_options',
@@ -226,6 +232,34 @@ function isNoncanonicalSampleConfirmationPath(filePath) {
   return isSampleConfirmationJsonPath(filePath) && !isSampleConfirmationPath(filePath);
 }
 
+function isControlledPilotReviewJsonPath(filePath) {
+  return isJsonBelow(filePath, 'reviews/controlled_pilot_reviews') &&
+    !isReviewTemplatePath(filePath);
+}
+
+function isControlledPilotReviewPath(filePath) {
+  if (!isControlledPilotReviewJsonPath(filePath)) return false;
+  return !filePath.slice('reviews/controlled_pilot_reviews/'.length).includes('/');
+}
+
+function isNoncanonicalControlledPilotReviewPath(filePath) {
+  return isControlledPilotReviewJsonPath(filePath) && !isControlledPilotReviewPath(filePath);
+}
+
+function isControlledPilotApprovalJsonPath(filePath) {
+  return isJsonBelow(filePath, 'reviews/controlled_pilot_approvals') &&
+    !isReviewTemplatePath(filePath);
+}
+
+function isControlledPilotApprovalPath(filePath) {
+  if (!isControlledPilotApprovalJsonPath(filePath)) return false;
+  return !filePath.slice('reviews/controlled_pilot_approvals/'.length).includes('/');
+}
+
+function isNoncanonicalControlledPilotApprovalPath(filePath) {
+  return isControlledPilotApprovalJsonPath(filePath) && !isControlledPilotApprovalPath(filePath);
+}
+
 function isHandoffPath(filePath) {
   return isJsonBelow(filePath, 'reviews/git_handoffs') &&
     !filePath.endsWith('/TEMPLATE.json');
@@ -242,6 +276,8 @@ function isContentReviewPath(filePath) {
     isSelfReviewJsonPath(filePath) ||
     isApprovedBatchJsonPath(filePath) ||
     isSampleConfirmationJsonPath(filePath) ||
+    isControlledPilotReviewJsonPath(filePath) ||
+    isControlledPilotApprovalJsonPath(filePath) ||
     isScopedAuditPath(filePath)
   ) {
     return true;
@@ -2204,6 +2240,201 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
   return issues;
 }
 
+function validateChangedControlledPilotRecords({base, head, entries}) {
+  const issues = [];
+  const changedPaths = new Set(entries.flatMap(entry => entry.paths));
+  const changedReviews = new Map();
+  const changedApprovals = new Map();
+
+  for (const entry of entries) {
+    const statusType = entry.status[0] === '?' ? 'A' : entry.status[0];
+    if (statusType === 'D') continue;
+    const filePath = entry.path;
+    if (!isControlledPilotReviewPath(filePath) && !isControlledPilotApprovalPath(filePath)) continue;
+    if (!isRegularFileAtCommit(head, filePath)) {
+      issues.push({
+        code: 'changed_controlled_pilot_record_not_regular_file',
+        path: filePath,
+        message: 'Controlled-pilot review and approval evidence must be direct regular JSON blobs at immutable HEAD.',
+      });
+      continue;
+    }
+    const record = readChangedJson(filePath, head);
+    if (!record || typeof record !== 'object' || Array.isArray(record)) {
+      issues.push({
+        code: 'changed_controlled_pilot_record_unreadable',
+        path: filePath,
+        message: 'Controlled-pilot review and approval evidence must be readable JSON objects.',
+      });
+      continue;
+    }
+    if (isControlledPilotReviewPath(filePath)) changedReviews.set(filePath, record);
+    else changedApprovals.set(filePath, record);
+  }
+
+  for (const [filePath, review] of changedReviews) {
+    for (const message of validateControlledPilotReview(review)) {
+      issues.push({code: 'changed_controlled_pilot_review_invalid', path: filePath, message});
+    }
+    const auditPath = review.source_records?.scoped_audit;
+    if (!isScopedQualityAuditReportPath(auditPath) || !isRegularFileAtCommit(head, auditPath)) {
+      issues.push({
+        code: 'changed_controlled_pilot_review_scoped_audit_invalid',
+        path: filePath,
+        audit: auditPath ?? null,
+        message: 'A controlled-pilot aggregate review must link one direct current scoped-audit blob at immutable HEAD.',
+      });
+    } else {
+      const report = readChangedJson(auditPath, head);
+      const replay = replayScopedAuditAtHead({base, head, scopeCardIds: review.scope?.card_ids || []});
+      if (!replay.ok || !isDeepStrictEqual(report, replay.report)) {
+        issues.push({
+          code: 'changed_controlled_pilot_review_scoped_audit_replay_mismatch',
+          path: filePath,
+          audit: auditPath,
+          message: replay.message || 'The controlled-pilot scoped audit must exactly match a current immutable-HEAD replay.',
+        });
+      }
+    }
+    for (const sourcePath of [
+      review.source_records?.sample_confirmation,
+      ...(review.source_records?.agent_self_reviews || []),
+    ]) {
+      if (!isRegularFileAtCommit(head, sourcePath)) {
+        issues.push({
+          code: 'changed_controlled_pilot_review_source_not_regular_file',
+          path: filePath,
+          source: sourcePath ?? null,
+          message: 'Every confirmation and per-box review source must be a regular Git blob at immutable HEAD.',
+        });
+      }
+    }
+    if (review.status === 'user_approved') {
+      const artifactPath = review.approval?.artifact_path;
+      if (!isControlledPilotApprovalPath(artifactPath) || !changedPaths.has(artifactPath)) {
+        issues.push({
+          code: 'changed_controlled_pilot_review_approval_artifact_not_changed',
+          path: filePath,
+          artifact: artifactPath ?? null,
+          message: 'An approved aggregate review and its product approval artifact must be changed together in one explicitly authorized PR.',
+        });
+      }
+    }
+  }
+
+  for (const [filePath, artifact] of changedApprovals) {
+    const matches = [...changedReviews.entries()].filter(([, review]) =>
+      review.approval?.artifact_path === filePath
+    );
+    if (matches.length !== 1) {
+      issues.push({
+        code: 'changed_controlled_pilot_approval_review_missing',
+        path: filePath,
+        message: 'A product approval artifact requires exactly one matching changed aggregate review.',
+      });
+      continue;
+    }
+    for (const message of validateControlledPilotApproval(artifact, matches[0][1])) {
+      issues.push({code: 'changed_controlled_pilot_approval_invalid', path: filePath, message});
+    }
+  }
+  return issues;
+}
+
+function validateControlledPilotReview(review) {
+  const errors = [];
+  const exact120 = value => Array.isArray(value) && value.length === 120 &&
+    value.every(hasText) && new Set(value).size === 120;
+  if (
+    review?.schema_version !== CONTROLLED_PILOT_REVIEW_SCHEMA ||
+    review?.scope?.track !== 'cet4' ||
+    review?.scope?.purpose !== 'controlled_pilot' ||
+    review?.scope?.card_count !== 120 ||
+    !exact120(review?.scope?.card_ids) ||
+    !Array.isArray(review?.scope?.box_prefixes) ||
+    review.scope.box_prefixes.length !== 14 ||
+    new Set(review.scope.box_prefixes).size !== 14
+  ) errors.push('controlled-pilot aggregate review scope is invalid');
+  if (
+    review?.coverage?.sample_cards !== 42 ||
+    review?.coverage?.expansion_cards !== 78 ||
+    review?.coverage?.reviewed_cards !== 120 ||
+    !Array.isArray(review?.coverage?.boxes) ||
+    review.coverage.boxes.length !== 14 ||
+    !setsEqual(
+      new Set(review.coverage.boxes.flatMap(box => box.reviewed_card_ids || [])),
+      new Set(review?.scope?.card_ids || []),
+    )
+  ) errors.push('controlled-pilot aggregate review coverage is invalid');
+  if (
+    review?.quality?.hard_blockers !== 0 ||
+    review?.quality?.content_risks !== 0 ||
+    review?.quality?.review_gaps !== 0 ||
+    review?.quality?.source_risks !== 120 ||
+    review?.quality?.synthetic_source_cards !== 120
+  ) errors.push('controlled-pilot aggregate review quality boundary is invalid');
+  if (
+    !SHA256_VALUE_RE.test(String(review?.content_version || '')) ||
+    !SHA256_VALUE_RE.test(String(review?.source_records?.runtime_payload_sha256 || '')) ||
+    !SHA256_VALUE_RE.test(String(review?.source_records?.scoped_audit_sha256 || '')) ||
+    !Array.isArray(review?.source_records?.agent_self_reviews) ||
+    review.source_records.agent_self_reviews.length !== 28 ||
+    new Set(review.source_records.agent_self_reviews).size !== 28
+  ) errors.push('controlled-pilot aggregate review source binding is invalid');
+  if (
+    review?.approval_boundary?.sample_confirmation_is_not_formal_approval !== true ||
+    review?.approval_boundary?.audio_qc_required_separately !== true ||
+    review?.approval_boundary?.pilot_release_required_separately !== true ||
+    review?.approval_boundary?.gate_eligible !== false
+  ) errors.push('controlled-pilot aggregate review boundary is invalid');
+  if (review?.status === 'ready_for_user_approval') {
+    if (
+      review?.approval?.approved_by_user !== false ||
+      review?.approval?.approved_at !== null ||
+      review?.approval?.source !== null ||
+      review?.approval?.artifact_path !== null
+    ) errors.push('pending controlled-pilot review claims approval');
+  } else if (review?.status === 'user_approved') {
+    if (
+      review?.approval?.approved_by_user !== true ||
+      !TIMEZONE_ISO_RE.test(String(review?.approval?.approved_at || '')) ||
+      !hasText(review?.approval?.source) ||
+      !isControlledPilotApprovalPath(review?.approval?.artifact_path)
+    ) errors.push('approved controlled-pilot review metadata is invalid');
+  } else errors.push('controlled-pilot aggregate review status is invalid');
+  return errors;
+}
+
+function validateControlledPilotApproval(artifact, review) {
+  const errors = [];
+  const exactKeys = [
+    'approved_at', 'approved_by_user', 'card_ids', 'content_version',
+    'pilot_id', 'schema_version', 'scope', 'status',
+  ];
+  const actualKeys = artifact && typeof artifact === 'object' && !Array.isArray(artifact)
+    ? Object.keys(artifact).sort()
+    : [];
+  if (!isDeepStrictEqual(actualKeys, exactKeys)) errors.push('controlled-pilot approval keys are not exact');
+  if (
+    artifact?.schema_version !== CONTROLLED_PILOT_APPROVAL_SCHEMA ||
+    artifact?.scope !== 'controlled_pilot_120' ||
+    artifact?.status !== 'approved' ||
+    artifact?.approved_by_user !== true ||
+    !TIMEZONE_ISO_RE.test(String(artifact?.approved_at || '')) ||
+    !SHA256_VALUE_RE.test(String(artifact?.content_version || '')) ||
+    !Array.isArray(artifact?.card_ids) || artifact.card_ids.length !== 120 ||
+    new Set(artifact.card_ids).size !== 120
+  ) errors.push('controlled-pilot approval shape is invalid');
+  if (
+    review?.status !== 'user_approved' ||
+    artifact?.pilot_id !== review?.pilot_id ||
+    artifact?.content_version !== review?.content_version ||
+    artifact?.approved_at !== review?.approval?.approved_at ||
+    !setsEqual(new Set(artifact?.card_ids || []), new Set(review?.scope?.card_ids || []))
+  ) errors.push('controlled-pilot approval does not match aggregate review');
+  return errors;
+}
+
 function readJsonFile(filePath) {
   return safeJsonParse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -2396,6 +2627,22 @@ function validate({ base, head }) {
             message: 'Sample-confirmation records must be direct JSON children of reviews/sample_confirmations.',
           });
         }
+        if (isNoncanonicalControlledPilotReviewPath(filePath)) {
+          issues.push({
+            code: 'changed_controlled_pilot_review_path_noncanonical',
+            path: filePath,
+            status: entry.status,
+            message: 'Controlled-pilot aggregate reviews must be direct JSON children of reviews/controlled_pilot_reviews.',
+          });
+        }
+        if (isNoncanonicalControlledPilotApprovalPath(filePath)) {
+          issues.push({
+            code: 'changed_controlled_pilot_approval_path_noncanonical',
+            path: filePath,
+            status: entry.status,
+            message: 'Controlled-pilot approval artifacts must be direct JSON children of reviews/controlled_pilot_approvals.',
+          });
+        }
         if (isCardBoxDirectoryPath(filePath) && !isCardBoxPath(filePath)) {
           issues.push({
             code: 'candidate_card_box_path_invalid',
@@ -2450,6 +2697,36 @@ function validate({ base, head }) {
           message: 'Sample-confirmation evidence must not be deleted or renamed out of its governed directory.',
         });
       }
+      const removesControlledPilotReview = (
+        statusType === 'D' && isControlledPilotReviewPath(entry.path)
+      ) || (
+        statusType === 'R' &&
+        isControlledPilotReviewPath(entry.paths[0]) &&
+        !isControlledPilotReviewPath(entry.path)
+      );
+      if (removesControlledPilotReview) {
+        issues.push({
+          code: 'changed_controlled_pilot_review_deleted',
+          path: entry.paths[0] || entry.path,
+          status: entry.status,
+          message: 'Controlled-pilot aggregate review evidence must not be deleted or renamed out of its governed directory.',
+        });
+      }
+      const removesControlledPilotApproval = (
+        statusType === 'D' && isControlledPilotApprovalPath(entry.path)
+      ) || (
+        statusType === 'R' &&
+        isControlledPilotApprovalPath(entry.paths[0]) &&
+        !isControlledPilotApprovalPath(entry.path)
+      );
+      if (removesControlledPilotApproval) {
+        issues.push({
+          code: 'changed_controlled_pilot_approval_deleted',
+          path: entry.paths[0] || entry.path,
+          status: entry.status,
+          message: 'Controlled-pilot approval evidence must not be deleted or renamed out of its governed directory.',
+        });
+      }
     }
 
     if (!resolvedHead) {
@@ -2479,6 +2756,11 @@ function validate({ base, head }) {
         entries,
       }));
       issues.push(...validateChangedReviewScopedAuditReferences({
+        base,
+        head: resolvedHead,
+        entries,
+      }));
+      issues.push(...validateChangedControlledPilotRecords({
         base,
         head: resolvedHead,
         entries,

@@ -797,11 +797,47 @@ test('review templates remain outside content-candidate scope', () => {
     path.join(repo.root, 'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json'),
     {template: true},
   );
-  commit(repo.root, 'add full-track review template');
+  writeJson(
+    path.join(repo.root, 'reviews/controlled_pilot_reviews/TEMPLATE.json'),
+    {template: true},
+  );
+  writeJson(
+    path.join(repo.root, 'reviews/controlled_pilot_approvals/TEMPLATE.json'),
+    {template: true},
+  );
+  commit(repo.root, 'add governed review templates');
 
   const result = validate(repo);
   assert.equal(result.status, 0, result.stderr || result.stdout);
   assert.equal(result.report.content_candidate_diff, false);
+});
+
+test('an unprefixed controlled-pilot aggregate review enters content scope and fails closed', () => {
+  const repo = createRepository();
+  writeJson(
+    path.join(repo.root, 'reviews/controlled_pilot_reviews/pilot-review.json'),
+    {schema_version: 'controlled-pilot-review.v1'},
+  );
+  commit(repo.root, 'add incomplete controlled-pilot review');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assert.equal(result.report.content_candidate_diff, true);
+  assertIssue(result.report, 'changed_controlled_pilot_review_invalid');
+});
+
+test('an orphan controlled-pilot approval artifact fails closed', () => {
+  const repo = createRepository();
+  writeJson(
+    path.join(repo.root, 'reviews/controlled_pilot_approvals/orphan.json'),
+    {schema_version: 'controlled-pilot-approval.v1'},
+  );
+  commit(repo.root, 'add orphan controlled-pilot approval');
+
+  const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assert.equal(result.report.content_candidate_diff, true);
+  assertIssue(result.report, 'changed_controlled_pilot_approval_review_missing');
 });
 
 test('a misleading TEMPLATE suffix cannot disguise an unprefixed self-review', () => {
