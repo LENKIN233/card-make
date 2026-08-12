@@ -10,6 +10,7 @@ import {
   loadIntegrityPolicy,
   validateChangedCardSelfReviewParity,
 } from './lib/card_integrity.mjs';
+import {validateTrackedRecords as validateControlledPilotRecords} from './manage_controlled_pilot_approval.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
@@ -92,6 +93,8 @@ const REVIEW_RECORD_TEMPLATE_PATHS = new Set([
   'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
   'reviews/approved_batches/TEMPLATE.json',
   'reviews/sample_confirmations/TEMPLATE.json',
+  'reviews/controlled_pilot_reviews/TEMPLATE.json',
+  'reviews/controlled_pilot_approvals/TEMPLATE.json',
 ]);
 const REQUIRED_GIT_HANDOFF_FIELDS = [
   'handoff_id',
@@ -904,9 +907,11 @@ function validateContentQuality(errors) {
   if (
     !String(integrity.governed_review_path_detection || '').includes('without') ||
     !String(integrity.governed_review_path_detection || '').includes('four-digit box prefix') ||
-    !String(integrity.governed_review_path_detection || '').includes('five exact repository-declared templates') ||
+    !String(integrity.governed_review_path_detection || '').includes('seven exact repository-declared templates') ||
     !String(integrity.governed_review_path_detection || '').includes('reviews/approved_batches') ||
     !String(integrity.governed_review_path_detection || '').includes('reviews/sample_confirmations') ||
+    !String(integrity.governed_review_path_detection || '').includes('reviews/controlled_pilot_reviews') ||
+    !String(integrity.governed_review_path_detection || '').includes('reviews/controlled_pilot_approvals') ||
     !String(integrity.governed_review_path_detection || '').includes('approval records') ||
     !String(integrity.governed_review_path_detection || '').includes('unknown filenames')
   ) {
@@ -2080,6 +2085,8 @@ function validateReviewDirs(errors) {
     ['reviews/approved_batches/FULL_TRACK_TEMPLATE.json', 'full_track_approval_template'],
     ['reviews/approved_batches/TEMPLATE.json', 'approval_template'],
     ['reviews/sample_confirmations/TEMPLATE.json', 'sample_confirmation_template'],
+    ['reviews/controlled_pilot_reviews/TEMPLATE.json', 'controlled_pilot_review_template'],
+    ['reviews/controlled_pilot_approvals/TEMPLATE.json', 'controlled_pilot_approval_template'],
   ]);
   const expectedTemplatePaths = [...expectedTemplateAuthorities.keys()];
   if (
@@ -2108,6 +2115,8 @@ function validateReviewDirs(errors) {
     'reviews/agent_self_review',
     'reviews/approved_batches',
     'reviews/sample_confirmations',
+    'reviews/controlled_pilot_reviews',
+    'reviews/controlled_pilot_approvals',
     'reviews/audit_scopes',
     'reviews/audio_qc',
     'reviews/drafts',
@@ -3999,6 +4008,10 @@ function validateReviewTemplatesAndRecords(errors, warnings) {
   validateHistoricalScopedAuditRecordAgingSelfTest(errors);
   validateHistoricalSelfReviewLifecycleSelfTest(errors);
   validateHistoricalFullTrackLifecycleSelfTest(errors);
+  const controlledPilotRecords = validateControlledPilotRecords(ROOT);
+  for (const message of controlledPilotRecords.errors) {
+    pushIssue(errors, 'controlled_pilot_review_or_approval_invalid', {message});
+  }
   const standardSelfReviewTemplate = readGovernedReviewTemplate(
     'reviews/agent_self_review/TEMPLATE.json',
     'standard_self_review',
