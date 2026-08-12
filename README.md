@@ -178,6 +178,19 @@ node scripts/manage_audio_perceptual_worklist.mjs next \
   --file exports/cet4-audio-perceptual-worklist.json
 ```
 
+An identified human may instead use the local one-card-at-a-time review station
+without editing JSON or assembling review commands:
+
+```bash
+node scripts/serve_audio_perceptual_review.mjs \
+  --file exports/cet4-controlled-pilot-24-audio-perceptual-worklist.json
+```
+
+It binds only to `127.0.0.1`, exposes no bulk-pass action, enables submission
+only after complete in-page playback, and delegates every write to the same
+human-only worklist validator. It is an operational review surface, not a
+formal audio QC record or content approval.
+
 The `next` result contains one local audio path, its bound transcript, box
 context, and seven pending perceptual checks. After listening, record only that
 card with a human reviewer identity. Run without `--apply` first; append

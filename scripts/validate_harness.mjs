@@ -1174,6 +1174,7 @@ function validateAudioGenerationContract(errors) {
   if (
     worklist.schema !== 'spec/audio-perceptual-worklist.schema.json' ||
     worklist.manager !== 'scripts/manage_audio_perceptual_worklist.mjs' ||
+    worklist.local_review_station !== 'scripts/serve_audio_perceptual_review.mjs' ||
     worklist.reviewed_worklist_dir !== 'reviews/audio_perceptual_worklists/'
   ) {
     pushIssue(errors, 'audio_perceptual_worklist_paths_drift', {});
@@ -1184,6 +1185,9 @@ function validateAudioGenerationContract(errors) {
     'scoped_worklist_requires_exact_non_empty_card_ids_and_fingerprint',
     'legacy_v1_is_full_track_only',
     'one_card_per_review_action',
+    'review_station_loopback_only',
+    'review_station_has_no_bulk_pass',
+    'review_station_uses_authoritative_manager_for_writes',
     'human_reviewer_required',
     'full_asset_listening_attestation_required',
     'reviewed_identity_change_fails_closed',
@@ -1217,6 +1221,23 @@ function validateAudioGenerationContract(errors) {
     ]) {
       if (!manager.includes(token)) {
         pushIssue(errors, 'audio_perceptual_worklist_manager_guard_missing', {token});
+      }
+    }
+  }
+  if (!exists('scripts/serve_audio_perceptual_review.mjs')) {
+    pushIssue(errors, 'audio_perceptual_review_station_missing', {});
+  } else {
+    const station = readText('scripts/serve_audio_perceptual_review.mjs');
+    for (const token of [
+      "const LOOPBACK_HOST = '127.0.0.1'",
+      'reviewAudioPerceptualEntry',
+      'validateAudioPerceptualWorklist',
+      '一次只能提交审核台当前显示的一条音频',
+      '必须完整播放当前音频后才能提交',
+      '不提供批量通过',
+    ]) {
+      if (!station.includes(token)) {
+        pushIssue(errors, 'audio_perceptual_review_station_guard_missing', {token});
       }
     }
   }

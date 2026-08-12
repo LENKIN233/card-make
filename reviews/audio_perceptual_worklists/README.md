@@ -6,6 +6,22 @@ a time, and use the manager's dry-run-first `review` command to record outcomes.
 Every non-pending update requires the reviewer to attest that the complete asset
 was heard with its transcript and target context.
 
+For a human reviewer who should not edit JSON or assemble commands, start the
+loopback-only review station against the ignored queue:
+
+```sh
+node scripts/serve_audio_perceptual_review.mjs \
+  --file exports/cet4-controlled-pilot-24-audio-perceptual-worklist.json
+```
+
+The station serves one current entry at a time, plays only the hash-bound local
+asset, enables submission only after a complete in-page playback, requires all
+seven checks, and requires notes for a failure. It has no bulk-pass action,
+rejects Agent/bot identities through the authoritative manager, and writes the
+same validated worklist atomically. Browser playback state supports the human
+attestation; it is not cryptographic proof that a person listened attentively.
+Keep the station on loopback and do not publish it.
+
 For a controlled subset such as the 24 audio cards referenced by one pilot
 candidate, build with `--scope-card-ids <comma-separated-card-ids>`. The v2
 worklist binds the exact non-empty card IDs, canonical order, expected entry
