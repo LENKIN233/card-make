@@ -1,0 +1,76 @@
+{
+  "handoff_id": "20260812-content-cet4-pilot-learner-facing-context",
+  "created_at": "2026-08-12T22:25:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-learner-facing-context",
+  "base_branch": "main",
+  "commit_sha": "a54401fd2dd366fa0ac3c65248ebb1787b095a77",
+  "push_ref": "origin/content/cet4-pilot-learner-facing-context",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/154",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_bankedcloze_0202.json",
+      "card_boxes_json/card_boxes_seed_cet4_bankedcloze_0220.json",
+      "card_boxes_json/card_boxes_seed_cet4_grammar_0611.json",
+      "card_boxes_json/card_boxes_seed_cet4_grammar_0630.json",
+      "card_boxes_json/card_boxes_seed_cet4_listening_0000.json",
+      "card_boxes_json/card_boxes_seed_cet4_listening_0010.json",
+      "card_boxes_json/card_boxes_seed_cet4_reading_0113.json",
+      "card_boxes_json/card_boxes_seed_cet4_translation_0401.json",
+      "card_boxes_json/card_boxes_seed_cet4_translation_0410.json",
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0500.json",
+      "card_boxes_json/card_boxes_seed_cet4_writing_0300.json",
+      "card_boxes_json/card_boxes_seed_cet4_writing_0311.json",
+      "reviews/agent_self_review/20260812-cet4-pilot-learner-facing-context.json",
+      "reviews/audit_scopes/20260812-cet4-pilot-learner-facing-context-audit.json"
+    ],
+    "changed_card_ids_count": 45,
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "8d63013394a5d2bca32850519d18a5532f17d0b4",
+    "patch_sha256": "9a59ec8580306c3b67ef0d4ffdb4f0c5fc9906d828357dac7f8d6ab2040bc407"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; 2414 cards, errors 0, warnings 0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids <45 exact ids> --write-scope-report reviews/audit_scopes/20260812-cet4-pilot-learner-facing-context-audit.json",
+      "result": "passed; hard blockers 0, content risks 0, review gaps 0; 45 disclosed synthetic-source notices"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids <120 exact controlled-pilot ids>",
+      "result": "passed locally; exact 120 cards, hard blockers 0, content risks 0, review gaps 0; 120 disclosed synthetic-source notices"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; exact 45-card residual closure is the sole current review coverage"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream version and group-alignment warnings"
+    },
+    {
+      "command": "manual semantic and front/runtime mirror review",
+      "result": "passed; 45 learner-facing contexts, three corrected lock word-bank mirrors, two corrected writing analysis openings"
+    },
+    {
+      "command": "controlled-pilot candidate consumer build and exact old/new diff",
+      "result": "passed; 120 cards, 60-card free prefix, 24 audio assets, content_version sha256:dd2d397532556563a205351f04f98184afc09a4cd6a2580966556052ffc24f36, payload sha256 5f75b4ddd2e3462854d9c5dbdf9543178993356d150e23910966375fbb9feea3"
+    },
+    {
+      "command": "120-card final review-pack completeness scan",
+      "result": "passed locally; 120 rows, 120 unique card IDs, no missing IDs, no undefined/null placeholders"
+    }
+  ],
+  "local_status": "PR #154 is the consolidated candidate change against main. The selected cards render learner-facing coaching copy and exact lock candidates; the 120-card review pack remains an ignored local approval aid rather than tracked delivery evidence.",
+  "remaining_risks": [
+    "The complete 120-card candidate still requires explicit final user approval before formal use.",
+    "The 24 listening audio assets still require human perceptual QC before formal use.",
+    "PR #149 is closed and superseded by PR #154; it must not be merged separately."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}

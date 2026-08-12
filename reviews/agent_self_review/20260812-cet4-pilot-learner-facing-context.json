@@ -1,0 +1,2776 @@
+{
+  "review_id": "20260812-cet4-pilot-learner-facing-context",
+  "created_at": "2026-08-12T19:00:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力、仔细阅读、选词填空、写作、翻译、词汇、语法",
+    "group": "听前预测；语音现象；干扰项排除；词性判断；固定搭配；判断作文体裁；模版句式；高级句子；主题化例句；同义词替换；复杂句；主/被动语态",
+    "box": "根据选项预测话题；连读；偷换概念；动词；动词+介词/副词；应用文；展开认证；定语从句；历史文化；近义词替换；翻译",
+    "box_prefixes": [
+      "0000",
+      "0010",
+      "0113",
+      "0202",
+      "0220",
+      "0300",
+      "0311",
+      "0401",
+      "0410",
+      "0500",
+      "0611",
+      "0630"
+    ],
+    "card_ids": [
+      "000001",
+      "000002",
+      "000003",
+      "000004",
+      "000005",
+      "000006",
+      "000007",
+      "000008",
+      "000009",
+      "000010",
+      "000011",
+      "000012",
+      "001001",
+      "001002",
+      "001003",
+      "011305",
+      "011308",
+      "020204",
+      "020206",
+      "020207",
+      "020208",
+      "022004",
+      "022005",
+      "022006",
+      "022007",
+      "022008",
+      "030002",
+      "030003",
+      "030004",
+      "030007",
+      "031102",
+      "031103",
+      "031104",
+      "031107",
+      "040104",
+      "040105",
+      "040106",
+      "040107",
+      "040108",
+      "041004",
+      "041007",
+      "041008",
+      "050005",
+      "061105",
+      "063005"
+    ],
+    "closure_reason": "The controlled-pilot runtime renders quality_metadata.exam_value directly as front.context. Forty-five selected cards exposed content-production phrasing such as 让用户、训练用户、训练考生 instead of learner-facing micro-coaching copy; three lock cards also had front/runtime word-bank drift, and two writing cards contained malformed learner-visible analysis openings.",
+    "source_issue_refs": [
+      "softbook_cet apps/mobile/src/learning/LearningSurface.tsx renders currentCard.front.context",
+      "controlled-pilot candidate payload: 45 selected front.context values contained author-facing user/learner training language",
+      "manual word-bank mirror audit: 020208, 022005, and 022007 front candidates differed from runtime word_bank",
+      "manual writing audit: 030003 and 030004 analysis openings contained 正确判断是否 / 正确判断是是"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/infra/cloudbase/mobile-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260812-cet4-pilot-learner-facing-context-audit.json",
+    "corpus_fingerprint": "c9290cc2810d7ecf6c3ed6ef3ac43d00c20024b76cd0c4ef9cd23de58384e80f",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "000001",
+        "000002",
+        "000003",
+        "000004",
+        "000005",
+        "000006",
+        "000007",
+        "000008",
+        "000009",
+        "000010",
+        "000011",
+        "000012",
+        "001001",
+        "001002",
+        "001003",
+        "011305",
+        "011308",
+        "020204",
+        "020206",
+        "020207",
+        "020208",
+        "022004",
+        "022005",
+        "022006",
+        "022007",
+        "022008",
+        "030002",
+        "030003",
+        "030004",
+        "030007",
+        "031102",
+        "031103",
+        "031104",
+        "031107",
+        "040104",
+        "040105",
+        "040106",
+        "040107",
+        "040108",
+        "041004",
+        "041007",
+        "041008",
+        "050005",
+        "061105",
+        "063005"
+      ],
+      "card_count": 45,
+      "issue_count": 45,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 45
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 45,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "000001",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项关键词组合预测听力主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "先从选项中抓住对象和比较角度，再播放音频验证话题预测。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "000002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "听开头句识别主话题关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "把开头句的中心关系和背景词分开，别因听到一个熟词就误判。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "000003",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据讲座开头预测后文展开方向",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "合并讲座开头的结构词和评价词，提前预测后文会怎样展开。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "000004",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 whether 结构中预测听力中心议题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "把听力开头的对象与待判断问题合起来，别只凭一个熟词猜主旨。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "000005",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用对象、受众和方式预测听力主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "别凭单个场景词猜主旨，要用完整的话题角色关系筛选选项。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "000006",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 impact of X on Y 预测影响类主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "把措施和结果成对识别，别把行业背景误当作主旨。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "000007",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 how 与 by 结构预测策略类主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "从听力开头抓住行动者、目标人群和方法，快速形成三段式预测。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "000008",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别话题切换并预测后文核心问题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "听出主旨何时从背景比较切换到研究问题，别被开头熟词带偏。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "000009",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据强调与条件信号预测结论型主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "从活动背景中提取真正的变化结论，并锁定它的触发条件。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "000010",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据转折识别政策效果类主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "听出问题陈述只是引入，把注意力转向政策带来的具体效果。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "000011",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 central concern 结构预测解释型主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "略过趋势背景，抓住研究人群、行为变化与条件组成的中心问题。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "000012",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据总结与最高程度限定预测结论型主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "从多因素列举中抓住最终结论和比较强度，提前预测后文证据重点。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "001001",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "0",
+        "box_name": "连读",
+        "box_prefix": "0010"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 turn off 中的辅音加元音连读",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "把听不清的短语还原成词边界，短句会更快听懂。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "001002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "0",
+        "box_name": "连读",
+        "box_prefix": "0010"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 pick it up at 的连续短词连读",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "把连续的短词音块拆回动作和介词结构，再恢复句意。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "001003",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "0",
+        "box_name": "连读",
+        "box_prefix": "0010"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 ask about 的辅音加元音连读",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "把连读听感还原成词边界，别把常见短语误听成陌生表达。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "011305",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分接触机会与晋升待遇等最终结果",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "区分过程中的机会、决策与结果，别从“获得接触”跳到“待遇改善”。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "011308",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "0113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分参与行为指标与能力结果指标",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先确认研究实际测了什么，别把未测能力补成正向结论。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "020204",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0202"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在关系从句中识别限定动词谓语位",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先识别关系从句的谓语位置，再用时态排除名词和非限定形式。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "020206",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0202"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在同词性候选中用搭配与上下文逻辑选择动词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "词性筛选失去区分度时，再用句间逻辑锁定唯一动词。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "020207",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0202"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合介词后词形与 dip into 搭配选择动词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先用词形缩小范围，再用搭配锁定唯一动词。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "020208",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "2",
+        "box_name": "动词",
+        "box_prefix": "0202"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "排除插入语后锁定复数主语的谓语动词",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "剥离插入成分后定位谓语，再用 continue to do 的语义锁定答案。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep after restoring exact front/runtime word-bank parity and revalidating the lock answer."
+    },
+    {
+      "card_id": "022004",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "0",
+        "box_name": "动词+介词/副词",
+        "box_prefix": "0220"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别证据语境中的 point to 搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "把动词和小词当作完整搭配识别，别逐词硬译介词。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "022005",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "0",
+        "box_name": "动词+介词/副词",
+        "box_prefix": "0220"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "整体识别 keep up with 三词搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "越过空格后的两个小词识别完整搭配，避免只在局部试词。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep after restoring exact front/runtime word-bank parity and revalidating the lock answer."
+    },
+    {
+      "card_id": "022006",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "0",
+        "box_name": "动词+介词/副词",
+        "box_prefix": "0220"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据因果方向区分 result from 与 result in",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先画出因果方向再选介词，别混淆同一动词下方向相反的搭配。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "022007",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "0",
+        "box_name": "动词+介词/副词",
+        "box_prefix": "0220"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "整体锁定 take into account 长搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "跨过介词识别长搭配，再用权衡语境验证选择。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep after restoring exact front/runtime word-bank parity and revalidating the lock answer."
+    },
+    {
+      "card_id": "022008",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "2",
+        "group_name": "固定搭配",
+        "box_id": "0",
+        "box_name": "动词+介词/副词",
+        "box_prefix": "0220"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据宾语线索补全 come up with 搭配",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "用宾语反推完整三词短语，再区分同一基础动词的近形搭配。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "030002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "0",
+        "group_name": "判断作文体裁",
+        "box_id": "0",
+        "box_name": "应用文",
+        "box_prefix": "0300"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从应用文指令中同时锁定读者任务与语气",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "把题目主题转成读者、任务、语气清单，避免对象和任务错位。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "030003",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "0",
+        "group_name": "判断作文体裁",
+        "box_id": "0",
+        "box_name": "应用文",
+        "box_prefix": "0300"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用特定读者与交际动作区分应用文和议论文",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "动笔前先确认是否真有读者和交际任务，避免文体整体错位。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep after correcting the learner-visible Chinese analysis sentence without changing its verdict."
+    },
+    {
+      "card_id": "030004",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "0",
+        "group_name": "判断作文体裁",
+        "box_id": "0",
+        "box_name": "应用文",
+        "box_prefix": "0300"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别特定朋友书信中的读者载体与交际动作",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "判断体裁后，再核对内容相关性和朋友之间的表达语域。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep after correcting the learner-visible Chinese analysis sentence without changing its verdict."
+    },
+    {
+      "card_id": "030007",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "0",
+        "group_name": "判断作文体裁",
+        "box_id": "0",
+        "box_name": "应用文",
+        "box_prefix": "0300"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "锁定应用文载体并保持交际动作的并列词形",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "把体裁、动作任务和句法形式一起映射成可执行题干。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "031102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从主张后识别可继续展开的作用机制",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "把赞同主张推进为可解释、可举例的理由，别让观点原地重复。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "031103",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "诊断主张与结果之间缺失的作用机制",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "定位空泛段落里的因果断点，别用连接词或虚构数字遮掩。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "031104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "选择具体且不过度外推的论证机制",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "用可推演的机制增强说服力，同时避开无依据数字和绝对化结论。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "031107",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "1",
+        "box_name": "展开认证",
+        "box_prefix": "0311"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用连接词完成让步问题替代方案结果链",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "按句间功能组织较复杂的论证链，别堆连接词或虚构结果数据。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "040104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "0401"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "把中文补充分句挂载到明确的物类先行词",
+        "weak_point_tags": [
+          "translation_output_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "汉译英时先保住主干，再用非限制性定语从句压缩补充信息。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "040105",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "0401"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "诊断定语从句被近邻名词错误吸附的问题",
+        "weak_point_tags": [
+          "translation_output_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "同时核验定语从句的位置和语义归属，避免翻译逻辑错位。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "040106",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "0401"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 some of which 表达集合中的部分",
+        "weak_point_tags": [
+          "translation_output_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "遇到中文“其中一些”，优先检查介词加关系代词结构。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "040107",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "0401"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在限定性从句中保持并列谓语与代词回指一致",
+        "weak_point_tags": [
+          "translation_output_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "较长汉译英句中，同时控制关系词、并列动作和代词指向。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "040108",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "0401"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在同一句中区分部分关系与地点关系",
+        "weak_point_tags": [
+          "translation_output_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "逐个从句判断关系词所作成分，别按先行词类型机械重复 which。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "041004",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "1",
+        "group_name": "主题化例句",
+        "box_id": "0",
+        "box_name": "历史文化",
+        "box_prefix": "0410"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "将历史文化抽象评价落实到具体实践动作",
+        "weak_point_tags": [
+          "translation_output_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "用 in doing 解释抽象文化评价，别只翻主题词而丢掉实践信息。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "041007",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "1",
+        "group_name": "主题化例句",
+        "box_id": "0",
+        "box_name": "历史文化",
+        "box_prefix": "0410"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "并列翻译文化传承路径与现代融合结果",
+        "weak_point_tags": [
+          "translation_output_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "翻译历史文化句时，保全对象、路径、延续和当代应用四层信息。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "041008",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "1",
+        "group_name": "主题化例句",
+        "box_id": "0",
+        "box_name": "历史文化",
+        "box_prefix": "0410"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 from A to B 保留技艺传承的方向",
+        "weak_point_tags": [
+          "translation_output_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "翻译传承关系时，同时保留起点、终点、被动和延续信息。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "050005",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "5",
+        "library_name": "词汇",
+        "group_id": "0",
+        "group_name": "同义词替换",
+        "box_id": "0",
+        "box_name": "近义词替换",
+        "box_prefix": "0500"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "展开 minimize 并保持对象与程度上限",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "识别压缩动词的解释性改写，同时排除绝对化和对象偷换。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "061105",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "1",
+        "group_name": "复杂句",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "0611"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "同时判断 whose 的所属关系、从句范围与主句主语",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "拆解 whose 长句时，分清所属关系、从句主语和主句主语。",
+        "box_progression_role": "mixed",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    },
+    {
+      "card_id": "063005",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "3",
+        "group_name": "主/被动语态",
+        "box_id": "0",
+        "box_name": "翻译",
+        "box_prefix": "0630"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "排除语态选择中的绝对化规则并保持事件角色稳定",
+        "weak_point_tags": [
+          "grammar_weak",
+          "translation_output_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "CET 翻译中别机械套用被动；主动改写时也要守住动作角色。",
+        "box_progression_role": "mixed",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The material remains an explicitly disclosed synthetic candidate and is not represented as true-exam content."
+      ],
+      "recommendation": "Keep with learner-facing exam_value copy; answer truth and interaction semantics are unchanged."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "No progression roles changed. This closure makes the selected cards learner-facing and restores exact lock candidate parity while preserving the previously reviewed 14-box progression.",
+    "repetition_or_gap_risks": [
+      "The complete 120-card batch remains candidate-only until explicit final user approval.",
+      "The 24 listening audio assets still require human perceptual QC before formal use."
+    ],
+    "representative_cards": [
+      "000001",
+      "020208",
+      "022005",
+      "030003",
+      "040105",
+      "061105"
+    ],
+    "next_step": "Replay immutable-HEAD scope validation, regenerate the exact 120-card consumer payload, and present the complete candidate plus 24-audio perceptual worklist for user approval."
+  }
+}
