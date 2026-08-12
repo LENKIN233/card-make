@@ -124,7 +124,23 @@
       "stress_or_pause_leaks_or_distorts_answer",
       "source_authenticity_claim_from_tts",
       "formal_audio_ready_without_user_content_approval_boundary"
-    ]
+    ],
+    "completed_worklist_bridge": {
+      "builder": "scripts/build_audio_qc_drafts.mjs",
+      "input_must_be_tracked_reviewed_worklist": true,
+      "requires_complete_human_pass_for_every_perceptual_check": true,
+      "splits_records_by_box": true,
+      "requires_one_human_reviewer_per_box_record": true,
+      "requires_explicit_product_semantics_attestations": [
+        "no_autoplay_assumption",
+        "front_side_no_required_subtitles",
+        "tts_audio_not_used_as_source_authenticity"
+      ],
+      "dry_run_by_default": true,
+      "must_not_overwrite_existing_qc_records": true,
+      "must_not_create_content_approval": true,
+      "must_not_invent_legacy_provider_voice_or_generator": true
+    }
   },
   "technical_audio_audit": {
     "script": "scripts/audit_audio_technical.mjs",
@@ -166,8 +182,10 @@
   "validation_commands": [
     "node --test scripts/test_audio_technical_audit.mjs",
     "node --test scripts/test_audio_perceptual_worklist.mjs",
+    "node --test scripts/test_build_audio_qc_drafts.mjs",
     "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json",
     "node scripts/manage_audio_perceptual_worklist.mjs validate --file exports/cet4-audio-perceptual-worklist.json",
+    "node scripts/build_audio_qc_drafts.mjs --worklist reviews/audio_perceptual_worklists/<reviewed-worklist>.json --attest-no-autoplay --attest-front-no-required-subtitles --attest-tts-not-source-authenticity",
     "node scripts/validate_audio_qc.mjs",
     "node scripts/validate_harness.mjs"
   ]

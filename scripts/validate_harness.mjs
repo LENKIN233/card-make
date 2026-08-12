@@ -1118,6 +1118,51 @@ function validateAudioGenerationContract(errors) {
   if (contract.formal_audio_qc?.required_before_formal_audio_use !== true) {
     pushIssue(errors, 'formal_audio_qc_not_required', {});
   }
+  const audioQcBridge = contract.formal_audio_qc?.completed_worklist_bridge || {};
+  if (audioQcBridge.builder !== 'scripts/build_audio_qc_drafts.mjs') {
+    pushIssue(errors, 'audio_qc_bridge_path_drift', {builder: audioQcBridge.builder});
+  }
+  for (const field of [
+    'input_must_be_tracked_reviewed_worklist',
+    'requires_complete_human_pass_for_every_perceptual_check',
+    'splits_records_by_box',
+    'requires_one_human_reviewer_per_box_record',
+    'dry_run_by_default',
+    'must_not_overwrite_existing_qc_records',
+    'must_not_create_content_approval',
+    'must_not_invent_legacy_provider_voice_or_generator',
+  ]) {
+    if (audioQcBridge[field] !== true) {
+      pushIssue(errors, 'audio_qc_bridge_guard_missing', {field});
+    }
+  }
+  for (const attestation of [
+    'no_autoplay_assumption',
+    'front_side_no_required_subtitles',
+    'tts_audio_not_used_as_source_authenticity',
+  ]) {
+    if (!(audioQcBridge.requires_explicit_product_semantics_attestations || []).includes(attestation)) {
+      pushIssue(errors, 'audio_qc_bridge_attestation_missing', {attestation});
+    }
+  }
+  if (!exists('scripts/build_audio_qc_drafts.mjs')) {
+    pushIssue(errors, 'audio_qc_bridge_missing', {});
+  } else {
+    const bridge = readText('scripts/build_audio_qc_drafts.mjs');
+    for (const token of [
+      'requireComplete: true',
+      'reviews/audio_perceptual_worklists',
+      'reviews/audio_qc',
+      'refusing to replace existing audio QC record',
+      'formal_content_approval_created: false',
+      'legacy_unknown',
+      '--attest-no-autoplay',
+      '--attest-front-no-required-subtitles',
+      '--attest-tts-not-source-authenticity',
+    ]) {
+      if (!bridge.includes(token)) pushIssue(errors, 'audio_qc_bridge_guard_missing', {token});
+    }
+  }
   const worklist = contract.perceptual_review_worklist || {};
   if (
     worklist.schema !== 'spec/audio-perceptual-worklist.schema.json' ||
