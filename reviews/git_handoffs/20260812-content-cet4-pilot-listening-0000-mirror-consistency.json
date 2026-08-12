@@ -1,0 +1,52 @@
+{
+  "handoff_id": "20260812-content-cet4-pilot-listening-0000-mirror-consistency",
+  "created_at": "2026-08-12T12:08:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-listening-0000-mirror-consistency",
+  "base_branch": "main",
+  "commit_sha": "eefc334d33802524a69825dc5e100d8f5bbfe52a",
+  "push_ref": "origin/content/cet4-pilot-listening-0000-mirror-consistency",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/149",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0000.json",
+      "reviews/agent_self_review/20260802-cet4-pilot-listening-0000-sample.json",
+      "reviews/audit_scopes/20260802-cet4-pilot-listening-0000-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "2825d4f984c3a0ed4da4be88674627f77544a64a",
+    "patch_sha256": "72093da708403c3b912574de0142379d6136f50e92b65c000679e516cec7b5ab"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; 2414 cards, errors 0, warnings 0"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 000001,000002,000003 --write-scope-report reviews/audit_scopes/20260802-cet4-pilot-listening-0000-scope-audit.json",
+      "result": "passed; scoped hard blockers 0, content risks 0, review gaps 0"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed at payload commit eefc334d33802524a69825dc5e100d8f5bbfe52a"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs and focused harness tests",
+      "result": "passed; only recorded upstream version and group-alignment warnings"
+    },
+    {
+      "command": "legacy/runtime analysis mirror equality assertion and git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Draft PR #149 is open for the analysis-mirror correction; the three-card sample remains candidate-only pending user confirmation.",
+  "remaining_risks": [
+    "The three cards remain simulations and require explicit user confirmation before box expansion.",
+    "The three referenced TTS assets still require human perceptual audio QC before formal use.",
+    "No reviews/approved_batches record exists and this PR must not auto-merge as formal content."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
