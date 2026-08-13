@@ -4,8 +4,8 @@
   "agent": "codex",
   "branch": "content/cet6-reading-1100-sample-review",
   "base_branch": "main",
-  "commit_sha": "2b5e83cb952e6576b253435c3b9dd625e2cfdc9a",
-  "content_commit_sha": "2b5e83cb952e6576b253435c3b9dd625e2cfdc9a",
+  "commit_sha": "9f2b4be79660e61527d378f86a29a5c402698368",
+  "content_commit_sha": "9f2b4be79660e61527d378f86a29a5c402698368",
   "push_ref": "origin/content/cet6-reading-1100-sample-review",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/99",
   "PR_state": "OPEN",
@@ -43,27 +43,31 @@
   },
   "validation": [
     {
-      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 110001,110002,110003 --write-scope-report reviews/audit_scopes/20260710-cet6-reading-1100-scope-audit.json --max-examples 20",
-      "result": "passed; scoped hard blockers 0, content risks 0, review gaps 0, source risks 3 synthetic_source only"
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 110001,110002,110003 --write-scope-report reviews/audit_scopes/20260710-cet6-reading-1100-scope-audit.json",
+      "result": "passed on current corpus; hard blockers 0, content risks 0, review gaps 0, source risks 3 synthetic_source only"
     },
     {
-      "command": "node scripts/validate_cards.mjs --report-path /tmp/card-make-1100-validation.json",
-      "result": "passed; errors 0, warnings 0; report written outside the repository"
+      "command": "node scripts/validate_cards.mjs --report-path /private/tmp/card-make-1100-validation-20260813.json",
+      "result": "passed; 2414 cards, errors 0, warnings 0; report kept outside repository"
     },
     {
       "command": "node scripts/validate_harness.mjs",
-      "result": "passed; only recorded upstream group-alignment warnings plus scoped-evidence stale-global-report warning"
+      "result": "passed; only recorded upstream product-core version and group-alignment warnings"
     },
     {
       "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
-      "result": "passed after content commit; primary scope prefix 1100, current scoped audit ok"
+      "result": "passed at 9f2b4be79660e61527d378f86a29a5c402698368; single prefix 1100, changed-card integrity ok, current scoped audit ok"
     },
     {
-      "command": "git diff --check",
+      "command": "git diff --check origin/main...HEAD",
       "result": "passed"
+    },
+    {
+      "command": "manual answer and progression review",
+      "result": "passed; recognition -> application -> transfer sequence is coherent, answers match source, and the front does not expose the answer path"
     }
   ],
-  "local_status": "Draft PR #99 is open for candidate sample review on the single-root baseline; no formal approval, import, or release claim is made.",
+  "local_status": "Draft PR #99 was reopened on 2026-08-13 after merging current main and migrating the 1100 sample to the current elimination-ID and self-review contracts; no formal content approval, product import, or release claim is made.",
   "remaining_risks": [
     "The sample uses simulation material; this is marked explicitly and remains subject to user confirmation.",
     "No reviews/approved_batches record was created; formal usability is not claimed.",
