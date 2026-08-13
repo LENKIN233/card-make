@@ -1,0 +1,52 @@
+{
+  "handoff_id": "20260813-content-cet4-listening-0021-sample-review-v1",
+  "created_at": "2026-08-13T10:35:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0021-sample-review-v1",
+  "base_branch": "main",
+  "commit_sha": "b6fb030d2ef098b4533c3531fb9904e54e504d51",
+  "push_ref": "origin/content/cet4-listening-0021-sample-review-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/159",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0021.json",
+      "reviews/agent_self_review/20260813-cet4-listening-0021-sample.json",
+      "reviews/audit_scopes/20260813-cet4-listening-0021-sample-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "4b6149019bcc231835a7ed7a08c5adb8b190d068",
+    "patch_sha256": "4793ccc4a5b854c78451fbe6bc3438388ae218048760d08f354b21c54ce97faa"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 002101,002102,002103 --write-scope-report reviews/audit_scopes/20260813-cet4-listening-0021-sample-scope-audit.json",
+      "result": "passed; 0 hard blockers, 0 content risks, 0 review gaps, 3 disclosed synthetic-source findings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; exactly three changed card objects with one matching self-review snapshot each"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs && node --test scripts/test_card_integrity.mjs && git diff --check",
+      "result": "passed; only recorded upstream version and catalog-alignment warnings"
+    },
+    {
+      "command": "independent semantic review and re-review of box 0021 sample",
+      "result": "passed after closing front-answer leakage and transfer-strength findings; answer, distractor, analysis, and interaction semantics align"
+    }
+  ],
+  "local_status": "Three revised CET4 listening cards are available as a draft sample for explicit user confirmation before any expansion of the remaining nine box-0021 cards.",
+  "remaining_risks": [
+    "The sample is not formal content and cannot authorize batch expansion before explicit user confirmation.",
+    "The existing TTS assets still require identified-human perceptual QC before formal audio use.",
+    "The simulations must never be represented as true-exam excerpts."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
