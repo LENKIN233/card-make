@@ -1,0 +1,57 @@
+{
+  "approval_id": "YYYYMMDD-cet4-full-track-final",
+  "approval_mode": "full_track_final",
+  "approved_by_user": true,
+  "approved_at": "YYYY-MM-DDTHH:mm:ss+08:00",
+  "scope": {
+    "track": "cet4",
+    "box_prefixes": [],
+    "card_ids": []
+  },
+  "summary": "",
+  "representative_cards": [],
+  "card_quality_audit": {
+    "report": "reviews/audit_scopes/YYYYMMDD-track-full-scope-audit.json",
+    "report_sha256": "sha256:<64 lowercase hex characters>",
+    "corpus_fingerprint": "CURRENT_CARD_CORPUS_SHA256",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [],
+      "card_count": 0,
+      "issue_count": 0,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 0
+      },
+      "by_rule": {
+        "multiple_choice_no_options": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "front_leaks_correct_answer": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_missing_or_too_short": 0,
+        "analysis_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "template_analysis_pattern": 0,
+        "exact_repeated_front": 0,
+        "exact_repeated_analysis": 0,
+        "missing_quality_metadata": 0,
+        "unverified_source": 0,
+        "synthetic_source": 0
+      }
+    }
+  },
+  "validation": {
+    "harness": "node scripts/validate_harness.mjs",
+    "cards": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+    "card_quality_audit": "node scripts/audit_card_quality.mjs --report-path reports/card_quality_audit_report.json",
+    "card_quality_audit_report": "reports/card_quality_audit_report.json",
+    "agent_self_review": "reviews/agent_self_review/YYYYMMDD-cet4-full-track-remediation.json"
+  },
+  "approval_limits": [
+    "Only the named track, box prefixes, card IDs, and corpus fingerprint are approved.",
+    "Approval does not authorize unrelated generation or another track.",
+    "Approval does not change softbook_cet product specs."
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "handoff_id": "20260812-content-cet4-controlled-pilot-120-approval",
+  "created_at": "2026-08-12T18:46:00+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-controlled-pilot-120-approval",
+  "base_branch": "main",
+  "commit_sha": "ceb671e87b9416e07cc0ded10bdc5731132b280a",
+  "push_ref": "origin/content/cet4-controlled-pilot-120-approval",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/155",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "reviews/audit_scopes/20260812-cet4-controlled-pilot-120-approval-audit.json",
+      "reviews/controlled_pilot_approvals/cet4-controlled-pilot-v1-6052ffc24f36.json",
+      "reviews/controlled_pilot_reviews/20260812-cet4-controlled-pilot-120.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "7e0226c263a6fddb45d1e2c518fde2ee1c320f68",
+    "patch_sha256": "eedbfb8804eb99d0a82ecf99dafde5ef63ebc70f58453741e7db570010d63150"
+  },
+  "validation": [
+    {
+      "command": "node scripts/manage_controlled_pilot_approval.mjs validate",
+      "result": "passed; one aggregate review and one exact matching approval artifact"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --report-path /tmp/cet4-approved-card-validation.json",
+      "result": "passed; 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed; approval evidence only, no added or modified card objects"
+    },
+    {
+      "command": "exact controlled-pilot payload rebuild from merged main",
+      "result": "passed; 120 cards, 14 boxes, 24 audio assets, content version sha256:dd2d397532556563a205351f04f98184afc09a4cd6a2580966556052ffc24f36, payload sha256:5f75b4ddd2e3462854d9c5dbdf9543178993356d150e23910966375fbb9feea3"
+    },
+    {
+      "command": "exact 120-card scoped audit from merged main",
+      "result": "passed; hard blockers 0, content risks 0, review gaps 0, 120 disclosed synthetic-source notices"
+    }
+  ],
+  "local_status": "The user's explicit approval has been transformed by the repository manager into a tracked aggregate review transition and exact eight-field controlled-pilot approval artifact for the approved 120-card content version.",
+  "remaining_risks": [
+    "The 24 listening audio assets still require non-agent human perceptual QC before pilot publication.",
+    "Controlled-pilot publication and receiver deployment remain separate product-repository gates.",
+    "Controlled-pilot artifacts remain gate_eligible=false and do not replace formal closed-beta or launch evidence."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}

@@ -1,0 +1,46 @@
+{
+  "handoff_id": "20260803-content-cet4-pilot-cloze-0220-sample",
+  "created_at": "2026-08-03T07:26:55+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-cloze-0220-clean-v2",
+  "base_branch": "main",
+  "commit_sha": "7de672fe2cfc589c6ef7f50ca65c7d174db8e0f3",
+  "push_ref": "origin/content/cet4-pilot-cloze-0220-clean-v2",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/127",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_bankedcloze_0220.json",
+      "reviews/agent_self_review/20260801-cet4-pilot-cloze-0220-sample.json",
+      "reviews/audit_scopes/20260801-cet4-pilot-cloze-0220-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "c69fa4ccd2a0984b96cb3a0fe4ce858083ca451f",
+    "patch_sha256": "c24b63e593723c861d0d86f053cae15010e2a0f97beb8fc6015ec5c9a8c804d5"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; errors 0, warnings 0"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed at payload commit; exact scope 022001,022002,022003 and scoped hard blockers 0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream version and group-alignment warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #127 is a validated three-card candidate sample covered by the recorded 14-box controlled-pilot sample confirmation; it remains non-formal content.",
+  "remaining_risks": [
+    "The complete 120-card batch still requires a separate explicit user approval record before formal use."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}

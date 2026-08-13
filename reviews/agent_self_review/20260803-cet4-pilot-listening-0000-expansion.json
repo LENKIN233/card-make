@@ -1,0 +1,167 @@
+{
+  "review_id": "20260803-cet4-pilot-listening-0000-expansion",
+  "created_at": "2026-08-03T09:10:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测话题",
+    "box_prefixes": ["0000"],
+    "card_ids": ["000004", "000005", "000006", "000007", "000008", "000009", "000010", "000011", "000012"]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "spec/audio-generation-contract.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "reviews/sample_confirmations/20260802-cet4-controlled-pilot-14-boxes.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "is_three_card_sample_per_box": false,
+    "confirmed_box_expansion": true,
+    "sample_confirmation_satisfied": true,
+    "sample_confirmation_record": "reviews/sample_confirmations/20260802-cet4-controlled-pilot-14-boxes.json",
+    "sample_confirmation_id": "20260802-cet4-controlled-pilot-14-boxes",
+    "final_user_approval_required": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260803-cet4-pilot-listening-0000-expansion-scope-audit.json",
+    "corpus_fingerprint": "89af5e349c57715806a7fa60073d9e72ebcb8346e3334001183a3f3ad622afa7",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": ["000004", "000005", "000006", "000007", "000008", "000009", "000010", "000011", "000012"],
+      "card_count": 9,
+      "issue_count": 9,
+      "by_severity": {"hard_blocker": 0, "content_risk": 0, "review_gap": 0, "source_risk": 9},
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 9,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "000004", "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "0", "library_name": "听力", "group_id": "0", "group_name": "听前预测", "box_id": "0", "box_name": "根据选项预测话题", "box_prefix": "0000"},
+      "status": "pass",
+      "quality_metadata": {"main_training_goal": "从 whether 结构中预测听力中心议题", "weak_point_tags": ["listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "foundation", "secondary": ["pass"]}, "card_prototype": "solving_action", "material": {"text_source_type": "simulation", "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练用户把听力开头的对象与待判断问题合并，避免只凭一个熟词误判主旨。", "box_progression_role": "recognition", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [], "minor_issues": ["Perceptual audio QC is incomplete; this pass covers transcript, task, options, and analysis only."],
+      "recommendation": "Use as a recognition item for whether-framed topic prediction; keep audio non-formal."
+    },
+    {
+      "card_id": "000005", "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "0", "library_name": "听力", "group_id": "0", "group_name": "听前预测", "box_id": "0", "box_name": "根据选项预测话题", "box_prefix": "0000"},
+      "status": "pass",
+      "quality_metadata": {"main_training_goal": "用对象、受众和方式预测听力主话题", "weak_point_tags": ["listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "foundation", "secondary": ["pass"]}, "card_prototype": "solving_action", "material": {"text_source_type": "simulation", "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "让用户不再凭单个场景词猜主旨，而是用完整的话题角色关系筛选选项。", "box_progression_role": "recognition", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [], "minor_issues": ["Perceptual audio QC is incomplete; this pass covers transcript, task, options, and analysis only."],
+      "recommendation": "Use for object-audience-method topic matching; keep audio non-formal."
+    },
+    {
+      "card_id": "000006", "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "0", "library_name": "听力", "group_id": "0", "group_name": "听前预测", "box_id": "0", "box_name": "根据选项预测话题", "box_prefix": "0000"},
+      "status": "pass",
+      "quality_metadata": {"main_training_goal": "从 impact of X on Y 预测影响类主话题", "weak_point_tags": ["listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "pass", "secondary": []}, "card_prototype": "context_input", "material": {"text_source_type": "simulation", "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练用户把措施和结果成对识别，避免把行业场景误当作主旨。", "box_progression_role": "application", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [], "minor_issues": ["Perceptual audio QC is incomplete; this pass covers transcript, task, options, and analysis only."],
+      "recommendation": "Use for impact-frame application; keep audio non-formal."
+    },
+    {
+      "card_id": "000007", "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "0", "library_name": "听力", "group_id": "0", "group_name": "听前预测", "box_id": "0", "box_name": "根据选项预测话题", "box_prefix": "0000"},
+      "status": "pass",
+      "quality_metadata": {"main_training_goal": "用 how 与 by 结构预测策略类主话题", "weak_point_tags": ["listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "pass", "secondary": []}, "card_prototype": "context_input", "material": {"text_source_type": "simulation", "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "帮助用户从听力开头快速建立行动者、目标人群和方法三段式预测。", "box_progression_role": "application", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [], "minor_issues": ["Perceptual audio QC is incomplete; this pass covers transcript, task, options, and analysis only."],
+      "recommendation": "Use for how-by strategy prediction; keep audio non-formal."
+    },
+    {
+      "card_id": "000008", "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "0", "library_name": "听力", "group_id": "0", "group_name": "听前预测", "box_id": "0", "box_name": "根据选项预测话题", "box_prefix": "0000"},
+      "status": "pass",
+      "quality_metadata": {"main_training_goal": "识别话题切换并预测后文核心问题", "weak_point_tags": ["listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "pass", "secondary": ["high_score"]}, "card_prototype": "integrated_micro_drill", "material": {"text_source_type": "simulation", "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练用户识别主旨从背景比较切换到研究问题，减少被开头熟词带偏。", "box_progression_role": "transfer", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [], "minor_issues": ["Perceptual audio QC is incomplete; this pass covers transcript, task, options, and analysis only."],
+      "recommendation": "Use for topic-shift transfer; keep audio non-formal."
+    },
+    {
+      "card_id": "000009", "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "0", "library_name": "听力", "group_id": "0", "group_name": "听前预测", "box_id": "0", "box_name": "根据选项预测话题", "box_prefix": "0000"},
+      "status": "pass",
+      "quality_metadata": {"main_training_goal": "根据强调与条件信号预测结论型主话题", "weak_point_tags": ["listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "pass", "secondary": ["high_score"]}, "card_prototype": "integrated_micro_drill", "material": {"text_source_type": "simulation", "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "帮助用户从活动背景中提取真正的变化结论和触发条件。", "box_progression_role": "transfer", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [], "minor_issues": ["Perceptual audio QC is incomplete; this pass covers transcript, task, options, and analysis only."],
+      "recommendation": "Use for condition-result transfer; keep audio non-formal."
+    },
+    {
+      "card_id": "000010", "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "0", "library_name": "听力", "group_id": "0", "group_name": "听前预测", "box_id": "0", "box_name": "根据选项预测话题", "box_prefix": "0000"},
+      "status": "pass",
+      "quality_metadata": {"main_training_goal": "根据转折识别政策效果类主话题", "weak_point_tags": ["listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "pass", "secondary": []}, "card_prototype": "context_input", "material": {"text_source_type": "simulation", "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "让用户听出问题陈述只是引入，并把注意力转向政策带来的具体效果。", "box_progression_role": "application", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [], "minor_issues": ["Perceptual audio QC is incomplete; this pass covers transcript, task, options, and analysis only."],
+      "recommendation": "Use for contrast-to-policy-effect application; keep audio non-formal."
+    },
+    {
+      "card_id": "000011", "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "0", "library_name": "听力", "group_id": "0", "group_name": "听前预测", "box_id": "0", "box_name": "根据选项预测话题", "box_prefix": "0000"},
+      "status": "pass",
+      "quality_metadata": {"main_training_goal": "从 central concern 结构预测解释型主话题", "weak_point_tags": ["listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "high_score", "secondary": ["pass"]}, "card_prototype": "integrated_micro_drill", "material": {"text_source_type": "simulation", "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "训练用户忽略趋势背景，捕捉研究人群、行为变化与条件组成的中心问题。", "box_progression_role": "transfer", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [], "minor_issues": ["Perceptual audio QC is incomplete; this pass covers transcript, task, options, and analysis only."],
+      "recommendation": "Use for central-concern transfer; keep audio non-formal."
+    },
+    {
+      "card_id": "000012", "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "0", "library_name": "听力", "group_id": "0", "group_name": "听前预测", "box_id": "0", "box_name": "根据选项预测话题", "box_prefix": "0000"},
+      "status": "pass",
+      "quality_metadata": {"main_training_goal": "根据总结与最高程度限定预测结论型主话题", "weak_point_tags": ["listening_weak", "exam_strategy_weak"], "difficulty": {"primary": "high_score", "secondary": ["pass"]}, "card_prototype": "integrated_micro_drill", "material": {"text_source_type": "simulation", "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.", "audio_generation_method": "TTS_AI_generated", "tts_text_reviewed": true, "tts_audio_reviewed": false}, "exam_value": "帮助用户从多因素列举中抓住最终结论及其比较强度，提前预判后文证据重点。", "box_progression_role": "transfer", "review_status": "agent_pass"},
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [], "minor_issues": ["Perceptual audio QC is incomplete; this pass covers transcript, task, options, and analysis only."],
+      "recommendation": "Use for conclusion-and-superlative transfer; keep audio non-formal."
+    }
+  ],
+  "batch_review": {
+    "status": "reviewed_confirmed_box_expansion",
+    "box_progression": "The expansion moves from option-led recognition of complete topic roles, through impact, strategy, and policy-effect application, to transfer across topic shifts, conditions, central concerns, and conclusion-strength signals.",
+    "repetition_or_gap_risks": [
+      "All nine transcripts are disclosed constructed simulations and must not be represented as true-exam excerpts.",
+      "All nine cards use multiple choice because this box specifically trains option-based topic prediction; variation comes from the discourse frame rather than unsupported interaction families.",
+      "Existing TTS assets were not changed and have not passed human perceptual QC, so text review cannot authorize audio or formal use."
+    ],
+    "representative_cards": ["000004", "000008", "000012"],
+    "next_step": "Keep the complete twelve-card box as non-formal candidate content, complete separate technical and human perceptual audio QC, and continue the remaining confirmed box expansions."
+  }
+}

@@ -5,6 +5,7 @@
     "may": [
       "produce_candidate_cards",
       "produce_3_card_sample_per_box",
+      "expand_user_confirmed_box_samples_to_recorded_targets",
       "self_review_candidates",
       "revise_user_authorized_scope",
       "mark_discard_candidates",
@@ -35,7 +36,9 @@
   "sample_policy": {
     "default_size": "3 cards per box",
     "purpose": "prove quality before batch expansion",
-    "batch_generation_requires": "user_confirmation_of_sample"
+    "batch_generation_requires": "validated_user_sample_confirmation_record",
+    "sample_confirmation_directory": "reviews/sample_confirmations/",
+    "sample_confirmation_is_not_formal_approval": true
   },
   "candidate_review_queue": {
     "schema": "spec/candidate-review-queue.schema.json",
@@ -43,8 +46,12 @@
     "active_candidate_pr_limit": 5,
     "parallel_tooling_pr_limit": 1,
     "active_unit": "one_box_three_card_sample",
+    "merged_candidate_status": "A merged_candidate record preserves a merged sample PR and its candidate scope without counting it as an active PR or formal approval.",
     "green_checks_do_not_create_formal_approval": true,
-    "parked_units_must_keep_patch_sha_and_original_head": true
+    "parked_units_must_keep_patch_sha_and_original_head": true,
+    "active_new_pr_numbers_must_be_unique": true,
+    "active_box_and_card_scopes_must_be_globally_disjoint": true,
+    "weekly_remote_verification": "each active queue entry maps to one open draft content PR targeting main on the recorded branch; extra open content PRs are rejected"
   },
   "sample_quality_gate": {
     "quality_metadata_schema": "spec/card-metadata.schema.json",
@@ -52,8 +59,11 @@
     "approval_record_directory": "reviews/approved_batches/",
     "required_before_user_confirmation": [
       "quality_metadata_per_card",
+      "changed_candidate_card_integrity",
       "agent_self_review_record",
+      "self_review_quality_metadata_matches_current_card_corpus",
       "blocker_scan_per_card",
+      "analysis_reference_consistency_attestation",
       "card_quality_audit_no_hard_blockers",
       "scoped_card_quality_audit_report",
       "box_progression_roles",
@@ -66,6 +76,99 @@
       "harness_validation",
       "card_validation",
       "card_quality_audit_report"
+    ]
+  },
+  "changed_candidate_integrity_policy": {
+    "contract": "spec/content-quality-contract.json#candidate_integrity_policy",
+    "validator": "scripts/validate_pr_scope.mjs",
+    "discovery": "compare merge-base and head card objects by card_id rather than trusting declared scope",
+    "strict_on_any_card_change": true,
+    "requirements": [
+      "every added or modified card has complete schema-valid quality_metadata",
+      "every added or modified card has exactly one changed review coverage: either one standard per-card snapshot or one validated full-track aggregate scope+coverage entry",
+      "standard three-card samples contain exactly three snapshots for each declared scope.box_prefixes value, and every snapshot interaction_id plus knowledge_ref exactly matches its unique immutable HEAD corpus card",
+      "every new or changed standard, residual-closure, or full-track self-review or approval record links a direct current scoped audit under reviews/audit_scopes; global audit references belong only to immutable pre-cutover records",
+      "every new or changed scoped-audit artifact is a direct regular JSON file that exactly matches the current immutable-HEAD audit replay for its declared scope; malformed unlinked artifacts and deletion or mutation of archived evidence fail closed",
+      "standard sample batch_review carries non-empty box_progression, an explicit repetition_or_gap_risks array, non-empty unique representative_cards drawn from scope.card_ids, and a non-empty next_step",
+      "newly added cards require standard three-card sample coverage; residual blocker closure evidence applies only to pre-existing cards",
+      "newly added cards after a confirmed sample may instead use confirmed-box-expansion coverage when one immutable sample-confirmation record binds the exact box, its three sample card IDs, and its final per-box target",
+      "every entry in every changed self-review resolves to exactly one HEAD corpus card and all quality_metadata fields except artifact-local review_status are deeply equal, even when the card itself did not change",
+      "every new or changed standard or residual card snapshot explicitly confirms that answer truth, option or word-bank references, and distractor labels match the exact card; every new or changed full-track aggregate confirms the same checks under coverage",
+      "a changed full-track aggregate record may omit cards; its exact sample flags, structured human reviewer identity, per-box human pass, complete quality_audit summary, ready batch status, non-empty unique scope.card_ids, and coverage.reviewed_card_ids are validated before its scope can count as review evidence",
+      "for a semantically valid full-track aggregate, scope.card_ids and coverage.reviewed_card_ids are identical, both equal the complete declared track, and immutable HEAD has the same non-empty card ID set at merge-base",
+      "every JSON change under agent_self_review, approved_batches, sample_confirmations, controlled_pilot_reviews, controlled_pilot_approvals, drafts, or audit_scopes enters the content gate regardless of filename prefix, except the seven exact repository-declared template paths; governed records must be direct regular JSON children and nested records fail closed",
+      "Git paths are interpreted exactly without rewriting literal backslashes as separators, and review paths containing backslashes, controls, or Unicode line separators fail closed",
+      "all files under card_boxes_json use the canonical governed filename and are included in changed-candidate detection",
+      "the replayed scoped audit reads the complete immutable HEAD card_boxes_json snapshot, including deletions and rename sources",
+      "elimination runtime ID items, preview compatibility projection, and ID-based answer truth remain mutually consistent"
+    ],
+    "legacy_boundary": "Untouched cards without quality_metadata remain readable legacy corpus; touching a card opts the complete head object into current candidate integrity requirements.",
+    "must_not": [
+      "grandfather inherited integrity defects on a changed card",
+      "derive changed card scope only from self-review or handoff declarations",
+      "allow missing optional metadata fields to pass parity",
+      "exclude any parity field other than artifact-local review_status",
+      "treat object key order as a metadata mismatch",
+      "allow self-review-only churn to avoid HEAD corpus parity",
+      "allow an unprefixed governed review filename to avoid content-candidate validation",
+      "treat an unknown record as a template merely because its basename ends in TEMPLATE.json",
+      "count invalid or mismatched full-track scope and coverage as changed-card review evidence",
+      "count a new or changed self-review with missing or false answer and analysis reference consistency attestations as review coverage",
+      "allow a partial-track aggregate to satisfy changed-card review coverage",
+      "allow a full-track record to claim a track that differs from any covered HEAD card",
+      "allow a full-track remediation aggregate to authorize a card absent from merge-base",
+      "attach a cards snapshot payload to a full-track aggregate instead of using its canonical scope and coverage evidence",
+      "count a nested, symlinked, semantically incomplete, or automation-reviewed self-review record as changed-card coverage",
+      "count a box as sampled when it lacks exactly three matching immutable HEAD card snapshots",
+      "use residual blocker closure evidence to authorize newly generated cards",
+      "treat sample confirmation or confirmed-box-expansion review as formal content approval, audio perceptual QC, pilot release authority, or permission to exceed the recorded box target",
+      "rewrite unusual Git path characters into a different governed evidence path",
+      "replay a scoped audit on a base worktree that retains card files deleted or renamed by HEAD",
+      "run content-candidate validation without an explicit immutable head commit"
+    ]
+  },
+  "full_track_remediation_policy": {
+    "review_scope_type": "full_track_remediation",
+    "purpose": "Remediate an existing complete track corpus under one explicitly user-authorized scope, while preserving one final user approval for formal use.",
+    "allowed_when": [
+      "the track corpus already exists and this flow does not authorize new bulk generation",
+      "the user explicitly authorizes the named track remediation scope",
+      "every in-scope card is bound to one current corpus fingerprint",
+      "automated audit, agent review, and a named human CET reviewer cover the complete track"
+    ],
+    "required_fields": [
+      "sample_policy.review_scope_type=full_track_remediation",
+      "sample_policy.is_three_card_sample_per_box=false",
+      "sample_policy.full_track_remediation=true",
+      "sample_policy.final_user_approval_required=true",
+      "scope.track",
+      "scope.box_prefixes",
+      "scope.card_ids",
+      "coverage.expected_card_count",
+      "coverage.reviewed_card_ids",
+      "coverage.human_reviewer",
+      "coverage.boxes",
+      "quality_audit",
+      "representative_cards=non_empty_unique_scope_subset",
+      "batch_review.status=ready_for_full_track_user_approval",
+      "batch_review.summary",
+      "batch_review.remaining_risks=[]",
+      "batch_review.next_step"
+    ],
+    "human_reviewer_identity": {
+      "format": "github:<id>|team:<id>|external:<id>",
+      "id_characters": "one to 64 characters, starting with a Unicode letter or number and followed only by Unicode letters, numbers, or . _ @ - separators, with no whitespace",
+      "forbidden_identity_tokens": ["agent", "bot", "codex", "automation", "ci"],
+      "coverage_boxes_reviewer": "must equal coverage.human_reviewer",
+      "coverage_boxes_status": "pass"
+    },
+    "quality_audit_semantics": "The record must name a direct current scoped report under reviews/audit_scopes and a non-empty current corpus fingerprint, declare scope_has_no_hard_blockers=true, and carry a scope_summary whose unique card IDs/count match the full scope, whose required non-negative severity and rule counts are complete, whose hard_blocker count is zero, and whose issue_count equals the severity total.",
+    "approval_model": "execution_team_remediates_and_reviews_the_full_track; user_performs_one_final_complete_batch_approval",
+    "does_not_authorize": [
+      "new_bulk_card_generation",
+      "formal_use_before_the_final_user_approval_record",
+      "deleting_cards_without_user_confirmation",
+      "using_green_automation_as_human_content_review"
     ]
   },
   "residual_blocker_closure_review_policy": {
@@ -92,17 +195,56 @@
       "treat scoped audit plus handoff evidence as formal user approval"
     ]
   },
+  "confirmed_box_expansion_review_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "purpose": "Expand one user-confirmed three-card box sample to the exact target recorded for that box without converting sample confirmation into formal content approval.",
+    "allowed_when": [
+      "one direct validated record under reviews/sample_confirmations confirms the exact three sample card IDs and target for the box",
+      "the expansion self-review covers exactly one box prefix",
+      "the expansion adds exactly target_card_count minus the three confirmed sample cards",
+      "every expansion card has current per-card metadata, reference checks, blocker scan, and a direct current scoped audit"
+    ],
+    "required_fields": [
+      "sample_policy.review_scope_type=confirmed_box_expansion",
+      "sample_policy.is_three_card_sample_per_box=false",
+      "sample_policy.confirmed_box_expansion=true",
+      "sample_policy.sample_confirmation_satisfied=true",
+      "sample_policy.sample_confirmation_record",
+      "sample_policy.final_user_approval_required=true",
+      "scope.single_box_prefix",
+      "scope.card_ids=all_new_expansion_cards",
+      "batch_review.status=reviewed_confirmed_box_expansion",
+      "scoped_card_quality_audit_report"
+    ],
+    "approval_boundary": "This mode authorizes candidate production and agent review only. The complete 120-card batch still requires a separate explicit user approval record before formal use.",
+    "must_not": [
+      "create reviews/approved_batches records from sample confirmation alone",
+      "claim gate_eligible or formal usability",
+      "count unreviewed audio as approved",
+      "expand outside the recorded box prefixes or beyond a recorded target"
+    ]
+  },
   "self_review_required_checks": [
     "single_card_quality",
     "front_back_relationship",
+    "answer_matches_card",
+    "choice_or_bank_references_match_source",
+    "distractor_labels_match_explanations",
     "language_naturalness",
     "library_group_box_match",
     "box_progression",
     "blocker_scan"
   ],
+  "analysis_reference_check": {
+    "forward_requirement": "Every new or changed standard or residual self-review card entry must explicitly attest all three checks as true; every new or changed full-track remediation record must attest them under coverage.",
+    "answer_matches_card": "The stated answer and reasoning must match the canonical answer truth of the card.",
+    "choice_or_bank_references_match_source": "Every option key, option text, word-bank token, example, or source fragment named by the analysis must exist in and refer to the intended visible source item.",
+    "distractor_labels_match_explanations": "Whenever analysis classifies a labeled choice or bank item as correct, incorrect, target, or non-target, the label and explanation must describe that exact item.",
+    "automation_boundary": "This is explicit semantic review evidence, not a claim that regex or structural audit can prove natural-language correctness."
+  },
   "self_review_output": {
     "per_card_status": ["pass", "revise", "block"],
-    "batch_status": ["recommend_user_confirmation", "revise_before_user_review", "blocked", "documented_residual_closure"],
+    "batch_status": ["recommend_user_confirmation", "revise_before_user_review", "blocked", "documented_residual_closure", "reviewed_confirmed_box_expansion", "ready_for_full_track_user_approval"],
     "must_include": [
       "changed_or_new_boxes",
       "representative_cards",
@@ -139,7 +281,54 @@
       "card_quality_audit",
       "representative_cards",
       "validation"
-    ]
+    ],
+    "field_semantics": {
+      "approved_at": "non-empty ISO-8601 timestamp with an explicit timezone",
+      "summary": "non-empty approval conclusion",
+      "scope.box_prefixes": "non-empty unique string array",
+      "scope.card_ids": "non-empty unique string array",
+      "representative_cards": "non-empty unique string array contained in scope.card_ids"
+    },
+    "new_or_changed_record_audit_policy": "Every new or changed approval record must link a direct current scoped audit whose immutable-HEAD replay exactly matches the declared scope.",
+    "historical_linked_audit_aging": "Unchanged historical review and approval records remain immutable archive evidence bound to their recorded scoped artifact and rule set. Historical self-review skips current-card parity and historical approval does not count as current authorization; current formal authorization additionally requires the consumer to independently regenerate the complete current audit and exactly replay both scoped reports.",
+    "current_authorization_consumers": "Candidate queue and release-gap planning accept only direct canonical non-template approval records with complete formal fields and exact current scope, plus a direct canonical complete linked self-review with matching scope. The approval, linked review, both scoped reports, active audit script, and active audit rule spec must be regular committed evidence or authority whose worktree, index, and one fixed HEAD modes and bytes agree. The consumer independently regenerates the complete current card-quality audit, requires both scoped reports to be exact replays, and rechecks the fixed HEAD/index snapshot, captured file modes/bytes, and corpus fingerprint before returning; merely being tracked, matching a current corpus digest, using a self-declared summary, or claiming zero blockers cannot authorize. Historical approvals, templates, traversal, nested paths, symlinks, incomplete records, dirty/staged/mode-drifted authority or evidence, concurrent snapshot drift, forged or stale audits, and stale linked reviews remain non-authorizing.",
+    "template_mode_mapping": {
+      "reviews/agent_self_review/TEMPLATE.json": "three_card_sample_per_box with complete standard placeholder shape",
+      "reviews/agent_self_review/FULL_TRACK_TEMPLATE.json": "full_track_remediation with complete aggregate placeholder shape",
+      "reviews/approved_batches/TEMPLATE.json": "standard approval without approval_mode and with complete placeholder shape",
+      "reviews/approved_batches/FULL_TRACK_TEMPLATE.json": "approval_mode=full_track_final with complete placeholder shape",
+      "all_template_paths_must_be_regular_files": true,
+      "manifest_authority_must_match_path": true
+    },
+    "full_track_final_mode": {
+      "approval_mode": "full_track_final",
+      "requires_linked_review_scope_type": "full_track_remediation",
+      "requires_exact_track_card_and_box_scope_match": true,
+      "requires_quality_audit_report_sha256": true,
+      "requires_one_explicit_final_user_confirmation": true
+    },
+    "controlled_pilot_120_mode": {
+      "aggregate_review_schema": "controlled-pilot-review.v1",
+      "aggregate_review_template": "reviews/controlled_pilot_reviews/TEMPLATE.json",
+      "approval_artifact_schema": "controlled-pilot-approval.v1",
+      "approval_artifact_template": "reviews/controlled_pilot_approvals/TEMPLATE.json",
+      "manager": "scripts/manage_controlled_pilot_approval.mjs",
+      "track": "cet4",
+      "purpose": "controlled_pilot",
+      "exact_card_count": 120,
+      "exact_box_count": 14,
+      "sample_card_count": 42,
+      "expansion_card_count": 78,
+      "required_approval_scope": "controlled_pilot_120",
+      "requires_current_scoped_audit": true,
+      "requires_zero_hard_blockers_content_risks_and_review_gaps": true,
+      "allows_only_120_disclosed_synthetic_source_risks": true,
+      "requires_explicit_user_approval_command": true,
+      "sample_confirmation_is_not_formal_approval": true,
+      "audio_qc_required_separately": true,
+      "pilot_publication_required_separately": true,
+      "gate_eligible": false
+    }
   },
   "git_policy": {
     "contract": "spec/git-workflow.json",

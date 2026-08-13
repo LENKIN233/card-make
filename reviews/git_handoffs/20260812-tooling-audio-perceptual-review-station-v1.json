@@ -1,0 +1,73 @@
+{
+  "handoff_id": "20260812-tooling-audio-perceptual-review-station-v1",
+  "created_at": "2026-08-12T20:10:00+08:00",
+  "agent": "codex",
+  "branch": "tooling/audio-perceptual-review-station-v1",
+  "base_branch": "main",
+  "commit_sha": "91d6bb766cf8b23068f2bf1a977f32b482962ac7",
+  "push_ref": "origin/tooling/audio-perceptual-review-station-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/156",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "tooling",
+    "purpose": "Provide a loopback-only, one-card-at-a-time human audio perceptual review station that delegates every write to the authoritative worklist manager without bulk passing, content approval, or audio-QC authority.",
+    "referenced_specs": [
+      "spec/workspace-contract.json",
+      "spec/content-quality-contract.json",
+      "spec/review-workflow.json",
+      "spec/audio-generation-contract.json",
+      "spec/audio-perceptual-worklist.schema.json",
+      "../softbook_cet/spec/card-system.json",
+      "../softbook_cet/infra/cloudbase/controlled-pilot-v1-runtime-contract.md"
+    ],
+    "touched_paths": [
+      "README.md",
+      "reviews/audio_perceptual_worklists/README.md",
+      "scripts/serve_audio_perceptual_review.mjs",
+      "scripts/test_audio_perceptual_review_station.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/audio-generation-contract.json",
+      "spec/authority-map.json",
+      "spec/doc-manifest.json",
+      "spec/git-workflow.json",
+      "spec/workspace-contract.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "7a1cf71010bf547c09b731dc19f7d9f542e387c2",
+    "patch_sha256": "99d14a7d2e314fb395ee87f003402e91e7b3c13e8b4d22520d66c5c68fae68e0"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with no errors; only recorded upstream version and box-alignment warnings"
+    },
+    {
+      "command": "node --test scripts/test_audio_perceptual_worklist.mjs scripts/test_audio_perceptual_review_station.mjs scripts/test_build_audio_qc_drafts.mjs scripts/test_audio_technical_audit.mjs",
+      "result": "passed; 21 tests including one-current-card, human identity, complete listening, failure notes, loopback state and ranged MP3 delivery"
+    },
+    {
+      "command": "node --test scripts/test_card_integrity.mjs scripts/test_validate_pr_scope.mjs scripts/test_validate_delivery_record.mjs",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed; no formal audio QC records created"
+    },
+    {
+      "command": "real approved 120-card queue build and loopback smoke",
+      "result": "passed; complete 301-asset technical audit, exact 24-card pending queue with complete context, first bound MP3 ranged GET verified"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Ready tooling PR. The exact approved controlled-pilot 24-card worklist was regenerated under ignored exports and remains 24 pending until an identified human completes full-asset listening.",
+  "remaining_risks": [
+    "Human perceptual review remains 0 of 24 and cannot be completed or signed by an Agent.",
+    "A passing worklist must still be committed, translated into validated audio_qc records, and consumed by the controlled-pilot bundle.",
+    "Receiver-owned CloudBase profile, credentials, deployment and real-device evidence remain external."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}

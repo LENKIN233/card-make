@@ -276,7 +276,7 @@
         "summary": "Intentionally incomplete fixture: user approval exists without a linked agent self-review record.",
         "representative_cards": ["003191", "003192", "003193"],
         "card_quality_audit": {
-          "report": "reports/card_quality_audit_report.json",
+          "report": "reviews/audit_scopes/fixture-missing-self-review-scope-audit.json",
           "corpus_fingerprint": "FIXTURE_CARD_CORPUS_SHA256",
           "scope_has_no_hard_blockers": true,
           "scope_summary": {
@@ -292,6 +292,8 @@
             "by_rule": {
               "multiple_choice_no_options": 0,
               "multiple_choice_answer_not_in_options": 0,
+              "front_leaks_correct_answer": 0,
+              "front_leaks_analysis_conclusion": 0,
               "front_missing_or_too_short": 0,
               "analysis_missing_or_too_short": 0,
               "generic_front_pattern": 0,
@@ -346,7 +348,7 @@
           "batch_generation_requires_user_confirmation": true
         },
         "quality_audit": {
-          "report": "reports/card_quality_audit_report.json",
+          "report": "reviews/audit_scopes/fixture-residual-closure-scope-audit.json",
           "corpus_fingerprint": "FIXTURE_CARD_CORPUS_SHA256",
           "scope_has_no_hard_blockers": true,
           "scope_summary": {
@@ -363,6 +365,7 @@
               "multiple_choice_no_options": 0,
               "multiple_choice_answer_not_in_options": 0,
               "front_leaks_correct_answer": 0,
+              "front_leaks_analysis_conclusion": 0,
               "front_missing_or_too_short": 0,
               "analysis_missing_or_too_short": 0,
               "generic_front_pattern": 0,
@@ -510,6 +513,92 @@
         "formal_use_claimed": false,
         "expected_audit_rules": ["front_leaks_correct_answer"],
         "expected_hard_blocker_rules": ["front_leaks_correct_answer"]
+      }
+    },
+    {
+      "id": "FIX-GT-CARD-004-BLOCK-INCOMPLETE-FULL-TRACK-REVIEW",
+      "golden_task_id": "GT-CARD-004",
+      "type": "self_review_record",
+      "self_review_record": {
+        "review_id": "fixture-incomplete-full-track-review",
+        "created_at": "2026-07-29T00:00:00+08:00",
+        "agent": "codex",
+        "scope": {
+          "track": "cet4",
+          "box_prefixes": ["0000"],
+          "card_ids": ["000001"]
+        },
+        "specs_read": ["spec/review-workflow.json"],
+        "sample_policy": {
+          "review_scope_type": "full_track_remediation",
+          "is_three_card_sample_per_box": false,
+          "full_track_remediation": true,
+          "batch_generation_requires_user_confirmation": true,
+          "final_user_approval_required": true
+        },
+        "coverage": {
+          "expected_card_count": 2,
+          "reviewed_card_ids": [],
+          "human_reviewer": "external:codex-agent",
+          "boxes": [
+            {
+              "box_prefix": "0000",
+              "status": "pass",
+              "reviewer": "external:codex-agent"
+            }
+          ]
+        },
+        "quality_audit": {
+          "report": "reviews/audit_scopes/fixture-incomplete-full-track-scope-audit.json",
+          "corpus_fingerprint": "FIXTURE_CARD_CORPUS_SHA256",
+          "scope_has_no_hard_blockers": true,
+          "scope_summary": {
+            "card_ids": ["000001"],
+            "card_count": 1,
+            "issue_count": 0,
+            "by_severity": {
+              "hard_blocker": 0,
+              "content_risk": 0,
+              "review_gap": 0,
+              "source_risk": 0
+            },
+            "by_rule": {
+              "multiple_choice_no_options": 0,
+              "multiple_choice_answer_not_in_options": 0,
+              "front_leaks_correct_answer": 0,
+              "front_leaks_analysis_conclusion": 0,
+              "front_missing_or_too_short": 0,
+              "analysis_missing_or_too_short": 0,
+              "generic_front_pattern": 0,
+              "template_analysis_pattern": 0,
+              "exact_repeated_front": 0,
+              "exact_repeated_analysis": 0,
+              "missing_quality_metadata": 0,
+              "unverified_source": 0,
+              "synthetic_source": 0
+            }
+          }
+        },
+        "representative_cards": ["000001"],
+        "batch_review": {
+          "status": "ready_for_full_track_user_approval",
+          "summary": "Fixture must fail because full-track coverage and human review are incomplete.",
+          "remaining_risks": [],
+          "next_step": "block"
+        }
+      },
+      "expected_outcome": {
+        "self_review_status": "block",
+        "formal_use_claimed": false,
+        "expected_gate_errors": [
+          "full_track_review_card_scope_not_complete_track",
+          "full_track_review_box_scope_not_complete_track",
+          "full_track_review_expected_count_mismatch",
+          "full_track_review_coverage_card_ids_invalid",
+          "full_track_review_coverage_mismatch",
+          "full_track_review_human_reviewer_invalid",
+          "full_track_review_box_not_human_passed"
+        ]
       }
     },
     {

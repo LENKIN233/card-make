@@ -59,6 +59,7 @@
     "default_for_harness_followups": "use_existing_PR_for_same_harness_domain; create_stacked_PR_for_distinct_git_workflow_or_quality_gate_domains"
   },
   "validation_policy": {
+    "delivery_record_head_policy": "The delivery-record gate passes github.event.pull_request.head.sha and exact number, URL, state, draft, head/base branch, and head/base repository metadata to payload-history validation while other pull-request jobs retain the default synthetic merge checkout for base-integration coverage.",
     "required_github_checks": [
       "contract-harness",
       "content-scope",
@@ -77,8 +78,16 @@
         "command": "node scripts/validate_audio_qc.mjs"
       },
       {
+        "scope": "audio_perceptual_worklist_tooling",
+        "command": "node --test scripts/test_audio_perceptual_worklist.mjs scripts/test_audio_perceptual_review_station.mjs"
+      },
+      {
         "scope": "card_json_or_preview_reader",
         "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json"
+      },
+      {
+        "scope": "card_integrity_harness",
+        "command": "node --test scripts/test_card_integrity.mjs"
       },
       {
         "scope": "candidate_sample_scoped_audit",
@@ -86,13 +95,39 @@
       },
       {
         "scope": "content_sample_pr_scope",
-        "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract",
+        "command": "node scripts/validate_pr_scope.mjs --base origin/fix/review-findings-card-contract --head HEAD",
+        "execution_phase": "after_payload_commit_before_push",
         "blocks": [
           "global report refreshes in content PRs",
           "non-scope self-review or scoped-audit churn",
+          "unprefixed self-review, draft, or scoped-audit paths bypassing content-candidate validation",
+          "nested, symlinked, semantically incomplete, or automation-reviewed self-review evidence counting as changed-card coverage",
+          "standard samples without exactly three immutable-HEAD-matching snapshots per declared box, or residual closure evidence used for newly added cards",
+          "new or changed review evidence reusing an archived global audit, or any mutation of the immutable pre-cutover report index and its referenced legacy review records",
+          "empty, malformed, forged, deleted, renamed, or non-replayed scoped-audit artifacts, including unlinked files",
+          "swapped, incomplete, symlinked, or mode-drifted review authority templates and formally approved records with empty or duplicate approval evidence",
+          "candidate-queue or release-gap consumers counting templates, traversal, symlinks, incomplete records, historical approvals, dirty/staged/mode-drifted audit authority or approval/review/audit evidence, concurrent HEAD/index/file/corpus drift, forged current-digest audits, stale audits, or stale linked self-reviews as current authorization without proving one fixed worktree/index/HEAD snapshot, regenerating the complete current audit, and exactly replaying both scoped reports",
+          "literal backslash, control, or Unicode line-separator Git paths being rewritten or misclassified as governed evidence",
+          "self-review-only metadata drift from the immutable HEAD corpus",
+          "noncanonical or Unicode card-box paths that are not part of the governed corpus filename contract",
           "multi-prefix content PRs without explicit handoff or residual-closure evidence",
-          "current scoped card-quality audit hard blockers, even when changed scoped-audit evidence was generated under older rules"
+          "current scoped card-quality audit hard blockers, even when changed scoped-audit evidence was generated under older rules",
+          "current scoped audits replayed against a partial overlay instead of the complete immutable HEAD card corpus",
+          "changed cards without current schema-valid quality metadata",
+          "changed cards without exactly one changed self-review snapshot",
+          "changed card and self-review quality_metadata mismatch",
+          "new or changed self-review evidence without complete true answer and analysis reference consistency attestations",
+          "elimination runtime ID, preview projection, or answer truth mismatch",
+          "worktree-only validation without an explicit immutable head commit"
         ]
+      },
+      {
+        "scope": "content_pr_scope_harness",
+        "command": "node --test scripts/test_validate_pr_scope.mjs"
+      },
+      {
+        "scope": "delivery_record_integrity",
+        "command": "node --test scripts/test_validate_delivery_record.mjs"
       },
       {
         "scope": "front_leak_candidate_queue",
@@ -138,6 +173,7 @@
     "active_candidate_pr_limit": 5,
     "parallel_tooling_or_harness_pr_limit": 1,
     "candidate_queue_contract": "spec/candidate-review-queue.schema.json",
+    "candidate_queue_remote_mapping": "weekly health verification requires exactly one open draft main-targeting PR per active queue entry and rejects unmapped content PRs",
     "parked_candidate_state": "closed PR plus recoverable patch_sha256 and original head_sha",
     "green_checks_are_not_formal_approval": true
   },
@@ -168,8 +204,12 @@
   },
   "handoff_policy": {
     "directory": "reviews/git_handoffs/",
+    "template_path": "reviews/git_handoffs/TEMPLATE.json",
     "record_required_when": "agent_publishes_tracked_file_changes",
     "required_fields": [
+      "handoff_id",
+      "created_at",
+      "agent",
       "branch",
       "base_branch",
       "commit_sha",
@@ -177,10 +217,130 @@
       "PR_url",
       "PR_state",
       "is_draft",
+      "scope",
       "validation",
       "local_status",
       "remaining_risks",
       "merge_authority"
-    ]
+    ],
+    "payload_commit_policy": {
+      "commit_sha_meaning": "the final payload commit before the handoff-only commit",
+      "base_commit": "merge-base of the recorded base ref and commit_sha",
+      "payload_path_set": "all non-handoff paths changed from base_commit through commit_sha must exactly equal sorted unique scope.touched_paths, and every commit reachable from commit_sha but not base_commit is walked so add-delete, modify-restore, gitlink, non-UTF-8, and restored side-branch paths fail closed rather than disappearing from the final tree diff",
+      "post_payload_changes": "the full commit set reachable from the explicit PR head but not from commit_sha may change only the current handoff record; this includes merged side histories, and a later tree restoration or identical-tree merge does not erase an intervening payload mutation"
+    },
+    "record_object_policy": {
+      "path": "exactly one direct safe reviews/git_handoffs/<record>.json child, excluding only reviews/git_handoffs/TEMPLATE.json",
+      "fixed_head_object": "the explicit PR-head tree entry must be a non-executable 100644 blob; symlinks, executable blobs, gitlinks, nested records, backslashes, ASCII controls, and Unicode line separators fail closed",
+      "read_method": "resolve the fixed HEAD tree entry with literal-pathspec ls-tree -z, require the exact path/mode/type, then parse UTF-8 JSON from cat-file blob <object_oid>",
+      "append_only": "the current handoff path must be absent from both base_commit and commit_sha and added only after the payload; an existing base handoff may not be overwritten, deleted and re-added, or renamed into the current record, and all other historical handoffs remain immutable"
+    },
+    "semantic_git_reads": {
+      "fixed_oids": "resolve base, head, and handoff commit_sha to direct full commit OIDs once before merge-base, path, history, tree, or blob inspection",
+      "environment": [
+        "start from an empty child environment",
+        "inherit only PATH, Path, PATHEXT, SystemRoot, SYSTEMROOT, WINDIR, COMSPEC, ComSpec, TMPDIR, TMP, and TEMP when present",
+        "GIT_ATTR_NOSYSTEM=1",
+        "GIT_CONFIG_NOSYSTEM=1",
+        "GIT_CONFIG_GLOBAL=<canonical_null_device>",
+        "GIT_CONFIG_SYSTEM=<canonical_null_device>",
+        "GIT_GRAFT_FILE=<canonical_null_device>",
+        "GIT_NO_REPLACE_OBJECTS=1",
+        "LC_ALL=C",
+        "LANG=C"
+      ],
+      "replace_policy": "Git replace refs, GIT_REPLACE_REF_BASE, and legacy common-git-dir info/grafts must never affect ref resolution, ancestry, merge-base, path discovery, reachable-history inspection, tree mode inspection, blob reads, or patch hashing; GIT_GRAFT_FILE is pinned to the canonical null device and any non-empty common-dir info/grafts fails closed, including from linked worktrees."
+    },
+    "touched_paths_policy": {
+      "required": true,
+      "non_empty": true,
+      "repository_relative": true,
+      "sorted": true,
+      "unique": true,
+      "must_exclude_current_handoff": true,
+      "must_name_changed_payload_paths_only": true,
+      "must_reject_transient_or_restored_payload_history": true,
+      "path_encoding": "Git path output must be valid UTF-8 and is decoded fatally and byte-preservingly; any non-UTF-8 path bytes fail closed, and a leading UTF-8 BOM is preserved as the U+FEFF filename character instead of being stripped or aliased.",
+      "path_discovery": "Every payload and post-payload path walk forces --no-ext-diff and --ignore-submodules=none so local diff settings cannot hide a gitlink or invoke an external helper.",
+      "git_pathspec_handling": "All touched paths are passed to Git with --literal-pathspecs so pathspec magic and glob characters are hashed as literal tracked filenames."
+    },
+    "patch_integrity": {
+      "legacy_helper_format": "git-diff-binary-scoped-v1",
+      "legacy_archive_policy": "legacy hashes may be reproduced for immutable pre-cutover archive tooling only; a current changed handoff must never omit or downgrade the v2 evidence fields",
+      "legacy_algorithm": "sha256 of raw git --literal-pathspecs diff --binary <merge-base> <commit_sha> -- <sorted scope.touched_paths>",
+      "new_format": "git-diff-binary-v2",
+      "current_handoff_required_format": "git-diff-binary-v2",
+      "new_format_requires": [
+        "scope.base_commit_sha",
+        "scope.patch_sha256"
+      ],
+      "new_algorithm": "sha256 of the exact stdout bytes returned by scripts/validate_delivery_record.mjs buildPatchBytes for git-diff-binary-v2, using the ordered canonical_environment, canonical_git_config, and canonical_diff_options below before <scope.base_commit_sha> <commit_sha> -- <sorted scope.touched_paths>",
+      "canonical_null_device": "the platform null device returned by node:os.devNull",
+      "canonical_environment": [
+        "start from an empty child environment",
+        "inherit only PATH, Path, PATHEXT, SystemRoot, SYSTEMROOT, WINDIR, COMSPEC, ComSpec, TMPDIR, TMP, and TEMP when present",
+        "do not inherit any other ambient variable, including GIT_* injection variables",
+        "GIT_ATTR_NOSYSTEM=1",
+        "GIT_ATTR_SOURCE=<commit_sha>",
+        "GIT_CONFIG_NOSYSTEM=1",
+        "GIT_CONFIG_GLOBAL=<canonical_null_device>",
+        "GIT_CONFIG_SYSTEM=<canonical_null_device>",
+        "GIT_GRAFT_FILE=<canonical_null_device>",
+        "GIT_NO_REPLACE_OBJECTS=1",
+        "LC_ALL=C",
+        "LANG=C"
+      ],
+      "canonical_git_config": [
+        "color.ui=false",
+        "core.bigFileThreshold=512m",
+        "core.quotePath=true",
+        "core.attributesFile=<canonical_null_device>",
+        "diff.noprefix=false",
+        "diff.mnemonicPrefix=false",
+        "diff.relative=false",
+        "diff.algorithm=myers",
+        "diff.compactionHeuristic=false",
+        "diff.indentHeuristic=false",
+        "diff.context=3",
+        "diff.interHunkContext=0",
+        "diff.suppressBlankEmpty=false",
+        "diff.orderFile=<canonical_null_device>"
+      ],
+      "canonical_diff_options": [
+        "--literal-pathspecs",
+        "diff",
+        "--binary",
+        "--full-index",
+        "--no-ext-diff",
+        "--no-textconv",
+        "--no-renames",
+        "--no-color",
+        "--src-prefix=a/",
+        "--dst-prefix=b/",
+        "--line-prefix=",
+        "--unified=3",
+        "--diff-algorithm=myers",
+        "--no-indent-heuristic",
+        "--inter-hunk-context=0",
+        "--no-relative",
+        "--ignore-submodules=none",
+        "--submodule=short",
+        "--output-indicator-new=+",
+        "--output-indicator-old=-",
+        "--output-indicator-context= "
+      ],
+      "attribute_policy": "Attributes are read from commit_sha via GIT_ATTR_SOURCE; a non-empty repository info/attributes file or any repository-local/worktree diff.<driver>.* config key fails closed instead of producing environment-dependent bytes.",
+      "compatibility_golden": {
+        "fixture": "the fixed text-plus-binary payload in scripts/test_validate_delivery_record.mjs",
+        "sha256": "4fa4d17ca8633b5313260f144fffaf7230b9c19adc5246e34e99685c25578fed",
+        "requirement": "a Git/runtime environment must reproduce this digest before it may create or validate git-diff-binary-v2 evidence"
+      }
+    },
+    "locator_policy": {
+      "pull_request": "OPEN, CLOSED, or MERGED records use the canonical repository-matching /pull/<number> URL and require exact GitHub pull_request event binding for number, canonical URL, state, merged flag, draft flag, explicit head SHA, head/base branch, and same-origin head/base repository; fork records fail closed under the origin/<branch> model",
+      "parked_compare": "PARKED_NO_PR_WIP_LIMIT records may use the legacy PR_url field for a repository-matching /compare/<base_branch>...<branch> locator whose decoded refs exactly match the record; the compare page is not a pull request, event context must be absent, and refs/remotes/origin/<branch> must resolve to the explicit validated head",
+      "push_ref": "must equal origin/<branch> and be proven by exact PR event metadata or, for parked records, a matching remote-tracking commit",
+      "record_schema": "current records require the complete template field set with strict string, boolean, object, array, timestamp, validation-entry, risk-entry, change_type enum, and merge_authority-to-scope consistency checks; any payload that changes card_boxes_json must use a content change_type with no-auto-merge authority"
+    }
   }
 }

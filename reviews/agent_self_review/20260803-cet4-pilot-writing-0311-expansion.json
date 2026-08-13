@@ -1,0 +1,180 @@
+{
+  "review_id": "20260803-cet4-pilot-writing-0311-expansion",
+  "created_at": "2026-08-03T09:35:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "写作",
+    "group": "论证展开与论据支撑",
+    "box": "展开认证",
+    "box_prefixes": ["0311"],
+    "card_ids": ["031102", "031103", "031104", "031105", "031107"]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "is_three_card_sample_per_box": false,
+    "confirmed_box_expansion": true,
+    "sample_confirmation_satisfied": true,
+    "sample_confirmation_record": "reviews/sample_confirmations/20260802-cet4-controlled-pilot-14-boxes.json",
+    "sample_confirmation_id": "20260802-cet4-controlled-pilot-14-boxes",
+    "final_user_approval_required": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260803-cet4-pilot-writing-0311-expansion-scope-audit.json",
+    "corpus_fingerprint": "86ec5c183d60e74c3b92989775c11d99f081bc9d82f7cf72184b474f14664a7d",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": ["031102", "031103", "031104", "031105", "031107"],
+      "card_count": 5,
+      "issue_count": 5,
+      "by_severity": {"hard_blocker": 0, "content_risk": 0, "review_gap": 0, "source_risk": 5},
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 5,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "031102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "3", "library_name": "写作", "group_id": "1", "group_name": "论证展开与论据支撑", "box_id": "1", "box_name": "展开认证", "box_prefix": "0311"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从主张后识别可继续展开的作用机制",
+        "weak_point_tags": ["writing_output_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "foundation", "secondary": ["pass"]},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生把赞同主张推进为可解释、可举例的理由，避免观点原地重复。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use as the mechanism-recognition entry."
+    },
+    {
+      "card_id": "031103",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "3", "library_name": "写作", "group_id": "1", "group_name": "论证展开与论据支撑", "box_id": "1", "box_name": "展开认证", "box_prefix": "0311"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "诊断主张与结果之间缺失的作用机制",
+        "weak_point_tags": ["writing_output_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["foundation"]},
+        "card_prototype": "error_correction",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生定位空泛段落中的因果断点，而不是靠连接词或虚构数字遮掩。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for causal-gap diagnosis."
+    },
+    {
+      "card_id": "031104",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "3", "library_name": "写作", "group_id": "1", "group_name": "论证展开与论据支撑", "box_id": "1", "box_name": "展开认证", "box_prefix": "0311"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "选择具体且不过度外推的论证机制",
+        "weak_point_tags": ["writing_output_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": []},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生用可推演机制增强说服力，同时规避无依据数字和绝对化结论。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for bounded-warrant selection."
+    },
+    {
+      "card_id": "031105",
+      "interaction_id": "swipe",
+      "knowledge_ref": {"track": "cet4", "library_id": "3", "library_name": "写作", "group_id": "1", "group_name": "论证展开与论据支撑", "box_id": "1", "box_name": "展开认证", "box_prefix": "0311"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "判断无精确数据的具体情境能否构成有效例证",
+        "weak_point_tags": ["writing_output_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["high_score"]},
+        "card_prototype": "error_correction",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "纠正以虚构精确数据替代论证的习惯，建立情境证据与理由回扣意识。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for evidence-source misconception correction."
+    },
+    {
+      "card_id": "031107",
+      "interaction_id": "lock",
+      "knowledge_ref": {"track": "cet4", "library_id": "3", "library_name": "写作", "group_id": "1", "group_name": "论证展开与论据支撑", "box_id": "1", "box_name": "展开认证", "box_prefix": "0311"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用连接词完成让步问题替代方案结果链",
+        "weak_point_tags": ["writing_output_weak", "grammar_weak"],
+        "difficulty": {"primary": "high_score", "secondary": ["pass"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "ai_generated", "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.", "audio_generation_method": "none"},
+        "exam_value": "训练考生按句间功能组织较复杂的论证链，而不是堆叠连接词或虚构结果数据。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use as the concession-alternative-result transfer lock."
+    }
+  ],
+  "batch_review": {
+    "status": "reviewed_confirmed_box_expansion",
+    "box_progression": "The expansion moves from recognizing a usable mechanism, through diagnosing a missing causal bridge and selecting a bounded warrant, to correcting fabricated-data habits and locking a concession-alternative-result chain.",
+    "repetition_or_gap_risks": [
+      "All five cards are disclosed AI-authored simulations and must not be represented as true-exam excerpts.",
+      "Three multiple-choice cards serve distinct reason functions; swipe and lock then move the box into evidence judgment and structural transfer. Formal usability still requires complete-batch approval."
+    ],
+    "representative_cards": ["031102", "031105", "031107"],
+    "next_step": "Keep this exact eight-card box non-formal while expanding the remaining confirmed boxes under the same quality contract."
+  }
+}

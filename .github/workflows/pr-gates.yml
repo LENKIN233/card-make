@@ -28,14 +28,14 @@ jobs:
         working-directory: card-make
     steps:
       - name: Checkout card workspace
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: card-make
           fetch-depth: 0
           lfs: true
 
       - name: Checkout product authority
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: LENKIN233/softbook_cet
           ref: main
@@ -44,7 +44,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22.11.0"
 
@@ -53,6 +53,11 @@ jobs:
           node scripts/validate_harness.mjs
           node scripts/validate_audio_qc.mjs
           node scripts/validate_audio_lfs.mjs
+          node --test scripts/test_card_integrity.mjs
+          node --test scripts/test_validate_pr_scope.mjs
+          node --test scripts/test_validate_delivery_record.mjs
+          node --test scripts/test_audio_technical_audit.mjs
+          node --test scripts/test_audio_perceptual_worklist.mjs
           git diff --check
 
   content-scope:
@@ -63,14 +68,14 @@ jobs:
         working-directory: card-make
     steps:
       - name: Checkout card workspace
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: card-make
           fetch-depth: 0
           lfs: true
 
       - name: Checkout product authority
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: LENKIN233/softbook_cet
           ref: main
@@ -79,7 +84,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22.11.0"
 
@@ -100,7 +105,7 @@ jobs:
         working-directory: card-make
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: card-make
           fetch-depth: 0
@@ -119,7 +124,7 @@ jobs:
         working-directory: card-make
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: card-make
           fetch-depth: 0
@@ -129,7 +134,17 @@ jobs:
         env:
           HEAD_BRANCH: ${{ github.head_ref }}
           BASE_BRANCH: ${{ github.base_ref }}
-        run: node scripts/validate_delivery_record.mjs --base "origin/${{ github.base_ref }}" --head HEAD
+          DELIVERY_PR_NUMBER: ${{ github.event.pull_request.number }}
+          DELIVERY_PR_URL: ${{ github.event.pull_request.html_url }}
+          DELIVERY_PR_STATE: ${{ github.event.pull_request.state }}
+          DELIVERY_PR_MERGED: ${{ github.event.pull_request.merged }}
+          DELIVERY_PR_DRAFT: ${{ github.event.pull_request.draft }}
+          DELIVERY_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          DELIVERY_HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+          DELIVERY_HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+          DELIVERY_BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+          DELIVERY_BASE_REPOSITORY: ${{ github.event.pull_request.base.repo.full_name }}
+        run: node scripts/validate_delivery_record.mjs --base "origin/${{ github.base_ref }}" --head "${{ github.event.pull_request.head.sha }}"
 
   repo-health:
     runs-on: ubuntu-latest
@@ -139,7 +154,7 @@ jobs:
         working-directory: card-make
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: card-make
           fetch-depth: 0
@@ -148,14 +163,17 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
           EVENT_NAME: ${{ github.event_name }}
+          GH_TOKEN: ${{ github.token }}
         run: |
+          node scripts/test_report_repo_health.mjs
+          node scripts/validate_candidate_review_queue.mjs --self-test
           if [ "$EVENT_NAME" = "schedule" ]; then
-            node scripts/report_repo_health.mjs --full-tree --remote --strict --output "$RUNNER_TEMP/repository-health.json"
-            node scripts/validate_candidate_review_queue.mjs --required --require-five
+            node scripts/report_repo_health.mjs --full-tree --remote --strict --expected-max-worktrees 1 --expected-max-stashes 0 --require-upstreams --output "$RUNNER_TEMP/repository-health.json"
+            node scripts/validate_candidate_review_queue.mjs --required --require-nonempty --verify-remote
           elif git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
-            node scripts/report_repo_health.mjs --base "$BASE_SHA" --strict --output "$RUNNER_TEMP/repository-health.json"
+            node scripts/report_repo_health.mjs --base "$BASE_SHA" --strict --expected-max-worktrees 1 --expected-max-stashes 0 --require-upstreams --output "$RUNNER_TEMP/repository-health.json"
             node scripts/validate_candidate_review_queue.mjs
           else
-            node scripts/report_repo_health.mjs --strict --output "$RUNNER_TEMP/repository-health.json"
+            node scripts/report_repo_health.mjs --strict --expected-max-worktrees 1 --expected-max-stashes 0 --require-upstreams --output "$RUNNER_TEMP/repository-health.json"
             node scripts/validate_candidate_review_queue.mjs
           fi

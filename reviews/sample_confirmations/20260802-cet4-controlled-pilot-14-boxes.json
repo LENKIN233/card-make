@@ -1,0 +1,65 @@
+{
+  "schema_version": "sample-confirmation.v1",
+  "confirmation_id": "20260802-cet4-controlled-pilot-14-boxes",
+  "recorded_at": "2026-08-02T21:36:34+08:00",
+  "confirmed_by_user": true,
+  "confirmation_source": {
+    "conversation_id": "codex-task:softbook-cet-controlled-pilot",
+    "message": "可以继续吧",
+    "context": "After receiving the 14-box, 42-card consolidated review result and the explicit explanation that confirmation authorizes expansion to 120 but does not approve audio QC or protected release gates, the user instructed the agent to continue."
+  },
+  "scope": {
+    "track": "cet4",
+    "purpose": "controlled_pilot",
+    "target_card_count": 120,
+    "box_targets": [
+      {"box_prefix": "0000", "target_card_count": 12, "sample_card_ids": ["000001", "000002", "000003"]},
+      {"box_prefix": "0010", "target_card_count": 12, "sample_card_ids": ["001001", "001002", "001003"]},
+      {"box_prefix": "0113", "target_card_count": 12, "sample_card_ids": ["011301", "011302", "011303"]},
+      {"box_prefix": "0121", "target_card_count": 12, "sample_card_ids": ["012101", "012102", "012104"]},
+      {"box_prefix": "0202", "target_card_count": 8, "sample_card_ids": ["020201", "020202", "020203"]},
+      {"box_prefix": "0220", "target_card_count": 8, "sample_card_ids": ["022001", "022002", "022003"]},
+      {"box_prefix": "0300", "target_card_count": 8, "sample_card_ids": ["030001", "030006", "030012"]},
+      {"box_prefix": "0311", "target_card_count": 8, "sample_card_ids": ["031101", "031106", "031110"]},
+      {"box_prefix": "0401", "target_card_count": 8, "sample_card_ids": ["040101", "040102", "040103"]},
+      {"box_prefix": "0410", "target_card_count": 8, "sample_card_ids": ["041001", "041002", "041003"]},
+      {"box_prefix": "0500", "target_card_count": 6, "sample_card_ids": ["050001", "050002", "050003"]},
+      {"box_prefix": "0521", "target_card_count": 6, "sample_card_ids": ["052101", "052102", "052106"]},
+      {"box_prefix": "0611", "target_card_count": 6, "sample_card_ids": ["061101", "061102", "061103"]},
+      {"box_prefix": "0630", "target_card_count": 6, "sample_card_ids": ["063001", "063002", "063003"]}
+    ]
+  },
+  "sample_evidence": {
+    "review_pack_sha256": "sha256:4e1723f9d1d499881d248bbfa7e7be491aa53c4f1246b22beed0068bc5176452",
+    "sample_card_count": 42,
+    "box_count": 14,
+    "branch_heads": [
+      {"box_prefix": "0000", "branch": "content/cet4-pilot-listening-0000-sample", "commit_sha": "777e1e4"},
+      {"box_prefix": "0010", "branch": "content/cet4-pilot-listening-0010-sample", "commit_sha": "e8824d1"},
+      {"box_prefix": "0113", "branch": "content/cet4-pilot-reading-0113-sample", "commit_sha": "f14593b"},
+      {"box_prefix": "0121", "branch": "content/cet4-pilot-reading-0121-sample", "commit_sha": "097c9e1"},
+      {"box_prefix": "0202", "branch": "content/cet4-pilot-cloze-0202-sample", "commit_sha": "043628f"},
+      {"box_prefix": "0220", "branch": "content/cet4-pilot-cloze-0220-sample", "commit_sha": "2da518c"},
+      {"box_prefix": "0300", "branch": "content/cet4-pilot-writing-0300-sample", "commit_sha": "60e71cb"},
+      {"box_prefix": "0311", "branch": "content/cet4-pilot-writing-0311-sample", "commit_sha": "141d248"},
+      {"box_prefix": "0401", "branch": "content/cet4-pilot-translation-0401-sample", "commit_sha": "c922cda"},
+      {"box_prefix": "0410", "branch": "content/cet4-pilot-translation-0410-sample", "commit_sha": "125eb86"},
+      {"box_prefix": "0500", "branch": "content/cet4-pilot-vocab-0500-sample", "commit_sha": "baa4ca5"},
+      {"box_prefix": "0521", "branch": "content/cet4-pilot-vocab-0521-sample", "commit_sha": "ab685b8"},
+      {"box_prefix": "0611", "branch": "content/cet4-pilot-grammar-0611-sample", "commit_sha": "fe65fab"},
+      {"box_prefix": "0630", "branch": "content/cet4-pilot-grammar-0630-sample", "commit_sha": "7f46a1c"}
+    ]
+  },
+  "authorizes": {
+    "confirmed_box_expansion": true,
+    "same_quality_contract": true
+  },
+  "does_not_authorize": [
+    "formal_content_approval",
+    "audio_perceptual_qc",
+    "pilot_release",
+    "destructive_card_changes"
+  ],
+  "final_user_approval_required": true,
+  "gate_eligible": false
+}

@@ -1,0 +1,46 @@
+{
+  "handoff_id": "20260803-content-cet4-pilot-vocabulary-0500-sample",
+  "created_at": "2026-08-03T07:01:23+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-vocabulary-0500-clean",
+  "base_branch": "main",
+  "commit_sha": "700eb9d4114e239dacfc0c7ec99314aeb5761b69",
+  "push_ref": "origin/content/cet4-pilot-vocabulary-0500-clean",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/122",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0500.json",
+      "reviews/agent_self_review/20260801-cet4-pilot-vocabulary-0500-sample.json",
+      "reviews/audit_scopes/20260801-cet4-pilot-vocabulary-0500-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "b4706cbd8889e9858c661f520cde29e9f655915d",
+    "patch_sha256": "1c50b8b46ddede783d6a11b5d3a085db6e668f6f3839ff0ab93ed3761dd36284"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; errors 0, warnings 0"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed at payload commit; exact scope 050001,050002,050003 and scoped hard blockers 0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream version and group-alignment warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #122 is a validated three-card candidate sample covered by the recorded 14-box controlled-pilot sample confirmation; it remains non-formal content.",
+  "remaining_risks": [
+    "The complete 120-card batch still requires a separate explicit user approval record before formal use."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}

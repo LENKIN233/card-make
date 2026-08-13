@@ -1,0 +1,131 @@
+{
+  "review_id": "20260803-cet4-pilot-translation-040105-runtime-answer-fix",
+  "created_at": "2026-08-03T11:18:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "翻译",
+    "group": "高级句子",
+    "box": "定语从句",
+    "box_prefixes": ["0401"],
+    "card_ids": ["040105"],
+    "closure_reason": "The controlled-pilot runtime payload conversion found that the visible back answer was 错误 while the canonical swipe answer_key.correct_state remained null, making automatic scoring impossible.",
+    "source_issue_refs": [
+      "controlled-pilot candidate payload dry-run: 040105 answer_key.correct_state must be a string, number, or boolean identifier"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/infra/cloudbase/mobile-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260803-cet4-pilot-translation-040105-runtime-answer-fix-audit.json",
+    "corpus_fingerprint": "c6036501f589d2e8206285129570d361b25e975a43bfe5c5c5c649bfb04538ea",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": ["040105"],
+      "card_count": 1,
+      "issue_count": 1,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 1
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 1,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "040105",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "1",
+        "box_name": "定语从句",
+        "box_prefix": "0401"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "诊断定语从句被近邻名词错误吸附的问题",
+        "weak_point_tags": ["translation_output_weak", "grammar_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["foundation"]},
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练考生同时核验定语从句的位置和语义归属，避免翻译逻辑错位。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "The source remains a disclosed AI-authored simulation.",
+        "This closure changes only the canonical false answer binding; it does not constitute formal batch approval."
+      ],
+      "recommendation": "Keep the card in the controlled-pilot candidate set with correct_state=false so the swipe interaction can score the stated 错误 verdict."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "No progression change; this closes a runtime scoring defect in the already reviewed 0401 expansion.",
+    "repetition_or_gap_risks": [
+      "The complete 120-card candidate remains non-formal until final content approval and audio perceptual QC."
+    ],
+    "representative_cards": ["040105"],
+    "next_step": "Re-run the exact 120-card controlled-pilot payload conversion and consumer validation."
+  }
+}

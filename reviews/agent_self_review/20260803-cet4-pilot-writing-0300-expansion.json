@@ -1,0 +1,333 @@
+{
+  "review_id": "20260803-cet4-pilot-writing-0300-expansion",
+  "created_at": "2026-08-03T09:12:58+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "写作",
+    "group": "判断作文体裁",
+    "box": "应用文",
+    "box_prefixes": [
+      "0300"
+    ],
+    "card_ids": [
+      "030002",
+      "030003",
+      "030004",
+      "030005",
+      "030007"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "is_three_card_sample_per_box": false,
+    "confirmed_box_expansion": true,
+    "sample_confirmation_satisfied": true,
+    "sample_confirmation_record": "reviews/sample_confirmations/20260802-cet4-controlled-pilot-14-boxes.json",
+    "sample_confirmation_id": "20260802-cet4-controlled-pilot-14-boxes",
+    "final_user_approval_required": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260803-cet4-pilot-writing-0300-expansion-scope-audit.json",
+    "corpus_fingerprint": "fab0ee6aa5d0b678578883081484e4b686e7b501ec332ba1ee0725661049c00b",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "030002",
+        "030003",
+        "030004",
+        "030005",
+        "030007"
+      ],
+      "card_count": 5,
+      "issue_count": 5,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 5
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 5,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "030002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "0",
+        "group_name": "判断作文体裁",
+        "box_id": "0",
+        "box_name": "应用文",
+        "box_prefix": "0300"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从应用文指令中同时锁定读者任务与语气",
+        "weak_point_tags": ["writing_output_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "foundation", "secondary": ["pass"]},
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练考生把题目主题转换成可执行交际清单，避免对象和任务错位。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use as the reader-task-tone recognition entry."
+    },
+    {
+      "card_id": "030003",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "0",
+        "group_name": "判断作文体裁",
+        "box_id": "0",
+        "box_name": "应用文",
+        "box_prefix": "0300"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用特定读者与交际动作区分应用文和议论文",
+        "weak_point_tags": ["writing_output_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "foundation", "secondary": ["pass"]},
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练考生在动笔前快速排除伪应用文题，避免文体和结构整体错位。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for fast rejection of a non-application prompt."
+    },
+    {
+      "card_id": "030004",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "0",
+        "group_name": "判断作文体裁",
+        "box_id": "0",
+        "box_name": "应用文",
+        "box_prefix": "0300"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别特定朋友书信中的读者载体与交际动作",
+        "weak_point_tags": ["writing_output_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["foundation"]},
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练考生把体裁判断进一步映射到内容相关性和朋友语域。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for recipient-and-action application."
+    },
+    {
+      "card_id": "030005",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "0",
+        "group_name": "判断作文体裁",
+        "box_id": "0",
+        "box_name": "应用文",
+        "box_prefix": "0300"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "将特定发布平台识别为应用文的受众边界",
+        "weak_point_tags": ["writing_output_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["high_score"]},
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "纠正只有具体收件人才算应用文的误区，并把平台任务映射到正文功能。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use for platform-audience transfer and misconception correction."
+    },
+    {
+      "card_id": "030007",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "0",
+        "group_name": "判断作文体裁",
+        "box_id": "0",
+        "box_name": "应用文",
+        "box_prefix": "0300"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "锁定应用文载体并保持交际动作的并列词形",
+        "weak_point_tags": ["writing_output_weak", "grammar_weak"],
+        "difficulty": {"primary": "high_score", "secondary": ["pass"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "ai_generated",
+          "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练考生把体裁识别、动作任务和句法形式同时映射到可执行题干。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": ["Disclosed AI-authored simulation."],
+      "recommendation": "Use as the carrier-action-form transfer lock."
+    }
+  ],
+  "batch_review": {
+    "status": "reviewed_confirmed_box_expansion",
+    "box_progression": "The expansion moves from reader-task-tone recognition, through fast binary genre judgments for generic, personal, and platform audiences, to a transfer lock that combines carrier, communicative action, and parallel grammar.",
+    "repetition_or_gap_risks": [
+      "All five cards are disclosed AI-authored simulations and must not be represented as true-exam excerpts.",
+      "Three swipe cards intentionally provide low-cost genre judgment across distinct audience boundaries; formal usability still requires complete-batch approval."
+    ],
+    "representative_cards": [
+      "030002",
+      "030005",
+      "030007"
+    ],
+    "next_step": "Keep this exact eight-card box non-formal while expanding the remaining confirmed boxes under the same quality contract."
+  }
+}

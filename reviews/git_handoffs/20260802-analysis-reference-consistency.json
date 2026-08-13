@@ -1,0 +1,72 @@
+{
+  "handoff_id": "20260802-analysis-reference-consistency",
+  "created_at": "2026-08-02T11:35:47+08:00",
+  "agent": "codex",
+  "branch": "harness/analysis-reference-consistency",
+  "base_branch": "main",
+  "commit_sha": "4e6a6d537991de5df4019de249150f6f02c3fa63",
+  "push_ref": "origin/harness/analysis-reference-consistency",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/111",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "purpose": "Prevent new or changed candidate and full-track self-review evidence from silently passing when answer truth, option or word-bank references, or distractor labels have not been explicitly checked against the exact card source.",
+    "referenced_specs": [
+      "spec/agent-harness.json",
+      "spec/content-quality-contract.json",
+      "spec/evals.json",
+      "spec/git-workflow.json",
+      "spec/review-workflow.json"
+    ],
+    "touched_paths": [
+      "reviews/agent_self_review/FULL_TRACK_TEMPLATE.json",
+      "reviews/agent_self_review/TEMPLATE.json",
+      "scripts/test_validate_pr_scope.mjs",
+      "scripts/validate_harness.mjs",
+      "scripts/validate_pr_scope.mjs",
+      "spec/agent-harness.json",
+      "spec/content-quality-contract.json",
+      "spec/evals.json",
+      "spec/git-workflow.json",
+      "spec/review-workflow.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "59c85d65c627783dce452b65caa4530782c4e256",
+    "patch_sha256": "c0b5e656555f2d787df1112dcb8ba583be7e55b98dbf003c7f425c9458a7cfe6"
+  },
+  "validation": [
+    {
+      "command": "jq empty reviews/agent_self_review/TEMPLATE.json reviews/agent_self_review/FULL_TRACK_TEMPLATE.json spec/review-workflow.json spec/content-quality-contract.json spec/agent-harness.json spec/git-workflow.json spec/evals.json",
+      "result": "passed"
+    },
+    {
+      "command": "node --check scripts/validate_harness.mjs && node --check scripts/validate_pr_scope.mjs",
+      "result": "passed"
+    },
+    {
+      "command": "node --test scripts/test_validate_pr_scope.mjs",
+      "result": "passed 92/92, including standard and full-track false-attestation rejection"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head 4e6a6d537991de5df4019de249150f6f02c3fa63",
+      "result": "passed with content_candidate_diff=false, no issues, and no warnings"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with zero errors; only the recorded upstream product-core version and group-alignment warnings remain"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "The harness-only payload and append-only handoff are pushed to ready PR #111. Content-scope, approval-boundary, and repo-health passed on the initial payload head; delivery-record passed locally against the exact pull-request metadata after the handoff, and all five required checks must rerun on the final non-draft head.",
+  "remaining_risks": [
+    "PR #111 must remain unmerged until this handoff commit is pushed, the PR is marked ready, GitHub reports it mergeable, and all five required checks pass on the final head.",
+    "The attestation makes semantic checking explicit but does not claim that structural automation can prove natural-language correctness.",
+    "Existing unchanged review records remain historical-compatible; touched candidate reviews must add the new evidence before they can count.",
+    "No card JSON, audio asset, formal approval record, or approved content volume changed."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}

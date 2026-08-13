@@ -23,7 +23,7 @@
         "required": ["queue_id", "status", "priority", "original", "scope", "patch_sha256", "formal_approval"],
         "properties": {
           "queue_id": {"type": "string", "minLength": 1},
-          "status": {"enum": ["active", "parked", "patch_pool", "superseded"]},
+          "status": {"enum": ["active", "merged_candidate", "parked", "patch_pool", "superseded"]},
           "priority": {"type": "integer", "minimum": 1},
           "original": {
             "type": "object",
@@ -37,6 +37,7 @@
           },
           "scope": {
             "type": "object",
+            "description": "Active box prefixes and card IDs must also be globally disjoint; the queue validator enforces this cross-entry constraint.",
             "required": ["box_prefixes", "card_ids"],
             "properties": {
               "box_prefixes": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
@@ -49,7 +50,34 @@
           "formal_approval": {"type": "boolean"},
           "approval_record": {"type": ["string", "null"]}
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {"status": {"const": "active"}},
+              "required": ["status"]
+            },
+            "then": {
+              "required": ["new_pr_number"],
+              "properties": {
+                "new_pr_number": {"type": "integer", "minimum": 1}
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {"status": {"const": "merged_candidate"}},
+              "required": ["status"]
+            },
+            "then": {
+              "required": ["new_pr_number"],
+              "properties": {
+                "new_pr_number": {"type": "integer", "minimum": 1},
+                "formal_approval": {"const": false}
+              }
+            }
+          }
+        ]
       }
     }
   },

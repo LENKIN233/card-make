@@ -14,7 +14,18 @@
     "index": "reports/pre-cutover-report-index.json",
     "schema_version": "pre-cutover-report-index.v1",
     "scope": "immutable legacy review references only",
-    "new_or_changed_review_records_must_use_current_scoped_report": true
+    "new_or_changed_review_records_must_use_current_scoped_report": true,
+    "active_repository_immutability_proof": "The index bytes and every referenced legacy review-record byte sequence must equal their versions in the active repository commit that introduced the index. source_commit identifies the archived pre-cutover history and is not assumed to resolve inside the cut-over active Git history."
+  },
+  "legacy_scoped_report_archive": {
+    "scope": "immutable historical diagnostic artifacts created before current scoped-report ok and rule-completeness semantics",
+    "reports": [
+      {
+        "path": "reviews/audit_scopes/20260521-front-answer-leak-proof-scope-audit.json",
+        "sha256": "3f2401645fc4436620571b7e0f871daa861436fc0dcecd837758615fddea102e"
+      }
+    ],
+    "mutation_policy": "forbidden; every listed path and hash must resolve identically at the active repository index-introduction commit, and new evidence must use a new direct scoped-report path and current audit replay"
   },
   "scoped_report_dir": "reviews/audit_scopes/",
   "script_path": "scripts/audit_card_quality.mjs",
@@ -131,6 +142,8 @@
     "path_pattern": "reviews/audit_scopes/YYYYMMDD-box-prefix-scope-audit.json",
     "must_include": [
       "ok",
+      "audit_version",
+      "mode",
       "report_type",
       "corpus_fingerprint",
       "scope",
@@ -139,13 +152,14 @@
       "scoped_hard_blocker_issues"
     ],
     "ok_semantics": "A scoped report is ok only when all requested card_ids exist and scoped_hard_blocker_issues is empty.",
-    "report_type": "scoped_card_quality_audit"
+    "report_type": "scoped_card_quality_audit",
+    "tracked_artifact_validation": "Every changed or newly added scoped report must exactly match a current immutable-HEAD audit replay for its declared card IDs. Standalone harness validation recursively rejects malformed artifacts; current-fingerprint artifacts are replayed against the current global audit, while structurally valid unchanged historical artifacts may retain their historical fingerprint. An unchanged historical self-review bound to such an artifact validates against that artifact's immutable fingerprint and recorded rule set without current-card or current-track parity; changing the review requires a direct current replay. An unchanged historical approval remains archive evidence. Current-authorization consumers require approval, linked self-review, both scoped reports, scripts/audit_card_quality.mjs, and spec/card-quality-audit.json to be regular committed evidence or authority whose worktree, index, and one fixed HEAD modes and bytes agree. They independently regenerate the complete current audit, exactly replay both scoped reports, and recheck the fixed HEAD/index snapshot, captured file bytes/modes, and corpus fingerprint before returning. Merely being tracked, matching only the corpus digest, using a self-declared summary, or claiming zero blockers is insufficient. Explicit legacy exceptions are limited to the hash-pinned legacy_scoped_report_archive."
   },
   "candidate_scope_policy": {
     "before_user_sample_review": [
       "run scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json",
       "scoped_report_must_match_current_card_corpus_fingerprint",
-      "agent_self_review_must_link_current_scoped_or_global_quality_audit_report",
+      "agent_self_review_must_link_current_scoped_quality_audit_report",
       "agent_self_review_must_include_scoped_quality_audit_summary",
       "scope_must_have_no_hard_blocker_issues",
       "content_risk_examples_must_be reviewed_or_explicitly_accepted_as_known_legacy_risk"
@@ -154,6 +168,7 @@
       "no_hard_blocker_issues",
       "no_unresolved_content_risk_without_user_authorized_exception",
       "linked_agent_self_review_record",
+      "approval_record_must_link_current_scoped_quality_audit_report",
       "linked_current_quality_audit_report",
       "explicit_user_confirmation"
     ]

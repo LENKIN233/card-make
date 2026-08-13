@@ -1,0 +1,64 @@
+{
+  "handoff_id": "20260802-tooling-controlled-pilot-expansion-governance",
+  "created_at": "2026-08-02T21:54:08+08:00",
+  "agent": "codex",
+  "branch": "tooling/controlled-pilot-expansion-governance",
+  "base_branch": "main",
+  "commit_sha": "82a5345ced04f7b395872b5ca51c0a976968f0e0",
+  "push_ref": "origin/tooling/controlled-pilot-expansion-governance",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/119",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "tooling",
+    "touched_paths": [
+      "AGENTS.md",
+      "reviews/sample_confirmations/20260802-cet4-controlled-pilot-14-boxes.json",
+      "reviews/sample_confirmations/README.md",
+      "reviews/sample_confirmations/TEMPLATE.json",
+      "scripts/test_validate_pr_scope.mjs",
+      "scripts/validate_harness.mjs",
+      "scripts/validate_pr_scope.mjs",
+      "spec/authority-map.json",
+      "spec/content-quality-contract.json",
+      "spec/doc-manifest.json",
+      "spec/review-workflow.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "7cc47fcf9e455cd255c681bed47f337e8db02f83",
+    "patch_sha256": "b6763e11ee27fd3727585cc18fb5b8f48441d5b83abbfb0c304ee6043b8896fd"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream version and group-alignment warnings"
+    },
+    {
+      "command": "node --test scripts/test_card_integrity.mjs",
+      "result": "passed; 19/19"
+    },
+    {
+      "command": "node --test scripts/test_validate_pr_scope.mjs",
+      "result": "passed; 100/100 including exact 9, 5, and 3 card expansion counts plus missing-confirmation, cross-box, count, and gate-boundary failures"
+    },
+    {
+      "command": "node --test scripts/test_validate_delivery_record.mjs",
+      "result": "passed; 75/75"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_delivery_record.mjs --base origin/main --head HEAD with exact PR #119 event context",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #119 is ready for review. The user-confirmed 14-box sample scope is recorded as non-formal evidence, and confirmed_box_expansion permits only exact per-box target completion with current review and audit evidence.",
+  "remaining_risks": [
+    "The remaining 78 candidate cards have not yet been produced or reviewed.",
+    "Listening audio still requires separate perceptual QC before final approval.",
+    "The complete 120-card batch still requires a separate explicit user approval record before formal controlled-pilot use."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}

@@ -1,0 +1,47 @@
+{
+  "handoff_id": "20260802-content-cet4-pilot-reading-0113-sample",
+  "created_at": "2026-08-02T15:01:09+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-pilot-reading-0113-sample",
+  "base_branch": "main",
+  "commit_sha": "5bcec1b3b9cea0cdddb423dce16a2fadc58af881",
+  "push_ref": "origin/content/cet4-pilot-reading-0113-sample",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/113",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_reading_0113.json",
+      "reviews/agent_self_review/20260801-cet4-pilot-reading-0113-sample.json",
+      "reviews/audit_scopes/20260801-cet4-pilot-reading-0113-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "d26667d2fa982dabfdb30b5a4682a17fa0363671",
+    "patch_sha256": "cc51c49dfc8bbbba56b437228bbd84a26769210eb17eb18754ad47a021162477"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; errors 0, warnings 0"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed at payload commit; exact three-card scope 011301,011302,011303 and scoped hard blockers 0"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream version and group-alignment warnings"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "PR #113 is ready after the user confirmed the 14-box sample direction and exact expansion targets; no formal approval, import, or release claim is made.",
+  "remaining_risks": [
+    "The sample confirmation authorizes target-bound candidate expansion only; the complete batch still requires final user approval.",
+    "No reviews/approved_batches record exists and this PR must not auto-merge."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
