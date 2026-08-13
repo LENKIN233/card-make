@@ -1,0 +1,267 @@
+{
+  "review_id": "20260813-cet4-listening-0012-sample",
+  "created_at": "2026-08-13T08:30:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "语音现象",
+    "box": "失去爆破",
+    "box_prefixes": [
+      "0012"
+    ],
+    "card_ids": [
+      "001201",
+      "001202",
+      "001203"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260813-cet4-listening-0012-sample-scope-audit.json",
+    "corpus_fingerprint": "501762c87de35595f22ee10a487020ffb9f629a95750ce9d5eb3bde7e12eb006",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "001201",
+        "001202",
+        "001203"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "001201",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 market pressure 中 /t/ 在 /p/ 前的失去爆破",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在词尾爆破不明显时仍能还原完整短语，减少听漏关键词。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Perceptual audio QC remains pending; this pass covers transcript, task, answer, and card logic only.",
+        "The disclosed simulation must not be represented as a true-exam excerpt."
+      ],
+      "recommendation": "Use as the recognition card for hearing an unreleased /t/ before /p/."
+    },
+    {
+      "card_id": "001202",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "解释 stopped collecting 中 /t/ 接 /k/ 的失去爆破",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "避免把失爆误当作过去式词尾被删，借助语法和相邻辅音还原原句。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Perceptual audio QC remains pending; this pass covers transcript, task, answer, and card logic only.",
+        "The disclosed simulation must not be represented as a true-exam excerpt."
+      ],
+      "recommendation": "Use as the application card that corrects the mistaken belief that an unheard release deletes the past-tense ending."
+    },
+    {
+      "card_id": "001203",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 strict timing 迁移识别 good plan 的失去爆破结构",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "把单句听感转化为可迁移的音素判断规则，在新词组中快速识别失爆。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Perceptual audio QC remains pending; this pass covers transcript, task, answer, and card logic only.",
+        "The disclosed simulation must not be represented as a true-exam excerpt."
+      ],
+      "recommendation": "Use as the transfer card for distinguishing consonant-triggered unreleased stops from consonant-to-vowel linking."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The sample progresses from recognizing /t/ before /p/, to applying the rule while preserving a past-tense ending before /k/, to transferring the phonetic structure from strict timing to good plan.",
+    "repetition_or_gap_risks": [
+      "The three texts are disclosed simulations and must never be marketed as true-exam excerpts.",
+      "All three use multiple choice because the learner must contrast sound-process explanations or phonetic environments.",
+      "Perceptual audio QC is separate and remains pending before any formal audio use."
+    ],
+    "representative_cards": [
+      "001201",
+      "001202",
+      "001203"
+    ],
+    "next_step": "Present these three revised cards for user sample confirmation before expanding the remaining nine cards in box 0012."
+  }
+}
