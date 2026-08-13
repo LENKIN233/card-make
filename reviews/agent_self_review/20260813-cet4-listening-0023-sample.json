@@ -1,0 +1,267 @@
+{
+  "review_id": "20260813-cet4-listening-0023-sample",
+  "created_at": "2026-08-13T11:35:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "逻辑关系",
+    "box": "对比/比较关系",
+    "box_prefixes": [
+      "0023"
+    ],
+    "card_ids": [
+      "002301",
+      "002302",
+      "002303"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260813-cet4-listening-0023-sample-scope-audit.json",
+    "corpus_fingerprint": "bf2fe0cda50879094cd53a5ce05fb01285bad9bc0a16b4294d321851f6631588",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "002301",
+        "002302",
+        "002303"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "002301",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别比较句中由转折与程度词加强的信息重心",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户从比较句的转折与信息强度中判断表达重心，既避免等量记忆，也避免把重心夸大成最终选择。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Perceptual audio QC remains pending; this pass covers transcript, task, conclusion, and card logic only.",
+        "The disclosed simulation must not be represented as a true-exam excerpt."
+      ],
+      "recommendation": "Use as the recognition entry for identifying which comparison detail is more strongly expressed without overclaiming a final preference."
+    },
+    {
+      "card_id": "002302",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "将 whereas 前后的特点准确绑定到对应比较对象",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在比较听力题中先绑定对象再选择改写，排除对象错配与无依据细节。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Perceptual audio QC remains pending; this pass covers transcript, task, answer, and card logic only.",
+        "The disclosed simulation must not be represented as a true-exam excerpt."
+      ],
+      "recommendation": "Use as the application card for binding each contrasted feature to the correct system under near-neighbor distractors."
+    },
+    {
+      "card_id": "002303",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "整合 unlike 建立的参照对象与后续差异维度",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在跨语境比较题中同时保留参照系与差异维度，不把后半句当成孤立事实。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Perceptual audio QC remains pending; this pass covers transcript, task, answer, and card logic only.",
+        "The disclosed simulation must not be represented as a true-exam excerpt."
+      ],
+      "recommendation": "Use as the transfer card for carrying an unlike-based reference frame into a full comparison answer."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The sample progresses from recognizing information emphasis inside a comparison, to applying object-feature binding under whereas, to transferring an unlike reference frame into a complete comparison answer.",
+    "repetition_or_gap_risks": [
+      "All three texts are disclosed simulations and must never be marketed as true-exam excerpts.",
+      "Perceptual audio QC is separate and remains pending before formal audio use.",
+      "The first card uses low-burden flip recognition; the next two use balanced near-neighbor options for application and transfer."
+    ],
+    "representative_cards": [
+      "002301",
+      "002302",
+      "002303"
+    ],
+    "next_step": "Present these three cards for user sample confirmation before expanding the remaining nine cards in box 0023."
+  }
+}
