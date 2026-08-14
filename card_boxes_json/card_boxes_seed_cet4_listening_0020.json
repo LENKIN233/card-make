@@ -447,36 +447,35 @@
       "box": 0,
       "card_no": 4,
       "card_box_code": "0020",
-      "interaction_type": 3,
+      "interaction_type": 0,
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：按住开始听，听到观点真正起始处时松手。",
-        "task_prompt": "按住开始听，听到 but 后真正观点起点时松手。",
-        "task_schema": {
-          "action": "按住并在目标时机松手",
-          "focus": "口语中‘背景信息 → 立场信息’的切换时刻",
-          "success_criteria": "在 but 后立场句起点附近松手（容差内）"
-        },
+        "text": "听完后，先判断说话人“住在哪里”和“平时与谁来往”哪一个才是最终信息重心。",
+        "task_prompt": "不要停在地点背景上；用 but 后的信息概括说话人的真实社交状态，再翻面核对。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后口头概括最终社交状态",
+          "focus": "区分地点背景与 but 后的真实行为",
+          "success_criteria": "能说明说话人住在荷兰，但很少与荷兰人交往"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0020/002004.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0020/002004.mp3"
       },
       "back_content": {
-        "text": "观点起点：but 之后的 I don't really socialize much...",
-        "explanation": "语境揭示：I do live in Holland, but I don't really socialize much with Dutch people. 前半句只交代身处荷兰，后半句才交代真实社交状态。听到 but 以后，判断应立刻从“背景”切到“立场”。"
+        "text": "信息重心在 but 后：说话人虽然住在荷兰，却很少与荷兰人来往。",
+        "explanation": "前半句 I do live in Holland 只交代地点背景；but 后的 don't really socialize much 才回答真实社交状态。"
       },
       "analysis_content": {
-        "text": "① 识别信号：口语里常先给位置、身份、经历，再用 but 把信息重心切到真正可判断的立场。\n\n② 核心规律：背景句回答“人在哪里”，立场句回答“人实际怎么做”。听力题通常考后者，因为它直接决定判断。\n\n③ 验证：本句 live in Holland 只是环境背景；真正能回答社交状态的是 don't really socialize much。松手点应该压在 but 后立场句刚起步的位置。",
+        "text": "① 先把两半句分工：前句交代“在哪里”，后句交代“实际怎么做”。\n\n② but 会撤销听者根据地点产生的默认推断——住在荷兰不等于经常与荷兰人交往。\n\n③ 因而若题目问社交情况，证据必须落在 but 后，而不是抓住 Holland 就作答。",
         "tips": [
-          "把 but 前句当镜头铺垫，把 but 后句当镜头对焦。",
-          "一旦定位到立场句，再回头补背景，不要反过来。"
+          "地点名常是显眼干扰词，先判断它在句中承担背景还是结论。",
+          "转折后若出现频率词或否定词，通常直接限定行为。"
         ]
       },
       "options": null,
       "eliminable_items": null,
-      "target_duration_ms": 3000,
       "audio": {
         "url": "ai_tts/cet4/0020/002004.mp3",
         "duration_ms": 5208,
@@ -484,12 +483,12 @@
         "path": "ai_tts/cet4/0020/002004.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -505,36 +504,60 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：按住开始听，听到观点真正起始处时松手。",
-        "task_prompt": "按住开始听，听到 but 后真正观点起点时松手。",
+        "text": "听完后，先判断说话人“住在哪里”和“平时与谁来往”哪一个才是最终信息重心。",
+        "task_prompt": "不要停在地点背景上；用 but 后的信息概括说话人的真实社交状态，再翻面核对。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "按住并在目标时机松手",
-          "focus": "口语中‘背景信息 → 立场信息’的切换时刻",
-          "success_criteria": "在 but 后立场句起点附近松手（容差内）"
+          "action": "听后口头概括最终社交状态",
+          "focus": "区分地点背景与 but 后的真实行为",
+          "success_criteria": "能说明说话人住在荷兰，但很少与荷兰人交往"
         }
       },
       "analysis": {
-        "text": "① 识别信号：口语里常先给位置、身份、经历，再用 but 把信息重心切到真正可判断的立场。\n\n② 核心规律：背景句回答“人在哪里”，立场句回答“人实际怎么做”。听力题通常考后者，因为它直接决定判断。\n\n③ 验证：本句 live in Holland 只是环境背景；真正能回答社交状态的是 don't really socialize much。松手点应该压在 but 后立场句刚起步的位置。",
+        "text": "① 先把两半句分工：前句交代“在哪里”，后句交代“实际怎么做”。\n\n② but 会撤销听者根据地点产生的默认推断——住在荷兰不等于经常与荷兰人交往。\n\n③ 因而若题目问社交情况，证据必须落在 but 后，而不是抓住 Holland 就作答。",
         "tips": [
-          "把 but 前句当镜头铺垫，把 but 后句当镜头对焦。",
-          "一旦定位到立场句，再回头补背景，不要反过来。"
+          "地点名常是显眼干扰词，先判断它在句中承担背景还是结论。",
+          "转折后若出现频率词或否定词，通常直接限定行为。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 but 将地点背景切换为真实社交状态",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "避免被显眼地点词带偏，按转折后的行为信息回答人物状态题。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -549,48 +572,48 @@
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：听完后判断，哪一半信息真正决定‘是否可执行’。",
-        "task_prompt": "听完后判断，真正决定“能不能落地”的是哪一半信息。",
-        "task_schema": {
-          "action": "四选一作答",
-          "focus": "区分‘纸面可行’与‘现实约束’两层语义",
-          "success_criteria": "选择能解释决策边界的那一侧信息"
-        },
+        "text": "听完后，哪项最准确说明这项方案能否直接落地？",
+        "task_prompt": "先区分纸面评价和课堂执行条件，再选择真正决定实施的证据。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一判断实施结论",
+          "focus": "从 but 后的现实约束判断可执行性",
+          "success_criteria": "选择课堂准备时间推翻纸面乐观评价的选项"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0020/002005.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0020/002005.mp3"
       },
       "back_content": {
-        "text": "结论：真正决定能否落地的是后句里的现实约束。",
-        "explanation": "语境揭示：The plan looks efficient on paper, but in real classrooms teachers need much more preparation time than expected. 这类句子不是先后都重要，而是先给一个纸面乐观判断，再用 but 把决策权交给执行成本。"
+        "text": "现实课堂需要的准备时间远超预期，因此纸面上的高效并不足以证明方案可直接实施。",
+        "explanation": "on paper 是初步乐观判断；but in real classrooms 引出执行层证据。涉及落地时，时间、成本和资源约束拥有更高判断权重。"
       },
       "analysis_content": {
-        "text": "① 识别信号：on paper 和 in real classrooms 形成了“纸面判断 vs 现场约束”的对撞。\n\n② 核心规律：凡是讨论实施，time、cost、capacity 这类约束词通常比 efficient、promising 这类乐观词更有决策权。\n\n③ 验证：本句前半句只说明方案看起来高效，后半句则给出真正会卡住执行的成本：准备时间远超预期。答题时应以后句约束为核心证据。",
+        "text": "① on paper 与 in real classrooms 构成“设想层—执行层”对比。\n\n② but 后给出可检验的现实成本：教师准备时间显著增加。\n\n③ 所以不能选“已经足够高效”或“实践中时间更少”；正确结论是现实约束推翻了最初评价。",
         "tips": [
-          "当一句话出现“设想层”和“执行层”两组信息时，先分层再判断主次。",
-          "涉及落地问题时，优先追踪可执行条件（时间、成本、资源）。"
+          "实施题优先追踪时间、成本、资源等约束。",
+          "前句的正面形容词可能只是待修正的初评。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "The plan is already efficient enough to implement as it is.",
+          "text": "方案已经足够高效，可以原样实施",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "Real classroom constraints overturn the initial optimistic view.",
+          "text": "现实课堂的准备成本推翻了最初的乐观判断",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "Teachers need less preparation time in practice.",
+          "text": "教师在实践中需要的准备时间更少",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "The two clauses are equivalent and non-contrastive.",
+          "text": "前后两句表达相同观点，没有形成转折",
           "is_correct": false
         }
       ],
@@ -602,12 +625,12 @@
         "path": "ai_tts/cet4/0020/002005.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -623,32 +646,54 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：听完后判断，哪一半信息真正决定‘是否可执行’。",
-        "task_prompt": "听完后判断，真正决定“能不能落地”的是哪一半信息。",
+        "text": "听完后，哪项最准确说明这项方案能否直接落地？",
+        "task_prompt": "先区分纸面评价和课堂执行条件，再选择真正决定实施的证据。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "四选一作答",
-          "focus": "区分‘纸面可行’与‘现实约束’两层语义",
-          "success_criteria": "选择能解释决策边界的那一侧信息"
-        }
+          "action": "四选一判断实施结论",
+          "focus": "从 but 后的现实约束判断可执行性",
+          "success_criteria": "选择课堂准备时间推翻纸面乐观评价的选项"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "方案已经足够高效，可以原样实施",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "现实课堂的准备成本推翻了最初的乐观判断",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "教师在实践中需要的准备时间更少",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "前后两句表达相同观点，没有形成转折",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：on paper 和 in real classrooms 形成了“纸面判断 vs 现场约束”的对撞。\n\n② 核心规律：凡是讨论实施，time、cost、capacity 这类约束词通常比 efficient、promising 这类乐观词更有决策权。\n\n③ 验证：本句前半句只说明方案看起来高效，后半句则给出真正会卡住执行的成本：准备时间远超预期。答题时应以后句约束为核心证据。",
+        "text": "① on paper 与 in real classrooms 构成“设想层—执行层”对比。\n\n② but 后给出可检验的现实成本：教师准备时间显著增加。\n\n③ 所以不能选“已经足够高效”或“实践中时间更少”；正确结论是现实约束推翻了最初评价。",
         "tips": [
-          "当一句话出现“设想层”和“执行层”两组信息时，先分层再判断主次。",
-          "涉及落地问题时，优先追踪可执行条件（时间、成本、资源）。"
+          "实施题优先追踪时间、成本、资源等约束。",
+          "前句的正面形容词可能只是待修正的初评。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -656,6 +701,28 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 but 后的课堂约束修正纸面可行性判断",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在方案类听力中用现实约束而非乐观措辞确定结论。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -670,27 +737,27 @@
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：听完后，复述说话人的最终立场（不是中间立场）。",
-        "task_prompt": "听完后，用一句话复述最后留下来的立场，不要停在中间转折上。",
-        "task_schema": {
-          "action": "口头复述最终立场",
-          "focus": "多次转折中的立场收束",
-          "success_criteria": "复述需体现‘最后一次有效转折’后的观点"
-        },
+        "text": "这段话连续修正了两次。听到结尾后，用一句话复述说话人的最终立场。",
+        "task_prompt": "不要停在“不限速”或“开得快但谨慎”上；等 so 后的收束判断再作答。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听完整段并复述最终立场",
+          "focus": "多次转折后的观点收束",
+          "success_criteria": "复述限制措施有时反而会制造危险这一最终判断"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0020/002006.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0020/002006.mp3"
       },
       "back_content": {
-        "text": "示例复述：说话人最终主张是“某些限制本身反而会制造危险”，不是单纯夸德国人开得快。",
-        "explanation": "语境揭示：Right. But did you know there are no speed limits in Germany? People there do drive fast, but they still drive with care. So I'd say it's the restrictions that sometimes create the danger. 这段不是一句 but 就结束，而是连续修正两次，最后才收束出真正立场。"
+        "text": "最终立场：说话人认为，某些限制措施本身有时反而会制造危险。",
+        "explanation": "段落先谈德国不限速，再用 but 修正“开得快就不谨慎”的推断，最后由 So I'd say 给出可独立成立的结论。"
       },
       "analysis_content": {
-        "text": "① 识别信号：同一段里连续出现 but 和 so，说明说话人不是一次说完，而是在不断修正、最后收束。\n\n② 核心规律：多转折语篇要按“版本更新”来听：V1 提话题，V2 做修正，V3 才给最终立场。真正该复述的是最后一个语义完整、能独立成立的判断句。\n\n③ 验证：本段先提德国不限速，再补“快但仍谨慎”，最后才落到“限制有时反而制造危险”。因此答题不能停在中间句，必须跟到末尾收束句。",
+        "text": "① 多转折段落要按“版本更新”听，而不是把每个 but 后都当最终答案。\n\n② 前两层信息只是为结论搭建比较：不限速、速度快但驾驶谨慎。\n\n③ so 后的完整判断才是最终主张；若问题问观点或态度，应以这一收束句作答。",
         "tips": [
-          "遇到连续转折时，不要抢答，先等最后的收束句。",
-          "So、therefore、that means 往往是在提示“可以定稿了”。"
+          "连续转折时先记关键词，等结论标记再定稿。",
+          "So、therefore、I'd say 常提示最终立场。"
         ]
       },
       "options": null,
@@ -702,12 +769,12 @@
         "path": "ai_tts/cet4/0020/002006.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -723,36 +790,60 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：听完后，复述说话人的最终立场（不是中间立场）。",
-        "task_prompt": "听完后，用一句话复述最后留下来的立场，不要停在中间转折上。",
+        "text": "这段话连续修正了两次。听到结尾后，用一句话复述说话人的最终立场。",
+        "task_prompt": "不要停在“不限速”或“开得快但谨慎”上；等 so 后的收束判断再作答。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "口头复述最终立场",
-          "focus": "多次转折中的立场收束",
-          "success_criteria": "复述需体现‘最后一次有效转折’后的观点"
+          "action": "听完整段并复述最终立场",
+          "focus": "多次转折后的观点收束",
+          "success_criteria": "复述限制措施有时反而会制造危险这一最终判断"
         }
       },
       "analysis": {
-        "text": "① 识别信号：同一段里连续出现 but 和 so，说明说话人不是一次说完，而是在不断修正、最后收束。\n\n② 核心规律：多转折语篇要按“版本更新”来听：V1 提话题，V2 做修正，V3 才给最终立场。真正该复述的是最后一个语义完整、能独立成立的判断句。\n\n③ 验证：本段先提德国不限速，再补“快但仍谨慎”，最后才落到“限制有时反而制造危险”。因此答题不能停在中间句，必须跟到末尾收束句。",
+        "text": "① 多转折段落要按“版本更新”听，而不是把每个 but 后都当最终答案。\n\n② 前两层信息只是为结论搭建比较：不限速、速度快但驾驶谨慎。\n\n③ so 后的完整判断才是最终主张；若问题问观点或态度，应以这一收束句作答。",
         "tips": [
-          "遇到连续转折时，不要抢答，先等最后的收束句。",
-          "So、therefore、that means 往往是在提示“可以定稿了”。"
+          "连续转折时先记关键词，等结论标记再定稿。",
+          "So、therefore、I'd say 常提示最终立场。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
         "type": 0,
         "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "product_mapping_reason": "flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "在连续 but 与 so 中追踪最终立场",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "避免在多轮修正中抢答，准确抓住观点题的末端结论。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -763,34 +854,55 @@
       "box": 0,
       "card_no": 7,
       "card_box_code": "0020",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "点击转折点后“真正决策”出现的时刻。",
-        "task_prompt": "先听音频，再完成转折关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
+        "text": "听完后，城市最终把哪项方案置于优先位置？",
+        "task_prompt": "planned to 只表示原计划；依据 however 后的 final decision 作答。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一识别最终决策",
+          "focus": "区分原计划与 however 后的正式决定",
+          "success_criteria": "选择优先建设自行车道以提升安全的选项"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0020/002007.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0020/002007.mp3"
       },
       "back_content": {
-        "text": "结论：however 后是答案重心，决策转向 bike lanes。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：The city planned to expand parking lots, however the final decision prioritized bike lanes for safety."
+        "text": "城市最终优先建设自行车道，以改善安全。",
+        "explanation": "expand parking lots 是原计划，however 后的 final decision 才是落地决定；安全理由也随决定一起出现。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The city planned to expand parking lots, however the final decision prioritized bike lanes for safety.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① planned to 标记尚未落地的意向，final decision 标记已经定稿的选择。\n\n② however 把信息重心从停车场扩建切到自行车道。\n\n③ 作答时同时保留“方案”和“目的”：优先自行车道，理由是安全。",
         "tips": [
-          "转折后信息权重通常更高。",
-          "先定位转折词再听细节。"
+          "计划、建议、决定要分层，不能只抓第一个动作。",
+          "final decision、eventually、instead 常与真正答案同现。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "继续扩建停车场",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "优先建设自行车道",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "同时取消停车场和自行车道",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "推迟所有交通安全项目",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "path": "ai_tts/cet4/0020/002007.mp3",
@@ -801,335 +913,12 @@
         "transcript": "The city planned to expand parking lots, however the final decision prioritized bike lanes for safety."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "time_window_ms": [
-        3400,
-        5000
-      ],
-      "track_index": 0,
-      "contract_version": "softbook-card-v1",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "0",
-        "library_name": "听力",
-        "group_id": "2",
-        "group_name": "逻辑关系",
-        "box_id": "0",
-        "box_name": "转折关系",
-        "box_prefix": "0020"
-      },
-      "interaction_id": "flip",
-      "front": {
-        "text": "点击转折点后“真正决策”出现的时刻。",
-        "task_prompt": "先听音频，再完成转折关系训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
-        "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The city planned to expand parking lots, however the final decision prioritized bike lanes for safety.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "转折后信息权重通常更高。",
-          "先定位转折词再听细节。"
-        ]
-      },
-      "auto_scoring": false,
-      "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
-      },
-      "quality_flags": [
-        "unverified_source"
-      ],
-      "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      }
-    },
-    {
-      "card_id": "002008",
-      "track": "cet4",
-      "library": 0,
-      "group": 2,
-      "box": 0,
-      "card_no": 8,
-      "card_box_code": "0020",
-      "interaction_type": 3,
-      "card_box_name": "转折关系",
-      "card_group_name": "逻辑关系",
-      "front_content": {
-        "text": "长按覆盖 but 后的决策句段。",
-        "task_prompt": "先听音频，再完成转折关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0020/002008.mp3",
-        "highlight_ranges": []
-      },
-      "back_content": {
-        "text": "结论：but 后给出真实执行方案。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：Many students wanted longer lectures, but the department shortened sessions to increase discussion time."
-      },
-      "analysis_content": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“Many students wanted longer lectures, but the department shortened sessions to increase discussion time.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "前句常是观点铺垫。",
-          "but 后常承载可考动作。"
-        ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0020/002008.mp3",
-        "url": "ai_tts/cet4/0020/002008.mp3",
-        "duration_ms": 7176,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "Many students wanted longer lectures, but the department shortened sessions to increase discussion time."
-      },
-      "source_ref": {
-        "type": "content_pool",
-        "paper_id": null,
-        "question_id": null,
-        "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "target_duration_ms": 4150,
-      "track_index": 0,
-      "contract_version": "softbook-card-v1",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "0",
-        "library_name": "听力",
-        "group_id": "2",
-        "group_name": "逻辑关系",
-        "box_id": "0",
-        "box_name": "转折关系",
-        "box_prefix": "0020"
-      },
-      "interaction_id": "flip",
-      "front": {
-        "text": "长按覆盖 but 后的决策句段。",
-        "task_prompt": "先听音频，再完成转折关系训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
-        "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“Many students wanted longer lectures, but the department shortened sessions to increase discussion time.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "前句常是观点铺垫。",
-          "but 后常承载可考动作。"
-        ]
-      },
-      "auto_scoring": false,
-      "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
-      },
-      "quality_flags": [
-        "unverified_source"
-      ],
-      "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      }
-    },
-    {
-      "card_id": "002009",
-      "track": "cet4",
-      "library": 0,
-      "group": 2,
-      "box": 0,
-      "card_no": 9,
-      "card_box_code": "0020",
-      "interaction_type": 0,
-      "card_box_name": "转折关系",
-      "card_group_name": "逻辑关系",
-      "front_content": {
-        "text": "翻面前先判断：真正可考信息在前半句还是后半句？",
-        "task_prompt": "先听音频，再完成转折关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0020/002009.mp3",
-        "highlight_ranges": []
-      },
-      "back_content": {
-        "text": "结论：nevertheless 后的风险提示是关键。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：The report sounds optimistic at first; nevertheless, it warns that staffing shortages may delay implementation."
-      },
-      "analysis_content": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：翻面前先自述判断路径，翻面后只核验证据链是否闭合。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The report sounds optimistic at first; nevertheless, it warns that staffing shortages may delay implementation.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "让步转折后常出现限制条件。",
-          "态度词变化是判断锚点。"
-        ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0020/002009.mp3",
-        "url": "ai_tts/cet4/0020/002009.mp3",
-        "duration_ms": 8400,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The report sounds optimistic at first; nevertheless, it warns that staffing shortages may delay implementation."
-      },
-      "source_ref": {
-        "type": "content_pool",
-        "paper_id": null,
-        "question_id": null,
-        "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "track_index": 0,
-      "contract_version": "softbook-card-v1",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "0",
-        "library_name": "听力",
-        "group_id": "2",
-        "group_name": "逻辑关系",
-        "box_id": "0",
-        "box_name": "转折关系",
-        "box_prefix": "0020"
-      },
-      "interaction_id": "flip",
-      "front": {
-        "text": "翻面前先判断：真正可考信息在前半句还是后半句？",
-        "task_prompt": "先听音频，再完成转折关系训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
-        "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：翻面前先自述判断路径，翻面后只核验证据链是否闭合。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The report sounds optimistic at first; nevertheless, it warns that staffing shortages may delay implementation.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "让步转折后常出现限制条件。",
-          "态度词变化是判断锚点。"
-        ]
-      },
-      "auto_scoring": false,
-      "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
-      },
-      "quality_flags": [
-        "unverified_source"
-      ],
-      "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      }
-    },
-    {
-      "card_id": "002010",
-      "track": "cet4",
-      "library": 0,
-      "group": 2,
-      "box": 0,
-      "card_no": 10,
-      "card_box_code": "0020",
-      "interaction_type": 1,
-      "card_box_name": "转折关系",
-      "card_group_name": "逻辑关系",
-      "front_content": {
-        "text": "四选一：依据 yet 后内容确定最终立场。",
-        "task_prompt": "先听音频，再完成转折关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0020/002010.mp3",
-        "highlight_ranges": []
-      },
-      "back_content": {
-        "text": "答案：D。解析：最终立场是“复杂谈判仍需线下”。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：The speaker praises online meetings, yet she admits that complex negotiations still require face-to-face interaction."
-      },
-      "analysis_content": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：四选一先判关系类型，再排除对象错位和范围错位选项。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The speaker praises online meetings, yet she admits that complex negotiations still require face-to-face interaction.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "yet 与 but 功能相近，后句更关键。",
-          "别被前句褒义评价误导。"
-        ]
-      },
-      "options": [
-        {
-          "key": "A",
-          "text": "线上会议可替代一切",
-          "is_correct": false
-        },
-        {
-          "key": "B",
-          "text": "线上沟通效率最低",
-          "is_correct": false
-        },
-        {
-          "key": "C",
-          "text": "会议形式无差别",
-          "is_correct": false
-        },
-        {
-          "key": "D",
-          "text": "复杂谈判仍需线下",
-          "is_correct": true
-        }
-      ],
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0020/002010.mp3",
-        "url": "ai_tts/cet4/0020/002010.mp3",
-        "duration_ms": 8568,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The speaker praises online meetings, yet she admits that complex negotiations still require face-to-face interaction."
-      },
-      "source_ref": {
-        "type": "content_pool",
-        "paper_id": null,
-        "question_id": null,
-        "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -1145,39 +934,590 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "四选一：依据 yet 后内容确定最终立场。",
-        "task_prompt": "先听音频，再完成转折关系训练。",
+        "text": "听完后，城市最终把哪项方案置于优先位置？",
+        "task_prompt": "planned to 只表示原计划；依据 however 后的 final decision 作答。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+          "action": "四选一识别最终决策",
+          "focus": "区分原计划与 however 后的正式决定",
+          "success_criteria": "选择优先建设自行车道以提升安全的选项"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "继续扩建停车场",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "优先建设自行车道",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "同时取消停车场和自行车道",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "推迟所有交通安全项目",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：四选一先判关系类型，再排除对象错位和范围错位选项。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The speaker praises online meetings, yet she admits that complex negotiations still require face-to-face interaction.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① planned to 标记尚未落地的意向，final decision 标记已经定稿的选择。\n\n② however 把信息重心从停车场扩建切到自行车道。\n\n③ 作答时同时保留“方案”和“目的”：优先自行车道，理由是安全。",
         "tips": [
-          "yet 与 but 功能相近，后句更关键。",
-          "别被前句褒义评价误导。"
+          "计划、建议、决定要分层，不能只抓第一个动作。",
+          "final decision、eventually、instead 常与真正答案同现。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "answer_key": {
-        "correct_option": "D"
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分 however 前的原计划与后的最终城市决策",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在政策与方案题中避免把早先意向误当最终决定。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "002008",
+      "track": "cet4",
+      "library": 0,
+      "group": 2,
+      "box": 0,
+      "card_no": 8,
+      "card_box_code": "0020",
+      "interaction_type": 1,
+      "card_box_name": "转折关系",
+      "card_group_name": "逻辑关系",
+      "front_content": {
+        "text": "学生提出的偏好和院系最终采取的做法不同。哪项是实际决定？",
+        "task_prompt": "先听 wanted，再听 but 后的执行动词；只选择已经采取的安排。",
+        "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一识别实际执行方案",
+          "focus": "区分群体愿望与机构决定",
+          "success_criteria": "选择缩短课程以增加讨论时间的选项"
+        },
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0020/002008.mp3"
+      },
+      "back_content": {
+        "text": "院系最终缩短了课程时段，以增加讨论时间。",
+        "explanation": "wanted longer lectures 是学生愿望，不代表决定；but 后的 department shortened sessions 是机构实际采取的行动。"
+      },
+      "analysis_content": {
+        "text": "① 先标注信息主体：students 提出偏好，department 执行决定。\n\n② but 不仅转折内容，也切换了有决策权的主体。\n\n③ 因而答案必须包含 shortened sessions 与 increase discussion time，不能把 longer lectures 当落地安排。",
+        "tips": [
+          "同一句出现两个主体时，先判断谁拥有决策权。",
+          "wanted、hoped 是愿望；decided、shortened 是结果。"
+        ]
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "延长讲授时间并减少讨论",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "保持原时长不变",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "缩短课程时段并增加讨论时间",
+          "is_correct": true
+        },
+        {
+          "key": "D",
+          "text": "取消课堂讨论",
+          "is_correct": false
+        }
+      ],
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0020/002008.mp3",
+        "url": "ai_tts/cet4/0020/002008.mp3",
+        "duration_ms": 7176,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "Many students wanted longer lectures, but the department shortened sessions to increase discussion time."
+      },
+      "source_ref": {
+        "type": "simulation",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "学生提出的偏好和院系最终采取的做法不同。哪项是实际决定？",
+        "task_prompt": "先听 wanted，再听 but 后的执行动词；只选择已经采取的安排。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一识别实际执行方案",
+          "focus": "区分群体愿望与机构决定",
+          "success_criteria": "选择缩短课程以增加讨论时间的选项"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "延长讲授时间并减少讨论",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "保持原时长不变",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "缩短课程时段并增加讨论时间",
+            "is_correct": true
+          },
+          {
+            "key": "D",
+            "text": "取消课堂讨论",
+            "is_correct": false
+          }
+        ]
+      },
+      "analysis": {
+        "text": "① 先标注信息主体：students 提出偏好，department 执行决定。\n\n② but 不仅转折内容，也切换了有决策权的主体。\n\n③ 因而答案必须包含 shortened sessions 与 increase discussion time，不能把 longer lectures 当落地安排。",
+        "tips": [
+          "同一句出现两个主体时，先判断谁拥有决策权。",
+          "wanted、hoped 是愿望；decided、shortened 是结果。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "synthetic_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 but 区分学生愿望与院系实际决策",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在校园场景中追踪主体和行动状态，避免愿望—结果错配。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "002009",
+      "track": "cet4",
+      "library": 0,
+      "group": 2,
+      "box": 0,
+      "card_no": 9,
+      "card_box_code": "0020",
+      "interaction_type": 1,
+      "card_box_name": "转折关系",
+      "card_group_name": "逻辑关系",
+      "front_content": {
+        "text": "报告开头语气乐观，但最终保留了什么风险？",
+        "task_prompt": "依据 nevertheless 后的警告选择，不要用开头态度替代具体风险。",
+        "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一提取转折后的限制条件",
+          "focus": "从乐观总评切换到具体实施风险",
+        "success_criteria": "能保留转折后风险的原因与可能后果"
+        },
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0020/002009.mp3"
+      },
+      "back_content": {
+        "text": "报告警告：人员短缺可能延误实施。",
+        "explanation": "sounds optimistic at first 是总体语气；nevertheless 后的 warns that 才给出会影响结果的具体限制。"
+      },
+      "analysis_content": {
+        "text": "① at first 提醒听者：前面的态度不是最终版本。\n\n② nevertheless 引出与乐观基调相冲突的事实风险。\n\n③ staffing shortages 是原因，delay implementation 是后果；正确选项需保留这条因果链。",
+        "tips": [
+          "态度词不等于事实结论，继续听后面的限制。",
+          "风险题要同时抓原因和可能后果。"
+        ]
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "预算增加会提前完成实施",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "人员短缺可能延误实施",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "报告没有提出任何风险",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "人员过剩将取消项目",
+          "is_correct": false
+        }
+      ],
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0020/002009.mp3",
+        "url": "ai_tts/cet4/0020/002009.mp3",
+        "duration_ms": 8400,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "The report sounds optimistic at first; nevertheless, it warns that staffing shortages may delay implementation."
+      },
+      "source_ref": {
+        "type": "simulation",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "报告开头语气乐观，但最终保留了什么风险？",
+        "task_prompt": "依据 nevertheless 后的警告选择，不要用开头态度替代具体风险。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一提取转折后的限制条件",
+          "focus": "从乐观总评切换到具体实施风险",
+        "success_criteria": "能保留转折后风险的原因与可能后果"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "预算增加会提前完成实施",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "人员短缺可能延误实施",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "报告没有提出任何风险",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "人员过剩将取消项目",
+            "is_correct": false
+          }
+        ]
+      },
+      "analysis": {
+        "text": "① at first 提醒听者：前面的态度不是最终版本。\n\n② nevertheless 引出与乐观基调相冲突的事实风险。\n\n③ staffing shortages 是原因，delay implementation 是后果；正确选项需保留这条因果链。",
+        "tips": [
+          "态度词不等于事实结论，继续听后面的限制。",
+          "风险题要同时抓原因和可能后果。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "synthetic_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 nevertheless 后的实施风险及其后果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在报告类听力中从笼统态度切换到可作答的限制条件。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "002010",
+      "track": "cet4",
+      "library": 0,
+      "group": 2,
+      "box": 0,
+      "card_no": 10,
+      "card_box_code": "0020",
+      "interaction_type": 1,
+      "card_box_name": "转折关系",
+      "card_group_name": "逻辑关系",
+      "front_content": {
+        "text": "听完后，说话人对复杂谈判采取什么立场？",
+        "task_prompt": "praises 只是前置评价；依据 yet 后的 admits 判断适用边界。",
+        "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一判断说话人最终立场",
+          "focus": "识别肯定评价后的适用限制",
+          "success_criteria": "选择复杂谈判仍需面对面交流的选项"
+        },
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0020/002010.mp3"
+      },
+      "back_content": {
+        "text": "说话人承认，复杂谈判仍然需要面对面交流。",
+        "explanation": "前句肯定线上会议，yet 后用 admits 收窄其适用范围：复杂谈判不能完全由线上会议替代。"
+      },
+      "analysis_content": {
+        "text": "① praises 表示正面评价，但不等于无限适用。\n\n② yet she admits 引出说话人不得不承认的限制。\n\n③ complex negotiations 和 still require 构成关键边界，所以不能推出线上会议可以替代一切。",
+        "tips": [
+          "yet 与 but 一样会把注意力转向后句。",
+          "still require 常提示某种条件没有被新方案消除。"
+        ]
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "线上会议可以替代所有谈判",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "复杂谈判仍需面对面交流",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "面对面谈判应当完全取消",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "所有会议形式效果相同",
+          "is_correct": false
+        }
+      ],
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0020/002010.mp3",
+        "url": "ai_tts/cet4/0020/002010.mp3",
+        "duration_ms": 8568,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "The speaker praises online meetings, yet she admits that complex negotiations still require face-to-face interaction."
+      },
+      "source_ref": {
+        "type": "simulation",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "0",
+        "box_name": "转折关系",
+        "box_prefix": "0020"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "听完后，说话人对复杂谈判采取什么立场？",
+        "task_prompt": "praises 只是前置评价；依据 yet 后的 admits 判断适用边界。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一判断说话人最终立场",
+          "focus": "识别肯定评价后的适用限制",
+          "success_criteria": "选择复杂谈判仍需面对面交流的选项"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "线上会议可以替代所有谈判",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "复杂谈判仍需面对面交流",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "面对面谈判应当完全取消",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "所有会议形式效果相同",
+            "is_correct": false
+          }
+        ]
+      },
+      "analysis": {
+        "text": "① praises 表示正面评价，但不等于无限适用。\n\n② yet she admits 引出说话人不得不承认的限制。\n\n③ complex negotiations 和 still require 构成关键边界，所以不能推出线上会议可以替代一切。",
+        "tips": [
+          "yet 与 but 一样会把注意力转向后句。",
+          "still require 常提示某种条件没有被新方案消除。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "synthetic_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "从 yet 后的信息确定线上会议的适用边界",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在观点题中识别“总体肯定但保留例外”的真实立场。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -1188,34 +1528,55 @@
       "box": 0,
       "card_no": 11,
       "card_box_code": "0020",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "在 recommendation 改变的触发句点击。",
-        "task_prompt": "先听音频，再完成转折关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
+        "text": "哪项新信息使原来的建议发生了根本改变？",
+        "task_prompt": "区分最初的价格印象与 but 后新增的长期成本证据。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一识别建议改变的触发因素",
+          "focus": "转折后的隐藏成本",
+          "success_criteria": "选择维护成本这一新增证据"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0020/002011.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0020/002011.mp3"
       },
       "back_content": {
-        "text": "结论：转折后指出“维护成本”改变建议。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：At first the plan looked affordable, but hidden maintenance costs changed the recommendation entirely."
+        "text": "隐藏的维护成本使原有建议彻底改变。",
+        "explanation": "looked affordable 只是初看印象；but 后揭示 hidden maintenance costs，正是它改变了 recommendation。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“At first the plan looked affordable, but hidden maintenance costs changed the recommendation entirely.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① at first 和 looked 都说明“负担得起”只是暂时判断。\n\n② but 后出现此前未计入的维护成本。\n\n③ changed the recommendation entirely 明确告诉我们：新成本不是附带细节，而是决策触发因素。",
         "tips": [
-          "转折词后要抓“变化原因”。",
-          "recommendation changed 是高价值信号。"
+          "预算题要区分一次性价格与长期维护成本。",
+          "changed the recommendation 直接提示因果落点。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "初始购买价格",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "隐藏的维护成本",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "计划的名称",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "项目宣传方式",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "path": "ai_tts/cet4/0020/002011.mp3",
@@ -1226,17 +1587,13 @@
         "transcript": "At first the plan looked affordable, but hidden maintenance costs changed the recommendation entirely."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
-      "time_window_ms": [
-        3700,
-        5300
-      ],
       "track_index": 0,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -1249,38 +1606,85 @@
         "box_name": "转折关系",
         "box_prefix": "0020"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "在 recommendation 改变的触发句点击。",
-        "task_prompt": "先听音频，再完成转折关系训练。",
+        "text": "哪项新信息使原来的建议发生了根本改变？",
+        "task_prompt": "区分最初的价格印象与 but 后新增的长期成本证据。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“At first the plan looked affordable, but hidden maintenance costs changed the recommendation entirely.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "转折词后要抓“变化原因”。",
-          "recommendation changed 是高价值信号。"
+          "action": "四选一识别建议改变的触发因素",
+          "focus": "转折后的隐藏成本",
+          "success_criteria": "选择维护成本这一新增证据"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "初始购买价格",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "隐藏的维护成本",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "计划的名称",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "项目宣传方式",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "① at first 和 looked 都说明“负担得起”只是暂时判断。\n\n② but 后出现此前未计入的维护成本。\n\n③ changed the recommendation entirely 明确告诉我们：新成本不是附带细节，而是决策触发因素。",
+        "tips": [
+          "预算题要区分一次性价格与长期维护成本。",
+          "changed the recommendation 直接提示因果落点。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 but 后改变建议的隐藏维护成本",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户从前置价格印象转向真正改变决策的新证据。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -1291,34 +1695,55 @@
       "box": 0,
       "card_no": 12,
       "card_box_code": "0020",
-      "interaction_type": 3,
+      "interaction_type": 1,
       "card_box_name": "转折关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "长按覆盖“同意原则但否决时间表”的转折段。",
-        "task_prompt": "先听音频，再完成转折关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
+        "text": "经理对提案的最终态度是什么？",
+        "task_prompt": "不要把 in principle 的原则认同误当成整体批准；结合 however 后的信息作答。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一判断部分同意后的实际结论",
+          "focus": "区分原则认同与时间表否决",
+          "success_criteria": "选择认同提案方向但否决不现实时间表的选项"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0020/002012.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0020/002012.mp3"
       },
       "back_content": {
-        "text": "结论：however 后否决了时间安排可行性。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：The manager agreed with the proposal in principle, however he rejected the timeline as unrealistic."
+        "text": "经理原则上认同提案，但否决了不现实的时间表。",
+        "explanation": "agreed in principle 只认可方向；however 后的 rejected the timeline 明确保留了执行层否决。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The manager agreed with the proposal in principle, however he rejected the timeline as unrealistic.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① in principle 限定同意范围：只认可原则，不代表所有细节获批。\n\n② however 后给出明确否决对象 timeline，并说明理由 unrealistic。\n\n③ 最终态度是“方向可接受、进度不可接受”，不是完全同意或完全反对。",
         "tips": [
-          "同意原则不等于批准执行。",
-          "转折后否定项常是题目落点。"
+          "注意限定词：in principle、partly、overall 都会收窄态度。",
+          "部分同意题要保留同意对象和否决对象两个槽位。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "完全批准提案及其时间表",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "原则上认同提案，但认为时间表不现实",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "反对提案的总体方向",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "尚未阅读提案，无法表态",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "path": "ai_tts/cet4/0020/002012.mp3",
@@ -1329,14 +1754,13 @@
         "transcript": "The manager agreed with the proposal in principle, however he rejected the timeline as unrealistic."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
-      "target_duration_ms": 4200,
       "track_index": 0,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -1349,38 +1773,87 @@
         "box_name": "转折关系",
         "box_prefix": "0020"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "长按覆盖“同意原则但否决时间表”的转折段。",
-        "task_prompt": "先听音频，再完成转折关系训练。",
+        "text": "经理对提案的最终态度是什么？",
+        "task_prompt": "不要把 in principle 的原则认同误当成整体批准；结合 however 后的信息作答。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡训练“转折关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The manager agreed with the proposal in principle, however he rejected the timeline as unrealistic.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "同意原则不等于批准执行。",
-          "转折后否定项常是题目落点。"
+          "action": "四选一判断部分同意后的实际结论",
+          "focus": "区分原则认同与时间表否决",
+          "success_criteria": "选择认同提案方向但否决不现实时间表的选项"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "完全批准提案及其时间表",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "原则上认同提案，但认为时间表不现实",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "反对提案的总体方向",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "尚未阅读提案，无法表态",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "① in principle 限定同意范围：只认可原则，不代表所有细节获批。\n\n② however 后给出明确否决对象 timeline，并说明理由 unrealistic。\n\n③ 最终态度是“方向可接受、进度不可接受”，不是完全同意或完全反对。",
+        "tips": [
+          "注意限定词：in principle、partly、overall 都会收窄态度。",
+          "部分同意题要保留同意对象和否决对象两个槽位。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分原则认同与对执行时间表的否决",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户准确处理“部分同意 + 具体反对”的复合态度题。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],
