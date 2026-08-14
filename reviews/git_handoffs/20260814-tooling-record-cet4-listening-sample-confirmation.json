@@ -1,0 +1,46 @@
+{
+  "handoff_id": "20260814-tooling-record-cet4-listening-sample-confirmation",
+  "created_at": "2026-08-14T10:43:10+08:00",
+  "agent": "codex",
+  "branch": "tooling/record-cet4-listening-sample-confirmation-20260814",
+  "base_branch": "main",
+  "commit_sha": "2907478a72960c0d16f6dff8cee481cf4f1c091a",
+  "push_ref": "origin/tooling/record-cet4-listening-sample-confirmation-20260814",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/162",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "tooling",
+    "touched_paths": [
+      "reviews/sample_confirmations/20260814-cet4-listening-five-boxes.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "4b6149019bcc231835a7ed7a08c5adb8b190d068",
+    "patch_sha256": "6e60ec7e9c297d5f3bd6f335b8bcf4403d0c2a472632335608ea7a1d4164618c"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream product-core version and group-alignment warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed at payload commit 2907478a72960c0d16f6dff8cee481cf4f1c091a; confirmation record valid, no card objects changed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    {
+      "command": "manual authority and exact-head review",
+      "result": "passed; five approved branch heads and 15 sample card IDs exactly match the user-facing confirmation request"
+    }
+  ],
+  "local_status": "Draft PR #162 records the user's exact five-box sample confirmation so confirmed-box expansion can begin. It does not approve formal content, audio perceptual QC, content PR merges, product import, destructive changes, or launch.",
+  "remaining_risks": [
+    "Each box expansion still requires current per-card Agent review and scoped audit evidence.",
+    "Formal content use still requires a separate explicit user approval record.",
+    "Listening audio still requires perceptual QC before formal audio readiness."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
