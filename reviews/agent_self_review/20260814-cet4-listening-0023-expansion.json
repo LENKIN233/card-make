@@ -1,0 +1,646 @@
+{
+  "review_id": "20260814-cet4-listening-0023-expansion",
+  "created_at": "2026-08-14T14:40:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "逻辑关系",
+    "box": "对比/比较关系",
+    "box_prefixes": [
+      "0023"
+    ],
+    "single_box_prefix": "0023",
+    "card_ids": [
+      "002304",
+      "002305",
+      "002306",
+      "002307",
+      "002308",
+      "002309",
+      "002310",
+      "002311",
+      "002312"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "spec/audio-generation-contract.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/runtime-boundaries.json",
+    "../softbook_cet/infra/cloudbase/content-manifest-v1-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "is_three_card_sample_per_box": false,
+    "confirmed_box_expansion": true,
+    "sample_confirmation_satisfied": true,
+    "sample_confirmation_record": "reviews/sample_confirmations/20260814-cet4-listening-five-boxes.json",
+    "sample_confirmation_id": "20260814-cet4-listening-five-boxes",
+    "final_user_approval_required": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260814-cet4-listening-0023-expansion-scope-audit.json",
+    "corpus_fingerprint": "0763f4d87ae775551f59207309e80ae5d39899fdf734e36bd8bc0b2b2e6461e4",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "002304",
+        "002305",
+        "002306",
+        "002307",
+        "002308",
+        "002309",
+        "002310",
+        "002311",
+        "002312"
+      ],
+      "card_count": 9,
+      "issue_count": 9,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 9
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 9,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "002304",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 both 共同点后由 but 引出的服务能力差异",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; cards 002307–002312 are retained meta-language simulations used only for explicit comparison-evidence diagnostics; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在比较题中越过共同背景，锁定真正改变结论的差异。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 识别 both 共同点后由 but 引出的服务能力差异."
+    },
+    {
+      "card_id": "002305",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别供应商比较中的维护响应速度差异",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; cards 002307–002312 are retained meta-language simulations used only for explicit comparison-evidence diagnostics; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "避免把规模和名气等可见属性误当真正影响体验的比较轴。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 识别供应商比较中的维护响应速度差异."
+    },
+    {
+      "card_id": "002306",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "完整还原短租与年度合约的多维比较结论",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; cards 002307–002312 are retained meta-language simulations used only for explicit comparison-evidence diagnostics; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在复合比较中保留参照系、让步维度和最终决策优势。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 完整还原短租与年度合约的多维比较结论."
+    },
+    {
+      "card_id": "002307",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 first、then 与 which 还原元话语的推进顺序",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; cards 002307–002312 are retained meta-language simulations used only for explicit comparison-evidence diagnostics; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "用受控元话语诊断顺序层级，同时避免把它冒充真题语料。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval. The retained audio is meta-language and this card is approved only as explicit comparison-evidence diagnosis, not as a natural CET example."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 从 first、then 与 which 还原元话语的推进顺序."
+    },
+    {
+      "card_id": "002308",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "纠正把 because 因果结构误标为比较关系的错误",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; cards 002307–002312 are retained meta-language simulations used only for explicit comparison-evidence diagnostics; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户以实际语法关系而非音频自述判断逻辑。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval. The retained audio is meta-language and this card is approved only as explicit comparison-evidence diagnosis, not as a natural CET example."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 纠正把 because 因果结构误标为比较关系的错误."
+    },
+    {
+      "card_id": "002309",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 but 建立的次要事实与决定性线索对比",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; cards 002307–002312 are retained meta-language simulations used only for explicit comparison-evidence diagnostics; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户用连接词与词义对照共同定位高权重信息。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval. The retained audio is meta-language and this card is approved only as explicit comparison-evidence diagnosis, not as a natural CET example."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 识别 but 建立的次要事实与决定性线索对比."
+    },
+    {
+      "card_id": "002310",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别仅命名 comparison logic 但缺少比较证据的元话语",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; cards 002307–002312 are retained meta-language simulations used only for explicit comparison-evidence diagnostics; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户拒绝用空泛逻辑标签替代具体语义证据。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval. The retained audio is meta-language and this card is approved only as explicit comparison-evidence diagnosis, not as a natural CET example."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 识别仅命名 comparison logic 但缺少比较证据的元话语."
+    },
+    {
+      "card_id": "002311",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 yet 引出的信息困难与定位线索对照",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; cards 002307–002312 are retained meta-language simulations used only for explicit comparison-evidence diagnostics; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在元话语中仍按真实功能词判断转折。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval. The retained audio is meta-language and this card is approved only as explicit comparison-evidence diagnosis, not as a natural CET example."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 识别 yet 引出的信息困难与定位线索对照."
+    },
+    {
+      "card_id": "002312",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "3",
+        "box_name": "对比/比较关系",
+        "box_prefix": "0023"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "纠正把 and 并列补充误当具体比较关系的错误",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; cards 002307–002312 are retained meta-language simulations used only for explicit comparison-evidence diagnostics; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在逻辑标签重复出现时仍坚持检查实际命题结构。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval. The retained audio is meta-language and this card is approved only as explicit comparison-evidence diagnosis, not as a natural CET example."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 纠正把 and 并列补充误当具体比较关系的错误."
+    }
+  ],
+  "batch_review": {
+    "status": "reviewed_confirmed_box_expansion",
+    "box_progression": "Cards 002304–002306 extend the confirmed sample with natural common-point, comparison-axis, and reference-dimension-conclusion tasks. Cards 002307–002312 explicitly diagnose retained meta-language audio for sequence, causal mislabel, weight contrast, insufficient comparison evidence, yet-contrast, and and-coordination.",
+    "repetition_or_gap_risks": [
+      "All nine expansion assets are disclosed simulations and still require complete human perceptual audio QC.",
+      "Cards 002307–002312 retain legacy meta-language TTS and are usable only with the explicit diagnostic framing in this review; they are not authentic CET examples.",
+      "Formal content use remains blocked until a separate explicit final user approval record exists."
+    ],
+    "representative_cards": [
+      "002304",
+      "002306",
+      "002308",
+      "002312"
+    ],
+    "next_step": "Keep the 12-card box candidate-only, preserve the diagnostic framing for 002307–002312, complete human perceptual audio QC, then include it in a separately user-approved formal batch before product import."
+  }
+}
