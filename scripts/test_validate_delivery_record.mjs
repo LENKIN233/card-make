@@ -91,6 +91,7 @@ function mutateRecord(fixture, mutate) {
 function createFixture({
   bomAliasOnly = false,
   candidateCard = false,
+  confirmedExpansionEvidence = false,
   customDiffDriver = false,
   declareGitlink = true,
   gitlinkPath = false,
@@ -132,8 +133,27 @@ function createFixture({
     if (unicodePath) write(root, 'docs/听力.txt', 'changed listening text\n');
     if (candidateCard) {
       write(root, 'card_boxes_json/card_boxes_seed_cet4_listening_0000.json', '{"version":"candidate"}\n');
-      write(root, 'reviews/agent_self_review/0000-test.json', '{"version":"candidate"}\n');
+      write(root, 'reviews/agent_self_review/0000-test.json', confirmedExpansionEvidence
+        ? JSON.stringify({
+            sample_policy: {review_scope_type: 'three_card_sample_per_box'},
+            scope: {box_prefixes: ['0000'], card_ids: ['000001', '000002', '000003']},
+            quality_audit: {report: 'reviews/audit_scopes/0000-test.json'},
+          })
+        : '{"version":"candidate"}\n');
       write(root, 'reviews/audit_scopes/0000-test.json', '{"version":"candidate"}\n');
+      if (confirmedExpansionEvidence) {
+        write(root, 'reviews/agent_self_review/0000-expansion.json', JSON.stringify({
+          sample_policy: {
+            review_scope_type: 'confirmed_box_expansion',
+            confirmed_box_expansion: true,
+            sample_confirmation_satisfied: true,
+            sample_confirmation_id: 'fixture-confirmation',
+          },
+          scope: {box_prefixes: ['0000'], card_ids: ['000004', '000005']},
+          quality_audit: {report: 'reviews/audit_scopes/0000-expansion.json'},
+        }));
+        write(root, 'reviews/audit_scopes/0000-expansion.json', '{"version":"candidate-expansion"}\n');
+      }
     }
   }
   let payloadCommitSha;
@@ -160,6 +180,12 @@ function createFixture({
       'reviews/agent_self_review/0000-test.json',
       'reviews/audit_scopes/0000-test.json',
     );
+    if (confirmedExpansionEvidence) {
+      payloadPaths.push(
+        'reviews/agent_self_review/0000-expansion.json',
+        'reviews/audit_scopes/0000-expansion.json',
+      );
+    }
   }
   payloadPaths.sort();
 
@@ -232,13 +258,15 @@ function rebuildFixtureWithPayloadHistory(fixture, buildHistory) {
   fixture.handoffCommitSha = commitAll(fixture.root, 'handoff after historical payload');
 }
 
-function validate(fixture) {
-  const pullRequest = fixture.parked ? undefined : pullRequestContext(fixture);
+function validate(fixture, {branch = 'harness/test-delivery'} = {}) {
+  const pullRequest = fixture.parked
+    ? undefined
+    : pullRequestContext(fixture, {headBranch: branch});
   return validateDeliveryRecord({
     root: fixture.root,
     base: 'main',
     head: 'HEAD',
-    branch: 'harness/test-delivery',
+    branch,
     baseBranch: 'main',
     pullRequest,
   });
@@ -1011,6 +1039,35 @@ test('candidate card payload cannot claim harness auto-merge authority', t => {
   const fixture = createFixture({candidateCard: true});
   cleanUp(t, fixture);
   assertError(validate(fixture), /candidate card payload must use a content change_type and no-auto-merge authority/);
+});
+
+test('accepts one sample plus one confirmed-expansion evidence pair for a candidate card payload', t => {
+  const fixture = createFixture({candidateCard: true, confirmedExpansionEvidence: true});
+  cleanUp(t, fixture);
+  mutateRecord(fixture, record => {
+    record.branch = 'content/cet4-listening-0000';
+    record.push_ref = 'origin/content/cet4-listening-0000';
+    record.scope.change_type = 'content_sample';
+    record.merge_authority = 'no_auto_merge_content_candidate_user_confirmation_required';
+  });
+
+  const result = validate(fixture, {branch: 'content/cet4-listening-0000'});
+  assert.equal(result.ok, true, JSON.stringify(result.errors, null, 2));
+});
+
+test('rejects an arbitrary two-review candidate evidence bundle', t => {
+  const fixture = createFixture({candidateCard: true, confirmedExpansionEvidence: true});
+  cleanUp(t, fixture);
+  const expansionPath = path.join(
+    fixture.root,
+    'reviews/agent_self_review/0000-expansion.json',
+  );
+  const expansion = JSON.parse(fs.readFileSync(expansionPath, 'utf8'));
+  expansion.sample_policy.review_scope_type = 'residual_blocker_closure';
+  write(fixture.root, 'reviews/agent_self_review/0000-expansion.json', JSON.stringify(expansion));
+  commitAll(fixture.root, 'corrupt expansion evidence');
+
+  assertError(validate(fixture), /exactly one three-card sample and one confirmed box expansion/);
 });
 
 test('binds real pull-request records to exact event metadata', async t => {
