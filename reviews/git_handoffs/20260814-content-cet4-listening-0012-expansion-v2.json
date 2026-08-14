@@ -1,0 +1,65 @@
+{
+  "handoff_id": "20260814-content-cet4-listening-0012-expansion-v2",
+  "created_at": "2026-08-14T11:05:11+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0012-expansion-v2",
+  "base_branch": "content/cet4-listening-0012-sample-review-v1",
+  "commit_sha": "4661c96243d5577a48a8b8cf580df47985cec1f6",
+  "push_ref": "origin/content/cet4-listening-0012-expansion-v2",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/164",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0012.json",
+      "reviews/agent_self_review/20260814-cet4-listening-0012-expansion.json",
+      "reviews/audit_scopes/20260814-cet4-listening-0012-expansion-scope-audit.json",
+      "reviews/sample_confirmations/20260814-cet4-listening-five-boxes.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "13ecc383c433b024c47a33f997444076afd76077",
+    "patch_sha256": "8c773ea4df02d77168896bea24e06fa65790b429582c276b3838937ce720ffb1"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path /private/tmp/card-make-0012-expansion-v2-validation.json",
+      "result": "passed; 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 001204,001205,001206,001207,001208,001209,001210,001211,001212",
+      "result": "passed; 9 cards, hard blockers 0, content risks 0, review gaps 0, 9 disclosed synthetic-source notices"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; only recorded upstream product-core version and group-alignment warnings"
+    },
+    {
+      "command": "node --test scripts/test_card_integrity.mjs",
+      "result": "passed; 19/19 tests"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/content/cet4-listening-0012-sample-review-v1 --head HEAD",
+      "result": "passed at payload commit 4661c96243d5577a48a8b8cf580df47985cec1f6; exactly 9 expansion cards, one self-review, one scoped audit, and one validated confirmation record"
+    },
+    {
+      "command": "node scripts/audit_audio_technical.mjs --track cet4 --report-path /private/tmp/cet4-audio-technical-0012-expansion-20260814.json",
+      "result": "passed; 301/301 referenced CET4 audio assets technically verified, 0 errors"
+    },
+    {
+      "command": "manual card-by-card semantic and progression review",
+      "result": "passed after repairing front-answer leaks and explicitly framing retained legacy language and phoneme-boundary defects as error-correction tasks"
+    },
+    {
+      "command": "git diff --check origin/content/cet4-listening-0012-sample-review-v1...HEAD",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Draft stacked PR #164 adds nine independently reviewed expansion cards above the exact user-confirmed 0012 sample head. It is candidate-only and has not been formally approved, merged, imported, or released.",
+  "remaining_risks": [
+    "All nine expansion assets are disclosed simulations and require complete human perceptual audio QC before formal audio readiness.",
+    "Cards 001207, 001209, and 001210 rely on explicit error-correction framing around retained legacy audio defects.",
+    "The stacked sample and expansion branches remain unmerged; formal content use and product import require a separate explicit final user approval record and merge authority."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
