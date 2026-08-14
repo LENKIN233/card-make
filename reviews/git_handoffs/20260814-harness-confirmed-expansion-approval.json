@@ -1,0 +1,37 @@
+{
+  "handoff_id": "20260814-harness-confirmed-expansion-approval",
+  "created_at": "2026-08-14T15:15:00+08:00",
+  "agent": "codex",
+  "branch": "harness/approval-confirmed-expansion",
+  "base_branch": "main",
+  "commit_sha": "e60a31f3c40af6247d23f658a4f6a9516118f573",
+  "push_ref": "origin/harness/approval-confirmed-expansion",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/165",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      "scripts/validate_harness.mjs",
+      "spec/review-workflow.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "89aba2aa02dddf28dc7bc4f8945bfff50adf754f",
+    "patch_sha256": "af6fb9e9d94cbfa1e31a9a4c3c22cd79bce8f10f8658a78407bdb33e98d9b143"
+  },
+  "validation": [
+    {"command": "node --check scripts/validate_harness.mjs", "result": "passed"},
+    {"command": "node scripts/validate_harness.mjs", "result": "passed; only recorded upstream product-core version and group-alignment warnings"},
+    {"command": "node --test scripts/test_validate_pr_scope.mjs", "result": "passed; 102/102 tests"},
+    {"command": "node --test scripts/test_validate_delivery_record.mjs", "result": "passed; 75/75 tests"},
+    {"command": "git diff --check", "result": "passed"},
+    {"command": "Agent review", "result": "passed; explicit mode only, exact scope/status mapping, unknown modes fail closed, sample confirmation and audio QC boundaries preserved"}
+  ],
+  "local_status": "Draft PR #165 adds only the missing validator path for explicit user-approved confirmed-box expansions. No card content or approval record is changed.",
+  "remaining_risks": [
+    "The new mode does not create approval by itself; a current exact-scope approved_batches record and approval:authorized label remain required.",
+    "Audio perceptual QC remains a separate human-controlled boundary.",
+    "Content candidate PRs remain no-auto-merge even after formal approval evidence exists."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
