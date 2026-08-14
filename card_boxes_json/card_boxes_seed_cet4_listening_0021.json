@@ -469,21 +469,21 @@
       "box": 1,
       "card_no": 4,
       "card_box_code": "0021",
-      "interaction_type": 3,
+      "interaction_type": 0,
       "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：按住开始听，在因果链真正落到‘结果动作’时松手。",
-        "task_prompt": "按住开始听，在因果链真正落到‘结果动作’时松手。",
-        "task_schema": {
-          "action": "按住并择机松手",
-          "focus": "从原因描述切换到结果动作",
-          "success_criteria": "在结果动词起点附近松手"
-        },
+        "text": "听完后，城市采取了什么措施来应对通勤流量上升？",
+        "task_prompt": "先分开压力来源和 so 后的组织响应，再用一句话概括措施。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听后概括应对措施",
+          "focus": "so 后的结果动作",
+          "success_criteria": "能区分桥梁关闭后的流量压力与城市响应"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0021/002104.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0021/002104.mp3"
       },
       "back_content": {
         "text": "结果动作起点：so the city extended service hours。",
@@ -498,7 +498,6 @@
       },
       "options": null,
       "eliminable_items": null,
-      "target_duration_ms": 3300,
       "audio": {
         "url": "ai_tts/cet4/0021/002104.mp3",
         "duration_ms": 6744,
@@ -506,12 +505,12 @@
         "path": "ai_tts/cet4/0021/002104.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -527,15 +526,15 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：按住开始听，在因果链真正落到‘结果动作’时松手。",
-        "task_prompt": "按住开始听，在因果链真正落到‘结果动作’时松手。",
+        "text": "听完后，城市采取了什么措施来应对通勤流量上升？",
+        "task_prompt": "先分开压力来源和 so 后的组织响应，再用一句话概括措施。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "按住并择机松手",
-          "focus": "从原因描述切换到结果动作",
-          "success_criteria": "在结果动词起点附近松手"
+          "action": "听后概括应对措施",
+          "focus": "so 后的结果动作",
+          "success_criteria": "能区分桥梁关闭后的流量压力与城市响应"
         }
       },
       "analysis": {
@@ -547,16 +546,40 @@
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 so 后由交通压力触发的城市响应",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在措施题中越过问题背景，锁定组织采取的结果动作。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -571,17 +594,17 @@
       "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：听完后选出‘造成延误的根因’，不是表面后果。",
-        "task_prompt": "听完后选出‘造成延误的根因’，不是表面后果。",
-        "task_schema": {
-          "action": "四选一作答",
-          "focus": "根因与连锁后果区分",
-          "success_criteria": "锁定 root cause 而非 secondary effect"
-        },
+        "text": "听完后，造成收银台长队的根本原因是什么？",
+        "task_prompt": "causing 后是可见后果；回到前半句寻找第一触发事件。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一判断根因",
+          "focus": "区分初始触发与连锁后果",
+          "success_criteria": "能用事件先后和 causing 结构定位根因"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0021/002105.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0021/002105.mp3"
       },
       "back_content": {
         "text": "答案：系统升级失败是根因，后续队伍拥堵是后果。",
@@ -597,22 +620,22 @@
       "options": [
         {
           "key": "A",
-          "text": "Long queues at checkout desks.",
+          "text": "收银台前出现长队",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "The payment system crashed during an update.",
+          "text": "系统更新导致支付系统崩溃",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "Customers arrived earlier than usual.",
+          "text": "顾客比平时更早到店",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "The store closed several service counters.",
+          "text": "商店主动关闭多个收银台",
           "is_correct": false
         }
       ],
@@ -624,12 +647,12 @@
         "path": "ai_tts/cet4/0021/002105.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -645,16 +668,38 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：听完后选出‘造成延误的根因’，不是表面后果。",
-        "task_prompt": "听完后选出‘造成延误的根因’，不是表面后果。",
+        "text": "听完后，造成收银台长队的根本原因是什么？",
+        "task_prompt": "causing 后是可见后果；回到前半句寻找第一触发事件。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "四选一作答",
-          "focus": "根因与连锁后果区分",
-          "success_criteria": "锁定 root cause 而非 secondary effect"
-        }
+          "action": "四选一判断根因",
+          "focus": "区分初始触发与连锁后果",
+          "success_criteria": "能用事件先后和 causing 结构定位根因"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "收银台前出现长队",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "系统更新导致支付系统崩溃",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "顾客比平时更早到店",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "商店主动关闭多个收银台",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
         "text": "① 识别信号：现在分词 causing 常把后半句标记为后果延伸。\n\n② 核心规律：很多题会把“看得见的后果”做成强干扰项，因为它更具体、更容易记住。根因往往更抽象，但决定了为什么事情开始失控。要先定位第一触发事件，再判断后续扩散。\n\n③ 验证：本句第一触发是 update crashed payment system；queues at checkout desk 是由 causing 引出的连锁表现。因此根因类题目必须选前者。",
@@ -667,14 +712,36 @@
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 causing 结构区分支付系统故障与排队后果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "避免把更显眼的后果误当原因，准确完成根因题。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       },
       "answer_key": {
         "correct_option": "B"
@@ -692,17 +759,17 @@
       "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：听完后，用一句话复述“原因链如何一步步推到结论”。",
-        "task_prompt": "听完后，用一句话复述“原因链如何一步步推到结论”。",
-        "task_schema": {
-          "action": "口头复述因果链",
-          "focus": "多节点因果链收束",
-          "success_criteria": "复述包含起因、中间机制、最终结果"
-        },
+        "text": "这段话包含三步因果。听完后按顺序复述从天气变化到高速封闭的链条。",
+        "task_prompt": "保留起因、中间机制和管理结果三个节点，不要一步跳到结论。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "按顺序复述三段式因果链",
+          "focus": "which led to、in turn 与 so 串联的节点",
+          "success_criteria": "能完整复述环境变化、道路风险与封路动作"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0021/002106.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0021/002106.mp3"
       },
       "back_content": {
         "text": "示例复述：因为夜间降温导致路面结冰，随后发生连环追尾，所以高速被临时封闭。",
@@ -724,12 +791,12 @@
         "path": "ai_tts/cet4/0021/002106.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -745,15 +812,15 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：听完后，用一句话复述“原因链如何一步步推到结论”。",
-        "task_prompt": "听完后，用一句话复述“原因链如何一步步推到结论”。",
+        "text": "这段话包含三步因果。听完后按顺序复述从天气变化到高速封闭的链条。",
+        "task_prompt": "保留起因、中间机制和管理结果三个节点，不要一步跳到结论。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "口头复述因果链",
-          "focus": "多节点因果链收束",
-          "success_criteria": "复述包含起因、中间机制、最终结果"
+          "action": "按顺序复述三段式因果链",
+          "focus": "which led to、in turn 与 so 串联的节点",
+          "success_criteria": "能完整复述环境变化、道路风险与封路动作"
         }
       },
       "analysis": {
@@ -767,14 +834,38 @@
       "legacy_interaction": {
         "type": 0,
         "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "product_mapping_reason": "flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "追踪多标记连接的三段式因果链",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在长句中保留中间机制，减少因果链断裂造成的细节题误判。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -785,34 +876,55 @@
       "box": 1,
       "card_no": 7,
       "card_box_code": "0021",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "点击因果链中“结果句”落地的时刻。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
+        "text": "过滤系统升级后，实验室出现了什么变化？",
+        "task_prompt": "Because 从句给原因；选择主句描述的两周内结果。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一识别干预后的结果",
+          "focus": "原因从句与主句结果的对应",
+          "success_criteria": "能根据主句选择与干预直接对应的变化"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0021/002107.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0021/002107.mp3"
       },
       "back_content": {
-        "text": "结论：升级过滤系统导致污染样本下降。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：Because the laboratory upgraded its filters, the number of contaminated samples dropped sharply within two weeks."
+        "text": "过滤系统升级后，污染样本数量在两周内明显下降。",
+        "explanation": "Because 从句说明干预，主句 the number of contaminated samples dropped sharply 给出结果和时间范围。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“Because the laboratory upgraded its filters, the number of contaminated samples dropped sharply within two weeks.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① Because 引出的升级是原因，不是题目所问的结果。\n\n② 主句中的 dropped sharply 描述变化方向，within two weeks 限定观察窗口。\n\n③ 正确选项须同时保留“污染样本减少”和“两周内发生”，不能把升级动作本身当结果。",
         "tips": [
-          "because 后是原因，主句常给结果。",
-          "先锁因果方向再选答案。"
+          "原因前置时，主句通常承载题目所问的结果。",
+          "注意数量变化方向：rise、drop、remain stable。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "污染样本在两周内明显减少",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "过滤系统在两周内停止运行",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "样本数量因升级而翻倍",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "实验室取消了污染检测",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "path": "ai_tts/cet4/0021/002107.mp3",
@@ -823,335 +935,12 @@
         "transcript": "Because the laboratory upgraded its filters, the number of contaminated samples dropped sharply within two weeks."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "time_window_ms": [
-        3400,
-        5000
-      ],
-      "track_index": 0,
-      "contract_version": "softbook-card-v1",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "0",
-        "library_name": "听力",
-        "group_id": "2",
-        "group_name": "逻辑关系",
-        "box_id": "1",
-        "box_name": "因果关系",
-        "box_prefix": "0021"
-      },
-      "interaction_id": "flip",
-      "front": {
-        "text": "点击因果链中“结果句”落地的时刻。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
-        "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“Because the laboratory upgraded its filters, the number of contaminated samples dropped sharply within two weeks.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "because 后是原因，主句常给结果。",
-          "先锁因果方向再选答案。"
-        ]
-      },
-      "auto_scoring": false,
-      "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
-      },
-      "quality_flags": [
-        "unverified_source"
-      ],
-      "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      }
-    },
-    {
-      "card_id": "002108",
-      "track": "cet4",
-      "library": 0,
-      "group": 2,
-      "box": 1,
-      "card_no": 8,
-      "card_box_code": "0021",
-      "interaction_type": 3,
-      "card_box_name": "因果关系",
-      "card_group_name": "逻辑关系",
-      "front_content": {
-        "text": "长按覆盖 since 引出的原因到结果完整链条。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0021/002108.mp3",
-        "highlight_ranges": []
-      },
-      "back_content": {
-        "text": "结论：信号灯动态调控是通勤提速原因。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：The commute became faster since the city adjusted traffic lights based on real-time congestion data."
-      },
-      "analysis_content": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The commute became faster since the city adjusted traffic lights based on real-time congestion data.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "since 在此表原因，不是时间。",
-          "结果词 faster 要回扣前因。"
-        ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0021/002108.mp3",
-        "url": "ai_tts/cet4/0021/002108.mp3",
-        "duration_ms": 7008,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The commute became faster since the city adjusted traffic lights based on real-time congestion data."
-      },
-      "source_ref": {
-        "type": "content_pool",
-        "paper_id": null,
-        "question_id": null,
-        "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "target_duration_ms": 4150,
-      "track_index": 0,
-      "contract_version": "softbook-card-v1",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "0",
-        "library_name": "听力",
-        "group_id": "2",
-        "group_name": "逻辑关系",
-        "box_id": "1",
-        "box_name": "因果关系",
-        "box_prefix": "0021"
-      },
-      "interaction_id": "flip",
-      "front": {
-        "text": "长按覆盖 since 引出的原因到结果完整链条。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
-        "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The commute became faster since the city adjusted traffic lights based on real-time congestion data.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "since 在此表原因，不是时间。",
-          "结果词 faster 要回扣前因。"
-        ]
-      },
-      "auto_scoring": false,
-      "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
-      },
-      "quality_flags": [
-        "unverified_source"
-      ],
-      "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      }
-    },
-    {
-      "card_id": "002109",
-      "track": "cet4",
-      "library": 0,
-      "group": 2,
-      "box": 1,
-      "card_no": 9,
-      "card_box_code": "0021",
-      "interaction_type": 0,
-      "card_box_name": "因果关系",
-      "card_group_name": "逻辑关系",
-      "front_content": {
-        "text": "翻面前先复述“因→果”两端各是什么。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0021/002109.mp3",
-        "highlight_ranges": []
-      },
-      "back_content": {
-        "text": "结论：因是发货延迟，果是促销延期。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：As a consequence of delayed shipments, several stores postponed their seasonal promotions."
-      },
-      "analysis_content": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：翻面前先自述判断路径，翻面后只核验证据链是否闭合。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“As a consequence of delayed shipments, several stores postponed their seasonal promotions.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "as a consequence 明确标记结果。",
-          "两端都要说全，避免只记一半。"
-        ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0021/002109.mp3",
-        "url": "ai_tts/cet4/0021/002109.mp3",
-        "duration_ms": 6576,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "As a consequence of delayed shipments, several stores postponed their seasonal promotions."
-      },
-      "source_ref": {
-        "type": "content_pool",
-        "paper_id": null,
-        "question_id": null,
-        "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "track_index": 0,
-      "contract_version": "softbook-card-v1",
-      "knowledge_ref": {
-        "track": "cet4",
-        "library_id": "0",
-        "library_name": "听力",
-        "group_id": "2",
-        "group_name": "逻辑关系",
-        "box_id": "1",
-        "box_name": "因果关系",
-        "box_prefix": "0021"
-      },
-      "interaction_id": "flip",
-      "front": {
-        "text": "翻面前先复述“因→果”两端各是什么。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
-        "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：翻面前先自述判断路径，翻面后只核验证据链是否闭合。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“As a consequence of delayed shipments, several stores postponed their seasonal promotions.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "as a consequence 明确标记结果。",
-          "两端都要说全，避免只记一半。"
-        ]
-      },
-      "auto_scoring": false,
-      "legacy_interaction": {
-        "type": 0,
-        "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
-      },
-      "quality_flags": [
-        "unverified_source"
-      ],
-      "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      }
-    },
-    {
-      "card_id": "002110",
-      "track": "cet4",
-      "library": 0,
-      "group": 2,
-      "box": 1,
-      "card_no": 10,
-      "card_box_code": "0021",
-      "interaction_type": 1,
-      "card_box_name": "因果关系",
-      "card_group_name": "逻辑关系",
-      "front_content": {
-        "text": "四选一：根据 because 结构判断最强因果项。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0021/002110.mp3",
-        "highlight_ranges": []
-      },
-      "back_content": {
-        "text": "答案：A。解析：注册步骤减少推动活跃用户增长。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：The app gained more active users because it reduced sign-up steps from five to two."
-      },
-      "analysis_content": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：四选一先判关系类型，再排除对象错位和范围错位选项。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The app gained more active users because it reduced sign-up steps from five to two.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "数量变化常是结果端。",
-          "操作改动常是原因端。"
-        ]
-      },
-      "options": [
-        {
-          "key": "A",
-          "text": "简化注册步骤提升活跃",
-          "is_correct": true
-        },
-        {
-          "key": "B",
-          "text": "增加通知频率导致卸载",
-          "is_correct": false
-        },
-        {
-          "key": "C",
-          "text": "提高价格带来增长",
-          "is_correct": false
-        },
-        {
-          "key": "D",
-          "text": "更换主题色提升留存",
-          "is_correct": false
-        }
-      ],
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0021/002110.mp3",
-        "url": "ai_tts/cet4/0021/002110.mp3",
-        "duration_ms": 6024,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The app gained more active users because it reduced sign-up steps from five to two."
-      },
-      "source_ref": {
-        "type": "content_pool",
-        "paper_id": null,
-        "question_id": null,
-        "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -1167,32 +956,54 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "四选一：根据 because 结构判断最强因果项。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
+        "text": "过滤系统升级后，实验室出现了什么变化？",
+        "task_prompt": "Because 从句给原因；选择主句描述的两周内结果。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+          "action": "四选一识别干预后的结果",
+          "focus": "原因从句与主句结果的对应",
+          "success_criteria": "能根据主句选择与干预直接对应的变化"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "污染样本在两周内明显减少",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "过滤系统在两周内停止运行",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "样本数量因升级而翻倍",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "实验室取消了污染检测",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：四选一先判关系类型，再排除对象错位和范围错位选项。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“The app gained more active users because it reduced sign-up steps from five to two.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① Because 引出的升级是原因，不是题目所问的结果。\n\n② 主句中的 dropped sharply 描述变化方向，within two weeks 限定观察窗口。\n\n③ 正确选项须同时保留“污染样本减少”和“两周内发生”，不能把升级动作本身当结果。",
         "tips": [
-          "数量变化常是结果端。",
-          "操作改动常是原因端。"
+          "原因前置时，主句通常承载题目所问的结果。",
+          "注意数量变化方向：rise、drop、remain stable。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -1200,6 +1011,489 @@
       },
       "answer_key": {
         "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 because 前置原因与主句中的污染样本变化",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在原因前置句中把注意力转回主句结果。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "002108",
+      "track": "cet4",
+      "library": 0,
+      "group": 2,
+      "box": 1,
+      "card_no": 8,
+      "card_box_code": "0021",
+      "interaction_type": 1,
+      "card_box_name": "因果关系",
+      "card_group_name": "逻辑关系",
+      "front_content": {
+        "text": "通勤为什么变快了？",
+        "task_prompt": "since 在这里引出原因；选择城市对信号灯采取的具体做法。",
+        "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一定位原因",
+          "focus": "since 后的交通管理措施",
+          "success_criteria": "能识别实时拥堵数据与信号灯调整之间的作用"
+        },
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0021/002108.mp3"
+      },
+      "back_content": {
+        "text": "通勤提速的原因是城市依据实时拥堵数据调整了信号灯。",
+        "explanation": "The commute became faster 是结果；since 后解释原因：信号灯控制根据实时拥堵信息动态调整。"
+      },
+      "analysis_content": {
+        "text": "① 先识别 faster 是待解释的结果。\n\n② since 引出原因，核心动作是 adjusted traffic lights。\n\n③ based on real-time congestion data 说明调整依据；正确答案不能只泛化为“改善交通”。",
+        "tips": [
+          "结果在前、原因在后时，听到 since 不要误当时间词。",
+          "动作 + 依据比宽泛主题词更能支撑答案。"
+        ]
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "城市依据实时拥堵数据调整信号灯",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "城市关闭了所有主要道路",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "通勤者改为夜间出行",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "实时交通数据停止更新",
+          "is_correct": false
+        }
+      ],
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0021/002108.mp3",
+        "url": "ai_tts/cet4/0021/002108.mp3",
+        "duration_ms": 7008,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "The commute became faster since the city adjusted traffic lights based on real-time congestion data."
+      },
+      "source_ref": {
+        "type": "simulation",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "通勤为什么变快了？",
+        "task_prompt": "since 在这里引出原因；选择城市对信号灯采取的具体做法。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一定位原因",
+          "focus": "since 后的交通管理措施",
+          "success_criteria": "能识别实时拥堵数据与信号灯调整之间的作用"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "城市依据实时拥堵数据调整信号灯",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "城市关闭了所有主要道路",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "通勤者改为夜间出行",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "实时交通数据停止更新",
+            "is_correct": false
+          }
+        ]
+      },
+      "analysis": {
+        "text": "① 先识别 faster 是待解释的结果。\n\n② since 引出原因，核心动作是 adjusted traffic lights。\n\n③ based on real-time congestion data 说明调整依据；正确答案不能只泛化为“改善交通”。",
+        "tips": [
+          "结果在前、原因在后时，听到 since 不要误当时间词。",
+          "动作 + 依据比宽泛主题词更能支撑答案。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "synthetic_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 since 后使通勤提速的动态信号灯调控",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在结果先行句中向后追踪原因证据。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "002109",
+      "track": "cet4",
+      "library": 0,
+      "group": 2,
+      "box": 1,
+      "card_no": 9,
+      "card_box_code": "0021",
+      "interaction_type": 0,
+      "card_box_name": "因果关系",
+      "card_group_name": "逻辑关系",
+      "front_content": {
+        "text": "听完后，分别说出促销延期的原因和结果。",
+        "task_prompt": "As a consequence of 后是原因名词短语，主句是商店采取的结果动作。",
+        "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "口头还原因果两端",
+          "focus": "介词短语原因与主句结果",
+          "success_criteria": "能准确配对发货延迟和促销延期"
+        },
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0021/002109.mp3"
+      },
+      "back_content": {
+        "text": "原因是发货延迟；结果是多家商店推迟季节性促销。",
+        "explanation": "As a consequence of delayed shipments 把 delayed shipments 标成原因；主句 postponed their seasonal promotions 是结果。"
+      },
+      "analysis_content": {
+        "text": "① as a consequence of 后接名词性原因，不是结果。\n\n② 主句的 postponed 是实际变化，several stores 是受影响主体。\n\n③ 复述时保持方向：发货延迟 → 商店推迟促销，不能倒置为“促销导致发货延迟”。",
+        "tips": [
+          "遇到 of 结构时，先看介词短语修饰哪一端。",
+          "用箭头复述可快速检查因果方向。"
+        ]
+      },
+      "options": null,
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0021/002109.mp3",
+        "url": "ai_tts/cet4/0021/002109.mp3",
+        "duration_ms": 6576,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "As a consequence of delayed shipments, several stores postponed their seasonal promotions."
+      },
+      "source_ref": {
+        "type": "simulation",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "interaction_id": "flip",
+      "front": {
+        "text": "听完后，分别说出促销延期的原因和结果。",
+        "task_prompt": "As a consequence of 后是原因名词短语，主句是商店采取的结果动作。",
+        "audio_first": true,
+        "display_mode": "audio_first",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "口头还原因果两端",
+          "focus": "介词短语原因与主句结果",
+          "success_criteria": "能准确配对发货延迟和促销延期"
+        }
+      },
+      "analysis": {
+        "text": "① as a consequence of 后接名词性原因，不是结果。\n\n② 主句的 postponed 是实际变化，several stores 是受影响主体。\n\n③ 复述时保持方向：发货延迟 → 商店推迟促销，不能倒置为“促销导致发货延迟”。",
+        "tips": [
+          "遇到 of 结构时，先看介词短语修饰哪一端。",
+          "用箭头复述可快速检查因果方向。"
+        ]
+      },
+      "auto_scoring": false,
+      "legacy_interaction": {
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "flip card maps directly to flip"
+      },
+      "quality_flags": [
+        "synthetic_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用 as a consequence of 还原发货与促销之间的因果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户处理名词化因果标记，避免把原因和结果方向听反。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
+    },
+    {
+      "card_id": "002110",
+      "track": "cet4",
+      "library": 0,
+      "group": 2,
+      "box": 1,
+      "card_no": 10,
+      "card_box_code": "0021",
+      "interaction_type": 1,
+      "card_box_name": "因果关系",
+      "card_group_name": "逻辑关系",
+      "front_content": {
+        "text": "这款应用活跃用户增加的直接原因是什么？",
+        "task_prompt": "because 后给出产品改动；选择与注册流程有关的证据。",
+        "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一判断增长原因",
+          "focus": "because 后的具体流程改动",
+          "success_criteria": "能区分用户增长结果与引发增长的产品变化"
+        },
+        "image_url": null,
+        "audio_url": "ai_tts/cet4/0021/002110.mp3"
+      },
+      "back_content": {
+        "text": "直接原因是应用把注册步骤从五步减少到两步。",
+        "explanation": "gained more active users 是结果；because 后的 reduced sign-up steps 明确给出原因和量化变化。"
+      },
+      "analysis_content": {
+        "text": "① 先标记 gained more active users 为结果。\n\n② because 后出现唯一被陈述的产品改动：注册步骤由五步减到两步。\n\n③ 其他选项都是音频未提及的常见增长猜测，不能替代直接证据。",
+        "tips": [
+          "因果题只接受音频给出的机制，不接受合理但未提及的推测。",
+          "数字变化常帮助确认具体动作。"
+        ]
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "把注册步骤从五步减少到两步",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "增加通知频率",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "提高订阅价格",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "更换应用主题色",
+          "is_correct": false
+        }
+      ],
+      "eliminable_items": null,
+      "audio": {
+        "path": "ai_tts/cet4/0021/002110.mp3",
+        "url": "ai_tts/cet4/0021/002110.mp3",
+        "duration_ms": 6024,
+        "voice": "en-US-AriaNeural",
+        "rate": "-8%",
+        "transcript": "The app gained more active users because it reduced sign-up steps from five to two."
+      },
+      "source_ref": {
+        "type": "simulation",
+        "paper_id": null,
+        "question_id": null,
+        "passage_id": null,
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
+      },
+      "track_index": 0,
+      "contract_version": "softbook-card-v1",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "interaction_id": "multiple_choice",
+      "front": {
+        "text": "这款应用活跃用户增加的直接原因是什么？",
+        "task_prompt": "because 后给出产品改动；选择与注册流程有关的证据。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一判断增长原因",
+          "focus": "because 后的具体流程改动",
+          "success_criteria": "能区分用户增长结果与引发增长的产品变化"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "把注册步骤从五步减少到两步",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "增加通知频率",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "提高订阅价格",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "更换应用主题色",
+            "is_correct": false
+          }
+        ]
+      },
+      "analysis": {
+        "text": "① 先标记 gained more active users 为结果。\n\n② because 后出现唯一被陈述的产品改动：注册步骤由五步减到两步。\n\n③ 其他选项都是音频未提及的常见增长猜测，不能替代直接证据。",
+        "tips": [
+          "因果题只接受音频给出的机制，不接受合理但未提及的推测。",
+          "数字变化常帮助确认具体动作。"
+        ]
+      },
+      "auto_scoring": true,
+      "legacy_interaction": {
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
+      },
+      "quality_flags": [
+        "synthetic_source"
+      ],
+      "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别简化注册步骤带来的活跃用户增长",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户从 because 后抽取具体产品改动，而不是凭常识猜测增长原因。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -1210,34 +1504,55 @@
       "box": 1,
       "card_no": 11,
       "card_box_code": "0021",
-      "interaction_type": 2,
+      "interaction_type": 1,
       "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "在 due to 引出原因后点击“应对动作”出现点。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
+        "text": "反复停电后，医院采取了什么应对措施？",
+        "task_prompt": "Due to 先给风险背景；选择主句中的组织响应。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一识别应对动作",
+          "focus": "原因背景后的医院措施",
+          "success_criteria": "能区分停电原因、备份措施和预防目的"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0021/002111.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0021/002111.mp3"
       },
       "back_content": {
-        "text": "结论：停电风险促使医院部署备份系统。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：Due to repeated power outages, the hospital installed backup systems to prevent data loss."
+        "text": "医院安装了备份系统，以防止数据丢失。",
+        "explanation": "Due to repeated power outages 给原因；installed backup systems 是措施；to prevent data loss 说明目的。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“Due to repeated power outages, the hospital installed backup systems to prevent data loss.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① due to 后的停电是触发背景，不是医院的动作。\n\n② 主句 installed 明确标出应对措施，backup systems 是动作对象。\n\n③ to prevent data loss 说明措施目的，而不是另一项已发生结果。答题时应把“反复停电—安装备份—防止丢失”分别放进原因、措施和目的三个槽位。",
         "tips": [
-          "due to 后常接问题根因。",
-          "动作句通常给出管理决策。"
+          "措施题优先锁定主句动作动词。",
+          "原因—措施—目的三槽位可以分别记忆。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "安装备份系统",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "关闭医院数据中心",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "停止记录患者数据",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "取消所有供电维护",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "path": "ai_tts/cet4/0021/002111.mp3",
@@ -1248,17 +1563,13 @@
         "transcript": "Due to repeated power outages, the hospital installed backup systems to prevent data loss."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
-      "time_window_ms": [
-        3500,
-        5100
-      ],
       "track_index": 0,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -1271,38 +1582,85 @@
         "box_name": "因果关系",
         "box_prefix": "0021"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "在 due to 引出原因后点击“应对动作”出现点。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
+        "text": "反复停电后，医院采取了什么应对措施？",
+        "task_prompt": "Due to 先给风险背景；选择主句中的组织响应。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：时机点击题要把动作锚在因果/转折触发词后，确保点击对应语义变化点。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“Due to repeated power outages, the hospital installed backup systems to prevent data loss.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "due to 后常接问题根因。",
-          "动作句通常给出管理决策。"
+          "action": "四选一识别应对动作",
+          "focus": "原因背景后的医院措施",
+          "success_criteria": "能区分停电原因、备份措施和预防目的"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "安装备份系统",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "关闭医院数据中心",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "停止记录患者数据",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "取消所有供电维护",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "① due to 后的停电是触发背景，不是医院的动作。\n\n② 主句 installed 明确标出应对措施，backup systems 是动作对象。\n\n③ to prevent data loss 说明措施目的，而不是另一项已发生结果。答题时应把“反复停电—安装备份—防止丢失”分别放进原因、措施和目的三个槽位。",
+        "tips": [
+          "措施题优先锁定主句动作动词。",
+          "原因—措施—目的三槽位可以分别记忆。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别停电风险触发的医院备份系统部署",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在公共服务场景中从风险背景切换到机构措施。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -1313,34 +1671,55 @@
       "box": 1,
       "card_no": 12,
       "card_box_code": "0021",
-      "interaction_type": 3,
+      "interaction_type": 1,
       "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "长按覆盖“反馈问题→改写手册→结果变化”整段。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
+        "text": "客户反馈最终促使公司做了什么，并带来什么结果？",
+        "task_prompt": "since 从句给问题来源；选择同时保留改动和后续变化的选项。",
         "audio_first": true,
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一还原原因—行动—结果链",
+          "focus": "反馈问题、说明书改写与支持来电变化",
+          "success_criteria": "能选出同时对应公司动作和结果的完整链条"
+        },
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0021/002112.mp3",
-        "highlight_ranges": []
+        "audio_url": "ai_tts/cet4/0021/002112.mp3"
       },
       "back_content": {
-        "text": "结论：说明书改写减少了客服来电。\n\n关键点：作答要能回指到音频证据。",
-        "explanation": "语境揭示：Since customer feedback highlighted unclear instructions, the company rewrote the manual and cut support calls."
+        "text": "公司根据反馈改写了说明书，随后客服来电减少。",
+        "explanation": "反馈指出说明不清，由此触发 rewrote the manual；and cut support calls 给出同一行动链的结果。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“Since customer feedback highlighted unclear instructions, the company rewrote the manual and cut support calls.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
+        "text": "① since 从句解释为什么公司要行动：说明文字不清。\n\n② 主句先给动作 rewrote the manual，再给结果 cut support calls。\n\n③ 正确答案必须保留动作与结果，不能只复述反馈问题。",
         "tips": [
-          "三段因果链要抓中间动作。",
-          "结果 cut support calls 是可验证指标。"
+          "并列动词可能表示“行动 + 结果”，需结合语义顺序判断。",
+          "完整链条比单个关键词更能排除干扰项。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "公司改写说明书，客服来电随之减少",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "公司删除反馈渠道，客服来电增加",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "公司保留原说明书并扩大客服团队",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "客户改写说明书，公司停止销售",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "audio": {
         "path": "ai_tts/cet4/0021/002112.mp3",
@@ -1351,14 +1730,13 @@
         "transcript": "Since customer feedback highlighted unclear instructions, the company rewrote the manual and cut support calls."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
-      "target_duration_ms": 4200,
       "track_index": 0,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -1371,38 +1749,87 @@
         "box_name": "因果关系",
         "box_prefix": "0021"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "长按覆盖“反馈问题→改写手册→结果变化”整段。",
-        "task_prompt": "先听音频，再完成因果关系训练。",
+        "text": "客户反馈最终促使公司做了什么，并带来什么结果？",
+        "task_prompt": "since 从句给问题来源；选择同时保留改动和后续变化的选项。",
         "audio_first": true,
-        "display_mode": "audio_first",
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
-      },
-      "analysis": {
-        "text": "① 识别信号：本卡训练“因果关系”的听辨。先识别功能词（如转折、因果或语音现象），再进入作答。\n\n② 核心规律：长按题要覆盖完整有效信息段，边界由语义决定而不是固定秒数。先结构后细节，能显著减少误判。\n\n③ 验证与迁移：回听“Since customer feedback highlighted unclear instructions, the company rewrote the manual and cut support calls.”，检查你的答案是否能被关键语义段直接支持。下次遇到同类题，重复“判关系-抓重心-执行动作”。",
-        "tips": [
-          "三段因果链要抓中间动作。",
-          "结果 cut support calls 是可验证指标。"
+          "action": "四选一还原原因—行动—结果链",
+          "focus": "反馈问题、说明书改写与支持来电变化",
+          "success_criteria": "能选出同时对应公司动作和结果的完整链条"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "公司改写说明书，客服来电随之减少",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "公司删除反馈渠道，客服来电增加",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "公司保留原说明书并扩大客服团队",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "客户改写说明书，公司停止销售",
+            "is_correct": false
+          }
         ]
       },
-      "auto_scoring": false,
+      "analysis": {
+        "text": "① since 从句解释为什么公司要行动：说明文字不清。\n\n② 主句先给动作 rewrote the manual，再给结果 cut support calls。\n\n③ 正确答案必须保留动作与结果，不能只复述反馈问题。",
+        "tips": [
+          "并列动词可能表示“行动 + 结果”，需结合语义顺序判断。",
+          "完整链条比单个关键词更能排除干扰项。"
+        ]
+      },
+      "auto_scoring": true,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+        "type": 1,
+        "label": "T1",
+        "product_mapping_reason": "four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "answer_key": {
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "追踪客户反馈触发的说明书改写与来电减少",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在一句话中同时保留触发问题、组织动作和可观察结果。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],
