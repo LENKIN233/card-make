@@ -1,0 +1,43 @@
+{
+  "handoff_id": "20260814-content-cet4-listening-0022-formal-v3-audio-bound",
+  "created_at": "2026-08-14T21:35:30+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0022-formal-v3-audio-bound",
+  "base_branch": "main",
+  "commit_sha": "d515e35a3f4e55868f9b6157ede6529b2f4c435b",
+  "push_ref": "origin/content/cet4-listening-0022-formal-v3-audio-bound",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/176",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "ai_tts/audio-lfs-manifest.json",
+      "ai_tts/cet4/0022/002207-v2.mp3",
+      "ai_tts/cet4/0022/002208-v2.mp3",
+      "ai_tts/cet4/0022/002209-v2.mp3",
+      "ai_tts/cet4/0022/002210-v2.mp3",
+      "ai_tts/cet4/0022/002211-v2.mp3",
+      "ai_tts/cet4/0022/002212-v2.mp3",
+      "card_boxes_json/card_boxes_seed_cet4_listening_0022.json",
+      "reviews/agent_self_review/20260813-cet4-listening-0022-sample.json",
+      "reviews/agent_self_review/20260814-cet4-listening-0022-expansion.json",
+      "reviews/audit_scopes/20260813-cet4-listening-0022-sample-scope-audit.json",
+      "reviews/audit_scopes/20260814-cet4-listening-0022-expansion-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "763cfcdad865b85fd1c1c1bb888c068dee8d4da2",
+    "patch_sha256": "43e6d8e8e68ebbd8f7a218bbfbf5b18158908b519a94e963897bcc58d5d06ff7"
+  },
+  "validation": [
+    {"command": "node scripts/validate_audio_lfs.mjs", "result": "passed; 633 tracked assets"},
+    {"command": "node scripts/validate_cards.mjs --report-path exports/formal-v3-0022-card-validation.json", "result": "passed; 2414 cards; zero errors"},
+    {"command": "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/formal-v3-0022-audio-technical.json", "result": "passed; 301/301 referenced assets technically verified"},
+    {"command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD", "result": "passed; 12-card scope; zero blockers"}
+  ],
+  "local_status": "Audio-bound candidate payload pushed; draft PR 176 opened; handoff-only commit ready.",
+  "remaining_risks": [
+    "Human perceptual audio QC remains unverified; no formal audio-QC or launch claim is made."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
