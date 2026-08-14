@@ -1,0 +1,654 @@
+{
+  "review_id": "20260814-cet4-listening-0012-expansion",
+  "created_at": "2026-08-14T10:54:19+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "语音现象",
+    "box": "失去爆破",
+    "box_prefixes": [
+      "0012"
+    ],
+    "single_box_prefix": "0012",
+    "card_ids": [
+      "001204",
+      "001205",
+      "001206",
+      "001207",
+      "001208",
+      "001209",
+      "001210",
+      "001211",
+      "001212"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "spec/audio-generation-contract.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/runtime-boundaries.json",
+    "../softbook_cet/infra/cloudbase/content-manifest-v1-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "is_three_card_sample_per_box": false,
+    "confirmed_box_expansion": true,
+    "sample_confirmation_satisfied": true,
+    "sample_confirmation_record": "reviews/sample_confirmations/20260814-cet4-listening-five-boxes.json",
+    "sample_confirmation_id": "20260814-cet4-listening-five-boxes",
+    "final_user_approval_required": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260814-cet4-listening-0012-expansion-scope-audit.json",
+    "corpus_fingerprint": "a13236fddc2d18f39e3c655492d3fede957920ac6bf60cfe36e33f38e8c10ea0",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "001204",
+        "001205",
+        "001206",
+        "001207",
+        "001208",
+        "001209",
+        "001210",
+        "001211",
+        "001212"
+      ],
+      "card_count": 9,
+      "issue_count": 9,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 9
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 9,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "001204",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 draft plan 中 /t/ 在 /p/ 前的失去爆破",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户从短促词界恢复完整名词短语，避免把失爆误判为漏词。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, audio identity, decoder, and declared duration only.",
+        "TTS audio is disclosed simulation material and is not source-authenticity evidence or formal-audio approval."
+      ],
+      "recommendation": "Use as the second recognition anchor for stop-to-stop boundaries in an ordinary CET-style sentence."
+    },
+    {
+      "card_id": "001205",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "定位 first pilot 中发生失去爆破的词尾 /t/",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在自然语流中先恢复词界，再定位不明显的词尾辅音。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, audio identity, decoder, and declared duration only.",
+        "TTS audio is disclosed simulation material and is not source-authenticity evidence or formal-audio approval."
+      ],
+      "recommendation": "Use to make the learner locate the unreleased segment only after recovering the word boundary."
+    },
+    {
+      "card_id": "001206",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合 /t/ 失爆和句法线索还原 blocked final approval",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在词尾弱化时仍能恢复时态与核心事件，减少听力细节题误判。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, audio identity, decoder, and declared duration only.",
+        "TTS audio is disclosed simulation material and is not source-authenticity evidence or formal-audio approval."
+      ],
+      "recommendation": "Use as a transfer card that combines unreleased-stop listening with past-tense recovery."
+    },
+    {
+      "card_id": "001207",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "修正 next train 发音讲解的句式并保留 /t/ 失爆结论",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户面对弱化词界时保持词形完整，避免按声音表面误选近形词。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, audio identity, decoder, and declared duration only.",
+        "TTS audio is disclosed simulation material and is not source-authenticity evidence or formal-audio approval.",
+        "The legacy audio explanation contains a language or phoneme-boundary defect and is intentionally retained only as the object of an explicit error-correction task; removing that framing would make the card misleading."
+      ],
+      "recommendation": "Keep as an explicitly framed correction of an incomplete meta-pronunciation sentence while preserving the /t/ boundary analysis."
+    },
+    {
+      "card_id": "001208",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分 good boy 中 /d/ 的失去爆破与删音",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在近似听感中恢复高频形容词与名词搭配，排除错误词形。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, audio identity, decoder, and declared duration only.",
+        "TTS audio is disclosed simulation material and is not source-authenticity evidence or formal-audio approval."
+      ],
+      "recommendation": "Use to distinguish incomplete release from deletion, liaison, and vowel insertion."
+    },
+    {
+      "card_id": "001209",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "修正 at the last minute 并识别 /t/ 在 /m/ 前的失爆",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户既识别语音弱化，又不丢失时间类细节题所需的信息词。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, audio identity, decoder, and declared duration only.",
+        "TTS audio is disclosed simulation material and is not source-authenticity evidence or formal-audio approval.",
+        "The legacy audio explanation contains a language or phoneme-boundary defect and is intentionally retained only as the object of an explicit error-correction task; removing that framing would make the card misleading."
+      ],
+      "recommendation": "Keep as an explicitly framed correction of the missing article before applying the /t/ to /m/ boundary rule."
+    },
+    {
+      "card_id": "001210",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 kept quiet 口头解释中遗漏的 /pt/ 辅音群层级",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "提升用户对发音解释和近似听感的校验能力，避免把错误音素边界带入听写。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, audio identity, decoder, and declared duration only.",
+        "TTS audio is disclosed simulation material and is not source-authenticity evidence or formal-audio approval.",
+        "The legacy audio explanation contains a language or phoneme-boundary defect and is intentionally retained only as the object of an explicit error-correction task; removing that framing would make the card misleading."
+      ],
+      "recommendation": "Keep only as an explicitly framed error-correction card; its legacy audio explanation omits the internal /pt/ layer."
+    },
+    {
+      "card_id": "001211",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从紧缩听感中恢复 big class 并识别 /g/ 到 /k/ 的失爆",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在快速语流中用音位与语义双证据恢复名词短语。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, audio identity, decoder, and declared duration only.",
+        "TTS audio is disclosed simulation material and is not source-authenticity evidence or formal-audio approval."
+      ],
+      "recommendation": "Use to transfer the same recovery method to a velar /g/ + /k/ boundary."
+    },
+    {
+      "card_id": "001212",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分 stopped by 中失去爆破与辅音群简化并保留语法词形",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在复杂辅音边界中恢复时态词形，并避免将所有弱化误判为同一种现象。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, audio identity, decoder, and declared duration only.",
+        "TTS audio is disclosed simulation material and is not source-authenticity evidence or formal-audio approval."
+      ],
+      "recommendation": "Use as the high-score boundary card distinguishing a single unreleased stop from wider cluster simplification."
+    }
+  ],
+  "batch_review": {
+    "status": "reviewed_confirmed_box_expansion",
+    "box_progression": "The confirmed sample establishes recognition, application, and transfer. Cards 001204–001212 add three further waves: ordinary stop boundaries, approximate-sound recovery, and high-score error/cluster discrimination, without adding a new interaction family.",
+    "repetition_or_gap_risks": [
+      "All nine expansion assets are disclosed simulations and still require complete human perceptual audio QC.",
+      "Cards 001207–001212 use meta-pronunciation explanations rather than exam excerpts; they provide controlled concept discrimination but should not be presented as authentic CET material.",
+      "Cards 001207, 001209, and 001210 depend on explicit error-correction framing because their retained legacy audio explanations contain incomplete English or an omitted phoneme-boundary layer.",
+      "Formal content use remains blocked until a separate explicit final user approval record exists."
+    ],
+    "representative_cards": [
+      "001204",
+      "001206",
+      "001210",
+      "001212"
+    ],
+    "next_step": "Keep the 12-card box candidate-only, complete human perceptual audio QC, then include it in a separately user-approved formal batch before product import."
+  }
+}
