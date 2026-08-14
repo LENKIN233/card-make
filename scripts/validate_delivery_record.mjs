@@ -343,6 +343,115 @@ function readHandoffBlobAtHead(root, headOid, handoffPath, errors) {
   }
 }
 
+function readRegularJsonBlobAtHead(root, headOid, repositoryPath, errors, label) {
+  if (!isSafeRepositoryRelativePath(repositoryPath)) {
+    errors.push(`${label} path is not a safe repository-relative path: ${JSON.stringify(repositoryPath)}`);
+    return null;
+  }
+
+  let treeEntry;
+  try {
+    treeEntry = treeEntryAtCommit(root, headOid, repositoryPath, `git ls-tree ${label}`);
+  } catch {
+    errors.push(`unable to inspect ${label} tree entry at ${headOid}: ${repositoryPath}`);
+    return null;
+  }
+  if (!treeEntry || treeEntry.mode !== REGULAR_HANDOFF_MODE || treeEntry.objectType !== 'blob') {
+    errors.push(`${label} must be a direct regular ${REGULAR_HANDOFF_MODE} blob at fixed HEAD: ${repositoryPath}`);
+    return null;
+  }
+
+  try {
+    const text = decodeGitUtf8(
+      gitBuffer(root, ['cat-file', 'blob', treeEntry.objectOid]),
+      `${label} blob ${treeEntry.objectOid}`,
+    );
+    const record = JSON.parse(text);
+    if (record === null || typeof record !== 'object' || Array.isArray(record)) {
+      throw new Error('not an object');
+    }
+    return record;
+  } catch {
+    errors.push(`${label} must be readable object JSON at fixed HEAD: ${repositoryPath}`);
+    return null;
+  }
+}
+
+function hasUniqueNonEmptyStrings(values) {
+  return Array.isArray(values)
+    && values.length > 0
+    && values.every(value => typeof value === 'string' && value.length > 0)
+    && new Set(values).size === values.length;
+}
+
+function validateCandidateEvidenceBundle(root, headOid, selfReviews, scopedAudits, errors) {
+  if (selfReviews.length === 1 && scopedAudits.length === 1) return;
+
+  if (selfReviews.length !== 2 || scopedAudits.length !== 2 || !headOid) {
+    errors.push(
+      'candidate card PR requires either one self-review plus one scoped audit, '
+      + 'or one sample/confirmed-expansion review pair with two linked scoped audits; '
+      + `got ${selfReviews.length} self-review record(s) and ${scopedAudits.length} scoped audit record(s)`,
+    );
+    return;
+  }
+
+  const records = selfReviews.map(reviewPath => ({
+    path: reviewPath,
+    record: readRegularJsonBlobAtHead(root, headOid, reviewPath, errors, 'candidate self-review'),
+  }));
+  if (records.some(entry => !entry.record)) return;
+
+  const sampleEntries = records.filter(
+    entry => entry.record.sample_policy?.review_scope_type === 'three_card_sample_per_box',
+  );
+  const expansionEntries = records.filter(
+    entry => entry.record.sample_policy?.review_scope_type === 'confirmed_box_expansion',
+  );
+  if (sampleEntries.length !== 1 || expansionEntries.length !== 1) {
+    errors.push('two-record candidate evidence must contain exactly one three-card sample and one confirmed box expansion');
+    return;
+  }
+
+  const sample = sampleEntries[0].record;
+  const expansion = expansionEntries[0].record;
+  const samplePrefixes = sample.scope?.box_prefixes;
+  const expansionPrefixes = expansion.scope?.box_prefixes;
+  const sampleCardIds = sample.scope?.card_ids;
+  const expansionCardIds = expansion.scope?.card_ids;
+  const sameSingleBox =
+    hasUniqueNonEmptyStrings(samplePrefixes)
+    && hasUniqueNonEmptyStrings(expansionPrefixes)
+    && samplePrefixes.length === 1
+    && expansionPrefixes.length === 1
+    && samplePrefixes[0] === expansionPrefixes[0];
+  if (!sameSingleBox) {
+    errors.push('sample and confirmed-expansion self-reviews must cover the same single box prefix');
+  }
+  if (!hasUniqueNonEmptyStrings(sampleCardIds) || !hasUniqueNonEmptyStrings(expansionCardIds)) {
+    errors.push('sample and confirmed-expansion self-reviews must declare unique non-empty scope.card_ids');
+  } else if (sampleCardIds.some(cardId => new Set(expansionCardIds).has(cardId))) {
+    errors.push('sample and confirmed-expansion self-review card scopes must be disjoint');
+  }
+  if (
+    expansion.sample_policy?.confirmed_box_expansion !== true
+    || expansion.sample_policy?.sample_confirmation_satisfied !== true
+    || typeof expansion.sample_policy?.sample_confirmation_id !== 'string'
+    || expansion.sample_policy.sample_confirmation_id.length === 0
+  ) {
+    errors.push('confirmed-expansion self-review must bind a satisfied named sample confirmation');
+  }
+
+  const linkedAuditPaths = records.map(entry => entry.record.quality_audit?.report);
+  if (
+    !hasUniqueNonEmptyStrings(linkedAuditPaths)
+    || linkedAuditPaths.length !== scopedAudits.length
+    || linkedAuditPaths.some(auditPath => !scopedAudits.includes(auditPath))
+  ) {
+    errors.push('sample and confirmed-expansion self-reviews must link exactly the two changed scoped audit records');
+  }
+}
+
 function parseGitHubRepository(remoteUrl) {
   const value = String(remoteUrl || '').trim().replace(/\.git$/, '');
   let match = value.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)$/i);
@@ -859,8 +968,7 @@ export function validateDeliveryRecord({
   if (handoffs.length !== 1) errors.push(`exactly one git handoff record is required, got ${handoffs.length}`);
   if (cardFiles.length > 0) {
     if (!resolvedBranch.startsWith('content/')) errors.push('candidate card PR branch must use content/ prefix');
-    if (selfReviews.length !== 1) errors.push(`candidate card PR requires one self-review record, got ${selfReviews.length}`);
-    if (scopedAudits.length !== 1) errors.push(`candidate card PR requires one scoped audit record, got ${scopedAudits.length}`);
+    validateCandidateEvidenceBundle(root, resolvedHeadOid, selfReviews, scopedAudits, errors);
   }
 
   if (handoffs.length === 1) {

@@ -264,6 +264,11 @@
       "path_discovery": "Every payload and post-payload path walk forces --no-ext-diff and --ignore-submodules=none so local diff settings cannot hide a gitlink or invoke an external helper.",
       "git_pathspec_handling": "All touched paths are passed to Git with --literal-pathspecs so pathspec magic and glob characters are hashed as literal tracked filenames."
     },
+    "candidate_content_evidence_policy": {
+      "standard_unit": "one changed self-review linked to one changed scoped audit",
+      "confirmed_box_expansion_unit": "exactly one three-card sample self-review plus one confirmed-box-expansion self-review for the same single box, with disjoint card scopes, a satisfied named sample confirmation, and exactly two linked changed scoped audits",
+      "fail_closed": "all other self-review and scoped-audit cardinalities or pairings are rejected"
+    },
     "patch_integrity": {
       "legacy_helper_format": "git-diff-binary-scoped-v1",
       "legacy_archive_policy": "legacy hashes may be reproduced for immutable pre-cutover archive tooling only; a current changed handoff must never omit or downgrade the v2 evidence fields",
