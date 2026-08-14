@@ -2051,6 +2051,23 @@ function validateWorkflow(errors) {
   if (workflow.approval_record_policy?.full_track_final_mode?.approval_mode !== 'full_track_final') {
     pushIssue(errors, 'full_track_final_approval_mode_missing', {});
   }
+  const expansionApprovalMode = workflow.approval_record_policy?.confirmed_box_expansion_final_mode;
+  if (expansionApprovalMode?.approval_mode !== 'confirmed_box_expansion_final') {
+    pushIssue(errors, 'confirmed_box_expansion_final_approval_mode_missing', {});
+  }
+  if (expansionApprovalMode?.requires_linked_review_scope_type !== 'confirmed_box_expansion') {
+    pushIssue(errors, 'confirmed_box_expansion_final_review_scope_missing', {});
+  }
+  if (expansionApprovalMode?.requires_linked_review_status !== CONFIRMED_BOX_EXPANSION_STATUS) {
+    pushIssue(errors, 'confirmed_box_expansion_final_review_status_missing', {});
+  }
+  if (
+    expansionApprovalMode?.requires_explicit_final_user_confirmation !== true ||
+    expansionApprovalMode?.sample_confirmation_alone_is_not_formal_approval !== true ||
+    expansionApprovalMode?.audio_qc_required_separately !== true
+  ) {
+    pushIssue(errors, 'confirmed_box_expansion_final_boundary_missing', {});
+  }
   if (!exists('scripts/build_full_track_remediation_baseline.mjs')) {
     pushIssue(errors, 'full_track_remediation_baseline_tool_missing', {});
   } else {
@@ -3422,7 +3439,14 @@ function validateApprovalRecord(record, errors, source, {
   fixture = false,
   currentFingerprint = currentCardCorpusFingerprint(),
 } = {}) {
+  const approvalExpectation = approvalRecordExpectation(record.approval_mode);
   const isFullTrackFinal = record.approval_mode === 'full_track_final';
+  if (!approvalExpectation) {
+    pushIssue(errors, 'approval_record_mode_unsupported', {
+      source,
+      approval_mode: record.approval_mode,
+    });
+  }
   if (record.approved_by_user !== true) {
     pushIssue(errors, 'approval_record_not_user_approved', { source });
   }
@@ -3577,8 +3601,8 @@ function validateApprovalRecord(record, errors, source, {
     }
     if (selfReview) {
       const linkedScopeType = selfReviewScopeType(selfReview);
-      const expectedStatus = isFullTrackFinal ? FULL_TRACK_READY_STATUS : 'recommend_user_confirmation';
-      const expectedScopeType = isFullTrackFinal ? 'full_track_remediation' : 'three_card_sample_per_box';
+      const expectedStatus = approvalExpectation?.status;
+      const expectedScopeType = approvalExpectation?.scopeType;
       if (linkedScopeType !== expectedScopeType) {
         pushIssue(errors, 'approval_record_review_scope_type_mismatch', {
           source,
@@ -3630,6 +3654,28 @@ function validateApprovalRecord(record, errors, source, {
       });
     }
   }
+}
+
+function approvalRecordExpectation(approvalMode) {
+  if (approvalMode === undefined) {
+    return {
+      scopeType: 'three_card_sample_per_box',
+      status: 'recommend_user_confirmation',
+    };
+  }
+  if (approvalMode === 'confirmed_box_expansion_final') {
+    return {
+      scopeType: 'confirmed_box_expansion',
+      status: CONFIRMED_BOX_EXPANSION_STATUS,
+    };
+  }
+  if (approvalMode === 'full_track_final') {
+    return {
+      scopeType: 'full_track_remediation',
+      status: FULL_TRACK_READY_STATUS,
+    };
+  }
+  return null;
 }
 
 function readGovernedReviewTemplate(file, expectedKind, errors) {
@@ -3799,6 +3845,31 @@ function validateApprovalRecordShapeSelfTest(errors) {
         actual: shapeErrors,
       });
     }
+  }
+}
+
+function validateApprovalRecordModeSelfTest(errors) {
+  const cases = [
+    [undefined, 'three_card_sample_per_box', 'recommend_user_confirmation'],
+    ['confirmed_box_expansion_final', 'confirmed_box_expansion', CONFIRMED_BOX_EXPANSION_STATUS],
+    ['full_track_final', 'full_track_remediation', FULL_TRACK_READY_STATUS],
+  ];
+  for (const [approvalMode, scopeType, status] of cases) {
+    const actual = approvalRecordExpectation(approvalMode);
+    if (actual?.scopeType !== scopeType || actual?.status !== status) {
+      pushIssue(errors, 'approval_record_mode_self_test_failed', {
+        approval_mode: approvalMode,
+        expected: {scopeType, status},
+        actual,
+      });
+    }
+  }
+  if (approvalRecordExpectation('unsupported-mode') !== null) {
+    pushIssue(errors, 'approval_record_mode_self_test_failed', {
+      approval_mode: 'unsupported-mode',
+      expected: null,
+      actual: approvalRecordExpectation('unsupported-mode'),
+    });
   }
 }
 
@@ -4026,6 +4097,7 @@ function validateReviewTemplatesAndRecords(errors, warnings) {
   validateCurrentCardSnapshotIdentitySelfTest(errors);
   validateReviewIdentityUniquenessSelfTest(errors);
   validateApprovalRecordShapeSelfTest(errors);
+  validateApprovalRecordModeSelfTest(errors);
   validateHistoricalScopedAuditRecordAgingSelfTest(errors);
   validateHistoricalSelfReviewLifecycleSelfTest(errors);
   validateHistoricalFullTrackLifecycleSelfTest(errors);
