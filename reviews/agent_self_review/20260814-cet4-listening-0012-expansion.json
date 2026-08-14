@@ -1,0 +1,647 @@
+{
+  "review_id": "20260814-cet4-listening-0012-expansion",
+  "created_at": "2026-08-14T20:03:32+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "语音现象",
+    "box": "失去爆破",
+    "box_prefixes": [
+      "0012"
+    ],
+    "single_box_prefix": "0012",
+    "card_ids": [
+      "001204",
+      "001205",
+      "001206",
+      "001207",
+      "001208",
+      "001209",
+      "001210",
+      "001211",
+      "001212"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/audio-generation-contract.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "is_three_card_sample_per_box": false,
+    "confirmed_box_expansion": true,
+    "sample_confirmation_satisfied": true,
+    "sample_confirmation_record": "reviews/sample_confirmations/20260814-cet4-listening-five-boxes.json",
+    "sample_confirmation_id": "20260814-cet4-listening-five-boxes",
+    "final_user_approval_required": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260814-cet4-listening-0012-expansion-scope-audit.json",
+    "corpus_fingerprint": "9322cca977934087d31163e53f7419b56971155b31374449ae4255be5907a0ff",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "001204",
+        "001205",
+        "001206",
+        "001207",
+        "001208",
+        "001209",
+        "001210",
+        "001211",
+        "001212"
+      ],
+      "card_count": 9,
+      "issue_count": 9,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 9
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 9,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "001204",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 draft plan 中 /t/ 在 /p/ 前的失去爆破",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户从短促词界恢复完整名词短语，避免把失爆误判为漏词。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "人耳感知音频 QC 仍待完成；本次通过仅覆盖文本、任务、答案、解析与盒内递进。",
+        "材料为已披露 simulation，不得表示为 CET 真题原声。"
+      ],
+      "recommendation": "保留为自然语境识别卡：解释 draft plan 的紧缩词界。"
+    },
+    {
+      "card_id": "001205",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "定位 first pilot 中发生失去爆破的词尾 /t/",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在自然语流中先恢复词界，再定位不明显的词尾辅音。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "人耳感知音频 QC 仍待完成；本次通过仅覆盖文本、任务、答案、解析与盒内递进。",
+        "材料为已披露 simulation，不得表示为 CET 真题原声。"
+      ],
+      "recommendation": "保留为定位卡：先切 first | pilot，再判断前词末音。"
+    },
+    {
+      "card_id": "001206",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合 /t/ 失爆和句法线索还原 blocked final approval",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在词尾弱化时仍能恢复时态与核心事件，减少听力细节题误判。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "人耳感知音频 QC 仍待完成；本次通过仅覆盖文本、任务、答案、解析与盒内递进。",
+        "材料为已披露 simulation，不得表示为 CET 真题原声。"
+      ],
+      "recommendation": "保留为语音和语法整合卡：还原 blocked 的过去式。"
+    },
+    {
+      "card_id": "001207",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 next train 中 /t/ 在 /tr/ 前的不完整释放",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Rewritten CET listening simulation; local TTS candidate requires complete human perceptual audio QC before formal audio use.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在紧缩词界中保留 next 的完整词形，避免按表面听感漏掉词尾。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "人耳感知音频 QC 仍待完成；本次通过仅覆盖文本、任务、答案、解析与盒内递进。",
+        "材料为已披露 simulation，不得表示为 CET 真题原声。"
+      ],
+      "recommendation": "采用重写版：用自然车站语境识别 next train 的 /t/ 不完整释放。"
+    },
+    {
+      "card_id": "001208",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分 good boy 中 /d/ 的失去爆破与删音",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在近似听感中恢复高频形容词与名词搭配，排除错误词形。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "人耳感知音频 QC 仍待完成；本次通过仅覆盖文本、任务、答案、解析与盒内递进。",
+        "材料为已披露 simulation，不得表示为 CET 真题原声。"
+      ],
+      "recommendation": "保留为听感纠偏卡：区分 good boy 中的不完整释放与删音。"
+    },
+    {
+      "card_id": "001209",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在自然句中还原 last minute 词界处不明显的 /t/",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Rewritten CET listening simulation; local TTS candidate requires complete human perceptual audio QC before formal audio use.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户把语音弱化与固定搭配结合，避免在听写和细节题中漏掉词尾。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "人耳感知音频 QC 仍待完成；本次通过仅覆盖文本、任务、答案、解析与盒内递进。",
+        "材料为已披露 simulation，不得表示为 CET 真题原声。"
+      ],
+      "recommendation": "采用重写版：在自然事件语境中还原 last minute 的完整词形。"
+    },
+    {
+      "card_id": "001210",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "还原 kept quiet 的完整辅音序列并定位词界失爆",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Rewritten CET listening simulation; local TTS candidate requires complete human perceptual audio QC before formal audio use.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在复杂辅音群中先定位真实词界，避免用错误音素关系解释听感。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "人耳感知音频 QC 仍待完成；本次通过仅覆盖文本、任务、答案、解析与盒内递进。",
+        "材料为已披露 simulation，不得表示为 CET 真题原声。"
+      ],
+      "recommendation": "采用重写版：先还原 /pt/ + /kw/，再定位 kept | quiet 的真实词界。"
+    },
+    {
+      "card_id": "001211",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从紧缩听感中恢复 big class 并识别 /g/ 到 /k/ 的失爆",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在快速语流中用音位与语义双证据恢复名词短语。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "人耳感知音频 QC 仍待完成；本次通过仅覆盖文本、任务、答案、解析与盒内递进。",
+        "材料为已披露 simulation，不得表示为 CET 真题原声。"
+      ],
+      "recommendation": "保留为发音部位迁移卡：恢复 big class 的标准短语。"
+    },
+    {
+      "card_id": "001212",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "1",
+        "group_name": "语音现象",
+        "box_id": "2",
+        "box_name": "失去爆破",
+        "box_prefix": "0012"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分 stopped by 中失去爆破与辅音群简化并保留语法词形",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在复杂辅音边界中恢复时态词形，并避免将所有弱化误判为同一种现象。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "人耳感知音频 QC 仍待完成；本次通过仅覆盖文本、任务、答案、解析与盒内递进。",
+        "材料为已披露 simulation，不得表示为 CET 真题原声。"
+      ],
+      "recommendation": "保留为高阶辨析卡：区分不完整释放与复杂辅音群简化。"
+    }
+  ],
+  "batch_review": {
+    "status": "reviewed_confirmed_box_expansion",
+    "box_progression": "9 张扩展卡在已确认样卡之后形成三轮 recognition → application → transfer：先识别普通词界，再结合词形与语法还原，最后处理复杂辅音群和跨短语迁移。",
+    "repetition_or_gap_risks": [
+      "全部材料均为已披露 simulation，不得作为 CET 真题原声展示。",
+      "001207、001209、001210 已从错误元话语改写为自然语境，并绑定新的 v2 音频身份。",
+      "三项 v2 音频仍需生成 MP3、技术审计和逐卡完整人耳感知 QC。",
+      "正式内容使用仍需可验证的用户批准记录；仓库合并不等于产品上线。"
+    ],
+    "representative_cards": [
+      "001204",
+      "001206",
+      "001210",
+      "001212"
+    ],
+    "next_step": "完成三项 v2 音频资产及人耳 QC，补齐正式批准时间记录，再进入 PR review、required checks 和合并。"
+  }
+}
