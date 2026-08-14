@@ -1,0 +1,47 @@
+{
+  "handoff_id": "20260814-content-cet4-listening-formal-v2-audio-candidates",
+  "created_at": "2026-08-14T21:42:20+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-formal-v2-audio-candidates",
+  "base_branch": "main",
+  "commit_sha": "e22df2bd496d353a545cc310c721fdf658d5e4b6",
+  "push_ref": "origin/content/cet4-listening-formal-v2-audio-candidates",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/178",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "ai_tts/audio-lfs-manifest.json",
+      "ai_tts/cet4/0012/001207-v2.mp3",
+      "ai_tts/cet4/0012/001209-v2.mp3",
+      "ai_tts/cet4/0012/001210-v2.mp3",
+      "ai_tts/cet4/0022/002207-v2.mp3",
+      "ai_tts/cet4/0022/002208-v2.mp3",
+      "ai_tts/cet4/0022/002209-v2.mp3",
+      "ai_tts/cet4/0022/002210-v2.mp3",
+      "ai_tts/cet4/0022/002211-v2.mp3",
+      "ai_tts/cet4/0022/002212-v2.mp3",
+      "ai_tts/cet4/0023/002307-v2.mp3",
+      "ai_tts/cet4/0023/002308-v2.mp3",
+      "ai_tts/cet4/0023/002309-v2.mp3",
+      "ai_tts/cet4/0023/002310-v2.mp3",
+      "ai_tts/cet4/0023/002311-v2.mp3",
+      "ai_tts/cet4/0023/002312-v2.mp3"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "cf2164d56070a6ec5ded49c059c9b91272868eb6",
+    "patch_sha256": "28e2f7b554e1d5b2bb64ac6edb7b25546e61e28092381c0f4275ed988c47db9c"
+  },
+  "validation": [
+    {"command": "node scripts/validate_audio_lfs.mjs", "result": "passed; 642 tracked assets"},
+    {"command": "node scripts/validate_audio_qc.mjs", "result": "passed; zero formal QC records"},
+    {"command": "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/formal-v2-15-audio-candidates-technical.json", "result": "passed; 301/301 currently referenced main-corpus assets"},
+    {"command": "node scripts/validate_delivery_boundary.mjs --base origin/main --head HEAD", "result": "passed; 16 audio-only changed paths; zero card files"}
+  ],
+  "local_status": "Audio-only candidate payload pushed; draft PR 178 opened; handoff-only commit ready.",
+  "remaining_risks": [
+    "Human perceptual audio QC remains unverified; no formal audio-QC, content-approval, or launch claim is made."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
