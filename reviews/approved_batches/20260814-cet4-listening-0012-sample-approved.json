@@ -1,0 +1,79 @@
+{
+  "approval_id": "20260814-cet4-listening-0012-sample-approved",
+  "approved_by_user": true,
+  "approved_at": "2026-08-14T15:30:00+08:00",
+  "scope": {
+    "library": "听力",
+    "group": "语音现象",
+    "box": "失去爆破",
+    "box_prefixes": [
+      "0012"
+    ],
+    "card_ids": [
+      "001201",
+      "001202",
+      "001203"
+    ]
+  },
+  "summary": "User formally approved the exact reviewed 失去爆破 scope for repository merge and product import validation.",
+  "representative_cards": [
+    "001201",
+    "001202",
+    "001203"
+  ],
+  "card_quality_audit": {
+    "report": "reviews/audit_scopes/20260813-cet4-listening-0012-sample-scope-audit.json",
+    "corpus_fingerprint": "501762c87de35595f22ee10a487020ffb9f629a95750ce9d5eb3bde7e12eb006",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "001201",
+        "001202",
+        "001203"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "validation": {
+    "harness": "node scripts/validate_harness.mjs",
+    "cards": "node scripts/validate_cards.mjs",
+    "card_quality_audit": "node scripts/audit_card_quality.mjs --scope-card-ids 001201,001202,001203 --write-scope-report reviews/audit_scopes/20260813-cet4-listening-0012-sample-scope-audit.json",
+    "card_quality_audit_report": "reports/card_quality_audit_report.json",
+    "agent_self_review": "reviews/agent_self_review/20260813-cet4-listening-0012-sample.json"
+  },
+  "approval_limits": [
+    "Only the listed scope is approved.",
+    "Approval does not authorize unrelated bulk generation or destructive card changes.",
+    "Approval does not change softbook_cet product specs.",
+    "Approval does not constitute human perceptual audio QC.",
+    "Approval authorizes repository merge and product import validation, not formal product launch."
+  ],
+  "user_approval_evidence": {
+    "exact_message": "批准",
+    "context_date": "2026-08-14",
+    "original_confirmed_head": "13ecc383c433b024c47a33f997444076afd76077",
+    "scope_statement": "The immediately preceding assistant message listed the exact five 60-card candidate heads and requested formal approval for repository merge and product import validation, explicitly excluding perceptual audio QC and formal launch."
+  }
+}
