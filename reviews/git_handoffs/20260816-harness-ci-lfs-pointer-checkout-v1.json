@@ -1,0 +1,52 @@
+{
+  "handoff_id": "20260816-harness-ci-lfs-pointer-checkout-v1",
+  "created_at": "2026-08-16T16:19:03+08:00",
+  "agent": "codex",
+  "branch": "harness/ci-lfs-pointer-checkout-v1",
+  "base_branch": "main",
+  "commit_sha": "e9722f0260a03be185c4502c2ecfabb46d8d056a",
+  "push_ref": "origin/harness/ci-lfs-pointer-checkout-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/180",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      ".github/workflows/pr-gates.yml"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "cf2164d56070a6ec5ded49c059c9b91272868eb6",
+    "patch_sha256": "3122da6ad51d2dceefc47805950b4c3b7330dc6ababccf354cab202a100cf552"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed; zero errors"
+    },
+    {
+      "command": "node --test scripts/test_card_integrity.mjs",
+      "result": "passed; 19 tests"
+    },
+    {
+      "command": "node --test scripts/test_validate_pr_scope.mjs",
+      "result": "passed; 102 tests"
+    },
+    {
+      "command": "node --test scripts/test_validate_delivery_record.mjs",
+      "result": "passed; 77 tests"
+    },
+    {
+      "command": "node scripts/validate_audio_lfs.mjs",
+      "result": "passed; tracked audio remains valid Git LFS pointers"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Payload commit pushed; draft PR 180 opened; append-only handoff record ready for final delivery validation.",
+  "remaining_risks": [
+    "Audio workflows that decode media bytes still require an environment with retrievable LFS objects; this change intentionally covers only general metadata and content gates."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}
