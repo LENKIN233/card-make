@@ -46,6 +46,9 @@ const CURRENT_AUDIT_OVERLAY_PATHS = [
   'scripts/audit_card_quality.mjs',
   'spec/card-quality-audit.json',
 ];
+const POINTER_ONLY_GIT_ENV = Object.freeze({
+  GIT_LFS_SKIP_SMUDGE: '1',
+});
 const FULL_TRACK_READY_STATUS = 'ready_for_full_track_user_approval';
 const CONTROLLED_PILOT_REVIEW_SCHEMA = 'controlled-pilot-review.v1';
 const CONTROLLED_PILOT_APPROVAL_SCHEMA = 'controlled-pilot-approval.v1';
@@ -102,6 +105,9 @@ function readOption(name, fallback) {
 function runCommand(command, args, options = {}) {
   const result = spawnSync(command, args, {
     cwd: options.cwd || process.cwd(),
+    env: options.env
+      ? {...process.env, ...options.env}
+      : process.env,
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -114,6 +120,13 @@ function runCommand(command, args, options = {}) {
 
 function runGit(args, options = {}) {
   return runCommand('git', args, options);
+}
+
+function addDetachedPointerWorktree(worktreePath, commit) {
+  runGit(
+    ['worktree', 'add', '--detach', worktreePath, commit],
+    {env: POINTER_ONLY_GIT_ENV},
+  );
 }
 
 function resolveCommit(ref) {
@@ -1871,7 +1884,7 @@ function runCurrentScopedAudit({ base, head, entries }) {
   let worktreeAdded = false;
 
   try {
-    runGit(['worktree', 'add', '--detach', worktreePath, base]);
+    addDetachedPointerWorktree(worktreePath, base);
     worktreeAdded = true;
     materializeHeadCardCorpus(worktreePath, head);
     copyCurrentAuditHarness(worktreePath);
@@ -1924,7 +1937,7 @@ function replayScopedAuditAtHead({base, head, scopeCardIds}) {
   const scopedReportPath = 'reviews/audit_scopes/__validate_changed_scoped_audit.json';
   let worktreeAdded = false;
   try {
-    runGit(['worktree', 'add', '--detach', worktreePath, base]);
+    addDetachedPointerWorktree(worktreePath, base);
     worktreeAdded = true;
     materializeHeadCardCorpus(worktreePath, head);
     copyCurrentAuditHarness(worktreePath);

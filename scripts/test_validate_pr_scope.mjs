@@ -114,6 +114,46 @@ test('a changed card with complete matching changed self-review passes', () => {
   assert.deepEqual(result.report.changed_card_integrity.changed_card_ids, ['000001']);
 });
 
+test('scoped audit worktrees retain LFS pointers without running media smudge', () => {
+  const repo = createRepository();
+  const mediaPath = path.join(repo.root, 'media/probe.bin');
+  fs.mkdirSync(path.dirname(mediaPath), {recursive: true});
+  fs.writeFileSync(
+    path.join(repo.root, '.gitattributes'),
+    '*.bin filter=lfs diff=lfs merge=lfs -text\n',
+  );
+  fs.writeFileSync(
+    mediaPath,
+    'version https://git-lfs.github.com/spec/v1\n' +
+      `oid sha256:${'a'.repeat(64)}\n` +
+      'size 1\n',
+  );
+  git(repo.root, 'config', 'filter.lfs.clean', 'cat');
+  git(
+    repo.root,
+    'config',
+    'filter.lfs.smudge',
+    'sh -c \'test "$GIT_LFS_SKIP_SMUDGE" = 1 && cat\'',
+  );
+  git(repo.root, 'config', 'filter.lfs.required', 'true');
+  commit(repo.root, 'establish pointer-only media fixture');
+  repo.base = git(repo.root, 'rev-parse', 'HEAD');
+
+  const card = completeCard();
+  writeCardBox(repo.root, [card]);
+  writeSelfReview(
+    repo.root,
+    'lfs-pointer-review.json',
+    ['000001'],
+    [reviewEntry(card)],
+  );
+  commit(repo.root, 'change card with pointer-only audit replay');
+
+  const result = validate(repo);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(result.report.current_scoped_audit.ok, true);
+});
+
 test('a changed self-review must explicitly confirm answer and analysis references', () => {
   const repo = createRepository();
   const card = completeCard();
