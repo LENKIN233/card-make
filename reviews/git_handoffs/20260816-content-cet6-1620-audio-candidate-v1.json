@@ -1,0 +1,69 @@
+{
+  "handoff_id": "20260816-content-cet6-1620-audio-candidate-v1",
+  "created_at": "2026-08-16T23:48:18+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-1620-audio-candidate-v1",
+  "base_branch": "content/cet6-hard-blocker-consolidation-v1",
+  "commit_sha": "9909c53ac36452823e790f0fac76a60f3d352be7",
+  "push_ref": "origin/content/cet6-1620-audio-candidate-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/185",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate_residual_blocker_closure",
+    "touched_paths": [
+      "ai_tts/audio-lfs-manifest.json",
+      "ai_tts/cet6/1620/162001-v2.mp3",
+      "ai_tts/cet6/1620/162002-v2.mp3",
+      "ai_tts/cet6/1620/162003-v2.mp3",
+      "ai_tts/cet6/1620/162004-v2.mp3",
+      "ai_tts/cet6/1620/162005-v2.mp3",
+      "ai_tts/cet6/1620/162006-v2.mp3",
+      "ai_tts/cet6/1620/162007-v2.mp3",
+      "ai_tts/cet6/1620/162008-v2.mp3",
+      "card_boxes_json/card_boxes_seed_cet6_grammar_1620.json",
+      "reviews/agent_self_review/20260731-cet6-grammar-1620-full-remediation.json",
+      "reviews/audit_scopes/20260731-cet6-grammar-1620-full-remediation-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "8b749be722e3915838cedb738b265da84e519bf5",
+    "patch_sha256": "7b7314fb3e271febb28d1ffc40a4c8024939d07bf803c09f78d91f2a3b1c46e1"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base 8b749be722e3915838cedb738b265da84e519bf5 --head 9909c53ac36452823e790f0fac76a60f3d352be7",
+      "result": "passed; 8 changed cards, one exact-scope self-review, and one linked scoped audit"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "passed; 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/validate_audio_lfs.mjs",
+      "result": "passed; 635 manifest-listed MP3 assets, including all 8 new CET6 1620 candidate files"
+    },
+    {
+      "command": "CET6 exact path/hash/decoder/duration/transcript audit",
+      "result": "passed; 328/328 path-bound CET6 audio cards, 0 technical errors"
+    },
+    {
+      "command": "node --test scripts/test_card_integrity.mjs scripts/test_pr_scope.mjs scripts/test_audio_technical.mjs",
+      "result": "passed; 125/125 tests"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed structurally with 0 formal perceptual-QC records; no perceptual approval is claimed"
+    },
+    {
+      "command": "git diff --check 8b749be722e3915838cedb738b265da84e519bf5...9909c53ac36452823e790f0fac76a60f3d352be7",
+      "result": "passed"
+    }
+  ],
+  "local_status": "All 8 CET6 grammar 1620 playback cards now bind versioned candidate MP3 assets with matching path, SHA-256, duration, transcript, and LFS manifest entries; the complete CET6 candidate has 328/328 technically valid path-bound audio cards.",
+  "remaining_risks": [
+    "The generated files are candidate media and do not constitute formal human perceptual-QC approval.",
+    "This child PR targets the CET6 candidate branch; product import, formal release evidence, receiver deployment, and launch approval remain separate.",
+    "Content candidate merge authority remains no-auto-merge under the repository contract."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
