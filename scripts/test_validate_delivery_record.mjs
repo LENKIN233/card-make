@@ -92,6 +92,7 @@ function createFixture({
   bomAliasOnly = false,
   candidateCard = false,
   confirmedExpansionEvidence = false,
+  multiPrefixEvidence = false,
   customDiffDriver = false,
   declareGitlink = true,
   gitlinkPath = false,
@@ -102,6 +103,7 @@ function createFixture({
   rawInvalidUtf8Path = false,
   unicodePath = false,
 } = {}) {
+  if (multiPrefixEvidence) candidateCard = true;
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'delivery-record-validator-'));
   git(root, 'init', '-b', 'main');
   git(root, 'config', 'user.name', 'Delivery Validator Test');
@@ -116,9 +118,12 @@ function createFixture({
   if (literalMagicPath) write(root, ':(exclude)**', 'base magic path\n');
   if (unicodePath) write(root, 'docs/听力.txt', 'base listening text\n');
   if (candidateCard) {
-    write(root, 'card_boxes_json/card_boxes_seed_cet4_listening_0000.json', '{"version":"base"}\n');
-    write(root, 'reviews/agent_self_review/0000-test.json', '{"version":"base"}\n');
-    write(root, 'reviews/audit_scopes/0000-test.json', '{"version":"base"}\n');
+    const prefixes = multiPrefixEvidence ? ['0000', '0001'] : ['0000'];
+    for (const prefix of prefixes) {
+      write(root, `card_boxes_json/card_boxes_seed_cet4_listening_${prefix}.json`, '{"version":"base"}\n');
+      write(root, `reviews/agent_self_review/${prefix}-test.json`, '{"version":"base"}\n');
+      write(root, `reviews/audit_scopes/${prefix}-test.json`, '{"version":"base"}\n');
+    }
   }
   if (historicalHandoffPath) write(root, historicalHandoffPath, '{"archived":true}\n');
   const baseCommitSha = commitAll(root, 'base');
@@ -132,15 +137,28 @@ function createFixture({
     if (literalMagicPath) write(root, ':(exclude)**', 'changed magic path\n');
     if (unicodePath) write(root, 'docs/听力.txt', 'changed listening text\n');
     if (candidateCard) {
-      write(root, 'card_boxes_json/card_boxes_seed_cet4_listening_0000.json', '{"version":"candidate"}\n');
-      write(root, 'reviews/agent_self_review/0000-test.json', confirmedExpansionEvidence
-        ? JSON.stringify({
+      const prefixes = multiPrefixEvidence ? ['0000', '0001'] : ['0000'];
+      for (const prefix of prefixes) {
+        write(root, `card_boxes_json/card_boxes_seed_cet4_listening_${prefix}.json`, '{"version":"candidate"}\n');
+        write(root, `reviews/agent_self_review/${prefix}-test.json`, multiPrefixEvidence
+          ? JSON.stringify({
+              sample_policy: {
+                review_scope_type: 'residual_blocker_closure',
+                residual_blocker_closure: true,
+                not_sample_approval: true,
+              },
+              scope: {box_prefixes: [prefix], card_ids: [`${prefix}01`]},
+              quality_audit: {report: `reviews/audit_scopes/${prefix}-test.json`},
+            })
+          : confirmedExpansionEvidence
+            ? JSON.stringify({
             sample_policy: {review_scope_type: 'three_card_sample_per_box'},
             scope: {box_prefixes: ['0000'], card_ids: ['000001', '000002', '000003']},
             quality_audit: {report: 'reviews/audit_scopes/0000-test.json'},
           })
-        : '{"version":"candidate"}\n');
-      write(root, 'reviews/audit_scopes/0000-test.json', '{"version":"candidate"}\n');
+            : '{"version":"candidate"}\n');
+        write(root, `reviews/audit_scopes/${prefix}-test.json`, '{"version":"candidate"}\n');
+      }
       if (confirmedExpansionEvidence) {
         write(root, 'reviews/agent_self_review/0000-expansion.json', JSON.stringify({
           sample_policy: {
@@ -175,11 +193,14 @@ function createFixture({
   if (rawInvalidUtf8Path) payloadPaths.push('raw-invalid-\ufffd.txt');
   if (unicodePath) payloadPaths.push('docs/听力.txt');
   if (candidateCard) {
-    payloadPaths.push(
-      'card_boxes_json/card_boxes_seed_cet4_listening_0000.json',
-      'reviews/agent_self_review/0000-test.json',
-      'reviews/audit_scopes/0000-test.json',
-    );
+    const prefixes = multiPrefixEvidence ? ['0000', '0001'] : ['0000'];
+    for (const prefix of prefixes) {
+      payloadPaths.push(
+        `card_boxes_json/card_boxes_seed_cet4_listening_${prefix}.json`,
+        `reviews/agent_self_review/${prefix}-test.json`,
+        `reviews/audit_scopes/${prefix}-test.json`,
+      );
+    }
     if (confirmedExpansionEvidence) {
       payloadPaths.push(
         'reviews/agent_self_review/0000-expansion.json',
@@ -224,6 +245,15 @@ function createFixture({
     remaining_risks: [],
     merge_authority: 'standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs',
   };
+  if (multiPrefixEvidence) {
+    record.branch = 'content/cet4-multi-prefix-closure';
+    record.push_ref = 'origin/content/cet4-multi-prefix-closure';
+    record.scope.change_type = 'content_candidate_residual_blocker_closure';
+    record.scope.box_prefixes = ['0000', '0001'];
+    record.scope.multi_prefix_review_unit = true;
+    record.scope.scope_reason = 'Two independently reviewed box remediations are delivered as one residual-closure unit.';
+    record.merge_authority = 'no_auto_merge_content_candidate_user_confirmation_required';
+  }
   write(root, HANDOFF_PATH, `${JSON.stringify(record, null, 2)}\n`);
   let handoffCommitSha;
   if (hasIndexOnlyPayload) {
@@ -1052,6 +1082,14 @@ test('accepts one sample plus one confirmed-expansion evidence pair for a candid
   });
 
   const result = validate(fixture, {branch: 'content/cet4-listening-0000'});
+  assert.equal(result.ok, true, JSON.stringify(result.errors, null, 2));
+});
+
+test('accepts exact per-prefix residual-closure evidence for a declared multi-prefix content unit', t => {
+  const fixture = createFixture({multiPrefixEvidence: true});
+  cleanUp(t, fixture);
+
+  const result = validate(fixture, {branch: 'content/cet4-multi-prefix-closure'});
   assert.equal(result.ok, true, JSON.stringify(result.errors, null, 2));
 });
 

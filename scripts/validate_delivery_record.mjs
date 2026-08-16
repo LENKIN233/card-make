@@ -384,8 +384,91 @@ function hasUniqueNonEmptyStrings(values) {
     && new Set(values).size === values.length;
 }
 
-function validateCandidateEvidenceBundle(root, headOid, selfReviews, scopedAudits, errors) {
+function validateMultiPrefixResidualClosureBundle(
+  root,
+  headOid,
+  handoff,
+  selfReviews,
+  scopedAudits,
+  errors,
+) {
+  const declaredPrefixes = handoff.scope?.box_prefixes;
+  if (
+    handoff.scope?.change_type !== 'content_candidate_residual_blocker_closure'
+    || handoff.scope?.multi_prefix_review_unit !== true
+    || !hasUniqueNonEmptyStrings(declaredPrefixes)
+    || typeof handoff.scope?.scope_reason !== 'string'
+    || handoff.scope.scope_reason.trim().length === 0
+  ) return false;
+
+  if (selfReviews.length !== declaredPrefixes.length || scopedAudits.length !== declaredPrefixes.length) {
+    errors.push(
+      'multi-prefix residual-closure evidence requires exactly one self-review and one scoped audit per declared box prefix; '
+      + `got ${declaredPrefixes.length} prefix(es), ${selfReviews.length} self-review(s), and ${scopedAudits.length} scoped audit(s)`,
+    );
+    return true;
+  }
+
+  const declaredPrefixSet = new Set(declaredPrefixes);
+  const reviewPrefixes = new Set();
+  const linkedAuditPaths = new Set();
+  for (const reviewPath of selfReviews) {
+    const review = readRegularJsonBlobAtHead(root, headOid, reviewPath, errors, 'candidate self-review');
+    if (!review) continue;
+    const prefixes = review.scope?.box_prefixes;
+    if (!hasUniqueNonEmptyStrings(prefixes) || prefixes.length !== 1) {
+      errors.push(`multi-prefix residual-closure self-review must cover exactly one box prefix: ${reviewPath}`);
+      continue;
+    }
+    const prefix = prefixes[0];
+    if (!declaredPrefixSet.has(prefix)) {
+      errors.push(`multi-prefix residual-closure self-review covers an undeclared box prefix: ${reviewPath}`);
+    }
+    if (reviewPrefixes.has(prefix)) {
+      errors.push(`multi-prefix residual-closure box prefix has multiple self-reviews: ${prefix}`);
+    }
+    reviewPrefixes.add(prefix);
+    if (
+      review.sample_policy?.review_scope_type !== 'residual_blocker_closure'
+      || review.sample_policy?.residual_blocker_closure !== true
+      || review.sample_policy?.not_sample_approval !== true
+    ) {
+      errors.push(`multi-prefix self-review must be explicit residual-blocker closure evidence: ${reviewPath}`);
+    }
+    const auditPath = review.quality_audit?.report;
+    if (typeof auditPath !== 'string' || !scopedAudits.includes(auditPath)) {
+      errors.push(`multi-prefix self-review must link one changed scoped audit: ${reviewPath}`);
+    } else if (linkedAuditPaths.has(auditPath)) {
+      errors.push(`multi-prefix scoped audit is linked by multiple self-reviews: ${auditPath}`);
+    } else {
+      linkedAuditPaths.add(auditPath);
+    }
+  }
+
+  for (const prefix of declaredPrefixSet) {
+    if (!reviewPrefixes.has(prefix)) {
+      errors.push(`multi-prefix residual-closure box prefix is missing self-review evidence: ${prefix}`);
+    }
+  }
+  for (const auditPath of scopedAudits) {
+    if (!linkedAuditPaths.has(auditPath)) {
+      errors.push(`multi-prefix residual-closure scoped audit is not linked by a self-review: ${auditPath}`);
+    }
+  }
+  return true;
+}
+
+function validateCandidateEvidenceBundle(root, headOid, handoff, selfReviews, scopedAudits, errors) {
   if (selfReviews.length === 1 && scopedAudits.length === 1) return;
+
+  if (headOid && validateMultiPrefixResidualClosureBundle(
+    root,
+    headOid,
+    handoff,
+    selfReviews,
+    scopedAudits,
+    errors,
+  )) return;
 
   if (selfReviews.length !== 2 || scopedAudits.length !== 2 || !headOid) {
     errors.push(
@@ -968,7 +1051,6 @@ export function validateDeliveryRecord({
   if (handoffs.length !== 1) errors.push(`exactly one git handoff record is required, got ${handoffs.length}`);
   if (cardFiles.length > 0) {
     if (!resolvedBranch.startsWith('content/')) errors.push('candidate card PR branch must use content/ prefix');
-    validateCandidateEvidenceBundle(root, resolvedHeadOid, selfReviews, scopedAudits, errors);
   }
 
   if (handoffs.length === 1) {
@@ -992,6 +1074,9 @@ export function validateDeliveryRecord({
 
     if (record) {
       validateHandoffSchema(record, handoffPath, errors);
+      if (cardFiles.length > 0) {
+        validateCandidateEvidenceBundle(root, resolvedHeadOid, record, selfReviews, scopedAudits, errors);
+      }
       if (cardFiles.length > 0 && !CONTENT_CHANGE_TYPES.has(record.scope?.change_type)) {
         errors.push('candidate card payload must use a content change_type and no-auto-merge authority');
       }
