@@ -1,0 +1,65 @@
+{
+  "handoff_id": "20260817-tooling-audio-signal-diagnostics-v1",
+  "created_at": "2026-08-17T01:45:43+08:00",
+  "agent": "codex",
+  "branch": "tooling/audio-signal-diagnostics-v1",
+  "base_branch": "main",
+  "commit_sha": "85951956b1be443b55cae674ce565cf93eb46d9c",
+  "push_ref": "origin/tooling/audio-signal-diagnostics-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/187",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "tooling",
+    "touched_paths": [
+      "README.md",
+      "scripts/audit_audio_technical.mjs",
+      "scripts/test_audio_technical_audit.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/audio-generation-contract.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "fb06247b8df57bab6dbf7a4f18da562f35b61bf2",
+    "patch_sha256": "baebef013007b863fcb1238407aa9cc67cd484163979763165f88b9899b33c58"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with 0 errors and only recorded upstream warnings"
+    },
+    {
+      "command": "node --test scripts/test_card_integrity.mjs scripts/test_validate_pr_scope.mjs scripts/test_validate_delivery_record.mjs scripts/test_audio_technical_audit.mjs",
+      "result": "passed; 205/205 tests"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed; 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-signal-guard.json",
+      "result": "passed; 301/301 assets, 95-196 WPM, -22.9 to -20.5 dB mean, and no coarse-signal errors"
+    },
+    {
+      "command": "node scripts/audit_audio_technical.mjs --track cet6 --report-path exports/cet6-audio-signal-guard.json",
+      "result": "passed; current main 320/320 assets, 97-192 WPM, -22.3 to -20.5 dB mean, and no coarse-signal errors"
+    },
+    {
+      "command": "candidate worktree audit with tooling/audio-signal-diagnostics-v1",
+      "result": "passed; CET4 301/301 and corrected CET6 328/328 assets, with both afinfo and ffprobe inside the 50 ms duration contract"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head 85951956b1be443b55cae674ce565cf93eb46d9c",
+      "result": "passed; tooling-only diff with no content-candidate scope"
+    },
+    {
+      "command": "node scripts/validate_delivery_boundary.mjs && git diff --check origin/main...85951956b1be443b55cae674ce565cf93eb46d9c",
+      "result": "passed"
+    }
+  ],
+  "local_status": "The technical audio audit now rejects gross transcript-duration speed, unsafe absolute or peak level, and track-relative level outliers before a candidate can enter the human perceptual-QC queue, while preserving every human-only formal audio boundary.",
+  "remaining_risks": [
+    "Coarse FFmpeg diagnostics cannot prove speech-to-transcript match, pronunciation, natural rhythm, stress, pauses, or noise absence.",
+    "Formal audio use still requires complete human perceptual QC and final content approval."
+  ],
+  "merge_authority": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs"
+}

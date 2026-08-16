@@ -1105,6 +1105,50 @@ function validateAudioGenerationContract(errors) {
       pushIssue(errors, 'audio_legacy_adoption_forbidden_rule_missing', { forbidden });
     }
   }
+  const technicalAudit = contract.technical_audio_audit || {};
+  for (const check of [
+    'estimated_transcript_speech_rate_within_80_to_220_wpm',
+    'mean_level_within_minus_32_to_minus_12_dbfs',
+    'peak_level_below_minus_0_1_dbfs',
+    'per_asset_mean_level_within_4_db_of_track_median',
+  ]) {
+    if (!(technicalAudit.required_checks || []).includes(check)) {
+      pushIssue(errors, 'audio_signal_diagnostic_check_missing', {check});
+    }
+  }
+  if (technicalAudit.signal_diagnostic_probe_command !== 'ffmpeg') {
+    pushIssue(errors, 'audio_signal_diagnostic_probe_drift', {
+      actual: technicalAudit.signal_diagnostic_probe_command,
+    });
+  }
+  if (technicalAudit.coarse_signal_diagnostics_do_not_replace_human_perceptual_qc !== true) {
+    pushIssue(errors, 'audio_signal_diagnostic_boundary_missing', {});
+  }
+  if (
+    !String(technicalAudit.authority_boundary || '').includes(
+      'coarse signal diagnostics do not prove speech-to-transcript match',
+    )
+  ) {
+    pushIssue(errors, 'audio_signal_diagnostic_authority_boundary_drift', {});
+  }
+  if (!exists('scripts/audit_audio_technical.mjs')) {
+    pushIssue(errors, 'audio_technical_audit_tool_missing', {});
+  } else {
+    const technicalAuditTool = readText('scripts/audit_audio_technical.mjs');
+    for (const token of [
+      'audio_estimated_speech_rate_out_of_range',
+      'audio_mean_level_out_of_range',
+      'audio_peak_level_clipping_risk',
+      'audio_track_level_outlier',
+      "option(process.argv, '--signal-probe', 'ffmpeg')",
+      'not_verified_requires_perceptual_QC',
+      'formal_audio_qc_records_created: 0',
+    ]) {
+      if (!technicalAuditTool.includes(token)) {
+        pushIssue(errors, 'audio_signal_diagnostic_tool_guard_missing', {token});
+      }
+    }
+  }
   if (contract.pronunciation_target_policy?.required_for_listening_pronunciation_boxes !== true) {
     pushIssue(errors, 'audio_pronunciation_target_policy_missing', {});
   }

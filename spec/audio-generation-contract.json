@@ -151,10 +151,16 @@
       "manifest_size_and_sha256_match",
       "decoder_can_probe_mp3",
       "declared_duration_matches_probed_duration_within_50ms",
-      "transcript_is_present_and_hash_bound"
+      "transcript_is_present_and_hash_bound",
+      "estimated_transcript_speech_rate_within_80_to_220_wpm",
+      "mean_level_within_minus_32_to_minus_12_dbfs",
+      "peak_level_below_minus_0_1_dbfs",
+      "per_asset_mean_level_within_4_db_of_track_median"
     ],
     "supported_probe_commands": ["afinfo", "ffprobe"],
-    "authority_boundary": "A passing technical audit does not prove speech-to-transcript match, clipping/noise absence, pronunciation, rhythm, stress, pauses, source authenticity, or formal audio readiness; those remain perceptual per-card QC.",
+    "signal_diagnostic_probe_command": "ffmpeg",
+    "coarse_signal_diagnostics_do_not_replace_human_perceptual_qc": true,
+    "authority_boundary": "A passing technical audit excludes gross transcript-duration speed, absolute level, peak, and track-relative level outliers. These coarse signal diagnostics do not prove speech-to-transcript match, clipping/noise absence, pronunciation, natural speed, rhythm, stress, pauses, source authenticity, or formal audio readiness; those remain perceptual per-card QC.",
     "must_not_create_formal_qc_records": true
   },
   "perceptual_review_worklist": {

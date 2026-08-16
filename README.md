@@ -162,9 +162,12 @@ node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-a
 ```
 
 The audit verifies exact bytes, manifest hashes, decoder metadata, declared
-duration, and transcript presence. It deliberately does not claim that speech
-matches the transcript or that pronunciation, noise, clipping, rhythm, stress,
-or pauses pass; those require records under `reviews/audio_qc/`.
+duration, and transcript presence. Its required FFmpeg diagnostic also rejects
+gross transcript-duration speed outliers, unsafe absolute/peak levels, and any
+asset whose mean level differs from the track median by more than 4 dB. These
+coarse measurements deliberately do not claim that speech matches the
+transcript or that pronunciation, natural speed, noise, clipping, rhythm,
+stress, or pauses pass; those require records under `reviews/audio_qc/`.
 
 Build the human perceptual-review queue from that exact passing audit:
 
