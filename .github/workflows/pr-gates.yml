@@ -32,7 +32,10 @@ jobs:
         with:
           path: card-make
           fetch-depth: 0
-          lfs: true
+          # These gates validate paths, pointer OIDs/sizes, manifests, and JSON;
+          # they do not decode audio bytes. Keep LFS objects as pointers so
+          # ordinary content PRs are not coupled to GitHub LFS download quota.
+          lfs: false
 
       - name: Checkout product authority
         uses: actions/checkout@v7
@@ -72,7 +75,10 @@ jobs:
         with:
           path: card-make
           fetch-depth: 0
-          lfs: true
+          # Card and audit validation does not consume MP3 bytes. Retaining
+          # pointers keeps the content gate available when LFS downloads are
+          # temporarily quota-limited.
+          lfs: false
 
       - name: Checkout product authority
         uses: actions/checkout@v7
