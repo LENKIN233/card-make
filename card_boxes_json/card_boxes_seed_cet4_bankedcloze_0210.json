@@ -43,12 +43,12 @@
       "correct_answer": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -85,11 +85,32 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "建立冠词、形容词、介词和物主词后的名词位框架",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练不依赖词义识别名词短语核心。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -148,12 +169,12 @@
       "correct_answer": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -190,7 +211,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -198,6 +219,27 @@
       },
       "answer_key": {
         "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "利用最高级形容词锁定后续名词核心",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练从限定词加形容词骨架预判词性。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -218,14 +260,14 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：debate\n\npublic + 空格 + over... 是名词短语结构，空格为名词核心。\ndebate（名词）可与 over 搭配：debate over sth。\n\n词性先行：debatable（形容词）/debated（动词分词）/debating（动名词）均不符合该名词核心位。",
-        "explanation": "形容词后面一般接名词；而名词再接 over/about/on 等介词短语是常见扩展结构。"
+        "text": "答案：debate。\n\npublic + 空格 + over... 构成名词短语，空格是单数名词核心；谓语 continues 也要求单数主语。debate 可与 over 搭配。\n\ndebates 虽是名词复数，却与 continues 数量不一致；debatable、debated 等词形也不能完成该主语结构。",
+        "explanation": "名词位预判后仍要核对单复数与谓语一致，不能只看到某个候选可作名词就停止。"
       },
       "analysis_content": {
-        "text": "① 识别信号：\"public ___ over ...\"。public 是前置形容词，over bike lanes 是后置介词短语补足。中间空格应是名词核心。\n\n② 核心规律：空格语法预判中，\"形容词 + 空格 + 介词短语\" 大概率为名词位。因为介词短语通常后置修饰名词（the debate over..., the concern about..., the increase in...）。\n\n③ 验证：\"public debate over bike lanes\" 完整合法，语义为「围绕自行车道的公共争论」。若填 debatable（形容词）则变成 \"public debatable over...\"，结构不成立。",
+        "text": "① 识别信号：public 是前置形容词，over bike lanes 是后置介词短语，中间需要名词核心；后面的 continues 进一步要求该主语为单数。\n\n② 核心规律：“形容词 + 名词 + 介词短语”先锁定名词位，再用限定词和谓语核对数。这样可区分单数 debate 与复数 debates。\n\n③ 验证：public debate over bike lanes still continues 在词性、搭配和主谓一致上均成立；public debates...continues 则数量冲突。",
         "tips": [
-          "先判空格词性并筛掉不合格词，再代回检查搭配自然度和整句逻辑。",
-          "本题线索在空格前后搭配：先锁定句法位，再验证语义一致性。 题面片段：\"In many cities, fierce public {{bla..."
+          "词性过滤后继续检查单复数。",
+          "后置介词短语常说明名词核心的主题或对象。"
         ]
       },
       "options": null,
@@ -233,7 +275,7 @@
         "debate",
         "debatable",
         "debated",
-        "debating",
+        "debates",
         "careful",
         "barely"
       ],
@@ -244,12 +286,12 @@
       "correct_answer": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -273,10 +315,10 @@
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：\"public ___ over ...\"。public 是前置形容词，over bike lanes 是后置介词短语补足。中间空格应是名词核心。\n\n② 核心规律：空格语法预判中，\"形容词 + 空格 + 介词短语\" 大概率为名词位。因为介词短语通常后置修饰名词（the debate over..., the concern about..., the increase in...）。\n\n③ 验证：\"public debate over bike lanes\" 完整合法，语义为「围绕自行车道的公共争论」。若填 debatable（形容词）则变成 \"public debatable over...\"，结构不成立。",
+        "text": "① 识别信号：public 是前置形容词，over bike lanes 是后置介词短语，中间需要名词核心；后面的 continues 进一步要求该主语为单数。\n\n② 核心规律：“形容词 + 名词 + 介词短语”先锁定名词位，再用限定词和谓语核对数。这样可区分单数 debate 与复数 debates。\n\n③ 验证：public debate over bike lanes still continues 在词性、搭配和主谓一致上均成立；public debates...continues 则数量冲突。",
         "tips": [
-          "先判空格词性并筛掉不合格词，再代回检查搭配自然度和整句逻辑。",
-          "本题线索在空格前后搭配：先锁定句法位，再验证语义一致性。 题面片段：\"In many cities, fierce public {{bla..."
+          "词性过滤后继续检查单复数。",
+          "后置介词短语常说明名词核心的主题或对象。"
         ]
       },
       "auto_scoring": true,
@@ -286,7 +328,7 @@
         "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -302,7 +344,28 @@
           "id": "slot_1",
           "expected": "debate"
         }
-      ]
+      ],
+      "quality_metadata": {
+        "main_training_goal": "联合名词位和主谓一致选择 debate",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练词性过滤后的单复数复核。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      }
     },
     {
       "card_id": "021004",
@@ -316,14 +379,14 @@
       "card_box_name": "名词",
       "card_group_name": "空格语法预判",
       "front_content": {
-        "text": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n为什么这里优先预判为名词，而不是形容词？",
+        "text": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n哪一项最准确说明空格的句法角色？",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：C\n\nfinancial 是形容词，后面应接名词作被修饰核心（如 pressure, security, burden）。\n\n此外，空格后是 remains（系动词），说明空格前整体 \"financial ___\" 是句子主语名词短语。",
-        "explanation": "形容词通常不单独作主语，主语位需要名词性成分。\"financial + 空格\" 在主语位时，空格必然是名词。"
+        "text": "答案：C。\n\nfinancial 是前置形容词，空格后出现主句谓语 remains，因此 financial ___ 整体必须构成主语名词短语；空格可填 pressure、security、burden 等名词。",
+        "explanation": "主语位置与形容词前置修饰形成双重约束：空格必须提供名词核心。"
       },
       "analysis_content": {
         "text": "① 识别信号：\"financial ___ remains ...\"。空格前有形容词 financial，空格后是谓语 remains。由此可知 \"financial ___\" 整体为主语。\n\n② 核心规律：主语位置要求名词性成分；\"形容词 + 名词\" 可构成主语短语，\"形容词 + 形容词\" 不能构成合法主语核心。\n\n③ 验证：\"financial pressure remains the main reason\" 结构完整。若把空格填成副词/动词，会导致主语缺失或结构冲突。",
@@ -335,22 +398,22 @@
       "options": [
         {
           "key": "A",
-          "text": "remains 前面应填副词修饰 remains，所以空格是副词",
+          "text": "空格应作方式状语，修饰后面的谓语。",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "financial 是名词，后面可接任何词性",
+          "text": "前置修饰成分本身就是名词，因此后面词性不受限制。",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "financial 是形容词，且空格后为谓语 remains，说明空格是主语短语核心名词",
+          "text": "空格要补全主语名词短语，前置修饰成分不能独立充当核心。",
           "is_correct": true
         },
         {
           "key": "D",
-          "text": "remain 是及物动词，空格应填宾语动词",
+          "text": "后面的词是及物动词，空格应填它的宾语。",
           "is_correct": false
         }
       ],
@@ -360,12 +423,12 @@
       "correct_answer": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -381,8 +444,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n为什么这里优先预判为名词，而不是形容词？",
-        "task_prompt": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n为什么这里优先预判为名词，而不是形容词？",
+        "text": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n哪一项最准确说明空格的句法角色？",
+        "task_prompt": "\"For many workers in their 70s, financial ___ remains the main reason to stay in the labor force.\"\n\n哪一项最准确说明空格的句法角色？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -402,7 +465,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -410,6 +473,25 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "从主语位置和前置修饰锁定名词核心",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练利用后续谓语确认主语边界。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -456,12 +538,12 @@
       "correct_answer": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -498,7 +580,7 @@
         "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -514,7 +596,26 @@
           "id": "slot_1",
           "expected": "uncertainty"
         }
-      ]
+      ],
+      "quality_metadata": {
+        "main_training_goal": "在形容词加 for 短语骨架中选择 uncertainty",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练名词核心与后置补足语识别。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
     },
     {
       "card_id": "021006",
@@ -572,12 +673,12 @@
       "correct_answer": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -614,7 +715,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -622,6 +723,25 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据 ensure 的及物配价识别宾语名词位",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用动词配价补足位置线索。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -668,12 +788,12 @@
       "correct_answer": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -710,7 +830,7 @@
         "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -726,7 +846,26 @@
           "id": "slot_1",
           "expected": "shift"
         }
-      ]
+      ],
+      "quality_metadata": {
+        "main_training_goal": "利用冠词形容词和 in 短语选择 shift",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练学术变化名词骨架。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
     },
     {
       "card_id": "021008",
@@ -784,12 +923,12 @@
       "correct_answer": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -826,7 +965,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -834,6 +973,27 @@
       },
       "answer_key": {
         "correct_option": "D"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别介词与 enough 共同支配的名词宾语",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "迁移多重限定词信号。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -880,12 +1040,12 @@
       "correct_answer": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -922,7 +1082,7 @@
         "product_mapping_reason": "legacy word-bank blank filling maps to lock because all slots must be correct"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -938,7 +1098,28 @@
           "id": "slot_1",
           "expected": "increase"
         }
-      ]
+      ],
+      "quality_metadata": {
+        "main_training_goal": "构成趋势表达 a steady increase in",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "迁移变化概念名词化结构。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      }
     },
     {
       "card_id": "021010",
@@ -958,8 +1139,8 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：B\n\n结构链：financial（形容词）+ 空格；且空格前有并列结构 \"not A, but B\"，其中 B 与前面 motivation（名词）并列。\n因此空格所在成分必须是名词性中心词（如 pressure/security/support）。\n\n这道题的关键不是词义，而是并列对等 + 形容词后承接名词双重约束。",
-        "explanation": "并列结构中，A 与 B 通常语法功能对等。若 A 是名词短语，B 也应是名词短语。再结合 financial 的修饰关系，可双重确认名词位。"
+        "text": "答案：B。\n\nnot A but B 要求两端承担相同语法角色：前项 motivation alone 是名词短语，后项也应是名词短语；long-term financial 又是形容词性修饰语，因此空格必须提供名词核心。",
+        "explanation": "并列对等与名词短语内部结构可以相互验证，形成比单一位置线索更强的词性判断。"
       },
       "analysis_content": {
         "text": "① 识别信号：\"not motivation alone, but long-term financial ___\"。前半部分 motivation 是名词，but 后成分与其对等；同时 financial 为形容词，后接名词。\n\n② 核心规律：并列对等原则可作为强词性约束。结构 not A but B 中，A/B 多保持同类语法角色。若 A 是名词短语，B 也应为名词短语。结合 \"adj + ___\" 再次确认名词位。\n\n③ 验证：\"...but long-term financial pressure\" 语法与语义均成立。若填副词 financially，则成为 \"financial financially\" 结构冲突；若填动词 pressure（动词用法）也与并列名词结构不一致。",
@@ -971,22 +1152,22 @@
       "options": [
         {
           "key": "A",
-          "text": "to delaying retirement 后应直接接动词，因此空格应填动词",
+          "text": "前面的不定式要求后项继续使用动词。",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "motivation 与 but 后成分并列，financial 又要求后接名词，双重约束指向名词位",
+          "text": "并列前项是名词短语，后项又由形容词修饰，双重约束要求名词核心。",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "financial 本身可作名词，所以空格可填任意词",
+          "text": "前置修饰成分可独立作名词，因此空格词性不限。",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "alone 后通常接副词，空格应填副词形成语气",
+          "text": "并列标记之后通常使用副词加强语气。",
           "is_correct": false
         }
       ],
@@ -996,12 +1177,12 @@
       "correct_answer": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -1038,7 +1219,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -1046,6 +1227,27 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "联合并列对等和形容词修饰判断名词位",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "迁移双重句法约束。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],

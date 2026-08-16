@@ -21,11 +21,11 @@
       "card_group_name": "推理判断",
       "front_content": {
         "text": "任务：先听音频，再判断说话人总体态度偏正向还是负向，并给依据。",
-        "task_prompt": "先听音频，再判断态度方向并说明证据。",
+        "task_prompt": "任务：先听音频，再判断说话人总体态度偏正向还是负向，并给依据。",
         "task_schema": {
-          "action": "听后态度判断",
-          "focus": "态度词与限制词并读",
-          "success_criteria": "能给出方向并说明是强支持/谨慎支持/反对"
+          "action": "听后判断总体态度",
+          "focus": "主评价与转折后的限制信息",
+          "success_criteria": "同时说明方向、强度和依据"
         },
         "audio_first": true,
         "image_url": null,
@@ -37,11 +37,10 @@
         "explanation": "语境揭示：I am generally positive about the proposal, although we still need a clearer timeline."
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：先用信号词或句法骨架定位信息重心，再根据上下文完成含义确认，避免只看单个词就下结论。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是把定义性描述当答案本身，忽略语境中真正限制条件。纠偏时先问“这句话在当前语境里解决了什么问题”。下次遇到同类题时，直接执行：先圈出触发信号，再用一句话复述该句对主题的贡献。",
+        "text": "① 识别信号：generally positive 直接给出正向基调，although 引出尚需更清晰时间表的保留条件。\n\n② 核心规律：态度题要把方向和强度分开记录。正向评价后出现限制，不会自动把态度反转为负向，而是把“完全支持”降为“有保留的支持”。\n\n③ 验证：proposal 仍被正面评价；需要 clearer timeline 只是支持成立前还要补充的信息，因此结论应同时保留正向与保留两层。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "先记主态度方向，再用 although/but 修正强度。",
+          "不要把保留条件误听成反对。"
         ]
       },
       "options": null,
@@ -53,12 +52,12 @@
         "path": "ai_tts/cet4/0041/004101.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -75,22 +74,21 @@
       "interaction_id": "flip",
       "front": {
         "text": "任务：先听音频，再判断说话人总体态度偏正向还是负向，并给依据。",
-        "task_prompt": "先听音频，再判断态度方向并说明证据。",
+        "task_prompt": "任务：先听音频，再判断说话人总体态度偏正向还是负向，并给依据。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后态度判断",
-          "focus": "态度词与限制词并读",
-          "success_criteria": "能给出方向并说明是强支持/谨慎支持/反对"
+          "action": "听后判断总体态度",
+          "focus": "主评价与转折后的限制信息",
+          "success_criteria": "同时说明方向、强度和依据"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：先用信号词或句法骨架定位信息重心，再根据上下文完成含义确认，避免只看单个词就下结论。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是把定义性描述当答案本身，忽略语境中真正限制条件。纠偏时先问“这句话在当前语境里解决了什么问题”。下次遇到同类题时，直接执行：先圈出触发信号，再用一句话复述该句对主题的贡献。",
+        "text": "① 识别信号：generally positive 直接给出正向基调，although 引出尚需更清晰时间表的保留条件。\n\n② 核心规律：态度题要把方向和强度分开记录。正向评价后出现限制，不会自动把态度反转为负向，而是把“完全支持”降为“有保留的支持”。\n\n③ 验证：proposal 仍被正面评价；需要 clearer timeline 只是支持成立前还要补充的信息，因此结论应同时保留正向与保留两层。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "先记主态度方向，再用 although/but 修正强度。",
+          "不要把保留条件误听成反对。"
         ]
       },
       "auto_scoring": false,
@@ -100,11 +98,35 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分正向主态度与保留条件",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练分别记录态度方向和强度。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -120,11 +142,11 @@
       "card_group_name": "推理判断",
       "front_content": {
         "text": "任务：先听音频，再选出最准确的态度描述。",
-        "task_prompt": "先听音频，再选出态度强度最匹配的选项。",
+        "task_prompt": "任务：先听音频，再选出最准确的态度描述。",
         "task_schema": {
-          "action": "四选一：态度强度辨别",
-          "focus": "cautiously optimistic",
-          "success_criteria": "区分强支持、谨慎支持和中立"
+          "action": "四选一：判断态度方向与强度",
+          "focus": "评价方向、程度副词与证据条件",
+          "success_criteria": "选择同时保留方向和保留程度的选项"
         },
         "audio_first": true,
         "image_url": null,
@@ -136,11 +158,10 @@
         "explanation": "语境揭示：I'm cautiously optimistic about the new assessment method, but I need to see one full semester of results."
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "① 识别信号：cautiously optimistic 表示正向预期但态度克制；but 后面要求观察一个完整学期的结果，进一步限制支持强度。\n\n② 核心规律：选项必须同时覆盖态度方向和把握程度。只抓 optimistic 会误选过强支持，只抓 need to see results 又会误判为反对或中立。\n\n③ 验证：说话人认可新评估方法的前景，但仍等待长期证据，因此“正向但有保留”比强烈热情、反对或完全中立更准确。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "态度形容词与程度副词要连读。",
+          "but 后的证据要求通常调低强度，不一定改变方向。"
         ]
       },
       "options": [
@@ -173,12 +194,12 @@
         "path": "ai_tts/cet4/0041/004102.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -195,22 +216,21 @@
       "interaction_id": "multiple_choice",
       "front": {
         "text": "任务：先听音频，再选出最准确的态度描述。",
-        "task_prompt": "先听音频，再选出态度强度最匹配的选项。",
+        "task_prompt": "任务：先听音频，再选出最准确的态度描述。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "四选一：态度强度辨别",
-          "focus": "cautiously optimistic",
-          "success_criteria": "区分强支持、谨慎支持和中立"
+          "action": "四选一：判断态度方向与强度",
+          "focus": "评价方向、程度副词与证据条件",
+          "success_criteria": "选择同时保留方向和保留程度的选项"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "① 识别信号：cautiously optimistic 表示正向预期但态度克制；but 后面要求观察一个完整学期的结果，进一步限制支持强度。\n\n② 核心规律：选项必须同时覆盖态度方向和把握程度。只抓 optimistic 会误选过强支持，只抓 need to see results 又会误判为反对或中立。\n\n③ 验证：说话人认可新评估方法的前景，但仍等待长期证据，因此“正向但有保留”比强烈热情、反对或完全中立更准确。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "态度形容词与程度副词要连读。",
+          "but 后的证据要求通常调低强度，不一定改变方向。"
         ]
       },
       "auto_scoring": true,
@@ -220,7 +240,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -228,6 +248,30 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "综合程度副词和证据条件判断谨慎支持",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练避免只抓单个态度词。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -242,12 +286,12 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，在说话人明确表达负向态度的词出现时点击。",
-        "task_prompt": "先听音频，在负向态度核心词出现时点击。",
+        "text": "任务：先听音频，记下说话人首次作出明确态度评价的词，再翻面核对。",
+        "task_prompt": "任务：先听音频，记下说话人首次作出明确态度评价的词，再翻面核对。",
         "task_schema": {
-          "action": "时间窗口点击：态度词定位",
-          "focus": "disappointing",
-          "success_criteria": "在态度词处点击而非事实叙述处"
+          "action": "听后定位首次明确态度词",
+          "focus": "事实描述与态度评价的边界",
+          "success_criteria": "能指出直接表达态度的词并说明对象"
         },
         "audio_first": true,
         "image_url": null,
@@ -255,15 +299,14 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案窗口：disappointing（约第 4.1 秒）\n\n解析：前段是事实，disappointing 才是态度判断核心。",
-        "explanation": "语境揭示：The response rate was lower than expected, and frankly that result is disappointing for all of us."
+        "text": "关键态度词：disappointing。\n\nlower than expected 先陈述结果与预期的差距；frankly that result is disappointing 才直接给出说话人的负向评价。",
+        "explanation": "定位态度触发点时，要区分客观结果描述与显性的情绪评价。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：时机点击题先定位“信息转折或答案触发点”，点击窗口应落在语义发生变化的时间段。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是按语速或节奏点点击，而不是按语义转折点击。纠偏时以“观点变化点”为唯一锚。下次遇到同类题时，直接执行：听到转折词或态度词后再点击，不要在铺垫句提前作答。",
+        "text": "① 识别信号：lower than expected 说明表现不如预期，但 disappointing 才是直接标记情绪的评价词。\n\n② 核心规律：听力中的事实可以暗示态度，显性评价词则能确认态度。若任务要求定位态度信号，应等到评价真正出现，而不是在背景事实处提前判断。\n\n③ 验证：response rate 是评价对象，disappointing 给出负向情绪，for all of us 扩展了受影响范围；三者共同支持失望结论。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "先区分事实描述和评价表达。",
+          "听到 frankly 等提示语后，留意紧随其后的真实立场。"
         ]
       },
       "options": null,
@@ -279,12 +322,12 @@
         5400
       ],
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -300,23 +343,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，在说话人明确表达负向态度的词出现时点击。",
-        "task_prompt": "先听音频，在负向态度核心词出现时点击。",
+        "text": "任务：先听音频，记下说话人首次作出明确态度评价的词，再翻面核对。",
+        "task_prompt": "任务：先听音频，记下说话人首次作出明确态度评价的词，再翻面核对。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "时间窗口点击：态度词定位",
-          "focus": "disappointing",
-          "success_criteria": "在态度词处点击而非事实叙述处"
+          "action": "听后定位首次明确态度词",
+          "focus": "事实描述与态度评价的边界",
+          "success_criteria": "能指出直接表达态度的词并说明对象"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：时机点击题先定位“信息转折或答案触发点”，点击窗口应落在语义发生变化的时间段。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是按语速或节奏点点击，而不是按语义转折点击。纠偏时以“观点变化点”为唯一锚。下次遇到同类题时，直接执行：听到转折词或态度词后再点击，不要在铺垫句提前作答。",
+        "text": "① 识别信号：lower than expected 说明表现不如预期，但 disappointing 才是直接标记情绪的评价词。\n\n② 核心规律：听力中的事实可以暗示态度，显性评价词则能确认态度。若任务要求定位态度信号，应等到评价真正出现，而不是在背景事实处提前判断。\n\n③ 验证：response rate 是评价对象，disappointing 给出负向情绪，for all of us 扩展了受影响范围；三者共同支持失望结论。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "先区分事实描述和评价表达。",
+          "听到 frankly 等提示语后，留意紧随其后的真实立场。"
         ]
       },
       "auto_scoring": false,
@@ -326,11 +368,35 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分结果事实与直接态度评价",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练定位首次明确态度信号。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -345,12 +411,12 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，在说话人完整阐述“保留态度”的理由区间内按住屏幕。",
-        "task_prompt": "先听音频，在保留态度和其依据播放期间持续按住，结束后松手。",
+        "text": "任务：先听音频，概括说话人的当前立场、转折和保留条件，再翻面核对。",
+        "task_prompt": "任务：先听音频，概括说话人的当前立场、转折和保留条件，再翻面核对。",
         "task_schema": {
-          "action": "按住并择机松手：保留态度理由链",
-          "focus": "not against ... but need ...",
-          "success_criteria": "覆盖立场与证据需求两部分"
+          "action": "听后复述保留态度链",
+          "focus": "初始立场、转折后的主判断与条件",
+          "success_criteria": "三部分均被准确保留"
         },
         "audio_first": true,
         "image_url": null,
@@ -358,15 +424,14 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "区间：I'm not against the plan, but I can't fully support it until we clarify the budget assumptions（约第 1.6 秒至第 10.6 秒）\n\n解析：立场是非反对但未完全支持。",
-        "explanation": "语境揭示：I'm not against the plan, but I can't fully support it until we clarify the budget assumptions."
+        "text": "立场：不反对方案，但在预算假设澄清前不能完全支持。\n\nnot against 排除了明确反对；but I can't fully support 与 until... 给出保留程度和解除保留的条件。",
+        "explanation": "完整态度链由初始立场、转折后的主判断和条件三部分组成，不应截取单句。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。的理由区间内按住屏幕。”。\n\n② 核心规律：长按类任务要以连续有效信息为标准，覆盖核心语义段而非机械按住固定时长。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只追求时长达标，忽略有效信息是否完整。纠偏时先识别起止语义边界再执行动作。下次遇到同类题时，直接执行：先判定起止语义，再控制时长覆盖完整信息段。",
+        "text": "① 识别信号：not against 是否定式的弱正向或中性起点；but 把重心转向 can't fully support；until 引出预算澄清这一条件。\n\n② 核心规律：双重限制句不能只按第一个态度词判断。转折后的主判断通常权重更高，条件从句则解释为何尚未完全支持。\n\n③ 验证：说话人既没有否定方案，也没有无条件赞成，而是把进一步支持绑定到预算信息上，因此属于明确的保留态度。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "not against 不等于 fully support。",
+          "按“起点—转折—条件”复述复杂立场。"
         ]
       },
       "options": null,
@@ -379,12 +444,12 @@
       },
       "target_duration_ms": 6500,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -400,23 +465,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，在说话人完整阐述“保留态度”的理由区间内按住屏幕。",
-        "task_prompt": "先听音频，在保留态度和其依据播放期间持续按住，结束后松手。",
+        "text": "任务：先听音频，概括说话人的当前立场、转折和保留条件，再翻面核对。",
+        "task_prompt": "任务：先听音频，概括说话人的当前立场、转折和保留条件，再翻面核对。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "按住并择机松手：保留态度理由链",
-          "focus": "not against ... but need ...",
-          "success_criteria": "覆盖立场与证据需求两部分"
+          "action": "听后复述保留态度链",
+          "focus": "初始立场、转折后的主判断与条件",
+          "success_criteria": "三部分均被准确保留"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。的理由区间内按住屏幕。”。\n\n② 核心规律：长按类任务要以连续有效信息为标准，覆盖核心语义段而非机械按住固定时长。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是只追求时长达标，忽略有效信息是否完整。纠偏时先识别起止语义边界再执行动作。下次遇到同类题时，直接执行：先判定起止语义，再控制时长覆盖完整信息段。",
+        "text": "① 识别信号：not against 是否定式的弱正向或中性起点；but 把重心转向 can't fully support；until 引出预算澄清这一条件。\n\n② 核心规律：双重限制句不能只按第一个态度词判断。转折后的主判断通常权重更高，条件从句则解释为何尚未完全支持。\n\n③ 验证：说话人既没有否定方案，也没有无条件赞成，而是把进一步支持绑定到预算信息上，因此属于明确的保留态度。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "not against 不等于 fully support。",
+          "按“起点—转折—条件”复述复杂立场。"
         ]
       },
       "auto_scoring": false,
@@ -426,11 +490,33 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "还原起点—转折—条件的保留态度链",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练处理双重限制和条件句。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -446,11 +532,11 @@
       "card_group_name": "推理判断",
       "front_content": {
         "text": "任务：先听音频，再选出说话人的态度方向。",
-        "task_prompt": "先听音频，再选出最准确的态度标签。",
+        "task_prompt": "任务：先听音频，再选出说话人的态度方向。",
         "task_schema": {
-          "action": "四选一：方向判断",
-          "focus": "supportive 与 skeptical",
-          "success_criteria": "根据核心评价词判断方向"
+          "action": "四选一：判断总体态度",
+          "focus": "让步背景与主句比较结论",
+          "success_criteria": "根据最终权衡确定方向与强度"
         },
         "audio_first": true,
         "image_url": null,
@@ -462,11 +548,10 @@
         "explanation": "语境揭示：Despite a few concerns, I still believe the benefits of this change outweigh the drawbacks."
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "① 识别信号：Despite a few concerns 是让步背景；主句 still believe 把重心放在 benefits outweigh the drawbacks。\n\n② 核心规律：despite/although 引出的内容通常不是最终立场。判断态度要找到主句结论，并比较正负因素最后哪一方被说话人认为更重要。\n\n③ 验证：说话人承认少量担忧，却明确认为收益大于缺点，所以总体支持改变，但强度低于毫无保留的赞成。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "让步信息先记账，主句结论再定方向。",
+          "outweigh 表示比较后的主判断。"
         ]
       },
       "options": [
@@ -499,12 +584,12 @@
         "path": "ai_tts/cet4/0041/004105.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -521,22 +606,21 @@
       "interaction_id": "multiple_choice",
       "front": {
         "text": "任务：先听音频，再选出说话人的态度方向。",
-        "task_prompt": "先听音频，再选出最准确的态度标签。",
+        "task_prompt": "任务：先听音频，再选出说话人的态度方向。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "四选一：方向判断",
-          "focus": "supportive 与 skeptical",
-          "success_criteria": "根据核心评价词判断方向"
+          "action": "四选一：判断总体态度",
+          "focus": "让步背景与主句比较结论",
+          "success_criteria": "根据最终权衡确定方向与强度"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：四选一先排除“绝对化、偷换对象、无中生有”三类干扰项，再在剩余选项里比对证据强度。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是看到词面重合就直接选，忽略选项与原文主语、时态或限定范围不一致。纠偏时逐项核对对象+关系+限定词。下次遇到同类题时，直接执行：作答顺序固定为：先删明显错项，再做两项对比，最后回文验证。",
+        "text": "① 识别信号：Despite a few concerns 是让步背景；主句 still believe 把重心放在 benefits outweigh the drawbacks。\n\n② 核心规律：despite/although 引出的内容通常不是最终立场。判断态度要找到主句结论，并比较正负因素最后哪一方被说话人认为更重要。\n\n③ 验证：说话人承认少量担忧，却明确认为收益大于缺点，所以总体支持改变，但强度低于毫无保留的赞成。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "让步信息先记账，主句结论再定方向。",
+          "outweigh 表示比较后的主判断。"
         ]
       },
       "auto_scoring": true,
@@ -546,7 +630,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -554,6 +638,28 @@
       },
       "answer_key": {
         "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用让步与主句权重判断总体方向",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练以最终权衡而非局部担忧定态度。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -569,11 +675,11 @@
       "card_group_name": "推理判断",
       "front_content": {
         "text": "任务：听完音频，用自己的话复述说话人态度变化的过程。",
-        "task_prompt": "听完音频，复述初始态度、转变依据和当前立场。",
+        "task_prompt": "任务：听完音频，用自己的话复述说话人态度变化的过程。",
         "task_schema": {
-          "action": "听后变化链复述",
-          "focus": "from skeptical to supportive",
-          "success_criteria": "三段链条完整"
+          "action": "听后复述态度变化链",
+          "focus": "初始态度、证据节点与当前立场",
+          "success_criteria": "三段链条完整且不添加未述信息"
         },
         "audio_first": true,
         "image_url": null,
@@ -581,15 +687,14 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：他从怀疑转为谨慎支持，转变依据是试点结果优于预期。",
-        "explanation": "语境揭示：I was skeptical at first, but after seeing the pilot outcomes, I now support moving ahead with a phased rollout."
+        "text": "结论：说话人从最初的怀疑转为支持分阶段推进；促成转变的是看过试点结果。",
+        "explanation": "态度变化题要保留初始立场、证据节点和当前立场，不能给证据添加音频未表达的评价。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：先用信号词或句法骨架定位信息重心，再根据上下文完成含义确认，避免只看单个词就下结论。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是把定义性描述当答案本身，忽略语境中真正限制条件。纠偏时先问“这句话在当前语境里解决了什么问题”。下次遇到同类题时，直接执行：先圈出触发信号，再用一句话复述该句对主题的贡献。",
+        "text": "① 识别信号：at first 标记初始怀疑，but after seeing 标记证据节点，I now support 给出当前立场。\n\n② 核心规律：态度变化题应还原时间链，而不是只报最后方向。转变依据只能复述音频明说的 pilot outcomes，不能自行补成“结果优于预期”。\n\n③ 验证：完整链条是 skeptical → saw the pilot outcomes → support a phased rollout；phased 又说明支持的是渐进推进而非一次性全面展开。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "用 at first/but/now 画出态度时间线。",
+          "复述依据时不要加入材料未说的好坏判断。"
         ]
       },
       "options": null,
@@ -601,12 +706,12 @@
         "path": "ai_tts/cet4/0041/004106.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -623,22 +728,21 @@
       "interaction_id": "flip",
       "front": {
         "text": "任务：听完音频，用自己的话复述说话人态度变化的过程。",
-        "task_prompt": "听完音频，复述初始态度、转变依据和当前立场。",
+        "task_prompt": "任务：听完音频，用自己的话复述说话人态度变化的过程。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后变化链复述",
-          "focus": "from skeptical to supportive",
-          "success_criteria": "三段链条完整"
+          "action": "听后复述态度变化链",
+          "focus": "初始态度、证据节点与当前立场",
+          "success_criteria": "三段链条完整且不添加未述信息"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡聚焦“观点、态度”。先从题面中抓取可验证线索（如关键词、限定词、句法位置或语义转折），避免被表面词汇带偏。优先抓题面中的限定词、句法位置或语义转折。\n\n② 核心规律：先用信号词或句法骨架定位信息重心，再根据上下文完成含义确认，避免只看单个词就下结论。 这类题的本质不是记答案，而是建立稳定的判断顺序。你需要先判定信息结构，再做选项/填空/动作匹配；如果顺序颠倒，就容易被干扰项误导。\n\n③ 验证与纠偏：回到题面逐项核对对象、关系和限定范围。常见误判是把定义性描述当答案本身，忽略语境中真正限制条件。纠偏时先问“这句话在当前语境里解决了什么问题”。下次遇到同类题时，直接执行：先圈出触发信号，再用一句话复述该句对主题的贡献。",
+        "text": "① 识别信号：at first 标记初始怀疑，but after seeing 标记证据节点，I now support 给出当前立场。\n\n② 核心规律：态度变化题应还原时间链，而不是只报最后方向。转变依据只能复述音频明说的 pilot outcomes，不能自行补成“结果优于预期”。\n\n③ 验证：完整链条是 skeptical → saw the pilot outcomes → support a phased rollout；phased 又说明支持的是渐进推进而非一次性全面展开。",
         "tips": [
-          "先判断信息结构，再做答案选择，避免词面匹配先行。",
-          "每次作答后都做一次“回文验证”，确认结论与原句完全一致。",
-          "把常见误判写成自己的反例清单，下一题先对照排雷。"
+          "用 at first/but/now 画出态度时间线。",
+          "复述依据时不要加入材料未说的好坏判断。"
         ]
       },
       "auto_scoring": false,
@@ -648,11 +752,33 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "复述初始态度、证据和当前立场",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练态度变化链并避免补写材料。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -670,9 +796,9 @@
         "text": "任务：先听音频，再判断说话人对新政策的态度。",
         "task_prompt": "任务：先听音频，再判断说话人对新政策的态度。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后判断政策态度",
+          "focus": "直接评价与实施时机评价",
+          "success_criteria": "区分对政策本身和对推迟实施的态度"
         },
         "audio_first": true,
         "image_url": null,
@@ -684,19 +810,19 @@
         "explanation": "语境揭示：Honestly, I think the new policy is quite reasonable. It's long overdue, if you ask me."
       },
       "analysis_content": {
-        "text": "① 识别信号：\"quite reasonable\" 和 \"long overdue\" 是强正向态度词组。② 核心规律：CET4 attitude 题中，形容词（reasonable/excellent/disappointing）+ 副词修饰（quite/rather/totally）是快速判断极性的关键。③ 验证与迁移：\"long overdue\" = the policy should have been implemented earlier，答案方向为正向且急迫。",
+        "text": "① 识别信号：quite reasonable 是直接正向评价，long overdue 表示政策早就应该实施，进一步加强赞同。\n\n② 核心规律：overdue 字面涉及“迟到”，但 long overdue 在政策语境中常表达措施必要且实施太晚，态度指向政策本身仍是正向。\n\n③ 验证：两处表达都支持新政策，只是第二处同时批评实施时机过迟，因此应判断为明显赞同而非负面反对。",
         "tips": [
-          "态度词 + 程度副词 = 快速锁定说话人极性（正/负/中立）。",
-          "\"overdue\" 含隐性批评意味，但整体语境是支持。"
+          "评价对象要分清：赞同政策，不满的是实施太晚。",
+          "long overdue 常强化“早该如此”的立场。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         2500,
@@ -731,16 +857,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后判断政策态度",
+          "focus": "直接评价与实施时机评价",
+          "success_criteria": "区分对政策本身和对推迟实施的态度"
         }
       },
       "analysis": {
-        "text": "① 识别信号：\"quite reasonable\" 和 \"long overdue\" 是强正向态度词组。② 核心规律：CET4 attitude 题中，形容词（reasonable/excellent/disappointing）+ 副词修饰（quite/rather/totally）是快速判断极性的关键。③ 验证与迁移：\"long overdue\" = the policy should have been implemented earlier，答案方向为正向且急迫。",
+        "text": "① 识别信号：quite reasonable 是直接正向评价，long overdue 表示政策早就应该实施，进一步加强赞同。\n\n② 核心规律：overdue 字面涉及“迟到”，但 long overdue 在政策语境中常表达措施必要且实施太晚，态度指向政策本身仍是正向。\n\n③ 验证：两处表达都支持新政策，只是第二处同时批评实施时机过迟，因此应判断为明显赞同而非负面反对。",
         "tips": [
-          "态度词 + 程度副词 = 快速锁定说话人极性（正/负/中立）。",
-          "\"overdue\" 含隐性批评意味，但整体语境是支持。"
+          "评价对象要分清：赞同政策，不满的是实施太晚。",
+          "long overdue 常强化“早该如此”的立场。"
         ]
       },
       "auto_scoring": false,
@@ -750,11 +876,33 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分政策赞同与对实施过晚的不满",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练为不同评价绑定准确对象。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -772,9 +920,9 @@
         "text": "任务：先听音频，再判断说话人对调查结果的态度。",
         "task_prompt": "任务：先听音频，再判断说话人对调查结果的态度。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后判断调查结果态度",
+          "focus": "态度词、程度词与方法论依据",
+          "success_criteria": "给出态度并准确说明怀疑对象"
         },
         "audio_first": true,
         "image_url": null,
@@ -786,19 +934,19 @@
         "explanation": "语境揭示：I'm somewhat skeptical about the results of that survey. The sample size was really quite small, and I'm not sure it's representative."
       },
       "analysis_content": {
-        "text": "① 识别信号：\"somewhat skeptical\" + \"not sure\" 均是消极质疑信号。② 核心规律：CET4 考查 critical/doubtful attitude，关键词：skeptical / unconvinced / questionable / doubtful。③ 验证与迁移：说话人给出具体原因（sample size）是典型 CET4 态度+依据考查模式。",
+        "text": "① 识别信号：somewhat skeptical 直接给出怀疑但非全盘否定；not sure 延续不确定性，sample size small 和 representative 给出具体理由。\n\n② 核心规律：态度标签需要与依据绑定。对调查结果的怀疑来自样本规模和代表性，而不是说话人普遍反对调查方法。\n\n③ 验证：两个评价信号和两个方法论理由方向一致，支持“对结果可信度持保留和怀疑”的结论。",
         "tips": [
-          "skeptical/doubtful/unconvinced 是消极态度三兄弟，立即标记。",
-          "原因从句（because/as）后跟的是态度的支撑依据，要一并理解。"
+          "程度词 somewhat 表明怀疑强度有限。",
+          "原因句决定怀疑针对的是结果可信度。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 4200,
       "audio": {
@@ -830,16 +978,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后判断调查结果态度",
+          "focus": "态度词、程度词与方法论依据",
+          "success_criteria": "给出态度并准确说明怀疑对象"
         }
       },
       "analysis": {
-        "text": "① 识别信号：\"somewhat skeptical\" + \"not sure\" 均是消极质疑信号。② 核心规律：CET4 考查 critical/doubtful attitude，关键词：skeptical / unconvinced / questionable / doubtful。③ 验证与迁移：说话人给出具体原因（sample size）是典型 CET4 态度+依据考查模式。",
+        "text": "① 识别信号：somewhat skeptical 直接给出怀疑但非全盘否定；not sure 延续不确定性，sample size small 和 representative 给出具体理由。\n\n② 核心规律：态度标签需要与依据绑定。对调查结果的怀疑来自样本规模和代表性，而不是说话人普遍反对调查方法。\n\n③ 验证：两个评价信号和两个方法论理由方向一致，支持“对结果可信度持保留和怀疑”的结论。",
         "tips": [
-          "skeptical/doubtful/unconvinced 是消极态度三兄弟，立即标记。",
-          "原因从句（because/as）后跟的是态度的支撑依据，要一并理解。"
+          "程度词 somewhat 表明怀疑强度有限。",
+          "原因句决定怀疑针对的是结果可信度。"
         ]
       },
       "auto_scoring": false,
@@ -849,11 +997,33 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "把怀疑态度绑定到样本代表性依据",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练态度、程度和原因联合判断。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -871,9 +1041,9 @@
         "text": "任务：先听音频，再判断说话人的整体态度。",
         "task_prompt": "任务：先听音频，再判断说话人的整体态度。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后判断团队表现态度",
+          "focus": "直接赞许、预期差与时间信息",
+          "success_criteria": "同时说明正向评价和惊喜来源"
         },
         "audio_first": true,
         "image_url": null,
@@ -885,19 +1055,19 @@
         "explanation": "语境揭示：I have to say, I'm pretty impressed with how quickly the team turned things around. No one expected that kind of turnaround in just two weeks."
       },
       "analysis_content": {
-        "text": "① 识别信号：\"pretty impressed\" 为正向情感词；\"No one expected\" 强化出乎预料的惊喜程度。② 核心规律：CET4 中说话人对他人表现表达态度时，impressed/surprised/proud 类词是直接信号。③ 验证与迁移：\"Turned things around\" = 改变局面，答案应选 positive/admiring 态度。",
+        "text": "① 识别信号：pretty impressed 是直接赞许，No one expected 与 in just two weeks 突出成果超出预期且速度很快。\n\n② 核心规律：态度强度不仅来自情感词，也来自说话人用来解释惊喜的对比信息。turn things around 表示扭转局面，不是简单完成任务。\n\n③ 验证：说话人对团队改善速度和结果都作正面评价，因此整体态度是赞赏并带惊喜。",
         "tips": [
-          "impressed / surprised / delighted = 正向惊喜态度三联词。",
-          "No one expected 强调程度，不是说话人在批评，勿误选负向。"
+          "impressed 定方向，超预期信息定强度。",
+          "turn things around 要按“扭转局面”整体理解。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "audio": {
         "url": "ai_tts/cet4/0041/004109.mp3",
@@ -928,16 +1098,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后判断团队表现态度",
+          "focus": "直接赞许、预期差与时间信息",
+          "success_criteria": "同时说明正向评价和惊喜来源"
         }
       },
       "analysis": {
-        "text": "① 识别信号：\"pretty impressed\" 为正向情感词；\"No one expected\" 强化出乎预料的惊喜程度。② 核心规律：CET4 中说话人对他人表现表达态度时，impressed/surprised/proud 类词是直接信号。③ 验证与迁移：\"Turned things around\" = 改变局面，答案应选 positive/admiring 态度。",
+        "text": "① 识别信号：pretty impressed 是直接赞许，No one expected 与 in just two weeks 突出成果超出预期且速度很快。\n\n② 核心规律：态度强度不仅来自情感词，也来自说话人用来解释惊喜的对比信息。turn things around 表示扭转局面，不是简单完成任务。\n\n③ 验证：说话人对团队改善速度和结果都作正面评价，因此整体态度是赞赏并带惊喜。",
         "tips": [
-          "impressed / surprised / delighted = 正向惊喜态度三联词。",
-          "No one expected 强调程度，不是说话人在批评，勿误选负向。"
+          "impressed 定方向，超预期信息定强度。",
+          "turn things around 要按“扭转局面”整体理解。"
         ]
       },
       "auto_scoring": false,
@@ -947,11 +1117,35 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "利用超预期与时间信息判断赞赏强度",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练由解释信息校准情绪强度。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -969,9 +1163,9 @@
         "text": "任务：先听音频，再判断说话人对当前讨论的态度。",
         "task_prompt": "任务：先听音频，再判断说话人对当前讨论的态度。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：判断对讨论过程的态度",
+          "focus": "直接立场提示、耗时评价与建议",
+          "success_criteria": "选项同时匹配情绪和评价对象"
         },
         "audio_first": true,
         "image_url": null,
@@ -979,23 +1173,23 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：说话人认为在该问题上耗费过多时间，持不耐烦/批评态度。",
-        "explanation": "语境揭示：To be frank, I think we're wasting a lot of time on this issue. We should have moved on ages ago."
+        "text": "答案：C。\n\nwasting a lot of time 批评讨论效率，should have moved on ages ago 表明说话人认为早该结束，因此态度是不耐烦并带批评。",
+        "explanation": "态度选项应同时覆盖情绪和评价对象，不能只抓 to be frank 这一提示语。"
       },
       "analysis_content": {
-        "text": "① 识别信号：\"to be frank\" 是态度表达的前置信号；\"wasting time\" + \"moved on ages ago\" 明显负向。② 核心规律：To be frank/honest 开头 = 说话人将发表直接态度，后文是真实立场。③ 验证与迁移：答案方向：impatient / critical / frustrated。",
+        "text": "① 识别信号：To be frank 预告直接立场，wasting a lot of time 给出负面评价，should have moved on ages ago 表达对延误的不耐烦。\n\n② 核心规律：态度题要区分对议题本身和对讨论过程的评价。这里说话人批评的是继续耗时，而不是支持延长讨论。\n\n③ 验证：三处信号共同排除支持、冷漠和热情，只有“不耐烦并批评拖延”同时匹配情绪与对象。",
         "tips": [
-          "To be frank/honest 是态度问答的超强信号词，前置出现必考。",
-          "\"Should have done sth\" = 批评当前行为或决策的隐含否定。"
+          "提示语后紧跟的句子通常是真实立场。",
+          "答案要包含态度对象：这里是讨论拖延。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "options": [
         {
@@ -1048,16 +1242,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：判断对讨论过程的态度",
+          "focus": "直接立场提示、耗时评价与建议",
+          "success_criteria": "选项同时匹配情绪和评价对象"
         }
       },
       "analysis": {
-        "text": "① 识别信号：\"to be frank\" 是态度表达的前置信号；\"wasting time\" + \"moved on ages ago\" 明显负向。② 核心规律：To be frank/honest 开头 = 说话人将发表直接态度，后文是真实立场。③ 验证与迁移：答案方向：impatient / critical / frustrated。",
+        "text": "① 识别信号：To be frank 预告直接立场，wasting a lot of time 给出负面评价，should have moved on ages ago 表达对延误的不耐烦。\n\n② 核心规律：态度题要区分对议题本身和对讨论过程的评价。这里说话人批评的是继续耗时，而不是支持延长讨论。\n\n③ 验证：三处信号共同排除支持、冷漠和热情，只有“不耐烦并批评拖延”同时匹配情绪与对象。",
         "tips": [
-          "To be frank/honest 是态度问答的超强信号词，前置出现必考。",
-          "\"Should have done sth\" = 批评当前行为或决策的隐含否定。"
+          "提示语后紧跟的句子通常是真实立场。",
+          "答案要包含态度对象：这里是讨论拖延。"
         ]
       },
       "auto_scoring": true,
@@ -1067,7 +1261,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -1075,6 +1269,30 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别针对讨论拖延的不耐烦与批评",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移同时核对态度和评价对象。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1089,12 +1307,12 @@
       "card_box_name": "判断说话人观点态度",
       "card_group_name": "深层理解",
       "front_content": {
-        "text": "任务：先听音频，再判断说话人对 she 的态度表达。",
-        "task_prompt": "任务：先听音频，再判断说话人对 she 的态度表达。",
+        "text": "任务：先听音频，分别判断 she 当前的态度，以及说话人对此的反应。",
+        "task_prompt": "任务：先听音频，分别判断 she 当前的态度，以及说话人对此的反应。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后区分两层态度主体",
+          "focus": "被描述者当前态度与说话人反应",
+          "success_criteria": "两个主体及其态度均判断正确"
         },
         "audio_first": true,
         "image_url": null,
@@ -1102,23 +1320,23 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：说话人认为 she 这次态度中立，与平时强烈立场形成对比。",
-        "explanation": "语境揭示：She seems quite neutral about the whole thing, which is actually surprising given how vocal she usually is about environmental issues."
+        "text": "she 当前态度：中立。\n说话人的反应：意外，因为她平时会对环境议题积极发声。",
+        "explanation": "同一句可同时包含被描述者的态度和说话人的元态度，必须区分两个主体。"
       },
       "analysis_content": {
-        "text": "① 识别信号：\"quite neutral\" + \"surprising\" = 说话人感到意外，隐含对她平时不中立的认知。② 核心规律：CET4 态度对比题型：expected vs actual，\"usually\" 对应过去模式，\"this time\" 对应当前态度。③ 验证与迁移：正确答案反映对比关系：she is unusually neutral this time。",
+        "text": "① 识别信号：she seems quite neutral 描述 she；which is actually surprising 描述说话人的反应；given how vocal she usually is 给出意外原因。\n\n② 核心规律：多主体态度句先给每个评价绑定主体。neutral 不能误记为说话人中立，surprising 也不能误记为 she 感到意外。\n\n③ 验证：当前中立与平时积极发声形成 expected-versus-actual 对比，说话人的元态度正是对这种反差感到惊讶。",
         "tips": [
-          "which is + 情感形容词 结构 = 说话人对对比结果的个人评价。",
-          "usually 出现时，要识别说话人在建立预期，之后的情况会与之对比。"
+          "每个态度词旁标记是谁的态度。",
+          "which/given 引出的信息常解释说话人的反应。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3000,
@@ -1147,22 +1365,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断说话人对 she 的态度表达。",
-        "task_prompt": "任务：先听音频，再判断说话人对 she 的态度表达。",
+        "text": "任务：先听音频，分别判断 she 当前的态度，以及说话人对此的反应。",
+        "task_prompt": "任务：先听音频，分别判断 she 当前的态度，以及说话人对此的反应。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后区分两层态度主体",
+          "focus": "被描述者当前态度与说话人反应",
+          "success_criteria": "两个主体及其态度均判断正确"
         }
       },
       "analysis": {
-        "text": "① 识别信号：\"quite neutral\" + \"surprising\" = 说话人感到意外，隐含对她平时不中立的认知。② 核心规律：CET4 态度对比题型：expected vs actual，\"usually\" 对应过去模式，\"this time\" 对应当前态度。③ 验证与迁移：正确答案反映对比关系：she is unusually neutral this time。",
+        "text": "① 识别信号：she seems quite neutral 描述 she；which is actually surprising 描述说话人的反应；given how vocal she usually is 给出意外原因。\n\n② 核心规律：多主体态度句先给每个评价绑定主体。neutral 不能误记为说话人中立，surprising 也不能误记为 she 感到意外。\n\n③ 验证：当前中立与平时积极发声形成 expected-versus-actual 对比，说话人的元态度正是对这种反差感到惊讶。",
         "tips": [
-          "which is + 情感形容词 结构 = 说话人对对比结果的个人评价。",
-          "usually 出现时，要识别说话人在建立预期，之后的情况会与之对比。"
+          "每个态度词旁标记是谁的态度。",
+          "which/given 引出的信息常解释说话人的反应。"
         ]
       },
       "auto_scoring": false,
@@ -1172,11 +1390,35 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分被描述者态度与说话人元态度",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移多主体态度绑定。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1194,9 +1436,9 @@
         "text": "任务：先听音频，再判断说话人对项目结果的态度。",
         "task_prompt": "任务：先听音频，再判断说话人对项目结果的态度。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后判断项目结果态度",
+          "focus": "直接情感、反差结构与评价对象",
+          "success_criteria": "说明态度方向、强度和原因"
         },
         "audio_first": true,
         "image_url": null,
@@ -1208,19 +1450,19 @@
         "explanation": "语境揭示：Quite frankly, I'm disappointed. We had all the resources we needed, and yet the outcome was nowhere near what we'd hoped for."
       },
       "analysis_content": {
-        "text": "① 识别信号：\"quite frankly, I'm disappointed\" 直接表明负向情绪；\"nowhere near\" 强化差距之大。② 核心规律：disappointed / let down / dissatisfied = 负向结果态度三类词，CET4 极高频考查。③ 验证与迁移：\"had all the resources\" 是反衬，说明失望更为合理，加强负向态度。",
+        "text": "① 识别信号：I'm disappointed 直接表明失望；and yet 标出资源充分与结果不佳的反差；nowhere near 强化未达预期的程度。\n\n② 核心规律：直接情感词定方向，反事实或反差结构解释态度为何更强。已有全部资源却远未达到目标，使失望不仅存在，而且证据充分。\n\n③ 验证：评价对象是项目结果，原因是 outcome 与 hoped-for result 的巨大差距，因此不能把态度误判为对资源不足的抱怨。",
         "tips": [
-          "disappointed / let down = 直接负向情感，锁定消极态度答案。",
-          "anywhere/nowhere near = 程度副词，强化结果与预期的大差距。"
+          "direct emotion 先定方向，yet/nowhere near 再定强度。",
+          "核对态度对象：这里针对结果而非资源。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 4800,
       "audio": {
@@ -1252,16 +1494,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "判断说话人观点态度",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后判断项目结果态度",
+          "focus": "直接情感、反差结构与评价对象",
+          "success_criteria": "说明态度方向、强度和原因"
         }
       },
       "analysis": {
-        "text": "① 识别信号：\"quite frankly, I'm disappointed\" 直接表明负向情绪；\"nowhere near\" 强化差距之大。② 核心规律：disappointed / let down / dissatisfied = 负向结果态度三类词，CET4 极高频考查。③ 验证与迁移：\"had all the resources\" 是反衬，说明失望更为合理，加强负向态度。",
+        "text": "① 识别信号：I'm disappointed 直接表明失望；and yet 标出资源充分与结果不佳的反差；nowhere near 强化未达预期的程度。\n\n② 核心规律：直接情感词定方向，反事实或反差结构解释态度为何更强。已有全部资源却远未达到目标，使失望不仅存在，而且证据充分。\n\n③ 验证：评价对象是项目结果，原因是 outcome 与 hoped-for result 的巨大差距，因此不能把态度误判为对资源不足的抱怨。",
         "tips": [
-          "disappointed / let down = 直接负向情感，锁定消极态度答案。",
-          "anywhere/nowhere near = 程度副词，强化结果与预期的大差距。"
+          "direct emotion 先定方向，yet/nowhere near 再定强度。",
+          "核对态度对象：这里针对结果而非资源。"
         ]
       },
       "auto_scoring": false,
@@ -1271,11 +1513,35 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用反差结构解释失望的对象和强度",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移直接情感与反差证据联合判断。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],

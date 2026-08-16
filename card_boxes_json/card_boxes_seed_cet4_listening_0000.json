@@ -152,7 +152,7 @@
         "correct_option": "A"
       },
       "quality_metadata": {
-        "main_training_goal": "根据选项关键词组合预测听力主话题",
+        "main_training_goal": "根据选项中的对象与角度预测主话题",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -171,9 +171,15 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-      "exam_value": "先从选项中抓住对象和比较角度，再播放音频验证话题预测。",
+        "exam_value": "先从选项中抓住对象和比较角度，再播放音频验证话题预测。",
         "box_progression_role": "recognition",
         "review_status": "draft"
+      },
+      "extra_fields": {
+        "focus_expression": "compare X with Y in terms of Z",
+        "topic_signal": "comparison_objects_plus_dimensions",
+        "key_word_cn": "对象与比较维度联合预测",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     },
     {
@@ -320,14 +326,16 @@
         "correct_option": "C"
       },
       "quality_metadata": {
-        "main_training_goal": "听开头句识别主话题关系",
+        "main_training_goal": "从 focuses on how 识别主话题关系",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "pass",
-          "secondary": []
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
         },
         "card_prototype": "context_input",
         "material": {
@@ -337,9 +345,15 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-      "exam_value": "把开头句的中心关系和背景词分开，别因听到一个熟词就误判。",
-        "box_progression_role": "application",
+        "exam_value": "把开头句的中心关系和背景词分开，别因听到一个熟词就误判。",
+        "box_progression_role": "recognition",
         "review_status": "draft"
+      },
+      "extra_fields": {
+        "focus_expression": "focuses on how X influences Y",
+        "topic_signal": "explicit_focus_relation",
+        "key_word_cn": "显式主话题关系",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     },
     {
@@ -490,15 +504,15 @@
         "correct_option": "D"
       },
       "quality_metadata": {
-        "main_training_goal": "根据讲座开头预测后文展开方向",
+        "main_training_goal": "用介绍结构和评价动词预测讲座展开",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "pass",
+          "primary": "foundation",
           "secondary": [
-            "high_score"
+            "pass"
           ]
         },
         "card_prototype": "integrated_micro_drill",
@@ -509,9 +523,15 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-      "exam_value": "合并讲座开头的结构词和评价词，提前预测后文会怎样展开。",
-        "box_progression_role": "transfer",
+        "exam_value": "合并讲座开头的结构词和评价词，提前预测后文会怎样展开。",
+        "box_progression_role": "recognition",
         "review_status": "draft"
+      },
+      "extra_fields": {
+        "focus_expression": "introduces models and evaluates feasibility",
+        "topic_signal": "structure_plus_evaluation",
+        "key_word_cn": "展开结构与评价维度",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     },
     {
@@ -625,10 +645,12 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "synthetic_source",
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
+      "contract_migration": {
+        "version": "softbook-card-contract-2026-07-31-elimination-ids"
+      },
       "quality_metadata": {
         "main_training_goal": "从 whether 结构中预测听力中心议题",
         "weak_point_tags": [
@@ -649,15 +671,18 @@
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-      "exam_value": "把听力开头的对象与待判断问题合起来，别只凭一个熟词猜主旨。",
+        "exam_value": "把听力开头的对象与待判断问题合起来，别只凭一个熟词猜主旨。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       },
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-07-31-elimination-ids"
-      },
       "answer_key": {
         "correct_option": "A"
+      },
+      "extra_fields": {
+        "focus_expression": "centers on whether",
+        "topic_signal": "explicit_debate_question",
+        "key_word_cn": "中心疑问命题",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     },
     {
@@ -682,7 +707,29 @@
         "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0000/000005.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "options": [
+          {
+            "key": "A",
+            "text": "地方博物馆如何压缩文物保存预算",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "地方博物馆如何用互动展览吸引年轻访客",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "年轻访客如何预约博物馆停车位",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "博物馆如何把全部藏品转为线上档案",
+            "is_correct": false
+          }
+        ]
       },
       "back_content": {
         "text": "答案：C\n\n解析：主话题是当地博物馆如何用互动展览吸引年轻访客。",
@@ -732,30 +779,6 @@
         "note": "constructed_listening_topic_prediction_context_not_true_exam",
         "provenance_status": "synthetic"
       },
-      "quality_metadata": {
-        "main_training_goal": "用对象、受众和方式预测听力主话题",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "foundation",
-          "secondary": [
-            "pass"
-          ]
-        },
-        "card_prototype": "solving_action",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-      "exam_value": "别凭单个场景词猜主旨，要用完整的话题角色关系筛选选项。",
-        "box_progression_role": "recognition",
-        "review_status": "draft"
-      },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -779,7 +802,29 @@
           "action": "预测并确认主话题",
           "focus": "合并对象、受众与方式",
           "success_criteria": "能排除只命中一个背景词的选项"
-        }
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "地方博物馆如何压缩文物保存预算",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "地方博物馆如何用互动展览吸引年轻访客",
+            "is_correct": true
+          },
+          {
+            "key": "C",
+            "text": "年轻访客如何预约博物馆停车位",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "博物馆如何把全部藏品转为线上档案",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
         "text": "正确答案是 C。examines how 预告后文会解释一种方法：local museums 是实施者，younger visitors 是目标人群，interactive exhibits 是吸引方式。A 和 D 都保留了 museum 场景，却把受众或方式换掉；B 只保留 younger visitors，丢失博物馆对象。做主旨预测时，三个线索能在同一选项里闭合，才比单个熟词更可靠。",
@@ -795,8 +840,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "synthetic_source",
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -804,6 +848,36 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用对象、受众和方式预测听力主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "别凭单个场景词猜主旨，要用完整的话题角色关系筛选选项。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "extra_fields": {
+        "focus_expression": "examines how X attracts Y through Z",
+        "topic_signal": "actor_goal_method",
+        "key_word_cn": "对象目标方法",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     },
     {
@@ -878,28 +952,6 @@
         "note": "constructed_listening_topic_prediction_context_not_true_exam",
         "provenance_status": "synthetic"
       },
-      "quality_metadata": {
-        "main_training_goal": "从 impact of X on Y 预测影响类主话题",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": []
-        },
-        "card_prototype": "context_input",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-      "exam_value": "把措施和结果成对识别，别把行业背景误当作主旨。",
-        "box_progression_role": "application",
-        "review_status": "draft"
-      },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -939,15 +991,42 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "synthetic_source",
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-07-31-elimination-ids"
       },
+      "quality_metadata": {
+        "main_training_goal": "从 impact of X on Y 预测影响类主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "把措施和结果成对识别，别把行业背景误当作主旨。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
       "answer_key": {
         "correct_option": "D"
+      },
+      "extra_fields": {
+        "focus_expression": "impact of X on Y",
+        "topic_signal": "impact_relation",
+        "key_word_cn": "影响关系主话题",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     },
     {
@@ -1024,28 +1103,6 @@
         "note": "constructed_listening_topic_prediction_context_not_true_exam",
         "provenance_status": "synthetic"
       },
-      "quality_metadata": {
-        "main_training_goal": "用 how 与 by 结构预测策略类主话题",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": []
-        },
-        "card_prototype": "context_input",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-      "exam_value": "从听力开头抓住行动者、目标人群和方法，快速形成三段式预测。",
-        "box_progression_role": "application",
-        "review_status": "draft"
-      },
       "time_window_ms": [
         3700,
         5200
@@ -1089,15 +1146,42 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "synthetic_source",
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-07-31-elimination-ids"
       },
+      "quality_metadata": {
+        "main_training_goal": "用 how 与 by 结构预测策略类主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "从听力开头抓住行动者、目标人群和方法，快速形成三段式预测。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
       "answer_key": {
         "correct_option": "B"
+      },
+      "extra_fields": {
+        "focus_expression": "explains how X attracts Y by Z",
+        "topic_signal": "actor_method_goal",
+        "key_word_cn": "行动者方法目标",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     },
     {
@@ -1174,30 +1258,6 @@
         "note": "constructed_listening_topic_prediction_context_not_true_exam",
         "provenance_status": "synthetic"
       },
-      "quality_metadata": {
-        "main_training_goal": "识别话题切换并预测后文核心问题",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": [
-            "high_score"
-          ]
-        },
-        "card_prototype": "integrated_micro_drill",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-      "exam_value": "听出主旨何时从背景比较切换到研究问题，别被开头熟词带偏。",
-        "box_progression_role": "transfer",
-        "review_status": "draft"
-      },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -1237,15 +1297,44 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "synthetic_source",
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-07-31-elimination-ids"
       },
+      "quality_metadata": {
+        "main_training_goal": "识别话题切换并预测后文核心问题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "听出主旨何时从背景比较切换到研究问题，别被开头熟词带偏。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
       "answer_key": {
         "correct_option": "D"
+      },
+      "extra_fields": {
+        "focus_expression": "compares A and B, then focuses on why",
+        "topic_signal": "background_to_focus_shift",
+        "key_word_cn": "背景比较转核心问题",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     },
     {
@@ -1322,30 +1411,6 @@
         "note": "constructed_listening_topic_prediction_context_not_true_exam",
         "provenance_status": "synthetic"
       },
-      "quality_metadata": {
-        "main_training_goal": "根据强调与条件信号预测结论型主话题",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": [
-            "high_score"
-          ]
-        },
-        "card_prototype": "integrated_micro_drill",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-      "exam_value": "从活动背景中提取真正的变化结论，并锁定它的触发条件。",
-        "box_progression_role": "transfer",
-        "review_status": "draft"
-      },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -1385,15 +1450,44 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "synthetic_source",
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-07-31-elimination-ids"
       },
+      "quality_metadata": {
+        "main_training_goal": "根据强调与条件信号预测结论型主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "从活动背景中提取真正的变化结论，并锁定它的触发条件。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
       "answer_key": {
         "correct_option": "A"
+      },
+      "extra_fields": {
+        "focus_expression": "emphasizes that ... only after",
+        "topic_signal": "emphasis_plus_condition",
+        "key_word_cn": "强调结论与时序条件",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     },
     {
@@ -1470,28 +1564,6 @@
         "note": "constructed_listening_topic_prediction_context_not_true_exam",
         "provenance_status": "synthetic"
       },
-      "quality_metadata": {
-        "main_training_goal": "根据转折识别政策效果类主话题",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "pass",
-          "secondary": []
-        },
-        "card_prototype": "context_input",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-      "exam_value": "听出问题陈述只是引入，把注意力转向政策带来的具体效果。",
-        "box_progression_role": "application",
-        "review_status": "draft"
-      },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -1531,8 +1603,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "synthetic_source",
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -1540,6 +1611,34 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据转折识别政策效果类主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "听出问题陈述只是引入，把注意力转向政策带来的具体效果。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "extra_fields": {
+        "focus_expression": "starts with ..., but the key point is ...",
+        "topic_signal": "explicit_contrast_focus",
+        "key_word_cn": "开场背景与明确重点",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     },
     {
@@ -1616,30 +1715,6 @@
         "note": "constructed_listening_topic_prediction_context_not_true_exam",
         "provenance_status": "synthetic"
       },
-      "quality_metadata": {
-        "main_training_goal": "从 central concern 结构预测解释型主话题",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "high_score",
-          "secondary": [
-            "pass"
-          ]
-        },
-        "card_prototype": "integrated_micro_drill",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-      "exam_value": "略过趋势背景，抓住研究人群、行为变化与条件组成的中心问题。",
-        "box_progression_role": "transfer",
-        "review_status": "draft"
-      },
       "time_window_ms": [
         4000,
         5600
@@ -1683,15 +1758,44 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "synthetic_source",
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-07-31-elimination-ids"
       },
+      "quality_metadata": {
+        "main_training_goal": "从 central concern 结构预测解释型主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "略过趋势背景，抓住研究人群、行为变化与条件组成的中心问题。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
       "answer_key": {
         "correct_option": "C"
+      },
+      "extra_fields": {
+        "focus_expression": "mentions X, yet its central concern is Y",
+        "topic_signal": "mention_to_central_concern",
+        "key_word_cn": "提及背景转核心关切",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     },
     {
@@ -1768,30 +1872,6 @@
         "note": "constructed_listening_topic_prediction_context_not_true_exam",
         "provenance_status": "synthetic"
       },
-      "quality_metadata": {
-        "main_training_goal": "根据总结与最高程度限定预测结论型主话题",
-        "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
-        ],
-        "difficulty": {
-          "primary": "high_score",
-          "secondary": [
-            "pass"
-          ]
-        },
-        "card_prototype": "integrated_micro_drill",
-        "material": {
-          "text_source_type": "simulation",
-          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
-          "audio_generation_method": "TTS_AI_generated",
-          "tts_text_reviewed": true,
-          "tts_audio_reviewed": false
-        },
-      "exam_value": "从多因素列举中抓住最终结论和比较强度，提前预测后文证据重点。",
-        "box_progression_role": "transfer",
-        "review_status": "draft"
-      },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -1831,15 +1911,44 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "synthetic_source",
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-07-31-elimination-ids"
       },
+      "quality_metadata": {
+        "main_training_goal": "根据总结与最高程度限定预测结论型主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "从多因素列举中抓住最终结论和比较强度，提前预测后文证据重点。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
       "answer_key": {
         "correct_option": "D"
+      },
+      "extra_fields": {
+        "focus_expression": "reviews factors, then concludes that X changed Y the most",
+        "topic_signal": "review_to_ranked_conclusion",
+        "key_word_cn": "回顾因素转最高结论",
+        "source_origin": "constructed_listening_topic_prediction_context"
       }
     }
   ],

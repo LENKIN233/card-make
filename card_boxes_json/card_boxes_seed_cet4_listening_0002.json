@@ -20,12 +20,12 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "播放音频前先看选项：这句话最可能出现哪组信号词？",
-        "task_prompt": "注意 demand grew quickly 和 delayed expansion 之间可能有转折，再听原因解释。",
+        "text": "先看四组连接词：哪一组能把“看似应当扩张、实际却推迟，并交代理由”串成一句？",
+        "task_prompt": "先选结构，再播放音频核对两个连接位置。",
         "task_schema": {
-          "action": "选择最可能的信号词组合",
-          "focus": "预测让步加原因的双信号结构",
-          "success_criteria": "能解释 although 标出反预期，because 引出真正原因"
+          "action": "根据选项预判双连接结构",
+          "focus": "从两层语义关系反推连接词",
+          "success_criteria": "能说明所选组合如何分别连接两层关系"
         },
         "audio_first": false,
         "image_url": null,
@@ -34,14 +34,14 @@
         "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "答案：A\n\n解析：Although ... because ... 是这段音频中最关键的信号词判断。",
-        "explanation": "正确答案是 A。Although 先制造反预期：需求增长很快，按理应该扩张；but 这里实际动作是 delayed expansion。because 接着给出延迟原因：funding approval was not finalized。听前预测信号词时，要先看句子里可能存在的逻辑冲突，再预判会不会出现 although / however / because 这类结构词。B 是举例和补充，C 是排序，D 是时间流程，都不能解释“需求增长却推迟扩张”的关系。"
+        "text": "答案：A\n\n解析：先建立反预期关系，再说明推迟原因。",
+        "explanation": "正确答案是 A。Although 引出被让步承认的背景事实 demand grew quickly，并预告主句将偏离由此产生的“应当扩张”预期；delayed expansion 承担反预期结果。because 再说明推迟是因为资金审批尚未完成。原句无需也没有 but。B 是举例后补充，C 是顺序，D 是时间推进，都无法同时承载“反预期 + 原因”。听前先按逻辑功能给选项分组，播放后只需验证两个连接位置是否与预测一致。"
       },
       "analysis_content": {
-        "text": "正确答案是 A。Although 先制造反预期：需求增长很快，按理应该扩张；but 这里实际动作是 delayed expansion。because 接着给出延迟原因：funding approval was not finalized。听前预测信号词时，要先看句子里可能存在的逻辑冲突，再预判会不会出现 although / however / because 这类结构词。B 是举例和补充，C 是排序，D 是时间流程，都不能解释“需求增长却推迟扩张”的关系。",
+        "text": "正确答案是 A。Although 引出被让步承认的背景事实 demand grew quickly，并预告主句将偏离由此产生的“应当扩张”预期；delayed expansion 承担反预期结果。because 再说明推迟是因为资金审批尚未完成。原句无需也没有 but。B 是举例后补充，C 是顺序，D 是时间推进，都无法同时承载“反预期 + 原因”。听前先按逻辑功能给选项分组，播放后只需验证两个连接位置是否与预测一致。",
         "tips": [
-          "Although 常提示“前面不等于结论”。",
-          "because 后面通常是题目最容易追问的原因。"
+          "看到两层关系时，不要只预测一个连接词。",
+          "although 从句承认背景，主句给出反预期结果，不要求再出现 but。"
         ]
       },
       "options": [
@@ -74,12 +74,12 @@
         "path": "ai_tts/cet4/0002/000201.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -95,15 +95,15 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "播放音频前先看选项：这句话最可能出现哪组信号词？",
-        "task_prompt": "注意 demand grew quickly 和 delayed expansion 之间可能有转折，再听原因解释。",
+        "text": "先看四组连接词：哪一组能把“看似应当扩张、实际却推迟，并交代理由”串成一句？",
+        "task_prompt": "先选结构，再播放音频核对两个连接位置。",
         "audio_first": false,
         "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "选择最可能的信号词组合",
-          "focus": "预测让步加原因的双信号结构",
-          "success_criteria": "能解释 although 标出反预期，because 引出真正原因"
+          "action": "根据选项预判双连接结构",
+          "focus": "从两层语义关系反推连接词",
+          "success_criteria": "能说明所选组合如何分别连接两层关系"
         },
         "options": [
           {
@@ -129,10 +129,10 @@
         ]
       },
       "analysis": {
-        "text": "正确答案是 A。Although 先制造反预期：需求增长很快，按理应该扩张；but 这里实际动作是 delayed expansion。because 接着给出延迟原因：funding approval was not finalized。听前预测信号词时，要先看句子里可能存在的逻辑冲突，再预判会不会出现 although / however / because 这类结构词。B 是举例和补充，C 是排序，D 是时间流程，都不能解释“需求增长却推迟扩张”的关系。",
+        "text": "正确答案是 A。Although 引出被让步承认的背景事实 demand grew quickly，并预告主句将偏离由此产生的“应当扩张”预期；delayed expansion 承担反预期结果。because 再说明推迟是因为资金审批尚未完成。原句无需也没有 but。B 是举例后补充，C 是顺序，D 是时间推进，都无法同时承载“反预期 + 原因”。听前先按逻辑功能给选项分组，播放后只需验证两个连接位置是否与预测一致。",
         "tips": [
-          "Although 常提示“前面不等于结论”。",
-          "because 后面通常是题目最容易追问的原因。"
+          "看到两层关系时，不要只预测一个连接词。",
+          "although 从句承认背景，主句给出反预期结果，不要求再出现 but。"
         ]
       },
       "auto_scoring": true,
@@ -142,7 +142,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -152,7 +152,7 @@
         "correct_option": "A"
       },
       "quality_metadata": {
-        "main_training_goal": "预测让步加原因信号词组合",
+        "main_training_goal": "根据语义冲突与原因层级预判双连接结构",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -166,12 +166,12 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
           "audio_generation_method": "TTS_AI_generated",
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户在听前预判反预期和原因结构，降低听到长句时的处理负担。",
+        "exam_value": "训练把选项中的连接词按逻辑功能分组，减少长句播放后的临时判断负担。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       }
@@ -188,28 +188,28 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "听到前半句是 positive，后半句最需要抓哪个信号词？",
-        "task_prompt": "先预测评价方向会不会反转，再播放音频验证。",
+        "text": "先看四个信号词：一句话先给正面评价，随后补出严重安全担忧，最可能在哪个词上换向？",
+        "task_prompt": "先选择预期的换向词，再播放音频验证；不要只凭前半句下结论。",
         "task_schema": {
-          "action": "选择需要重点听的信号词",
-          "focus": "识别正向反馈到安全担忧的转折",
-          "success_criteria": "能说明 however 后的信息权重更高"
+          "action": "根据前后评价差异预判信号词",
+          "focus": "定位评价方向发生变化的边界",
+          "success_criteria": "能用前后命题关系排除结果、举例和并行词"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0002/000202.mp3",
         "highlight_ranges": [],
-        "display_mode": "audio_then_options"
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "答案：A\n\n解析：however 是这段音频中最关键的信号词判断。",
-        "explanation": "正确答案是 A。positive 让人以为整体评价不错，但 however 之后出现 serious security concerns，信息重心明显反转。CET 听力里，however / but / yet 后面的内容常常比前面的铺垫更接近答案。therefore 是结果，for instance 是举例，meanwhile 是并列时间，都不能承接 positive 到 security concerns 的冲突。"
+        "text": "答案：A\n\n解析：正面初评与严重担忧之间需要转折信号。",
+        "explanation": "正确答案是 A。The initial feedback seemed positive 建立正向预期，however 随后引出 serious security concerns，使本句的评价方向发生变化。这里应更新对整体反馈的判断，但不能把“转折后必然就是答案”当成普遍规则；仍要结合题目和后续证据。therefore 表结果，for instance 引例子，meanwhile 表同时或并行，均不符合本句关系。"
       },
       "analysis_content": {
-        "text": "正确答案是 A。positive 让人以为整体评价不错，但 however 之后出现 serious security concerns，信息重心明显反转。CET 听力里，however / but / yet 后面的内容常常比前面的铺垫更接近答案。therefore 是结果，for instance 是举例，meanwhile 是并列时间，都不能承接 positive 到 security concerns 的冲突。",
+        "text": "正确答案是 A。The initial feedback seemed positive 建立正向预期，however 随后引出 serious security concerns，使本句的评价方向发生变化。这里应更新对整体反馈的判断，但不能把“转折后必然就是答案”当成普遍规则；仍要结合题目和后续证据。therefore 表结果，for instance 引例子，meanwhile 表同时或并行，均不符合本句关系。",
         "tips": [
-          "however 后面常是转折后的重点。",
-          "前半句很正面时，更要警惕后面的负向转折。"
+          "先比较选项对应的逻辑关系，再预测具体词。",
+          "转折词提醒你更新判断，不等于自动保证后句就是答案。"
         ]
       },
       "options": [
@@ -242,12 +242,12 @@
         "path": "ai_tts/cet4/0002/000202.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -263,15 +263,15 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "听到前半句是 positive，后半句最需要抓哪个信号词？",
-        "task_prompt": "先预测评价方向会不会反转，再播放音频验证。",
-        "audio_first": true,
-        "display_mode": "audio_then_options",
+        "text": "先看四个信号词：一句话先给正面评价，随后补出严重安全担忧，最可能在哪个词上换向？",
+        "task_prompt": "先选择预期的换向词，再播放音频验证；不要只凭前半句下结论。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "选择需要重点听的信号词",
-          "focus": "识别正向反馈到安全担忧的转折",
-          "success_criteria": "能说明 however 后的信息权重更高"
+          "action": "根据前后评价差异预判信号词",
+          "focus": "定位评价方向发生变化的边界",
+          "success_criteria": "能用前后命题关系排除结果、举例和并行词"
         },
         "options": [
           {
@@ -297,10 +297,10 @@
         ]
       },
       "analysis": {
-        "text": "正确答案是 A。positive 让人以为整体评价不错，但 however 之后出现 serious security concerns，信息重心明显反转。CET 听力里，however / but / yet 后面的内容常常比前面的铺垫更接近答案。therefore 是结果，for instance 是举例，meanwhile 是并列时间，都不能承接 positive 到 security concerns 的冲突。",
+        "text": "正确答案是 A。The initial feedback seemed positive 建立正向预期，however 随后引出 serious security concerns，使本句的评价方向发生变化。这里应更新对整体反馈的判断，但不能把“转折后必然就是答案”当成普遍规则；仍要结合题目和后续证据。therefore 表结果，for instance 引例子，meanwhile 表同时或并行，均不符合本句关系。",
         "tips": [
-          "however 后面常是转折后的重点。",
-          "前半句很正面时，更要警惕后面的负向转折。"
+          "先比较选项对应的逻辑关系，再预测具体词。",
+          "转折词提醒你更新判断，不等于自动保证后句就是答案。"
         ]
       },
       "auto_scoring": true,
@@ -310,7 +310,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -320,25 +320,27 @@
         "correct_option": "A"
       },
       "quality_metadata": {
-        "main_training_goal": "识别转折信号词 however",
+        "main_training_goal": "根据评价方向变化预判转折信号词",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "pass",
-          "secondary": []
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
         },
-        "card_prototype": "context_input",
+        "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
           "audio_generation_method": "TTS_AI_generated",
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "训练用户把 however 后的信息当成听力判断的高权重点。",
-        "box_progression_role": "application",
+        "exam_value": "训练在播放前识别评价反转风险，并在听到边界词后及时更新判断。",
+        "box_progression_role": "recognition",
         "review_status": "draft"
       }
     },
@@ -354,28 +356,28 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "听到 transport 被 disrupted，预测句子开头最可能是什么逻辑信号。",
-        "task_prompt": "判断后面的 postponed the field survey 是结果还是补充说明。",
+        "text": "先看四个句首词：已知“交通受天气影响”解释“调查推迟两天”，哪一个最适合引出前一层信息？",
+        "task_prompt": "先按原因、补充、条件、对比分组选项，再播放验证。",
         "task_schema": {
-          "action": "选择开头信号词",
-          "focus": "识别原因到结果的预测关系",
-          "success_criteria": "能说明 weather disrupted transport 是 postponed 的原因"
+          "action": "根据选项预判句首连接词",
+          "focus": "区分原因关系与时间含义",
+          "success_criteria": "能依靠两件事的因果关系判断词义"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0002/000203.mp3",
         "highlight_ranges": [],
-        "display_mode": "audio_then_options"
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "答案：A\n\n解析：Since 是这段音频中最关键的信号词判断。",
-        "explanation": "正确答案是 A。Since 在这里不是“自从”，而是原因信号，相当于 because：天气影响交通，所以组织者把实地调查推迟两天。听到 disrupted / delayed / postponed 这类结果词时，可以反向预测前面可能会有 since / because / due to。Besides 是补充，unless 是条件，in contrast 是对比，都不适合连接天气影响和活动推迟。"
+        "text": "答案：A\n\n解析：这里的 Since 引出原因，不表示“自从”。",
+        "explanation": "正确答案是 A。天气影响交通解释了调查为何推迟，所以句首 Since 在这里相当于 because，引出原因。Since 也可以表示时间，不能只凭词形判断；要看前一命题能否回答后一动作的“为什么”。Besides 是补充，Unless 是例外条件，In contrast 是对比，都不能连接这组原因与结果。听前先按功能排除，播放后再验证词形。"
       },
       "analysis_content": {
-        "text": "正确答案是 A。Since 在这里不是“自从”，而是原因信号，相当于 because：天气影响交通，所以组织者把实地调查推迟两天。听到 disrupted / delayed / postponed 这类结果词时，可以反向预测前面可能会有 since / because / due to。Besides 是补充，unless 是条件，in contrast 是对比，都不适合连接天气影响和活动推迟。",
+        "text": "正确答案是 A。天气影响交通解释了调查为何推迟，所以句首 Since 在这里相当于 because，引出原因。Since 也可以表示时间，不能只凭词形判断；要看前一命题能否回答后一动作的“为什么”。Besides 是补充，Unless 是例外条件，In contrast 是对比，都不能连接这组原因与结果。听前先按功能排除，播放后再验证词形。",
         "tips": [
-          "Since 放句首时常可表示原因。",
-          "postponed 这类结果词前后通常要找原因。"
+          "Since 的原因义要由完整命题关系确认。",
+          "先判断“为什么”，再决定是否需要原因信号。"
         ]
       },
       "options": [
@@ -412,12 +414,12 @@
         4600
       ],
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -433,15 +435,15 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "听到 transport 被 disrupted，预测句子开头最可能是什么逻辑信号。",
-        "task_prompt": "判断后面的 postponed the field survey 是结果还是补充说明。",
-        "audio_first": true,
-        "display_mode": "audio_then_options",
+        "text": "先看四个句首词：已知“交通受天气影响”解释“调查推迟两天”，哪一个最适合引出前一层信息？",
+        "task_prompt": "先按原因、补充、条件、对比分组选项，再播放验证。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "选择开头信号词",
-          "focus": "识别原因到结果的预测关系",
-          "success_criteria": "能说明 weather disrupted transport 是 postponed 的原因"
+          "action": "根据选项预判句首连接词",
+          "focus": "区分原因关系与时间含义",
+          "success_criteria": "能依靠两件事的因果关系判断词义"
         },
         "options": [
           {
@@ -467,10 +469,10 @@
         ]
       },
       "analysis": {
-        "text": "正确答案是 A。Since 在这里不是“自从”，而是原因信号，相当于 because：天气影响交通，所以组织者把实地调查推迟两天。听到 disrupted / delayed / postponed 这类结果词时，可以反向预测前面可能会有 since / because / due to。Besides 是补充，unless 是条件，in contrast 是对比，都不适合连接天气影响和活动推迟。",
+        "text": "正确答案是 A。天气影响交通解释了调查为何推迟，所以句首 Since 在这里相当于 because，引出原因。Since 也可以表示时间，不能只凭词形判断；要看前一命题能否回答后一动作的“为什么”。Besides 是补充，Unless 是例外条件，In contrast 是对比，都不能连接这组原因与结果。听前先按功能排除，播放后再验证词形。",
         "tips": [
-          "Since 放句首时常可表示原因。",
-          "postponed 这类结果词前后通常要找原因。"
+          "Since 的原因义要由完整命题关系确认。",
+          "先判断“为什么”，再决定是否需要原因信号。"
         ]
       },
       "auto_scoring": true,
@@ -480,7 +482,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -490,7 +492,7 @@
         "correct_option": "A"
       },
       "quality_metadata": {
-        "main_training_goal": "识别句首原因信号词 since",
+        "main_training_goal": "根据因果顺序预判句首原因信号",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -498,19 +500,19 @@
         "difficulty": {
           "primary": "pass",
           "secondary": [
-            "high_score"
+            "foundation"
           ]
         },
         "card_prototype": "integrated_micro_drill",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy content_pool transcript with unverified provenance; sample only.",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
           "audio_generation_method": "TTS_AI_generated",
           "tts_text_reviewed": true,
           "tts_audio_reviewed": false
         },
-        "exam_value": "帮助用户把原因信号词和结果动作绑定，避免只记 isolated words。",
-        "box_progression_role": "transfer",
+        "exam_value": "训练利用选项语义关系区分 Since 的原因义和时间义。",
+        "box_progression_role": "recognition",
         "review_status": "draft"
       }
     },
@@ -526,27 +528,28 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，完成信号词预测训练。",
-        "task_prompt": "先听音频，再根据选项预测信号词给出判断。",
+        "text": "先在 unless / therefore 中预判：计划默认继续，只在合规风险未解决时例外，哪一个词更合适？",
+        "task_prompt": "先口头作答，再播放核对“默认规则—例外条件”的位置。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "信号词预测",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "预判例外条件信号",
+          "focus": "从默认结果与阻止条件恢复连接词",
+          "success_criteria": "能把例外条件改写成等价的 if ... not 结构"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0002/000204.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "text_first"
       },
       "back_content": {
-        "text": "目标区间：约 4.2 秒\n\n解析：按住覆盖关键结构段，结束后松手。",
-        "explanation": "语境揭示：The plan will proceed unless the legal review identifies unresolved compliance risks."
+        "text": "结论：应预判 unless。\n\n它把合规风险写成阻止计划继续的例外条件。",
+        "explanation": "The plan will proceed unless the legal review identifies unresolved compliance risks 等价于：如果法律审查没有发现尚未解决的合规风险，计划就会继续。unless 引出的不是普通负面补充，而是会阻止默认结果的例外条件。therefore 只能引出由前文理由推出的结果，不能表达这个条件。遇到 unless，先写出默认结果，再把 unless 从句改写为 if ... not，能减少正反关系误判。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在信号词预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先覆盖关键结构段，再在结构结束点松手避免拖尾。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的信号词预测机制。",
+        "text": "The plan will proceed unless the legal review identifies unresolved compliance risks 等价于：如果法律审查没有发现尚未解决的合规风险，计划就会继续。unless 引出的不是普通负面补充，而是会阻止默认结果的例外条件。therefore 只能引出由前文理由推出的结果，不能表达这个条件。遇到 unless，先写出默认结果，再把 unless 从句改写为 if ... not，能减少正反关系误判。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "unless 常可改写为 if ... not，但要保留原句的默认结果。",
+          "先找“什么情况会阻止它”，再判断例外条件词。"
         ]
       },
       "options": null,
@@ -559,12 +562,12 @@
       },
       "target_duration_ms": 4200,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -580,22 +583,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，完成信号词预测训练。",
-        "task_prompt": "先听音频，再根据选项预测信号词给出判断。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先在 unless / therefore 中预判：计划默认继续，只在合规风险未解决时例外，哪一个词更合适？",
+        "task_prompt": "先口头作答，再播放核对“默认规则—例外条件”的位置。",
+        "audio_first": false,
+        "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "信号词预测",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "预判例外条件信号",
+          "focus": "从默认结果与阻止条件恢复连接词",
+          "success_criteria": "能把例外条件改写成等价的 if ... not 结构"
         }
       },
       "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在信号词预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先覆盖关键结构段，再在结构结束点松手避免拖尾。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的信号词预测机制。",
+        "text": "The plan will proceed unless the legal review identifies unresolved compliance risks 等价于：如果法律审查没有发现尚未解决的合规风险，计划就会继续。unless 引出的不是普通负面补充，而是会阻止默认结果的例外条件。therefore 只能引出由前文理由推出的结果，不能表达这个条件。遇到 unless，先写出默认结果，再把 unless 从句改写为 if ... not，能减少正反关系误判。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "unless 常可改写为 if ... not，但要保留原句的默认结果。",
+          "先找“什么情况会阻止它”，再判断例外条件词。"
         ]
       },
       "auto_scoring": false,
@@ -605,11 +608,33 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据默认规则与例外条件预判条件信号",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练从选项关系恢复例外条件，避免把 unless 从句当成普通否定。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -624,48 +649,49 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，完成信号词预测训练。",
-        "task_prompt": "先听音频，再根据选项预测信号词给出判断。",
+        "text": "两项变化都是收益：降低成本、缩短交付时间。先看选项，哪组信号最适合把它们打包？",
+        "task_prompt": "先选择递进结构，再播放音频核对成对信号是否完整。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "信号词预测",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "根据并列收益预判成对信号",
+          "focus": "识别两项同向信息的递进结构",
+          "success_criteria": "能排除让步、条件和举例结构"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0002/000205.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "答案：B\n\n解析：该卡训练目标是信号词预测，应优先使用结构信号完成判断。",
-        "explanation": "语境揭示：Not only did the new process reduce cost, but it also shortened delivery time."
+        "text": "答案：A\n\n解析：两个同向收益由成对递进结构连接。",
+        "explanation": "正确答案是 A。Not only ... but also ... 把 reduce cost 和 shorten delivery time 作为两个同向收益连接起来，第二项是在第一项基础上的追加。B 会建立让步并解释原因，C 表条件及后果，D 先举例再推结果，都不符合“两项收益并列递进”。听前看到选项中有成对结构时，要先检查音频是否应出现两个平行成分，再播放核对。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在信号词预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先排除与结构信号冲突的选项，再比较剩余项覆盖范围。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的信号词预测机制。",
+        "text": "正确答案是 A。Not only ... but also ... 把 reduce cost 和 shorten delivery time 作为两个同向收益连接起来，第二项是在第一项基础上的追加。B 会建立让步并解释原因，C 表条件及后果，D 先举例再推结果，都不符合“两项收益并列递进”。听前看到选项中有成对结构时，要先检查音频是否应出现两个平行成分，再播放核对。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "成对信号要同时检查两端，不能只听到 not only 就作答。",
+          "两个同向收益更适合递进，不是转折。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "关注背景信息，不做结构判断",
-          "is_correct": false
-        },
-        {
-          "key": "B",
-          "text": "优先依据信号词预测完成判断",
+          "text": "Not only ... but also ...",
           "is_correct": true
         },
         {
+          "key": "B",
+          "text": "Although ... because ...",
+          "is_correct": false
+        },
+        {
           "key": "C",
-          "text": "忽略连接关系，只看名词",
+          "text": "Unless ... otherwise ...",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "等待全文结束再随机选择",
+          "text": "For example ... therefore ...",
           "is_correct": false
         }
       ],
@@ -677,12 +703,12 @@
         "path": "ai_tts/cet4/0002/000205.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -698,22 +724,44 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，完成信号词预测训练。",
-        "task_prompt": "先听音频，再根据选项预测信号词给出判断。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "两项变化都是收益：降低成本、缩短交付时间。先看选项，哪组信号最适合把它们打包？",
+        "task_prompt": "先选择递进结构，再播放音频核对成对信号是否完整。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "信号词预测",
-          "success_criteria": "能基于音频线索给出可解释的判断"
-        }
+          "action": "根据并列收益预判成对信号",
+          "focus": "识别两项同向信息的递进结构",
+          "success_criteria": "能排除让步、条件和举例结构"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "Not only ... but also ...",
+            "is_correct": true
+          },
+          {
+            "key": "B",
+            "text": "Although ... because ...",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "Unless ... otherwise ...",
+            "is_correct": false
+          },
+          {
+            "key": "D",
+            "text": "For example ... therefore ...",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在信号词预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先排除与结构信号冲突的选项，再比较剩余项覆盖范围。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的信号词预测机制。",
+        "text": "正确答案是 A。Not only ... but also ... 把 reduce cost 和 shorten delivery time 作为两个同向收益连接起来，第二项是在第一项基础上的追加。B 会建立让步并解释原因，C 表条件及后果，D 先举例再推结果，都不符合“两项收益并列递进”。听前看到选项中有成对结构时，要先检查音频是否应出现两个平行成分，再播放核对。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "成对信号要同时检查两端，不能只听到 not only 就作答。",
+          "两个同向收益更适合递进，不是转折。"
         ]
       },
       "auto_scoring": true,
@@ -723,14 +771,36 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "answer_key": {
-        "correct_option": "B"
+        "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据并列收益预判递进连接结构",
+        "weak_point_tags": [
+          "listening_weak",
+          "grammar_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练从选项里的平行信息提前锁定成对连接结构，并完整核对两端。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -745,27 +815,28 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，完成信号词预测训练。",
-        "task_prompt": "先听音频，再根据选项预测信号词给出判断。",
+        "text": "先在 therefore / meanwhile 中预判：如果这句话是董事会根据前文证据作出的最终取舍，开头更可能出现哪个词？",
+        "task_prompt": "先说出选择及它需要怎样的前文，再播放核对。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "信号词预测",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "预判结论信号",
+          "focus": "识别结果句对前文理由的依赖",
+          "success_criteria": "能说明所选词为何要求前文提供依据"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0002/000206.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "text_first"
       },
       "back_content": {
-        "text": "结论：本题核心是信号词预测。\n\n关键点：优先抓结构信号，再做内容判断。",
-        "explanation": "语境揭示：Therefore, the board decided to prioritize reliability over short-term profit."
+        "text": "结论：应预判 therefore。\n\n这段音频是结论摘句，理由需要从前文寻找。",
+        "explanation": "Therefore 把“优先可靠性而非短期利润”标成由前文证据推出的决定。当前音频只保留结论句，没有提供那些理由；这正说明 therefore 会向前建立篇章依赖，而不是自己充当原因。meanwhile 只提示另一件事同时或并行发生。做听前预测时，若选项一边是理由、一边是最终取舍，就应预期结论信号，并在播放后继续追查它所回指的证据。"
       },
       "analysis_content": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在信号词预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先概括主判断，再回看支持该判断的语义证据。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的信号词预测机制。",
+        "text": "Therefore 把“优先可靠性而非短期利润”标成由前文证据推出的决定。当前音频只保留结论句，没有提供那些理由；这正说明 therefore 会向前建立篇章依赖，而不是自己充当原因。meanwhile 只提示另一件事同时或并行发生。做听前预测时，若选项一边是理由、一边是最终取舍，就应预期结论信号，并在播放后继续追查它所回指的证据。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "therefore 后是推出的结果，理由通常在前文。",
+          "孤立结论句不能替代完整的因果证据。"
         ]
       },
       "options": null,
@@ -777,12 +848,12 @@
         "path": "ai_tts/cet4/0002/000206.mp3"
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -798,22 +869,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，完成信号词预测训练。",
-        "task_prompt": "先听音频，再根据选项预测信号词给出判断。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先在 therefore / meanwhile 中预判：如果这句话是董事会根据前文证据作出的最终取舍，开头更可能出现哪个词？",
+        "task_prompt": "先说出选择及它需要怎样的前文，再播放核对。",
+        "audio_first": false,
+        "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "信号词预测",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+          "action": "预判结论信号",
+          "focus": "识别结果句对前文理由的依赖",
+          "success_criteria": "能说明所选词为何要求前文提供依据"
         }
       },
       "analysis": {
-        "text": "① 识别信号：这张卡的核心不在单个词义，而在信号词预测对应的结构线索。实际听感中可优先捕捉连接词、语气转折或语音触发点，再结合前后语义判断信息重心。\n\n② 核心规律：高频误判是“只听到熟悉词就下结论”，忽略了结构功能。正确流程是：先概括主判断，再回看支持该判断的语义证据。当结构线索与字面内容冲突时，应以结构线索优先，因为出题点通常藏在结构切换后的信息单元，而不是背景铺垫。\n\n③ 验证：先把音频切成“触发点前后”两段，检查结论是否由后段直接支持；再反证其余可能解释是否缺少证据。若替换同类语料仍能复用同一判断流程，说明你掌握的不是这道题答案，而是可迁移的信号词预测机制。",
+        "text": "Therefore 把“优先可靠性而非短期利润”标成由前文证据推出的决定。当前音频只保留结论句，没有提供那些理由；这正说明 therefore 会向前建立篇章依赖，而不是自己充当原因。meanwhile 只提示另一件事同时或并行发生。做听前预测时，若选项一边是理由、一边是最终取舍，就应预期结论信号，并在播放后继续追查它所回指的证据。",
         "tips": [
-          "先标结构词，再判断语义重心。",
-          "若存在转折或因果提示，优先检查提示词后内容。"
+          "therefore 后是推出的结果，理由通常在前文。",
+          "孤立结论句不能替代完整的因果证据。"
         ]
       },
       "auto_scoring": false,
@@ -823,11 +894,35 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "根据理由与结论关系预判结果信号",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用选项判断句子在篇章中的角色，并追踪结论词回指的前文证据。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -842,27 +937,28 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "点击你听到信号词触发“语义转向”的时刻。",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
+        "text": "先看两种预测：①转折词一出现，后文就必然是答案；②它只预告方向变化，答案仍要靠上下文。哪种更严谨？",
+        "task_prompt": "播放这段讲解后，再翻面核对它缺少什么证据。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查转折信号预测",
+          "focus": "区分方向提示与答案保证",
+          "success_criteria": "能指出自然前后命题和题目语境仍是必要证据"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0002/000207.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "text_first"
       },
       "back_content": {
-        "text": "结论：关键信号词是 however，作用是转折换重心。\n\n关键点：用语义证据解释你的动作选择。",
-        "explanation": "语境揭示：When the speaker says however, the argument shifts from cost concerns to safety benefits, and that shift is the key signal word moment."
+        "text": "结论：②更严谨。\n\n现有音频是元教学旁白，不能作为正式听力脚本。",
+        "explanation": "however 能预告前后命题存在转折，但不能保证后文在每道题里都自动成为答案。现有音频只是说“说话者用了 however”，并概述 cost concerns 与 safety benefits；它没有让学习者听到两条自然命题及真实转向，因此无法验证所谓 key moment。题面已改为 flip，消除了旧“点击时刻”与正式交互的冲突；但正式采用前仍须换成自然成本—安全语境，重新生成音频并完成文字匹配与人工听感 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：时机点击题要把点击点锚在“语义触发词”后，而不是按节奏盲点。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“When the speaker says however, the argument shifts from cost concerns to safety benefits, and that shift is the key signal word moment.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "however 能预告前后命题存在转折，但不能保证后文在每道题里都自动成为答案。现有音频只是说“说话者用了 however”，并概述 cost concerns 与 safety benefits；它没有让学习者听到两条自然命题及真实转向，因此无法验证所谓 key moment。题面已改为 flip，消除了旧“点击时刻”与正式交互的冲突；但正式采用前仍须换成自然成本—安全语境，重新生成音频并完成文字匹配与人工听感 QC。",
         "tips": [
-          "转折信号词后面通常更接近答案区。",
-          "先识别功能，再记词形。"
+          "信号词提供方向，不提供无条件的答案保证。",
+          "讲规则的旁白不能替代包含真实转折的听力语料。"
         ]
       },
       "options": null,
@@ -876,12 +972,12 @@
         "transcript": "When the speaker says however, the argument shifts from cost concerns to safety benefits, and that shift is the key signal word moment."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3200,
@@ -901,22 +997,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "点击你听到信号词触发“语义转向”的时刻。",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看两种预测：①转折词一出现，后文就必然是答案；②它只预告方向变化，答案仍要靠上下文。哪种更严谨？",
+        "task_prompt": "播放这段讲解后，再翻面核对它缺少什么证据。",
+        "audio_first": false,
+        "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查转折信号预测",
+          "focus": "区分方向提示与答案保证",
+          "success_criteria": "能指出自然前后命题和题目语境仍是必要证据"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：时机点击题要把点击点锚在“语义触发词”后，而不是按节奏盲点。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“When the speaker says however, the argument shifts from cost concerns to safety benefits, and that shift is the key signal word moment.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "however 能预告前后命题存在转折，但不能保证后文在每道题里都自动成为答案。现有音频只是说“说话者用了 however”，并概述 cost concerns 与 safety benefits；它没有让学习者听到两条自然命题及真实转向，因此无法验证所谓 key moment。题面已改为 flip，消除了旧“点击时刻”与正式交互的冲突；但正式采用前仍须换成自然成本—安全语境，重新生成音频并完成文字匹配与人工听感 QC。",
         "tips": [
-          "转折信号词后面通常更接近答案区。",
-          "先识别功能，再记词形。"
+          "信号词提供方向，不提供无条件的答案保证。",
+          "讲规则的旁白不能替代包含真实转折的听力语料。"
         ]
       },
       "auto_scoring": false,
@@ -926,11 +1022,35 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分转折提示与答案保证",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练把转折词当作更新判断的提示，而不是机械押答案。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -945,27 +1065,28 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "长按覆盖“因果连接词+结果句”完整语义段。",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
+        "text": "先看两种预测：①先后发生就可判断因果；②只有前后命题构成原因—结果，结果信号才成立。哪种更可靠？",
+        "task_prompt": "播放后判断这段讲解是否真的给出了两件事，再翻面核对。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查结果信号预测",
+          "focus": "区分因果关系与时间先后",
+          "success_criteria": "能用两条自然命题验证原因和结果"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0002/000208.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "text_first"
       },
       "back_content": {
-        "text": "结论：关键信号是 as a result，标记结果信息。\n\n关键点：用语义证据解释你的动作选择。",
-        "explanation": "语境揭示：The phrase as a result links two events directly, signaling that the second clause is an effect rather than a new topic."
+        "text": "结论：②更可靠。\n\n现有音频只解释规则，没有给出可验证的原因—结果事件。",
+        "explanation": "as a result 用来引出可由前置原因或情境推出的结果，但“先发生、后发生”本身不足以证明因果。现有音频只说这个短语 links two events，却没有呈现任何具体事件，所以学习者既不能预测，也不能验证关系。题面已从旧长按动作收口为 flip；正式采用仍需重写成自然的原因—结果语料，重新生成音频，并通过 transcript 匹配、节奏重音和听感 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：长按题要覆盖完整信息段，起止边界由语义决定，不由秒数决定。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The phrase as a result links two events directly, signaling that the second clause is an effect rather than a new topic.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "as a result 用来引出可由前置原因或情境推出的结果，但“先发生、后发生”本身不足以证明因果。现有音频只说这个短语 links two events，却没有呈现任何具体事件，所以学习者既不能预测，也不能验证关系。题面已从旧长按动作收口为 flip；正式采用仍需重写成自然的原因—结果语料，重新生成音频，并通过 transcript 匹配、节奏重音和听感 QC。",
         "tips": [
-          "结果句常承载可考细节。",
-          "别把结果句当背景补充。"
+          "时间顺序不是因果关系的充分证据。",
+          "结果信号必须能回指可识别的前置原因或情境。"
         ]
       },
       "options": null,
@@ -979,12 +1100,12 @@
         "transcript": "The phrase as a result links two events directly, signaling that the second clause is an effect rather than a new topic."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 4100,
       "track_index": 0,
@@ -1001,22 +1122,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "长按覆盖“因果连接词+结果句”完整语义段。",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看两种预测：①先后发生就可判断因果；②只有前后命题构成原因—结果，结果信号才成立。哪种更可靠？",
+        "task_prompt": "播放后判断这段讲解是否真的给出了两件事，再翻面核对。",
+        "audio_first": false,
+        "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查结果信号预测",
+          "focus": "区分因果关系与时间先后",
+          "success_criteria": "能用两条自然命题验证原因和结果"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：长按题要覆盖完整信息段，起止边界由语义决定，不由秒数决定。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The phrase as a result links two events directly, signaling that the second clause is an effect rather than a new topic.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "as a result 用来引出可由前置原因或情境推出的结果，但“先发生、后发生”本身不足以证明因果。现有音频只说这个短语 links two events，却没有呈现任何具体事件，所以学习者既不能预测，也不能验证关系。题面已从旧长按动作收口为 flip；正式采用仍需重写成自然的原因—结果语料，重新生成音频，并通过 transcript 匹配、节奏重音和听感 QC。",
         "tips": [
-          "结果句常承载可考细节。",
-          "别把结果句当背景补充。"
+          "时间顺序不是因果关系的充分证据。",
+          "结果信号必须能回指可识别的前置原因或情境。"
         ]
       },
       "auto_scoring": false,
@@ -1026,11 +1147,35 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分结果信号与时间先后",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在预判结果词前先核对选项是否真的构成因果链。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -1045,27 +1190,28 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "翻面前先判断：这是补充信息还是纠偏强调？",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
+        "text": "先判断这条规则是否可靠：“听到 in fact 就一定是在纠正错误假设，而且后句一定是考点。”",
+        "task_prompt": "播放后找出这段讲解把哪些可能性说得过满，再翻面核对。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查强调信号的适用边界",
+          "focus": "区分纠正、确认与加强语气",
+          "success_criteria": "能根据具体上下文判断功能而不作绝对化推断"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0002/000209.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "text_first"
       },
       "back_content": {
-        "text": "结论：in fact 在此用于纠偏强调，后句是重点。\n\n关键点：用语义证据解释你的动作选择。",
-        "explanation": "语境揭示：The speaker uses in fact to correct a common assumption, which signals emphasis and often introduces the tested point."
+        "text": "结论：这条规则不可靠。\n\nin fact 的具体功能和后句是否可考，都必须由上下文确认。",
+        "explanation": "in fact 可以纠正前设，也可以确认或加强前一句，具体功能取决于上下文；它更不能保证后句一定是题目答案。现有音频直接声称 common assumption 被纠正，却没有给出那个假设和对应事实，因此缺少可听证据。当前卡面可用于识别旧规则的过度概括，但正式听力材料必须换成“常见判断—实际情况”的自然语境后重新生成并完成 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：翻面卡先自述判断，再核对证据，目的是固化可迁移的听辨流程。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The speaker uses in fact to correct a common assumption, which signals emphasis and often introduces the tested point.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "in fact 可以纠正前设，也可以确认或加强前一句，具体功能取决于上下文；它更不能保证后句一定是题目答案。现有音频直接声称 common assumption 被纠正，却没有给出那个假设和对应事实，因此缺少可听证据。当前卡面可用于识别旧规则的过度概括，但正式听力材料必须换成“常见判断—实际情况”的自然语境后重新生成并完成 QC。",
         "tips": [
-          "纠偏类信号词后常有高价值信息。",
-          "听到 in fact 时要准备推翻前设。"
+          "in fact 的功能要看它前后具体说了什么。",
+          "“可能可考”不能写成“必然是答案”。"
         ]
       },
       "options": null,
@@ -1079,12 +1225,12 @@
         "transcript": "The speaker uses in fact to correct a common assumption, which signals emphasis and often introduces the tested point."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -1100,22 +1246,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "翻面前先判断：这是补充信息还是纠偏强调？",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先判断这条规则是否可靠：“听到 in fact 就一定是在纠正错误假设，而且后句一定是考点。”",
+        "task_prompt": "播放后找出这段讲解把哪些可能性说得过满，再翻面核对。",
+        "audio_first": false,
+        "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查强调信号的适用边界",
+          "focus": "区分纠正、确认与加强语气",
+          "success_criteria": "能根据具体上下文判断功能而不作绝对化推断"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：翻面卡先自述判断，再核对证据，目的是固化可迁移的听辨流程。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The speaker uses in fact to correct a common assumption, which signals emphasis and often introduces the tested point.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "in fact 可以纠正前设，也可以确认或加强前一句，具体功能取决于上下文；它更不能保证后句一定是题目答案。现有音频直接声称 common assumption 被纠正，却没有给出那个假设和对应事实，因此缺少可听证据。当前卡面可用于识别旧规则的过度概括，但正式听力材料必须换成“常见判断—实际情况”的自然语境后重新生成并完成 QC。",
         "tips": [
-          "纠偏类信号词后常有高价值信息。",
-          "听到 in fact 时要准备推翻前设。"
+          "in fact 的功能要看它前后具体说了什么。",
+          "“可能可考”不能写成“必然是答案”。"
         ]
       },
       "auto_scoring": false,
@@ -1125,11 +1271,35 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别 in fact 功能的语境边界",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练拒绝信号词万能口诀，改用上下文验证纠正或强调功能。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -1144,48 +1314,49 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "四选一：识别该信号词的功能类别。",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
+        "text": "先看选项，再播放：这段音频为什么不能承担“听前预测信号词”的正式训练？",
+        "task_prompt": "先选再听，区分技术表现与训练设计。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "识别脚本失效原因",
+          "focus": "判断音频是否让学习者完成过真正预测",
+          "success_criteria": "能用音频内容逐项排除三个错误原因"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0002/000210.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "options_then_audio"
       },
       "back_content": {
-        "text": "答案：C。解析：for example 引出例证，不是结论。",
-        "explanation": "语境揭示：The line begins with for example and then gives a concrete case, so the signal indicates illustration rather than conclusion."
+        "text": "答案：C\n\n解析：旁白直接宣布信号词及功能，播放过程把任务自答了。",
+        "explanation": "正确答案是 C。现有音频明确说 for example 并直接解释它表示 illustration rather than conclusion，学习者只需复述旁白，不需要根据选项提前预测。A 没有听感 QC 证据支持；B 与音频内容相反；D 错在否认举例信号的 CET 适用性。要成为正式训练，脚本应给出自然观点和具体案例，让用户先从选项预判，再用音频验证；随后还需重新生成并完成正式 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：四选一先判考点再删错项，重点排除对象错位和范围错位。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The line begins with for example and then gives a concrete case, so the signal indicates illustration rather than conclusion.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "正确答案是 C。现有音频明确说 for example 并直接解释它表示 illustration rather than conclusion，学习者只需复述旁白，不需要根据选项提前预测。A 没有听感 QC 证据支持；B 与音频内容相反；D 错在否认举例信号的 CET 适用性。要成为正式训练，脚本应给出自然观点和具体案例，让用户先从选项预判，再用音频验证；随后还需重新生成并完成正式 QC。",
         "tips": [
-          "例证句用于支撑观点，不是观点本体。",
-          "先分“观点句/证据句”再答题。"
+          "音频若直接讲答案，就不是预测训练。",
+          "自然例证语料应呈现观点与案例，而不是解释“这是举例”。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "转折",
+          "text": "语速太慢，因此听不出连接词",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "因果",
+          "text": "没有出现任何信号词",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "举例",
+          "text": "旁白直接说出信号词及其功能，任务被音频自答",
           "is_correct": true
         },
         {
           "key": "D",
-          "text": "让步",
+          "text": "举例信号不会出现在 CET 听力中",
           "is_correct": false
         }
       ],
@@ -1199,12 +1370,12 @@
         "transcript": "The line begins with for example and then gives a concrete case, so the signal indicates illustration rather than conclusion."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -1220,22 +1391,44 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "四选一：识别该信号词的功能类别。",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看选项，再播放：这段音频为什么不能承担“听前预测信号词”的正式训练？",
+        "task_prompt": "先选再听，区分技术表现与训练设计。",
+        "audio_first": false,
+        "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+          "action": "识别脚本失效原因",
+          "focus": "判断音频是否让学习者完成过真正预测",
+          "success_criteria": "能用音频内容逐项排除三个错误原因"
+        },
+        "options": [
+          {
+            "key": "A",
+            "text": "语速太慢，因此听不出连接词",
+            "is_correct": false
+          },
+          {
+            "key": "B",
+            "text": "没有出现任何信号词",
+            "is_correct": false
+          },
+          {
+            "key": "C",
+            "text": "旁白直接说出信号词及其功能，任务被音频自答",
+            "is_correct": true
+          },
+          {
+            "key": "D",
+            "text": "举例信号不会出现在 CET 听力中",
+            "is_correct": false
+          }
+        ]
       },
       "analysis": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：四选一先判考点再删错项，重点排除对象错位和范围错位。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The line begins with for example and then gives a concrete case, so the signal indicates illustration rather than conclusion.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "正确答案是 C。现有音频明确说 for example 并直接解释它表示 illustration rather than conclusion，学习者只需复述旁白，不需要根据选项提前预测。A 没有听感 QC 证据支持；B 与音频内容相反；D 错在否认举例信号的 CET 适用性。要成为正式训练，脚本应给出自然观点和具体案例，让用户先从选项预判，再用音频验证；随后还需重新生成并完成正式 QC。",
         "tips": [
-          "例证句用于支撑观点，不是观点本体。",
-          "先分“观点句/证据句”再答题。"
+          "音频若直接讲答案，就不是预测训练。",
+          "自然例证语料应呈现观点与案例，而不是解释“这是举例”。"
         ]
       },
       "auto_scoring": true,
@@ -1245,7 +1438,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -1253,6 +1446,30 @@
       },
       "answer_key": {
         "correct_option": "C"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别会自答的元教学音频脚本",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移判断一段听力材料是否真正要求预测，而不是让旁白直接揭示答案。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1267,27 +1484,28 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "点击并行信息开始并对照出现的时刻。",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
+        "text": "先看两种预测：① meanwhile 必然表示两个对象的比较；②它先表示同时或并行，是否构成比较还看内容。哪种更准确？",
+        "task_prompt": "播放后检查旁白有没有给出两件真实事件，再翻面核对。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查并行信号的功能边界",
+          "focus": "区分同时推进与比较关系",
+          "success_criteria": "能根据具体命题判断是否真的存在对照"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0002/000211.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "text_first"
       },
       "back_content": {
-        "text": "结论：meanwhile 标记并行推进的信息。\n\n关键点：用语义证据解释你的动作选择。",
-        "explanation": "语境揭示：The speaker says meanwhile to present two developments in parallel, signaling comparison of simultaneous changes."
+        "text": "结论：②更准确。\n\n现有音频没有呈现两件真实事件，不能证明比较关系。",
+        "explanation": "meanwhile 首先标记另一事件在同一时期发生，或把叙述切换到并行进展；只有内容形成差异时，才可进一步谈比较。现有旁白直接说 comparison of simultaneous changes，却没有给出任何两项变化，因而无法听证这个判断。题面已从旧“点击时刻”改为 flip；正式采用仍需两件自然并行事件的脚本、重新生成音频和完整 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：时机点击题要把点击点锚在“语义触发词”后，而不是按节奏盲点。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The speaker says meanwhile to present two developments in parallel, signaling comparison of simultaneous changes.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "meanwhile 首先标记另一事件在同一时期发生，或把叙述切换到并行进展；只有内容形成差异时，才可进一步谈比较。现有旁白直接说 comparison of simultaneous changes，却没有给出任何两项变化，因而无法听证这个判断。题面已从旧“点击时刻”改为 flip；正式采用仍需两件自然并行事件的脚本、重新生成音频和完整 QC。",
         "tips": [
-          "并行关系常用于比较两个对象走势。",
-          "抓住同时发生可减少信息遗漏。"
+          "同时发生不必然等于比较。",
+          "先确认两条命题，再判断它们是并行还是对照。"
         ]
       },
       "options": null,
@@ -1301,12 +1519,12 @@
         "transcript": "The speaker says meanwhile to present two developments in parallel, signaling comparison of simultaneous changes."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3800,
@@ -1326,22 +1544,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "点击并行信息开始并对照出现的时刻。",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先看两种预测：① meanwhile 必然表示两个对象的比较；②它先表示同时或并行，是否构成比较还看内容。哪种更准确？",
+        "task_prompt": "播放后检查旁白有没有给出两件真实事件，再翻面核对。",
+        "audio_first": false,
+        "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查并行信号的功能边界",
+          "focus": "区分同时推进与比较关系",
+          "success_criteria": "能根据具体命题判断是否真的存在对照"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：时机点击题要把点击点锚在“语义触发词”后，而不是按节奏盲点。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“The speaker says meanwhile to present two developments in parallel, signaling comparison of simultaneous changes.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "meanwhile 首先标记另一事件在同一时期发生，或把叙述切换到并行进展；只有内容形成差异时，才可进一步谈比较。现有旁白直接说 comparison of simultaneous changes，却没有给出任何两项变化，因而无法听证这个判断。题面已从旧“点击时刻”改为 flip；正式采用仍需两件自然并行事件的脚本、重新生成音频和完整 QC。",
         "tips": [
-          "并行关系常用于比较两个对象走势。",
-          "抓住同时发生可减少信息遗漏。"
+          "同时发生不必然等于比较。",
+          "先确认两条命题，再判断它们是并行还是对照。"
         ]
       },
       "auto_scoring": false,
@@ -1351,11 +1569,35 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分并行关系与必然比较",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移判断并行信号的实际语篇功能，避免把所有同时信息都当作比较。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1370,27 +1612,28 @@
       "card_box_name": "根据选项预测信号词",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "长按覆盖“改写释义”句段，确认真正要考的含义。",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
+        "text": "先判断这条预测是否成立：“in other words 后一定更简单，也一定直接给出考点答案。”",
+        "task_prompt": "播放后检查旁白是否真的呈现了原表达与改写句，再翻面核对。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查释义信号的适用边界",
+          "focus": "区分重新表述、简化与答案保证",
+          "success_criteria": "能比较前后两条命题是否语义等值"
         },
-        "audio_first": true,
+        "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0002/000212.mp3",
-        "highlight_ranges": []
+        "highlight_ranges": [],
+        "display_mode": "text_first"
       },
       "back_content": {
-        "text": "结论：in other words 引导释义句，常是解题捷径。\n\n关键点：用语义证据解释你的动作选择。",
-        "explanation": "语境揭示：By saying in other words, the lecturer restates the idea in simpler language, so the second sentence clarifies the tested meaning."
+        "text": "结论：这条预测不成立。\n\nin other words 标记重新表述，但不保证更简单或直接给出答案。",
+        "explanation": "in other words 通常引出对前述内容的重新表述，后句可能更易懂，但“更简单”不是固定语义，更不能保证它就是题目答案。现有音频只是宣称 lecturer restates the idea，却没有给出原表达和改写句，学习者无法比较语义是否等值。题面已从旧长按动作收口为 flip；正式采用前必须写成自然的原表达—释义对，重新生成并完成 transcript 匹配与人工听感 QC。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：长按题要覆盖完整信息段，起止边界由语义决定，不由秒数决定。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“By saying in other words, the lecturer restates the idea in simpler language, so the second sentence clarifies the tested meaning.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "in other words 通常引出对前述内容的重新表述，后句可能更易懂，但“更简单”不是固定语义，更不能保证它就是题目答案。现有音频只是宣称 lecturer restates the idea，却没有给出原表达和改写句，学习者无法比较语义是否等值。题面已从旧长按动作收口为 flip；正式采用前必须写成自然的原表达—释义对，重新生成并完成 transcript 匹配与人工听感 QC。",
         "tips": [
-          "释义句常直接给出同义表达。",
-          "碰到生词先听后面的改写句。"
+          "释义信号提示重新表述，不是答案保证。",
+          "必须比较前后命题，才能确认改写是否等值。"
         ]
       },
       "options": null,
@@ -1404,12 +1647,12 @@
         "transcript": "By saying in other words, the lecturer restates the idea in simpler language, so the second sentence clarifies the tested meaning."
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "legacy_untraced_content_pool_reclassified_as_cet4_simulation_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 4400,
       "track_index": 0,
@@ -1426,22 +1669,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "长按覆盖“改写释义”句段，确认真正要考的含义。",
-        "task_prompt": "先听音频，再完成根据选项预测信号词训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "先判断这条预测是否成立：“in other words 后一定更简单，也一定直接给出考点答案。”",
+        "task_prompt": "播放后检查旁白是否真的呈现了原表达与改写句，再翻面核对。",
+        "audio_first": false,
+        "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
+          "action": "审查释义信号的适用边界",
+          "focus": "区分重新表述、简化与答案保证",
+          "success_criteria": "能比较前后两条命题是否语义等值"
         }
       },
       "analysis": {
-        "text": "① 识别信号：本卡围绕“根据选项预测信号词”训练信号词预测。你需要先在语流中找功能词和信息重心，再进入作答动作。\n\n② 核心规律：长按题要覆盖完整信息段，起止边界由语义决定，不由秒数决定。当背景句与结论句并存时，优先看结论句。\n\n③ 验证与迁移：对照原句“By saying in other words, the lecturer restates the idea in simpler language, so the second sentence clarifies the tested meaning.”回听，确认你的判断是否由关键语义段直接支持。下次遇到同类题，沿用“先判功能-再抓重心-后做动作”的顺序。",
+        "text": "in other words 通常引出对前述内容的重新表述，后句可能更易懂，但“更简单”不是固定语义，更不能保证它就是题目答案。现有音频只是宣称 lecturer restates the idea，却没有给出原表达和改写句，学习者无法比较语义是否等值。题面已从旧长按动作收口为 flip；正式采用前必须写成自然的原表达—释义对，重新生成并完成 transcript 匹配与人工听感 QC。",
         "tips": [
-          "释义句常直接给出同义表达。",
-          "碰到生词先听后面的改写句。"
+          "释义信号提示重新表述，不是答案保证。",
+          "必须比较前后命题，才能确认改写是否等值。"
         ]
       },
       "auto_scoring": false,
@@ -1451,11 +1694,35 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别释义信号的适用边界",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "existing_ai_tts_asset_provider_and_voice_unverified_pending_formal_audio_qc",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": false,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "迁移利用释义信号核对同义关系，同时避免机械押中后句。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],
