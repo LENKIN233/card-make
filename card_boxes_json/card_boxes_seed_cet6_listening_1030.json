@@ -24,9 +24,9 @@
         "text": "任务：先听音频，了解本节训练重点：同义替换识别（词汇改写与句义等价）。",
         "task_prompt": "任务：先听音频，了解本节训练重点：同义替换识别（词汇改写与句义等价）。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后建立词组改写对",
+          "focus": "reduce financial support 与 funding cuts",
+          "success_criteria": "能保留削减资金这一动作、对象和对研究的影响"
         },
         "audio_first": true,
         "image_url": null,
@@ -45,12 +45,12 @@
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "audio": {
         "url": "ai_tts/cet6/1030/103001.mp3",
@@ -81,9 +81,9 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后建立词组改写对",
+          "focus": "reduce financial support 与 funding cuts",
+          "success_criteria": "能保留削减资金这一动作、对象和对研究的影响"
         }
       },
       "analysis": {
@@ -100,11 +100,41 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "reduce financial support = funding cuts",
+        "topic_signal": "verb_phrase_to_noun_phrase",
+        "key_word_cn": "动词短语转名词短语",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别动词短语到名词短语的等义改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练在词性变化后保留动作方向和对象。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -122,9 +152,9 @@
         "text": "任务：先听音频，再识别改写版选项中与原文意思相同的一项。",
         "task_prompt": "任务：先听音频，再识别改写版选项中与原文意思相同的一项。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：匹配完整句义",
+          "focus": "终止合同的主体、动作与对象",
+          "success_criteria": "选择保留公司终止供应商协议的表述，并排除改善、另签或修订等新增事件"
         },
         "audio_first": true,
         "image_url": null,
@@ -143,12 +173,12 @@
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "audio": {
         "url": "ai_tts/cet6/1030/103002.mp3",
@@ -201,9 +231,9 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：匹配完整句义",
+          "focus": "终止合同的主体、动作与对象",
+          "success_criteria": "选择保留公司终止供应商协议的表述，并排除改善、另签或修订等新增事件"
         }
       },
       "analysis": {
@@ -220,7 +250,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -228,6 +258,36 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "extra_fields": {
+        "focus_expression": "company terminated contract = firm ended agreement",
+        "topic_signal": "multi_slot_paraphrase",
+        "key_word_cn": "主体动作对象联合改写",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "匹配主体—动作—对象三槽改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练同义词替换后仍核对事件是否一致。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -245,9 +305,9 @@
         "text": "任务：先听音频，再在规定时间内复述：原句核心信息及其同义替换版本。",
         "task_prompt": "任务：先听音频，再在规定时间内复述：原句核心信息及其同义替换版本。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后生成不夸大的句义改写",
+          "focus": "超过十二小时、数据分析与投入程度",
+          "success_criteria": "能把长时投入改写为 devotes extensive time，同时保留具体时长证据"
         },
         "audio_first": true,
         "image_url": null,
@@ -255,23 +315,23 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：原意：研究员每天花超过12小时研究数据。改写：研究人员把大部分时间用在数据分析上。",
-        "explanation": "语境揭示：The researcher spends more than twelve hours a day analyzing data, which demonstrates an extraordinary level of dedication to the project."
+        "text": "可接受改写：The researcher devotes an exceptionally large amount of time to data analysis, spending over twelve hours on it each day.\n\n不能只写 most of the time，因为该说法丢失具体时长且参照范围不清。",
+        "explanation": "数量信息可以转为程度概括，但高质量改写应保留可核验的 over twelve hours a day。"
       },
       "analysis_content": {
-        "text": "① 识别信号：\"spends more than twelve hours\"→\"devotes most of his time\"；analyzing data = data analysis = 同义替换。② 核心规律：时间量化（12 hours）→比例描述（most of the time）是CET6常见的同义改写方式。③ 验证与迁移：复述时可使用改写版本（不必原词重复），测试对信息本质的理解而非机械记忆。",
+        "text": "① 数量证据：more than twelve hours a day 是明确可核验的时长。\n\n② 程度改写：可概括为 devotes an exceptionally large amount of time，但不能无参照地写 most of his time。\n\n③ 事件保持：spends... analyzing data 可改写为 devotes... to data analysis，dedication 仍是由投入时长支持的评价。",
         "tips": [
-          "花时间做某事：spend time / devote time / dedicate time to 三者互换。",
-          "复述时用近义词替换原文词汇，能验证你真正理解了音频内容。"
+          "数量改程度时，尽量保留原始数字作证据锚。",
+          "同义改写要避免引入参照范围不明的新比例。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "audio": {
         "url": "ai_tts/cet6/1030/103003.mp3",
@@ -306,16 +366,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后生成不夸大的句义改写",
+          "focus": "超过十二小时、数据分析与投入程度",
+          "success_criteria": "能把长时投入改写为 devotes extensive time，同时保留具体时长证据"
         }
       },
       "analysis": {
-        "text": "① 识别信号：\"spends more than twelve hours\"→\"devotes most of his time\"；analyzing data = data analysis = 同义替换。② 核心规律：时间量化（12 hours）→比例描述（most of the time）是CET6常见的同义改写方式。③ 验证与迁移：复述时可使用改写版本（不必原词重复），测试对信息本质的理解而非机械记忆。",
+        "text": "① 数量证据：more than twelve hours a day 是明确可核验的时长。\n\n② 程度改写：可概括为 devotes an exceptionally large amount of time，但不能无参照地写 most of his time。\n\n③ 事件保持：spends... analyzing data 可改写为 devotes... to data analysis，dedication 仍是由投入时长支持的评价。",
         "tips": [
-          "花时间做某事：spend time / devote time / dedicate time to 三者互换。",
-          "复述时用近义词替换原文词汇，能验证你真正理解了音频内容。"
+          "数量改程度时，尽量保留原始数字作证据锚。",
+          "同义改写要避免引入参照范围不明的新比例。"
         ]
       },
       "auto_scoring": false,
@@ -325,11 +385,41 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "spends over X doing Y = devotes extensive time to Y",
+        "topic_signal": "quantity_to_bounded_degree",
+        "key_word_cn": "数量转受限程度",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "将量化时长改写为有证据边界的投入程度",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练避免同义改写中的范围升级。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -344,12 +434,12 @@
       "card_box_name": "识别同义替换",
       "card_group_name": "深度理解",
       "front_content": {
-        "text": "任务：先听音频，再进行影子跟读，注意信息重心词的重读节奏。",
-        "task_prompt": "任务：先听音频，再进行影子跟读，注意信息重心词的重读节奏。",
+        "text": "听完后先别翻面：分别改写“规律锻炼”“显著改善”和“所有年龄段”。",
+        "task_prompt": "三组改写都要保持原句强度和适用范围。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后生成三组等义表达",
+          "focus": "活动频率、改善强度与人群范围",
+          "success_criteria": "能用 consistent physical activity、markedly enhance、people of any age 等表达而不改变句义"
         },
         "audio_first": true,
         "image_url": null,
@@ -357,23 +447,23 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：完成跟读，注意核心名词/动词的重读位置（信息重心）。",
-        "explanation": "语境揭示：Scientists have discovered that regular physical exercise can substantially improve memory retention and cognitive performance in individuals of all age groups."
+        "text": "参考改写：Consistent physical activity can markedly enhance memory and cognitive performance among people of any age.\n\nregular→consistent，substantially improve→markedly enhance，individuals of all age groups→people of any age。",
+        "explanation": "改写不只是换单词，还要保留 can 的可能性、改善方向和全年龄适用范围。"
       },
       "analysis_content": {
-        "text": "① 识别信号：\"regular physical exercise\" → 重读 exercise；\"substantially improve\" → 重读 improve；\"memory retention\" → 重读 memory。② 核心规律：英语重读规律：实词（名词/动词/形容词）重读，虚词（冠词/介词/连词）轻读；信息重心通常在句尾内容词。③ 验证与迁移：跟读后能准确识别哪些词是答题关键（重读词）是本卡的成功标准。",
+        "text": "① 活动改写：regular physical exercise ≈ consistent physical activity。\n\n② 强度改写：substantially improve ≈ markedly enhance，不能弱化成 may slightly help。\n\n③ 范围改写：individuals of all age groups ≈ people of any age，不能缩成只适用于年轻人。",
         "tips": [
-          "重读词 = 信息重心词 = 听力答题时需捕捉的核心词汇。",
-          "跟读时模仿重读位置，有助于建立英语听力的信息层级意识。"
+          "同义替换要同时核对语气、程度和范围。",
+          "多个词组共同改写时，逐槽对齐比只找一个近义词更可靠。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "audio": {
         "url": "ai_tts/cet6/1030/103004.mp3",
@@ -399,22 +489,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再进行影子跟读，注意信息重心词的重读节奏。",
-        "task_prompt": "任务：先听音频，再进行影子跟读，注意信息重心词的重读节奏。",
+        "text": "听完后先别翻面：分别改写“规律锻炼”“显著改善”和“所有年龄段”。",
+        "task_prompt": "三组改写都要保持原句强度和适用范围。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后生成三组等义表达",
+          "focus": "活动频率、改善强度与人群范围",
+          "success_criteria": "能用 consistent physical activity、markedly enhance、people of any age 等表达而不改变句义"
         }
       },
       "analysis": {
-        "text": "① 识别信号：\"regular physical exercise\" → 重读 exercise；\"substantially improve\" → 重读 improve；\"memory retention\" → 重读 memory。② 核心规律：英语重读规律：实词（名词/动词/形容词）重读，虚词（冠词/介词/连词）轻读；信息重心通常在句尾内容词。③ 验证与迁移：跟读后能准确识别哪些词是答题关键（重读词）是本卡的成功标准。",
+        "text": "① 活动改写：regular physical exercise ≈ consistent physical activity。\n\n② 强度改写：substantially improve ≈ markedly enhance，不能弱化成 may slightly help。\n\n③ 范围改写：individuals of all age groups ≈ people of any age，不能缩成只适用于年轻人。",
         "tips": [
-          "重读词 = 信息重心词 = 听力答题时需捕捉的核心词汇。",
-          "跟读时模仿重读位置，有助于建立英语听力的信息层级意识。"
+          "同义替换要同时核对语气、程度和范围。",
+          "多个词组共同改写时，逐槽对齐比只找一个近义词更可靠。"
         ]
       },
       "auto_scoring": false,
@@ -424,11 +514,39 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "regular exercise / substantially improve / all ages",
+        "topic_signal": "multi_phrase_equivalence",
+        "key_word_cn": "频率强度范围三槽改写",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "联合改写频率、强度与人群范围",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练多词组等义且不丢限定。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -446,9 +564,9 @@
         "text": "任务：先听音频，再选出与原文意思相同的改写版选项。",
         "task_prompt": "任务：先听音频，再选出与原文意思相同的改写版选项。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：识别完整事件改写",
+          "focus": "废除政策、公众反对与因果关系",
+          "success_criteria": "选择保留政府放弃计划及公众抵制原因的表述"
         },
         "audio_first": true,
         "image_url": null,
@@ -467,12 +585,12 @@
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "audio": {
         "url": "ai_tts/cet6/1030/103005.mp3",
@@ -525,9 +643,9 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：识别完整事件改写",
+          "focus": "废除政策、公众反对与因果关系",
+          "success_criteria": "选择保留政府放弃计划及公众抵制原因的表述"
         }
       },
       "analysis": {
@@ -544,7 +662,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -552,6 +670,34 @@
       },
       "answer_key": {
         "correct_option": "A"
+      },
+      "extra_fields": {
+        "focus_expression": "scrap policy due to opposition = abandon plan after resistance",
+        "topic_signal": "event_plus_reason_paraphrase",
+        "key_word_cn": "事件与原因联合改写",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别动作、对象与原因联合改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练排除引入、改善或忽视反对等方向变化。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -569,9 +715,9 @@
         "text": "任务：先听音频，再识别 remarkable resilience 在选项中的同义替换表达。",
         "task_prompt": "任务：先听音频，再识别 remarkable resilience 在选项中的同义替换表达。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后解释抽象评价的证据",
+          "focus": "resilience 与 bounced back 的语义对应",
+          "success_criteria": "能用 strong recovery ability 改写韧性，并用快速复苏作为证据"
         },
         "audio_first": true,
         "image_url": null,
@@ -590,12 +736,12 @@
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3200,
@@ -630,9 +776,9 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后解释抽象评价的证据",
+          "focus": "resilience 与 bounced back 的语义对应",
+          "success_criteria": "能用 strong recovery ability 改写韧性，并用快速复苏作为证据"
         }
       },
       "analysis": {
@@ -649,11 +795,39 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "remarkable resilience evidenced by bouncing back",
+        "topic_signal": "abstract_quality_to_behavioral_evidence",
+        "key_word_cn": "抽象品质与行为证据",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "用行为证据解释抽象同义表达",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练把 resilience 与快速复苏连接，而非只背近义词。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -671,9 +845,9 @@
         "text": "任务：先听音频，再识别 fundamentally flawed 在选项中的同义替换。",
         "task_prompt": "任务：先听音频，再识别 fundamentally flawed 在选项中的同义替换。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后区分改写与因果延伸",
+          "focus": "数据根本缺陷及其决策可靠性后果",
+          "success_criteria": "能把 fundamentally flawed 改写为 seriously defective，并说明 unreliable policy decisions 是后果而非同义词"
         },
         "audio_first": true,
         "image_url": null,
@@ -681,23 +855,23 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：fundamentally flawed = 从根本上存在缺陷 → 同义替换：seriously defective / deeply problematic / full of basic errors。",
-        "explanation": "语境揭示：The committee concluded that the data presented in the report was fundamentally flawed, and that any policy decisions based on it would be inherently unreliable."
+        "text": "改写：the data was fundamentally flawed ≈ the data was seriously defective / deeply problematic.\n\n因果后果：基于这些数据的政策决定会不可靠。后者不是 flawed 的同义表达，而是缺陷数据导致的判断风险。",
+        "explanation": "先建立词义等价，再单独标出 consequence，避免把因果关系误记成同义关系。"
       },
       "analysis_content": {
-        "text": "① 识别信号：fundamentally = 从根本上，等同 basically/essentially/deeply；flawed = 有缺陷的，等同 defective/problematic/erroneous。② 核心规律：逻辑连贯题：fundamentally flawed → inherently unreliable = 两者是因果关系，均指数据不可靠的同义链条。③ 验证与迁移：答案方向：data is seriously problematic / cannot be trusted；\"flawed data\" 与 \"unreliable policy\" 是同义延伸。",
+        "text": "① 程度与评价：fundamentally flawed ≈ seriously defective / deeply problematic。\n\n② 因果连接：and that any policy decisions based on it would be inherently unreliable 说明缺陷数据的后果。\n\n③ 边界：flawed data 与 unreliable decisions 相关但不等义；一个描述数据质量，一个描述依赖该数据的决策可信度。",
         "tips": [
-          "fundamentally/inherently = 程度副词，强调问题本质性；flawed/defective/erroneous = 缺陷类替换词。",
-          "题目问 \"what did the committee say about the data\" = 找替换 flawed 的选项表达。"
+          "先标 E1≈E2，再标 E1→R，避免混淆等义和因果。",
+          "同义替换必须保持被描述对象一致。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 5400,
       "audio": {
@@ -729,16 +903,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后区分改写与因果延伸",
+          "focus": "数据根本缺陷及其决策可靠性后果",
+          "success_criteria": "能把 fundamentally flawed 改写为 seriously defective，并说明 unreliable policy decisions 是后果而非同义词"
         }
       },
       "analysis": {
-        "text": "① 识别信号：fundamentally = 从根本上，等同 basically/essentially/deeply；flawed = 有缺陷的，等同 defective/problematic/erroneous。② 核心规律：逻辑连贯题：fundamentally flawed → inherently unreliable = 两者是因果关系，均指数据不可靠的同义链条。③ 验证与迁移：答案方向：data is seriously problematic / cannot be trusted；\"flawed data\" 与 \"unreliable policy\" 是同义延伸。",
+        "text": "① 程度与评价：fundamentally flawed ≈ seriously defective / deeply problematic。\n\n② 因果连接：and that any policy decisions based on it would be inherently unreliable 说明缺陷数据的后果。\n\n③ 边界：flawed data 与 unreliable decisions 相关但不等义；一个描述数据质量，一个描述依赖该数据的决策可信度。",
         "tips": [
-          "fundamentally/inherently = 程度副词，强调问题本质性；flawed/defective/erroneous = 缺陷类替换词。",
-          "题目问 \"what did the committee say about the data\" = 找替换 flawed 的选项表达。"
+          "先标 E1≈E2，再标 E1→R，避免混淆等义和因果。",
+          "同义替换必须保持被描述对象一致。"
         ]
       },
       "auto_scoring": false,
@@ -748,11 +922,39 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "flawed data paraphrase; causes unreliable decisions",
+        "topic_signal": "paraphrase_versus_consequence",
+        "key_word_cn": "同义关系与因果延伸",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "区分词义改写与下游因果后果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保持描述对象和逻辑关系。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -770,9 +972,9 @@
         "text": "任务：先听音频，再识别 considerable skepticism 的同义替换，并判断规划委员会的态度。",
         "task_prompt": "任务：先听音频，再识别 considerable skepticism 的同义替换，并判断规划委员会的态度。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后改写态度并保留质疑对象",
+          "focus": "规划委员会的怀疑程度、结构可行性与预算限制",
+          "success_criteria": "能用 serious doubts 或 substantial reservations 改写态度，并说明其质疑内容"
         },
         "audio_first": true,
         "image_url": null,
@@ -784,19 +986,19 @@
         "explanation": "语境揭示：The architect's proposal was met with considerable skepticism by the planning board, who questioned whether the ambitious design was structurally feasible within the given budget constraints."
       },
       "analysis_content": {
-        "text": "① 识别信号：considerable = 相当大的，等同 significant/serious/substantial；skepticism = 怀疑，等同 doubt/reservations/uncertainty。② 核心规律：态度类同义替换：skepticism = doubt/pessimism = 负面态度词替换；题目问态度时 = 找表达 doubt 的选项。③ 验证与迁移：规划委员会立场：had serious doubts about the proposal = 同义于 met with considerable skepticism。",
+        "text": "① 程度：considerable ≈ substantial / significant，表示怀疑程度较强。\n\n② 态度：skepticism ≈ serious doubts / reservations；不能无条件扩大为 pessimism，因为后者是更宽泛的悲观倾向。\n\n③ 质疑对象：委员会怀疑雄心勃勃的设计能否在预算限制内实现结构可行。",
         "tips": [
-          "skepticism/reservations/doubt = 怀疑态度的三种替换，CET6 常互换。",
-          "met with + negative reaction = 被...以负面回应迎接，是固定搭配，答案方向是负面态度。"
+          "态度词改写要保持对象、方向和强度。",
+          "doubt/reservations 比 pessimism 更精确对应 skepticism。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "audio": {
         "url": "ai_tts/cet6/1030/103008.mp3",
@@ -827,16 +1029,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后改写态度并保留质疑对象",
+          "focus": "规划委员会的怀疑程度、结构可行性与预算限制",
+          "success_criteria": "能用 serious doubts 或 substantial reservations 改写态度，并说明其质疑内容"
         }
       },
       "analysis": {
-        "text": "① 识别信号：considerable = 相当大的，等同 significant/serious/substantial；skepticism = 怀疑，等同 doubt/reservations/uncertainty。② 核心规律：态度类同义替换：skepticism = doubt/pessimism = 负面态度词替换；题目问态度时 = 找表达 doubt 的选项。③ 验证与迁移：规划委员会立场：had serious doubts about the proposal = 同义于 met with considerable skepticism。",
+        "text": "① 程度：considerable ≈ substantial / significant，表示怀疑程度较强。\n\n② 态度：skepticism ≈ serious doubts / reservations；不能无条件扩大为 pessimism，因为后者是更宽泛的悲观倾向。\n\n③ 质疑对象：委员会怀疑雄心勃勃的设计能否在预算限制内实现结构可行。",
         "tips": [
-          "skepticism/reservations/doubt = 怀疑态度的三种替换，CET6 常互换。",
-          "met with + negative reaction = 被...以负面回应迎接，是固定搭配，答案方向是负面态度。"
+          "态度词改写要保持对象、方向和强度。",
+          "doubt/reservations 比 pessimism 更精确对应 skepticism。"
         ]
       },
       "auto_scoring": false,
@@ -846,11 +1048,39 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "considerable skepticism = substantial reservations about feasibility",
+        "topic_signal": "attitude_strength_paraphrase",
+        "key_word_cn": "态度强度与质疑对象",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "改写怀疑态度并保留质疑对象",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练态度词精确度而非泛化负面情绪。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -865,12 +1095,12 @@
       "card_box_name": "识别同义替换",
       "card_group_name": "深度理解",
       "front_content": {
-        "text": "任务：先听音频，再识别该段话的核心主张，并找出 rote memorization 的同义替换。",
-        "task_prompt": "任务：先听音频，再识别该段话的核心主张，并找出 rote memorization 的同义替换。",
+        "text": "听完后，选出最完整且不改变立场的核心主张改写。",
+        "task_prompt": "核对教育系统强调什么、牺牲什么，以及教授的评价方向。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：匹配核心主张",
+          "focus": "强调对象、对照对象与立场方向",
+          "success_criteria": "选择保留系统偏重记忆并弱化分析创造能力发展的表述"
         },
         "audio_first": true,
         "image_url": null,
@@ -882,19 +1112,19 @@
         "explanation": "语境揭示：The professor argued that contemporary educational systems prioritize rote memorization over the development of analytical and creative thinking capacities."
       },
       "analysis_content": {
-        "text": "① 识别信号：rote = 机械式的，等同 mechanical/by repetition；memorization = 死记，等同 learning by heart/repetitive recall。② 核心规律：CET6 教育类同义替换：rote = mechanical；critical/analytical thinking = 批判性思维，是 rote 的反义方向。③ 验证与迁移：答案方向：systems favor memorization over critical thinking = 选项含 mechanical learning 或 at the expense of analysis。",
+        "text": "① 强调对象：educational systems prioritize rote memorization。\n\n② 对照关系：over the development of analytical and creative thinking capacities 表示前者被优先、后者被压低。\n\n③ 选项核验：B 用 mechanical memorization 和 analytical skills 保留关系；A/C 反向，D 则把教授的批评偷换为支持。",
         "tips": [
-          "rote memorization vs critical/analytical/creative thinking = CET6 教育话题的核心对立词对。",
-          "over (prioritize A over B) = A优于B，选项中 A 是被批评过度使用的，B 是被忽视的。"
+          "核心主张改写要保留 A over B 的优先级方向。",
+          "同义词匹配之后还要核对说话者立场。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "options": [
         {
@@ -941,22 +1171,22 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再识别该段话的核心主张，并找出 rote memorization 的同义替换。",
-        "task_prompt": "任务：先听音频，再识别该段话的核心主张，并找出 rote memorization 的同义替换。",
+        "text": "听完后，选出最完整且不改变立场的核心主张改写。",
+        "task_prompt": "核对教育系统强调什么、牺牲什么，以及教授的评价方向。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "四选一：匹配核心主张",
+          "focus": "强调对象、对照对象与立场方向",
+          "success_criteria": "选择保留系统偏重记忆并弱化分析创造能力发展的表述"
         }
       },
       "analysis": {
-        "text": "① 识别信号：rote = 机械式的，等同 mechanical/by repetition；memorization = 死记，等同 learning by heart/repetitive recall。② 核心规律：CET6 教育类同义替换：rote = mechanical；critical/analytical thinking = 批判性思维，是 rote 的反义方向。③ 验证与迁移：答案方向：systems favor memorization over critical thinking = 选项含 mechanical learning 或 at the expense of analysis。",
+        "text": "① 强调对象：educational systems prioritize rote memorization。\n\n② 对照关系：over the development of analytical and creative thinking capacities 表示前者被优先、后者被压低。\n\n③ 选项核验：B 用 mechanical memorization 和 analytical skills 保留关系；A/C 反向，D 则把教授的批评偷换为支持。",
         "tips": [
-          "rote memorization vs critical/analytical/creative thinking = CET6 教育话题的核心对立词对。",
-          "over (prioritize A over B) = A优于B，选项中 A 是被批评过度使用的，B 是被忽视的。"
+          "核心主张改写要保留 A over B 的优先级方向。",
+          "同义词匹配之后还要核对说话者立场。"
         ]
       },
       "auto_scoring": true,
@@ -966,7 +1196,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -974,6 +1204,34 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "extra_fields": {
+        "focus_expression": "prioritize A over development of B = emphasize A over B",
+        "topic_signal": "priority_relation_paraphrase",
+        "key_word_cn": "优先级关系改写",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "匹配优先级关系和批评立场的完整改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练避免只凭 memorization 词面选项。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -991,9 +1249,9 @@
         "text": "任务：先听音频，再识别 wholly inadequate 的同义替换。",
         "task_prompt": "任务：先听音频，再识别 wholly inadequate 的同义替换。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后改写程度强化的负面评价",
+          "focus": "wholly inadequate 的程度与功能失败",
+          "success_criteria": "能用 entirely ineffective / completely insufficient 改写，并保留监管机制未能应对无证经营扩张"
         },
         "audio_first": true,
         "image_url": null,
@@ -1005,19 +1263,19 @@
         "explanation": "语境揭示：The regulatory agency eventually conceded that its enforcement mechanisms had proven wholly inadequate in addressing the rapid proliferation of unlicensed operators in the market."
       },
       "analysis_content": {
-        "text": "① 识别信号：wholly = entirely/completely/totally（强调程度副词）；inadequate = 不足的/无效的，等同 ineffective/insufficient/incapable。② 核心规律：CET6 程度强化替换：wholly/utterly/completely + negative adj = 选项中必有 entirely/completely 修饰的负面形容词替换。③ 验证与迁移：答案：enforcement was entirely ineffective / failed completely；监管机构承认失败 = conceded。",
+        "text": "① 程度强化：wholly ≈ entirely / completely。\n\n② 负面评价：inadequate 在此表示机制不足以应对问题，可改写为 ineffective / insufficient for the task。\n\n③ 语境边界：失败对象是 enforcement mechanisms，所面对的是 unlicensed operators 的快速增加；不能只写“监管机构不好”。",
         "tips": [
-          "wholly/utterly/completely = 完全否定副词，选项中 entirely/totally/completely + 负面词 = 正确替换方向。",
-          "conceded = 承认（之前不想承认的事实），是让步认错动词，答案含负面评价。"
+          "程度副词与负面形容词要作为整体改写。",
+          "选项不一定出现固定近义词，仍需核对功能和对象。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3800,
@@ -1052,16 +1310,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后改写程度强化的负面评价",
+          "focus": "wholly inadequate 的程度与功能失败",
+          "success_criteria": "能用 entirely ineffective / completely insufficient 改写，并保留监管机制未能应对无证经营扩张"
         }
       },
       "analysis": {
-        "text": "① 识别信号：wholly = entirely/completely/totally（强调程度副词）；inadequate = 不足的/无效的，等同 ineffective/insufficient/incapable。② 核心规律：CET6 程度强化替换：wholly/utterly/completely + negative adj = 选项中必有 entirely/completely 修饰的负面形容词替换。③ 验证与迁移：答案：enforcement was entirely ineffective / failed completely；监管机构承认失败 = conceded。",
+        "text": "① 程度强化：wholly ≈ entirely / completely。\n\n② 负面评价：inadequate 在此表示机制不足以应对问题，可改写为 ineffective / insufficient for the task。\n\n③ 语境边界：失败对象是 enforcement mechanisms，所面对的是 unlicensed operators 的快速增加；不能只写“监管机构不好”。",
         "tips": [
-          "wholly/utterly/completely = 完全否定副词，选项中 entirely/totally/completely + 负面词 = 正确替换方向。",
-          "conceded = 承认（之前不想承认的事实），是让步认错动词，答案含负面评价。"
+          "程度副词与负面形容词要作为整体改写。",
+          "选项不一定出现固定近义词，仍需核对功能和对象。"
         ]
       },
       "auto_scoring": false,
@@ -1071,11 +1329,41 @@
         "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "wholly inadequate in addressing X = entirely ineffective against X",
+        "topic_signal": "intensified_negative_evaluation",
+        "key_word_cn": "程度强化负面评价",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "迁移程度强化与功能失败的整体改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保留机制对象和问题范围。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1093,9 +1381,9 @@
         "text": "任务：先听音频，再识别 unscrupulous employers 的同义替换，并判断纪录片揭示了什么内容。",
         "task_prompt": "任务：先听音频，再识别 unscrupulous employers 的同义替换，并判断纪录片揭示了什么内容。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后改写揭示行为与伦理评价",
+          "focus": "纪录片揭示、系统剥削与无良雇主",
+          "success_criteria": "能用 exposed systematic exploitation by unethical employers 改写完整事件"
         },
         "audio_first": true,
         "image_url": null,
@@ -1107,19 +1395,19 @@
         "explanation": "语境揭示：The documentary shed light on the systematic exploitation of migrant workers, revealing how their vulnerability was consistently taken advantage of by unscrupulous employers."
       },
       "analysis_content": {
-        "text": "① 识别信号：unscrupulous = 无良的/不道德的，等同 dishonest/unethical/unprincipled；shed light on = 揭示、explain/reveal。② 核心规律：CET6 道德评价词替换：unscrupulous = dishonest/exploitative；shed light on = reveal/expose/uncover。③ 验证与迁移：答案方向：documentary revealed how dishonest employers exploited migrant workers' vulnerability。",
+        "text": "① 揭示动作：shed light on ≈ revealed / exposed。\n\n② 行为关系：systematic exploitation 与 vulnerability was consistently taken advantage of 共同说明持续利用弱势。\n\n③ 伦理评价：unscrupulous employers ≈ unethical / unprincipled employers；完整改写必须保留 migrant workers 这一受害群体。",
         "tips": [
-          "shed light on = expose/reveal/uncover，常用在揭露问题的文章中。",
-          "unscrupulous/dishonest/unethical = 负面品格替换词，使用场景：不道德商业行为。"
+          "短语动词、行为和评价词可以同时改写，但事件角色不能交换。",
+          "systematic / consistently 体现持续性，不能删成一次性事件。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 5600,
       "audio": {
@@ -1151,16 +1439,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后改写揭示行为与伦理评价",
+          "focus": "纪录片揭示、系统剥削与无良雇主",
+          "success_criteria": "能用 exposed systematic exploitation by unethical employers 改写完整事件"
         }
       },
       "analysis": {
-        "text": "① 识别信号：unscrupulous = 无良的/不道德的，等同 dishonest/unethical/unprincipled；shed light on = 揭示、explain/reveal。② 核心规律：CET6 道德评价词替换：unscrupulous = dishonest/exploitative；shed light on = reveal/expose/uncover。③ 验证与迁移：答案方向：documentary revealed how dishonest employers exploited migrant workers' vulnerability。",
+        "text": "① 揭示动作：shed light on ≈ revealed / exposed。\n\n② 行为关系：systematic exploitation 与 vulnerability was consistently taken advantage of 共同说明持续利用弱势。\n\n③ 伦理评价：unscrupulous employers ≈ unethical / unprincipled employers；完整改写必须保留 migrant workers 这一受害群体。",
         "tips": [
-          "shed light on = expose/reveal/uncover，常用在揭露问题的文章中。",
-          "unscrupulous/dishonest/unethical = 负面品格替换词，使用场景：不道德商业行为。"
+          "短语动词、行为和评价词可以同时改写，但事件角色不能交换。",
+          "systematic / consistently 体现持续性，不能删成一次性事件。"
         ]
       },
       "auto_scoring": false,
@@ -1170,11 +1458,41 @@
         "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "shed light on exploitation by unscrupulous employers",
+        "topic_signal": "revelation_behavior_evaluation",
+        "key_word_cn": "揭示行为与伦理评价",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "迁移揭示动作、剥削行为与伦理评价",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练多层同义改写中的角色与持续性。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1192,9 +1510,9 @@
         "text": "任务：先听音频，再识别 reconciling contradictions 的同义替换，并判断两大理论的关系。",
         "task_prompt": "任务：先听音频，再识别 reconciling contradictions 的同义替换，并判断两大理论的关系。",
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后改写抽象科学冲突",
+          "focus": "长期努力、调和表面矛盾与各自适用领域",
+          "success_criteria": "能说明科学家长期尝试解决两理论间的表面不相容，同时保留二者各自成功"
         },
         "audio_first": true,
         "image_url": null,
@@ -1206,19 +1524,19 @@
         "explanation": "语境揭示：Scientists have long grappled with the challenge of reconciling the apparent contradictions between quantum mechanics and general relativity, two theories that are each enormously successful in their respective domains."
       },
       "analysis_content": {
-        "text": "① 识别信号：reconcile = 调和/使协调，等同 resolve/bridge/unified；contradictions = 矛盾，等同 conflicts/incompatibilities/inconsistencies。② 核心规律：CET6 科学类抽象概念替换：grapple with = struggle with/wrestle with；reconcile = harmonize/unify/resolve tensions。③ 验证与迁移：答案核心：scientists struggle to resolve the conflicts between the two theories。",
+        "text": "① 困难投入：grappled with the challenge ≈ struggled with the problem。\n\n② 调和任务：reconciling apparent contradictions ≈ resolving apparent conflicts / bridging seeming incompatibilities。\n\n③ 限定让步：两种理论 each enormously successful in their respective domains；冲突是 apparent，不能改写成任一理论完全错误。",
         "tips": [
-          "reconcile + contradictions = resolve + conflicts = 两对名词替换，答案覆盖两者。",
-          "grapple with = deal with with difficulty，选项中常替换为 face challenges in / struggle to。"
+          "抽象改写要保留 apparent 等认识论限定。",
+          "respective domains 说明各自成功范围，不能删掉后宣称普遍失效。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_listening_paraphrase_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "audio": {
         "url": "ai_tts/cet6/1030/103012.mp3",
@@ -1249,16 +1567,16 @@
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后操作",
-          "focus": "识别同义替换",
-          "success_criteria": "准确完成交互操作"
+          "action": "听后改写抽象科学冲突",
+          "focus": "长期努力、调和表面矛盾与各自适用领域",
+          "success_criteria": "能说明科学家长期尝试解决两理论间的表面不相容，同时保留二者各自成功"
         }
       },
       "analysis": {
-        "text": "① 识别信号：reconcile = 调和/使协调，等同 resolve/bridge/unified；contradictions = 矛盾，等同 conflicts/incompatibilities/inconsistencies。② 核心规律：CET6 科学类抽象概念替换：grapple with = struggle with/wrestle with；reconcile = harmonize/unify/resolve tensions。③ 验证与迁移：答案核心：scientists struggle to resolve the conflicts between the two theories。",
+        "text": "① 困难投入：grappled with the challenge ≈ struggled with the problem。\n\n② 调和任务：reconciling apparent contradictions ≈ resolving apparent conflicts / bridging seeming incompatibilities。\n\n③ 限定让步：两种理论 each enormously successful in their respective domains；冲突是 apparent，不能改写成任一理论完全错误。",
         "tips": [
-          "reconcile + contradictions = resolve + conflicts = 两对名词替换，答案覆盖两者。",
-          "grapple with = deal with with difficulty，选项中常替换为 face challenges in / struggle to。"
+          "抽象改写要保留 apparent 等认识论限定。",
+          "respective domains 说明各自成功范围，不能删掉后宣称普遍失效。"
         ]
       },
       "auto_scoring": false,
@@ -1268,11 +1586,41 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "extra_fields": {
+        "focus_expression": "grapple with reconciling apparent contradictions between successful theories",
+        "topic_signal": "abstract_conflict_resolution",
+        "key_word_cn": "抽象冲突调和与限定",
+        "source_origin": "constructed_listening_paraphrase_context"
+      },
+      "quality_metadata": {
+        "main_training_goal": "迁移抽象科学冲突及限定条件的改写",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 listening simulation; legacy TTS asset retained for candidate sample only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练保留 apparent 和 respective domains。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],
