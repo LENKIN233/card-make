@@ -1,0 +1,56 @@
+{
+  "handoff_id": "20260817-content-cet6-1620-probe-portability-v1",
+  "created_at": "2026-08-17T01:41:36+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-1620-audio-candidate-v1",
+  "base_branch": "content/cet6-hard-blocker-consolidation-v1",
+  "commit_sha": "fe93f947f0222b7161d6753994b547eb13ead748",
+  "push_ref": "origin/content/cet6-1620-audio-candidate-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/185",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate_audio_probe_portability",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_grammar_1620.json",
+      "reviews/agent_self_review/20260731-cet6-grammar-1620-full-remediation.json",
+      "reviews/audit_scopes/20260731-cet6-grammar-1620-full-remediation-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "e3b2f15723d210725ba7cd082130ce7632ba30a2",
+    "patch_sha256": "3634e3e6baa3fb725ffb4bb679520471f1171340937e1606686da9a31a59feaf"
+  },
+  "validation": [
+    {
+      "command": "node scripts/audit_audio_technical.mjs --track cet6 --probe afinfo --report-path exports/cet6-audio-afinfo-portable.json",
+      "result": "passed; 328/328 assets and all declared durations match the macOS probe within 50 ms"
+    },
+    {
+      "command": "node scripts/audit_audio_technical.mjs --track cet6 --probe ffprobe --report-path exports/cet6-audio-ffprobe-portable.json",
+      "result": "passed; 328/328 assets and all declared durations match the Linux-compatible probe within 50 ms"
+    },
+    {
+      "command": "tooling/audio-signal-diagnostics-v1 dual-probe candidate audit",
+      "result": "passed with both afinfo and ffprobe; 328/328 signal diagnostics pass, estimated transcript speed is 97-205 WPM, mean level is -22.3 to -20.5 dB, and peak level is -8.5 to -0.8 dB"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base 8b749be722e3915838cedb738b265da84e519bf5 --head fe93f947f0222b7161d6753994b547eb13ead748",
+      "result": "passed; exact 8-card scope, current linked audit, and changed-card review coverage remain valid"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs && node scripts/validate_audio_lfs.mjs && node scripts/validate_harness.mjs",
+      "result": "passed; 2414 cards validate, LFS asset identities remain unchanged, and harness has 0 errors"
+    },
+    {
+      "command": "git diff --check e3b2f15723d210725ba7cd082130ce7632ba30a2...fe93f947f0222b7161d6753994b547eb13ead748",
+      "result": "passed"
+    }
+  ],
+  "local_status": "The eight normalized CET6 1620 assets now use declared durations centered between afinfo and ffprobe results, so both probe families remain within the governed 50 ms tolerance without changing the audio bytes or transcript bindings.",
+  "remaining_risks": [
+    "Probe portability and coarse signal diagnostics do not claim speech-to-transcript match, pronunciation, rhythm, stress, pauses, or formal human perceptual QC.",
+    "This child PR still targets the CET6 candidate branch; product import, formal release evidence, receiver deployment, and launch approval remain separate.",
+    "Content candidate merge authority remains no-auto-merge under the repository contract."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}

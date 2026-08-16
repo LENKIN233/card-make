@@ -19,10 +19,11 @@
       "162007",
       "162008"
     ],
-    "closure_reason": "Complete candidate closure for this box: hard blockers are removed, repetitive or underspecified fronts and analyses are replaced with task-specific teaching content, metadata is complete, and untraced legacy sources are disclosed as simulations rather than true-exam material.",
+    "closure_reason": "Complete candidate closure for this box: content blockers are removed and every audio-dependent task now binds a versioned candidate MP3 path, measured duration, transcript, and SHA-256 without claiming formal perceptual QC.",
     "source_issue_refs": [
       "audit:cet6-remaining-content-rewrite-20260816",
-      "audit:complete-prefix-1620"
+      "audit:complete-prefix-1620",
+      "audit:cet6-1620-audio-binding-20260816"
     ]
   },
   "specs_read": [
@@ -33,6 +34,7 @@
     "spec/review-workflow.json",
     "spec/card-metadata.schema.json",
     "spec/card-quality-audit.json",
+    "spec/audio-generation-contract.json",
     "../softbook_cet/spec/product-core.json",
     "../softbook_cet/spec/card-system.json",
     "../softbook_cet/spec/box-catalog.json"
@@ -46,7 +48,7 @@
   },
   "quality_audit": {
     "report": "reviews/audit_scopes/20260731-cet6-grammar-1620-full-remediation-scope-audit.json",
-    "corpus_fingerprint": "81a88ab94c7c73966798155c33612b0c48224b5377583646a3ebc1d0a7ae9757",
+    "corpus_fingerprint": "6317e00161caadec4281a35d86a445cd8563a0c84228f8711906ca1775906c26",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
       "card_ids": [
@@ -578,13 +580,14 @@
     "box_progression": "The box preserves its interaction sequence while every card now has a concrete task, card-specific explanation, complete metadata, and an explicit provenance boundary.",
     "repetition_or_gap_risks": [
       "Current scoped audit reports no hard blocker, content risk, or review gap.",
-      "Any synthetic-source disclosure is explicit and is not a true-exam claim."
+      "Any synthetic-source disclosure is explicit and is not a true-exam claim.",
+      "The eight versioned TTS assets are candidate media with technical identity only; formal human perceptual QC remains separate."
     ],
     "representative_cards": [
       "162001",
       "162005",
       "162008"
     ],
-    "next_step": "Keep the box in the complete track candidate payload and validate the combined CET4+CET6 import without claiming formal launch approval."
+    "next_step": "Run the complete CET6 technical audio audit and product audio-bundle runtime smoke without claiming formal perceptual QC or launch approval."
   }
 }

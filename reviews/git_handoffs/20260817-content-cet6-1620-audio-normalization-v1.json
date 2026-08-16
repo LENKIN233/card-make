@@ -1,0 +1,65 @@
+{
+  "handoff_id": "20260817-content-cet6-1620-audio-normalization-v1",
+  "created_at": "2026-08-17T01:27:51+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-1620-audio-candidate-v1",
+  "base_branch": "content/cet6-hard-blocker-consolidation-v1",
+  "commit_sha": "24af1cbc0162e7b2cede1d855dc541d2f3dd1992",
+  "push_ref": "origin/content/cet6-1620-audio-candidate-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/185",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate_audio_normalization",
+    "touched_paths": [
+      "ai_tts/audio-lfs-manifest.json",
+      "ai_tts/cet6/1620/162001-v2.mp3",
+      "ai_tts/cet6/1620/162002-v2.mp3",
+      "ai_tts/cet6/1620/162003-v2.mp3",
+      "ai_tts/cet6/1620/162004-v2.mp3",
+      "ai_tts/cet6/1620/162005-v2.mp3",
+      "ai_tts/cet6/1620/162006-v2.mp3",
+      "ai_tts/cet6/1620/162007-v2.mp3",
+      "ai_tts/cet6/1620/162008-v2.mp3",
+      "card_boxes_json/card_boxes_seed_cet6_grammar_1620.json",
+      "reviews/agent_self_review/20260731-cet6-grammar-1620-full-remediation.json",
+      "reviews/audit_scopes/20260731-cet6-grammar-1620-full-remediation-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "2a0e798e66f79dc1d9425c8905ed2bd87d1bac23",
+    "patch_sha256": "3a0ac72292ec75d0da097821d1a1398681575b85c246bd4fd44789543a21349b"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base 8b749be722e3915838cedb738b265da84e519bf5 --head 24af1cbc0162e7b2cede1d855dc541d2f3dd1992",
+      "result": "passed; all 8 CET6 1620 changed cards retain exact self-review coverage and a current linked scoped audit with zero hard blockers, content risks, or review gaps"
+    },
+    {
+      "command": "node scripts/audit_audio_technical.mjs --track cet6 --report-path exports/cet6-full-track-audio-technical.json",
+      "result": "passed; 328/328 CET6 audio assets decode and match bound paths, hashes, durations, and transcripts with 0 technical errors"
+    },
+    {
+      "command": "CET6 1620 transcript-duration and signal-level diagnostic",
+      "result": "passed; all 8 normalized assets are 157-202 estimated words per minute, -21.8 to -21.1 dB mean level, and -8.5 to -7.3 dB peak with no clipping or level outlier"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs && node scripts/validate_audio_lfs.mjs && node scripts/validate_harness.mjs",
+      "result": "passed; 2414 cards validate, all LFS identities match, and harness has 0 errors"
+    },
+    {
+      "command": "node --test scripts/test_card_integrity.mjs scripts/test_pr_scope.mjs scripts/test_audio_technical_audit.mjs scripts/test_audio_perceptual_worklist.mjs",
+      "result": "passed; 30/30 focused tests"
+    },
+    {
+      "command": "git diff --check 2a0e798e66f79dc1d9425c8905ed2bd87d1bac23...24af1cbc0162e7b2cede1d855dc541d2f3dd1992",
+      "result": "passed"
+    }
+  ],
+  "local_status": "The eight CET6 1620 candidate assets now match the surrounding full-track listening corpus more closely: the prior 235-245 WPM outliers are removed, signal level is normalized, and every changed byte is rebound through the card payload, LFS manifest, immutable scoped audit, and self-review fingerprint.",
+  "remaining_risks": [
+    "These diagnostics improve candidate usability but do not claim speech-to-transcript match, pronunciation, rhythm, stress, pauses, or formal human perceptual QC.",
+    "This child PR still targets the CET6 candidate branch; product import, formal release evidence, receiver deployment, and launch approval remain separate.",
+    "Content candidate merge authority remains no-auto-merge under the repository contract."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
