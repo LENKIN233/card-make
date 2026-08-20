@@ -1,0 +1,201 @@
+{
+  "review_id": "20260816-cet4-0200-residual-blocker-closure",
+  "created_at": "2026-08-16T16:08:43+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "选词填空",
+    "group": "词性判断",
+    "box": "名词",
+    "box_prefixes": ["0200"],
+    "card_ids": ["020003", "020005", "020007", "020008", "020009", "020010"],
+    "closure_reason": "The 2026-08-16 full-corpus baseline found six existing 0200 cards whose front side exposed the correct option or declared the analysis clue before the learner attempted the task.",
+    "source_issue_refs": [
+      "exports/cet4-full-track-remediation-baseline-20260816.json: box 0200 reported six hard blockers",
+      "scripts/audit_card_quality.mjs: front_leaks_correct_answer and front_leaks_analysis_conclusion"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260816-cet4-0200-residual-blocker-closure-scope-audit.json",
+    "corpus_fingerprint": "01a50f3cfd765e62a75ad91f299c34a355e635c993962f4b1363ee04fa9d801b",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": ["020003", "020005", "020007", "020008", "020009", "020010"],
+      "card_count": 6,
+      "issue_count": 12,
+      "by_severity": {"hard_blocker": 0, "content_risk": 0, "review_gap": 0, "source_risk": 12},
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 6,
+        "template_analysis_pattern": 0,
+        "unverified_source": 6
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "020003",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "2", "library_name": "选词填空", "group_id": "0", "group_name": "词性判断", "box_id": "0", "box_name": "名词", "box_prefix": "0200"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别冠词加形容词后的核心名词",
+        "weak_point_tags": ["grammar_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "foundation", "secondary": ["pass"]},
+        "card_prototype": "error_correction",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy content-pool item without verifiable paper provenance; conservatively treated as CET4 simulation material.", "audio_generation_method": "none"},
+        "exam_value": "避免把形容词误填进名词短语核心位置，并能解释排除理由。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["The legacy source has no verifiable paper provenance and is disclosed as simulation material."],
+      "recommendation": "Use as the noun-phrase head application item without exposing distinction on the front."
+    },
+    {
+      "card_id": "020005",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "2", "library_name": "选词填空", "group_id": "0", "group_name": "词性判断", "box_id": "0", "box_name": "名词", "box_prefix": "0200"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "利用并列对等关系判断名词词性",
+        "weak_point_tags": ["grammar_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["foundation"]},
+        "card_prototype": "solving_action",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy content-pool item without verifiable paper provenance; conservatively treated as CET4 simulation material.", "audio_generation_method": "none"},
+        "exam_value": "把并列项的词性迁移到空格，提升复杂名词短语中的判断速度。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["The legacy source has no verifiable paper provenance and is disclosed as simulation material."],
+      "recommendation": "Use for parallel-structure application without naming textile before the attempt."
+    },
+    {
+      "card_id": "020007",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "2", "library_name": "选词填空", "group_id": "0", "group_name": "词性判断", "box_id": "0", "box_name": "名词", "box_prefix": "0200"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据学术搭配选择研究对象名词",
+        "weak_point_tags": ["vocabulary_weak", "reading_slow", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["high_score"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy content-pool item without verifiable paper provenance; conservatively treated as CET4 simulation material.", "audio_generation_method": "none"},
+        "exam_value": "识别 a sample of people 等研究语境高频搭配，避免只按中文词义选词。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["The legacy source has no verifiable paper provenance and is disclosed as simulation material."],
+      "recommendation": "Use for same-part-of-speech filtering without placing sample in the stem."
+    },
+    {
+      "card_id": "020008",
+      "interaction_id": "lock",
+      "knowledge_ref": {"track": "cet4", "library_id": "2", "library_name": "选词填空", "group_id": "0", "group_name": "词性判断", "box_id": "0", "box_name": "名词", "box_prefix": "0200"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "利用定语从句约束名词语义",
+        "weak_point_tags": ["grammar_weak", "reading_slow", "exam_strategy_weak"],
+        "difficulty": {"primary": "high_score", "secondary": ["pass"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy content-pool item without verifiable paper provenance; conservatively treated as CET4 simulation material.", "audio_generation_method": "none"},
+        "exam_value": "把后置定语从句转化为语义筛选条件，处理词性相同的多个候选词。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["The legacy source has no verifiable paper provenance and is disclosed as simulation material."],
+      "recommendation": "Use as a transfer item after removing answer-hindsight wording from the hint."
+    },
+    {
+      "card_id": "020009",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "2", "library_name": "选词填空", "group_id": "0", "group_name": "词性判断", "box_id": "0", "box_name": "名词", "box_prefix": "0200"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别百分比修饰下的风险名词搭配",
+        "weak_point_tags": ["vocabulary_weak", "reading_slow", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["high_score"]},
+        "card_prototype": "integrated_micro_drill",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy content-pool item without verifiable paper provenance; conservatively treated as CET4 simulation material.", "audio_generation_method": "none"},
+        "exam_value": "结合可量化修饰语和 risk of death 搭配判断公共卫生语境中的名词。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["The legacy source has no verifiable paper provenance and is disclosed as simulation material."],
+      "recommendation": "Use for collocation transfer without naming risk in the front stem."
+    },
+    {
+      "card_id": "020010",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {"track": "cet4", "library_id": "2", "library_name": "选词填空", "group_id": "0", "group_name": "词性判断", "box_id": "0", "box_name": "名词", "box_prefix": "0200"},
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据因果与相关对比选择名词",
+        "weak_point_tags": ["reading_slow", "exam_strategy_weak"],
+        "difficulty": {"primary": "high_score", "secondary": ["pass"]},
+        "card_prototype": "exam_strategy",
+        "material": {"text_source_type": "simulation", "source_note": "Legacy content-pool item without verifiable paper provenance; conservatively treated as CET4 simulation material.", "audio_generation_method": "none"},
+        "exam_value": "利用转折和研究方法边界区分因果结论与数据关联模式。",
+        "box_progression_role": "mixed",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {"logic_error": false, "language_error": false, "inappropriate_wording": false, "low_knowledge_density": false, "not_meeting_requirement": false, "reverse_engineered_front": false, "fake_source_claim": false, "low_quality_variation": false},
+      "analysis_reference_check": {"answer_matches_card": true, "choice_or_bank_references_match_source": true, "distractor_labels_match_explanations": true},
+      "major_issues": [],
+      "minor_issues": ["The legacy source has no verifiable paper provenance and is disclosed as simulation material."],
+      "recommendation": "Use as the box transfer item without repeating the correct option wording in the front."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "No box-count change. Six existing items now preserve the recognition-to-application-to-transfer sequence without revealing the answer or analysis conclusion before the learner acts.",
+    "repetition_or_gap_risks": [
+      "The six source excerpts remain unverified legacy content-pool items and are conservatively disclosed as simulation material.",
+      "This residual closure is agent review evidence only and does not create formal batch approval."
+    ],
+    "representative_cards": ["020003", "020008", "020010"],
+    "next_step": "Continue the CET4 hard-blocker queue with the next highest-impact box, then include this closure in the eventual full-track review."
+  }
+}

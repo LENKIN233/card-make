@@ -1,0 +1,37 @@
+{
+  "handoff_id": "20260816-content-cet4-0200-hard-blocker-remediation-v1",
+  "created_at": "2026-08-16T16:12:44+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-0200-hard-blocker-remediation-v1",
+  "base_branch": "main",
+  "commit_sha": "9841528dd685670221760bbfdd71c030b1d93c21",
+  "push_ref": "origin/content/cet4-0200-hard-blocker-remediation-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/179",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_bankedcloze_0200.json",
+      "reviews/agent_self_review/20260816-cet4-0200-residual-blocker-closure.json",
+      "reviews/audit_scopes/20260816-cet4-0200-residual-blocker-closure-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "cf2164d56070a6ec5ded49c059c9b91272868eb6",
+    "patch_sha256": "65c0893536b735084249ac81be293df29b5a223883ab5aeeac07da6b290b275c"
+  },
+  "validation": [
+    {"command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json", "result": "passed; 2,414 cards, zero errors and warnings"},
+    {"command": "node scripts/audit_card_quality.mjs --scope-card-ids 020003,020005,020007,020008,020009,020010 --write-scope-report reviews/audit_scopes/20260816-cet4-0200-residual-blocker-closure-scope-audit.json", "result": "passed; zero hard blockers, content risks, or review gaps"},
+    {"command": "node scripts/validate_harness.mjs", "result": "passed with recorded upstream warnings only"},
+    {"command": "node --test scripts/test_card_integrity.mjs", "result": "passed; 19/19"},
+    {"command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD", "result": "passed against immutable payload commit 9841528dd685670221760bbfdd71c030b1d93c21"},
+    {"command": "git diff --check", "result": "passed"}
+  ],
+  "local_status": "Six-card residual blocker closure pushed; draft PR 179 opened; handoff-only commit ready.",
+  "remaining_risks": [
+    "The six legacy source excerpts remain conservatively disclosed as simulation material with unverified paper provenance.",
+    "This residual closure does not create formal batch approval or product launch authority."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
