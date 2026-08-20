@@ -1,0 +1,646 @@
+{
+  "review_id": "20260814-cet4-listening-0021-expansion",
+  "created_at": "2026-08-14T13:25:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "逻辑关系",
+    "box": "因果关系",
+    "box_prefixes": [
+      "0021"
+    ],
+    "single_box_prefix": "0021",
+    "card_ids": [
+      "002104",
+      "002105",
+      "002106",
+      "002107",
+      "002108",
+      "002109",
+      "002110",
+      "002111",
+      "002112"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "spec/audio-generation-contract.json",
+    "../softbook_cet/spec/requirement-memory.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/runtime-boundaries.json",
+    "../softbook_cet/infra/cloudbase/content-manifest-v1-runtime-contract.md"
+  ],
+  "sample_policy": {
+    "review_scope_type": "confirmed_box_expansion",
+    "is_three_card_sample_per_box": false,
+    "confirmed_box_expansion": true,
+    "sample_confirmation_satisfied": true,
+    "sample_confirmation_record": "reviews/sample_confirmations/20260814-cet4-listening-five-boxes.json",
+    "sample_confirmation_id": "20260814-cet4-listening-five-boxes",
+    "final_user_approval_required": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260814-cet4-listening-0021-expansion-scope-audit.json",
+    "corpus_fingerprint": "b4c9663b32bf97b0f7e3ab4f7141ff925ed87d0bba37f655c63d848e1bd65861",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "002104",
+        "002105",
+        "002106",
+        "002107",
+        "002108",
+        "002109",
+        "002110",
+        "002111",
+        "002112"
+      ],
+      "card_count": 9,
+      "issue_count": 9,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 9
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 9,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "002104",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 so 后由交通压力触发的城市响应",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在措施题中越过问题背景，锁定组织采取的结果动作。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 识别 so 后由交通压力触发的城市响应."
+    },
+    {
+      "card_id": "002105",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 causing 结构区分支付系统故障与排队后果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "避免把更显眼的后果误当原因，准确完成根因题。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 用 causing 结构区分支付系统故障与排队后果."
+    },
+    {
+      "card_id": "002106",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "追踪多标记连接的三段式因果链",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在长句中保留中间机制，减少因果链断裂造成的细节题误判。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 追踪多标记连接的三段式因果链."
+    },
+    {
+      "card_id": "002107",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 because 前置原因与主句中的污染样本变化",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在原因前置句中把注意力转回主句结果。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 识别 because 前置原因与主句中的污染样本变化."
+    },
+    {
+      "card_id": "002108",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 since 后使通勤提速的动态信号灯调控",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在结果先行句中向后追踪原因证据。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 识别 since 后使通勤提速的动态信号灯调控."
+    },
+    {
+      "card_id": "002109",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 as a consequence of 还原发货与促销之间的因果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户处理名词化因果标记，避免把原因和结果方向听反。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 用 as a consequence of 还原发货与促销之间的因果."
+    },
+    {
+      "card_id": "002110",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别简化注册步骤带来的活跃用户增长",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户从 because 后抽取具体产品改动，而不是凭常识猜测增长原因。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 识别简化注册步骤带来的活跃用户增长."
+    },
+    {
+      "card_id": "002111",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别停电风险触发的医院备份系统部署",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在公共服务场景中从风险背景切换到机构措施。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 识别停电风险触发的医院备份系统部署."
+    },
+    {
+      "card_id": "002112",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "追踪客户反馈触发的说明书改写与来电减少",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending complete human perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户在一句话中同时保留触发问题、组织动作和可观察结果。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Complete human perceptual audio QC is pending; this pass covers transcript, task, answer logic, asset identity, decoder, and declared duration only.",
+        "The TTS material is disclosed simulation and must not be represented as an authentic CET excerpt or formal-audio approval."
+      ],
+      "recommendation": "Use this reviewed expansion card to train: 追踪客户反馈触发的说明书改写与来电减少."
+    }
+  ],
+  "batch_review": {
+    "status": "reviewed_confirmed_box_expansion",
+    "box_progression": "The confirmed sample establishes basic cause/effect recognition. Cards 002104–002112 extend the box through response actions, root-cause discrimination, multi-step chains, cause-fronted clauses, result-fronted clauses, nominal causal markers, and cause-action-purpose separation using only flip and multiple_choice.",
+    "repetition_or_gap_risks": [
+      "All nine expansion assets are disclosed simulations and still require complete human perceptual audio QC.",
+      "The controlled TTS sentences are not authentic CET excerpts and must not be represented as source-authentic exam material.",
+      "Formal content use remains blocked until a separate explicit final user approval record exists."
+    ],
+    "representative_cards": [
+      "002104",
+      "002106",
+      "002109",
+      "002112"
+    ],
+    "next_step": "Keep the 12-card box candidate-only, complete human perceptual audio QC, then include it in a separately user-approved formal batch before product import."
+  }
+}

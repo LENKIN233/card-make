@@ -1,0 +1,267 @@
+{
+  "review_id": "20260813-cet4-listening-0021-sample",
+  "created_at": "2026-08-13T10:10:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "逻辑关系",
+    "box": "因果关系",
+    "box_prefixes": [
+      "0021"
+    ],
+    "card_ids": [
+      "002101",
+      "002102",
+      "002103"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/doc-manifest.json",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "three_card_sample_per_box",
+    "is_three_card_sample_per_box": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260813-cet4-listening-0021-sample-scope-audit.json",
+    "corpus_fingerprint": "b4c9663b32bf97b0f7e3ab4f7141ff925ed87d0bba37f655c63d848e1bd65861",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "002101",
+        "002102",
+        "002103"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "002101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别 because 前的结果与后的具体原因",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在听力 why 题中越过表面现象，准确提取 because 后的原因信息。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Perceptual audio QC remains pending; this pass covers transcript, task, conclusion, and card logic only.",
+        "The disclosed simulation must not be represented as a true-exam excerpt."
+      ],
+      "recommendation": "Use as the low-burden recognition entry for separating the because result and reason sides."
+    },
+    {
+      "card_id": "002102",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "按 led to 的方向区分投诉原因与政策修订结果",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练用户用因果箭头排除结果倒置和对象错配，稳定完成 CET 听力原因题。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Perceptual audio QC remains pending; this pass covers transcript, task, answer, and card logic only.",
+        "The disclosed simulation must not be represented as a true-exam excerpt."
+      ],
+      "recommendation": "Use as the application card for lead-to direction under near-neighbor distractors."
+    },
+    {
+      "card_id": "002103",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "2",
+        "group_name": "逻辑关系",
+        "box_id": "1",
+        "box_name": "因果关系",
+        "box_prefix": "0021"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 therefore 从失败证据切换到最终决定",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Existing AI TTS asset has unverified provider and voice; pending formal perceptual audio QC.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "帮助用户在 CET 新闻和讲座听力中越过背景证据，抓住 therefore 后的最终决定。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Perceptual audio QC remains pending; this pass covers transcript, task, answer, and card logic only.",
+        "The disclosed simulation must not be represented as a true-exam excerpt."
+      ],
+      "recommendation": "Use as the transfer card for evidence-to-decision reasoning after therefore."
+    }
+  ],
+  "batch_review": {
+    "status": "recommend_user_confirmation",
+    "box_progression": "The sample progresses from recognizing the result-reason split around because, to applying a lead-to cause arrow under near-neighbor distractors, to transferring therefore into evidence-to-decision listening.",
+    "repetition_or_gap_risks": [
+      "All three texts are disclosed simulations and must never be marketed as true-exam excerpts.",
+      "Perceptual audio QC is separate and remains pending before formal audio use.",
+      "The first card intentionally remains flip for low-burden recognition; the next two use answer choices for application and transfer."
+    ],
+    "representative_cards": [
+      "002101",
+      "002102",
+      "002103"
+    ],
+    "next_step": "Present these three cards for user sample confirmation before expanding the remaining nine cards in box 0021."
+  }
+}

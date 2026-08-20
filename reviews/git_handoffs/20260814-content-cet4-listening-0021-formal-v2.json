@@ -1,0 +1,37 @@
+{
+  "handoff_id": "20260814-content-cet4-listening-0021-formal-v2",
+  "created_at": "2026-08-14T21:09:59+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-listening-0021-formal-v2",
+  "base_branch": "main",
+  "commit_sha": "70f89058c91c769ca9c15afa0b870c9362245ff3",
+  "push_ref": "origin/content/cet4-listening-0021-formal-v2",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/171",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0021.json",
+      "reviews/agent_self_review/20260813-cet4-listening-0021-sample.json",
+      "reviews/agent_self_review/20260814-cet4-listening-0021-expansion.json",
+      "reviews/audit_scopes/20260813-cet4-listening-0021-sample-scope-audit.json",
+      "reviews/audit_scopes/20260814-cet4-listening-0021-expansion-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "763cfcdad865b85fd1c1c1bb888c068dee8d4da2",
+    "patch_sha256": "3ca83e1e6cfafa7f7b6dd966e20ae2a411645ce1c5c1f9f380b6805614165a5b"
+  },
+  "validation": [
+    {"command": "node scripts/validate_cards.mjs", "result": "passed; 0 errors and 0 warnings"},
+    {"command": "node scripts/validate_harness.mjs", "result": "passed with recorded upstream warnings only"},
+    {"command": "node --test scripts/test_card_integrity.mjs", "result": "passed; 19/19"},
+    {"command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD", "result": "passed on immutable payload head"}
+  ],
+  "local_status": "payload and handoff commits isolated",
+  "remaining_risks": [
+    "Candidate content is not a formal approved batch.",
+    "Formal product launch remains separate."
+  ],
+  "merge_authority": "no_auto_merge_content_candidate_user_confirmation_required"
+}
