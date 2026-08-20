@@ -4,7 +4,7 @@
   "agent": "codex",
   "branch": "content/cet4-hard-blocker-consolidation-v1",
   "base_branch": "main",
-  "commit_sha": "420cedc3d9951741f65495a3d2aef8985c249f02",
+  "commit_sha": "eb8c0262dac7fb6f63cb0796f9da2329572c0871",
   "push_ref": "origin/content/cet4-hard-blocker-consolidation-v1",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/182",
   "PR_state": "OPEN",
@@ -446,7 +446,7 @@
       "reviews/audit_scopes/20260816-cet4-0631-metadata-source-closure-scope-audit.json"
     ],
     "patch_format": "git-diff-binary-v2",
-    "base_commit_sha": "fb06247b8df57bab6dbf7a4f18da562f35b61bf2",
+    "base_commit_sha": "1d6ee22f747ec0cbea2a70500bcc6846f13f55e6",
     "patch_sha256": "93baefb13e81bde00b74f96aa0f3829b958fa0f48e67ff121db50bc6a62b3f7d"
   },
   "validation": [
@@ -467,14 +467,27 @@
       "result": "passed; 1143 changed CET4 card objects across 107 changed box files"
     },
     {
-      "command": "git diff --check fb06247b8df57bab6dbf7a4f18da562f35b61bf2...420cedc3d9951741f65495a3d2aef8985c249f02",
+      "command": "git diff --check 1d6ee22f747ec0cbea2a70500bcc6846f13f55e6...eb8c0262dac7fb6f63cb0796f9da2329572c0871",
       "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed after rebasing the complete CET4 candidate onto audio-signal diagnostics main"
+    },
+    {
+      "command": "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-main-refresh.json",
+      "result": "passed; 300/300 base-candidate assets satisfy exact binding and current coarse-signal thresholds; stacked PR #186 supplies the separately validated 301st asset"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed structurally; 0 formal perceptual QC records, so no formal audio-readiness claim"
     }
   ],
   "local_status": "CET4 candidate closure now covers all 1180 track cards: zero hard blockers, zero content risks, zero review gaps, zero unverified sources, and no stale unverified-source flags under the current audit.",
   "remaining_risks": [
-    "This is a complete CET4 candidate payload, not yet product-imported, deployed, or formal launch evidence.",
-    "CET4 candidate quality is complete under the current repository audit; cross-track combined import and runtime smoke remain separate.",
+    "This is a complete CET4 candidate payload, not a formal approved batch, receiver deployment, or closed-beta release candidate.",
+    "The base candidate binds 300 technically verified audio assets; stacked PR #186 carries the separately validated 301st asset required by the product release contract.",
+    "Formal identified-human perceptual QC remains absent and cannot be replaced by technical diagnostics or ASR.",
     "Synthetic preparation material remains explicitly disclosed and is never represented as true-exam content.",
     "Listening audio delivery, receiver-environment verification, and formal release gates remain separate work."
   ],
