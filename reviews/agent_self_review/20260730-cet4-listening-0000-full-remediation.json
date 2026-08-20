@@ -1,0 +1,813 @@
+{
+  "review_id": "20260730-cet4-listening-0000-full-remediation",
+  "created_at": "2026-08-16T23:10:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "听力",
+    "group": "听前预测",
+    "box": "根据选项预测话题",
+    "box_prefixes": [
+      "0000"
+    ],
+    "card_ids": [
+      "000001",
+      "000002",
+      "000003",
+      "000004",
+      "000005",
+      "000006",
+      "000007",
+      "000008",
+      "000009",
+      "000010",
+      "000011",
+      "000012"
+    ],
+    "closure_reason": "Complete candidate closure for this box: hard blockers are removed, repetitive or underspecified fronts and analyses are replaced with task-specific teaching content, metadata is complete, and untraced legacy sources are disclosed as simulations rather than true-exam material.",
+    "source_issue_refs": [
+      "audit:cet4-remaining-content-rewrite-20260816",
+      "audit:complete-prefix-0000"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet4-listening-0000-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "bfce4a5d3720653109aa79fdd5d21ede48ba9c5c662e64a75cd197d589295b5f",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "000001",
+        "000002",
+        "000003",
+        "000004",
+        "000005",
+        "000006",
+        "000007",
+        "000008",
+        "000009",
+        "000010",
+        "000011",
+        "000012"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "000001",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项中的对象与角度预测主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "先从选项中抓住对象和比较角度，再播放音频验证话题预测。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "000002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 focuses on how 识别主话题关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "把开头句的中心关系和背景词分开，别因听到一个熟词就误判。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "000003",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用介绍结构和评价动词预测讲座展开",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "合并讲座开头的结构词和评价词，提前预测后文会怎样展开。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "000004",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 whether 结构中预测听力中心议题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "把听力开头的对象与待判断问题合起来，别只凭一个熟词猜主旨。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "000005",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用对象、受众和方式预测听力主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "别凭单个场景词猜主旨，要用完整的话题角色关系筛选选项。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "000006",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 impact of X on Y 预测影响类主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "把措施和结果成对识别，别把行业背景误当作主旨。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "000007",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用 how 与 by 结构预测策略类主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "从听力开头抓住行动者、目标人群和方法，快速形成三段式预测。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "000008",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别话题切换并预测后文核心问题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "听出主旨何时从背景比较切换到研究问题，别被开头熟词带偏。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "000009",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据强调与条件信号预测结论型主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "从活动背景中提取真正的变化结论，并锁定它的触发条件。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "000010",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据转折识别政策效果类主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "听出问题陈述只是引入，把注意力转向政策带来的具体效果。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "000011",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 central concern 结构预测解释型主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "略过趋势背景，抓住研究人群、行为变化与条件组成的中心问题。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "000012",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据总结与最高程度限定预测结论型主话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET4 listening simulation; existing TTS asset retained for candidate review only.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "从多因素列举中抓住最终结论和比较强度，提前预测后文证据重点。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "The box preserves its interaction sequence while every card now has a concrete task, card-specific explanation, complete metadata, and an explicit provenance boundary.",
+    "repetition_or_gap_risks": [
+      "Current scoped audit reports no hard blocker, content risk, or review gap.",
+      "Any synthetic-source disclosure is explicit and is not a true-exam claim."
+    ],
+    "representative_cards": [
+      "000001",
+      "000007",
+      "000012"
+    ],
+    "next_step": "Keep the box in the complete track candidate payload and validate the combined CET4+CET6 import without claiming formal launch approval."
+  }
+}

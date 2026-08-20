@@ -1,0 +1,771 @@
+{
+  "review_id": "20260730-cet4-reading-0110-full-remediation",
+  "created_at": "2026-08-16T23:10:00+08:00",
+  "agent": "codex",
+  "scope": {
+    "library": "仔细阅读",
+    "group": "干扰项排除",
+    "box": "无中生有",
+    "box_prefixes": [
+      "0110"
+    ],
+    "card_ids": [
+      "011001",
+      "011002",
+      "011003",
+      "011004",
+      "011005",
+      "011006",
+      "011007",
+      "011008",
+      "011009",
+      "011010",
+      "011011",
+      "011012"
+    ],
+    "closure_reason": "Complete candidate closure for this box: hard blockers are removed, repetitive or underspecified fronts and analyses are replaced with task-specific teaching content, metadata is complete, and untraced legacy sources are disclosed as simulations rather than true-exam material.",
+    "source_issue_refs": [
+      "audit:cet4-remaining-content-rewrite-20260816",
+      "audit:complete-prefix-0110"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/card-metadata.schema.json",
+    "spec/card-quality-audit.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json"
+  ],
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "is_three_card_sample_per_box": false,
+    "residual_blocker_closure": true,
+    "not_sample_approval": true,
+    "batch_generation_requires_user_confirmation": true
+  },
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260730-cet4-reading-0110-full-remediation-scope-audit.json",
+    "corpus_fingerprint": "bfce4a5d3720653109aa79fdd5d21ede48ba9c5c662e64a75cd197d589295b5f",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "011001",
+        "011002",
+        "011003",
+        "011004",
+        "011005",
+        "011006",
+        "011007",
+        "011008",
+        "011009",
+        "011010",
+        "011011",
+        "011012"
+      ],
+      "card_count": 12,
+      "issue_count": 12,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 12
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 12,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "011001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别看似合理但没有文本证据的新增预测",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练区分文本支持与顺常识补写。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "011002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别权威术语包装的无证据结论",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练逐项回链研究规模、验证和结论词。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "011003",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别从现状描述跳到未来预测或成果总结",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练按时间层级检查证据边界。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "011004",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分合理常识与文本可支持推断",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练删除背景知识后重新验证结论。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "011005",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别专业化术语新增且改变原机制",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练核对机制中的数量、对象与环境因素。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "011006",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别把明确未测指标写成已证实结果",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练区分 measured 与 not examined。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "011007",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分已测结果、未测指标和后续企业决策",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练为每个结果建立证据覆盖清单。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "011008",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别前半句真实、后半因果新增的复合错项",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练遇到 therefore 等词逐段核对因果链。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "011009",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "识别有限试验被扩展为普遍成功",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练核对 experiment、does not claim 与 proven/every 的跨度。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "011010",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "迁移识别实验室短期结果跨层跳到长期现实结果",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练核对场景、时间与结果层级。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "011011",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "迁移识别不确定解释被升级为确认原因",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练保持 possible 与 confirmed 的证据等级。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    },
+    {
+      "card_id": "011012",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "0110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "综合区分功能结果与未讨论的政治态度结果",
+        "weak_point_tags": [
+          "exam_strategy_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练防止从服务可达性自动推出政府信任。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete track candidate corpus."
+    }
+  ],
+  "batch_review": {
+    "status": "documented_residual_closure",
+    "box_progression": "The box preserves its interaction sequence while every card now has a concrete task, card-specific explanation, complete metadata, and an explicit provenance boundary.",
+    "repetition_or_gap_risks": [
+      "Current scoped audit reports no hard blocker, content risk, or review gap.",
+      "Any synthetic-source disclosure is explicit and is not a true-exam claim."
+    ],
+    "representative_cards": [
+      "011001",
+      "011007",
+      "011012"
+    ],
+    "next_step": "Keep the box in the complete track candidate payload and validate the combined CET4+CET6 import without claiming formal launch approval."
+  }
+}
