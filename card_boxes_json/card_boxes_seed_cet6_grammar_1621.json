@@ -20,16 +20,23 @@
       "card_box_name": "阅读",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【阅读虚拟语气】混合虚拟识别\n\n句子：If the team had cross-checked the dataset earlier, the conclusion would now be much more defensible in 阅读。\n\n任务：说明为什么这是“过去条件 + 现在结果”的混合虚拟。"
+        "text": "阅读句：The report acknowledges, ‘If the survey had included residents without internet access, its estimate of service satisfaction would be more representative today.’\n\n翻卡前写出：过去哪件事没有发生？作者承认估计结果现在有什么局限？",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "翻卡前写出一个过去事实和一个当前局限",
+          "focus": "混合反事实的时间轴与事实还原",
+          "success_criteria": "能分别依据 had included、would be 和 today 写出两层信息"
+        }
       },
       "back_content": {
-        "text": "if 从句 had cross-checked 指向过去未实现条件，主句 would now be 指向当前结果，因此属于混合虚拟。\n\n【盒内定位】阅读理解侧重：优先抓语义线索与句间逻辑。"
+        "text": "过去未发生的事是：调查没有纳入无法上网的居民。作者承认的当前局限是：现有满意度估计的代表性不如纳入这些居民时可能达到的水平。句子承认样本覆盖不足，但没有断言整个调查毫无价值。",
+        "explanation": "阅读混合反事实要分别恢复两个时间点：had included 指向过去未实现的条件，would be 指向现在仍受影响的结果。"
       },
       "analysis_content": {
-        "text": "① 识别信号：if 从句为 had done，主句带 now 且为 would be。\n② 核心规律：混合虚拟常表示“过去决策影响当前状态”。\n③ 验证：还原现实语义可得“过去未核对，导致当前结论说服力不足”。",
+        "text": "① had included 把纳入行为放在过去，并把它呈现为未发生。\n\n② would be more representative 把比较结果落在 today，即当前估计。\n\n③ 作者借反事实承认代表性边界；这支持‘可能不够全面’，不支持‘所有结论都错误’。",
         "tips": [
-          "先画时间轴，再匹配主从句时态。（1621）",
-          "看到 now/today 一类词时要警惕混合虚拟。"
+          "把条件和结果分别标成 past / now。",
+          "局限性承认通常缩小结论范围，而不是自动推翻全文。"
         ]
       },
       "options": null,
@@ -40,12 +47,12 @@
       "form_options": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_reading_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -61,18 +68,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "【阅读虚拟语气】混合虚拟识别\n\n句子：If the team had cross-checked the dataset earlier, the conclusion would now be much more defensible in 阅读。\n\n任务：说明为什么这是“过去条件 + 现在结果”的混合虚拟。",
-        "task_prompt": "【阅读虚拟语气】混合虚拟识别\n\n句子：If the team had cross-checked the dataset earlier, the conclusion would now be much more defensible in 阅读。\n\n任务：说明为什么这是“过去条件 + 现在结果”的混合虚拟。",
+        "text": "阅读句：The report acknowledges, ‘If the survey had included residents without internet access, its estimate of service satisfaction would be more representative today.’\n\n翻卡前写出：过去哪件事没有发生？作者承认估计结果现在有什么局限？",
+        "task_prompt": "阅读句：The report acknowledges, ‘If the survey had included residents without internet access, its estimate of service satisfaction would be more representative today.’\n\n翻卡前写出：过去哪件事没有发生？作者承认估计结果现在有什么局限？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "翻卡前写出一个过去事实和一个当前局限",
+          "focus": "混合反事实的时间轴与事实还原",
+          "success_criteria": "能分别依据 had included、would be 和 today 写出两层信息"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：if 从句为 had done，主句带 now 且为 would be。\n② 核心规律：混合虚拟常表示“过去决策影响当前状态”。\n③ 验证：还原现实语义可得“过去未核对，导致当前结论说服力不足”。",
+        "text": "① had included 把纳入行为放在过去，并把它呈现为未发生。\n\n② would be more representative 把比较结果落在 today，即当前估计。\n\n③ 作者借反事实承认代表性边界；这支持‘可能不够全面’，不支持‘所有结论都错误’。",
         "tips": [
-          "先画时间轴，再匹配主从句时态。（1621）",
-          "看到 now/today 一类词时要警惕混合虚拟。"
+          "把条件和结果分别标成 past / now。",
+          "局限性承认通常缩小结论范围，而不是自动推翻全文。"
         ]
       },
       "auto_scoring": false,
@@ -82,11 +93,34 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "elimination_items": null,
+      "answer_key": null,
+      "quality_metadata": {
+        "main_training_goal": "从混合反事实中还原过去事实与当前阅读结论",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读从混合虚拟语气中恢复事实，并控制局限性推断范围。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -101,37 +135,44 @@
       "card_box_name": "阅读",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【阅读虚拟语气 T1】当前反事实\n\n句子：If the guideline were clearer, reviewers _____ far fewer format errors."
+        "text": "短文：The proposal explains the benefits of centralized purchasing but says nothing about how rural clinics would share the cost. If it addressed that question, the argument would be more convincing.\n\n哪项推断最稳妥？",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一：选择文本直接支持且不过度外推的结论",
+          "focus": "当前反事实、现实缺口与推断范围",
+          "success_criteria": "能逐项回指原文证据，并排除预测或总体化表述"
+        }
       },
       "back_content": {
-        "text": "正确答案：C。\n\n当前反事实条件句通常是 if + were/过去式，主句用 would + 动词原形。\n\n【盒内定位】阅读理解侧重：优先抓语义线索与句间逻辑。"
+        "text": "答案：B。says nothing about 给出现实缺口；If it addressed ... would be more convincing 用当前反事实说明补上该问题会增强说服力，因此当前版本在这一点上较弱。它不预测必然修订，也不否认已写出的其他收益。",
+        "explanation": "当前反事实常用于谨慎批评：作者指出现实没有满足某个条件，并说明如果满足会怎样；阅读推断必须保留这种局部范围。"
       },
       "analysis_content": {
-        "text": "① 识别信号：if 从句出现 were，提示非现实假设。\n② 核心规律：当前反事实框架为 if + past-form, would do。\n③ 验证：代入 would report 后语义为“若更清晰，错误会更少”。",
+        "text": "① says nothing about 直接支持‘目前未说明’，排除 A。\n\n② would be more convincing 表示当前论证尚可加强，支持 B。\n\n③ 句中没有未来修订承诺，也没有把局部成本缺口扩大为对集中采购的全面否定。",
         "tips": [
-          "were 在这里是虚拟标记，不是简单过去时。（1621）",
-          "主从句时间层级必须一致。"
+          "先找文本明说的现实缺口，再读反事实结果。",
+          "不要把‘更有说服力’改成‘现在完全不可信’。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "are reporting",
+          "text": "提案已经清楚解释了农村诊所如何分担成本",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "reported",
-          "is_correct": false
-        },
-        {
-          "key": "C",
-          "text": "would report",
+          "text": "成本分担问题目前没有说明，这削弱了论证的说服力",
           "is_correct": true
         },
         {
+          "key": "C",
+          "text": "作者预测提案一定会在下一版补上这部分",
+          "is_correct": false
+        },
+        {
           "key": "D",
-          "text": "have reported",
+          "text": "作者认为集中采购不可能给任何诊所带来好处",
           "is_correct": false
         }
       ],
@@ -142,12 +183,12 @@
       "form_options": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_reading_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -163,18 +204,22 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "【阅读虚拟语气 T1】当前反事实\n\n句子：If the guideline were clearer, reviewers _____ far fewer format errors.",
-        "task_prompt": "【阅读虚拟语气 T1】当前反事实\n\n句子：If the guideline were clearer, reviewers _____ far fewer format errors.",
+        "text": "短文：The proposal explains the benefits of centralized purchasing but says nothing about how rural clinics would share the cost. If it addressed that question, the argument would be more convincing.\n\n哪项推断最稳妥？",
+        "task_prompt": "短文：The proposal explains the benefits of centralized purchasing but says nothing about how rural clinics would share the cost. If it addressed that question, the argument would be more convincing.\n\n哪项推断最稳妥？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "四选一：选择文本直接支持且不过度外推的结论",
+          "focus": "当前反事实、现实缺口与推断范围",
+          "success_criteria": "能逐项回指原文证据，并排除预测或总体化表述"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：if 从句出现 were，提示非现实假设。\n② 核心规律：当前反事实框架为 if + past-form, would do。\n③ 验证：代入 would report 后语义为“若更清晰，错误会更少”。",
+        "text": "① says nothing about 直接支持‘目前未说明’，排除 A。\n\n② would be more convincing 表示当前论证尚可加强，支持 B。\n\n③ 句中没有未来修订承诺，也没有把局部成本缺口扩大为对集中采购的全面否定。",
         "tips": [
-          "were 在这里是虚拟标记，不是简单过去时。（1621）",
-          "主从句时间层级必须一致。"
+          "先找文本明说的现实缺口，再读反事实结果。",
+          "不要把‘更有说服力’改成‘现在完全不可信’。"
         ]
       },
       "auto_scoring": true,
@@ -184,14 +229,36 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "answer_key": {
-        "correct_option": "C"
+        "correct_option": "B"
+      },
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "根据当前反事实判断作者对论证缺口的审慎评价",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读用虚拟语气识别作者的局部批评与承诺强度。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -206,19 +273,47 @@
       "card_box_name": "阅读",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【阅读虚拟语气 T8】过去反事实填空\n\nIf the reference list _____ finalized before submission, the revision round would have been shorter."
+        "text": "背景：The archive was not digitized before the flood, and many records are now inaccessible.\n\nIf it _____ digitized earlier, researchers would have access to more of the collection today.\n\n选择最合适的形式，再核对过去事实和当前结果。",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一补全条件从句，并用背景句核对答案",
+          "focus": "背景事实、条件从句与 today 的时间关系",
+          "success_criteria": "所选形式须使整段时序与语义一致"
+        }
       },
       "back_content": {
-        "text": "正确答案：had been。\n\n过去反事实条件句常用 if + had done（被动则 had been done）。\n\n【盒内定位】阅读理解侧重：优先抓语义线索与句间逻辑。"
+        "text": "答案：A。过去背景明确说明洪水前没有完成数字化，因此空格用 had been，与后面的 digitized 组成过去完成时被动；主句 would have access 与 today 指向现在仍存在的可访问性后果。",
+        "explanation": "混合反事实的形式由两个时间点共同决定：过去未实现的被动条件使用 had been done，当前结果使用 would + 动词原形。"
       },
       "analysis_content": {
-        "text": "① 识别信号：主句出现 would have been，提示过去虚拟结果。\n② 核心规律：与之配套的 if 从句应为 had done / had been done。\n③ 验证：填入 had been 后，逻辑成为“若当时已定稿，则后续更短”。",
+        "text": "① before the flood 把条件定位在过去，not digitized 说明事实未实现。\n\n② archive 是数字化动作的承受者，空格需要过去完成时被动的助动部分 had been。\n\n③ today 把结果落在现在；其他选项要么时间不符，要么把 would 错放进 if 从句。",
         "tips": [
-          "主句有 would have done 时优先回查 if 从句 had done。（1621）",
-          "注意主动被动一致性。"
+          "先按语境画过去条件→现在结果，再选形式。",
+          "被动动作同时检查 have been + 过去分词。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "had been",
+          "is_correct": true
+        },
+        {
+          "key": "B",
+          "text": "were",
+          "is_correct": false
+        },
+        {
+          "key": "C",
+          "text": "would have been",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "has been",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "correct_answer": null,
       "word_bank": null,
@@ -231,12 +326,12 @@
         },
         {
           "form_no": 2,
-          "text": "was",
+          "text": "were",
           "is_correct": false
         },
         {
           "form_no": 3,
-          "text": "would be",
+          "text": "would have been",
           "is_correct": false
         },
         {
@@ -247,12 +342,12 @@
       ],
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_reading_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -268,18 +363,22 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "【阅读虚拟语气 T8】过去反事实填空\n\nIf the reference list _____ finalized before submission, the revision round would have been shorter.",
-        "task_prompt": "【阅读虚拟语气 T8】过去反事实填空\n\nIf the reference list _____ finalized before submission, the revision round would have been shorter.",
+        "text": "背景：The archive was not digitized before the flood, and many records are now inaccessible.\n\nIf it _____ digitized earlier, researchers would have access to more of the collection today.\n\n选择最合适的形式，再核对过去事实和当前结果。",
+        "task_prompt": "背景：The archive was not digitized before the flood, and many records are now inaccessible.\n\nIf it _____ digitized earlier, researchers would have access to more of the collection today.\n\n选择最合适的形式，再核对过去事实和当前结果。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "四选一补全条件从句，并用背景句核对答案",
+          "focus": "背景事实、条件从句与 today 的时间关系",
+          "success_criteria": "所选形式须使整段时序与语义一致"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：主句出现 would have been，提示过去虚拟结果。\n② 核心规律：与之配套的 if 从句应为 had done / had been done。\n③ 验证：填入 had been 后，逻辑成为“若当时已定稿，则后续更短”。",
+        "text": "① before the flood 把条件定位在过去，not digitized 说明事实未实现。\n\n② archive 是数字化动作的承受者，空格需要过去完成时被动的助动部分 had been。\n\n③ today 把结果落在现在；其他选项要么时间不符，要么把 would 错放进 if 从句。",
         "tips": [
-          "主句有 would have done 时优先回查 if 从句 had done。（1621）",
-          "注意主动被动一致性。"
+          "先按语境画过去条件→现在结果，再选形式。",
+          "被动动作同时检查 have been + 过去分词。"
         ]
       },
       "auto_scoring": true,
@@ -289,7 +388,7 @@
         "product_mapping_reason": "legacy tense-form choice maps to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -297,6 +396,27 @@
       },
       "answer_key": {
         "correct_option": "A"
+      },
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "在阅读语境中完成过去条件到当前结果的混合反事实",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读结合显性背景选择混合虚拟形式并恢复事实。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -311,37 +431,44 @@
       "card_box_name": "阅读",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【阅读虚拟语气 T1】mandative subjunctive\n\n句子：The editor recommended that every disputed paragraph _____ revised before release."
+        "text": "短文：The ethics board recommended that the raw interviews be stored on an encrypted server. A follow-up audit, however, found that two files had remained on personal laptops.\n\n哪项解读最准确？",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一：核对两句之间的语义关系",
+          "focus": "recommend that、however 与 follow-up audit",
+          "success_criteria": "所选解读须同时覆盖两句，并与原文时序一致"
+        }
       },
       "back_content": {
-        "text": "正确答案：B。\n\nrecommend/suggest/demand 后的 that 从句常用虚拟原形（should 可省略）。\n\n【盒内定位】阅读理解侧重：优先抓语义线索与句间逻辑。"
+        "text": "答案：B。recommend that ... be stored 表达委员会提出的要求；它本身不证明动作已经执行。however 后的审计结果进一步表明，至少两份文件仍留在个人电脑上，执行并不完整。",
+        "explanation": "mandative subjunctive 描写被建议、要求或规定的状态，不承担‘已经落实’的事实断言。阅读时必须把规范性语言与后续执行证据分开。"
       },
       "analysis_content": {
-        "text": "① 识别信号：谓语动词是 recommended。\n② 核心规律：建议/要求类动词后接 that 从句常为 (should) do。\n③ 验证：be revised 为标准虚拟被动形式。",
+        "text": "① be stored 位于 recommend 后的 that 从句中，语义核心是建议而非完成事实。\n\n② follow-up audit 与 had remained 提供实际执行证据。\n\n③ however 标出要求与现实之间的落差，因此不能把建议当成已全部落实，也不能把个人电脑误读成获准方案。",
         "tips": [
-          "recommend + that 从句优先考虑动词原形。（1621）",
-          "不要机械套时态一致，先看语气功能。"
+          "把 recommend/require 后的目标状态和审计结果分栏。",
+          "规范性语言回答‘应该怎样’，事实证据回答‘实际怎样’。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "was",
+          "text": "委员会的措辞证明建议提出前所有文件都已转移",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "be",
+          "text": "第一句提出预期的安全措施，而审计表明执行并不完整",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "is",
+          "text": "be stored 把加密存储写成与现实无关的想象",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "has been",
+          "text": "审计确认个人电脑已获准保存这些访谈文件",
           "is_correct": false
         }
       ],
@@ -352,12 +479,12 @@
       "form_options": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_reading_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -373,18 +500,22 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "【阅读虚拟语气 T1】mandative subjunctive\n\n句子：The editor recommended that every disputed paragraph _____ revised before release.",
-        "task_prompt": "【阅读虚拟语气 T1】mandative subjunctive\n\n句子：The editor recommended that every disputed paragraph _____ revised before release.",
+        "text": "短文：The ethics board recommended that the raw interviews be stored on an encrypted server. A follow-up audit, however, found that two files had remained on personal laptops.\n\n哪项解读最准确？",
+        "task_prompt": "短文：The ethics board recommended that the raw interviews be stored on an encrypted server. A follow-up audit, however, found that two files had remained on personal laptops.\n\n哪项解读最准确？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "四选一：核对两句之间的语义关系",
+          "focus": "recommend that、however 与 follow-up audit",
+          "success_criteria": "所选解读须同时覆盖两句，并与原文时序一致"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：谓语动词是 recommended。\n② 核心规律：建议/要求类动词后接 that 从句常为 (should) do。\n③ 验证：be revised 为标准虚拟被动形式。",
+        "text": "① be stored 位于 recommend 后的 that 从句中，语义核心是建议而非完成事实。\n\n② follow-up audit 与 had remained 提供实际执行证据。\n\n③ however 标出要求与现实之间的落差，因此不能把建议当成已全部落实，也不能把个人电脑误读成获准方案。",
         "tips": [
-          "recommend + that 从句优先考虑动词原形。（1621）",
-          "不要机械套时态一致，先看语气功能。"
+          "把 recommend/require 后的目标状态和审计结果分栏。",
+          "规范性语言回答‘应该怎样’，事实证据回答‘实际怎样’。"
         ]
       },
       "auto_scoring": true,
@@ -394,7 +525,7 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -402,6 +533,28 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "区分 mandative 从句中的规范要求与后续实际执行",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读避免把建议、要求或规定误读为已经发生的事实。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -416,38 +569,45 @@
       "card_box_name": "阅读",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【阅读虚拟语气 T4】常见误用排查\n\n找出虚拟语气错误项（可多选）：\n① If I was you, I would postpone the release.\n② Had the team checked the appendix, they would have avoided this mismatch.\n③ I wish the table were easier to read.\n④ It is essential that the summary is submitted tonight."
+        "text": "短文：The author writes, ‘If the subsidy had been introduced before winter, some households might have avoided cutting back on essential heating. Even now, without clearer eligibility rules, many eligible families would hesitate to apply.’\n\n下面四项中有两项不受文本支持。点击应剔除的推断：",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "剔除所有改变事实状态、可能性或数量范围的推断",
+          "focus": "反事实、might/would 与 some/many 的证据强度",
+          "success_criteria": "能保留逐词有依据的推断，并指出被剔除项改变了哪一层信息"
+        }
       },
       "back_content": {
-        "text": "错误项：①④。\n\n① 固定表达应为 If I were you；④ essential that 从句常用虚拟原形 be submitted。\n\n【盒内定位】阅读理解侧重：优先抓语义线索与句间逻辑。"
+        "text": "应剔除①和④。had been introduced 的过去反事实表示补贴并未在入冬前推出；might have avoided 只表达部分家庭可能避免削减供暖。第二句说 many families would hesitate，既不是所有家庭，也不是已经拒绝。",
+        "explanation": "虚拟语气阅读的高频陷阱是把未实现条件当成事实、把 might 的可能性改成确定性，或把 some/many 扩大成 all。"
       },
       "analysis_content": {
-        "text": "① 识别信号：重点看 If I was you 与 essential that + 直陈式。\n② 核心规律：反事实 be 常用 were；mandative 结构常用原形。\n③ 验证：②③ 结构合法，①④ 不符合标准虚拟用法。",
+        "text": "① had been introduced 位于 if 反事实条件中，实际情况与之相反。\n\n② some + might 保留有限对象与可能结果，文本支持。\n\n③ without clearer rules 与 would hesitate 支持‘规则不清可能形成阻力’。\n\n④ 把 many 改成 all，又把 hesitate 改成 already refused，双重过度推断。",
         "tips": [
-          "If I were you 是高频固定结构。（1621）",
-          "essential/necessary/important + that 常触发虚拟原形。"
+          "同时圈时态、情态词和数量词。",
+          "一个词的强度变化就可能让推断越界。"
         ]
       },
       "options": null,
       "eliminable_items": [
         {
           "item_no": 1,
-          "text": "① If I was you, I would postpone the release.",
+          "text": "① 补贴已经在入冬前推出。",
           "is_correct": true
         },
         {
           "item_no": 2,
-          "text": "② Had the team checked the appendix, they would have avoided this mismatch.",
+          "text": "② 作者把更早推出补贴写成一种可能减轻困难、而非保证成功的条件。",
           "is_correct": false
         },
         {
           "item_no": 3,
-          "text": "③ I wish the table were easier to read.",
+          "text": "③ 作者认为当前资格规则还不够清楚，可能妨碍申请。",
           "is_correct": false
         },
         {
           "item_no": 4,
-          "text": "④ It is essential that the summary is submitted tonight.",
+          "text": "④ 所有符合资格的家庭都已经拒绝申请。",
           "is_correct": true
         }
       ],
@@ -457,12 +617,12 @@
       "form_options": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_reading_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -478,18 +638,22 @@
       },
       "interaction_id": "elimination",
       "front": {
-        "text": "【阅读虚拟语气 T4】常见误用排查\n\n找出虚拟语气错误项（可多选）：\n① If I was you, I would postpone the release.\n② Had the team checked the appendix, they would have avoided this mismatch.\n③ I wish the table were easier to read.\n④ It is essential that the summary is submitted tonight.",
-        "task_prompt": "【阅读虚拟语气 T4】常见误用排查\n\n找出虚拟语气错误项（可多选）：\n① If I was you, I would postpone the release.\n② Had the team checked the appendix, they would have avoided this mismatch.\n③ I wish the table were easier to read.\n④ It is essential that the summary is submitted tonight.",
+        "text": "短文：The author writes, ‘If the subsidy had been introduced before winter, some households might have avoided cutting back on essential heating. Even now, without clearer eligibility rules, many eligible families would hesitate to apply.’\n\n下面四项中有两项不受文本支持。点击应剔除的推断：",
+        "task_prompt": "短文：The author writes, ‘If the subsidy had been introduced before winter, some households might have avoided cutting back on essential heating. Even now, without clearer eligibility rules, many eligible families would hesitate to apply.’\n\n下面四项中有两项不受文本支持。点击应剔除的推断：",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "剔除所有改变事实状态、可能性或数量范围的推断",
+          "focus": "反事实、might/would 与 some/many 的证据强度",
+          "success_criteria": "能保留逐词有依据的推断，并指出被剔除项改变了哪一层信息"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：重点看 If I was you 与 essential that + 直陈式。\n② 核心规律：反事实 be 常用 were；mandative 结构常用原形。\n③ 验证：②③ 结构合法，①④ 不符合标准虚拟用法。",
+        "text": "① had been introduced 位于 if 反事实条件中，实际情况与之相反。\n\n② some + might 保留有限对象与可能结果，文本支持。\n\n③ without clearer rules 与 would hesitate 支持‘规则不清可能形成阻力’。\n\n④ 把 many 改成 all，又把 hesitate 改成 already refused，双重过度推断。",
         "tips": [
-          "If I were you 是高频固定结构。（1621）",
-          "essential/necessary/important + that 常触发虚拟原形。"
+          "同时圈时态、情态词和数量词。",
+          "一个词的强度变化就可能让推断越界。"
         ]
       },
       "auto_scoring": true,
@@ -499,7 +663,7 @@
         "product_mapping_reason": "legacy elimination card maps directly to elimination"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
@@ -507,32 +671,49 @@
       },
       "answer_key": {
         "correct_items": [
-          "① If I was you, I would postpone the release.",
-          "④ It is essential that the summary is submitted tonight."
+          "item_1",
+          "item_4"
         ]
       },
       "elimination_items": [
         {
-          "item_no": 1,
-          "text": "① If I was you, I would postpone the release.",
-          "is_correct": true
+          "id": "item_1",
+          "text": "① 补贴已经在入冬前推出。"
         },
         {
-          "item_no": 2,
-          "text": "② Had the team checked the appendix, they would have avoided this mismatch.",
-          "is_correct": false
+          "id": "item_2",
+          "text": "② 作者把更早推出补贴写成一种可能减轻困难、而非保证成功的条件。"
         },
         {
-          "item_no": 3,
-          "text": "③ I wish the table were easier to read.",
-          "is_correct": false
+          "id": "item_3",
+          "text": "③ 作者认为当前资格规则还不够清楚，可能妨碍申请。"
         },
         {
-          "item_no": 4,
-          "text": "④ It is essential that the summary is submitted tonight.",
-          "is_correct": true
+          "id": "item_4",
+          "text": "④ 所有符合资格的家庭都已经拒绝申请。"
         }
-      ]
+      ],
+      "quality_metadata": {
+        "main_training_goal": "联合核对反事实、情态强度和数量范围以排除越界推断",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读排除把可能性、数量范围或未实现条件擅自加强的选项。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
     },
     {
       "card_id": "162106",
@@ -546,16 +727,23 @@
       "card_box_name": "阅读",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【阅读虚拟语气】wish 与 if only\n\n句子：I wish the annotation notes had been archived properly; if only we had run one more consistency check.\n\n任务：说明两者在时间指向上的共同点。"
+        "text": "阅读句：The report discusses the pilot as if it had settled the safety question, yet no participants under eighteen were included.\n\n作者借 as if ... had settled 和 yet 表达什么立场？哪些更强的结论并没有被文本支持？",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "翻卡前写出作者质疑的主张、依据和推断上限",
+          "focus": "as if 的事实距离、yet 转折与作者立场",
+          "success_criteria": "能说明样本缺口如何限制‘已经解决’，且不外推为全面否定"
+        }
       },
       "back_content": {
-        "text": "两者都在表达对过去事实的遗憾。had been archived / had run 都是过去完成虚拟，表示事情已错过且难以改变。\n\n【盒内定位】阅读理解侧重：优先抓语义线索与句间逻辑。"
+        "text": "作者批评报告把试点写得仿佛已经彻底解决安全问题；had settled 指向一个被质疑的先前完成状态，yet 后的未成年人样本缺口构成范围限制，削弱了‘已经解决’的依据。文本支持‘结论过满’，但不支持‘试点没有任何价值’或‘安全问题已经被证明无法解决’。",
+        "explanation": "as if + past perfect 可以把某个先前状态呈现为与作者判断有距离；结合 yet 等转折，常用于识别讽刺、保留或批评立场。"
       },
       "analysis_content": {
-        "text": "① 识别信号：wish / if only 后接 had done。\n② 核心规律：该形式对应“过去未实现”的反事实遗憾。\n③ 验证：语境中问题已发生，句子在追悔过去而非预测未来。",
+        "text": "① had settled 把‘已经解决’放在试点讨论之前，并由 as if 标记为表面呈现。\n\n② yet 引入未覆盖未成年人的事实，削弱‘彻底解决’的说法。\n\n③ 作者质疑的是论断强度与样本范围，不能据此外推试点完全无用。",
         "tips": [
-          "wish 后时态常后退一格表达非现实。（1621）",
-          "if only 情绪色彩通常比 wish 更强。"
+          "as if 先判断作者是否与命题保持距离。",
+          "转折后的事实通常限定前面结论，而非自动反转成极端否定。"
         ]
       },
       "options": null,
@@ -566,12 +754,12 @@
       "form_options": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_reading_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -587,18 +775,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "【阅读虚拟语气】wish 与 if only\n\n句子：I wish the annotation notes had been archived properly; if only we had run one more consistency check.\n\n任务：说明两者在时间指向上的共同点。",
-        "task_prompt": "【阅读虚拟语气】wish 与 if only\n\n句子：I wish the annotation notes had been archived properly; if only we had run one more consistency check.\n\n任务：说明两者在时间指向上的共同点。",
+        "text": "阅读句：The report discusses the pilot as if it had settled the safety question, yet no participants under eighteen were included.\n\n作者借 as if ... had settled 和 yet 表达什么立场？哪些更强的结论并没有被文本支持？",
+        "task_prompt": "阅读句：The report discusses the pilot as if it had settled the safety question, yet no participants under eighteen were included.\n\n作者借 as if ... had settled 和 yet 表达什么立场？哪些更强的结论并没有被文本支持？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "翻卡前写出作者质疑的主张、依据和推断上限",
+          "focus": "as if 的事实距离、yet 转折与作者立场",
+          "success_criteria": "能说明样本缺口如何限制‘已经解决’，且不外推为全面否定"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：wish / if only 后接 had done。\n② 核心规律：该形式对应“过去未实现”的反事实遗憾。\n③ 验证：语境中问题已发生，句子在追悔过去而非预测未来。",
+        "text": "① had settled 把‘已经解决’放在试点讨论之前，并由 as if 标记为表面呈现。\n\n② yet 引入未覆盖未成年人的事实，削弱‘彻底解决’的说法。\n\n③ 作者质疑的是论断强度与样本范围，不能据此外推试点完全无用。",
         "tips": [
-          "wish 后时态常后退一格表达非现实。（1621）",
-          "if only 情绪色彩通常比 wish 更强。"
+          "as if 先判断作者是否与命题保持距离。",
+          "转折后的事实通常限定前面结论，而非自动反转成极端否定。"
         ]
       },
       "auto_scoring": false,
@@ -608,11 +800,34 @@
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "elimination_items": null,
+      "answer_key": null,
+      "quality_metadata": {
+        "main_training_goal": "根据 as if 与转折证据识别作者对过强结论的批评",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读结合虚拟距离和转折证据判断作者态度。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -627,19 +842,47 @@
       "card_box_name": "阅读",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【阅读虚拟语气 T8】预案式假设\n\nIf the lead reviewer _____ to withdraw this week, the whole schedule would need replanning."
+        "text": "短文：Current donations cover the program, but the review considers a less favorable scenario: ‘Were private funding to decline, the service would have to reduce its hours.’\n\n作者使用 Were ... to decline 的主要作用是什么？",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一：判断倒装结构在段落中的作用",
+          "focus": "背景句、条件从句与结果句的关系",
+          "success_criteria": "所选功能须能同时解释前后两句且不增添原文事实"
+        }
       },
       "back_content": {
-        "text": "正确答案：were。\n\nif ... were to do 常表示较低概率但需预案处理的未来假设。\n\n【盒内定位】阅读理解侧重：优先抓语义线索与句间逻辑。"
+        "text": "答案：B。背景先说当前捐款足够，Were private funding to decline 则倒装引入一个尚未发生、被拉开距离的未来情景；主句说明若风险出现，服务将面临什么后果。",
+        "explanation": "Were + 主语 + to do 可省略 if，用于较正式、较疏远的未来假设。阅读中它常服务于风险预案，而不是报告已发生事实。"
       },
       "analysis_content": {
-        "text": "① 识别信号：主句是 would need，属于假设推演。\n② 核心规律：were to do 常见于正式讨论中的风险场景。\n③ 验证：填入 were 后，语气与应急预案场景匹配。",
+        "text": "① Current donations cover 排除‘已经下降’。\n\n② but the review considers a scenario 说明作者在做条件推演。\n\n③ were ... to 与 would have to 配合，连接潜在风险和应对后果，不是命令或习惯叙述。",
         "tips": [
-          "were to do 常用于政策/会议预案语境。（1621）",
-          "保持 if 从句与主句的假设语气一致。"
+          "把 Were S to do 还原成 If S were to do。",
+          "先用上下文判断是假设、事实还是指令。"
         ]
       },
-      "options": null,
+      "options": [
+        {
+          "key": "A",
+          "text": "报告私人资金已经下降并导致服务时间缩短",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "引入一个较疏远的未来情景，用来检验项目的应急后果",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "向资助者发布具有法律效力的命令",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "说明服务时间减少是每天都会发生的习惯事实",
+          "is_correct": false
+        }
+      ],
       "eliminable_items": null,
       "correct_answer": null,
       "word_bank": null,
@@ -647,33 +890,33 @@
       "form_options": [
         {
           "form_no": 1,
-          "text": "were",
-          "is_correct": true
-        },
-        {
-          "form_no": 2,
-          "text": "is",
+          "text": "报告私人资金已经下降并导致服务时间缩短",
           "is_correct": false
         },
         {
+          "form_no": 2,
+          "text": "引入一个较疏远的未来情景，用来检验项目的应急后果",
+          "is_correct": true
+        },
+        {
           "form_no": 3,
-          "text": "has",
+          "text": "向资助者发布具有法律效力的命令",
           "is_correct": false
         },
         {
           "form_no": 4,
-          "text": "will be",
+          "text": "说明服务时间减少是每天都会发生的习惯事实",
           "is_correct": false
         }
       ],
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_reading_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -689,18 +932,22 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "【阅读虚拟语气 T8】预案式假设\n\nIf the lead reviewer _____ to withdraw this week, the whole schedule would need replanning.",
-        "task_prompt": "【阅读虚拟语气 T8】预案式假设\n\nIf the lead reviewer _____ to withdraw this week, the whole schedule would need replanning.",
+        "text": "短文：Current donations cover the program, but the review considers a less favorable scenario: ‘Were private funding to decline, the service would have to reduce its hours.’\n\n作者使用 Were ... to decline 的主要作用是什么？",
+        "task_prompt": "短文：Current donations cover the program, but the review considers a less favorable scenario: ‘Were private funding to decline, the service would have to reduce its hours.’\n\n作者使用 Were ... to decline 的主要作用是什么？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "四选一：判断倒装结构在段落中的作用",
+          "focus": "背景句、条件从句与结果句的关系",
+          "success_criteria": "所选功能须能同时解释前后两句且不增添原文事实"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：主句是 would need，属于假设推演。\n② 核心规律：were to do 常见于正式讨论中的风险场景。\n③ 验证：填入 were 后，语气与应急预案场景匹配。",
+        "text": "① Current donations cover 排除‘已经下降’。\n\n② but the review considers a scenario 说明作者在做条件推演。\n\n③ were ... to 与 would have to 配合，连接潜在风险和应对后果，不是命令或习惯叙述。",
         "tips": [
-          "were to do 常用于政策/会议预案语境。（1621）",
-          "保持 if 从句与主句的假设语气一致。"
+          "把 Were S to do 还原成 If S were to do。",
+          "先用上下文判断是假设、事实还是指令。"
         ]
       },
       "auto_scoring": true,
@@ -710,14 +957,36 @@
         "product_mapping_reason": "legacy tense-form choice maps to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "answer_key": {
-        "correct_option": "A"
+        "correct_option": "B"
+      },
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "识别 were to 倒装在阅读风险预案中的语用作用",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读判断正式虚拟倒装是在报告事实还是推演风险。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -732,37 +1001,44 @@
       "card_box_name": "阅读",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【阅读虚拟语气 T1】Had 倒装改写\n\n句子：Had the panel clarified the criteria, fewer disputes would have emerged in the final stage.\n\n哪项改写等值？"
+        "text": "短文：Had the authors separated short-term adaptation from long-term change, their conclusion might have been less categorical. Instead, the report treats the two processes as equivalent.\n\n哪项结论最受文本支持？",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "四选一：综合倒装、情态词和转折选择最稳妥推断",
+          "focus": "首句条件结构与 instead 后现实陈述",
+          "success_criteria": "所选结论须同时有两处原文依据且不扩大范围"
+        }
       },
       "back_content": {
-        "text": "正确答案：C。\n\nHad + 主语 + p.p. 是省略 if 的倒装虚拟，等值于 If + 主语 + had + p.p.。\n\n【盒内定位】阅读理解侧重：优先抓语义线索与句间逻辑。"
+        "text": "答案：B。Had the authors separated ... 是过去反事实，说明实际没有区分；might have been less categorical 表示若作区分，结论可能没有当前版本这么绝对，instead 再确认报告实际把两者视为等同。",
+        "explanation": "段落级虚拟语气常用来提出未采用的方法并评价其潜在影响。正确推断要保留 might 的不确定度和 categorical 的评价范围。"
       },
       "analysis_content": {
-        "text": "① 识别信号：句首 Had the panel clarified ...\n② 核心规律：虚拟倒装可还原成 if 从句，语义不变。\n③ 验证：改写时主句 would have emerged 必须保持不变。",
+        "text": "① Had ... separated 可还原为 If ... had separated，实际情况相反，排除 A。\n\n② might have been less categorical 支持‘当前版本可能显得更绝对’，但不证明内容整体错误。\n\n③ instead 给出当前处理方式；文本是在批评区分不足，不是在宣布两种过程永远等同。",
         "tips": [
-          "句首 Had/Were/Should 时先尝试补回 if。（1621）",
-          "改写虚拟倒装时不要改动主句情态层级。"
+          "倒装先还原 if，再恢复实际发生了什么。",
+          "might 和 less categorical 都限制结论强度，不能省略。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "If the panel clarifies the criteria, fewer disputes would emerge.",
+          "text": "作者已经在报告中清楚区分了短期适应和长期变化",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "Because the panel clarified the criteria, fewer disputes emerged.",
-          "is_correct": false
-        },
-        {
-          "key": "C",
-          "text": "If the panel had clarified the criteria, fewer disputes would have emerged.",
+          "text": "未区分两种过程可能使报告结论显得更绝对",
           "is_correct": true
         },
         {
+          "key": "C",
+          "text": "文本已经证明报告的全部结论都是错误的",
+          "is_correct": false
+        },
+        {
           "key": "D",
-          "text": "If the panel were clarifying the criteria, fewer disputes would have emerged.",
+          "text": "短期适应与长期变化在任何研究中都完全等同",
           "is_correct": false
         }
       ],
@@ -773,12 +1049,12 @@
       "form_options": null,
       "audio": null,
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_reading_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -794,18 +1070,22 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "【阅读虚拟语气 T1】Had 倒装改写\n\n句子：Had the panel clarified the criteria, fewer disputes would have emerged in the final stage.\n\n哪项改写等值？",
-        "task_prompt": "【阅读虚拟语气 T1】Had 倒装改写\n\n句子：Had the panel clarified the criteria, fewer disputes would have emerged in the final stage.\n\n哪项改写等值？",
+        "text": "短文：Had the authors separated short-term adaptation from long-term change, their conclusion might have been less categorical. Instead, the report treats the two processes as equivalent.\n\n哪项结论最受文本支持？",
+        "task_prompt": "短文：Had the authors separated short-term adaptation from long-term change, their conclusion might have been less categorical. Instead, the report treats the two processes as equivalent.\n\n哪项结论最受文本支持？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "四选一：综合倒装、情态词和转折选择最稳妥推断",
+          "focus": "首句条件结构与 instead 后现实陈述",
+          "success_criteria": "所选结论须同时有两处原文依据且不扩大范围"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：句首 Had the panel clarified ...\n② 核心规律：虚拟倒装可还原成 if 从句，语义不变。\n③ 验证：改写时主句 would have emerged 必须保持不变。",
+        "text": "① Had ... separated 可还原为 If ... had separated，实际情况相反，排除 A。\n\n② might have been less categorical 支持‘当前版本可能显得更绝对’，但不证明内容整体错误。\n\n③ instead 给出当前处理方式；文本是在批评区分不足，不是在宣布两种过程永远等同。",
         "tips": [
-          "句首 Had/Were/Should 时先尝试补回 if。（1621）",
-          "改写虚拟倒装时不要改动主句情态层级。"
+          "倒装先还原 if，再恢复实际发生了什么。",
+          "might 和 less categorical 都限制结论强度，不能省略。"
         ]
       },
       "auto_scoring": true,
@@ -815,14 +1095,36 @@
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
       "quality_flags": [
-        "unverified_source"
+        "synthetic_source"
       ],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "answer_key": {
-        "correct_option": "C"
+        "correct_option": "B"
+      },
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "在段落中综合虚拟倒装和情态强度完成审慎推断",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练六级阅读在段落级虚拟语气中恢复事实、态度和推断上限。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],
