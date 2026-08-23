@@ -21,6 +21,7 @@ import {buildEliminationContract} from './migrate_cards_to_softbook_contract.mjs
 import {
   buildContentAuthorizationAdditionalBindings,
   buildModelAcceptanceInputSha256,
+  deriveRuntimePayloadContentIdentity,
 } from './lib/model_acceptance.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -643,7 +644,21 @@ test('current approval consumers reject forged replay, stale, template, traversa
       path.join(root, approvalPath),
       'utf8',
     ));
-    const contentVersionA = `sha256:${'d'.repeat(64)}`;
+    const runtimePayloadPath =
+      'reviews/runtime_payloads/current-full-track-runtime.json';
+    const runtimePayload = {
+      source: {id: 'card-integrity-fixture', label: 'Card integrity fixture'},
+      track: 'cet4',
+      card_records: currentCards,
+      release: null,
+    };
+    const contentVersionA =
+      deriveRuntimePayloadContentIdentity(runtimePayload).content_version;
+    runtimePayload.content_version = contentVersionA;
+    writeJson(runtimePayloadPath, runtimePayload);
+    const runtimePayloadSha256 = `sha256:${cryptoHashFile(
+      path.join(root, runtimePayloadPath),
+    )}`;
     const contentVersionB = `sha256:${'e'.repeat(64)}`;
     const fullTrackReviewPath =
       'reviews/agent_self_review/current-full-track-review.json';
@@ -725,6 +740,8 @@ test('current approval consumers reject forged replay, stale, template, traversa
       content_version: contentVersionA,
       validation: {
         ...structuredClone(standardApproval.validation),
+        runtime_payload: runtimePayloadPath,
+        runtime_payload_sha256: runtimePayloadSha256,
         model_review: fullTrackReviewPath,
         model_review_sha256: fullTrackReviewSha256,
       },

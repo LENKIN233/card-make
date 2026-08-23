@@ -16,6 +16,8 @@ import {
 import {
   buildContentAuthorizationAdditionalBindings,
   buildModelAcceptanceInputSha256,
+  deriveRuntimePayloadContentIdentity,
+  isLegacyV1HumanAuthorityRecord,
   validateIndependentModelAcceptances,
   validateModelAcceptance,
 } from './lib/model_acceptance.mjs';
@@ -296,6 +298,11 @@ function isScopedAuditPath(filePath) {
     !isReviewTemplatePath(filePath);
 }
 
+function isRuntimePayloadPath(filePath) {
+  return isJsonBelow(filePath, 'reviews/runtime_payloads') &&
+    !filePath.slice('reviews/runtime_payloads/'.length).includes('/');
+}
+
 function isContentReviewPath(filePath) {
   if (
     isDraftPath(filePath) ||
@@ -304,7 +311,8 @@ function isContentReviewPath(filePath) {
     isSampleConfirmationJsonPath(filePath) ||
     isControlledPilotReviewJsonPath(filePath) ||
     isControlledPilotApprovalJsonPath(filePath) ||
-    isScopedAuditPath(filePath)
+    isScopedAuditPath(filePath) ||
+    isRuntimePayloadPath(filePath)
   ) {
     return true;
   }
@@ -613,6 +621,12 @@ export function validateFullTrackAggregateSemantics({
     issues.push({code, path: filePath, message, ...details});
   };
   if (record.schema_version === 'model-owned-full-track-review.v2') {
+    if (isLegacyV1HumanAuthorityRecord(record)) {
+      push(
+        'changed_model_review_person_authority_field_forbidden',
+        'Model-owned full-track reviews must not contain legacy person-authority fields.',
+      );
+    }
     for (const issue of validateIndependentModelAcceptances(
       record.model_acceptances,
       {requiredCapabilities: [
@@ -769,6 +783,10 @@ export function validateFullTrackAggregateSemantics({
     }
     return issues;
   }
+  push(
+    'changed_full_track_review_legacy_person_authority_archive_only',
+    'Legacy full-track human-review records are immutable archive evidence and cannot authorize current changed cards; use model-owned-full-track-review.v2.',
+  );
   const samplePolicy = record.sample_policy;
   const requiredSampleFlags = [
     ['is_three_card_sample_per_box', false],
@@ -1096,6 +1114,12 @@ function validateStandardReviewSemantics({
   const samplePolicy = record.sample_policy;
   const reviewScopeType = changedSelfReviewScopeType(record);
   if (reviewScopeType === 'model_owned_cards') {
+    if (isLegacyV1HumanAuthorityRecord(record)) {
+      push(
+        'changed_model_review_person_authority_field_forbidden',
+        'Model-owned card reviews must not contain legacy person-authority fields.',
+      );
+    }
     for (const issue of validateModelAcceptance(record.model_acceptance, {
       requireAccepted: true,
       requiredCapabilities: [
@@ -1227,6 +1251,10 @@ function validateStandardReviewSemantics({
     }
     return issues;
   }
+  push(
+    'changed_self_review_legacy_person_authority_archive_only',
+    'Legacy self-review records are immutable archive evidence and cannot authorize current changed cards; use model-owned-card-review.v2.',
+  );
   const isResidualClosure = reviewScopeType === 'residual_blocker_closure';
   const isConfirmedExpansion = reviewScopeType === 'confirmed_box_expansion';
   if (
@@ -2093,6 +2121,7 @@ function runChangedCardIntegrity({ base, head, entries }) {
       }
 
       const aggregateCoverageValid =
+        record.schema_version === 'model-owned-full-track-review.v2' &&
         rawScopeCardIds.length > 0 &&
         validScopeCardIds.length === rawScopeCardIds.length &&
         scopeCardIds.size === validScopeCardIds.length &&
@@ -2161,7 +2190,9 @@ function runChangedCardIntegrity({ base, head, entries }) {
       head,
     });
     issues.push(...standardSemanticIssues);
-    const standardSemanticsValid = standardSemanticIssues.length === 0;
+    const standardSemanticsValid =
+      record.schema_version === 'model-owned-card-review.v2' &&
+      standardSemanticIssues.length === 0;
 
     if (!Array.isArray(record.cards)) {
       issues.push({
@@ -2723,6 +2754,63 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
         });
         continue;
       }
+      if (isLegacyV1HumanAuthorityRecord(record)) {
+        issues.push({
+          code: 'changed_model_authorization_person_authority_field_forbidden',
+          path: filePath,
+          message: 'Model-owned content authorization must not contain legacy person-authority fields.',
+        });
+      }
+      if (record.authorization_mode === 'full_track') {
+        const runtimePayloadPath = record.validation?.runtime_payload;
+        const runtimePayloadSha256 = fileSha256AtCommit(runtimePayloadPath, head);
+        if (
+          !isRuntimePayloadPath(runtimePayloadPath) ||
+          !isRegularFileAtCommit(head, runtimePayloadPath)
+        ) {
+          issues.push({
+            code: 'changed_approval_runtime_payload_invalid',
+            path: filePath,
+            runtime_payload: runtimePayloadPath ?? null,
+          });
+        } else if (
+          record.validation?.runtime_payload_sha256 !== runtimePayloadSha256
+        ) {
+          issues.push({
+            code: 'changed_approval_runtime_payload_hash_mismatch',
+            path: filePath,
+            runtime_payload: runtimePayloadPath,
+          });
+        } else {
+          try {
+            const runtimePayload = readChangedJson(runtimePayloadPath, head);
+            const runtimeIdentity = deriveRuntimePayloadContentIdentity(
+              runtimePayload,
+            );
+            if (
+              runtimeIdentity.content_version !== record.content_version ||
+              runtimeIdentity.track !== record.scope?.track ||
+              !setsEqual(
+                new Set(runtimeIdentity.card_ids),
+                new Set(record.scope?.card_ids || []),
+              )
+            ) {
+              issues.push({
+                code: 'changed_approval_runtime_payload_identity_mismatch',
+                path: filePath,
+                runtime_payload: runtimePayloadPath,
+              });
+            }
+          } catch (error) {
+            issues.push({
+              code: 'changed_approval_runtime_payload_invalid',
+              path: filePath,
+              runtime_payload: runtimePayloadPath,
+              message: error instanceof Error ? error.message : String(error),
+            });
+          }
+        }
+      }
       let authorizationAdditionalBindings = {};
       try {
         authorizationAdditionalBindings =
@@ -3142,23 +3230,38 @@ function multiPrefixEvidenceRecords(entries, head, primaryPrefixes) {
       }
 
       if (isSelfReviewPath(filePath)) {
-        const samplePolicy = record.sample_policy || {};
         const recordPrefixes = prefixesFromScope(record.scope || {});
+        const modelOwnedStandard =
+          record.schema_version === 'model-owned-card-review.v2' &&
+          record.batch_review?.status === 'model_accepted' &&
+          validateModelAcceptance(record.model_acceptance, {
+            requireAccepted: true,
+            requiredCapabilities: [
+              'card_semantic_review',
+              'source_provenance_review',
+            ],
+          }).length === 0;
+        const modelOwnedFullTrack =
+          record.schema_version === 'model-owned-full-track-review.v2' &&
+          record.batch_review?.status === 'ready_for_model_authorization' &&
+          validateIndependentModelAcceptances(record.model_acceptances, {
+            requiredCapabilities: [
+              'card_semantic_review',
+              'source_provenance_review',
+            ],
+          }).length === 0;
         const accepted = coversAllPrefixes(recordPrefixes, primaryPrefixes) &&
-          samplePolicy.review_scope_type === 'residual_blocker_closure' &&
-          samplePolicy.residual_blocker_closure === true &&
-          samplePolicy.not_sample_approval === true &&
-          record.batch_review?.status === 'documented_residual_closure';
+          (modelOwnedStandard || modelOwnedFullTrack);
 
         evidence.push({
           path: filePath,
           accepted,
-          kind: 'agent_self_review',
-          review_scope_type: samplePolicy.review_scope_type || null,
+          kind: 'model_owned_review',
+          schema_version: record.schema_version || null,
           prefixes: [...recordPrefixes].sort(),
           reason: accepted
-            ? 'accepted_residual_blocker_closure_review'
-            : 'self_review_must_be_documented_residual_blocker_closure_and_cover_all_prefixes',
+            ? 'accepted_exact_input_model_owned_multi_prefix_review'
+            : 'self_review_must_be_current_model_owned_acceptance_and_cover_all_prefixes',
         });
       }
     }

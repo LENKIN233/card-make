@@ -23,11 +23,17 @@ immutable input. Legacy records containing `approved_by_user`,
 `confirmed_by_user`, or human-review fields are frozen historical evidence and
 cannot create current authorization.
 
-A full-track formal content authorization also declares the canonical runtime
-`content_version` and includes it in the canonical model-input hash. The two
-independent runs therefore cannot be replayed for the same card scope under a
-different normalized runtime version. Ordinary scoped authorization does not
-require a runtime version before one exists.
+A full-track formal content authorization also binds one direct immutable
+runtime payload and its SHA-256. Validators derive the canonical
+`content_version` from that payload, require exact track/card scope, and include
+the version in the canonical model-input hash. The two independent runs cannot
+be replayed for a different payload or normalized runtime version. Ordinary
+scoped authorization does not require a runtime version before one exists.
+
+`model-acceptance.v2` is structural decision evidence, not cryptographic proof
+that a provider model executed. The pinned base-only `trusted-model-review`
+workflow supplies repository execution provenance after bootstrap. Formal
+media claims still require a separate trusted exact-asset consumption receipt.
 
 ## Non-negotiable facts
 
@@ -51,6 +57,7 @@ require a runtime version before one exists.
 - `reviews/approved_batches/`: current content authorization.
 - `reviews/audio_qc/`: current model audio acceptance.
 - `reviews/audit_scopes/`: exact scoped audit evidence.
+- `reviews/runtime_payloads/`: full-track runtime payload/version bindings.
 - `spec/`: content, audio, review, delivery, and harness owners.
 - `scripts/`: validators and evidence builders.
 
@@ -60,6 +67,7 @@ For harness or policy changes:
 
 ```bash
 node --test scripts/test_model_acceptance.mjs
+python3 scripts/test_trusted_model_review.py
 node scripts/validate_harness.mjs
 node --test scripts/test_card_integrity.mjs
 node --test scripts/test_validate_pr_scope.mjs
@@ -88,14 +96,18 @@ node scripts/audit_audio_technical.mjs \
 Current model audio authorization is validated by
 `scripts/validate_audio_qc.mjs`. The active v3 perceptual worklist records two
 exact-input model runs, `complete_asset_consumed`, and all seven per-card
-results. The older v1/v2 human worklists and browser review station remain only
-for frozen compatibility; their output is not current authorization.
+results. Older v1/v2 person-authority worklists remain frozen archive evidence;
+the executable browser review station has been removed.
 
 ## Delivery
 
 Use a scoped topic branch. After exact-head validation and model review, push,
 open or update the PR, and merge automatically when required checks are green.
 Do not write `main` directly and do not wait for a person or an approval label.
+The trusted Codex workflow is installed through a one-time bootstrap: merge
+under the current exact-head checks, configure `OPENAI_API_KEY`, prove both
+isolated jobs plus the aggregate on a follow-up PR, then add
+`trusted-model-review` to branch protection.
 
 Generated reports under `reports/` and local output under `exports/` are not
 durable authorization evidence. A tracked status field, PR state, or claimed

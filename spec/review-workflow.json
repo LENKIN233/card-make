@@ -75,7 +75,8 @@
       ]
     },
     "current_authorization_rule": "Only a complete model-acceptance.v2 record bound to the exact current input can create current authorization.",
-    "canonical_input_rule": "Content review and authorization input hashes use scripts/lib/model_acceptance.mjs#buildModelAcceptanceInputSha256 and bind decision type, exact sorted scope, current corpus fingerprint, exact scoped-audit SHA-256, and linked review path/SHA-256 when authorization consumes a review. A full_track_content_authorization additionally binds the exact canonical runtime content_version through additionalBindings.content_version; changing only that runtime version invalidates both independent runs.",
+    "execution_provenance_rule": "model-acceptance.v2 is structural decision evidence, not cryptographic proof that a provider model executed. Repository merge authority additionally requires the trusted-model-review exact-diff check after its documented bootstrap; audio claims separately require exact media consumption evidence.",
+    "canonical_input_rule": "Content review and authorization input hashes use scripts/lib/model_acceptance.mjs#buildModelAcceptanceInputSha256 and bind decision type, exact sorted scope, current corpus fingerprint, exact scoped-audit SHA-256, and linked review path/SHA-256 when authorization consumes a review. A full_track_content_authorization additionally binds the exact canonical runtime content_version through additionalBindings.content_version; validators derive that version from one direct immutable runtime payload, rehash its bytes, and require exact track/card scope. Changing the payload or runtime version invalidates authorization.",
     "legacy_v1_rule": "Records that claim user confirmation, user approval, or a human reviewer remain immutable historical evidence only and never create current authorization. They must not be rewritten to look model-owned."
   },
   "workflow": {
@@ -116,6 +117,8 @@
     "exact_scope_and_current_scoped_audit_required": true,
     "full_track_runtime_content_version_required": true,
     "full_track_runtime_content_version_input_binding": "buildModelAcceptanceInputSha256.additionalBindings.content_version",
+    "full_track_runtime_payload_path_and_sha256_required": true,
+    "full_track_runtime_payload_content_version_must_be_recomputed": true,
     "ordinary_scoped_authorization_runtime_version_requirement": "not_required_when_no_canonical_runtime_version_exists; when declared it is validated and bound",
     "legacy_human_authority_records_are_archive_only": true
   },

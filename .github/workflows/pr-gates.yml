@@ -43,7 +43,6 @@ jobs:
           repository: LENKIN233/softbook_cet
           ref: main
           path: softbook_cet
-          ssh-key: ${{ secrets.SOFTBOOK_CET_DEPLOY_KEY }}
           persist-credentials: false
 
       - name: Set up Node.js
@@ -53,6 +52,7 @@ jobs:
 
       - name: Validate contracts
         run: |
+          python3 scripts/test_trusted_model_review.py
           node scripts/validate_harness.mjs
           node scripts/validate_audio_qc.mjs
           node --test scripts/test_validate_audio_qc_model.mjs
@@ -90,7 +90,6 @@ jobs:
           repository: LENKIN233/softbook_cet
           ref: main
           path: softbook_cet
-          ssh-key: ${{ secrets.SOFTBOOK_CET_DEPLOY_KEY }}
           persist-credentials: false
 
       - name: Set up Node.js

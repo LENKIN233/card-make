@@ -66,11 +66,32 @@
       "delivery-record",
       "repo-health"
     ],
+    "target_required_github_checks_after_trusted_bootstrap": [
+      "contract-harness",
+      "content-scope",
+      "approval-boundary",
+      "delivery-record",
+      "repo-health",
+      "trusted-model-review"
+    ],
+    "trusted_model_review_bootstrap": {
+      "workflow": ".github/workflows/trusted-model-review.yml",
+      "aggregator": "scripts/trusted_model_review.py",
+      "test": "scripts/test_trusted_model_review.py",
+      "trust_root": "two_isolated_pinned_openai_codex_action_jobs_running_base_only_code_and_binding_one_exact_PR_diff",
+      "author_editable_model_acceptance_records_are_execution_provenance": false,
+      "activation_sequence": "merge_under_current_exact_head_checks_then_configure_OPENAI_API_KEY_then_prove_both_review_jobs_and_aggregate_on_a_follow_up_PR_then_add_trusted-model-review_to_branch_protection",
+      "missing_provider_secret_fails_closed": true
+    },
     "generated_report_policy": "Global validation and quality reports are ephemeral outputs and must not be committed.",
     "before_commit": [
       {
         "scope": "model_owned_acceptance",
         "command": "node --test scripts/test_model_acceptance.mjs"
+      },
+      {
+        "scope": "trusted_model_execution_provenance",
+        "command": "python3 scripts/test_trusted_model_review.py"
       },
       {
         "scope": "model_owned_audio_acceptance",

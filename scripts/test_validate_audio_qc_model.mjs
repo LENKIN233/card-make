@@ -7,7 +7,10 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 
-import {validateAudioAcceptanceInput} from './validate_audio_qc.mjs';
+import {
+  validateAudioAcceptanceInput,
+  validateAudioQcRecord,
+} from './validate_audio_qc.mjs';
 
 const digest = value => crypto.createHash('sha256').update(value).digest('hex');
 
@@ -103,6 +106,18 @@ test('model audio input rejects a symbolic-link asset', t => {
     fs.rmSync(outside, {force: true});
     fs.rmSync(root, {recursive: true, force: true});
   }
+});
+
+test('model-owned audio records reject legacy person-authority fields', () => {
+  const record = JSON.parse(fs.readFileSync(
+    path.join(process.cwd(), 'reviews/audio_qc/TEMPLATE.json'),
+    'utf8',
+  ));
+  record.approved_by_user = true;
+  const issues = validateAudioQcRecord(record, {template: true});
+  assert.ok(issues.some(
+    issue => issue.code === 'audio_qc_person_authority_field_forbidden',
+  ));
 });
 
 function perCardPass(cardId, assetPath) {

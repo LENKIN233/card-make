@@ -49,6 +49,10 @@ immutable historical evidence only and cannot authorize current content.
   a capability blocker and continue independent work.
 - Keep exact scope, immutable commit/input SHA, current corpus fingerprint,
   scoped-audit replay, answer/reference parity, and technical audio invariants.
+- Full-track authorization must bind one direct immutable runtime payload and
+  derive its canonical `content_version`; caller-chosen versions fail closed.
+- Treat `model-acceptance.v2` as structural evidence. Repository authority also
+  requires the trusted base-only model check after its documented bootstrap.
 - Do not delete a card without governed destructive-change evidence bound to
   the base card and a successful current-reference and coverage scan.
 - Do not mix harness/tooling changes with bulk card content or audio asset
@@ -74,6 +78,7 @@ For harness or policy changes run at least:
 
 ```bash
 node --test scripts/test_model_acceptance.mjs
+python3 scripts/test_trusted_model_review.py
 node scripts/validate_harness.mjs
 node --test scripts/test_card_integrity.mjs
 node --test scripts/test_validate_pr_scope.mjs

@@ -128,6 +128,12 @@ test('model-owned pilot authorization binds complete review, sources, audit, run
   };
   writeJson(path.join(fixture.root, reviewPath), review);
   assert.deepEqual(validateControlledPilotReviewV2(review, {root: fixture.root}), []);
+  const personAuthorityReview = structuredClone(review);
+  personAuthorityReview.approved_by_user = true;
+  assert.ok(validateControlledPilotReviewV2(
+    personAuthorityReview,
+    {root: fixture.root},
+  ).some(error => error.includes('legacy person-authority fields')));
   const reviewSha256 = digest(fs.readFileSync(path.join(fixture.root, reviewPath)));
   const authorizationInput = buildModelAcceptanceInputSha256({
     decisionType: 'controlled_pilot_authorization',

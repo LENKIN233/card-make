@@ -120,6 +120,61 @@ export function buildContentAuthorizationAdditionalBindings({
   return {content_version: contentVersion};
 }
 
+export function deriveRuntimePayloadContentIdentity(payload) {
+  if (
+    !isPlainObject(payload) ||
+    !isPlainObject(payload.source) ||
+    !hasText(payload.source.id) ||
+    !hasText(payload.source.label) ||
+    !['cet4', 'cet6'].includes(payload.track) ||
+    !Array.isArray(payload.card_records) ||
+    payload.card_records.length === 0
+  ) {
+    throw new Error('runtime payload must contain source, track, and non-empty card_records');
+  }
+  const cardIds = payload.card_records.map(card => String(card?.card_id || ''));
+  if (cardIds.some(cardId => !cardId) || new Set(cardIds).size !== cardIds.length) {
+    throw new Error('runtime payload card_records must have unique non-empty card_id values');
+  }
+  const assets = payload.assets === undefined ? [] : payload.assets;
+  if (!Array.isArray(assets)) throw new Error('runtime payload assets must be an array');
+  const assetIds = assets.map(asset => String(asset?.asset_id || ''));
+  if (assetIds.some(assetId => !assetId) || new Set(assetIds).size !== assetIds.length) {
+    throw new Error('runtime payload assets must have unique non-empty asset_id values');
+  }
+  const versionedContent = {
+    card_records: payload.card_records,
+    source: {id: payload.source.id, label: payload.source.label},
+    track: payload.track,
+  };
+  if (assets.length > 0) {
+    versionedContent.assets = assets
+      .map(asset => ({
+        asset_id: asset.asset_id,
+        duration_ms: asset.duration_ms,
+        media_type: asset.media_type,
+        sha256: asset.sha256,
+        size_bytes: asset.size_bytes,
+      }))
+      .sort((left, right) => String(left.asset_id).localeCompare(String(right.asset_id)));
+  }
+  const contentVersion = `sha256:${crypto
+    .createHash('sha256')
+    .update(JSON.stringify(canonicalize(versionedContent)))
+    .digest('hex')}`;
+  if (
+    payload.content_version !== undefined &&
+    payload.content_version !== contentVersion
+  ) {
+    throw new Error('runtime payload content_version does not match normalized content');
+  }
+  return {
+    card_ids: [...cardIds].sort(),
+    content_version: contentVersion,
+    track: payload.track,
+  };
+}
+
 function isPlainObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }

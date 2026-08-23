@@ -8,6 +8,8 @@ import {isDeepStrictEqual} from 'node:util';
 import {
   buildContentAuthorizationAdditionalBindings,
   buildModelAcceptanceInputSha256,
+  deriveRuntimePayloadContentIdentity,
+  isLegacyV1HumanAuthorityRecord,
   MODEL_ACCEPTANCE_SCHEMA,
   validateIndependentModelAcceptances,
   validateModelAcceptance,
@@ -144,6 +146,10 @@ export function isDirectSelfReviewRecordPath(value) {
 
 export function isDirectScopedAuditRecordPath(value) {
   return isDirectGovernedJsonPath(value, 'reviews/audit_scopes');
+}
+
+export function isDirectRuntimePayloadPath(value) {
+  return isDirectGovernedJsonPath(value, 'reviews/runtime_payloads');
 }
 
 export function computeCardCorpusFingerprint(root) {
@@ -621,6 +627,48 @@ export function validateCurrentApprovalRecordReference({
     }
   }
   if (isModelOwned) {
+    if (isLegacyV1HumanAuthorityRecord(approval)) {
+      add('approval_record_person_authority_field_forbidden');
+    }
+    if (isFullTrackFinal) {
+      const runtimePayloadPath = approval.validation?.runtime_payload;
+      const runtimePayload = checkRecordFile(
+        runtimePayloadPath,
+        isDirectRuntimePayloadPath,
+        'approval_runtime_payload',
+      );
+      const runtimePayloadBytes = recordBytesByPath.get(runtimePayloadPath);
+      const runtimePayloadSha256 = runtimePayloadBytes
+        ? `sha256:${crypto.createHash('sha256').update(runtimePayloadBytes).digest('hex')}`
+        : null;
+      if (
+        runtimePayloadSha256 !== null &&
+        approval.validation?.runtime_payload_sha256 !== runtimePayloadSha256
+      ) {
+        add('approval_runtime_payload_hash_mismatch');
+      }
+      if (runtimePayload) {
+        try {
+          const runtimeIdentity = deriveRuntimePayloadContentIdentity(
+            runtimePayload,
+          );
+          if (
+            runtimeIdentity.content_version !== approval.content_version ||
+            runtimeIdentity.track !== approval.scope?.track ||
+            !sameStringSet(
+              runtimeIdentity.card_ids,
+              approval.scope?.card_ids,
+            )
+          ) {
+            add('approval_runtime_payload_identity_mismatch');
+          }
+        } catch (error) {
+          add('approval_runtime_payload_invalid', {
+            message: error instanceof Error ? error.message : String(error),
+          });
+        }
+      }
+    }
     const acceptanceIssues = isFullTrackFinal
       ? validateIndependentModelAcceptances(approval.model_acceptances, {
           requiredCapabilities: ['content_authorization'],
@@ -641,6 +689,7 @@ export function validateCurrentApprovalRecordReference({
       message: `${MODEL_ACCEPTANCE_SCHEMA} is required for current authorization`,
     });
     if (!hasText(approval.approval_id)) add('approval_record_id_missing');
+    return {ok: false, issues};
   }
   const authorizationTime = isModelOwned
     ? approval.authorized_at

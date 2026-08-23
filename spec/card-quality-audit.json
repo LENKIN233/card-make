@@ -31,8 +31,9 @@
   "script_path": "scripts/audit_card_quality.mjs",
   "approval_boundary": {
     "does_not_replace": [
-      "explicit_user_confirmation",
-      "agent_self_review_record",
+      "exact_input_model_acceptance",
+      "model_owned_semantic_review",
+      "model_owned_content_authorization",
       "card_validation",
       "harness_validation"
     ],
@@ -156,21 +157,21 @@
     "tracked_artifact_validation": "Every changed or newly added scoped report must exactly match a current immutable-HEAD audit replay for its declared card IDs. Standalone harness validation recursively rejects malformed artifacts; current-fingerprint artifacts are replayed against the current global audit, while structurally valid unchanged historical artifacts may retain their historical fingerprint. An unchanged historical self-review bound to such an artifact validates against that artifact's immutable fingerprint and recorded rule set without current-card or current-track parity; changing the review requires a direct current replay. An unchanged historical approval remains archive evidence. Current-authorization consumers require approval, linked self-review, both scoped reports, scripts/audit_card_quality.mjs, and spec/card-quality-audit.json to be regular committed evidence or authority whose worktree, index, and one fixed HEAD modes and bytes agree. They independently regenerate the complete current audit, exactly replay both scoped reports, and recheck the fixed HEAD/index snapshot, captured file bytes/modes, and corpus fingerprint before returning. Merely being tracked, matching only the corpus digest, using a self-declared summary, or claiming zero blockers is insufficient. Explicit legacy exceptions are limited to the hash-pinned legacy_scoped_report_archive."
   },
   "candidate_scope_policy": {
-    "before_user_sample_review": [
+    "before_model_content_review": [
       "run scripts/audit_card_quality.mjs --scope-card-ids <card_ids> --write-scope-report reviews/audit_scopes/<review_id>-scope-audit.json",
       "scoped_report_must_match_current_card_corpus_fingerprint",
-      "agent_self_review_must_link_current_scoped_quality_audit_report",
-      "agent_self_review_must_include_scoped_quality_audit_summary",
+      "model_owned_review_must_link_current_scoped_quality_audit_report",
+      "model_owned_review_must_include_scoped_quality_audit_summary",
       "scope_must_have_no_hard_blocker_issues",
-      "content_risk_examples_must_be reviewed_or_explicitly_accepted_as_known_legacy_risk"
+      "content_risks_must_be_resolved_or_recorded_as_structured_model_findings"
     ],
     "formal_batch_scope": [
       "no_hard_blocker_issues",
-      "no_unresolved_content_risk_without_user_authorized_exception",
-      "linked_agent_self_review_record",
-      "approval_record_must_link_current_scoped_quality_audit_report",
+      "no_unresolved_content_risk_in_accepted_model_scope",
+      "linked_current_model_owned_review_record",
+      "content_authorization_must_link_current_scoped_quality_audit_report",
       "linked_current_quality_audit_report",
-      "explicit_user_confirmation"
+      "two_independent_exact_input_model_acceptances_for_full_track_authorization"
     ]
   },
   "report_freshness_policy": {

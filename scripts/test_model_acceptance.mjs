@@ -6,6 +6,7 @@ import test from 'node:test';
 import {
   buildContentAuthorizationAdditionalBindings,
   buildModelAcceptanceInputSha256,
+  deriveRuntimePayloadContentIdentity,
   isCurrentModelAcceptance,
   isLegacyV1HumanAuthorityRecord,
   validateIndependentModelAcceptances,
@@ -102,6 +103,32 @@ test('full-track authorization binds canonical runtime content_version without b
       contentVersion: versionA,
     }),
     {content_version: versionA},
+  );
+});
+
+test('full-track runtime content_version is derived from normalized immutable payload content', () => {
+  const payload = {
+    source: {id: 'fixture', label: 'Fixture'},
+    track: 'cet4',
+    card_records: [{card_id: '000001', front: {text: 'Prompt'}}],
+    release: null,
+  };
+  const identity = deriveRuntimePayloadContentIdentity(payload);
+  assert.match(identity.content_version, /^sha256:[a-f0-9]{64}$/);
+  assert.deepEqual(identity.card_ids, ['000001']);
+  assert.equal(
+    deriveRuntimePayloadContentIdentity({
+      ...payload,
+      content_version: identity.content_version,
+    }).content_version,
+    identity.content_version,
+  );
+  assert.throws(
+    () => deriveRuntimePayloadContentIdentity({
+      ...payload,
+      content_version: `sha256:${'0'.repeat(64)}`,
+    }),
+    /does not match normalized content/,
   );
 });
 

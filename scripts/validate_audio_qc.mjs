@@ -3,7 +3,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import {validateIndependentModelAcceptances} from './lib/model_acceptance.mjs';
+import {
+  isLegacyV1HumanAuthorityRecord,
+  validateIndependentModelAcceptances,
+} from './lib/model_acceptance.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SPEC_PATH = 'spec/audio-generation-contract.json';
@@ -159,6 +162,9 @@ function validateRecord(record, errors, source, { template = false } = {}) {
     if (!(field in record)) pushIssue(errors, 'audio_qc_record_field_missing', { source, field });
   }
   if (modelOwned) {
+    if (isLegacyV1HumanAuthorityRecord(record)) {
+      pushIssue(errors, 'audio_qc_person_authority_field_forbidden', {source});
+    }
     for (const issue of validateIndependentModelAcceptances(
       record.model_acceptances,
       {
@@ -170,6 +176,7 @@ function validateRecord(record, errors, source, { template = false } = {}) {
     }
   } else if (!template) {
     pushIssue(errors, 'audio_qc_legacy_archive_only', {source});
+    return;
   }
 
   const cardIds = Array.isArray(record.scope?.card_ids) ? record.scope.card_ids.map(String) : [];
@@ -362,6 +369,15 @@ function validateRecord(record, errors, source, { template = false } = {}) {
       }
     }
   }
+}
+
+export function validateAudioQcRecord(
+  record,
+  {source = 'audio-qc-record', template = false} = {},
+) {
+  const errors = [];
+  validateRecord(record, errors, source, {template});
+  return errors;
 }
 
 function main() {
