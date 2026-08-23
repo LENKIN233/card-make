@@ -5,6 +5,13 @@ import os from 'node:os';
 import path from 'node:path';
 import {isDeepStrictEqual} from 'node:util';
 
+import {
+  buildModelAcceptanceInputSha256,
+  MODEL_ACCEPTANCE_SCHEMA,
+  validateIndependentModelAcceptances,
+  validateModelAcceptance,
+} from './model_acceptance.mjs';
+
 const REVIEW_STATUS_PARITY_EXCEPTION = Object.freeze({
   excluded_fields: ['review_status'],
   reason: 'card_authoring_status_and_self_review_snapshot_status_are_distinct; both remain independently schema-validated',
@@ -549,15 +556,42 @@ export function validateCurrentApprovalRecordReference({
     'approval_record',
   );
   if (!approval) return {ok: false, issues};
-  const isFullTrackFinal = approval.approval_mode === 'full_track_final';
-  if (!hasText(approval.approval_id)) add('approval_record_id_missing');
-  if (approval.approved_by_user !== true) add('approval_record_not_user_approved');
+  const isModelOwned =
+    approval.schema_version === 'model-owned-content-authorization.v2';
+  const isFullTrackFinal = isModelOwned
+    ? approval.authorization_mode === 'full_track'
+    : approval.approval_mode === 'full_track_final';
+  if (isModelOwned) {
+    const acceptanceIssues = isFullTrackFinal
+      ? validateIndependentModelAcceptances(approval.model_acceptances, {
+          requiredCapabilities: ['content_authorization'],
+        })
+      : validateModelAcceptance(approval.model_acceptance, {
+          requireAccepted: true,
+          requiredCapabilities: ['content_authorization'],
+        });
+    for (const issue of acceptanceIssues) {
+      add(issue.code, issue);
+    }
+    if (!hasText(approval.authorization_id)) {
+      add('approval_record_id_missing');
+    }
+  } else {
+    add('approval_record_legacy_archive_only', {
+      schema_version: approval.schema_version ?? null,
+      message: `${MODEL_ACCEPTANCE_SCHEMA} is required for current authorization`,
+    });
+    if (!hasText(approval.approval_id)) add('approval_record_id_missing');
+  }
+  const authorizationTime = isModelOwned
+    ? approval.authorized_at
+    : approval.approved_at;
   if (
-    !hasText(approval.approved_at) ||
+    !hasText(authorizationTime) ||
     !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(
-      approval.approved_at,
+      authorizationTime,
     ) ||
-    Number.isNaN(Date.parse(approval.approved_at))
+    Number.isNaN(Date.parse(authorizationTime))
   ) {
     add('approval_record_approved_at_invalid');
   }
@@ -580,7 +614,7 @@ export function validateCurrentApprovalRecordReference({
   ) {
     add('approval_record_box_scope_mismatch');
   }
-  if (isFullTrackFinal) {
+  if (isFullTrackFinal || isModelOwned) {
     if (!['cet4', 'cet6'].includes(approval.scope?.track)) {
       add('approval_record_track_invalid');
     }
@@ -600,9 +634,11 @@ export function validateCurrentApprovalRecordReference({
     add('approval_record_representative_cards_invalid');
   }
   if (
-    !Array.isArray(approval.approval_limits) ||
-    approval.approval_limits.length < 3 ||
-    !approval.approval_limits.every(hasText)
+    !Array.isArray(
+      isModelOwned ? approval.authorization_limits : approval.approval_limits,
+    ) ||
+    (isModelOwned ? approval.authorization_limits : approval.approval_limits).length < 3 ||
+    !(isModelOwned ? approval.authorization_limits : approval.approval_limits).every(hasText)
   ) {
     add('approval_record_limits_invalid');
   }
@@ -611,10 +647,8 @@ export function validateCurrentApprovalRecordReference({
       add('approval_record_validation_missing', {field});
     }
   }
-  if (
-    approval.validation?.card_quality_audit_report !==
-    'reports/card_quality_audit_report.json'
-  ) {
+  if (!isModelOwned && approval.validation?.card_quality_audit_report !==
+    'reports/card_quality_audit_report.json') {
     add('approval_record_validation_report_invalid');
   }
 
@@ -734,7 +768,7 @@ export function validateCurrentApprovalRecordReference({
     ) {
       add('approval_audit_scope_not_clear');
     }
-    if (isFullTrackFinal) {
+    if (isFullTrackFinal || isModelOwned) {
       const expectedHash = `sha256:${crypto
         .createHash('sha256')
         .update(recordBytesByPath.get(auditRecord.report))
@@ -745,13 +779,92 @@ export function validateCurrentApprovalRecordReference({
     }
   }
 
-  const linkedReviewPath = approval.validation?.agent_self_review;
+  const linkedReviewPath = isModelOwned
+    ? approval.validation?.model_review
+    : approval.validation?.agent_self_review;
   const linkedReview = checkRecordFile(
     linkedReviewPath,
     isDirectSelfReviewRecordPath,
     'approval_linked_self_review',
   );
   if (linkedReview) {
+    const linkedReviewSha256 = `sha256:${crypto
+      .createHash('sha256')
+      .update(recordBytesByPath.get(linkedReviewPath))
+      .digest('hex')}`;
+    if (
+      isModelOwned &&
+      approval.validation?.model_review_sha256 !== linkedReviewSha256
+    ) {
+      add('approval_linked_model_review_hash_mismatch');
+    }
+    if (isModelOwned && auditReport) {
+      const auditSha256 = `sha256:${crypto
+        .createHash('sha256')
+        .update(recordBytesByPath.get(auditRecord.report))
+        .digest('hex')}`;
+      let expectedAcceptanceInput = null;
+      try {
+        expectedAcceptanceInput = buildModelAcceptanceInputSha256({
+          decisionType: isFullTrackFinal
+            ? 'full_track_content_authorization'
+            : 'content_authorization',
+          scope: approval.scope,
+          corpusFingerprint: activeFingerprint.digest,
+          auditSha256,
+          linkedReviewIdentity: {
+            path: linkedReviewPath,
+            sha256: linkedReviewSha256,
+          },
+        });
+      } catch (error) {
+        add('model_acceptance_input_contract_invalid', {message: error.message});
+      }
+      const acceptances = isFullTrackFinal
+        ? approval.model_acceptances || []
+        : [approval.model_acceptance];
+      if (
+        expectedAcceptanceInput &&
+        acceptances.some(acceptance =>
+          acceptance?.evidence?.input_sha256 !== expectedAcceptanceInput
+        )
+      ) {
+        add('model_acceptance_input_scope_mismatch', {
+          expected: expectedAcceptanceInput,
+        });
+      }
+    }
+    const linkedReviewIsModelOwned = [
+      'model-owned-card-review.v2',
+      'model-owned-full-track-review.v2',
+    ].includes(linkedReview.schema_version);
+    if (isModelOwned) {
+      if (!linkedReviewIsModelOwned) {
+        add('approval_linked_self_review_legacy_archive_only');
+      } else {
+        const linkedAcceptanceIssues =
+          linkedReview.schema_version === 'model-owned-full-track-review.v2'
+            ? validateIndependentModelAcceptances(
+                linkedReview.model_acceptances,
+                {
+                  requiredCapabilities: [
+                    'card_semantic_review',
+                    'source_provenance_review',
+                  ],
+                },
+              )
+            : validateModelAcceptance(linkedReview.model_acceptance, {
+                requireAccepted: true,
+                requiredCapabilities: [
+                  'card_semantic_review',
+                  'source_provenance_review',
+                ],
+              });
+        for (const issue of linkedAcceptanceIssues) {
+          add(`approval_linked_${issue.code}`, issue);
+        }
+      }
+    }
     if (!hasText(linkedReview.review_id)) {
       add('approval_linked_self_review_id_missing');
     }
@@ -777,14 +890,103 @@ export function validateCurrentApprovalRecordReference({
     )) {
       add('approval_linked_self_review_box_scope_mismatch');
     }
-    for (const field of isFullTrackFinal
+    for (const field of (isFullTrackFinal || isModelOwned)
       ? ['track']
       : ['library', 'group', 'box']) {
       if (linkedReview.scope?.[field] !== approval.scope?.[field]) {
         add('approval_linked_self_review_scalar_scope_mismatch', {field});
       }
     }
-    if (isFullTrackFinal) {
+    if (isModelOwned) {
+      const fullTrackReview =
+        linkedReview.schema_version === 'model-owned-full-track-review.v2';
+      if (isFullTrackFinal !== fullTrackReview) {
+        add('approval_linked_model_review_mode_mismatch');
+      }
+      if (
+        fullTrackReview &&
+        linkedReview.batch_review?.status !== 'ready_for_model_authorization'
+      ) {
+        add('approval_linked_full_track_review_batch_invalid');
+      }
+      if (
+        !fullTrackReview &&
+        linkedReview.batch_review?.status !== 'model_accepted'
+      ) {
+        add('approval_linked_standard_review_batch_invalid');
+      }
+      const reviewedIds = fullTrackReview
+        ? linkedReview.coverage?.reviewed_card_ids
+        : (linkedReview.cards || []).map(card => card?.card_id);
+      if (!sameStringSet(reviewedIds, approval.scope?.card_ids)) {
+        add('approval_linked_model_review_coverage_invalid');
+      }
+      if (!fullTrackReview) {
+        const cards = Array.isArray(linkedReview.cards)
+          ? linkedReview.cards
+          : [];
+        const requiredMetadataFields = [
+          'main_training_goal',
+          'weak_point_tags',
+          'difficulty',
+          'card_prototype',
+          'material',
+          'exam_value',
+          'box_progression_role',
+          'review_status',
+        ];
+        if (cards.some(card =>
+          card?.status !== 'pass' ||
+          !card?.quality_metadata ||
+          !card?.blocker_scan ||
+          CURRENT_APPROVAL_BLOCKER_FIELDS.some(
+            field => card.blocker_scan?.[field] !== false,
+          )
+        )) {
+          add('approval_linked_standard_review_cards_invalid');
+        }
+        for (const currentEntry of currentScopeEntries) {
+          const snapshot = cards.find(
+            card => card?.card_id === currentEntry.card.card_id,
+          );
+          if (
+            !snapshot ||
+            snapshot.interaction_id !== currentEntry.card.interaction_id ||
+            !isDeepStrictEqual(
+              snapshot.knowledge_ref,
+              currentEntry.card.knowledge_ref,
+            ) ||
+            requiredMetadataFields.some(
+              field => !hasOwn(snapshot.quality_metadata, field),
+            ) ||
+            requiredMetadataFields.some(
+              field => !hasOwn(currentEntry.card?.quality_metadata, field),
+            ) ||
+            !deepEqualQualityMetadata(
+              currentEntry.card.quality_metadata,
+              snapshot.quality_metadata,
+            )
+          ) {
+            add('approval_linked_standard_review_current_corpus_mismatch', {
+              card_id: currentEntry.card.card_id,
+            });
+          }
+        }
+      }
+      if (
+        fullTrackReview &&
+        linkedReview.coverage?.expected_card_count !==
+          approval.scope?.card_ids?.length
+      ) {
+        add('approval_linked_full_track_review_coverage_invalid');
+      }
+      if (
+        Array.isArray(linkedReview.removed_cards) &&
+        linkedReview.removed_cards.length > 0
+      ) {
+        add('approval_linked_review_contains_unresolved_removals');
+      }
+    } else if (isFullTrackFinal) {
       if (
         linkedReview.sample_policy?.review_scope_type !==
           'full_track_remediation' ||
@@ -959,6 +1161,44 @@ export function validateCurrentApprovalRecordReference({
       'approval_linked_self_review_audit',
     );
     if (linkedReport) {
+      const linkedAuditSha256 = `sha256:${crypto
+        .createHash('sha256')
+        .update(recordBytesByPath.get(linkedAudit.report))
+        .digest('hex')}`;
+      if (
+        isModelOwned &&
+        linkedAudit?.report_sha256 !== linkedAuditSha256
+      ) {
+        add('approval_linked_model_review_audit_hash_mismatch');
+      }
+      if (isModelOwned && linkedReviewIsModelOwned) {
+        const fullTrackReview =
+          linkedReview.schema_version === 'model-owned-full-track-review.v2';
+        let expectedReviewInput = null;
+        try {
+          expectedReviewInput = buildModelAcceptanceInputSha256({
+            decisionType: fullTrackReview ? 'full_track_review' : 'card_review',
+            scope: linkedReview.scope,
+            corpusFingerprint: activeFingerprint.digest,
+            auditSha256: linkedAuditSha256,
+          });
+        } catch (error) {
+          add('approval_linked_model_acceptance_input_contract_invalid', {
+            message: error.message,
+          });
+        }
+        const reviewAcceptances = fullTrackReview
+          ? linkedReview.model_acceptances || []
+          : [linkedReview.model_acceptance];
+        if (
+          expectedReviewInput &&
+          reviewAcceptances.some(acceptance =>
+            acceptance?.evidence?.input_sha256 !== expectedReviewInput
+          )
+        ) {
+          add('approval_linked_model_acceptance_input_scope_mismatch');
+        }
+      }
       if (
         currentAudit &&
         !isDeepStrictEqual(

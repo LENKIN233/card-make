@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -16,6 +17,7 @@ import {
   validateQualityMetadata,
 } from './lib/card_integrity.mjs';
 import {buildEliminationContract} from './migrate_cards_to_softbook_contract.mjs';
+import {buildModelAcceptanceInputSha256} from './lib/model_acceptance.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const POLICY = loadIntegrityPolicy(ROOT);
@@ -48,6 +50,32 @@ test('structured human reviewer identities allow real short and Unicode IDs but 
 
 function clone(value) {
   return structuredClone(value);
+}
+
+function modelAcceptance(inputDigest, capabilities) {
+  return {
+    schema_version: 'model-acceptance.v2',
+    actor: {
+      kind: 'model_harness',
+      agent: 'codex',
+      model: 'gpt-5.6-sol',
+      run_id: 'codex-task:card-integrity-fixture',
+    },
+    evidence: {
+      reviewed_at: '2026-07-31T12:00:00+08:00',
+      input_sha256: String(inputDigest).startsWith('sha256:')
+        ? inputDigest
+        : `sha256:${inputDigest}`,
+      capabilities,
+      summary: 'The exact bound scope passed semantic review.',
+      findings: [],
+    },
+    decision: 'accepted',
+  };
+}
+
+function cryptoHashFile(file) {
+  return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 }
 
 function validMetadata(reviewStatus = 'draft') {
@@ -433,24 +461,38 @@ test('current approval consumers reject forged replay, stale, template, traversa
       path.join(root, 'reviews/audit_scopes/current-approval-audit.json'),
       'utf8',
     ));
-    writeJson('reviews/agent_self_review/current-review.json', {
+    const reviewAuditSha256 = `sha256:${cryptoHashFile(
+      path.join(root, 'reviews/audit_scopes/current-review-audit.json'),
+    )}`;
+    const approvalAuditSha256 = `sha256:${cryptoHashFile(
+      path.join(root, 'reviews/audit_scopes/current-approval-audit.json'),
+    )}`;
+    const reviewScope = {
+      track: 'cet4',
+      library: 'fixture-library',
+      group: 'fixture-group',
+      box: 'fixture-box',
+      box_prefixes: ['0000'],
+      card_ids: cardIds,
+    };
+    const currentReview = {
+      schema_version: 'model-owned-card-review.v2',
       review_id: 'current-review',
       created_at: '2026-07-31T12:00:00+08:00',
-      scope: {
-        library: 'fixture-library',
-        group: 'fixture-group',
-        box: 'fixture-box',
-        box_prefixes: ['0000'],
-        card_ids: cardIds,
-      },
+      model_acceptance: modelAcceptance(buildModelAcceptanceInputSha256({
+        decisionType: 'card_review',
+        scope: reviewScope,
+        corpusFingerprint: currentFingerprint.digest,
+        auditSha256: reviewAuditSha256,
+      }), [
+        'card_semantic_review',
+        'source_provenance_review',
+      ]),
+      scope: reviewScope,
       specs_read: ['spec/review-workflow.json'],
-      sample_policy: {
-        review_scope_type: 'three_card_sample_per_box',
-        is_three_card_sample_per_box: true,
-        batch_generation_requires_user_confirmation: true,
-      },
       quality_audit: {
         report: 'reviews/audit_scopes/current-review-audit.json',
+        report_sha256: reviewAuditSha256,
         corpus_fingerprint: currentFingerprint.digest,
         scope_has_no_hard_blockers: true,
         scope_summary: structuredClone(currentScopedReport.scope_summary),
@@ -476,29 +518,47 @@ test('current approval consumers reject forged replay, stale, template, traversa
         },
       })),
       batch_review: {
-        status: 'recommend_user_confirmation',
+        status: 'model_accepted',
         box_progression: 'fixture progression',
         repetition_or_gap_risks: [],
         representative_cards: ['000001'],
-        next_step: 'request user confirmation',
+        next_step: 'create model-owned authorization',
       },
-    });
+      removed_cards: [],
+    };
+    writeJson('reviews/agent_self_review/current-review.json', currentReview);
+    const linkedReviewSha256 = `sha256:${cryptoHashFile(
+      path.join(root, 'reviews/agent_self_review/current-review.json'),
+    )}`;
     const approvalPath = 'reviews/approved_batches/current-approval.json';
+    const approvalScope = {
+      track: 'cet4',
+      purpose: 'formal_content',
+      box_prefixes: ['0000'],
+      card_ids: cardIds,
+    };
     writeJson(approvalPath, {
-      approval_id: 'current-approval',
-      approved_by_user: true,
-      approved_at: '2026-07-31T12:00:00+08:00',
-      scope: {
-        library: 'fixture-library',
-        group: 'fixture-group',
-        box: 'fixture-box',
-        box_prefixes: ['0000'],
-        card_ids: cardIds,
-      },
+      schema_version: 'model-owned-content-authorization.v2',
+      authorization_id: 'current-authorization',
+      authorized_at: '2026-07-31T12:00:00+08:00',
+      model_acceptance: modelAcceptance(buildModelAcceptanceInputSha256({
+        decisionType: 'content_authorization',
+        scope: approvalScope,
+        corpusFingerprint: currentFingerprint.digest,
+        auditSha256: approvalAuditSha256,
+        linkedReviewIdentity: {
+          path: 'reviews/agent_self_review/current-review.json',
+          sha256: linkedReviewSha256,
+        },
+      }), [
+        'content_authorization',
+      ]),
+      scope: approvalScope,
       summary: 'Fixture current approval.',
       representative_cards: ['000001'],
       card_quality_audit: {
         report: 'reviews/audit_scopes/current-approval-audit.json',
+        report_sha256: approvalAuditSha256,
         corpus_fingerprint: currentFingerprint.digest,
         scope_has_no_hard_blockers: true,
         scope_summary: structuredClone(currentScopedReport.scope_summary),
@@ -507,10 +567,10 @@ test('current approval consumers reject forged replay, stale, template, traversa
         harness: 'node scripts/validate_harness.mjs',
         cards: 'node scripts/validate_cards.mjs',
         card_quality_audit: 'node scripts/audit_card_quality.mjs',
-        card_quality_audit_report: 'reports/card_quality_audit_report.json',
-        agent_self_review: 'reviews/agent_self_review/current-review.json',
+        model_review: 'reviews/agent_self_review/current-review.json',
+        model_review_sha256: linkedReviewSha256,
       },
-      approval_limits: [
+      authorization_limits: [
         'Only the listed scope is approved.',
         'No unrelated generation is approved.',
         'No product specification change is approved.',
@@ -881,7 +941,7 @@ test('current approval consumers reject forged replay, stale, template, traversa
     ));
 
     const scalarMismatchReview = structuredClone(validLinkedReview);
-    scalarMismatchReview.scope.library = 'wrong-library';
+    scalarMismatchReview.scope.track = 'cet6';
     writeJson(
       'reviews/agent_self_review/current-review.json',
       scalarMismatchReview,

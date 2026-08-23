@@ -1,23 +1,24 @@
 {
-  "version": "audio-perceptual-worklist-v2",
+  "version": "audio-perceptual-worklist-v3",
   "status": "active",
-  "schema_version": "audio-perceptual-worklist.v2",
-  "purpose": "Turn a passing full-track technical audio audit into a scope-bound, resumable, one-card-at-a-time human perceptual review queue without creating formal QC or content approval evidence.",
+  "schema_version": "audio-perceptual-worklist.v3",
+  "purpose": "Bind exact audio assets to per-card model perceptual evidence without creating source-authenticity or deployment claims.",
+  "authority_owner": "spec/review-workflow.json",
+  "model_acceptance_validator": "scripts/lib/model_acceptance.mjs",
   "authority_boundary": {
     "owns": [
       "perceptual_review_queue_identity",
-      "human_review_progress",
+      "model_review_progress",
       "per_card_perceptual_check_outcomes",
       "replacement_required_signal"
     ],
     "does_not_own": [
-      "formal_audio_qc_readiness",
       "text_source_authenticity",
-      "formal_card_content_approval",
-      "audio_generation_provider_selection"
+      "deployment_or_device_evidence",
+      "audio_generation_provider_inference"
     ],
     "formal_audio_qc_owner": "reviews/audio_qc/TEMPLATE.json",
-    "final_content_approval_owner": "reviews/approved_batches/FULL_TRACK_TEMPLATE.json"
+    "content_authorization_owner": "reviews/approved_batches/TEMPLATE.json"
   },
   "source_requirements": {
     "technical_audit_schema": "audio-technical-audit.v1",
@@ -33,28 +34,10 @@
       "full_track",
       "card_ids"
     ],
-    "full_track_technical_audit_remains_required_for_scoped_worklists": true,
     "scoped_card_ids_must_be_non_empty_unique_current_audio_cards": true,
     "scope_card_order_is_canonical_corpus_order": true,
-    "scope_expected_entry_count_required": true,
-    "full_track_audio_card_count_required": true,
-    "scope_card_ids_fingerprint_required": true,
-    "worklist_entries_must_exactly_equal_declared_scope": true,
-    "legacy_v1_scope": "full_track_only"
+    "worklist_entries_must_exactly_equal_declared_scope": true
   },
-  "entry_identity_fields": [
-    "card_id",
-    "card_source_file",
-    "knowledge_ref",
-    "training_context",
-    "audio.asset_path",
-    "audio.file_sha256",
-    "audio.size_bytes",
-    "audio.declared_duration_ms",
-    "audio.probed_duration_ms",
-    "audio.transcript",
-    "audio.transcript_sha256"
-  ],
   "perceptual_checks": [
     "audio_matches_text",
     "target_signal_audible",
@@ -64,41 +47,43 @@
     "stress_and_pauses_do_not_mislead",
     "no_unwanted_noise_or_clipping"
   ],
-  "check_states": ["pending", "pass", "fail"],
-  "review_states": ["pending", "in_progress", "passed", "failed"],
+  "check_states": [
+    "pending",
+    "pass",
+    "fail"
+  ],
+  "review_states": [
+    "pending",
+    "in_progress",
+    "passed",
+    "failed",
+    "capability_unavailable"
+  ],
   "review_policy": {
-    "human_reviewer_required_for_any_non_pending_state": true,
-    "full_asset_listening_attestation_required_for_any_non_pending_state": true,
-    "agent_or_automation_reviewer_forbidden": true,
-    "one_card_per_review_action": true,
-    "terminal_review_requires_every_check_resolved": true,
-    "failed_review_requires_notes": true,
-    "failed_review_requires_replacement": true,
-    "terminal_review_is_immutable": true,
-    "reviewed_identity_change_fails_without_explicit_human_acknowledged_reset": true,
-    "passing_worklist_entry_is_not_formal_audio_qc": true
+    "review_mode": "model_perceptual_qc",
+    "model_acceptance_required_for_any_non_pending_state": true,
+    "required_model_capability": "audio_perceptual_review",
+    "full_asset_consumption_attestation_required": true,
+    "complete_asset_consumed_field": "complete_asset_consumed",
+    "every_card_requires_explicit_check_results": true,
+    "independent_model_runs_required_per_card": 2,
+    "model_acceptance_input_binds_entry_identity_and_all_seven_results": true,
+    "failed_review_requires_notes_and_replacement": true,
+    "capability_unavailable_cannot_pass": true,
+    "reviewed_identity_change_fails_closed": true,
+    "passing_worklist_entry_is_not_source_authenticity_evidence": true
   },
-  "context_quality_summary": {
-    "required_fields": [
-      "entries_with_complete_training_context",
-      "missing_main_training_goal",
-      "missing_box_progression_role",
-      "formal_content_context_ready"
+  "legacy_compatibility": {
+    "schemas": [
+      "audio-perceptual-worklist.v1",
+      "audio-perceptual-worklist.v2"
     ],
-    "policy": "Missing training goals or box progression roles remain explicit content blockers even when technical and perceptual audio checks pass."
+    "role": "immutable historical evidence only",
+    "current_authorization": false
   },
   "operational_paths": {
     "default_generated_worklist": "exports/cet4-audio-perceptual-worklist.json",
     "reviewed_worklist_directory": "reviews/audio_perceptual_worklists/",
     "manager": "scripts/manage_audio_perceptual_worklist.mjs"
-  },
-  "commands": {
-    "build": "node scripts/manage_audio_perceptual_worklist.mjs build --track cet4 --technical-audit exports/cet4-audio-technical-audit.json --output exports/cet4-audio-perceptual-worklist.json",
-    "build_scoped": "append --scope-card-ids <comma-separated-current-audio-card-ids>; the complete technical audit is still validated",
-    "next": "node scripts/manage_audio_perceptual_worklist.mjs next --file exports/cet4-audio-perceptual-worklist.json",
-    "review_dry_run": "node scripts/manage_audio_perceptual_worklist.mjs review --file exports/cet4-audio-perceptual-worklist.json --card-id <card-id> --reviewer <human-id> --attest-listened --check <name=pass-or-fail>",
-    "review_apply": "append --apply only after the dry-run output is correct",
-    "validate": "node scripts/manage_audio_perceptual_worklist.mjs validate --file exports/cet4-audio-perceptual-worklist.json",
-    "require_complete": "node scripts/manage_audio_perceptual_worklist.mjs validate --file exports/cet4-audio-perceptual-worklist.json --require-complete"
   }
 }

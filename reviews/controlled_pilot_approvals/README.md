@@ -1,12 +1,9 @@
-# Controlled Pilot Approval Artifacts
+# Controlled-pilot model authorizations
 
-This directory stores the exact eight-field `controlled-pilot-approval.v1`
-artifacts consumed by the product publisher. Each non-template artifact must be
-derived from a matching tracked aggregate record under
-`reviews/controlled_pilot_reviews/`; it cannot be handwritten, inferred from
-green checks, or created from sample confirmation alone.
+New artifacts use `controlled-pilot-authorization.v2` with exact
+`model-acceptance.v2` evidence. Exact content version, card IDs, current review,
+audit, audio, publication, and external-state boundaries remain independent.
+The authorization also binds the exact review path/SHA-256, runtime payload
+SHA-256, scoped audit SHA-256, and canonical controlled-pilot model input.
 
-Approval is also dry-run by default and refuses an aggregate review whose mode
-or bytes differ from `HEAD`. After the user has actually approved the exact
-scope, the command requires all of `--attest-user-approved`, `--approved-at`,
-`--approval-source`, and `--apply` to persist the transition and artifact.
+Existing v1 artifacts remain immutable historical evidence only.

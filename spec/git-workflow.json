@@ -1,7 +1,7 @@
 {
-  "version": "card-make-git-workflow-v1",
+  "version": "card-make-git-workflow-v2",
   "status": "active",
-  "purpose": "Make the agent responsible for the Git lifecycle of agent-authored tracked-file changes, including standing user-delegated auto-merge for validated harness/tooling PRs while preserving user authority over final content approval.",
+  "purpose": "Make the agent responsible for the complete Git lifecycle of validated agent-authored changes under the standing model-owned acceptance authority.",
   "authority_boundary": {
     "agent_owns": [
       "pre_edit_git_status_check",
@@ -11,13 +11,12 @@
       "push",
       "open_or_update_draft_PR",
       "publish_handoff",
-      "auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation"
+      "auto_merge_validated_harness_tooling_content_audio_and_authorization_PRs_under_standing_delegation"
     ],
-    "user_reserves": [
-      "formal_content_approval",
-      "formal_content_PR_merge_unless_scope_delegated",
-      "approval_to_delete_cards",
-      "approval_to_mark_content_formally_usable"
+    "model_and_harness_must_not": [
+      "merge_when_exact_head_required_checks_are_incomplete_or_failing",
+      "invent_source_audio_deployment_device_or_remote_state_facts",
+      "remove_cards_without_governed_destructive_change_evidence"
     ]
   },
   "pre_edit_check": {
@@ -70,6 +69,14 @@
     "generated_report_policy": "Global validation and quality reports are ephemeral outputs and must not be committed.",
     "before_commit": [
       {
+        "scope": "model_owned_acceptance",
+        "command": "node --test scripts/test_model_acceptance.mjs"
+      },
+      {
+        "scope": "model_owned_audio_acceptance",
+        "command": "node --test scripts/test_validate_audio_qc_model.mjs"
+      },
+      {
         "scope": "harness_files",
         "command": "node scripts/validate_harness.mjs"
       },
@@ -79,7 +86,7 @@
       },
       {
         "scope": "audio_perceptual_worklist_tooling",
-        "command": "node --test scripts/test_audio_perceptual_worklist.mjs scripts/test_audio_perceptual_review_station.mjs"
+        "command": "node --test scripts/test_audio_perceptual_worklist.mjs scripts/test_build_audio_qc_drafts.mjs scripts/test_validate_audio_qc_model.mjs"
       },
       {
         "scope": "card_json_or_preview_reader",
@@ -138,17 +145,17 @@
         "command": "git diff --check"
       }
     ],
-    "no_remote_checks_policy": "If GitHub reports no checks, local validation plus PR metadata is the evidence of completion."
+    "no_remote_checks_policy": "A pull request with missing or empty required-check state is not mergeable; local validation and PR metadata never replace exact-head required checks."
   },
   "completion_policy": {
     "agent_authored_tracked_changes_default": "validated_commit_push_draft_PR",
     "local_only_exceptions": [
-      "small_samples_for_user_review",
+      "ephemeral_local_model_review_fixtures",
       "read_only_audits",
       "explicit_user_local_only_request"
     ],
     "formal_bulk_card_changes_require": [
-      "user_confirmed_sample",
+      "current_model_acceptance",
       "local_validation",
       "commit",
       "push",
@@ -175,28 +182,31 @@
     "candidate_queue_contract": "spec/candidate-review-queue.schema.json",
     "candidate_queue_remote_mapping": "weekly health verification requires exactly one open draft main-targeting PR per active queue entry and rejects unmapped content PRs",
     "parked_candidate_state": "closed PR plus recoverable patch_sha256 and original head_sha",
-    "green_checks_are_not_formal_approval": true
+    "green_checks_alone_are_not_current_model_acceptance": true
   },
   "merge_policy": {
-    "default": "standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs",
-    "standing_user_delegation": {
-      "granted_by_user_statement": "我要求自动合并",
-      "granted_at": "2026-05-13",
+    "default": "standing_delegation_auto_merge_for_all_validated_change_classes",
+    "standing_delegation": {
+      "authority_owner": "spec/review-workflow.json",
+      "granted_at": "2026-08-23",
       "scope": [
         "harness_changes",
-        "tooling_changes"
+        "tooling_changes",
+        "content_changes",
+        "audio_changes",
+        "authorization_changes"
       ],
       "requires": [
         "local_validation_passed",
         "PR_ready_or_not_draft",
         "GitHub_mergeable",
-        "no_bulk_card_content_changes",
+        "exact_head_required_checks_passed",
         "base_branch_or_target_clear"
       ]
     },
-    "agent_may_merge_only_when": "standing_user_delegation_matches_scope_or_user_explicitly_delegates_merge_for_the_specific_PR_or_task_class",
+    "agent_may_merge_only_when": "the standing delegation covers the change class, exact-head required checks pass, and the base and target are unambiguous",
     "never_merge_when": [
-      "formal_content_not_user_approved",
+      "current_model_acceptance_missing_or_rejected",
       "validator_failing",
       "PR_scope_mixes_harness_and_bulk_content",
       "base_branch_or_target_unclear"
@@ -235,6 +245,19 @@
       "read_method": "resolve the fixed HEAD tree entry with literal-pathspec ls-tree -z, require the exact path/mode/type, then parse UTF-8 JSON from cat-file blob <object_oid>",
       "append_only": "the current handoff path must be absent from both base_commit and commit_sha and added only after the payload; an existing base handoff may not be overwritten, deleted and re-added, or renamed into the current record, and all other historical handoffs remain immutable"
     },
+    "change_type_policy": {
+      "allowed": [
+        "harness",
+        "tooling",
+        "audio",
+        "authorization",
+        "content_sample",
+        "content_candidate_front_answer_leak_queue",
+        "content_candidate_residual_blocker_closure"
+      ],
+      "audio_paths_require_audio_type": true,
+      "authorization_paths_require_authorization_type": true
+    },
     "semantic_git_reads": {
       "fixed_oids": "resolve base, head, and handoff commit_sha to direct full commit OIDs once before merge-base, path, history, tree, or blob inspection",
       "environment": [
@@ -266,8 +289,8 @@
     },
     "candidate_content_evidence_policy": {
       "standard_unit": "one changed self-review linked to one changed scoped audit",
-      "confirmed_box_expansion_unit": "exactly one three-card sample self-review plus one confirmed-box-expansion self-review for the same single box, with disjoint card scopes, a satisfied named sample confirmation, and exactly two linked changed scoped audits",
-      "fail_closed": "all other self-review and scoped-audit cardinalities or pairings are rejected"
+      "model_owned_unit": "one exact-scope model-acceptance.v2 self-review linked to one changed current scoped audit, with per-card evidence for every added or modified card",
+      "fail_closed": "missing, duplicate, stale, legacy-only, or scope-mismatched model review and scoped-audit pairings are rejected"
     },
     "patch_integrity": {
       "legacy_helper_format": "git-diff-binary-scoped-v1",
@@ -345,7 +368,7 @@
       "pull_request": "OPEN, CLOSED, or MERGED records use the canonical repository-matching /pull/<number> URL and require exact GitHub pull_request event binding for number, canonical URL, state, merged flag, draft flag, explicit head SHA, head/base branch, and same-origin head/base repository; fork records fail closed under the origin/<branch> model",
       "parked_compare": "PARKED_NO_PR_WIP_LIMIT records may use the legacy PR_url field for a repository-matching /compare/<base_branch>...<branch> locator whose decoded refs exactly match the record; the compare page is not a pull request, event context must be absent, and refs/remotes/origin/<branch> must resolve to the explicit validated head",
       "push_ref": "must equal origin/<branch> and be proven by exact PR event metadata or, for parked records, a matching remote-tracking commit",
-      "record_schema": "current records require the complete template field set with strict string, boolean, object, array, timestamp, validation-entry, risk-entry, change_type enum, and merge_authority-to-scope consistency checks; any payload that changes card_boxes_json must use a content change_type with no-auto-merge authority"
+      "record_schema": "current records require the complete template field set with strict string, boolean, object, array, timestamp, validation-entry, risk-entry, change_type enum, and merge_authority-to-scope consistency checks; content payloads use the same exact-head validated auto-merge authority as other governed change classes"
     }
   }
 }

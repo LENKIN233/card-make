@@ -1,7 +1,7 @@
 {
   "version": "card-make-content-quality-v1",
   "status": "active",
-  "confirmed_by_user_interview": "2026-05-12",
+  "original_interview_anchor": "2026-05-12",
   "north_star": {
     "goal": "Produce high-quality CET4/CET6 cards that help Chinese college students pass the exam through micro-coaching card learning.",
     "success_is_not": [
@@ -11,7 +11,7 @@
       "generic_english_lecture",
       "vocabulary_only_drill"
     ],
-    "final_approval_authority": "user_only"
+    "current_acceptance_authority": "model_and_harness_under_spec/review-workflow.json"
   },
   "default_user_model": {
     "primary_group": "Chinese college students preparing for CET4/CET6",
@@ -62,13 +62,13 @@
     "authority_boundary": "This workspace may enforce stricter candidate integrity than the product runtime, but canonical interaction semantics remain owned by ../softbook_cet/spec/interactions.json.",
     "legacy_metadata_compatibility": "Untouched legacy cards may omit quality_metadata; any card that already carries quality_metadata must conform to spec/card-metadata.schema.json, and any added or modified candidate card must carry conforming quality_metadata without grandfathering inherited defects.",
     "changed_candidate_detection": "Derive added or modified card objects by card_id from the merge-base-to-head Git diff; every file consumed under card_boxes_json must use the canonical governed filename, and declared review scope is evidence but cannot narrow the validator's discovered card set.",
-    "governed_review_path_detection": "Every JSON change under reviews/agent_self_review, reviews/approved_batches, reviews/sample_confirmations, reviews/controlled_pilot_reviews, reviews/controlled_pilot_approvals, reviews/drafts, or reviews/audit_scopes triggers content-candidate validation by exact prefix/suffix classification without relying on a four-digit box prefix, except the seven exact repository-declared templates under those governed review directories; unknown filenames that merely end in TEMPLATE.json remain governed records. Governed review and approval records must be direct regular JSON children of their declared directories and nested records fail closed. Git paths are preserved exactly; literal backslashes, controls, and Unicode line separators are rejected rather than rewritten. Git handoffs remain classified by their governed content scope rather than treating every delivery-only handoff as content.",
+    "governed_review_path_detection": "Every JSON change under active review, authorization, draft, or scoped-audit directories triggers content-candidate validation by exact prefix/suffix classification without relying on a four-digit box prefix. Historical v1 person-authority directories remain immutable archive surfaces and never create current authorization. Governed records must be direct regular JSON children of their declared directories and nested records fail closed. Git paths are preserved exactly; literal backslashes, controls, and Unicode line separators are rejected rather than rewritten. Git handoffs remain classified by their governed content scope rather than treating every delivery-only handoff as content.",
     "current_scoped_audit_snapshot": "Replay the current audit against the complete card_boxes_json tree materialized from the immutable HEAD commit, including deletions and rename sources; overlay only the current audit harness and never leave base-only card files in the temporary audit worktree.",
     "self_review_parity": {
       "changed_self_review_required": true,
       "exactly_one_review_coverage_per_changed_card": true,
       "standard_review_snapshot_required": true,
-      "standard_review_per_box_coverage": "exactly three snapshots per declared scope.box_prefixes value; each snapshot interaction_id and knowledge_ref exactly matches its unique immutable HEAD corpus card. After a direct validated sample-confirmation record, a confirmed_box_expansion record may cover the exact remaining card count for one confirmed box target.",
+      "standard_review_per_card_coverage": "Every added or modified card has exactly one current model-owned snapshot whose interaction_id, knowledge_ref, quality metadata, answer truth, and source references match its unique immutable HEAD corpus card. Batch generation does not pause for a separate confirmation state.",
       "standard_review_batch_conclusion": "batch_review must carry non-empty box_progression, an explicit repetition_or_gap_risks array, non-empty unique representative_cards contained in scope.card_ids, and non-empty next_step before standard snapshots count",
       "current_scoped_audit_required": "every new or changed standard, residual-closure, or full-track review or approval record must link one direct current report under reviews/audit_scopes; the global report may be referenced only by byte-for-byte immutable records named by the immutable pre-cutover index",
       "scoped_audit_artifact_integrity": "every new or changed direct scoped-audit JSON blob must exactly equal a current immutable-HEAD audit replay for its declared scope, even when no review links it; standalone harness validation rejects malformed tracked artifacts, replays current-fingerprint artifacts, permits structurally valid unchanged historical fingerprints, and hash-pins the explicit legacy exception; historical approval remains archive evidence, and current-fingerprint evidence counts as current authorization only after the consumer independently regenerates the complete current audit and exactly replays both scoped reports",
@@ -78,10 +78,10 @@
       "quality_metadata_comparison": "deep semantic equality of every quality_metadata field except review_status in both PR-scope validation and standalone harness validation; object key order is irrelevant while array order and absent-versus-present fields remain significant",
       "review_status_semantics": "card corpus and self-review artifacts carry different lifecycle views (for example card=draft while review snapshot=agent_pass), so each review_status is validated independently and is the only parity exclusion",
       "every_changed_self_review_entry_checked_against_head": true,
-      "full_track_aggregate_boundary": "A changed full_track_remediation record is aggregate human-review evidence for an existing complete track and uses the canonical scope, exact sample flags, direct current scoped audit, structured non-automation human reviewer identity, per-box pass evidence, complete quality_audit summary, non-empty unique representative_cards within scope, and complete ready batch summary/empty-risk/next-step evidence from spec/review-workflow.json without a cards property. Those semantics are validated before coverage can count. Its non-empty unique scope.card_ids and coverage.reviewed_card_ids must be identical, its expected count must match, and scope.card_ids plus scope.box_prefixes must equal the complete declared track in immutable HEAD. The merge-base and HEAD card ID sets for that track must also be the same non-empty set, so remediation cannot authorize added or deleted cards. Every covered ID must resolve uniquely and belong to that track. Valid complete-track aggregate coverage counts toward the exactly-one review coverage required for a modified pre-existing card, while added cards require the standard per-card workflow in a separate review unit.",
+      "full_track_aggregate_boundary": "A current full-track record is aggregate model-review evidence bound to one model-acceptance.v2 actor/evidence object, a direct current scoped audit, exact complete-track card and box scope, complete quality_audit summary, non-empty representative cards, and an accepted decision. Scope and coverage IDs remain identical and every covered ID resolves uniquely in immutable HEAD. Any removal must use governed destructive-change evidence rather than being hidden by aggregate coverage.",
       "scope_omission_cannot_bypass_validation": true
     },
-    "review_authority_artifact_integrity": "The seven exact self-review, sample-confirmation, aggregate controlled-pilot review, and approval template paths are regular files whose complete governed placeholder shapes match their distinct doc-manifest authorities. Standard approval records require a timezone-qualified ISO approved_at, non-empty summary, non-empty unique string scope IDs/prefixes, and non-empty unique in-scope representative cards. A controlled-pilot approval requires its matching tracked aggregate review, an explicit user-approved transition, and the exact eight-field controlled-pilot-approval.v1 product shape.",
+    "review_authority_artifact_integrity": "Current review, content-authorization, and audio-acceptance templates are regular files whose complete governed shapes include model-acceptance.v2 evidence. Current authorization requires a timezone-qualified review time, exact input SHA-256, real agent/model/run identity, required capabilities, an accepted decision, non-empty exact scope, and current audit replay. Existing v1 person-authority artifacts remain immutable archive evidence only.",
     "elimination_integrity": {
       "canonical_authority": "../softbook_cet/spec/interactions.json#interactions[id=elimination]",
       "canonical_items_field": "elimination_items",
@@ -155,7 +155,7 @@
       "must_fit_CET_register_and_difficulty",
       "must_have_natural_English",
       "must_have_clear_training_goal",
-      "must_be_user_approved_before_formal_use"
+      "must_receive_current_model_and_harness_acceptance_before_formal_use"
     ],
     "rewrite_policy": [
       "may_shortern_or_clarify_for_training",

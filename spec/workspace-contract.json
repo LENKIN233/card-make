@@ -1,5 +1,5 @@
 {
-  "version": "card-make-harness-v1",
+  "version": "card-make-model-owned-acceptance-v2",
   "status": "active",
   "workspace_role": {
     "name": "softbook_cet_card_content_workspace",
@@ -17,9 +17,12 @@
     "tts_audio_assets": "ai_tts/",
     "audio_qc_records": "reviews/audio_qc/",
     "audio_perceptual_worklists": "reviews/audio_perceptual_worklists/",
-    "audio_perceptual_review_station": "scripts/serve_audio_perceptual_review.mjs",
-    "controlled_pilot_review_records": "reviews/controlled_pilot_reviews/",
-    "controlled_pilot_approval_artifacts": "reviews/controlled_pilot_approvals/",
+    "model_acceptance_validator": "scripts/lib/model_acceptance.mjs",
+    "historical_person_authority_records": [
+      "reviews/sample_confirmations/",
+      "reviews/controlled_pilot_reviews/",
+      "reviews/controlled_pilot_approvals/"
+    ],
     "legacy_preview_reader": "card_viewer_interactive.html",
     "structural_schema": "schemas/softbook_card_contract.schema.json",
     "structural_validator": "scripts/validate_cards.mjs",
@@ -162,21 +165,23 @@
   },
   "content_boundary": {
     "current_harness_focus": "Card content quality and agent behavior, not legacy migration status.",
-    "formal_use_condition": "Candidate content becomes formal usable content only after explicit user approval is recorded.",
+    "formal_use_condition": "Candidate content becomes currently authorized only after exact-scope model acceptance and deterministic harness validation succeed on the same immutable input.",
     "agent_max_authority": [
       "generate_candidate_cards",
-      "edit_cards_inside_user_authorized_scope",
+      "edit_cards_inside_product_and_spec_authorized_scope",
       "self_review_candidates",
       "produce_audio_generation_and_qc_plans",
-      "recommend_user_confirmation",
+      "create_model_owned_content_authorization",
+      "record_model_audio_perceptual_acceptance_after_actual_asset_consumption",
+      "remove_cards_with_governed_destructive_change_evidence",
       "open_PR_for_harness_or_formal_batch_changes",
-      "auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation"
+      "auto_merge_all_validated_PRs_under_standing_user_delegation"
     ],
     "agent_forbidden_authority": [
-      "declare_final_formal_usability",
-      "auto_merge_without_standing_or_explicit_user_authorization",
-      "auto_merge_formal_content_without_user_confirmed_sample_and_scope_delegation",
-      "delete_cards_without_user_confirmation",
+      "invent_external_or_source_facts",
+      "claim_audio_consumption_without_audio_capability_and_exact_asset_evidence",
+      "authorize_or_merge_when_exact_head_required_gates_are_incomplete_or_failing",
+      "delete_cards_without_governed_destructive_change_evidence",
       "change_softbook_cet_product_specs_as_part_of_card_generation"
     ]
   },
@@ -187,6 +192,6 @@
       "needs_review"
     ],
     "allowed_role": "legacy_structure_or_migration_compatibility_only",
-    "replacement_authority": "reviews/approved_batches/ records plus explicit user confirmation"
+    "replacement_authority": "reviews/approved_batches/ model-acceptance.v2 records validated under spec/review-workflow.json"
   }
 }

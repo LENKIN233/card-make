@@ -1,22 +1,39 @@
 {
-  "review_id": "YYYYMMDD-box-prefix-sample",
-  "created_at": "YYYY-MM-DDTHH:mm:ss+08:00",
-  "agent": "codex",
+  "schema_version": "model-owned-card-review.v2",
+  "review_id": "YYYYMMDD-track-scope-model-review",
+  "created_at": "<RFC3339_WITH_TIMEZONE>",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "<agent-id>",
+      "model": "<model-id>",
+      "run_id": "<run-id>"
+    },
+    "evidence": {
+      "reviewed_at": "<RFC3339_WITH_TIMEZONE>",
+      "input_sha256": "sha256:<64 lowercase hex characters>",
+      "capabilities": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "summary": "<semantic-review-summary>",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
   "scope": {
-    "library": "",
-    "group": "",
-    "box": "",
+    "track": "cet4",
     "box_prefixes": [],
     "card_ids": []
   },
-  "specs_read": [],
-  "sample_policy": {
-    "review_scope_type": "three_card_sample_per_box",
-    "is_three_card_sample_per_box": true,
-    "batch_generation_requires_user_confirmation": true
-  },
+  "specs_read": [
+    "spec/review-workflow.json",
+    "spec/content-quality-contract.json"
+  ],
   "quality_audit": {
-    "report": "reviews/audit_scopes/YYYYMMDD-box-prefix-scope-audit.json",
+    "report": "reviews/audit_scopes/YYYYMMDD-scope-audit.json",
+    "report_sha256": "sha256:<64 lowercase hex characters>",
     "corpus_fingerprint": "CURRENT_CARD_CORPUS_SHA256",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
@@ -29,78 +46,16 @@
         "review_gap": 0,
         "source_risk": 0
       },
-      "by_rule": {
-        "multiple_choice_no_options": 0,
-        "multiple_choice_answer_not_in_options": 0,
-        "front_leaks_correct_answer": 0,
-        "front_leaks_analysis_conclusion": 0,
-        "front_missing_or_too_short": 0,
-        "analysis_missing_or_too_short": 0,
-        "generic_front_pattern": 0,
-        "template_analysis_pattern": 0,
-        "exact_repeated_front": 0,
-        "exact_repeated_analysis": 0,
-        "missing_quality_metadata": 0,
-        "unverified_source": 0,
-        "synthetic_source": 0
-      }
+      "by_rule": {}
     }
   },
-  "cards": [
-    {
-      "card_id": "",
-      "interaction_id": "",
-      "knowledge_ref": {
-        "library_id": "",
-        "library": "",
-        "group_id": "",
-        "group": "",
-        "box_id": "",
-        "box": "",
-        "box_prefix": ""
-      },
-      "status": "pass",
-      "quality_metadata": {
-        "main_training_goal": "",
-        "weak_point_tags": [],
-        "difficulty": {
-          "primary": "foundation",
-          "secondary": []
-        },
-        "card_prototype": "",
-        "material": {
-          "text_source_type": "",
-          "audio_generation_method": "none"
-        },
-        "exam_value": "",
-        "box_progression_role": "recognition",
-        "review_status": "agent_pass"
-      },
-      "blocker_scan": {
-        "logic_error": false,
-        "language_error": false,
-        "inappropriate_wording": false,
-        "low_knowledge_density": false,
-        "not_meeting_requirement": false,
-        "reverse_engineered_front": false,
-        "fake_source_claim": false,
-        "low_quality_variation": false
-      },
-      "analysis_reference_check": {
-        "answer_matches_card": true,
-        "choice_or_bank_references_match_source": true,
-        "distractor_labels_match_explanations": true
-      },
-      "major_issues": [],
-      "minor_issues": [],
-      "recommendation": ""
-    }
-  ],
+  "cards": [],
+  "removed_cards": [],
   "batch_review": {
-    "status": "recommend_user_confirmation",
+    "status": "model_accepted",
     "box_progression": "",
     "repetition_or_gap_risks": [],
     "representative_cards": [],
-    "next_step": ""
+    "next_step": "Create exact-scope model-owned content authorization after deterministic gates pass."
   }
 }

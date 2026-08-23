@@ -1,354 +1,173 @@
 {
-  "version": "card-make-review-workflow-v1",
+  "version": "card-make-model-owned-acceptance-v2",
   "status": "active",
-  "agent_permissions": {
-    "may": [
-      "produce_candidate_cards",
-      "produce_3_card_sample_per_box",
-      "expand_user_confirmed_box_samples_to_recorded_targets",
-      "self_review_candidates",
-      "revise_user_authorized_scope",
-      "mark_discard_candidates",
-      "manage_git_lifecycle_for_agent_authored_tracked_changes",
-      "open_or_update_draft_PRs",
-      "auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation",
-      "commit_push_open_PR_for_harness_changes",
-      "commit_push_open_PR_for_user_confirmed_formal_batches"
+  "authority": "single_owner_for_model_owned_content_acceptance",
+  "standing_authority": {
+    "granted_at": "2026-08-23",
+    "granted_by_user_statement": "所有真人审核都不需要；整个产品过程中不存在人工；model 与 harness 必须完成生成、审查、批准、删除和合并。",
+    "scope": [
+      "candidate_generation",
+      "card_semantic_review",
+      "content_authorization",
+      "audio_perceptual_review",
+      "destructive_card_change_review",
+      "validated_PR_merge"
     ],
-    "must_not": [
-      "declare_final_formal_usability",
-      "batch_generate_before_user_confirms_sample",
-      "delete_cards_without_user_confirmation",
-      "auto_merge_formal_content_without_user_confirmed_sample_and_scope_delegation",
-      "auto_merge_without_standing_or_explicit_user_authorization",
-      "force_push_main_or_shared_base_branches",
-      "mix_harness_changes_with_bulk_card_content_changes"
-    ]
+    "model_and_harness_own_the_complete_acceptance_lifecycle": true,
+    "request_user_review_or_confirmation": false,
+    "require_human_review": false,
+    "auto_merge_after_exact_head_required_gates_pass": true
   },
-  "pre_generation_required_inputs": [
-    "library_group_box_target",
-    "target_user_weak_points",
-    "difficulty_tier",
-    "card_prototype_plan",
-    "material_source_type",
-    "TTS_text_and_audio_plan_when_audio_exists"
-  ],
-  "sample_policy": {
-    "default_size": "3 cards per box",
-    "purpose": "prove quality before batch expansion",
-    "batch_generation_requires": "validated_user_sample_confirmation_record",
-    "sample_confirmation_directory": "reviews/sample_confirmations/",
-    "sample_confirmation_is_not_formal_approval": true
-  },
-  "candidate_review_queue": {
-    "schema": "spec/candidate-review-queue.schema.json",
-    "record": "reviews/candidate-review-queue.json",
-    "active_candidate_pr_limit": 5,
-    "parallel_tooling_pr_limit": 1,
-    "active_unit": "one_box_three_card_sample",
-    "merged_candidate_status": "A merged_candidate record preserves a merged sample PR and its candidate scope without counting it as an active PR or formal approval.",
-    "green_checks_do_not_create_formal_approval": true,
-    "parked_units_must_keep_patch_sha_and_original_head": true,
-    "active_new_pr_numbers_must_be_unique": true,
-    "active_box_and_card_scopes_must_be_globally_disjoint": true,
-    "weekly_remote_verification": "each active queue entry maps to one open draft content PR targeting main on the recorded branch; extra open content PRs are rejected"
-  },
-  "sample_quality_gate": {
-    "quality_metadata_schema": "spec/card-metadata.schema.json",
-    "agent_self_review_directory": "reviews/agent_self_review/",
-    "approval_record_directory": "reviews/approved_batches/",
-    "required_before_user_confirmation": [
-      "quality_metadata_per_card",
-      "changed_candidate_card_integrity",
-      "agent_self_review_record",
-      "self_review_quality_metadata_matches_current_card_corpus",
-      "blocker_scan_per_card",
-      "analysis_reference_consistency_attestation",
-      "card_quality_audit_no_hard_blockers",
-      "scoped_card_quality_audit_report",
-      "box_progression_roles",
-      "TTS_audio_QC_plan_when_audio_exists",
-      "no_standalone_hint_layer_interaction"
-    ],
-    "approval_requires": [
-      "explicit_user_confirmation",
-      "linked_agent_self_review_record",
-      "harness_validation",
-      "card_validation",
-      "card_quality_audit_report"
-    ]
-  },
-  "changed_candidate_integrity_policy": {
-    "contract": "spec/content-quality-contract.json#candidate_integrity_policy",
-    "validator": "scripts/validate_pr_scope.mjs",
-    "discovery": "compare merge-base and head card objects by card_id rather than trusting declared scope",
-    "strict_on_any_card_change": true,
-    "requirements": [
-      "every added or modified card has complete schema-valid quality_metadata",
-      "every added or modified card has exactly one changed review coverage: either one standard per-card snapshot or one validated full-track aggregate scope+coverage entry",
-      "standard three-card samples contain exactly three snapshots for each declared scope.box_prefixes value, and every snapshot interaction_id plus knowledge_ref exactly matches its unique immutable HEAD corpus card",
-      "every new or changed standard, residual-closure, or full-track self-review or approval record links a direct current scoped audit under reviews/audit_scopes; global audit references belong only to immutable pre-cutover records",
-      "every new or changed scoped-audit artifact is a direct regular JSON file that exactly matches the current immutable-HEAD audit replay for its declared scope; malformed unlinked artifacts and deletion or mutation of archived evidence fail closed",
-      "standard sample batch_review carries non-empty box_progression, an explicit repetition_or_gap_risks array, non-empty unique representative_cards drawn from scope.card_ids, and a non-empty next_step",
-      "newly added cards require standard three-card sample coverage; residual blocker closure evidence applies only to pre-existing cards",
-      "newly added cards after a confirmed sample may instead use confirmed-box-expansion coverage when one immutable sample-confirmation record binds the exact box, its three sample card IDs, and its final per-box target",
-      "every entry in every changed self-review resolves to exactly one HEAD corpus card and all quality_metadata fields except artifact-local review_status are deeply equal, even when the card itself did not change",
-      "every new or changed standard or residual card snapshot explicitly confirms that answer truth, option or word-bank references, and distractor labels match the exact card; every new or changed full-track aggregate confirms the same checks under coverage",
-      "a changed full-track aggregate record may omit cards; its exact sample flags, structured human reviewer identity, per-box human pass, complete quality_audit summary, ready batch status, non-empty unique scope.card_ids, and coverage.reviewed_card_ids are validated before its scope can count as review evidence",
-      "for a semantically valid full-track aggregate, scope.card_ids and coverage.reviewed_card_ids are identical, both equal the complete declared track, and immutable HEAD has the same non-empty card ID set at merge-base",
-      "every JSON change under agent_self_review, approved_batches, sample_confirmations, controlled_pilot_reviews, controlled_pilot_approvals, drafts, or audit_scopes enters the content gate regardless of filename prefix, except the seven exact repository-declared template paths; governed records must be direct regular JSON children and nested records fail closed",
-      "Git paths are interpreted exactly without rewriting literal backslashes as separators, and review paths containing backslashes, controls, or Unicode line separators fail closed",
-      "all files under card_boxes_json use the canonical governed filename and are included in changed-candidate detection",
-      "the replayed scoped audit reads the complete immutable HEAD card_boxes_json snapshot, including deletions and rename sources",
-      "elimination runtime ID items, preview compatibility projection, and ID-based answer truth remain mutually consistent"
-    ],
-    "legacy_boundary": "Untouched cards without quality_metadata remain readable legacy corpus; touching a card opts the complete head object into current candidate integrity requirements.",
-    "must_not": [
-      "grandfather inherited integrity defects on a changed card",
-      "derive changed card scope only from self-review or handoff declarations",
-      "allow missing optional metadata fields to pass parity",
-      "exclude any parity field other than artifact-local review_status",
-      "treat object key order as a metadata mismatch",
-      "allow self-review-only churn to avoid HEAD corpus parity",
-      "allow an unprefixed governed review filename to avoid content-candidate validation",
-      "treat an unknown record as a template merely because its basename ends in TEMPLATE.json",
-      "count invalid or mismatched full-track scope and coverage as changed-card review evidence",
-      "count a new or changed self-review with missing or false answer and analysis reference consistency attestations as review coverage",
-      "allow a partial-track aggregate to satisfy changed-card review coverage",
-      "allow a full-track record to claim a track that differs from any covered HEAD card",
-      "allow a full-track remediation aggregate to authorize a card absent from merge-base",
-      "attach a cards snapshot payload to a full-track aggregate instead of using its canonical scope and coverage evidence",
-      "count a nested, symlinked, semantically incomplete, or automation-reviewed self-review record as changed-card coverage",
-      "count a box as sampled when it lacks exactly three matching immutable HEAD card snapshots",
-      "use residual blocker closure evidence to authorize newly generated cards",
-      "treat sample confirmation or confirmed-box-expansion review as formal content approval, audio perceptual QC, pilot release authority, or permission to exceed the recorded box target",
-      "rewrite unusual Git path characters into a different governed evidence path",
-      "replay a scoped audit on a base worktree that retains card files deleted or renamed by HEAD",
-      "run content-candidate validation without an explicit immutable head commit"
-    ]
-  },
-  "full_track_remediation_policy": {
-    "review_scope_type": "full_track_remediation",
-    "purpose": "Remediate an existing complete track corpus under one explicitly user-authorized scope, while preserving one final user approval for formal use.",
-    "allowed_when": [
-      "the track corpus already exists and this flow does not authorize new bulk generation",
-      "the user explicitly authorizes the named track remediation scope",
-      "every in-scope card is bound to one current corpus fingerprint",
-      "automated audit, agent review, and a named human CET reviewer cover the complete track"
-    ],
-    "required_fields": [
-      "sample_policy.review_scope_type=full_track_remediation",
-      "sample_policy.is_three_card_sample_per_box=false",
-      "sample_policy.full_track_remediation=true",
-      "sample_policy.final_user_approval_required=true",
-      "scope.track",
-      "scope.box_prefixes",
-      "scope.card_ids",
-      "coverage.expected_card_count",
-      "coverage.reviewed_card_ids",
-      "coverage.human_reviewer",
-      "coverage.boxes",
-      "quality_audit",
-      "representative_cards=non_empty_unique_scope_subset",
-      "batch_review.status=ready_for_full_track_user_approval",
-      "batch_review.summary",
-      "batch_review.remaining_risks=[]",
-      "batch_review.next_step"
-    ],
-    "human_reviewer_identity": {
-      "format": "github:<id>|team:<id>|external:<id>",
-      "id_characters": "one to 64 characters, starting with a Unicode letter or number and followed only by Unicode letters, numbers, or . _ @ - separators, with no whitespace",
-      "forbidden_identity_tokens": ["agent", "bot", "codex", "automation", "ci"],
-      "coverage_boxes_reviewer": "must equal coverage.human_reviewer",
-      "coverage_boxes_status": "pass"
+  "model_acceptance_contract": {
+    "schema_version": "model-acceptance.v2",
+    "validator": "scripts/lib/model_acceptance.mjs",
+    "required_shape": {
+      "actor": [
+        "kind=model_harness",
+        "agent",
+        "model",
+        "run_id"
+      ],
+      "evidence": [
+        "reviewed_at",
+        "input_sha256",
+        "capabilities",
+        "summary",
+        "findings"
+      ],
+      "decision": [
+        "accepted",
+        "rejected"
+      ]
     },
-    "quality_audit_semantics": "The record must name a direct current scoped report under reviews/audit_scopes and a non-empty current corpus fingerprint, declare scope_has_no_hard_blockers=true, and carry a scope_summary whose unique card IDs/count match the full scope, whose required non-negative severity and rule counts are complete, whose hard_blocker count is zero, and whose issue_count equals the severity total.",
-    "approval_model": "execution_team_remediates_and_reviews_the_full_track; user_performs_one_final_complete_batch_approval",
-    "does_not_authorize": [
-      "new_bulk_card_generation",
-      "formal_use_before_the_final_user_approval_record",
-      "deleting_cards_without_user_confirmation",
-      "using_green_automation_as_human_content_review"
-    ]
+    "semantic_output_policy": {
+      "summary_must_be_non_empty": true,
+      "findings_must_be_structured": true,
+      "accepted_decision_forbids_blocking_findings": true
+    },
+    "independent_second_pass": {
+      "required_for": [
+        "full_track_review",
+        "full_track_content_authorization",
+        "audio_perceptual_acceptance",
+        "controlled_pilot_authorization"
+      ],
+      "minimum_acceptances": 2,
+      "run_ids_must_be_distinct": true,
+      "input_sha256_must_match": true
+    },
+    "required_capabilities_by_decision": {
+      "card_review": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "content_authorization": [
+        "content_authorization"
+      ],
+      "audio_review": [
+        "audio_perceptual_review"
+      ],
+      "card_removal": [
+        "destructive_change_review"
+      ],
+      "merge": [
+        "merge_authorization"
+      ]
+    },
+    "current_authorization_rule": "Only a complete model-acceptance.v2 record bound to the exact current input can create current authorization.",
+    "canonical_input_rule": "Content review and authorization input hashes use scripts/lib/model_acceptance.mjs#buildModelAcceptanceInputSha256 and bind decision type, exact sorted scope, current corpus fingerprint, exact scoped-audit SHA-256, and linked review path/SHA-256 when authorization consumes a review.",
+    "legacy_v1_rule": "Records that claim user confirmation, user approval, or a human reviewer remain immutable historical evidence only and never create current authorization. They must not be rewritten to look model-owned."
   },
-  "residual_blocker_closure_review_policy": {
-    "review_scope_type": "residual_blocker_closure",
-    "purpose": "Record agent review evidence for a small set of previously detected blocker cards that may span unrelated box prefixes.",
-    "allowed_when": [
-      "the scope is a residual blocker closure rather than a new 3-card sample",
-      "each card is explicitly named by card_id",
-      "the source issue or PR evidence is recorded"
-    ],
-    "required_fields": [
-      "sample_policy.review_scope_type=residual_blocker_closure",
-      "sample_policy.is_three_card_sample_per_box=false",
-      "sample_policy.residual_blocker_closure=true",
-      "sample_policy.not_sample_approval=true",
-      "scope.closure_reason",
-      "scope.source_issue_refs",
-      "scoped_card_quality_audit_report"
-    ],
-    "not_sample_approval": true,
-    "must_not": [
-      "use recommend_user_confirmation",
-      "create reviews/approved_batches records",
-      "treat scoped audit plus handoff evidence as formal user approval"
-    ]
+  "workflow": {
+    "generate": "The model may generate the complete authorized scope without a staged sample pause.",
+    "review": "A model reviewer records exact-scope semantic evidence; deterministic validators independently replay structural, scope, hash, and audit invariants.",
+    "authorize": "The harness may create current content authorization only when model acceptance is accepted and every required deterministic gate passes on the same immutable input.",
+    "audio": "An audio-capable model may record perceptual evidence only after consuming the exact bound asset; technical probing remains independently required.",
+    "remove": "The harness may remove a card only with model destructive-change acceptance bound to the base card identity and proof that current references and required coverage remain valid.",
+    "merge": "The agent merges validated content, audio, authorization, tooling, and harness PRs after exact-head required checks pass."
   },
-  "confirmed_box_expansion_review_policy": {
-    "review_scope_type": "confirmed_box_expansion",
-    "purpose": "Expand one user-confirmed three-card box sample to the exact target recorded for that box without converting sample confirmation into formal content approval.",
-    "allowed_when": [
-      "one direct validated record under reviews/sample_confirmations confirms the exact three sample card IDs and target for the box",
-      "the expansion self-review covers exactly one box prefix",
-      "the expansion adds exactly target_card_count minus the three confirmed sample cards",
-      "every expansion card has current per-card metadata, reference checks, blocker scan, and a direct current scoped audit"
-    ],
-    "required_fields": [
-      "sample_policy.review_scope_type=confirmed_box_expansion",
-      "sample_policy.is_three_card_sample_per_box=false",
-      "sample_policy.confirmed_box_expansion=true",
-      "sample_policy.sample_confirmation_satisfied=true",
-      "sample_policy.sample_confirmation_record",
-      "sample_policy.final_user_approval_required=true",
-      "scope.single_box_prefix",
-      "scope.card_ids=all_new_expansion_cards",
-      "batch_review.status=reviewed_confirmed_box_expansion",
-      "scoped_card_quality_audit_report"
-    ],
-    "approval_boundary": "This mode authorizes candidate production and agent review only. The complete 120-card batch still requires a separate explicit user approval record before formal use.",
-    "must_not": [
-      "create reviews/approved_batches records from sample confirmation alone",
-      "claim gate_eligible or formal usability",
-      "count unreviewed audio as approved",
-      "expand outside the recorded box prefixes or beyond a recorded target"
-    ]
-  },
-  "self_review_required_checks": [
-    "single_card_quality",
-    "front_back_relationship",
-    "answer_matches_card",
-    "choice_or_bank_references_match_source",
-    "distractor_labels_match_explanations",
-    "language_naturalness",
-    "library_group_box_match",
-    "box_progression",
-    "blocker_scan"
+  "non_negotiable_invariants": [
+    "exact immutable commit and scope binding",
+    "current card corpus fingerprint and scoped audit replay",
+    "complete changed-card metadata and answer-reference parity",
+    "zero unresolved hard blockers for an accepted scope",
+    "source provenance remains explicit and AI or simulated content is never presented as true-exam content",
+    "audio perceptual acceptance requires actual complete asset consumption by an audio-capable model",
+    "technical audio hashes, byte sizes, decoder probes, durations, and transcript bindings remain independently verified",
+    "unknown legacy audio provider, voice, or generator facts remain unknown",
+    "no deployment, device, GitHub, source-authenticity, or other external fact is inferred or fabricated",
+    "payload, harness, and audio asset changes remain separate review units",
+    "failed or incomplete required gates prevent authorization and merge"
   ],
-  "analysis_reference_check": {
-    "forward_requirement": "Every new or changed standard or residual self-review card entry must explicitly attest all three checks as true; every new or changed full-track remediation record must attest them under coverage.",
-    "answer_matches_card": "The stated answer and reasoning must match the canonical answer truth of the card.",
-    "choice_or_bank_references_match_source": "Every option key, option text, word-bank token, example, or source fragment named by the analysis must exist in and refer to the intended visible source item.",
-    "distractor_labels_match_explanations": "Whenever analysis classifies a labeled choice or bank item as correct, incorrect, target, or non-target, the label and explanation must describe that exact item.",
-    "automation_boundary": "This is explicit semantic review evidence, not a claim that regex or structural audit can prove natural-language correctness."
+  "content_review_record": {
+    "directory": "reviews/agent_self_review/",
+    "required_for_changed_cards": true,
+    "requires_model_acceptance": true,
+    "scope_must_match_current_corpus": true,
+    "per_card_reference_checks_required": true,
+    "current_scoped_audit_required": true
   },
-  "self_review_output": {
-    "per_card_status": ["pass", "revise", "block"],
-    "batch_status": ["recommend_user_confirmation", "revise_before_user_review", "blocked", "documented_residual_closure", "reviewed_confirmed_box_expansion", "ready_for_full_track_user_approval"],
-    "must_include": [
-      "changed_or_new_boxes",
-      "representative_cards",
-      "self_review_result",
-      "blockers_or_risks",
-      "next_step_recommendation"
-    ]
+  "content_authorization_record": {
+    "directory": "reviews/approved_batches/",
+    "required_for_current_formal_use": true,
+    "requires_model_acceptance": true,
+    "linked_current_model_review_required": true,
+    "exact_scope_and_current_scoped_audit_required": true,
+    "legacy_human_authority_records_are_archive_only": true
+  },
+  "audio_acceptance_record": {
+    "directory": "reviews/audio_qc/",
+    "requires_model_acceptance": true,
+    "requires_audio_perceptual_review_capability": true,
+    "requires_exact_asset_and_transcript_binding": true,
+    "technical_audio_audit_required": true,
+    "source_authenticity_not_inferred": true
+  },
+  "card_removal_record": {
+    "location": "reviews/agent_self_review/*.json#removed_cards",
+    "required_fields": [
+      "card_id",
+      "base_card_sha256",
+      "reason",
+      "reference_scan",
+      "coverage_after_removal",
+      "model_acceptance"
+    ],
+    "bare_deletion_forbidden": true
+  },
+  "retired_active_workflows": [
+    "three_card_sample_pause",
+    "sample_confirmation_before_expansion",
+    "separate_final_person_decision",
+    "manual_audio_review_station",
+    "controlled_pilot_specific_person_transition",
+    "content_PR_manual_merge_pause"
+  ],
+  "historical_compatibility": {
+    "directories": [
+      "reviews/sample_confirmations/",
+      "reviews/controlled_pilot_reviews/",
+      "reviews/controlled_pilot_approvals/"
+    ],
+    "policy": "Existing v1 records are immutable archive evidence. New current authorization must use model-acceptance.v2 and must not derive authority from a legacy record.",
+    "mutation": "forbidden"
   },
   "uncertainty_policy": {
-    "default": "mark_uncertainty_do_not_invent",
-    "allowed_low_risk_assumption": "only_for_non_content-critical wording",
-    "preferred_actions": [
-      "reduce_scope",
-      "make_smaller_sample",
-      "ask_user"
+    "default": "do_not_invent",
+    "actions": [
+      "use a capable model or deterministic tool",
+      "reduce the affected scope",
+      "record a machine-visible blocker and continue independent work",
+      "regenerate or reject the affected artifact"
     ]
   },
-  "edit_existing_card_policy": {
-    "requires": [
-      "clear_quality_issue",
-      "user_authorized_scope",
-      "pre_edit_statement_of_issue"
-    ],
-    "delete_policy": "Do not delete directly; mark discard candidates for user confirmation."
-  },
-  "approval_record_policy": {
-    "directory": "reviews/approved_batches/",
-    "required_for_formal_use": true,
-    "required_fields": [
-      "approved_by_user",
-      "approved_at",
-      "scope",
-      "summary",
-      "card_quality_audit",
-      "representative_cards",
-      "validation"
-    ],
-    "field_semantics": {
-      "approved_at": "non-empty ISO-8601 timestamp with an explicit timezone",
-      "summary": "non-empty approval conclusion",
-      "scope.box_prefixes": "non-empty unique string array",
-      "scope.card_ids": "non-empty unique string array",
-      "representative_cards": "non-empty unique string array contained in scope.card_ids"
-    },
-    "new_or_changed_record_audit_policy": "Every new or changed approval record must link a direct current scoped audit whose immutable-HEAD replay exactly matches the declared scope.",
-    "historical_linked_audit_aging": "Unchanged historical review and approval records remain immutable archive evidence bound to their recorded scoped artifact and rule set. Historical self-review skips current-card parity and historical approval does not count as current authorization; current formal authorization additionally requires the consumer to independently regenerate the complete current audit and exactly replay both scoped reports.",
-    "current_authorization_consumers": "Candidate queue and release-gap planning accept only direct canonical non-template approval records with complete formal fields and exact current scope, plus a direct canonical complete linked self-review with matching scope. The approval, linked review, both scoped reports, active audit script, and active audit rule spec must be regular committed evidence or authority whose worktree, index, and one fixed HEAD modes and bytes agree. The consumer independently regenerates the complete current card-quality audit, requires both scoped reports to be exact replays, and rechecks the fixed HEAD/index snapshot, captured file modes/bytes, and corpus fingerprint before returning; merely being tracked, matching a current corpus digest, using a self-declared summary, or claiming zero blockers cannot authorize. Historical approvals, templates, traversal, nested paths, symlinks, incomplete records, dirty/staged/mode-drifted authority or evidence, concurrent snapshot drift, forged or stale audits, and stale linked reviews remain non-authorizing.",
-    "template_mode_mapping": {
-      "reviews/agent_self_review/TEMPLATE.json": "three_card_sample_per_box with complete standard placeholder shape",
-      "reviews/agent_self_review/FULL_TRACK_TEMPLATE.json": "full_track_remediation with complete aggregate placeholder shape",
-      "reviews/approved_batches/TEMPLATE.json": "standard approval without approval_mode and with complete placeholder shape",
-      "reviews/approved_batches/FULL_TRACK_TEMPLATE.json": "approval_mode=full_track_final with complete placeholder shape",
-      "all_template_paths_must_be_regular_files": true,
-      "manifest_authority_must_match_path": true
-    },
-    "full_track_final_mode": {
-      "approval_mode": "full_track_final",
-      "requires_linked_review_scope_type": "full_track_remediation",
-      "requires_exact_track_card_and_box_scope_match": true,
-      "requires_quality_audit_report_sha256": true,
-      "requires_one_explicit_final_user_confirmation": true
-    },
-    "confirmed_box_expansion_final_mode": {
-      "approval_mode": "confirmed_box_expansion_final",
-      "requires_linked_review_scope_type": "confirmed_box_expansion",
-      "requires_linked_review_status": "reviewed_confirmed_box_expansion",
-      "requires_exact_box_and_card_scope_match": true,
-      "requires_current_scoped_audit": true,
-      "requires_explicit_final_user_confirmation": true,
-      "sample_confirmation_alone_is_not_formal_approval": true,
-      "audio_qc_required_separately": true
-    },
-    "controlled_pilot_120_mode": {
-      "aggregate_review_schema": "controlled-pilot-review.v1",
-      "aggregate_review_template": "reviews/controlled_pilot_reviews/TEMPLATE.json",
-      "approval_artifact_schema": "controlled-pilot-approval.v1",
-      "approval_artifact_template": "reviews/controlled_pilot_approvals/TEMPLATE.json",
-      "manager": "scripts/manage_controlled_pilot_approval.mjs",
-      "track": "cet4",
-      "purpose": "controlled_pilot",
-      "exact_card_count": 120,
-      "exact_box_count": 14,
-      "sample_card_count": 42,
-      "expansion_card_count": 78,
-      "required_approval_scope": "controlled_pilot_120",
-      "requires_current_scoped_audit": true,
-      "requires_zero_hard_blockers_content_risks_and_review_gaps": true,
-      "allows_only_120_disclosed_synthetic_source_risks": true,
-      "requires_explicit_user_approval_command": true,
-      "sample_confirmation_is_not_formal_approval": true,
-      "audio_qc_required_separately": true,
-      "pilot_publication_required_separately": true,
-      "gate_eligible": false
-    }
-  },
   "git_policy": {
-    "contract": "spec/git-workflow.json",
     "pre_edit_status_check": "required",
-    "harness_changes": "validated_commit_push_open_or_update_draft_PR_required",
-    "small_samples": "may_remain_local_for_user_review",
-    "formal_bulk_card_changes": "validated_commit_push_open_or_update_draft_PR_required_after_user_confirmed_sample",
-    "existing_PR_update": "update_existing_open_PR_when_same_requirement_domain_and_base",
-    "new_PR": "create_scoped_branch_when_separate_review_unit_or_existing_PR_scope_would_blur",
-    "PR_merge": "auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation",
-    "handoff": "branch_base_commit_push_ref_validation_PR_status_required"
+    "topic_branch_required": true,
+    "exact_head_validation_required": true,
+    "required_checks_must_pass": true,
+    "auto_merge_validated_changes": true,
+    "direct_main_development": "forbidden",
+    "mixed_harness_and_bulk_content_PR": "forbidden"
   }
 }

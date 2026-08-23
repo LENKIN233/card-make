@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import { execFileSync, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import {buildModelAcceptanceInputSha256} from './lib/model_acceptance.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const TEMP_ROOTS = new Set();
@@ -47,7 +49,107 @@ test('deleting an entire candidate card box fails even when its ids are omitted 
 
   const result = validate(repo);
   assert.notEqual(result.status, 0, result.stdout);
-  assertIssue(result.report, 'changed_candidate_card_deleted');
+  assertIssue(result.report, 'changed_candidate_card_deleted_without_model_acceptance');
+});
+
+test('a governed model-owned destructive decision permits the exact bound removal', () => {
+  const repo = createRepository();
+  const removedCard = legacyCard();
+  const remainingCard = {
+    ...completeCard(),
+    card_id: '000002',
+    front: {text: 'remaining governed prompt'},
+  };
+  writeCardBox(repo.root, [removedCard, remainingCard]);
+  commit(repo.root, 'establish two-card removal base');
+  repo.base = git(repo.root, 'rev-parse', 'HEAD');
+  const baseCardSha256 = testCardObjectSha256(removedCard);
+  writeCardBox(repo.root, [remainingCard]);
+  const auditPath = 'reviews/audit_scopes/model-removal-scope-audit.json';
+  writeJson(path.join(repo.root, auditPath), fixtureScopedAuditReport(['000002']));
+  const auditSha256 = `sha256:${crypto
+    .createHash('sha256')
+    .update(fs.readFileSync(path.join(repo.root, auditPath)))
+    .digest('hex')}`;
+  const reviewScope = {
+    track: 'cet4',
+    box_prefixes: ['0000'],
+    card_ids: ['000002'],
+  };
+  writeJson(
+    path.join(repo.root, 'reviews/agent_self_review/model-removal.json'),
+    {
+      schema_version: 'model-owned-card-review.v2',
+      review_id: 'model-removal',
+      created_at: '2026-08-23T12:00:00+08:00',
+      model_acceptance: testModelAcceptance(
+        buildModelAcceptanceInputSha256({
+          decisionType: 'card_review',
+          scope: reviewScope,
+          corpusFingerprint: 'f'.repeat(64),
+          auditSha256,
+        }),
+        ['card_semantic_review', 'source_provenance_review'],
+        'codex-task:removal-review',
+      ),
+      scope: reviewScope,
+      specs_read: ['spec/review-workflow.json'],
+      quality_audit: {
+        report: auditPath,
+        report_sha256: auditSha256,
+        corpus_fingerprint: 'f'.repeat(64),
+        scope_has_no_hard_blockers: true,
+        scope_summary: qualityAuditSummary(['000002']),
+      },
+      cards: [reviewEntry(remainingCard)],
+      removed_cards: [{
+        card_id: removedCard.card_id,
+        base_card_sha256: baseCardSha256,
+        reason: 'Remove an obsolete duplicate from the current corpus.',
+        reference_scan: {
+          status: 'pass',
+          scanned_commit: 'HEAD',
+          scanned_surface: 'card_boxes_json',
+          dangling_current_references: [],
+        },
+        coverage_after_removal: {
+          status: 'pass',
+          track: 'cet4',
+          box_prefix: '0000',
+          base_box_card_count: 2,
+          head_box_card_count: 1,
+          box_remains_nonempty: true,
+        },
+        model_acceptance: testModelAcceptance(
+          baseCardSha256,
+          ['destructive_change_review'],
+          'codex-task:removal-decision',
+        ),
+      }],
+      batch_review: {
+        status: 'model_accepted',
+        box_progression: 'The remaining corpus preserves the governed sequence.',
+        repetition_or_gap_risks: [],
+        representative_cards: ['000002'],
+        next_step: 'Merge after exact-head gates pass.',
+      },
+    },
+  );
+  commit(repo.root, 'remove card with model-owned evidence');
+  const result = validate(repo);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(result.report.ok, true);
+  const removalReviewPath = path.join(
+    repo.root,
+    'reviews/agent_self_review/model-removal.json',
+  );
+  const forged = readJson(removalReviewPath);
+  forged.removed_cards[0].coverage_after_removal.head_box_card_count = 99;
+  writeJson(removalReviewPath, forged);
+  commit(repo.root, 'forge removal coverage claim');
+  const forgedResult = validate(repo);
+  assert.notEqual(forgedResult.status, 0, forgedResult.stdout);
+  assertIssue(forgedResult.report, 'changed_card_removal_coverage_invalid');
 });
 
 test('a noncanonical or Unicode card-box path cannot bypass corpus validation', () => {
@@ -98,7 +200,7 @@ test('renaming a card box out of the governed directory is a card deletion', () 
 
   const result = validate(repo);
   assert.notEqual(result.status, 0, result.stdout);
-  assertIssue(result.report, 'changed_candidate_card_deleted');
+  assertIssue(result.report, 'changed_candidate_card_deleted_without_model_acceptance');
 });
 
 test('a changed card with complete matching changed self-review passes', () => {
@@ -173,7 +275,7 @@ test('a changed self-review must explicitly confirm answer and analysis referenc
   assert.equal(coverageIssue.review_count, 0);
 });
 
-test('a complete three-card standard sample can authorize its changed candidates', () => {
+test('legacy three-card standard samples cannot authorize current changed candidates', () => {
   const repo = createRepository();
   const cards = [
     completeCard(),
@@ -199,21 +301,24 @@ test('a complete three-card standard sample can authorize its changed candidates
   commit(repo.root, 'add complete three-card standard sample');
 
   const result = validate(repo);
-  assert.equal(result.status, 0, result.stderr || result.stdout);
-  assert.deepEqual(
-    result.report.changed_card_integrity.changed_card_ids,
-    ['000001', '000002', '000003'],
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(
+    result.report,
+    'changed_self_review_legacy_person_authority_archive_only',
   );
 });
 
-test('confirmed box expansion accepts exact remaining counts for 12, 8, and 6 card targets', async t => {
+test('legacy confirmed box expansion cannot authorize current changed cards', async t => {
   for (const targetCardCount of [12, 8, 6]) {
     await t.test(`target ${targetCardCount}`, () => {
       const {repo, expansionCards} = prepareConfirmedExpansion(targetCardCount);
       commit(repo.root, `expand confirmed sample to ${targetCardCount}`);
       const result = validate(repo);
-      assert.equal(result.status, 0, result.stderr || result.stdout);
-      assert.deepEqual(result.report.changed_card_integrity.changed_card_ids, expansionCards.map(card => card.card_id));
+      assert.notEqual(result.status, 0, result.stdout);
+      assertIssue(
+        result.report,
+        'changed_self_review_legacy_person_authority_archive_only',
+      );
     });
   }
 });
@@ -245,7 +350,7 @@ test('confirmed box expansion cannot stop short of or exceed its recorded target
   commit(repo.root, 'try partial confirmed expansion');
   const result = validate(repo);
   assert.notEqual(result.status, 0, result.stdout);
-  assertIssue(result.report, 'changed_confirmed_expansion_count_mismatch');
+  assertIssue(result.report, 'changed_self_review_legacy_person_authority_archive_only');
 });
 
 test('confirmed box expansion cannot cross into an unconfirmed second box', () => {
@@ -733,18 +838,124 @@ test('a changed approval cannot link the archived global audit', () => {
 
   const result = validate(repo);
   assert.notEqual(result.status, 0, result.stdout);
-  assertIssue(result.report, 'changed_review_current_scoped_audit_required');
+  assertIssue(result.report, 'changed_approval_legacy_archive_only');
 });
 
-test('a changed approval can link an exact current scoped-audit replay', () => {
+test('a legacy approval remains archive-only even with an exact current scoped-audit replay', () => {
   const repo = createRepository();
   establishApprovalReviewBase(repo);
   writeApprovalFile(repo.root, 'current-scoped-audit-approval.json');
   commit(repo.root, 'add approval with current scoped audit');
 
   const result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_approval_legacy_archive_only');
+});
+
+test('a model-owned authorization passes with canonical scope, audit, and linked-review hashes', () => {
+  const repo = createRepository();
+  const card = completeCard();
+  writeCardBox(repo.root, [card]);
+  const auditPath = 'reviews/audit_scopes/model-authorization-audit.json';
+  writeJson(path.join(repo.root, auditPath), fixtureScopedAuditReport(['000001']));
+  const auditSha256 = `sha256:${crypto
+    .createHash('sha256')
+    .update(fs.readFileSync(path.join(repo.root, auditPath)))
+    .digest('hex')}`;
+  const reviewPath = 'reviews/agent_self_review/model-authorization-review.json';
+  const reviewScope = {
+    track: 'cet4',
+    library: 'fixture-library',
+    group: 'fixture-group',
+    box: 'fixture-box',
+    box_prefixes: ['0000'],
+    card_ids: ['000001'],
+  };
+  writeJson(path.join(repo.root, reviewPath), {
+    schema_version: 'model-owned-card-review.v2',
+    review_id: 'model-authorization-review',
+    created_at: '2026-08-23T12:00:00+08:00',
+    model_acceptance: testModelAcceptance(
+      buildModelAcceptanceInputSha256({
+        decisionType: 'card_review',
+        scope: reviewScope,
+        corpusFingerprint: 'f'.repeat(64),
+        auditSha256,
+      }),
+      ['card_semantic_review', 'source_provenance_review'],
+      'model-review-run',
+    ),
+    scope: reviewScope,
+    specs_read: ['spec/review-workflow.json'],
+    quality_audit: {
+      report: auditPath,
+      report_sha256: auditSha256,
+      corpus_fingerprint: 'f'.repeat(64),
+      scope_has_no_hard_blockers: true,
+      scope_summary: qualityAuditSummary(['000001']),
+    },
+    cards: [reviewEntry(card)],
+    removed_cards: [],
+    batch_review: {
+      status: 'model_accepted',
+      box_progression: 'fixture progression',
+      repetition_or_gap_risks: [],
+      representative_cards: ['000001'],
+      next_step: 'create authorization',
+    },
+  });
+  commit(repo.root, 'establish model review and audit');
+  repo.base = git(repo.root, 'rev-parse', 'HEAD');
+  const reviewSha256 = `sha256:${crypto
+    .createHash('sha256')
+    .update(fs.readFileSync(path.join(repo.root, reviewPath)))
+    .digest('hex')}`;
+  const authorizationScope = {
+    track: 'cet4',
+    purpose: 'formal_content',
+    box_prefixes: ['0000'],
+    card_ids: ['000001'],
+  };
+  writeJson(
+    path.join(repo.root, 'reviews/approved_batches/model-authorization.json'),
+    {
+      schema_version: 'model-owned-content-authorization.v2',
+      authorization_id: 'model-authorization',
+      authorized_at: '2026-08-23T12:30:00+08:00',
+      model_acceptance: testModelAcceptance(
+        buildModelAcceptanceInputSha256({
+          decisionType: 'content_authorization',
+          scope: authorizationScope,
+          corpusFingerprint: 'f'.repeat(64),
+          auditSha256,
+          linkedReviewIdentity: {path: reviewPath, sha256: reviewSha256},
+        }),
+        ['content_authorization'],
+        'authorization-run',
+      ),
+      scope: authorizationScope,
+      summary: 'Exact model-owned authorization fixture.',
+      representative_cards: ['000001'],
+      card_quality_audit: {
+        report: auditPath,
+        report_sha256: auditSha256,
+        corpus_fingerprint: 'f'.repeat(64),
+        scope_has_no_hard_blockers: true,
+        scope_summary: qualityAuditSummary(['000001']),
+      },
+      validation: {
+        harness: 'pass',
+        cards: 'pass',
+        card_quality_audit: 'pass',
+        model_review: reviewPath,
+        model_review_sha256: reviewSha256,
+      },
+      authorization_limits: ['scope only', 'no external claims', 'new input requires review'],
+    },
+  );
+  commit(repo.root, 'add model-owned authorization');
+  const result = validate(repo);
   assert.equal(result.status, 0, result.stderr || result.stdout);
-  assert.equal(result.report.content_candidate_diff, true);
 });
 
 test('formal approval evidence cannot be deleted', () => {
@@ -784,7 +995,7 @@ test('a changed approval cannot link review evidence outside the governed direct
 
   const result = validate(repo);
   assert.notEqual(result.status, 0, result.stdout);
-  assertIssue(result.report, 'changed_approval_linked_self_review_path_invalid');
+  assertIssue(result.report, 'changed_approval_legacy_archive_only');
 });
 
 test('a changed approval cannot reuse an unchanged stale linked self-review audit', () => {
@@ -805,14 +1016,7 @@ test('a changed approval cannot reuse an unchanged stale linked self-review audi
 
   const result = validate(repo);
   assert.notEqual(result.status, 0, result.stdout);
-  const issue = assertIssue(
-    result.report,
-    'changed_review_scoped_audit_replay_mismatch',
-  );
-  assert.equal(
-    issue.path,
-    'reviews/agent_self_review/fixture-approval-current-review.json',
-  );
+  assertIssue(result.report, 'changed_approval_legacy_archive_only');
 });
 
 test('tracked scoped-audit evidence cannot be deleted', () => {
@@ -863,7 +1067,7 @@ test('an unprefixed controlled-pilot aggregate review enters content scope and f
   const result = validate(repo);
   assert.notEqual(result.status, 0, result.stdout);
   assert.equal(result.report.content_candidate_diff, true);
-  assertIssue(result.report, 'changed_controlled_pilot_review_invalid');
+  assertIssue(result.report, 'changed_controlled_pilot_review_legacy_archive_only');
 });
 
 test('an orphan controlled-pilot approval artifact fails closed', () => {
@@ -877,7 +1081,7 @@ test('an orphan controlled-pilot approval artifact fails closed', () => {
   const result = validate(repo);
   assert.notEqual(result.status, 0, result.stdout);
   assert.equal(result.report.content_candidate_diff, true);
-  assertIssue(result.report, 'changed_controlled_pilot_approval_review_missing');
+  assertIssue(result.report, 'changed_controlled_pilot_approval_legacy_archive_only');
 });
 
 test('a misleading TEMPLATE suffix cannot disguise an unprefixed self-review', () => {
@@ -1626,7 +1830,9 @@ function createRepository() {
   for (const relativePath of [
     'scripts/validate_pr_scope.mjs',
     'scripts/validate_cards.mjs',
+    'scripts/manage_controlled_pilot_approval.mjs',
     'scripts/lib/card_integrity.mjs',
+    'scripts/lib/model_acceptance.mjs',
     'spec/card-metadata.schema.json',
     'spec/content-quality-contract.json',
   ]) {
@@ -1658,6 +1864,40 @@ function legacyCard() {
     front: { text: 'baseline prompt' },
     analysis: {text: 'baseline analysis'},
     source_ref: {type: 'human_original', provenance_status: 'documented'},
+  };
+}
+
+function testCanonicalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(testCanonicalJson).join(',')}]`;
+  if (value && typeof value === 'object') {
+    return `{${Object.keys(value).sort().map(key =>
+      `${JSON.stringify(key)}:${testCanonicalJson(value[key])}`
+    ).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function testCardObjectSha256(card) {
+  return `sha256:${crypto.createHash('sha256').update(testCanonicalJson(card)).digest('hex')}`;
+}
+
+function testModelAcceptance(inputSha256, capabilities, runId) {
+  return {
+    schema_version: 'model-acceptance.v2',
+    actor: {
+      kind: 'model_harness',
+      agent: 'codex',
+      model: 'gpt-5.6-sol',
+      run_id: runId,
+    },
+    evidence: {
+      reviewed_at: '2026-08-23T12:00:00+08:00',
+      input_sha256: inputSha256,
+      capabilities,
+      summary: 'The exact bound input passed the governed model review.',
+      findings: [],
+    },
+    decision: 'accepted',
   };
 }
 
@@ -2111,14 +2351,25 @@ function validate(repo) {
   const result = spawnSync(
     process.execPath,
     ['scripts/validate_pr_scope.mjs', '--base', repo.base, '--head', 'HEAD'],
-    { cwd: repo.root, encoding: 'utf8' },
+    { cwd: repo.root, encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 },
   );
   const output = result.stdout.trim() || result.stderr.trim();
+  let report;
+  try {
+    report = JSON.parse(output);
+  } catch (error) {
+    throw new Error(
+      `validate_pr_scope emitted invalid JSON: ${error.message}; ` +
+      `status=${result.status}; signal=${result.signal}; ` +
+      `stdout=${result.stdout.length}; stderr=${result.stderr.length}; ` +
+      `tail=${JSON.stringify(output.slice(-240))}`,
+    );
+  }
   return {
     status: result.status,
     stdout: result.stdout,
     stderr: result.stderr,
-    report: JSON.parse(output),
+    report,
   };
 }
 
@@ -2126,7 +2377,7 @@ function validateWorktree(repo) {
   const result = spawnSync(
     process.execPath,
     ['scripts/validate_pr_scope.mjs', '--base', repo.base],
-    {cwd: repo.root, encoding: 'utf8'},
+    {cwd: repo.root, encoding: 'utf8', maxBuffer: 50 * 1024 * 1024},
   );
   const output = result.stdout.trim() || result.stderr.trim();
   return {
@@ -2141,7 +2392,7 @@ function validateCards(repo) {
   const result = spawnSync(
     process.execPath,
     ['scripts/validate_cards.mjs'],
-    {cwd: repo.root, encoding: 'utf8'},
+    {cwd: repo.root, encoding: 'utf8', maxBuffer: 50 * 1024 * 1024},
   );
   const output = result.stdout.trim() || result.stderr.trim();
   return {

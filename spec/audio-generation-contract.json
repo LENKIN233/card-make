@@ -1,5 +1,5 @@
 {
-  "version": "card-make-audio-generation-v1",
+  "version": "card-make-audio-generation-v2",
   "status": "active",
   "purpose": "Define how listening-card audio may move from candidate TTS assets to formal usable audio evidence.",
   "authority_boundary": {
@@ -16,7 +16,7 @@
     ],
     "source_authenticity_owner": "spec/content-quality-contract.json",
     "presentation_owner": "../softbook_cet/spec/card-system.json",
-    "approval_owner": "reviews/approved_batches/TEMPLATE.json"
+    "acceptance_owner": "spec/review-workflow.json"
   },
   "asset_policy": {
     "asset_dir": "ai_tts/",
@@ -28,8 +28,8 @@
     "back_side_transcript_allowed": true
   },
   "candidate_policy": {
-    "existing_tts_assets_allowed_for_candidate_samples": true,
-    "must_mark_sample_only_when_audio_unreviewed": true,
+    "existing_tts_assets_allowed_for_candidate_review": true,
+    "must_mark_candidate_only_when_audio_unreviewed": true,
     "must_not_claim_formal_audio_quality": true,
     "candidate_metadata_must_keep_text_source_type_separate_from_audio_generation_method": true,
     "candidate_audio_can_support_card_review_only_when_transcript_matches_current_task": true
@@ -40,7 +40,7 @@
     "required_fields": [
       "legacy_adoption.enabled=true",
       "legacy_adoption.reviewed_at",
-      "legacy_adoption.reviewer",
+      "model_acceptance",
       "legacy_adoption.reproducibility_status=non_reproducible",
       "generation_plan.provider=legacy_unknown",
       "generation_plan.voice_or_speaker=legacy_unknown",
@@ -54,7 +54,7 @@
       "claim_reproducibility",
       "skip_transcript_or_perceptual_review",
       "treat_audio_QC_as_text_source_authenticity",
-      "bypass_final_content_approval"
+      "bypass_current_model_owned_content_authorization"
     ]
   },
   "text_gate_before_generation": {
@@ -123,14 +123,17 @@
       "pronunciation_error_changes_answer_logic",
       "stress_or_pause_leaks_or_distorts_answer",
       "source_authenticity_claim_from_tts",
-      "formal_audio_ready_without_user_content_approval_boundary"
+      "formal_audio_ready_without_current_model_owned_content_authorization"
     ],
     "completed_worklist_bridge": {
       "builder": "scripts/build_audio_qc_drafts.mjs",
       "input_must_be_tracked_reviewed_worklist": true,
-      "requires_complete_human_pass_for_every_perceptual_check": true,
+      "requires_complete_model_pass_for_every_perceptual_check": true,
+      "requires_two_exact_input_model_runs_per_box": true,
+      "requires_complete_asset_consumed_per_card": true,
+      "requires_all_seven_per_card_results": true,
       "splits_records_by_box": true,
-      "requires_one_human_reviewer_per_box_record": true,
+      "requires_exact_model_acceptance_per_box_record": true,
       "requires_explicit_product_semantics_attestations": [
         "no_autoplay_assumption",
         "front_side_no_required_subtitles",
@@ -159,44 +162,50 @@
     ],
     "supported_probe_commands": ["afinfo", "ffprobe"],
     "signal_diagnostic_probe_command": "ffmpeg",
-    "coarse_signal_diagnostics_do_not_replace_human_perceptual_qc": true,
+    "coarse_signal_diagnostics_do_not_replace_model_perceptual_qc": true,
     "authority_boundary": "A passing technical audit excludes gross transcript-duration speed, absolute level, peak, and track-relative level outliers. These coarse signal diagnostics do not prove speech-to-transcript match, clipping/noise absence, pronunciation, natural speed, rhythm, stress, pauses, source authenticity, or formal audio readiness; those remain perceptual per-card QC.",
     "must_not_create_formal_qc_records": true
   },
   "perceptual_review_worklist": {
     "schema": "spec/audio-perceptual-worklist.schema.json",
     "manager": "scripts/manage_audio_perceptual_worklist.mjs",
-    "local_review_station": "scripts/serve_audio_perceptual_review.mjs",
     "reviewed_worklist_dir": "reviews/audio_perceptual_worklists/",
     "source_requires_passing_technical_audit": true,
     "scoped_worklist_requires_complete_track_technical_audit": true,
     "scoped_worklist_requires_exact_non_empty_card_ids_and_fingerprint": true,
     "legacy_v1_is_full_track_only": true,
-    "one_card_per_review_action": true,
-    "review_station_loopback_only": true,
-    "review_station_has_no_bulk_pass": true,
-    "review_station_uses_authoritative_manager_for_writes": true,
-    "human_reviewer_required": true,
-    "full_asset_listening_attestation_required": true,
-    "agent_may_mark_passed": false,
+    "per_card_evidence_required": true,
+    "model_acceptance_required": true,
+    "audio_perceptual_review_capability_required": true,
+    "full_asset_consumption_attestation_required": true,
+    "complete_asset_consumed_field": "complete_asset_consumed",
+    "per_card_result_fields": [
+      "matches_text",
+      "target_signal",
+      "pronunciation",
+      "speed",
+      "rhythm",
+      "stress_pauses",
+      "no_noise"
+    ],
+    "model_may_mark_passed_after_exact_asset_consumption": true,
     "reviewed_identity_change_fails_closed": true,
     "passing_worklist_is_not_formal_audio_qc": true,
     "formal_audio_qc_record_still_required": true
   },
   "asset_change_policy": {
-    "do_not_replace_audio_in_content_sample_PRs": true,
+    "do_not_replace_audio_in_content_PRs": true,
     "audio_asset_changes_belong_in_audio_or_tooling_branch": true,
     "replacement_requires_audio_qc_record": true,
-    "bulk_generation_requires_user_confirmed_sample_scope": true
+    "bulk_generation_requires_model_and_harness_acceptance": true
   },
   "validation_commands": [
     "node --test scripts/test_audio_technical_audit.mjs",
     "node --test scripts/test_audio_perceptual_worklist.mjs",
-    "node --test scripts/test_audio_perceptual_review_station.mjs",
     "node --test scripts/test_build_audio_qc_drafts.mjs",
     "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json",
     "node scripts/manage_audio_perceptual_worklist.mjs validate --file exports/cet4-audio-perceptual-worklist.json",
-    "node scripts/build_audio_qc_drafts.mjs --worklist reviews/audio_perceptual_worklists/<reviewed-worklist>.json --attest-no-autoplay --attest-front-no-required-subtitles --attest-tts-not-source-authenticity",
+    "node scripts/build_audio_qc_drafts.mjs --worklist reviews/audio_perceptual_worklists/<reviewed-worklist>.json --plan-model-inputs --attest-no-autoplay --attest-front-no-required-subtitles --attest-tts-not-source-authenticity",
     "node scripts/validate_audio_qc.mjs",
     "node scripts/validate_harness.mjs"
   ]

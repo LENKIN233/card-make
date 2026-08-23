@@ -55,12 +55,16 @@ jobs:
         run: |
           node scripts/validate_harness.mjs
           node scripts/validate_audio_qc.mjs
+          node --test scripts/test_validate_audio_qc_model.mjs
           node scripts/validate_audio_lfs.mjs
+          node --test scripts/test_model_acceptance.mjs
           node --test scripts/test_card_integrity.mjs
           node --test scripts/test_validate_pr_scope.mjs
           node --test scripts/test_validate_delivery_record.mjs
           node --test scripts/test_audio_technical_audit.mjs
           node --test scripts/test_audio_perceptual_worklist.mjs
+          node --test scripts/test_build_audio_qc_drafts.mjs
+          node --test scripts/test_manage_controlled_pilot_approval.mjs
           git diff --check
 
   content-scope:

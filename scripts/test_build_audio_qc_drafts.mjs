@@ -8,6 +8,7 @@ import test from 'node:test';
 
 import {buildAudioQcDrafts} from './build_audio_qc_drafts.mjs';
 import {
+  audioPerceptualDecisionInputSha256,
   buildAudioPerceptualWorklist,
   PERCEPTUAL_CHECKS,
   reviewAudioPerceptualEntry,
@@ -19,15 +20,17 @@ const ATTESTATIONS = Object.freeze({
   tts_audio_not_used_as_source_authenticity: true,
 });
 
-test('builds one formal-ready legacy QC record per box after complete human review', t => {
+test('builds one formal-ready model-owned QC record per box after complete model review', t => {
   const fixture = createFixture(t);
-  const reviewed = completeWorklist(fixture.worklist, 'github:human-reviewer');
+  const reviewed = completeWorklist(fixture.worklist);
   writeWorklist(fixture, reviewed);
   commitFixture(fixture);
+  const modelAcceptancesByBox = boxAcceptances(fixture);
 
   const result = buildAudioQcDrafts({
     attestations: ATTESTATIONS,
     clock: () => new Date('2026-08-12T08:00:00.000Z'),
+    modelAcceptancesByBox,
     root: fixture.root,
     worklistPath: fixture.worklistPath,
   });
@@ -38,12 +41,18 @@ test('builds one formal-ready legacy QC record per box after complete human revi
   assert.equal(result.summary.formal_content_approval_created, false);
   for (const record of result.records) {
     assert.equal(record.verdict.formal_audio_ready, true);
-    assert.equal(record.legacy_adoption.reviewer, 'github:human-reviewer');
+    assert.equal(record.schema_version, 'model-owned-audio-qc.v2');
+    assert.equal(record.model_acceptances.length, 2);
     assert.equal(record.generation_plan.provider, 'legacy_unknown');
     assert.equal(record.source_records.linked_approved_batch, '');
     assert.equal(record.source_records.linked_agent_self_reviews.length, 1);
     assert.equal(record.generated_assets[0].file_sha256.length, 64);
     assert.equal(record.qa_checks.tts_audio_not_used_as_source_authenticity, true);
+    assert.equal(record.per_card_qc[0].complete_asset_consumed, true);
+    for (const field of [
+      'matches_text', 'target_signal', 'pronunciation', 'speed', 'rhythm',
+      'stress_pauses', 'no_noise',
+    ]) assert.equal(record.per_card_qc[0][field], true);
   }
   assert.equal(
     result.records.find(record => record.scope.box_prefixes[0] === '0010')
@@ -68,7 +77,7 @@ test('fails closed while any perceptual entry is pending', t => {
 
 test('requires all three product-semantics attestations', t => {
   const fixture = createFixture(t);
-  const reviewed = completeWorklist(fixture.worklist, 'team:audio-reviewer');
+  const reviewed = completeWorklist(fixture.worklist);
   writeWorklist(fixture, reviewed);
   commitFixture(fixture);
   assert.throws(
@@ -84,42 +93,27 @@ test('requires all three product-semantics attestations', t => {
   );
 });
 
-test('permits different reviewers across boxes but not within one box record', t => {
+test('requires two exact-input model runs for every box record', t => {
   const fixture = createFixture(t);
-  let reviewed = reviewAll(fixture.worklist, '000001', 'github:first-human');
-  reviewed = reviewAll(reviewed, '001001', 'external:second-human');
+  const reviewed = completeWorklist(fixture.worklist);
   writeWorklist(fixture, reviewed);
   commitFixture(fixture);
-  const result = buildAudioQcDrafts({
-    attestations: ATTESTATIONS,
-    root: fixture.root,
-    worklistPath: fixture.worklistPath,
-  });
-  assert.deepEqual(result.summary.reviewers, [
-    'external:second-human',
-    'github:first-human',
-  ]);
-});
-
-test('refuses different reviewers inside one box QC record', t => {
-  const fixture = createFixture(t, {sameBox: true});
-  let reviewed = reviewAll(fixture.worklist, '000001', 'github:first-human');
-  reviewed = reviewAll(reviewed, '000002', 'external:second-human');
-  writeWorklist(fixture, reviewed);
-  commitFixture(fixture);
+  const modelAcceptancesByBox = boxAcceptances(fixture);
+  modelAcceptancesByBox['0000'][1] = modelAcceptancesByBox['0000'][0];
   assert.throws(
     () => buildAudioQcDrafts({
       attestations: ATTESTATIONS,
+      modelAcceptancesByBox,
       root: fixture.root,
       worklistPath: fixture.worklistPath,
     }),
-    /same human reviewer/,
+    /run_id_duplicate/,
   );
 });
 
 test('refuses an untracked or dirty reviewed worklist', t => {
   const fixture = createFixture(t);
-  const reviewed = completeWorklist(fixture.worklist, 'github:human-reviewer');
+  const reviewed = completeWorklist(fixture.worklist);
   writeWorklist(fixture, reviewed);
   assert.throws(
     () => buildAudioQcDrafts({
@@ -268,22 +262,66 @@ function card({boxPrefix, cardId, groupId, groupName, mainTrainingGoal, transcri
   };
 }
 
-function completeWorklist(worklist, reviewer) {
+function completeWorklist(worklist) {
   return worklist.entries.reduce(
-    (current, entry) => reviewAll(current, entry.card_id, reviewer),
+    (current, entry) => reviewAll(current, entry.card_id),
     worklist,
   );
 }
 
-function reviewAll(worklist, cardId, reviewer) {
+function reviewAll(worklist, cardId) {
+  const entry = worklist.entries.find(candidate => candidate.card_id === cardId);
+  const checks = Object.fromEntries(PERCEPTUAL_CHECKS.map(name => [name, 'pass']));
+  const inputSha256 = audioPerceptualDecisionInputSha256(entry, checks);
   return reviewAudioPerceptualEntry({
     cardId,
     checkUpdates: PERCEPTUAL_CHECKS.map(name => ({name, value: 'pass'})),
     clock: () => new Date(`2026-08-11T02:0${cardId === '000001' ? '1' : '2'}:00.000Z`),
-    listenedToEntireAsset: true,
-    reviewer,
+    completeAssetConsumed: true,
+    modelAcceptances: [
+      modelAcceptance(inputSha256, `entry:${cardId}:first`),
+      modelAcceptance(inputSha256, `entry:${cardId}:second`),
+    ],
     worklist,
   });
+}
+
+function boxAcceptances(fixture) {
+  const plan = buildAudioQcDrafts({
+    attestations: ATTESTATIONS,
+    planOnly: true,
+    root: fixture.root,
+    worklistPath: fixture.worklistPath,
+  });
+  return Object.fromEntries(
+    Object.entries(plan.summary.acceptance_inputs).map(([boxPrefix, inputSha256]) => [
+      boxPrefix,
+      [
+        modelAcceptance(inputSha256, `box:${boxPrefix}:first`),
+        modelAcceptance(inputSha256, `box:${boxPrefix}:second`),
+      ],
+    ]),
+  );
+}
+
+function modelAcceptance(inputSha256, runId) {
+  return {
+    schema_version: 'model-acceptance.v2',
+    actor: {
+      kind: 'model_harness',
+      agent: 'codex',
+      model: 'audio-capable-model',
+      run_id: runId,
+    },
+    evidence: {
+      reviewed_at: '2026-08-11T02:00:00.000Z',
+      input_sha256: inputSha256,
+      capabilities: ['audio_perceptual_review'],
+      summary: 'Exact audio input and all perceptual checks passed.',
+      findings: [],
+    },
+    decision: 'accepted',
+  };
 }
 
 function writeWorklist(fixture, worklist) {

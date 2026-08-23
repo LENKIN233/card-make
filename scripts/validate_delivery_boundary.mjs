@@ -17,14 +17,6 @@ function git(...args) {
 
 const base = option('--base', 'origin/main');
 const head = option('--head', 'HEAD');
-const labels = (() => {
-  try {
-    const parsed = JSON.parse(process.env.PR_LABELS || '[]');
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-})();
 const files = git('diff', '--name-only', `${base}...${head}`).split('\n').filter(Boolean);
 const errors = [];
 const cardFiles = files.filter(file => file.startsWith('card_boxes_json/'));
@@ -39,9 +31,6 @@ const audioFiles = files.filter(file => file.startsWith('ai_tts/'));
 if (cardFiles.length > 0 && toolingFiles.length > 0) errors.push('content and tooling/harness changes must not share one PR');
 if (cardFiles.length > 0 && audioFiles.length > 0) errors.push('candidate card and audio asset changes must use separate PRs');
 if (reportFiles.length > 0) errors.push('generated global reports must not be committed');
-if (approvalFiles.length > 0 && !labels.includes('approval:authorized')) {
-  errors.push('formal approval changes require the approval:authorized label and explicit user approval evidence');
-}
 
 const result = {
   schema_version: 'delivery-boundary-validation.v1',

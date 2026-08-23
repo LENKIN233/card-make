@@ -11,6 +11,10 @@ import {
   validateChangedCardSelfReviewParity,
 } from './lib/card_integrity.mjs';
 import {validateTrackedRecords as validateControlledPilotRecords} from './manage_controlled_pilot_approval.mjs';
+import {
+  validateIndependentModelAcceptances,
+  validateModelAcceptance,
+} from './lib/model_acceptance.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
@@ -724,8 +728,8 @@ function validateManifest(errors) {
     if (!doc.path || !exists(doc.path)) {
       pushIssue(errors, 'manifest_missing_active_doc', { path: doc.path });
     }
-    if (doc.status !== 'active') {
-      pushIssue(errors, 'manifest_doc_not_active', { path: doc.path, status: doc.status });
+    if (!['active', 'legacy_archive'].includes(doc.status)) {
+      pushIssue(errors, 'manifest_doc_status_invalid', { path: doc.path, status: doc.status });
     }
   }
   return manifest;
@@ -734,14 +738,19 @@ function validateManifest(errors) {
 function validateAuthorityMap(errors) {
   const map = readJson('spec/authority-map.json');
   for (const [concept, ownerPath] of Object.entries(map.owners || {})) {
-    if (!exists(ownerPath)) {
+    const ownerFile = String(ownerPath).split('#', 1)[0];
+    if (!exists(ownerFile)) {
       pushIssue(errors, 'authority_owner_missing', { concept, ownerPath });
     }
   }
-  if (map.conflict_policy?.approval_conflict !== 'No agent, script, legacy field, or PR status can override explicit user approval for formal usable content.') {
-    pushIssue(errors, 'approval_conflict_policy_drift', {
-      expected: 'explicit user approval overrides agent/script/legacy/PR status',
-    });
+  if (map.owners?.model_owned_acceptance !== 'spec/review-workflow.json') {
+    pushIssue(errors, 'model_owned_acceptance_owner_drift', {});
+  }
+  if (map.owners?.model_acceptance_validator !== 'scripts/lib/model_acceptance.mjs') {
+    pushIssue(errors, 'model_acceptance_validator_owner_drift', {});
+  }
+  if (!String(map.conflict_policy?.acceptance_conflict || '').includes('sole owner')) {
+    pushIssue(errors, 'model_owned_acceptance_conflict_policy_drift', {});
   }
 }
 
@@ -778,12 +787,12 @@ function validateSoftbookRefs(errors, warnings) {
     }
   }
 
-  if (workspace.legacy_status_policy?.replacement_authority !== 'reviews/approved_batches/ records plus explicit user confirmation') {
+  if (!String(workspace.legacy_status_policy?.replacement_authority || '').includes('model-acceptance.v2')) {
     pushIssue(errors, 'approval_replacement_authority_drift', {});
   }
 
   const maxAuthority = workspace.content_boundary?.agent_max_authority || [];
-  if (!maxAuthority.includes('auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation')) {
+  if (!maxAuthority.includes('auto_merge_all_validated_PRs_under_standing_user_delegation')) {
     pushIssue(errors, 'workspace_auto_merge_authority_missing', {});
   }
 
@@ -792,8 +801,9 @@ function validateSoftbookRefs(errors, warnings) {
     pushIssue(errors, 'workspace_legacy_auto_merge_forbidden_authority_present', {});
   }
   for (const forbidden of [
-    'auto_merge_without_standing_or_explicit_user_authorization',
-    'auto_merge_formal_content_without_user_confirmed_sample_and_scope_delegation',
+    'invent_external_or_source_facts',
+    'claim_audio_consumption_without_audio_capability_and_exact_asset_evidence',
+    'authorize_or_merge_when_exact_head_required_gates_are_incomplete_or_failing',
   ]) {
     if (!forbiddenAuthority.includes(forbidden)) {
       pushIssue(errors, 'workspace_auto_merge_forbidden_authority_missing', { forbidden });
@@ -854,8 +864,11 @@ function validateUpstreamAlignment(errors, warnings) {
 
 function validateContentQuality(errors) {
   const quality = readJson('spec/content-quality-contract.json');
-  if (quality.north_star?.final_approval_authority !== 'user_only') {
-    pushIssue(errors, 'final_approval_authority_not_user_only', {});
+  if (
+    quality.north_star?.current_acceptance_authority !==
+      'model_and_harness_under_spec/review-workflow.json'
+  ) {
+    pushIssue(errors, 'model_owned_acceptance_authority_missing', {});
   }
 
   const blockers = new Set((quality.blockers || []).map(blocker => blocker.id));
@@ -907,13 +920,8 @@ function validateContentQuality(errors) {
   if (
     !String(integrity.governed_review_path_detection || '').includes('without') ||
     !String(integrity.governed_review_path_detection || '').includes('four-digit box prefix') ||
-    !String(integrity.governed_review_path_detection || '').includes('seven exact repository-declared templates') ||
-    !String(integrity.governed_review_path_detection || '').includes('reviews/approved_batches') ||
-    !String(integrity.governed_review_path_detection || '').includes('reviews/sample_confirmations') ||
-    !String(integrity.governed_review_path_detection || '').includes('reviews/controlled_pilot_reviews') ||
-    !String(integrity.governed_review_path_detection || '').includes('reviews/controlled_pilot_approvals') ||
-    !String(integrity.governed_review_path_detection || '').includes('approval records') ||
-    !String(integrity.governed_review_path_detection || '').includes('unknown filenames')
+    !String(integrity.governed_review_path_detection || '').includes('Historical v1') ||
+    !String(integrity.governed_review_path_detection || '').includes('immutable archive')
   ) {
     pushIssue(errors, 'candidate_integrity_unprefixed_review_path_boundary_missing', {});
   }
@@ -940,11 +948,10 @@ function validateContentQuality(errors) {
   }
   const fullTrackBoundary = String(integrity.self_review_parity?.full_track_aggregate_boundary || '');
   if (
-    !fullTrackBoundary.includes('coverage.reviewed_card_ids') ||
-    !fullTrackBoundary.includes('exactly-one review coverage') ||
-    !fullTrackBoundary.includes('without a cards property') ||
-    !fullTrackBoundary.includes('complete declared track') ||
-    !fullTrackBoundary.includes('merge-base and HEAD card ID sets')
+    !fullTrackBoundary.includes('model-review evidence') ||
+    !fullTrackBoundary.includes('model-acceptance.v2') ||
+    !fullTrackBoundary.includes('exact complete-track') ||
+    !fullTrackBoundary.includes('governed destructive-change evidence')
   ) {
     pushIssue(errors, 'candidate_integrity_full_track_aggregate_boundary_missing', {});
   }
@@ -980,6 +987,131 @@ function validateContentQuality(errors) {
 }
 
 function validateAudioGenerationContract(errors) {
+  {
+    const v2Contract = readJson('spec/audio-generation-contract.json');
+    if (v2Contract.version === 'card-make-audio-generation-v2') {
+      const manifest = readJson('spec/doc-manifest.json');
+      const activePaths = new Set(
+        (manifest.active_docs || [])
+          .filter(doc => doc.status === 'active')
+          .map(doc => doc.path),
+      );
+      for (const requiredPath of [
+        'spec/audio-generation-contract.json',
+        'spec/audio-perceptual-worklist.schema.json',
+        'scripts/manage_audio_perceptual_worklist.mjs',
+        'scripts/build_audio_qc_drafts.mjs',
+        'scripts/test_build_audio_qc_drafts.mjs',
+        'scripts/validate_audio_qc.mjs',
+        'reviews/audio_qc/TEMPLATE.json',
+        'reviews/audio_perceptual_worklists/README.md',
+      ]) {
+        if (!activePaths.has(requiredPath)) {
+          pushIssue(errors, 'audio_generation_manifest_entry_missing', {
+            path: requiredPath,
+          });
+        }
+      }
+      const schema = readJson('spec/audio-perceptual-worklist.schema.json');
+      if (
+        schema.schema_version !== 'audio-perceptual-worklist.v3' ||
+        schema.review_policy?.review_mode !== 'model_perceptual_qc' ||
+        schema.review_policy?.required_model_capability !==
+          'audio_perceptual_review' ||
+        schema.review_policy?.full_asset_consumption_attestation_required !==
+          true
+      ) {
+        pushIssue(errors, 'model_audio_worklist_policy_invalid', {});
+      }
+      if (
+        v2Contract.technical_audio_audit
+          ?.coarse_signal_diagnostics_do_not_replace_model_perceptual_qc !==
+          true ||
+        v2Contract.asset_policy?.tts_audio_never_proves_source_authenticity !==
+          true ||
+        v2Contract.perceptual_review_worklist
+          ?.audio_perceptual_review_capability_required !== true ||
+        v2Contract.perceptual_review_worklist
+          ?.full_asset_consumption_attestation_required !== true
+      ) {
+        pushIssue(errors, 'model_audio_contract_boundary_invalid', {});
+      }
+      const template = readJson('reviews/audio_qc/TEMPLATE.json');
+      for (const issue of validateIndependentModelAcceptances(
+        template.model_acceptances,
+        {
+          allowTemplatePlaceholders: true,
+          requiredCapabilities: ['audio_perceptual_review'],
+        },
+      )) {
+        pushIssue(errors, `audio_qc_template_${issue.code}`, issue);
+      }
+      if (
+        template.schema_version !== 'model-owned-audio-qc.v2' ||
+        template.approval_boundary
+          ?.tts_audio_is_not_source_authenticity_evidence !== true ||
+        template.approval_boundary
+          ?.external_facts_must_not_be_inferred !== true
+      ) {
+        pushIssue(errors, 'model_audio_qc_template_boundary_invalid', {});
+      }
+      for (const field of [
+        'complete_asset_consumed',
+        'matches_text',
+        'target_signal',
+        'pronunciation',
+        'speed',
+        'rhythm',
+        'stress_pauses',
+        'no_noise',
+      ]) {
+        if (!Object.hasOwn(template.per_card_qc?.[0] || {}, field)) {
+          pushIssue(errors, 'model_audio_qc_template_per_card_field_missing', {field});
+        }
+      }
+      const managerSource = readText('scripts/manage_audio_perceptual_worklist.mjs');
+      for (const token of [
+        "WORKLIST_SCHEMA = 'audio-perceptual-worklist.v3'",
+        'model_perceptual_qc',
+        'validateIndependentModelAcceptances',
+        'complete_asset_consumed',
+        'audioPerceptualDecisionInputSha256',
+      ]) {
+        if (!managerSource.includes(token)) {
+          pushIssue(errors, 'model_audio_worklist_manager_guard_missing', {token});
+        }
+      }
+      const bridgeSource = readText('scripts/build_audio_qc_drafts.mjs');
+      for (const token of [
+        'model-owned-audio-qc.v2',
+        'modelAcceptancesByBox',
+        'complete_asset_consumed',
+        'stress_pauses',
+        'no_noise',
+        'planOnly',
+      ]) {
+        if (!bridgeSource.includes(token)) {
+          pushIssue(errors, 'model_audio_qc_bridge_guard_missing', {token});
+        }
+      }
+      try {
+        const output = execFileSync(
+          process.execPath,
+          ['scripts/validate_audio_qc.mjs'],
+          {cwd: ROOT, encoding: 'utf8'},
+        );
+        if (JSON.parse(output).ok !== true) {
+          pushIssue(errors, 'audio_qc_validator_failed', {});
+        }
+      } catch (error) {
+        pushIssue(errors, 'audio_qc_validator_failed', {
+          message: error.message,
+          output: String(error.stdout || error.stderr || '').slice(0, 1000),
+        });
+      }
+      return;
+    }
+  }
   const manifest = readJson('spec/doc-manifest.json');
   const activePaths = new Set((manifest.active_docs || []).map(doc => doc.path));
   for (const path of [
@@ -1983,6 +2115,66 @@ function validateMetadataSchema(errors) {
 
 function validateWorkflow(errors) {
   const workflow = readJson('spec/review-workflow.json');
+  if (workflow.version === 'card-make-model-owned-acceptance-v2') {
+    if (
+      workflow.authority !== 'single_owner_for_model_owned_content_acceptance' ||
+      workflow.model_acceptance_contract?.schema_version !== 'model-acceptance.v2' ||
+      workflow.model_acceptance_contract?.validator !==
+        'scripts/lib/model_acceptance.mjs'
+    ) {
+      pushIssue(errors, 'model_owned_workflow_owner_invalid', {});
+    }
+    for (const field of [
+      'model_and_harness_own_the_complete_acceptance_lifecycle',
+      'auto_merge_after_exact_head_required_gates_pass',
+    ]) {
+      if (workflow.standing_authority?.[field] !== true) {
+        pushIssue(errors, 'model_owned_standing_authority_missing', {field});
+      }
+    }
+    for (const field of [
+      'request_user_review_or_confirmation',
+      'require_human_review',
+    ]) {
+      if (workflow.standing_authority?.[field] !== false) {
+        pushIssue(errors, 'retired_person_gate_still_active', {field});
+      }
+    }
+    for (const invariant of [
+      'exact immutable commit and scope binding',
+      'current card corpus fingerprint and scoped audit replay',
+      'source provenance remains explicit and AI or simulated content is never presented as true-exam content',
+      'audio perceptual acceptance requires actual complete asset consumption by an audio-capable model',
+      'no deployment, device, GitHub, source-authenticity, or other external fact is inferred or fabricated',
+    ]) {
+      if (!(workflow.non_negotiable_invariants || []).includes(invariant)) {
+        pushIssue(errors, 'model_owned_invariant_missing', {invariant});
+      }
+    }
+    if (
+      workflow.historical_compatibility?.mutation !== 'forbidden' ||
+      !String(workflow.historical_compatibility?.policy || '').includes(
+        'immutable archive evidence',
+      )
+    ) {
+      pushIssue(errors, 'legacy_person_authority_archive_boundary_missing', {});
+    }
+    if (
+      workflow.model_acceptance_contract?.semantic_output_policy
+        ?.summary_must_be_non_empty !== true ||
+      workflow.model_acceptance_contract?.semantic_output_policy
+        ?.findings_must_be_structured !== true ||
+      workflow.model_acceptance_contract?.semantic_output_policy
+        ?.accepted_decision_forbids_blocking_findings !== true ||
+      workflow.model_acceptance_contract?.independent_second_pass
+        ?.minimum_acceptances !== 2 ||
+      workflow.model_acceptance_contract?.independent_second_pass
+        ?.run_ids_must_be_distinct !== true
+    ) {
+      pushIssue(errors, 'model_acceptance_semantic_or_independence_policy_missing', {});
+    }
+    return;
+  }
   if (workflow.sample_policy?.default_size !== '3 cards per box') {
     pushIssue(errors, 'sample_size_policy_drift', {});
   }
@@ -2161,7 +2353,18 @@ function validateWorkflow(errors) {
 }
 
 function validateReviewDirs(errors) {
-  const expectedTemplateAuthorities = new Map([
+  const modelOwned =
+    readJson('spec/review-workflow.json').version ===
+      'card-make-model-owned-acceptance-v2';
+  const expectedTemplateAuthorities = new Map(modelOwned ? [
+    ['reviews/agent_self_review/FULL_TRACK_TEMPLATE.json', 'full_track_review_template'],
+    ['reviews/agent_self_review/TEMPLATE.json', 'review_template'],
+    ['reviews/approved_batches/FULL_TRACK_TEMPLATE.json', 'model_owned_full_track_authorization_template'],
+    ['reviews/approved_batches/TEMPLATE.json', 'model_owned_content_authorization_template'],
+    ['reviews/sample_confirmations/TEMPLATE.json', 'legacy_sample_confirmation_template'],
+    ['reviews/controlled_pilot_reviews/TEMPLATE.json', 'controlled_pilot_model_review_template'],
+    ['reviews/controlled_pilot_approvals/TEMPLATE.json', 'controlled_pilot_model_authorization_template'],
+  ] : [
     ['reviews/agent_self_review/FULL_TRACK_TEMPLATE.json', 'full_track_review_template'],
     ['reviews/agent_self_review/TEMPLATE.json', 'review_template'],
     ['reviews/approved_batches/FULL_TRACK_TEMPLATE.json', 'full_track_approval_template'],
@@ -4136,6 +4339,98 @@ function validateHistoricalFullTrackLifecycleSelfTest(errors) {
 }
 
 function validateReviewTemplatesAndRecords(errors, warnings) {
+  if (
+    readJson('spec/review-workflow.json').version ===
+      'card-make-model-owned-acceptance-v2'
+  ) {
+    const templates = [
+      [
+        'reviews/agent_self_review/TEMPLATE.json',
+        'model-owned-card-review.v2',
+        ['card_semantic_review', 'source_provenance_review'],
+        false,
+      ],
+      [
+        'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+        'model-owned-full-track-review.v2',
+        ['card_semantic_review', 'source_provenance_review'],
+        true,
+      ],
+      [
+        'reviews/approved_batches/TEMPLATE.json',
+        'model-owned-content-authorization.v2',
+        ['content_authorization'],
+        false,
+      ],
+      [
+        'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
+        'model-owned-content-authorization.v2',
+        ['content_authorization'],
+        true,
+      ],
+      [
+        'reviews/controlled_pilot_approvals/TEMPLATE.json',
+        'controlled-pilot-authorization.v2',
+        ['content_authorization'],
+        true,
+      ],
+    ];
+    for (const [templatePath, schemaVersion, capabilities, independent] of templates) {
+      if (!exists(templatePath)) {
+        pushIssue(errors, 'model_owned_template_missing', {path: templatePath});
+        continue;
+      }
+      const template = readJson(templatePath);
+      if (template.schema_version !== schemaVersion) {
+        pushIssue(errors, 'model_owned_template_schema_invalid', {
+          path: templatePath,
+          expected: schemaVersion,
+          actual: template.schema_version,
+        });
+      }
+      const acceptanceIssues = independent
+        ? validateIndependentModelAcceptances(template.model_acceptances, {
+            allowTemplatePlaceholders: true,
+            requiredCapabilities: capabilities,
+          })
+        : validateModelAcceptance(template.model_acceptance, {
+            allowTemplatePlaceholders: true,
+            requireAccepted: true,
+            requiredCapabilities: capabilities,
+          });
+      for (const issue of acceptanceIssues) {
+        pushIssue(errors, `model_owned_template_${issue.code}`, {
+          path: templatePath,
+          ...issue,
+        });
+      }
+    }
+    const pilotReviewTemplate = readJson(
+      'reviews/controlled_pilot_reviews/TEMPLATE.json',
+    );
+    if (
+      pilotReviewTemplate.schema_version !== 'controlled-pilot-review.v2' ||
+      pilotReviewTemplate.status !== 'ready_for_model_authorization'
+    ) {
+      pushIssue(errors, 'controlled_pilot_model_review_template_invalid', {});
+    }
+    const legacySampleTemplate = readJson(
+      'reviews/sample_confirmations/TEMPLATE.json',
+    );
+    if (
+      legacySampleTemplate.status !== 'legacy_archive_only' ||
+      legacySampleTemplate.current_authorization !== false
+    ) {
+      pushIssue(errors, 'legacy_sample_template_boundary_invalid', {});
+    }
+    const controlledPilotRecords = validateControlledPilotRecords(ROOT);
+    for (const message of controlledPilotRecords.errors) {
+      pushIssue(errors, 'controlled_pilot_review_or_approval_invalid', {
+        message,
+      });
+    }
+    return;
+  }
   validateReviewRecordDiscovery(errors);
   validateStandardSampleBoxDistributionSelfTest(errors);
   validateCurrentCardSnapshotIdentitySelfTest(errors);
@@ -4363,6 +4658,46 @@ function validateGitWorkflow(errors) {
   const manifest = readJson('spec/doc-manifest.json');
   const activePaths = new Set((manifest.active_docs || []).map(doc => doc.path));
   const handoffTemplate = readJson('reviews/git_handoffs/TEMPLATE.json');
+
+  if (gitWorkflow.version === 'card-make-git-workflow-v2') {
+    if (
+      gitWorkflow.merge_policy?.default !==
+        'standing_delegation_auto_merge_for_all_validated_change_classes' ||
+      gitWorkflow.merge_policy?.standing_delegation
+        ?.authority_owner !== 'spec/review-workflow.json' ||
+      gitWorkflow.validation_policy?.delivery_record_head_policy === undefined
+    ) {
+      pushIssue(errors, 'model_owned_git_policy_invalid', {});
+    }
+    for (const token of [
+      'validateModelAcceptance',
+      'changed_candidate_card_deleted_without_model_acceptance',
+      'destructive_change_review',
+      'standing_delegation_auto_merge_for_all_validated_change_classes',
+    ]) {
+      const source = token.startsWith('standing_delegation')
+        ? `${readText('scripts/validate_pr_scope.mjs')}\n${readText('scripts/validate_delivery_record.mjs')}`
+        : readText('scripts/validate_pr_scope.mjs');
+      if (!source.includes(token)) {
+        pushIssue(errors, 'model_owned_git_guard_missing', {token});
+      }
+    }
+    if (
+      handoffTemplate.merge_authority !==
+        'standing_delegation_auto_merge_for_all_validated_change_classes'
+    ) {
+      pushIssue(errors, 'git_handoff_model_owned_merge_authority_missing', {});
+    }
+    if (
+      !agentEntry.includes('merge after the exact PR head has passed') ||
+      !agentHarness.operating_model?.model_owned_lifecycle?.includes(
+        'exact_head_validated_merge',
+      )
+    ) {
+      pushIssue(errors, 'agent_model_owned_merge_policy_missing', {});
+    }
+    return;
+  }
 
   if (gitWorkflow.status !== 'active') {
     pushIssue(errors, 'git_workflow_not_active', { status: gitWorkflow.status });
@@ -5179,7 +5514,7 @@ function validateEvalsAndPerturbation(errors) {
     'requires_current_approval_consumers_to_fail_closed_when_audit_replay_is_unavailable_or_the_caller_fingerprint_is_forged',
     'binds_current_audit_script_and_rule_spec_to_committed_authority_and_rechecks_one_fixed_authorization_snapshot',
     'rejects_residual_closure_coverage_for_newly_added_cards',
-    'requires_structured_non_automation_human_identity_for_full_track_review',
+    'requires_two_independent_model_acceptance_runs_for_full_track_review',
     'rejects_nested_symlinked_or_unusual_path_self_review_evidence',
     'rejects_partial_or_wrong_track_full_track_aggregate_coverage',
     'rejects_full_track_aggregate_coverage_for_cards_absent_from_merge_base',
@@ -5204,23 +5539,18 @@ function validateEvalsAndPerturbation(errors) {
   }
   const currentApprovalGuard = (perturbation.anti_drift_guards || [])
     .find(guard => guard.id === 'PA-CARD-013');
-  if (
-    !String(currentApprovalGuard?.reject || '').includes('candidate-queue or release-gap consumers') ||
-    !String(currentApprovalGuard?.reject || '').includes('historical approvals') ||
-    !String(currentApprovalGuard?.reject || '').includes('dirty/staged/mode-drifted audit authority or approval/review/audit evidence') ||
-    !String(currentApprovalGuard?.reject || '').includes('concurrent HEAD/index/file/corpus drift') ||
-    !String(currentApprovalGuard?.reject || '').includes('forged current-digest audits') ||
-    !String(currentApprovalGuard?.reject || '').includes('stale linked self-reviews') ||
-    !String(currentApprovalGuard?.recovery || '').includes('current-authorization consumer') ||
-    !String(currentApprovalGuard?.recovery || '').includes('direct canonical non-template approval and linked review evidence') ||
-    !String(currentApprovalGuard?.recovery || '').includes('active audit script') ||
-    !String(currentApprovalGuard?.recovery || '').includes('active audit rule spec') ||
-    !String(currentApprovalGuard?.recovery || '').includes('one fixed HEAD modes and bytes agree') ||
-    !String(currentApprovalGuard?.recovery || '').includes('regenerate the complete current card-quality audit') ||
-    !String(currentApprovalGuard?.recovery || '').includes('exactly replay both scoped reports') ||
-    !String(currentApprovalGuard?.recovery || '').includes('recheck the fixed HEAD/index snapshot')
-  ) {
-    pushIssue(errors, 'current_approval_perturbation_guard_incomplete', {});
+  const currentAcceptanceText = `${currentApprovalGuard?.reject || ''} ${currentApprovalGuard?.recovery || ''}`;
+  for (const token of [
+    'model identity',
+    'two distinct high-risk run IDs',
+    'immutable input hash',
+    'current corpus fingerprint',
+    'scoped-audit replay',
+    'stale or forged evidence',
+  ]) {
+    if (!currentAcceptanceText.includes(token)) {
+      pushIssue(errors, 'current_acceptance_perturbation_guard_incomplete', {token});
+    }
   }
   const deliveryPerturbation = (perturbation.anti_drift_guards || [])
     .find(guard => guard.id === 'PA-CARD-011');
@@ -5538,6 +5868,48 @@ function validateEvalFixtures(errors) {
   }
 }
 
+function validateActiveModelOwnedPolicy(errors) {
+  const activePolicyPaths = [
+    'AGENTS.md',
+    'spec/authority-map.json',
+    'spec/workspace-contract.json',
+    'spec/content-quality-contract.json',
+    'spec/review-workflow.json',
+    'spec/audio-generation-contract.json',
+    'spec/audio-perceptual-worklist.schema.json',
+    'spec/git-workflow.json',
+    'spec/agent-harness.json',
+    'reviews/agent_self_review/TEMPLATE.json',
+    'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+    'reviews/approved_batches/TEMPLATE.json',
+    'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
+    'reviews/audio_qc/TEMPLATE.json',
+    'reviews/controlled_pilot_reviews/TEMPLATE.json',
+    'reviews/controlled_pilot_approvals/TEMPLATE.json',
+  ];
+  const forbidden = [
+    '"approved_by_user"',
+    '"confirmed_by_user"',
+    '"human_reviewer"',
+    '"human_perceptual_qc"',
+    'approval:authorized',
+    'no_auto_merge_content_candidate_user_confirmation_required',
+    'batch_generation_requires_user_confirmation',
+    'final_user_approval_required',
+  ];
+  for (const file of activePolicyPaths) {
+    const source = readText(file);
+    for (const token of forbidden) {
+      if (source.includes(token)) {
+        pushIssue(errors, 'retired_person_gate_in_active_policy', {
+          path: file,
+          token,
+        });
+      }
+    }
+  }
+}
+
 const errors = [];
 const warnings = [];
 
@@ -5556,6 +5928,7 @@ validateInteractionPolicy(errors);
 validateGitWorkflow(errors);
 validateEvalsAndPerturbation(errors);
 validateEvalFixtures(errors);
+validateActiveModelOwnedPolicy(errors);
 
 const result = {
   ok: errors.length === 0,
