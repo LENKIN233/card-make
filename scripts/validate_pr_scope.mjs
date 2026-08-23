@@ -1,8 +1,10 @@
 import { spawnSync } from 'node:child_process';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
+import {fileURLToPath} from 'node:url';
 
 import {
   isHumanReviewerIdentity,
@@ -11,6 +13,18 @@ import {
   validateEliminationIntegrity,
   validateQualityMetadata,
 } from './lib/card_integrity.mjs';
+import {
+  buildContentAuthorizationAdditionalBindings,
+  buildModelAcceptanceInputSha256,
+  deriveRuntimePayloadContentIdentity,
+  isLegacyV1HumanAuthorityRecord,
+  validateIndependentModelAcceptances,
+  validateModelAcceptance,
+} from './lib/model_acceptance.mjs';
+import {
+  validateControlledPilotAuthorizationV2,
+  validateControlledPilotReviewV2,
+} from './manage_controlled_pilot_approval.mjs';
 
 const DEFAULT_BASE = 'origin/fix/review-findings-card-contract';
 const GLOBAL_REPORT_PATHS = new Set([
@@ -22,7 +36,8 @@ const MULTI_PREFIX_CONTENT_CHANGE_TYPES = new Set([
   'content_candidate_front_answer_leak_queue',
   'content_candidate_residual_blocker_closure',
 ]);
-const CONTENT_NO_AUTO_MERGE_AUTHORITY = 'no_auto_merge_content_candidate_user_confirmation_required';
+const VALIDATED_AUTO_MERGE_AUTHORITY =
+  'standing_delegation_auto_merge_for_all_validated_change_classes';
 const REVIEW_TEMPLATE_PATHS = new Set([
   'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
   'reviews/approved_batches/TEMPLATE.json',
@@ -50,8 +65,8 @@ const POINTER_ONLY_GIT_ENV = Object.freeze({
   GIT_LFS_SKIP_SMUDGE: '1',
 });
 const FULL_TRACK_READY_STATUS = 'ready_for_full_track_user_approval';
-const CONTROLLED_PILOT_REVIEW_SCHEMA = 'controlled-pilot-review.v1';
-const CONTROLLED_PILOT_APPROVAL_SCHEMA = 'controlled-pilot-approval.v1';
+const CONTROLLED_PILOT_REVIEW_SCHEMA = 'controlled-pilot-review.v2';
+const CONTROLLED_PILOT_APPROVAL_SCHEMA = 'controlled-pilot-authorization.v2';
 const SHA256_VALUE_RE = /^sha256:[a-f0-9]{64}$/;
 const TIMEZONE_ISO_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 const QUALITY_AUDIT_SEVERITIES = ['hard_blocker', 'content_risk', 'review_gap', 'source_risk'];
@@ -283,6 +298,11 @@ function isScopedAuditPath(filePath) {
     !isReviewTemplatePath(filePath);
 }
 
+function isRuntimePayloadPath(filePath) {
+  return isJsonBelow(filePath, 'reviews/runtime_payloads') &&
+    !filePath.slice('reviews/runtime_payloads/'.length).includes('/');
+}
+
 function isContentReviewPath(filePath) {
   if (
     isDraftPath(filePath) ||
@@ -291,7 +311,8 @@ function isContentReviewPath(filePath) {
     isSampleConfirmationJsonPath(filePath) ||
     isControlledPilotReviewJsonPath(filePath) ||
     isControlledPilotApprovalJsonPath(filePath) ||
-    isScopedAuditPath(filePath)
+    isScopedAuditPath(filePath) ||
+    isRuntimePayloadPath(filePath)
   ) {
     return true;
   }
@@ -316,6 +337,20 @@ function setsEqual(left, right) {
 
 function hasText(value) {
   return typeof value === 'string' && value.trim().length > 0;
+}
+
+function canonicalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`;
+  if (value && typeof value === 'object') {
+    return `{${Object.keys(value).sort().map(key =>
+      `${JSON.stringify(key)}:${canonicalJson(value[key])}`
+    ).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function cardObjectSha256(card) {
+  return `sha256:${crypto.createHash('sha256').update(canonicalJson(card)).digest('hex')}`;
 }
 
 function isNonNegativeInteger(value) {
@@ -359,6 +394,18 @@ function readChangedJson(filePath, head) {
     return null;
   }
   return safeJsonParse(text);
+}
+
+function fileSha256AtCommit(filePath, head) {
+  if (!head || !hasText(filePath)) return null;
+  try {
+    return `sha256:${crypto
+      .createHash('sha256')
+      .update(runGit(['show', `${head}:${filePath}`]))
+      .digest('hex')}`;
+  } catch {
+    return null;
+  }
 }
 
 function scopedCardIdsFromRecord(record = {}) {
@@ -446,6 +493,71 @@ function cardCorpusAtCommit(commit) {
   return { cardsById, issues };
 }
 
+function collectExactStringReferences(value, target, currentPath = '$', results = []) {
+  if (typeof value === 'string') {
+    if (value === target) results.push(currentPath);
+    return results;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((entry, index) =>
+      collectExactStringReferences(entry, target, `${currentPath}[${index}]`, results));
+    return results;
+  }
+  if (value && typeof value === 'object') {
+    for (const [key, entry] of Object.entries(value)) {
+      collectExactStringReferences(entry, target, `${currentPath}.${key}`, results);
+    }
+  }
+  return results;
+}
+
+function removalEvidenceAtHead({baseCard, baseCorpus, cardId, headCorpus}) {
+  const danglingCurrentReferences = [];
+  for (const [candidateId, occurrences] of headCorpus.cardsById) {
+    for (const occurrence of occurrences) {
+      for (const referencePath of collectExactStringReferences(
+        occurrence.card,
+        cardId,
+      )) {
+        danglingCurrentReferences.push(
+          `${occurrence.path}#${candidateId}:${referencePath}`,
+        );
+      }
+    }
+  }
+  danglingCurrentReferences.sort();
+  const track = baseCard?.track ?? null;
+  const boxPrefix = baseCard?.knowledge_ref?.box_prefix ?? null;
+  const baseBoxCount = [...baseCorpus.cardsById.values()]
+    .flat()
+    .filter(entry =>
+      entry.card?.track === track &&
+      entry.card?.knowledge_ref?.box_prefix === boxPrefix
+    ).length;
+  const headBoxCount = [...headCorpus.cardsById.values()]
+    .flat()
+    .filter(entry =>
+      entry.card?.track === track &&
+      entry.card?.knowledge_ref?.box_prefix === boxPrefix
+    ).length;
+  return {
+    reference_scan: {
+      status: danglingCurrentReferences.length === 0 ? 'pass' : 'failed',
+      scanned_commit: 'HEAD',
+      scanned_surface: 'card_boxes_json',
+      dangling_current_references: danglingCurrentReferences,
+    },
+    coverage_after_removal: {
+      status: headBoxCount > 0 ? 'pass' : 'failed',
+      track,
+      box_prefix: boxPrefix,
+      base_box_card_count: baseBoxCount,
+      head_box_card_count: headBoxCount,
+      box_remains_nonempty: headBoxCount > 0,
+    },
+  };
+}
+
 function trackScopeFromCorpus(corpus, track) {
   const cardIds = new Set();
   const boxPrefixes = new Set();
@@ -497,16 +609,184 @@ function appendLibraryIssues(target, libraryIssues, context) {
   }
 }
 
-function validateFullTrackAggregateSemantics({
+export function validateFullTrackAggregateSemantics({
   record,
   filePath,
   scopeCardIds,
   scopeBoxPrefixes,
+  head,
 }) {
   const issues = [];
   const push = (code, message, details = {}) => {
     issues.push({code, path: filePath, message, ...details});
   };
+  if (record.schema_version === 'model-owned-full-track-review.v2') {
+    if (isLegacyV1HumanAuthorityRecord(record)) {
+      push(
+        'changed_model_review_person_authority_field_forbidden',
+        'Model-owned full-track reviews must not contain legacy person-authority fields.',
+      );
+    }
+    for (const issue of validateIndependentModelAcceptances(
+      record.model_acceptances,
+      {requiredCapabilities: [
+        'card_semantic_review',
+        'source_provenance_review',
+      ]},
+    )) {
+      push(`changed_${issue.code}`, 'Model-owned full-track acceptance evidence is invalid.', issue);
+    }
+    const auditSha256 = fileSha256AtCommit(record.quality_audit?.report, head);
+    if (record.quality_audit?.report_sha256 !== auditSha256) {
+      push(
+        'changed_model_review_audit_hash_mismatch',
+        'Model review must bind the exact scoped-audit blob at immutable HEAD.',
+      );
+    }
+    let expectedAcceptanceInput = null;
+    try {
+      expectedAcceptanceInput = buildModelAcceptanceInputSha256({
+        decisionType: 'full_track_review',
+        scope: record.scope,
+        corpusFingerprint: record.quality_audit?.corpus_fingerprint,
+        auditSha256,
+      });
+    } catch (error) {
+      push('changed_model_acceptance_input_contract_invalid', error.message);
+    }
+    if (
+      expectedAcceptanceInput &&
+      record.model_acceptances?.some(acceptance =>
+        acceptance?.evidence?.input_sha256 !== expectedAcceptanceInput
+      )
+    ) {
+      push(
+        'changed_model_acceptance_input_fingerprint_mismatch',
+        'Model acceptance input SHA must bind the exact declared current corpus fingerprint.',
+      );
+    }
+    if (record.batch_review?.status !== 'ready_for_model_authorization') {
+      push(
+        'changed_full_track_review_batch_status_invalid',
+        'A model-owned full-track review must be ready_for_model_authorization.',
+      );
+    }
+    if (
+      !Array.isArray(record.batch_review?.remaining_risks) ||
+      record.batch_review.remaining_risks.length !== 0 ||
+      !hasText(record.batch_review?.summary) ||
+      !hasText(record.batch_review?.next_step)
+    ) {
+      push(
+        'changed_full_track_review_batch_evidence_incomplete',
+        'Accepted model-owned full-track review requires complete zero-risk batch evidence.',
+      );
+    }
+    const boxes = Array.isArray(record.coverage?.boxes)
+      ? record.coverage.boxes
+      : [];
+    const reviewedCardIds = Array.isArray(record.coverage?.reviewed_card_ids)
+      ? record.coverage.reviewed_card_ids
+      : [];
+    if (
+      record.coverage?.expected_card_count !== scopeCardIds.size ||
+      reviewedCardIds.length !== scopeCardIds.size ||
+      new Set(reviewedCardIds).size !== reviewedCardIds.length ||
+      !setsEqual(new Set(reviewedCardIds), scopeCardIds) ||
+      boxes.length !== scopeBoxPrefixes.size ||
+      new Set(boxes.map(box => box?.box_prefix)).size !== boxes.length ||
+      !setsEqual(new Set(boxes.map(box => box?.box_prefix)), scopeBoxPrefixes) ||
+      boxes.some(box => box?.status !== 'pass' || !hasText(box?.box_prefix))
+    ) {
+      push(
+        'changed_full_track_review_box_model_pass_invalid',
+        'Model-owned coverage must exactly match every declared card and box with pass evidence.',
+      );
+    }
+    for (const field of ANALYSIS_REFERENCE_CHECK_FIELDS) {
+      if (record.coverage?.analysis_reference_check?.[field] !== true) {
+        push(
+          'changed_full_track_review_analysis_reference_check_invalid',
+          'Model-owned full-track review must confirm answer and source-reference parity.',
+          {field},
+        );
+      }
+    }
+    if (
+      !Array.isArray(record.representative_cards) ||
+      record.representative_cards.length === 0 ||
+      !record.representative_cards.every(hasText) ||
+      new Set(record.representative_cards).size !== record.representative_cards.length ||
+      record.representative_cards.some(cardId => !scopeCardIds.has(cardId))
+    ) {
+      push(
+        'changed_full_track_review_representative_cards_invalid',
+        'Model-owned representative_cards must be non-empty, unique, and within scope.',
+      );
+    }
+    const qualityAudit = record.quality_audit;
+    const summary = qualityAudit?.scope_summary;
+    const summaryCardIds = Array.isArray(summary?.card_ids)
+      ? summary.card_ids
+      : [];
+    if (
+      !isScopedQualityAuditReportPath(qualityAudit?.report) ||
+      !hasText(qualityAudit?.corpus_fingerprint) ||
+      qualityAudit?.scope_has_no_hard_blockers !== true ||
+      !summary ||
+      summary.card_count !== scopeCardIds.size ||
+      summaryCardIds.length !== scopeCardIds.size ||
+      new Set(summaryCardIds).size !== summaryCardIds.length ||
+      !setsEqual(new Set(summaryCardIds), scopeCardIds) ||
+      !isNonNegativeInteger(summary.issue_count) ||
+      summary.by_severity?.hard_blocker !== 0 ||
+      QUALITY_AUDIT_SEVERITIES.some(
+        severity => !isNonNegativeInteger(summary.by_severity?.[severity]),
+      ) ||
+      REQUIRED_QUALITY_AUDIT_RULES.some(
+        ruleId => !isNonNegativeInteger(summary.by_rule?.[ruleId]),
+      )
+    ) {
+      push(
+        'changed_full_track_review_quality_audit_summary_invalid',
+        'Model-owned full-track review requires a complete exact-scope zero-blocker quality summary.',
+      );
+    } else {
+      const severityTotal = QUALITY_AUDIT_SEVERITIES.reduce(
+        (total, severity) => total + summary.by_severity[severity],
+        0,
+      );
+      if (severityTotal !== summary.issue_count) {
+        push(
+          'changed_full_track_review_quality_audit_severity_total_mismatch',
+          'Model-owned quality issue_count must equal the severity total.',
+        );
+      }
+    }
+    if (
+      !Array.isArray(record.removed_cards) ||
+      record.removed_cards.length !== 0
+    ) {
+      push(
+        'changed_full_track_review_unresolved_removals',
+        'Full-track authorization review cannot contain unresolved removals.',
+      );
+    }
+    if (
+      !Array.isArray(record.specs_read) ||
+      !record.specs_read.includes('spec/review-workflow.json')
+    ) {
+      push(
+        'changed_full_track_review_specs_read_invalid',
+        'Model-owned review must name the single acceptance owner.',
+      );
+    }
+    return issues;
+  }
+  push(
+    'changed_full_track_review_legacy_person_authority_archive_only',
+    'Legacy full-track human-review records are immutable archive evidence and cannot authorize current changed cards; use model-owned-full-track-review.v2.',
+  );
   const samplePolicy = record.sample_policy;
   const requiredSampleFlags = [
     ['is_three_card_sample_per_box', false],
@@ -733,6 +1013,12 @@ function validateFullTrackAggregateSemantics({
 }
 
 function changedSelfReviewScopeType(record) {
+  if (record.schema_version === 'model-owned-full-track-review.v2') {
+    return 'model_owned_full_track';
+  }
+  if (record.schema_version === 'model-owned-card-review.v2') {
+    return 'model_owned_cards';
+  }
   if (hasText(record.sample_policy?.review_scope_type)) {
     return record.sample_policy.review_scope_type;
   }
@@ -745,6 +1031,10 @@ function changedSelfReviewScopeType(record) {
 function validateSampleConfirmationSemantics(record, filePath) {
   const issues = [];
   const push = (code, message, details = {}) => issues.push({code, path: filePath, message, ...details});
+  push(
+    'changed_sample_confirmation_legacy_archive_only',
+    'sample-confirmation.v1 is immutable historical evidence and cannot authorize a current change.',
+  );
   if (record?.schema_version !== 'sample-confirmation.v1' || record?.confirmed_by_user !== true) {
     push('changed_sample_confirmation_authority_invalid', 'A sample-confirmation record must use sample-confirmation.v1 and record explicit user confirmation.');
   }
@@ -823,8 +1113,159 @@ function validateStandardReviewSemantics({
   };
   const samplePolicy = record.sample_policy;
   const reviewScopeType = changedSelfReviewScopeType(record);
+  if (reviewScopeType === 'model_owned_cards') {
+    if (isLegacyV1HumanAuthorityRecord(record)) {
+      push(
+        'changed_model_review_person_authority_field_forbidden',
+        'Model-owned card reviews must not contain legacy person-authority fields.',
+      );
+    }
+    for (const issue of validateModelAcceptance(record.model_acceptance, {
+      requireAccepted: true,
+      requiredCapabilities: [
+        'card_semantic_review',
+        'source_provenance_review',
+      ],
+    })) {
+      push(`changed_${issue.code}`, 'Model-owned card review acceptance evidence is invalid.', issue);
+    }
+    const auditSha256 = fileSha256AtCommit(record.quality_audit?.report, head);
+    if (record.quality_audit?.report_sha256 !== auditSha256) {
+      push(
+        'changed_model_review_audit_hash_mismatch',
+        'Model review must bind the exact scoped-audit blob at immutable HEAD.',
+      );
+    }
+    let expectedAcceptanceInput = null;
+    try {
+      expectedAcceptanceInput = buildModelAcceptanceInputSha256({
+        decisionType: 'card_review',
+        scope: record.scope,
+        corpusFingerprint: record.quality_audit?.corpus_fingerprint,
+        auditSha256,
+      });
+    } catch (error) {
+      push('changed_model_acceptance_input_contract_invalid', error.message);
+    }
+    if (
+      expectedAcceptanceInput &&
+      record.model_acceptance?.evidence?.input_sha256 !== expectedAcceptanceInput
+    ) {
+      push(
+        'changed_model_acceptance_input_fingerprint_mismatch',
+        'Model acceptance input SHA must bind the exact declared current corpus fingerprint.',
+      );
+    }
+    if (record.batch_review?.status !== 'model_accepted') {
+      push(
+        'changed_self_review_batch_status_invalid',
+        'A model-owned changed-card review must be model_accepted.',
+      );
+    }
+    if (
+      !isScopedQualityAuditReportPath(record.quality_audit?.report) ||
+      record.quality_audit?.scope_has_no_hard_blockers !== true
+    ) {
+      push(
+        'changed_model_review_scoped_audit_invalid',
+        'Accepted model-owned review requires a direct current zero-hard-blocker scoped audit.',
+      );
+    }
+    if (
+      !hasText(record.batch_review?.box_progression) ||
+      !Array.isArray(record.batch_review?.repetition_or_gap_risks) ||
+      !hasText(record.batch_review?.next_step)
+    ) {
+      push(
+        'changed_self_review_batch_conclusion_invalid',
+        'Model-owned review requires progression, risk, and next-step evidence.',
+      );
+    }
+    const representativeCards = Array.isArray(record.batch_review?.representative_cards)
+      ? record.batch_review.representative_cards
+      : [];
+    if (
+      (scopeCardIds.size > 0 && representativeCards.length === 0) ||
+      new Set(representativeCards).size !== representativeCards.length ||
+      representativeCards.some(cardId => !scopeCardIds.has(cardId))
+    ) {
+      push(
+        'changed_self_review_batch_representative_cards_invalid',
+        'Model-owned review requires unique representative cards within scope.',
+      );
+    }
+    if (!Array.isArray(record.removed_cards)) {
+      push(
+        'changed_model_review_removed_cards_invalid',
+        'Model-owned review must carry an explicit removed_cards array.',
+      );
+    }
+    const cards = Array.isArray(record.cards) ? record.cards : [];
+    const cardIds = cards.map(card => card?.card_id);
+    if (
+      cardIds.length !== scopeCardIds.size ||
+      new Set(cardIds).size !== cardIds.length ||
+      cardIds.some(cardId => !scopeCardIds.has(cardId))
+    ) {
+      push(
+        'changed_model_review_card_coverage_invalid',
+        'Model-owned review must carry exactly one snapshot for every current scoped card.',
+      );
+    }
+    for (let index = 0; index < cards.length; index += 1) {
+      const card = cards[index];
+      if (card?.status !== 'pass') {
+        push(
+          'changed_model_review_card_status_invalid',
+          'Every card in an accepted model-owned review must pass.',
+          {review_index: index, card_id: card?.card_id ?? null},
+        );
+      }
+      for (const field of ANALYSIS_REFERENCE_CHECK_FIELDS) {
+        if (card?.analysis_reference_check?.[field] !== true) {
+          push(
+            'changed_self_review_analysis_reference_check_invalid',
+            'Accepted model review must explicitly verify answer and source references.',
+            {review_index: index, card_id: card?.card_id ?? null, field},
+          );
+        }
+      }
+      for (const blocker of REQUIRED_BLOCKERS) {
+        if (card?.blocker_scan?.[blocker] !== false) {
+          push(
+            'changed_self_review_blocker_scan_invalid',
+            'Every blocker field in an accepted model review must be explicitly false.',
+            {review_index: index, card_id: card?.card_id ?? null, blocker},
+          );
+        }
+      }
+    }
+    if (
+      !Array.isArray(record.specs_read) ||
+      !record.specs_read.includes('spec/review-workflow.json')
+    ) {
+      push(
+        'changed_self_review_specs_read_invalid',
+        'Model-owned review must name the single acceptance owner.',
+      );
+    }
+    return issues;
+  }
+  push(
+    'changed_self_review_legacy_person_authority_archive_only',
+    'Legacy self-review records are immutable archive evidence and cannot authorize current changed cards; use model-owned-card-review.v2.',
+  );
   const isResidualClosure = reviewScopeType === 'residual_blocker_closure';
   const isConfirmedExpansion = reviewScopeType === 'confirmed_box_expansion';
+  if (
+    reviewScopeType === 'three_card_sample_per_box' ||
+    isConfirmedExpansion
+  ) {
+    push(
+      'changed_self_review_legacy_person_authority_archive_only',
+      'Legacy sample and confirmed-expansion reviews cannot authorize current changed cards; use model-owned-card-review.v2.',
+    );
+  }
   if (!hasText(samplePolicy?.review_scope_type)) {
     push(
       'changed_self_review_scope_type_required',
@@ -1294,6 +1735,28 @@ function runChangedCardIntegrity({ base, head, entries }) {
   const headCorpus = cardCorpusAtCommit(head);
   const issues = [...headCorpus.issues];
   const changedCards = [];
+  const removalDecisionsByCardId = new Map();
+  for (const reviewPath of reviewPaths) {
+    if (!isRegularFileAtCommit(head, reviewPath)) continue;
+    const review = readChangedJson(reviewPath, head);
+    if (review?.schema_version !== 'model-owned-card-review.v2') continue;
+    for (let index = 0; index < (review.removed_cards || []).length; index += 1) {
+      const removal = review.removed_cards[index];
+      const cardId = hasText(removal?.card_id) ? removal.card_id : null;
+      if (!cardId) {
+        issues.push({
+          code: 'changed_card_removal_card_id_missing',
+          path: reviewPath,
+          removal_index: index,
+          message: 'Every governed removal decision must name a card_id.',
+        });
+        continue;
+      }
+      const matches = removalDecisionsByCardId.get(cardId) || [];
+      matches.push({removal, path: reviewPath, index});
+      removalDecisionsByCardId.set(cardId, matches);
+    }
+  }
 
   if (hasChangedCardBox) {
     for (const [cardId, headOccurrences] of headCorpus.cardsById) {
@@ -1320,12 +1783,93 @@ function runChangedCardIntegrity({ base, head, entries }) {
     for (const [cardId, baseOccurrences] of baseCorpus.cardsById) {
       const headOccurrences = headCorpus.cardsById.get(cardId) || [];
       if (baseOccurrences.length === 1 && headOccurrences.length === 0) {
-        issues.push({
-          code: 'changed_candidate_card_deleted',
-          card_id: cardId,
-          path: baseOccurrences[0].path,
-          message: 'Candidate card deletion is not permitted; keep the card and use the governed discard-candidate workflow for user confirmation.',
+        const decisions = removalDecisionsByCardId.get(cardId) || [];
+        if (decisions.length !== 1) {
+          issues.push({
+            code: 'changed_candidate_card_deleted_without_model_acceptance',
+            card_id: cardId,
+            path: baseOccurrences[0].path,
+            decision_count: decisions.length,
+            message: 'Card removal requires exactly one governed model-owned destructive-change decision.',
+          });
+          continue;
+        }
+        const decision = decisions[0];
+        const expectedBaseSha256 = cardObjectSha256(baseOccurrences[0].card);
+        const acceptanceIssues = validateModelAcceptance(
+          decision.removal.model_acceptance,
+          {
+            requireAccepted: true,
+            requiredCapabilities: ['destructive_change_review'],
+          },
+        );
+        for (const issue of acceptanceIssues) {
+          issues.push({
+            ...issue,
+            code: `changed_card_removal_${issue.code}`,
+            card_id: cardId,
+            path: decision.path,
+          });
+        }
+        if (
+          decision.removal.base_card_sha256 !== expectedBaseSha256 ||
+          decision.removal.model_acceptance?.evidence?.input_sha256 !==
+            expectedBaseSha256
+        ) {
+          issues.push({
+            code: 'changed_card_removal_base_identity_mismatch',
+            card_id: cardId,
+            path: decision.path,
+            expected: expectedBaseSha256,
+            actual: decision.removal.base_card_sha256 ?? null,
+            message: 'Removal evidence must bind both the decision and model input to the exact base card object.',
+          });
+        }
+        if (!hasText(decision.removal.reason)) {
+          issues.push({
+            code: 'changed_card_removal_reason_missing',
+            card_id: cardId,
+            path: decision.path,
+          });
+        }
+        const expectedRemovalEvidence = removalEvidenceAtHead({
+          baseCard: baseOccurrences[0].card,
+          baseCorpus,
+          cardId,
+          headCorpus,
         });
+        if (!isDeepStrictEqual(
+          decision.removal.reference_scan,
+          expectedRemovalEvidence.reference_scan,
+        )) {
+          issues.push({
+            code: 'changed_card_removal_reference_scan_invalid',
+            card_id: cardId,
+            path: decision.path,
+          });
+        }
+        if (!isDeepStrictEqual(
+          decision.removal.coverage_after_removal,
+          expectedRemovalEvidence.coverage_after_removal,
+        )) {
+          issues.push({
+            code: 'changed_card_removal_coverage_invalid',
+            card_id: cardId,
+            path: decision.path,
+          });
+        }
+        if (
+          expectedRemovalEvidence.reference_scan.status !== 'pass' ||
+          expectedRemovalEvidence.coverage_after_removal.status !== 'pass'
+        ) {
+          issues.push({
+            code: 'changed_card_removal_current_state_blocked',
+            card_id: cardId,
+            path: decision.path,
+            references: expectedRemovalEvidence.reference_scan.dangling_current_references,
+            coverage: expectedRemovalEvidence.coverage_after_removal,
+          });
+        }
       }
     }
   }
@@ -1358,7 +1902,14 @@ function runChangedCardIntegrity({ base, head, entries }) {
       typeof cardId === 'string' && cardId.length > 0
     );
     const scopeCardIds = new Set(validScopeCardIds);
-    if (rawScopeCardIds.length === 0 || validScopeCardIds.length !== rawScopeCardIds.length) {
+    const hasGovernedRemovals =
+      record.schema_version === 'model-owned-card-review.v2' &&
+      Array.isArray(record.removed_cards) &&
+      record.removed_cards.length > 0;
+    if (
+      (rawScopeCardIds.length === 0 && !hasGovernedRemovals) ||
+      validScopeCardIds.length !== rawScopeCardIds.length
+    ) {
       issues.push({
         code: 'changed_self_review_scope_card_ids_invalid',
         path: filePath,
@@ -1374,6 +1925,7 @@ function runChangedCardIntegrity({ base, head, entries }) {
     }
 
     const isFullTrackAggregate =
+      record.schema_version === 'model-owned-full-track-review.v2' ||
       record.sample_policy?.review_scope_type === 'full_track_remediation';
     if (isFullTrackAggregate) {
       fullTrackReviewPaths.push(filePath);
@@ -1435,6 +1987,7 @@ function runChangedCardIntegrity({ base, head, entries }) {
         filePath,
         scopeCardIds,
         scopeBoxPrefixes,
+        head,
       });
       issues.push(...semanticIssues);
       const trackCardScopeEqual =
@@ -1568,6 +2121,7 @@ function runChangedCardIntegrity({ base, head, entries }) {
       }
 
       const aggregateCoverageValid =
+        record.schema_version === 'model-owned-full-track-review.v2' &&
         rawScopeCardIds.length > 0 &&
         validScopeCardIds.length === rawScopeCardIds.length &&
         scopeCardIds.size === validScopeCardIds.length &&
@@ -1636,7 +2190,9 @@ function runChangedCardIntegrity({ base, head, entries }) {
       head,
     });
     issues.push(...standardSemanticIssues);
-    const standardSemanticsValid = standardSemanticIssues.length === 0;
+    const standardSemanticsValid =
+      record.schema_version === 'model-owned-card-review.v2' &&
+      standardSemanticIssues.length === 0;
 
     if (!Array.isArray(record.cards)) {
       issues.push({
@@ -2190,7 +2746,87 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
     }
 
     if (isApprovedBatchPath(filePath)) {
-      const linkedReviewPath = record.validation?.agent_self_review;
+      if (record.schema_version !== 'model-owned-content-authorization.v2') {
+        issues.push({
+          code: 'changed_approval_legacy_archive_only',
+          path: filePath,
+          message: 'Changed authorization records must use model-owned-content-authorization.v2; v1 approval records are immutable archive evidence only.',
+        });
+        continue;
+      }
+      if (isLegacyV1HumanAuthorityRecord(record)) {
+        issues.push({
+          code: 'changed_model_authorization_person_authority_field_forbidden',
+          path: filePath,
+          message: 'Model-owned content authorization must not contain legacy person-authority fields.',
+        });
+      }
+      if (record.authorization_mode === 'full_track') {
+        const runtimePayloadPath = record.validation?.runtime_payload;
+        const runtimePayloadSha256 = fileSha256AtCommit(runtimePayloadPath, head);
+        if (
+          !isRuntimePayloadPath(runtimePayloadPath) ||
+          !isRegularFileAtCommit(head, runtimePayloadPath)
+        ) {
+          issues.push({
+            code: 'changed_approval_runtime_payload_invalid',
+            path: filePath,
+            runtime_payload: runtimePayloadPath ?? null,
+          });
+        } else if (
+          record.validation?.runtime_payload_sha256 !== runtimePayloadSha256
+        ) {
+          issues.push({
+            code: 'changed_approval_runtime_payload_hash_mismatch',
+            path: filePath,
+            runtime_payload: runtimePayloadPath,
+          });
+        } else {
+          try {
+            const runtimePayload = readChangedJson(runtimePayloadPath, head);
+            const runtimeIdentity = deriveRuntimePayloadContentIdentity(
+              runtimePayload,
+            );
+            if (
+              runtimeIdentity.content_version !== record.content_version ||
+              runtimeIdentity.track !== record.scope?.track ||
+              !setsEqual(
+                new Set(runtimeIdentity.card_ids),
+                new Set(record.scope?.card_ids || []),
+              )
+            ) {
+              issues.push({
+                code: 'changed_approval_runtime_payload_identity_mismatch',
+                path: filePath,
+                runtime_payload: runtimePayloadPath,
+              });
+            }
+          } catch (error) {
+            issues.push({
+              code: 'changed_approval_runtime_payload_invalid',
+              path: filePath,
+              runtime_payload: runtimePayloadPath,
+              message: error instanceof Error ? error.message : String(error),
+            });
+          }
+        }
+      }
+      let authorizationAdditionalBindings = {};
+      try {
+        authorizationAdditionalBindings =
+          buildContentAuthorizationAdditionalBindings({
+            authorizationMode: record.authorization_mode,
+            contentVersion: record.content_version,
+          });
+      } catch (error) {
+        authorizationAdditionalBindings = null;
+        issues.push({
+          code: 'changed_approval_content_version_invalid',
+          path: filePath,
+          message: error instanceof Error ? error.message : String(error),
+        });
+      }
+      const linkedReviewPath = record.validation?.model_review;
       if (!isSelfReviewPath(linkedReviewPath)) {
         issues.push({
           code: 'changed_approval_linked_self_review_path_invalid',
@@ -2207,6 +2843,7 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
         });
       } else {
         const linkedReview = readChangedJson(linkedReviewPath, head);
+        const linkedReviewSha256 = fileSha256AtCommit(linkedReviewPath, head);
         if (
           !linkedReview ||
           typeof linkedReview !== 'object' ||
@@ -2218,6 +2855,13 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
             linked_review: linkedReviewPath,
           });
         } else {
+          if (record.validation?.model_review_sha256 !== linkedReviewSha256) {
+            issues.push({
+              code: 'changed_approval_linked_model_review_hash_mismatch',
+              path: filePath,
+              linked_review: linkedReviewPath,
+            });
+          }
           if (
             !setsEqual(
               new Set(linkedReview.scope?.card_ids || []),
@@ -2239,6 +2883,72 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
             record: linkedReview,
             auditRecord: linkedReview.quality_audit,
           });
+          const auditSha256 = fileSha256AtCommit(
+            record.card_quality_audit?.report,
+            head,
+          );
+          if (record.card_quality_audit?.report_sha256 !== auditSha256) {
+            issues.push({
+              code: 'changed_approval_audit_hash_mismatch',
+              path: filePath,
+            });
+          }
+          let expectedAcceptanceInput = null;
+          try {
+            if (authorizationAdditionalBindings === null) {
+              throw new Error(
+                'Full-track content authorization requires a canonical runtime content_version binding.',
+              );
+            }
+            expectedAcceptanceInput = buildModelAcceptanceInputSha256({
+              decisionType: record.authorization_mode === 'full_track'
+                ? 'full_track_content_authorization'
+                : 'content_authorization',
+              scope: record.scope,
+              corpusFingerprint: record.card_quality_audit?.corpus_fingerprint,
+              auditSha256,
+              linkedReviewIdentity: {
+                path: linkedReviewPath,
+                sha256: linkedReviewSha256,
+              },
+              additionalBindings: authorizationAdditionalBindings,
+            });
+          } catch (error) {
+            issues.push({
+              code: 'changed_approval_model_input_contract_invalid',
+              path: filePath,
+              message: error.message,
+            });
+          }
+          const acceptanceIssues = record.authorization_mode === 'full_track'
+            ? validateIndependentModelAcceptances(record.model_acceptances, {
+                requiredCapabilities: ['content_authorization'],
+              })
+            : validateModelAcceptance(record.model_acceptance, {
+                requireAccepted: true,
+                requiredCapabilities: ['content_authorization'],
+              });
+          for (const issue of acceptanceIssues) {
+            issues.push({
+              ...issue,
+              code: `changed_approval_${issue.code}`,
+              path: filePath,
+            });
+          }
+          const acceptances = record.authorization_mode === 'full_track'
+            ? record.model_acceptances || []
+            : [record.model_acceptance];
+          if (
+            expectedAcceptanceInput &&
+            acceptances.some(acceptance =>
+              acceptance?.evidence?.input_sha256 !== expectedAcceptanceInput
+            )
+          ) {
+            issues.push({
+              code: 'changed_approval_model_input_mismatch',
+              path: filePath,
+            });
+          }
         }
       }
     }
@@ -2286,7 +2996,15 @@ function validateChangedControlledPilotRecords({base, head, entries}) {
   }
 
   for (const [filePath, review] of changedReviews) {
-    for (const message of validateControlledPilotReview(review)) {
+    if (review.schema_version !== CONTROLLED_PILOT_REVIEW_SCHEMA) {
+      issues.push({
+        code: 'changed_controlled_pilot_review_legacy_archive_only',
+        path: filePath,
+        message: 'Changed controlled-pilot reviews must use v2; v1 records are archive-only.',
+      });
+      continue;
+    }
+    for (const message of validateControlledPilotReviewV2(review, {root: process.cwd()})) {
       issues.push({code: 'changed_controlled_pilot_review_invalid', path: filePath, message});
     }
     const auditPath = review.source_records?.scoped_audit;
@@ -2309,45 +3027,41 @@ function validateChangedControlledPilotRecords({base, head, entries}) {
         });
       }
     }
-    for (const sourcePath of [
-      review.source_records?.sample_confirmation,
-      ...(review.source_records?.agent_self_reviews || []),
-    ]) {
+    for (const sourcePath of review.source_records?.model_reviews || []) {
       if (!isRegularFileAtCommit(head, sourcePath)) {
         issues.push({
           code: 'changed_controlled_pilot_review_source_not_regular_file',
           path: filePath,
           source: sourcePath ?? null,
-          message: 'Every confirmation and per-box review source must be a regular Git blob at immutable HEAD.',
-        });
-      }
-    }
-    if (review.status === 'user_approved') {
-      const artifactPath = review.approval?.artifact_path;
-      if (!isControlledPilotApprovalPath(artifactPath) || !changedPaths.has(artifactPath)) {
-        issues.push({
-          code: 'changed_controlled_pilot_review_approval_artifact_not_changed',
-          path: filePath,
-          artifact: artifactPath ?? null,
-          message: 'An approved aggregate review and its product approval artifact must be changed together in one explicitly authorized PR.',
+          message: 'Every model review source must be a regular Git blob at immutable HEAD.',
         });
       }
     }
   }
 
   for (const [filePath, artifact] of changedApprovals) {
-    const matches = [...changedReviews.entries()].filter(([, review]) =>
-      review.approval?.artifact_path === filePath
-    );
-    if (matches.length !== 1) {
+    if (artifact.schema_version !== CONTROLLED_PILOT_APPROVAL_SCHEMA) {
       issues.push({
-        code: 'changed_controlled_pilot_approval_review_missing',
+        code: 'changed_controlled_pilot_approval_legacy_archive_only',
         path: filePath,
-        message: 'A product approval artifact requires exactly one matching changed aggregate review.',
+        message: 'Changed controlled-pilot authorizations must use v2; v1 records are archive-only.',
       });
       continue;
     }
-    for (const message of validateControlledPilotApproval(artifact, matches[0][1])) {
+    const review = changedReviews.get(artifact.review);
+    if (!review) {
+      issues.push({
+        code: 'changed_controlled_pilot_approval_review_missing',
+        path: filePath,
+        message: 'A controlled-pilot authorization requires its exact linked v2 review in the same change.',
+      });
+      continue;
+    }
+    for (const message of validateControlledPilotAuthorizationV2(
+      artifact,
+      review,
+      {reviewPath: artifact.review, root: process.cwd()},
+    )) {
       issues.push({code: 'changed_controlled_pilot_approval_invalid', path: filePath, message});
     }
   }
@@ -2499,7 +3213,7 @@ function multiPrefixEvidenceRecords(entries, head, primaryPrefixes) {
           scope.scope_reason.trim().length > 0;
         const accepted = coversAllPrefixes(recordPrefixes, primaryPrefixes) &&
           (allowedChangeType || explicitMultiPrefixUnit) &&
-          record.merge_authority === CONTENT_NO_AUTO_MERGE_AUTHORITY;
+          record.merge_authority === VALIDATED_AUTO_MERGE_AUTHORITY;
 
         evidence.push({
           path: filePath,
@@ -2510,29 +3224,44 @@ function multiPrefixEvidenceRecords(entries, head, primaryPrefixes) {
           prefixes: [...recordPrefixes].sort(),
           reason: accepted
             ? 'accepted_multi_prefix_handoff'
-            : 'handoff_must_cover_all_prefixes_name_an_allowed_multi_prefix_scope_and_keep_content_no_auto_merge',
+            : 'handoff_must_cover_all_prefixes_name_an_allowed_multi_prefix_scope_and_use_validated_auto_merge',
         });
         continue;
       }
 
       if (isSelfReviewPath(filePath)) {
-        const samplePolicy = record.sample_policy || {};
         const recordPrefixes = prefixesFromScope(record.scope || {});
+        const modelOwnedStandard =
+          record.schema_version === 'model-owned-card-review.v2' &&
+          record.batch_review?.status === 'model_accepted' &&
+          validateModelAcceptance(record.model_acceptance, {
+            requireAccepted: true,
+            requiredCapabilities: [
+              'card_semantic_review',
+              'source_provenance_review',
+            ],
+          }).length === 0;
+        const modelOwnedFullTrack =
+          record.schema_version === 'model-owned-full-track-review.v2' &&
+          record.batch_review?.status === 'ready_for_model_authorization' &&
+          validateIndependentModelAcceptances(record.model_acceptances, {
+            requiredCapabilities: [
+              'card_semantic_review',
+              'source_provenance_review',
+            ],
+          }).length === 0;
         const accepted = coversAllPrefixes(recordPrefixes, primaryPrefixes) &&
-          samplePolicy.review_scope_type === 'residual_blocker_closure' &&
-          samplePolicy.residual_blocker_closure === true &&
-          samplePolicy.not_sample_approval === true &&
-          record.batch_review?.status === 'documented_residual_closure';
+          (modelOwnedStandard || modelOwnedFullTrack);
 
         evidence.push({
           path: filePath,
           accepted,
-          kind: 'agent_self_review',
-          review_scope_type: samplePolicy.review_scope_type || null,
+          kind: 'model_owned_review',
+          schema_version: record.schema_version || null,
           prefixes: [...recordPrefixes].sort(),
           reason: accepted
-            ? 'accepted_residual_blocker_closure_review'
-            : 'self_review_must_be_documented_residual_blocker_closure_and_cover_all_prefixes',
+            ? 'accepted_exact_input_model_owned_multi_prefix_review'
+            : 'self_review_must_be_current_model_owned_acceptance_and_cover_all_prefixes',
         });
       }
     }
@@ -2869,20 +3598,24 @@ function validate({ base, head }) {
   };
 }
 
-const base = readOption('--base', DEFAULT_BASE);
-const head = readOption('--head', null);
-
-try {
-  const result = validate({ base, head });
-  result.head = head || 'WORKTREE';
-  console.log(JSON.stringify(result, null, 2));
-  if (!result.ok) process.exit(1);
-} catch (error) {
-  console.error(JSON.stringify({
-    ok: false,
-    base,
-    head: head || 'WORKTREE',
-    error: error.message,
-  }, null, 2));
-  process.exit(1);
+if (
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+) {
+  const base = readOption('--base', DEFAULT_BASE);
+  const head = readOption('--head', null);
+  try {
+    const result = validate({ base, head });
+    result.head = head || 'WORKTREE';
+    console.log(JSON.stringify(result, null, 2));
+    if (!result.ok) process.exitCode = 1;
+  } catch (error) {
+    console.error(JSON.stringify({
+      ok: false,
+      base,
+      head: head || 'WORKTREE',
+      error: error.message,
+    }, null, 2));
+    process.exitCode = 1;
+  }
 }

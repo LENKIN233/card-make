@@ -1,18 +1,37 @@
 {
-  "approval_id": "YYYYMMDD-approved-scope",
-  "approved_by_user": true,
-  "approved_at": "YYYY-MM-DDTHH:mm:ss+08:00",
+  "schema_version": "model-owned-content-authorization.v2",
+  "authorization_id": "YYYYMMDD-authorized-scope",
+  "authorized_at": "<RFC3339_WITH_TIMEZONE>",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "<agent-id>",
+      "model": "<model-id>",
+      "run_id": "<run-id>"
+    },
+    "evidence": {
+      "reviewed_at": "<RFC3339_WITH_TIMEZONE>",
+      "input_sha256": "sha256:<64 lowercase hex characters>",
+      "capabilities": [
+        "content_authorization"
+      ],
+      "summary": "<semantic-review-summary>",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
   "scope": {
-    "library": "",
-    "group": "",
-    "box": "",
+    "track": "cet4",
+    "purpose": "formal_content",
     "box_prefixes": [],
     "card_ids": []
   },
   "summary": "",
   "representative_cards": [],
   "card_quality_audit": {
-    "report": "reviews/audit_scopes/YYYYMMDD-box-prefix-scope-audit.json",
+    "report": "reviews/audit_scopes/YYYYMMDD-scope-audit.json",
+    "report_sha256": "sha256:<64 lowercase hex characters>",
     "corpus_fingerprint": "CURRENT_CARD_CORPUS_SHA256",
     "scope_has_no_hard_blockers": true,
     "scope_summary": {
@@ -25,33 +44,19 @@
         "review_gap": 0,
         "source_risk": 0
       },
-      "by_rule": {
-        "multiple_choice_no_options": 0,
-        "multiple_choice_answer_not_in_options": 0,
-        "front_leaks_correct_answer": 0,
-        "front_leaks_analysis_conclusion": 0,
-        "front_missing_or_too_short": 0,
-        "analysis_missing_or_too_short": 0,
-        "generic_front_pattern": 0,
-        "template_analysis_pattern": 0,
-        "exact_repeated_front": 0,
-        "exact_repeated_analysis": 0,
-        "missing_quality_metadata": 0,
-        "unverified_source": 0,
-        "synthetic_source": 0
-      }
+      "by_rule": {}
     }
   },
   "validation": {
     "harness": "node scripts/validate_harness.mjs",
-    "cards": "node scripts/validate_cards.mjs --write-report",
-    "card_quality_audit": "node scripts/audit_card_quality.mjs --write-report",
-    "card_quality_audit_report": "reports/card_quality_audit_report.json",
-    "agent_self_review": "reviews/agent_self_review/YYYYMMDD-box-prefix-sample.json"
+    "cards": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+    "card_quality_audit": "node scripts/audit_card_quality.mjs --report-path exports/card_quality_audit_report.json",
+    "model_review": "reviews/agent_self_review/YYYYMMDD-scope-model-review.json",
+    "model_review_sha256": "sha256:<64 lowercase hex characters>"
   },
-  "approval_limits": [
-    "Only the listed scope is approved.",
-    "Approval does not authorize unrelated bulk generation.",
-    "Approval does not change softbook_cet product specs."
+  "authorization_limits": [
+    "Only the exact current scope and corpus fingerprint are authorized.",
+    "No source, audio-consumption, deployment, device, or remote-state fact is inferred.",
+    "Any input change requires new model acceptance and deterministic replay."
   ]
 }

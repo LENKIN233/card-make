@@ -6,12 +6,13 @@ import path from 'node:path';
 import test from 'node:test';
 
 import {
-  approveControlledPilotReview,
-  buildControlledPilotReview,
+  authorizeControlledPilotReviewV2,
   parseArgs,
-  validateControlledPilotApproval,
-  validateControlledPilotReview,
+  validateControlledPilotAuthorizationV2,
+  validateControlledPilotReviewV2,
+  validateTrackedRecords,
 } from './manage_controlled_pilot_approval.mjs';
+import {buildModelAcceptanceInputSha256} from './lib/model_acceptance.mjs';
 
 const CONTENT_VERSION = `sha256:${'a'.repeat(64)}`;
 const TARGETS = Array.from({length: 14}, (_, index) => {
@@ -24,67 +25,188 @@ const TARGETS = Array.from({length: 14}, (_, index) => {
   };
 });
 
-test('builds exact 14-box, 120-card aggregate evidence without approval', t => {
-  const fixture = createFixture(t);
-  const review = build(fixture);
-  assert.equal(review.status, 'ready_for_user_approval');
-  assert.equal(review.approval.approved_by_user, false);
-  assert.equal(review.scope.card_ids.length, 120);
-  assert.equal(review.source_records.agent_self_reviews.length, 28);
-  assert.equal(review.coverage.sample_cards, 42);
-  assert.equal(review.coverage.expansion_cards, 78);
-  assert.deepEqual(validateControlledPilotReview(review), []);
-});
-
-test('rejects a missing expansion review and a runtime payload scope drift', t => {
-  const fixture = createFixture(t);
-  fs.rmSync(path.join(fixture.root, 'reviews/agent_self_review/expansion-0000.json'));
-  assert.throws(() => build(fixture), /exactly one expansion review for 0000/);
-  const second = createFixture(t);
-  second.runtimePayload.card_records[0].card_id = '999999';
-  writeJson(second.runtimePayloadPath, second.runtimePayload);
-  assert.throws(() => build(second), /Runtime payload card IDs do not match/);
-});
-
-test('rejects non-source findings and incomplete synthetic disclosure', t => {
-  const fixture = createFixture(t);
-  fixture.audit.scope_summary.by_severity.content_risk = 1;
-  fixture.audit.scope_summary.by_rule.front_leaks_correct_answer = 1;
-  writeJson(fixture.auditPath, fixture.audit);
-  assert.throws(() => build(fixture), /exact 120 synthetic-card boundary/);
-});
-
-test('creates exact product approval only from explicit approved transition', t => {
-  const fixture = createFixture(t);
-  const review = build(fixture);
-  assert.throws(
-    () => approveControlledPilotReview({approvedAt: '2026-08-12T16:00:00+08:00', review}),
-    /approval source is required/,
-  );
-  const result = approveControlledPilotReview({
-    approvalSource: 'codex-task:test explicit user confirmation',
-    approvedAt: '2026-08-12T16:00:00+08:00',
-    review,
-    reviewPath: 'reviews/controlled_pilot_reviews/review.json',
+test('legacy build and approve CLI commands are archive-only', () => {
+  assert.throws(() => parseArgs(['build']), /archive-only/);
+  assert.throws(() => parseArgs(['approve']), /archive-only/);
+  assert.deepEqual(parseArgs([
+    'authorize',
+    '--review', 'reviews/controlled_pilot_reviews/review.json',
+    '--acceptances', 'exports/model-acceptances.json',
+    '--authorized-at', '2026-08-23T12:00:00+08:00',
+    '--output', 'reviews/controlled_pilot_approvals/authorization.json',
+  ]), {
+    apply: false,
+    command: 'authorize',
+    review: 'reviews/controlled_pilot_reviews/review.json',
+    acceptances: 'exports/model-acceptances.json',
+    authorized_at: '2026-08-23T12:00:00+08:00',
+    output: 'reviews/controlled_pilot_approvals/authorization.json',
   });
-  assert.equal(result.approvedReview.status, 'user_approved');
-  assert.deepEqual(Object.keys(result.artifact).sort(), [
-    'approved_at', 'approved_by_user', 'card_ids', 'content_version',
-    'pilot_id', 'schema_version', 'scope', 'status',
-  ]);
-  assert.equal(result.artifact.scope, 'controlled_pilot_120');
-  assert.deepEqual(validateControlledPilotApproval(result.artifact, result.approvedReview), []);
 });
 
-test('CLI parsing requires an explicit user-approval attestation', () => {
-  const args = [
-    'approve', '--review', 'reviews/controlled_pilot_reviews/review.json',
-    '--approved-at', '2026-08-12T16:00:00+08:00',
-    '--approval-source', 'codex-task:explicit user confirmation',
-  ];
-  assert.throws(() => parseArgs(args), /--attest-user-approved/);
-  assert.equal(parseArgs([...args, '--attest-user-approved']).attestUserApproved, true);
+test('model-owned pilot authorization binds complete review, sources, audit, runtime, and two independent runs', t => {
+  const fixture = createFixture(t);
+  const cardIds = fixture.allIds;
+  const auditSha256 = digest(fs.readFileSync(fixture.auditPath));
+  const sourceReviewPath = 'reviews/agent_self_review/model-full-track-source.json';
+  const sourceScope = {
+    track: 'cet4',
+    box_prefixes: TARGETS.map(target => target.box_prefix),
+    card_ids: cardIds,
+  };
+  const sourceInput = buildModelAcceptanceInputSha256({
+    decisionType: 'full_track_review',
+    scope: sourceScope,
+    corpusFingerprint: `sha256:${'b'.repeat(64)}`,
+    auditSha256,
+  });
+  writeJson(path.join(fixture.root, sourceReviewPath), {
+    schema_version: 'model-owned-full-track-review.v2',
+    review_id: 'pilot-source-review',
+    created_at: '2026-08-23T11:00:00+08:00',
+    model_acceptances: [
+      modelAcceptance('codex-task:source-first', sourceInput, ['card_semantic_review', 'source_provenance_review']),
+      modelAcceptance('codex-task:source-second', sourceInput, ['card_semantic_review', 'source_provenance_review']),
+    ],
+    scope: sourceScope,
+    quality_audit: {
+      report: 'reviews/audit_scopes/pilot.json',
+      report_sha256: auditSha256,
+      corpus_fingerprint: 'b'.repeat(64),
+    },
+  });
+  const reviewPath = 'reviews/controlled_pilot_reviews/model-review.json';
+  const review = {
+    schema_version: 'controlled-pilot-review.v2',
+    review_id: 'pilot-model-review',
+    created_at: '2026-08-23T11:30:00+08:00',
+    pilot_id: 'cet4-controlled-pilot-v2',
+    content_version: CONTENT_VERSION,
+    scope: {
+      track: 'cet4',
+      purpose: 'controlled_pilot',
+      card_count: 120,
+      box_prefixes: TARGETS.map(target => target.box_prefix),
+      card_ids: cardIds,
+    },
+    source_records: {
+      runtime_payload: 'exports/runtime.json',
+      runtime_payload_sha256: digest(fs.readFileSync(fixture.runtimePayloadPath)),
+      model_reviews: [sourceReviewPath],
+      scoped_audit: 'reviews/audit_scopes/pilot.json',
+      scoped_audit_sha256: auditSha256,
+    },
+    coverage: {
+      reviewed_cards: 120,
+      boxes: TARGETS.map(target => ({
+        box_prefix: target.box_prefix,
+        card_ids: cardIds.filter(cardId => cardId.startsWith(target.box_prefix)),
+        status: 'passed',
+      })),
+    },
+    quality: {
+      corpus_fingerprint: `sha256:${'b'.repeat(64)}`,
+      hard_blockers: 0,
+      content_risks: 0,
+      review_gaps: 0,
+      source_risks: 120,
+      synthetic_source_cards: 120,
+      source_disclosure: 'synthetic_training_content_not_true_exam',
+    },
+    authorization: {
+      model_acceptance: null,
+      authorized_at: null,
+      artifact_path: null,
+    },
+    authorization_boundary: {
+      audio_qc_required_separately: true,
+      pilot_publication_required_separately: true,
+      external_facts_must_not_be_inferred: true,
+      gate_eligible: false,
+    },
+    status: 'ready_for_model_authorization',
+  };
+  writeJson(path.join(fixture.root, reviewPath), review);
+  assert.deepEqual(validateControlledPilotReviewV2(review, {root: fixture.root}), []);
+  const personAuthorityReview = structuredClone(review);
+  personAuthorityReview.approved_by_user = true;
+  assert.ok(validateControlledPilotReviewV2(
+    personAuthorityReview,
+    {root: fixture.root},
+  ).some(error => error.includes('legacy person-authority fields')));
+  const reviewSha256 = digest(fs.readFileSync(path.join(fixture.root, reviewPath)));
+  const authorizationInput = buildModelAcceptanceInputSha256({
+    decisionType: 'controlled_pilot_authorization',
+    scope: review.scope,
+    corpusFingerprint: review.quality.corpus_fingerprint,
+    auditSha256,
+    linkedReviewIdentity: {path: reviewPath, sha256: reviewSha256},
+    additionalBindings: {
+      pilot_id: review.pilot_id,
+      content_version: review.content_version,
+      runtime_payload_sha256: review.source_records.runtime_payload_sha256,
+    },
+  });
+  const first = modelAcceptance('codex-task:pilot-first', authorizationInput);
+  const second = modelAcceptance('codex-task:pilot-second', authorizationInput);
+  const artifact = authorizeControlledPilotReviewV2({
+    authorizedAt: '2026-08-23T12:00:00+08:00',
+    modelAcceptances: [first, second],
+    review,
+    reviewPath,
+    root: fixture.root,
+  });
+  assert.equal(artifact.schema_version, 'controlled-pilot-authorization.v2');
+  assert.equal(artifact.status, 'authorized');
+  assert.equal(artifact.model_acceptances.length, 2);
+  assert.deepEqual(validateControlledPilotAuthorizationV2(
+    artifact,
+    review,
+    {reviewPath, root: fixture.root},
+  ), []);
+  writeJson(
+    path.join(fixture.root, 'reviews/controlled_pilot_approvals/model-authorization.json'),
+    artifact,
+  );
+  assert.deepEqual(validateTrackedRecords(fixture.root).errors, []);
+  assert.throws(
+    () => authorizeControlledPilotReviewV2({
+      authorizedAt: '2026-08-23T12:00:00+08:00',
+      modelAcceptances: [first, first],
+      review,
+      reviewPath,
+      root: fixture.root,
+    }),
+    /run_id_duplicate/,
+  );
+  const tampered = structuredClone(review);
+  tampered.source_records.runtime_payload_sha256 = `sha256:${'c'.repeat(64)}`;
+  assert.notDeepEqual(validateControlledPilotReviewV2(tampered, {root: fixture.root}), []);
 });
+
+function modelAcceptance(
+  runId,
+  inputSha256 = CONTENT_VERSION,
+  capabilities = ['content_authorization'],
+) {
+  return {
+    schema_version: 'model-acceptance.v2',
+    actor: {
+      kind: 'model_harness',
+      agent: 'codex',
+      model: 'gpt-5.6-sol',
+      run_id: runId,
+    },
+    evidence: {
+      reviewed_at: '2026-08-23T12:00:00+08:00',
+      input_sha256: inputSha256,
+      capabilities,
+      summary: 'Independent controlled-pilot authorization pass.',
+      findings: [],
+    },
+    decision: 'accepted',
+  };
+}
 
 function build(fixture) {
   return buildControlledPilotReview({
@@ -109,6 +231,8 @@ function createFixture(t) {
     'exports',
     'reviews/agent_self_review',
     'reviews/audit_scopes',
+    'reviews/controlled_pilot_reviews',
+    'reviews/controlled_pilot_approvals',
     'reviews/sample_confirmations',
   ]) fs.mkdirSync(path.join(root, directory), {recursive: true});
 
@@ -159,6 +283,7 @@ function createFixture(t) {
     ok: true,
     audit_version: 'card-make-quality-audit-v1',
     report_type: 'scoped_card_quality_audit',
+    corpus_fingerprint: {digest: 'b'.repeat(64)},
     scope: {card_ids: [...allIds].sort(), missing_card_ids: []},
     scope_summary: {
       card_ids: [...allIds].sort(),
@@ -184,7 +309,7 @@ function createFixture(t) {
   };
   const runtimePayloadPath = path.join(root, 'exports/runtime.json');
   writeJson(runtimePayloadPath, runtimePayload);
-  return {audit, auditPath, confirmation, confirmationPath, root, runtimePayload, runtimePayloadPath};
+  return {allIds, audit, auditPath, confirmation, confirmationPath, root, runtimePayload, runtimePayloadPath};
 }
 
 function reviewRecord({ids, prefix, sample}) {

@@ -90,6 +90,8 @@ function mutateRecord(fixture, mutate) {
 
 function createFixture({
   bomAliasOnly = false,
+  audioRecord = false,
+  authorizationRecord = false,
   candidateCard = false,
   confirmedExpansionEvidence = false,
   multiPrefixEvidence = false,
@@ -173,6 +175,12 @@ function createFixture({
         write(root, 'reviews/audit_scopes/0000-expansion.json', '{"version":"candidate-expansion"}\n');
       }
     }
+    if (audioRecord) {
+      write(root, 'reviews/audio_qc/current.json', '{"schema_version":"model-owned-audio-qc.v2"}\n');
+    }
+    if (authorizationRecord) {
+      write(root, 'reviews/approved_batches/current.json', '{"schema_version":"model-owned-content-authorization.v2"}\n');
+    }
   }
   let payloadCommitSha;
   const hasIndexOnlyPayload = gitlinkPath || rawInvalidUtf8Path;
@@ -208,6 +216,8 @@ function createFixture({
       );
     }
   }
+  if (audioRecord) payloadPaths.push('reviews/audio_qc/current.json');
+  if (authorizationRecord) payloadPaths.push('reviews/approved_batches/current.json');
   payloadPaths.sort();
 
   const patchSha256 = computePatchSha256({
@@ -243,7 +253,7 @@ function createFixture({
     validation: [{command: 'node --test', result: 'passed'}],
     local_status: 'test fixture',
     remaining_risks: [],
-    merge_authority: 'standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs',
+    merge_authority: 'standing_delegation_auto_merge_for_all_validated_change_classes',
   };
   if (multiPrefixEvidence) {
     record.branch = 'content/cet4-multi-prefix-closure';
@@ -252,7 +262,7 @@ function createFixture({
     record.scope.box_prefixes = ['0000', '0001'];
     record.scope.multi_prefix_review_unit = true;
     record.scope.scope_reason = 'Two independently reviewed box remediations are delivered as one residual-closure unit.';
-    record.merge_authority = 'no_auto_merge_content_candidate_user_confirmation_required';
+    record.merge_authority = 'standing_delegation_auto_merge_for_all_validated_change_classes';
   }
   write(root, HANDOFF_PATH, `${JSON.stringify(record, null, 2)}\n`);
   let handoffCommitSha;
@@ -1068,8 +1078,24 @@ test('requires canonical handoff identity and a real calendar timestamp', async 
 test('candidate card payload cannot claim harness auto-merge authority', t => {
   const fixture = createFixture({candidateCard: true});
   cleanUp(t, fixture);
-  assertError(validate(fixture), /candidate card payload must use a content change_type and no-auto-merge authority/);
+  assertError(validate(fixture), /candidate card payload must use a content change_type and validated auto-merge authority/);
 });
+
+for (const [name, option, expectedType, errorPattern] of [
+  ['audio', {audioRecord: true}, 'audio', /scope\.change_type=audio/],
+  ['authorization', {authorizationRecord: true}, 'authorization', /scope\.change_type=authorization/],
+]) {
+  test(`${name} evidence requires its explicit delivery change type`, t => {
+    const fixture = createFixture(option);
+    cleanUp(t, fixture);
+    assertError(validate(fixture), errorPattern);
+    mutateRecord(fixture, record => {
+      record.scope.change_type = expectedType;
+    });
+    const result = validate(fixture);
+    assert.equal(result.ok, true, JSON.stringify(result.errors, null, 2));
+  });
+}
 
 test('accepts one sample plus one confirmed-expansion evidence pair for a candidate card payload', t => {
   const fixture = createFixture({candidateCard: true, confirmedExpansionEvidence: true});
@@ -1078,7 +1104,7 @@ test('accepts one sample plus one confirmed-expansion evidence pair for a candid
     record.branch = 'content/cet4-listening-0000';
     record.push_ref = 'origin/content/cet4-listening-0000';
     record.scope.change_type = 'content_sample';
-    record.merge_authority = 'no_auto_merge_content_candidate_user_confirmation_required';
+    record.merge_authority = 'standing_delegation_auto_merge_for_all_validated_change_classes';
   });
 
   const result = validate(fixture, {branch: 'content/cet4-listening-0000'});

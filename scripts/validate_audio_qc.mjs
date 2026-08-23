@@ -1,6 +1,12 @@
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+
+import {
+  isLegacyV1HumanAuthorityRecord,
+  validateIndependentModelAcceptances,
+} from './lib/model_acceptance.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SPEC_PATH = 'spec/audio-generation-contract.json';
@@ -36,12 +42,110 @@ function listRecordFiles() {
     .map(file => `${RECORD_DIR}/${file}`);
 }
 
+function sha256(value) {
+  return crypto.createHash('sha256').update(value).digest('hex');
+}
+
+export function validateAudioAcceptanceInput(record, {root = ROOT, template = false} = {}) {
+  if (template) return {issues: [], input_sha256: null};
+  const issues = [];
+  const transcripts = new Map();
+  const perCardEvidence = new Map();
+  for (const entry of record.per_card_qc || []) {
+    const cardId = String(entry?.card_id || '');
+    if (!cardId || perCardEvidence.has(cardId)) {
+      issues.push({code: 'audio_qc_per_card_identity_duplicate', card_id: cardId});
+      continue;
+    }
+    perCardEvidence.set(cardId, entry);
+  }
+  for (const entry of record.text_gate?.transcripts || []) {
+    const cardId = String(entry?.card_id || '');
+    if (!cardId || transcripts.has(cardId)) {
+      issues.push({code: 'audio_qc_transcript_identity_duplicate', card_id: cardId});
+      continue;
+    }
+    transcripts.set(cardId, entry);
+  }
+  const identities = [];
+  const assetIds = new Set();
+  for (const asset of record.generated_assets || []) {
+    const cardId = String(asset?.card_id || '');
+    if (!cardId || assetIds.has(cardId)) {
+      issues.push({code: 'audio_qc_asset_identity_duplicate', card_id: cardId});
+      continue;
+    }
+    assetIds.add(cardId);
+    const transcript = transcripts.get(cardId);
+    const perCard = perCardEvidence.get(cardId);
+    if (!transcript) {
+      issues.push({code: 'audio_qc_asset_transcript_missing', card_id: cardId});
+      continue;
+    }
+    if (!perCard) {
+      issues.push({code: 'audio_qc_asset_per_card_evidence_missing', card_id: cardId});
+      continue;
+    }
+    const expectedTranscriptHash = sha256(Buffer.from(String(transcript.transcript || ''), 'utf8'));
+    if (asset.transcript_sha256 !== expectedTranscriptHash) {
+      issues.push({code: 'audio_qc_transcript_hash_mismatch', card_id: cardId});
+    }
+    const absolute = path.resolve(root, String(asset.path || ''));
+    if (!absolute.startsWith(`${path.resolve(root)}${path.sep}`) || !fs.existsSync(absolute)) {
+      issues.push({code: 'audio_qc_asset_missing_on_disk', card_id: cardId});
+      continue;
+    }
+    const stat = fs.lstatSync(absolute);
+    if (!stat.isFile() || stat.isSymbolicLink()) {
+      issues.push({code: 'audio_qc_asset_not_regular_file', card_id: cardId});
+      continue;
+    }
+    const expectedFileHash = sha256(fs.readFileSync(absolute));
+    if (asset.file_sha256 !== expectedFileHash) {
+      issues.push({code: 'audio_qc_asset_hash_mismatch', card_id: cardId});
+    }
+    identities.push({
+      card_id: cardId,
+      path: asset.path,
+      file_sha256: expectedFileHash,
+      transcript_sha256: expectedTranscriptHash,
+      per_card_qc: {
+        complete_asset_consumed: perCard.complete_asset_consumed,
+        matches_text: perCard.matches_text,
+        target_signal: perCard.target_signal,
+        pronunciation: perCard.pronunciation,
+        speed: perCard.speed,
+        rhythm: perCard.rhythm,
+        stress_pauses: perCard.stress_pauses,
+        no_noise: perCard.no_noise,
+      },
+    });
+  }
+  const scopeIds = new Set((record.scope?.card_ids || []).map(String));
+  if (
+    scopeIds.size !== assetIds.size ||
+    [...scopeIds].some(cardId => !assetIds.has(cardId)) ||
+    [...scopeIds].some(cardId => !transcripts.has(cardId)) ||
+    [...scopeIds].some(cardId => !perCardEvidence.has(cardId)) ||
+    perCardEvidence.size !== scopeIds.size
+  ) {
+    issues.push({code: 'audio_qc_scope_asset_transcript_coverage_mismatch'});
+  }
+  identities.sort((left, right) =>
+    left.card_id.localeCompare(right.card_id) || left.path.localeCompare(right.path));
+  return {
+    issues,
+    input_sha256: `sha256:${sha256(Buffer.from(JSON.stringify(identities), 'utf8'))}`,
+  };
+}
+
 function validateRecord(record, errors, source, { template = false } = {}) {
   const spec = readJson(SPEC_PATH);
+  const modelOwned = record.schema_version === 'model-owned-audio-qc.v2';
   const requiredTopFields = [
+    ...(modelOwned ? ['schema_version', 'model_acceptances'] : ['agent']),
     'audio_qc_id',
     'created_at',
-    'agent',
     'scope',
     'source_records',
     'text_gate',
@@ -56,6 +160,23 @@ function validateRecord(record, errors, source, { template = false } = {}) {
   ];
   for (const field of requiredTopFields) {
     if (!(field in record)) pushIssue(errors, 'audio_qc_record_field_missing', { source, field });
+  }
+  if (modelOwned) {
+    if (isLegacyV1HumanAuthorityRecord(record)) {
+      pushIssue(errors, 'audio_qc_person_authority_field_forbidden', {source});
+    }
+    for (const issue of validateIndependentModelAcceptances(
+      record.model_acceptances,
+      {
+        allowTemplatePlaceholders: template,
+        requiredCapabilities: ['audio_perceptual_review'],
+      },
+    )) {
+      pushIssue(errors, `audio_qc_${issue.code}`, {source, ...issue});
+    }
+  } else if (!template) {
+    pushIssue(errors, 'audio_qc_legacy_archive_only', {source});
+    return;
   }
 
   const cardIds = Array.isArray(record.scope?.card_ids) ? record.scope.card_ids.map(String) : [];
@@ -94,7 +215,7 @@ function validateRecord(record, errors, source, { template = false } = {}) {
     if (!hasText(record.legacy_adoption?.reviewed_at)) {
       pushIssue(errors, 'audio_qc_legacy_reviewed_at_missing', { source });
     }
-    if (!hasText(record.legacy_adoption?.reviewer)) {
+    if (!modelOwned && !hasText(record.legacy_adoption?.reviewer)) {
       pushIssue(errors, 'audio_qc_legacy_reviewer_missing', { source });
     }
     if (record.legacy_adoption?.reproducibility_status !== 'non_reproducible') {
@@ -119,11 +240,21 @@ function validateRecord(record, errors, source, { template = false } = {}) {
   if (record.approval_boundary?.tts_audio_is_not_source_authenticity_evidence !== true) {
     pushIssue(errors, 'audio_qc_tts_boundary_missing', { source });
   }
-  if (record.approval_boundary?.formal_content_approval_still_requires_user !== true) {
-    pushIssue(errors, 'audio_qc_user_approval_boundary_missing', { source });
-  }
-  if (record.approval_boundary?.content_approval_record_required_for_formal_use !== true) {
-    pushIssue(errors, 'audio_qc_approval_record_boundary_missing', { source });
+  if (modelOwned) {
+    if (
+      record.approval_boundary
+        ?.current_model_owned_content_authorization_required !== true ||
+      record.approval_boundary?.external_facts_must_not_be_inferred !== true
+    ) {
+      pushIssue(errors, 'audio_qc_model_owned_boundary_missing', {source});
+    }
+  } else {
+    if (record.approval_boundary?.formal_content_approval_still_requires_user !== true) {
+      pushIssue(errors, 'audio_qc_user_approval_boundary_missing', { source });
+    }
+    if (record.approval_boundary?.content_approval_record_required_for_formal_use !== true) {
+      pushIssue(errors, 'audio_qc_approval_record_boundary_missing', { source });
+    }
   }
 
   const transcripts = Array.isArray(record.text_gate?.transcripts) ? record.text_gate.transcripts : [];
@@ -146,6 +277,19 @@ function validateRecord(record, errors, source, { template = false } = {}) {
   }
 
   const assets = Array.isArray(record.generated_assets) ? record.generated_assets : [];
+  if (modelOwned && !template) {
+    const identity = validateAudioAcceptanceInput(record);
+    for (const issue of identity.issues) pushIssue(errors, issue.code, {source, ...issue});
+    for (const acceptance of record.model_acceptances || []) {
+      if (acceptance?.evidence?.input_sha256 !== identity.input_sha256) {
+        pushIssue(errors, 'audio_qc_model_acceptance_input_mismatch', {
+          source,
+          expected: identity.input_sha256,
+          actual: acceptance?.evidence?.input_sha256 ?? null,
+        });
+      }
+    }
+  }
   if (!template && record.verdict?.formal_audio_ready === true && assets.length === 0) {
     pushIssue(errors, 'audio_qc_formal_ready_without_assets', { source });
   }
@@ -190,38 +334,69 @@ function validateRecord(record, errors, source, { template = false } = {}) {
     if (record.verdict?.requires_regeneration === true) {
       pushIssue(errors, 'audio_qc_formal_ready_but_requires_regeneration', { source });
     }
-    const perCard = new Map((record.per_card_qc || []).map(entry => [String(entry.card_id), entry]));
+    const perCardEntries = Array.isArray(record.per_card_qc)
+      ? record.per_card_qc
+      : [];
+    const perCard = new Map(perCardEntries.map(entry => [String(entry.card_id), entry]));
+    if (
+      perCard.size !== perCardEntries.length ||
+      perCard.size !== cardIds.length ||
+      perCardEntries.some(entry => !cardIds.includes(String(entry.card_id)))
+    ) {
+      pushIssue(errors, 'audio_qc_formal_ready_per_card_scope_mismatch', {source});
+    }
     for (const cardId of cardIds) {
       const entry = perCard.get(cardId);
       if (!entry) {
         pushIssue(errors, 'audio_qc_formal_ready_missing_per_card_qc', { source, card_id: cardId });
         continue;
       }
-      if (entry.audio_matches_text !== true || entry.target_signal_audible !== true) {
+      const generatedAsset = assets.find(asset => String(asset.card_id) === cardId);
+      if (
+        entry.asset_path !== generatedAsset?.path ||
+        [
+          'complete_asset_consumed',
+          'matches_text',
+          'target_signal',
+          'pronunciation',
+          'speed',
+          'rhythm',
+          'stress_pauses',
+          'no_noise',
+        ].some(field => entry[field] !== true)
+      ) {
         pushIssue(errors, 'audio_qc_formal_ready_failed_per_card_qc', { source, card_id: cardId });
       }
     }
   }
 }
 
-const errors = [];
-const warnings = [];
-
-if (!exists(SPEC_PATH)) pushIssue(errors, 'audio_generation_contract_missing', { path: SPEC_PATH });
-if (!exists(TEMPLATE_PATH)) pushIssue(errors, 'audio_qc_template_missing', { path: TEMPLATE_PATH });
-
-if (errors.length === 0) {
-  validateRecord(readJson(TEMPLATE_PATH), errors, TEMPLATE_PATH, { template: true });
-  for (const file of listRecordFiles()) validateRecord(readJson(file), errors, file);
+export function validateAudioQcRecord(
+  record,
+  {source = 'audio-qc-record', template = false} = {},
+) {
+  const errors = [];
+  validateRecord(record, errors, source, {template});
+  return errors;
 }
 
-const result = {
-  ok: errors.length === 0,
-  errors,
-  warnings,
-  records_checked: errors.length === 0 ? listRecordFiles().length : 0,
-};
+function main() {
+  const errors = [];
+  const warnings = [];
+  if (!exists(SPEC_PATH)) pushIssue(errors, 'audio_generation_contract_missing', { path: SPEC_PATH });
+  if (!exists(TEMPLATE_PATH)) pushIssue(errors, 'audio_qc_template_missing', { path: TEMPLATE_PATH });
+  if (errors.length === 0) {
+    validateRecord(readJson(TEMPLATE_PATH), errors, TEMPLATE_PATH, { template: true });
+    for (const file of listRecordFiles()) validateRecord(readJson(file), errors, file);
+  }
+  const result = {
+    ok: errors.length === 0,
+    errors,
+    warnings,
+    records_checked: errors.length === 0 ? listRecordFiles().length : 0,
+  };
+  console.log(JSON.stringify(result, null, 2));
+  if (!result.ok) process.exitCode = 1;
+}
 
-console.log(JSON.stringify(result, null, 2));
-
-if (!result.ok) process.exit(1);
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();

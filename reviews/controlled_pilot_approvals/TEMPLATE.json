@@ -1,10 +1,50 @@
 {
-  "schema_version": "controlled-pilot-approval.v1",
+  "schema_version": "controlled-pilot-authorization.v2",
   "pilot_id": "",
   "content_version": "sha256:<64 lowercase hex characters>",
   "scope": "controlled_pilot_120",
-  "status": "approved",
-  "approved_by_user": true,
-  "approved_at": "YYYY-MM-DDTHH:mm:ss+08:00",
+  "status": "authorized",
+  "authorized_at": "<RFC3339_WITH_TIMEZONE>",
+  "model_acceptances": [{
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "<agent-id>",
+      "model": "<model-id>",
+      "run_id": "<run-id>"
+    },
+    "evidence": {
+      "reviewed_at": "<RFC3339_WITH_TIMEZONE>",
+      "input_sha256": "sha256:<64 lowercase hex characters>",
+      "capabilities": [
+        "content_authorization"
+      ],
+      "summary": "<semantic-review-summary>",
+      "findings": []
+    },
+    "decision": "accepted"
+  }, {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "<independent-agent-id>",
+      "model": "<independent-model-id>",
+      "run_id": "<independent-run-id>"
+    },
+    "evidence": {
+      "reviewed_at": "<RFC3339_WITH_TIMEZONE>",
+      "input_sha256": "sha256:<64 lowercase hex characters>",
+      "capabilities": [
+        "content_authorization"
+      ],
+      "summary": "<semantic-review-summary>",
+      "findings": []
+    },
+    "decision": "accepted"
+  }],
+  "review": "reviews/controlled_pilot_reviews/YYYYMMDD-review.json",
+  "review_sha256": "sha256:<64 lowercase hex characters>",
+  "runtime_payload_sha256": "sha256:<64 lowercase hex characters>",
+  "scoped_audit_sha256": "sha256:<64 lowercase hex characters>",
   "card_ids": []
 }

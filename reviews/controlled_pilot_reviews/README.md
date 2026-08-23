@@ -1,24 +1,13 @@
-# Controlled Pilot Review Records
+# Controlled-pilot model reviews
 
-This directory stores the aggregate 120-card review evidence for the CET4
-controlled pilot. A record must bind the exact 14 confirmed boxes, the 42
-sample cards, the 78 reviewed expansion cards, a current 120-card scoped audit,
-and the product content version.
+New controlled-pilot review records use `controlled-pilot-review.v2` and reach
+`ready_for_model_authorization` only after exact-scope review and deterministic
+audit checks. The compatibility manager creates the v2 authorization transition
+without a person-review pause.
 
-`ready_for_user_approval` is not approval. Only the explicit `approve` command,
-run after an actual user decision and with its source recorded, may transition a
-review to `user_approved` and create the separate product-shaped approval
-artifact. Audio QC and pilot publication remain independent gates.
+The review binds the exact runtime payload and scoped audit hashes, fourteen-box
+coverage, 120 card IDs, zero non-source blockers, the corpus fingerprint, and
+the complete set of linked model-owned card reviews.
 
-Build is dry-run by default. Persisting the aggregate review requires
-`--apply`; it must then be committed before approval can run:
-
-```bash
-node scripts/manage_controlled_pilot_approval.mjs build \
-  --confirmation <tracked-sample-confirmation.json> \
-  --audit <tracked-120-card-scoped-audit.json> \
-  --runtime-payload <generated-runtime-payload.json> \
-  --pilot-id <product-pilot-id> \
-  --content-version sha256:<64-hex> \
-  --output reviews/controlled_pilot_reviews/<review>.json
-```
+The existing `controlled-pilot-review.v1` record remains immutable historical
+evidence. It is not rewritten and cannot authorize a changed current input.

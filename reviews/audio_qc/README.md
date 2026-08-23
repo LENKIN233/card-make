@@ -1,18 +1,13 @@
-# Audio QC Records
+# Model-owned audio QC records
 
-This directory stores review records for generated or replaced listening-card
-audio assets.
+Current records bind exact audio and transcript identities to an audio-capable
+model's complete-asset perceptual evidence plus the independent technical audit.
+Every card records `complete_asset_consumed` and all seven perceptual results;
+every box record carries two independent exact-input model acceptances. Use
+`scripts/build_audio_qc_drafts.mjs --plan-model-inputs` to obtain the bound box
+inputs, then rerun with `--acceptances-dir` and validate with
+`scripts/validate_audio_qc.mjs`.
 
-Candidate card samples may reference existing `ai_tts/` files when the audio is
-marked as sample-only. Formal audio readiness requires a scoped record based on
-`TEMPLATE.json`, including transcript review, generation details, per-card audio
-QC, and the boundary that TTS audio is not source-authenticity evidence.
-
-Do not use this directory to approve card content. User-approved formal content
-scope remains owned by `reviews/approved_batches/`.
-
-A completely human-reviewed worklist may be converted with
-`scripts/build_audio_qc_drafts.mjs`. The command is dry-run by default, emits
-one record per box, verifies current technical and card identity, and refuses
-untracked or dirty worklist bytes and existing QC records. Its output still
-keeps the user content approval boundary explicit.
+Audio QC does not prove text-source authenticity, provider or voice provenance,
+deployment, or device behavior. Current content authorization remains a separate
+model-owned artifact under `reviews/approved_batches/`.

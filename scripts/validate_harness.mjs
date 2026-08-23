@@ -11,6 +11,10 @@ import {
   validateChangedCardSelfReviewParity,
 } from './lib/card_integrity.mjs';
 import {validateTrackedRecords as validateControlledPilotRecords} from './manage_controlled_pilot_approval.mjs';
+import {
+  validateIndependentModelAcceptances,
+  validateModelAcceptance,
+} from './lib/model_acceptance.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CARD_DIR = path.join(ROOT, 'card_boxes_json');
@@ -724,8 +728,8 @@ function validateManifest(errors) {
     if (!doc.path || !exists(doc.path)) {
       pushIssue(errors, 'manifest_missing_active_doc', { path: doc.path });
     }
-    if (doc.status !== 'active') {
-      pushIssue(errors, 'manifest_doc_not_active', { path: doc.path, status: doc.status });
+    if (!['active', 'legacy_archive'].includes(doc.status)) {
+      pushIssue(errors, 'manifest_doc_status_invalid', { path: doc.path, status: doc.status });
     }
   }
   return manifest;
@@ -734,14 +738,19 @@ function validateManifest(errors) {
 function validateAuthorityMap(errors) {
   const map = readJson('spec/authority-map.json');
   for (const [concept, ownerPath] of Object.entries(map.owners || {})) {
-    if (!exists(ownerPath)) {
+    const ownerFile = String(ownerPath).split('#', 1)[0];
+    if (!exists(ownerFile)) {
       pushIssue(errors, 'authority_owner_missing', { concept, ownerPath });
     }
   }
-  if (map.conflict_policy?.approval_conflict !== 'No agent, script, legacy field, or PR status can override explicit user approval for formal usable content.') {
-    pushIssue(errors, 'approval_conflict_policy_drift', {
-      expected: 'explicit user approval overrides agent/script/legacy/PR status',
-    });
+  if (map.owners?.model_owned_acceptance !== 'spec/review-workflow.json') {
+    pushIssue(errors, 'model_owned_acceptance_owner_drift', {});
+  }
+  if (map.owners?.model_acceptance_validator !== 'scripts/lib/model_acceptance.mjs') {
+    pushIssue(errors, 'model_acceptance_validator_owner_drift', {});
+  }
+  if (!String(map.conflict_policy?.acceptance_conflict || '').includes('sole owner')) {
+    pushIssue(errors, 'model_owned_acceptance_conflict_policy_drift', {});
   }
 }
 
@@ -778,12 +787,12 @@ function validateSoftbookRefs(errors, warnings) {
     }
   }
 
-  if (workspace.legacy_status_policy?.replacement_authority !== 'reviews/approved_batches/ records plus explicit user confirmation') {
+  if (!String(workspace.legacy_status_policy?.replacement_authority || '').includes('model-acceptance.v2')) {
     pushIssue(errors, 'approval_replacement_authority_drift', {});
   }
 
   const maxAuthority = workspace.content_boundary?.agent_max_authority || [];
-  if (!maxAuthority.includes('auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation')) {
+  if (!maxAuthority.includes('auto_merge_all_validated_PRs_under_standing_user_delegation')) {
     pushIssue(errors, 'workspace_auto_merge_authority_missing', {});
   }
 
@@ -792,8 +801,9 @@ function validateSoftbookRefs(errors, warnings) {
     pushIssue(errors, 'workspace_legacy_auto_merge_forbidden_authority_present', {});
   }
   for (const forbidden of [
-    'auto_merge_without_standing_or_explicit_user_authorization',
-    'auto_merge_formal_content_without_user_confirmed_sample_and_scope_delegation',
+    'invent_external_or_source_facts',
+    'claim_audio_consumption_without_audio_capability_and_exact_asset_evidence',
+    'authorize_or_merge_when_exact_head_required_gates_are_incomplete_or_failing',
   ]) {
     if (!forbiddenAuthority.includes(forbidden)) {
       pushIssue(errors, 'workspace_auto_merge_forbidden_authority_missing', { forbidden });
@@ -854,8 +864,11 @@ function validateUpstreamAlignment(errors, warnings) {
 
 function validateContentQuality(errors) {
   const quality = readJson('spec/content-quality-contract.json');
-  if (quality.north_star?.final_approval_authority !== 'user_only') {
-    pushIssue(errors, 'final_approval_authority_not_user_only', {});
+  if (
+    quality.north_star?.current_acceptance_authority !==
+      'model_and_harness_under_spec/review-workflow.json'
+  ) {
+    pushIssue(errors, 'model_owned_acceptance_authority_missing', {});
   }
 
   const blockers = new Set((quality.blockers || []).map(blocker => blocker.id));
@@ -907,13 +920,8 @@ function validateContentQuality(errors) {
   if (
     !String(integrity.governed_review_path_detection || '').includes('without') ||
     !String(integrity.governed_review_path_detection || '').includes('four-digit box prefix') ||
-    !String(integrity.governed_review_path_detection || '').includes('seven exact repository-declared templates') ||
-    !String(integrity.governed_review_path_detection || '').includes('reviews/approved_batches') ||
-    !String(integrity.governed_review_path_detection || '').includes('reviews/sample_confirmations') ||
-    !String(integrity.governed_review_path_detection || '').includes('reviews/controlled_pilot_reviews') ||
-    !String(integrity.governed_review_path_detection || '').includes('reviews/controlled_pilot_approvals') ||
-    !String(integrity.governed_review_path_detection || '').includes('approval records') ||
-    !String(integrity.governed_review_path_detection || '').includes('unknown filenames')
+    !String(integrity.governed_review_path_detection || '').includes('Historical v1') ||
+    !String(integrity.governed_review_path_detection || '').includes('immutable archive')
   ) {
     pushIssue(errors, 'candidate_integrity_unprefixed_review_path_boundary_missing', {});
   }
@@ -940,11 +948,10 @@ function validateContentQuality(errors) {
   }
   const fullTrackBoundary = String(integrity.self_review_parity?.full_track_aggregate_boundary || '');
   if (
-    !fullTrackBoundary.includes('coverage.reviewed_card_ids') ||
-    !fullTrackBoundary.includes('exactly-one review coverage') ||
-    !fullTrackBoundary.includes('without a cards property') ||
-    !fullTrackBoundary.includes('complete declared track') ||
-    !fullTrackBoundary.includes('merge-base and HEAD card ID sets')
+    !fullTrackBoundary.includes('model-review evidence') ||
+    !fullTrackBoundary.includes('model-acceptance.v2') ||
+    !fullTrackBoundary.includes('exact complete-track') ||
+    !fullTrackBoundary.includes('governed destructive-change evidence')
   ) {
     pushIssue(errors, 'candidate_integrity_full_track_aggregate_boundary_missing', {});
   }
@@ -980,408 +987,134 @@ function validateContentQuality(errors) {
 }
 
 function validateAudioGenerationContract(errors) {
-  const manifest = readJson('spec/doc-manifest.json');
-  const activePaths = new Set((manifest.active_docs || []).map(doc => doc.path));
-  for (const path of [
-    'spec/audio-generation-contract.json',
-    'spec/audio-perceptual-worklist.schema.json',
-    'scripts/manage_audio_perceptual_worklist.mjs',
-    'scripts/validate_audio_qc.mjs',
-    'reviews/audio_qc/README.md',
-    'reviews/audio_qc/TEMPLATE.json',
-    'reviews/audio_perceptual_worklists/README.md',
-  ]) {
-    if (!activePaths.has(path)) {
-      pushIssue(errors, 'audio_generation_manifest_entry_missing', { path });
-    }
-  }
-
-  const authorityMap = readJson('spec/authority-map.json');
-  if (authorityMap.owners?.audio_generation_and_qc !== 'spec/audio-generation-contract.json') {
-    pushIssue(errors, 'audio_generation_owner_drift', {
-      owner: authorityMap.owners?.audio_generation_and_qc,
-    });
-  }
-  if (authorityMap.owners?.audio_qc_records !== 'reviews/audio_qc/TEMPLATE.json') {
-    pushIssue(errors, 'audio_qc_records_owner_drift', {
-      owner: authorityMap.owners?.audio_qc_records,
-    });
-  }
-  if (
-    authorityMap.owners?.audio_perceptual_worklists !==
-    'spec/audio-perceptual-worklist.schema.json'
-  ) {
-    pushIssue(errors, 'audio_perceptual_worklist_owner_drift', {
-      owner: authorityMap.owners?.audio_perceptual_worklists,
-    });
-  }
-  const worklistSchema = readJson('spec/audio-perceptual-worklist.schema.json');
-  if (worklistSchema.schema_version !== 'audio-perceptual-worklist.v2') {
-    pushIssue(errors, 'audio_perceptual_worklist_schema_version_drift', {
-      schema_version: worklistSchema.schema_version,
-    });
-  }
-  for (const field of [
-    'full_track_technical_audit_remains_required_for_scoped_worklists',
-    'scoped_card_ids_must_be_non_empty_unique_current_audio_cards',
-    'scope_card_order_is_canonical_corpus_order',
-    'scope_expected_entry_count_required',
-    'full_track_audio_card_count_required',
-    'scope_card_ids_fingerprint_required',
-    'worklist_entries_must_exactly_equal_declared_scope',
-  ]) {
-    if (worklistSchema.scope_requirements?.[field] !== true) {
-      pushIssue(errors, 'audio_perceptual_worklist_scope_guard_missing', {field});
-    }
-  }
-  if (worklistSchema.scope_requirements?.legacy_v1_scope !== 'full_track_only') {
-    pushIssue(errors, 'audio_perceptual_worklist_legacy_scope_drift', {});
-  }
-
-  const contract = readJson('spec/audio-generation-contract.json');
-  if (contract.status !== 'active') {
-    pushIssue(errors, 'audio_generation_contract_not_active', { status: contract.status });
-  }
-  if (contract.asset_policy?.asset_dir !== 'ai_tts/') {
-    pushIssue(errors, 'audio_asset_dir_drift', { asset_dir: contract.asset_policy?.asset_dir });
-  }
-  for (const field of [
-    'audio_is_content_medium_not_interaction_family',
-    'tts_audio_never_proves_source_authenticity',
-    'no_autoplay',
-    'front_side_subtitles_not_required',
-  ]) {
-    if (contract.asset_policy?.[field] !== true) {
-      pushIssue(errors, 'audio_asset_policy_flag_missing', { field });
-    }
-  }
-  for (const field of [
-    'existing_tts_assets_allowed_for_candidate_samples',
-    'must_mark_sample_only_when_audio_unreviewed',
-    'must_not_claim_formal_audio_quality',
-    'candidate_metadata_must_keep_text_source_type_separate_from_audio_generation_method',
-  ]) {
-    if (contract.candidate_policy?.[field] !== true) {
-      pushIssue(errors, 'audio_candidate_policy_flag_missing', { field });
-    }
-  }
-  if (contract.text_gate_before_generation?.required !== true) {
-    pushIssue(errors, 'audio_text_gate_not_required', {});
-  }
-  for (const check of readJson('spec/content-quality-contract.json').tts_policy?.tts_text_quality_checks || []) {
-    if (!(contract.text_gate_before_generation?.required_checks || []).includes(check)) {
-      pushIssue(errors, 'audio_text_gate_check_missing', { check });
-    }
-  }
-  for (const field of [
-    'card_id',
-    'transcript',
-    'target_signal',
-    'pronunciation_notes',
-    'method',
-    'voice_or_speaker',
-    'speed',
-    'style_notes',
-    'output_path',
-    'provenance_note',
-  ]) {
-    if (!(contract.generation_plan_required_fields || []).includes(field)) {
-      pushIssue(errors, 'audio_generation_plan_field_missing', { field });
-    }
-  }
-  for (const method of ['TTS_AI_generated', 'human_recorded', 'none']) {
-    if (!(contract.allowed_generation_methods || []).includes(method)) {
-      pushIssue(errors, 'audio_generation_method_missing', { method });
-    }
-  }
-  if (!(contract.legacy_generation_method_aliases || []).includes('tts')) {
-    pushIssue(errors, 'audio_legacy_tts_alias_missing', {});
-  }
-  if (contract.legacy_asset_adoption_policy?.same_quality_gate_as_new_audio !== true) {
-    pushIssue(errors, 'audio_legacy_adoption_quality_gate_missing', {});
-  }
-  for (const forbidden of ['invent_provider_or_voice', 'claim_reproducibility', 'skip_transcript_or_perceptual_review']) {
-    if (!(contract.legacy_asset_adoption_policy?.must_not || []).includes(forbidden)) {
-      pushIssue(errors, 'audio_legacy_adoption_forbidden_rule_missing', { forbidden });
-    }
-  }
-  const technicalAudit = contract.technical_audio_audit || {};
-  for (const check of [
-    'estimated_transcript_speech_rate_within_80_to_220_wpm',
-    'mean_level_within_minus_32_to_minus_12_dbfs',
-    'peak_level_below_minus_0_1_dbfs',
-    'per_asset_mean_level_within_4_db_of_track_median',
-  ]) {
-    if (!(technicalAudit.required_checks || []).includes(check)) {
-      pushIssue(errors, 'audio_signal_diagnostic_check_missing', {check});
-    }
-  }
-  if (technicalAudit.signal_diagnostic_probe_command !== 'ffmpeg') {
-    pushIssue(errors, 'audio_signal_diagnostic_probe_drift', {
-      actual: technicalAudit.signal_diagnostic_probe_command,
-    });
-  }
-  if (technicalAudit.coarse_signal_diagnostics_do_not_replace_human_perceptual_qc !== true) {
-    pushIssue(errors, 'audio_signal_diagnostic_boundary_missing', {});
-  }
-  if (
-    !String(technicalAudit.authority_boundary || '').includes(
-      'coarse signal diagnostics do not prove speech-to-transcript match',
-    )
-  ) {
-    pushIssue(errors, 'audio_signal_diagnostic_authority_boundary_drift', {});
-  }
-  if (!exists('scripts/audit_audio_technical.mjs')) {
-    pushIssue(errors, 'audio_technical_audit_tool_missing', {});
-  } else {
-    const technicalAuditTool = readText('scripts/audit_audio_technical.mjs');
-    for (const token of [
-      'audio_estimated_speech_rate_out_of_range',
-      'audio_mean_level_out_of_range',
-      'audio_peak_level_clipping_risk',
-      'audio_track_level_outlier',
-      "option(process.argv, '--signal-probe', 'ffmpeg')",
-      'not_verified_requires_perceptual_QC',
-      'formal_audio_qc_records_created: 0',
-    ]) {
-      if (!technicalAuditTool.includes(token)) {
-        pushIssue(errors, 'audio_signal_diagnostic_tool_guard_missing', {token});
+  {
+    const v2Contract = readJson('spec/audio-generation-contract.json');
+    if (v2Contract.version === 'card-make-audio-generation-v2') {
+      const manifest = readJson('spec/doc-manifest.json');
+      const activePaths = new Set(
+        (manifest.active_docs || [])
+          .filter(doc => doc.status === 'active')
+          .map(doc => doc.path),
+      );
+      for (const requiredPath of [
+        'spec/audio-generation-contract.json',
+        'spec/audio-perceptual-worklist.schema.json',
+        'scripts/manage_audio_perceptual_worklist.mjs',
+        'scripts/build_audio_qc_drafts.mjs',
+        'scripts/test_build_audio_qc_drafts.mjs',
+        'scripts/validate_audio_qc.mjs',
+        'reviews/audio_qc/TEMPLATE.json',
+        'reviews/audio_perceptual_worklists/README.md',
+      ]) {
+        if (!activePaths.has(requiredPath)) {
+          pushIssue(errors, 'audio_generation_manifest_entry_missing', {
+            path: requiredPath,
+          });
+        }
       }
-    }
-  }
-  if (contract.pronunciation_target_policy?.required_for_listening_pronunciation_boxes !== true) {
-    pushIssue(errors, 'audio_pronunciation_target_policy_missing', {});
-  }
-  if (contract.pronunciation_target_policy?.target_signal_must_be_audible_in_generated_audio !== true) {
-    pushIssue(errors, 'audio_target_signal_policy_missing', {});
-  }
-  if (contract.formal_audio_qc?.record_dir !== 'reviews/audio_qc/') {
-    pushIssue(errors, 'audio_qc_record_dir_drift', { record_dir: contract.formal_audio_qc?.record_dir });
-  }
-  if (contract.formal_audio_qc?.template !== 'reviews/audio_qc/TEMPLATE.json') {
-    pushIssue(errors, 'audio_qc_template_path_drift', { template: contract.formal_audio_qc?.template });
-  }
-  if (contract.formal_audio_qc?.validator !== 'scripts/validate_audio_qc.mjs') {
-    pushIssue(errors, 'audio_qc_validator_path_drift', { validator: contract.formal_audio_qc?.validator });
-  }
-  if (contract.formal_audio_qc?.required_before_formal_audio_use !== true) {
-    pushIssue(errors, 'formal_audio_qc_not_required', {});
-  }
-  const audioQcBridge = contract.formal_audio_qc?.completed_worklist_bridge || {};
-  if (audioQcBridge.builder !== 'scripts/build_audio_qc_drafts.mjs') {
-    pushIssue(errors, 'audio_qc_bridge_path_drift', {builder: audioQcBridge.builder});
-  }
-  for (const field of [
-    'input_must_be_tracked_reviewed_worklist',
-    'requires_complete_human_pass_for_every_perceptual_check',
-    'splits_records_by_box',
-    'requires_one_human_reviewer_per_box_record',
-    'dry_run_by_default',
-    'must_not_overwrite_existing_qc_records',
-    'must_not_create_content_approval',
-    'must_not_invent_legacy_provider_voice_or_generator',
-  ]) {
-    if (audioQcBridge[field] !== true) {
-      pushIssue(errors, 'audio_qc_bridge_guard_missing', {field});
-    }
-  }
-  for (const attestation of [
-    'no_autoplay_assumption',
-    'front_side_no_required_subtitles',
-    'tts_audio_not_used_as_source_authenticity',
-  ]) {
-    if (!(audioQcBridge.requires_explicit_product_semantics_attestations || []).includes(attestation)) {
-      pushIssue(errors, 'audio_qc_bridge_attestation_missing', {attestation});
-    }
-  }
-  if (!exists('scripts/build_audio_qc_drafts.mjs')) {
-    pushIssue(errors, 'audio_qc_bridge_missing', {});
-  } else {
-    const bridge = readText('scripts/build_audio_qc_drafts.mjs');
-    for (const token of [
-      'requireComplete: true',
-      'reviews/audio_perceptual_worklists',
-      'reviews/audio_qc',
-      'direct tracked file in HEAD',
-      'exactly match the tracked HEAD artifact',
-      'refusing to replace existing audio QC record',
-      'formal_content_approval_created: false',
-      'legacy_unknown',
-      '--attest-no-autoplay',
-      '--attest-front-no-required-subtitles',
-      '--attest-tts-not-source-authenticity',
-    ]) {
-      if (!bridge.includes(token)) pushIssue(errors, 'audio_qc_bridge_guard_missing', {token});
-    }
-  }
-  const worklist = contract.perceptual_review_worklist || {};
-  if (
-    worklist.schema !== 'spec/audio-perceptual-worklist.schema.json' ||
-    worklist.manager !== 'scripts/manage_audio_perceptual_worklist.mjs' ||
-    worklist.local_review_station !== 'scripts/serve_audio_perceptual_review.mjs' ||
-    worklist.reviewed_worklist_dir !== 'reviews/audio_perceptual_worklists/'
-  ) {
-    pushIssue(errors, 'audio_perceptual_worklist_paths_drift', {});
-  }
-  for (const field of [
-    'source_requires_passing_technical_audit',
-    'scoped_worklist_requires_complete_track_technical_audit',
-    'scoped_worklist_requires_exact_non_empty_card_ids_and_fingerprint',
-    'legacy_v1_is_full_track_only',
-    'one_card_per_review_action',
-    'review_station_loopback_only',
-    'review_station_has_no_bulk_pass',
-    'review_station_uses_authoritative_manager_for_writes',
-    'human_reviewer_required',
-    'full_asset_listening_attestation_required',
-    'reviewed_identity_change_fails_closed',
-    'passing_worklist_is_not_formal_audio_qc',
-    'formal_audio_qc_record_still_required',
-  ]) {
-    if (worklist[field] !== true) {
-      pushIssue(errors, 'audio_perceptual_worklist_guard_missing', {field});
-    }
-  }
-  if (worklist.agent_may_mark_passed !== false) {
-    pushIssue(errors, 'audio_perceptual_worklist_agent_pass_boundary_missing', {});
-  }
-  if (!exists('scripts/manage_audio_perceptual_worklist.mjs')) {
-    pushIssue(errors, 'audio_perceptual_worklist_manager_missing', {});
-  } else {
-    const manager = readText('scripts/manage_audio_perceptual_worklist.mjs');
-    for (const token of [
-      'audio-perceptual-worklist.v1',
-      'audio-perceptual-worklist.v2',
-      '--scope-card-ids',
-      'full_track_audio_card_count',
-      'card_ids_fingerprint',
-      'agent_may_mark_passed',
-      'one_card_per_review_action',
-      'Reviewed audio identity changed',
-      'Terminal audio review entries cannot be overwritten',
-      '--allow-reviewed-reset',
-      '--attest-listened',
-      '--require-complete',
-    ]) {
-      if (!manager.includes(token)) {
-        pushIssue(errors, 'audio_perceptual_worklist_manager_guard_missing', {token});
+      const schema = readJson('spec/audio-perceptual-worklist.schema.json');
+      if (
+        schema.schema_version !== 'audio-perceptual-worklist.v3' ||
+        schema.review_policy?.review_mode !== 'model_perceptual_qc' ||
+        schema.review_policy?.required_model_capability !==
+          'audio_perceptual_review' ||
+        schema.review_policy?.full_asset_consumption_attestation_required !==
+          true
+      ) {
+        pushIssue(errors, 'model_audio_worklist_policy_invalid', {});
       }
-    }
-  }
-  if (!exists('scripts/serve_audio_perceptual_review.mjs')) {
-    pushIssue(errors, 'audio_perceptual_review_station_missing', {});
-  } else {
-    const station = readText('scripts/serve_audio_perceptual_review.mjs');
-    for (const token of [
-      "const LOOPBACK_HOST = '127.0.0.1'",
-      'reviewAudioPerceptualEntry',
-      'validateAudioPerceptualWorklist',
-      '一次只能提交审核台当前显示的一条音频',
-      '必须完整播放当前音频后才能提交',
-      '不提供批量通过',
-    ]) {
-      if (!station.includes(token)) {
-        pushIssue(errors, 'audio_perceptual_review_station_guard_missing', {token});
+      if (
+        v2Contract.technical_audio_audit
+          ?.coarse_signal_diagnostics_do_not_replace_model_perceptual_qc !==
+          true ||
+        v2Contract.asset_policy?.tts_audio_never_proves_source_authenticity !==
+          true ||
+        v2Contract.perceptual_review_worklist
+          ?.audio_perceptual_review_capability_required !== true ||
+        v2Contract.perceptual_review_worklist
+          ?.full_asset_consumption_attestation_required !== true
+      ) {
+        pushIssue(errors, 'model_audio_contract_boundary_invalid', {});
       }
-    }
-  }
-  for (const check of REQUIRED_AUDIO_QC_CHECKS) {
-    if (!(contract.formal_audio_qc?.required_checks || []).includes(check)) {
-      pushIssue(errors, 'audio_qc_required_check_missing', { check });
-    }
-  }
-  for (const failure of [
-    'target_signal_missing_or_misleading',
-    'source_authenticity_claim_from_tts',
-    'formal_audio_ready_without_user_content_approval_boundary',
-  ]) {
-    if (!(contract.formal_audio_qc?.blocking_failures || []).includes(failure)) {
-      pushIssue(errors, 'audio_qc_blocking_failure_missing', { failure });
-    }
-  }
-  for (const field of [
-    'do_not_replace_audio_in_content_sample_PRs',
-    'audio_asset_changes_belong_in_audio_or_tooling_branch',
-    'replacement_requires_audio_qc_record',
-    'bulk_generation_requires_user_confirmed_sample_scope',
-  ]) {
-    if (contract.asset_change_policy?.[field] !== true) {
-      pushIssue(errors, 'audio_asset_change_policy_missing', { field });
-    }
-  }
-  for (const command of ['node scripts/validate_audio_qc.mjs', 'node scripts/validate_harness.mjs']) {
-    if (!(contract.validation_commands || []).includes(command)) {
-      pushIssue(errors, 'audio_validation_command_missing', { command });
-    }
-  }
-
-  if (!exists('reviews/audio_qc/TEMPLATE.json')) {
-    pushIssue(errors, 'audio_qc_template_missing', {});
-  } else {
-    const template = readJson('reviews/audio_qc/TEMPLATE.json');
-    for (const field of [
-      'audio_qc_id',
-      'scope',
-      'source_records',
-      'text_gate',
-      'generation_plan',
-      'legacy_adoption',
-      'generated_assets',
-      'qa_checks',
-      'per_card_qc',
-      'verdict',
-      'approval_boundary',
-      'validation',
-    ]) {
-      if (!hasOwn(template, field)) {
-        pushIssue(errors, 'audio_qc_template_field_missing', { field });
+      const template = readJson('reviews/audio_qc/TEMPLATE.json');
+      for (const issue of validateIndependentModelAcceptances(
+        template.model_acceptances,
+        {
+          allowTemplatePlaceholders: true,
+          requiredCapabilities: ['audio_perceptual_review'],
+        },
+      )) {
+        pushIssue(errors, `audio_qc_template_${issue.code}`, issue);
       }
-    }
-    for (const check of REQUIRED_AUDIO_QC_CHECKS) {
-      if (typeof template.qa_checks?.[check] !== 'boolean') {
-        pushIssue(errors, 'audio_qc_template_check_missing', { check });
+      if (
+        template.schema_version !== 'model-owned-audio-qc.v2' ||
+        template.approval_boundary
+          ?.tts_audio_is_not_source_authenticity_evidence !== true ||
+        template.approval_boundary
+          ?.external_facts_must_not_be_inferred !== true
+      ) {
+        pushIssue(errors, 'model_audio_qc_template_boundary_invalid', {});
       }
-    }
-    if (template.approval_boundary?.tts_audio_is_not_source_authenticity_evidence !== true) {
-      pushIssue(errors, 'audio_qc_template_tts_boundary_missing', {});
-    }
-    if (template.approval_boundary?.formal_content_approval_still_requires_user !== true) {
-      pushIssue(errors, 'audio_qc_template_user_approval_boundary_missing', {});
+      for (const field of [
+        'complete_asset_consumed',
+        'matches_text',
+        'target_signal',
+        'pronunciation',
+        'speed',
+        'rhythm',
+        'stress_pauses',
+        'no_noise',
+      ]) {
+        if (!Object.hasOwn(template.per_card_qc?.[0] || {}, field)) {
+          pushIssue(errors, 'model_audio_qc_template_per_card_field_missing', {field});
+        }
+      }
+      const managerSource = readText('scripts/manage_audio_perceptual_worklist.mjs');
+      for (const token of [
+        "WORKLIST_SCHEMA = 'audio-perceptual-worklist.v3'",
+        'model_perceptual_qc',
+        'validateIndependentModelAcceptances',
+        'complete_asset_consumed',
+        'audioPerceptualDecisionInputSha256',
+      ]) {
+        if (!managerSource.includes(token)) {
+          pushIssue(errors, 'model_audio_worklist_manager_guard_missing', {token});
+        }
+      }
+      const bridgeSource = readText('scripts/build_audio_qc_drafts.mjs');
+      for (const token of [
+        'model-owned-audio-qc.v2',
+        'modelAcceptancesByBox',
+        'complete_asset_consumed',
+        'stress_pauses',
+        'no_noise',
+        'planOnly',
+      ]) {
+        if (!bridgeSource.includes(token)) {
+          pushIssue(errors, 'model_audio_qc_bridge_guard_missing', {token});
+        }
+      }
+      try {
+        const output = execFileSync(
+          process.execPath,
+          ['scripts/validate_audio_qc.mjs'],
+          {cwd: ROOT, encoding: 'utf8'},
+        );
+        if (JSON.parse(output).ok !== true) {
+          pushIssue(errors, 'audio_qc_validator_failed', {});
+        }
+      } catch (error) {
+        pushIssue(errors, 'audio_qc_validator_failed', {
+          message: error.message,
+          output: String(error.stdout || error.stderr || '').slice(0, 1000),
+        });
+      }
+      return;
     }
   }
-
-  if (!exists('scripts/validate_audio_qc.mjs')) {
-    pushIssue(errors, 'audio_qc_validator_missing', {});
-  } else {
-    const script = readText('scripts/validate_audio_qc.mjs');
-    for (const token of [
-      'audio_qc_formal_ready_with_failed_check',
-      'audio_qc_source_authenticity_boundary_missing',
-      'audio_qc_legacy_asset_hash_missing',
-      'audio_qc_legacy_provider_must_be_unknown',
-      'target_signal_audible',
-      'ai_tts/',
-    ]) {
-      if (!script.includes(token)) {
-        pushIssue(errors, 'audio_qc_validator_guard_missing', { token });
-      }
-    }
-    try {
-      const output = execFileSync(process.execPath, ['scripts/validate_audio_qc.mjs'], {
-        cwd: ROOT,
-        encoding: 'utf8',
-      });
-      const validation = JSON.parse(output);
-      if (validation.ok !== true) {
-        pushIssue(errors, 'audio_qc_validator_failed', { output: validation });
-      }
-    } catch (error) {
-      pushIssue(errors, 'audio_qc_validator_failed', {
-        message: error.message,
-        output: String(error.stdout || error.stderr || '').slice(0, 1000),
-      });
-    }
-  }
+  pushIssue(errors, 'audio_generation_contract_version_invalid', {
+    actual: readJson('spec/audio-generation-contract.json').version,
+  });
 }
 
 function validateCardQualityAudit(errors, warnings) {
@@ -1471,18 +1204,18 @@ function validateCardQualityAudit(errors, warnings) {
   }
 
   const candidatePolicy = [
-    ...(audit.candidate_scope_policy?.before_user_sample_review || []),
+    ...(audit.candidate_scope_policy?.before_model_content_review || []),
     ...(audit.candidate_scope_policy?.formal_batch_scope || []),
   ];
   for (const requirement of [
     'scoped_report_must_match_current_card_corpus_fingerprint',
-    'agent_self_review_must_link_current_scoped_quality_audit_report',
-    'agent_self_review_must_include_scoped_quality_audit_summary',
+    'model_owned_review_must_link_current_scoped_quality_audit_report',
+    'model_owned_review_must_include_scoped_quality_audit_summary',
     'scope_must_have_no_hard_blocker_issues',
     'no_hard_blocker_issues',
-    'approval_record_must_link_current_scoped_quality_audit_report',
+    'content_authorization_must_link_current_scoped_quality_audit_report',
     'linked_current_quality_audit_report',
-    'explicit_user_confirmation',
+    'two_independent_exact_input_model_acceptances_for_full_track_authorization',
   ]) {
     if (!candidatePolicy.includes(requirement)) {
       pushIssue(errors, 'card_quality_audit_candidate_policy_missing', { requirement });
@@ -1983,185 +1716,84 @@ function validateMetadataSchema(errors) {
 
 function validateWorkflow(errors) {
   const workflow = readJson('spec/review-workflow.json');
-  if (workflow.sample_policy?.default_size !== '3 cards per box') {
-    pushIssue(errors, 'sample_size_policy_drift', {});
-  }
-  if (workflow.sample_policy?.batch_generation_requires !== 'validated_user_sample_confirmation_record') {
-    pushIssue(errors, 'batch_requires_user_confirmation_missing', {});
-  }
-  if (workflow.approval_record_policy?.required_for_formal_use !== true) {
-    pushIssue(errors, 'approval_record_not_required', {});
-  }
-  for (const field of REQUIRED_APPROVAL_FIELDS) {
-    if (!(workflow.approval_record_policy?.required_fields || []).includes(field)) {
-      pushIssue(errors, 'approval_record_policy_required_field_missing', { field });
+  if (workflow.version === 'card-make-model-owned-acceptance-v2') {
+    if (
+      workflow.authority !== 'single_owner_for_model_owned_content_acceptance' ||
+      workflow.model_acceptance_contract?.schema_version !== 'model-acceptance.v2' ||
+      workflow.model_acceptance_contract?.validator !==
+        'scripts/lib/model_acceptance.mjs'
+    ) {
+      pushIssue(errors, 'model_owned_workflow_owner_invalid', {});
     }
-  }
-  for (const field of REQUIRED_SAMPLE_GATE_FIELDS) {
-    if (!(workflow.sample_quality_gate?.required_before_user_confirmation || []).includes(field)) {
-      pushIssue(errors, 'sample_quality_gate_field_missing', { field });
-    }
-  }
-  for (const field of ANALYSIS_REFERENCE_CHECK_FIELDS) {
-    if (!(workflow.self_review_required_checks || []).includes(field)) {
-      pushIssue(errors, 'self_review_analysis_reference_check_missing', {field});
-    }
-  }
-  for (const field of ['explicit_user_confirmation', 'linked_agent_self_review_record', 'harness_validation', 'card_validation', 'card_quality_audit_report']) {
-    if (!(workflow.sample_quality_gate?.approval_requires || []).includes(field)) {
-      pushIssue(errors, 'sample_quality_gate_approval_requirement_missing', { field });
-    }
-  }
-  if (workflow.sample_quality_gate?.quality_metadata_schema !== 'spec/card-metadata.schema.json') {
-    pushIssue(errors, 'sample_quality_gate_schema_drift', {});
-  }
-  const candidateIntegrity = workflow.changed_candidate_integrity_policy || {};
-  if (candidateIntegrity.contract !== 'spec/content-quality-contract.json#candidate_integrity_policy') {
-    pushIssue(errors, 'changed_candidate_integrity_contract_drift', {});
-  }
-  if (candidateIntegrity.validator !== 'scripts/validate_pr_scope.mjs') {
-    pushIssue(errors, 'changed_candidate_integrity_validator_drift', {});
-  }
-  if (candidateIntegrity.strict_on_any_card_change !== true) {
-    pushIssue(errors, 'changed_candidate_integrity_not_strict', {});
-  }
-  for (const requiredText of [
-    'complete schema-valid quality_metadata',
-    'exactly one changed review coverage',
-    'even when the card itself did not change',
-    'coverage.reviewed_card_ids are identical',
-    'complete declared track',
-    'same non-empty card ID set at merge-base',
-    'regardless of filename prefix',
-    'exact repository-declared template paths',
-    'approved_batches',
-    'canonical governed filename',
-    'complete immutable HEAD card_boxes_json snapshot',
-    'elimination runtime ID items',
-  ]) {
-    if (!(candidateIntegrity.requirements || []).some(requirement => requirement.includes(requiredText))) {
-      pushIssue(errors, 'changed_candidate_integrity_requirement_missing', { requiredText });
-    }
-  }
-  for (const forbiddenText of [
-    'grandfather inherited integrity defects',
-    'derive changed card scope only',
-    'missing optional metadata fields',
-    'exclude any parity field other than artifact-local review_status',
-    'self-review-only churn',
-    'unprefixed governed review filename',
-    'merely because its basename ends in TEMPLATE.json',
-    'invalid or mismatched full-track scope and coverage',
-    'partial-track aggregate',
-    'claim a track that differs',
-    'absent from merge-base',
-    'attach a cards snapshot payload to a full-track aggregate',
-    'base worktree that retains card files deleted or renamed by HEAD',
-    'without an explicit immutable head commit',
-  ]) {
-    if (!(candidateIntegrity.must_not || []).some(rule => rule.includes(forbiddenText))) {
-      pushIssue(errors, 'changed_candidate_integrity_forbidden_bypass_missing', { forbiddenText });
-    }
-  }
-  if (workflow.residual_blocker_closure_review_policy?.review_scope_type !== 'residual_blocker_closure') {
-    pushIssue(errors, 'residual_blocker_closure_policy_missing', {});
-  }
-  if (workflow.residual_blocker_closure_review_policy?.not_sample_approval !== true) {
-    pushIssue(errors, 'residual_blocker_closure_must_not_be_sample_approval', {});
-  }
-  if (!(workflow.self_review_output?.batch_status || []).includes(RESIDUAL_BLOCKER_CLOSURE_STATUS)) {
-    pushIssue(errors, 'residual_blocker_closure_status_missing', {});
-  }
-  const expansionPolicy = workflow.confirmed_box_expansion_review_policy;
-  if (expansionPolicy?.review_scope_type !== 'confirmed_box_expansion') {
-    pushIssue(errors, 'confirmed_box_expansion_policy_missing', {});
-  }
-  if (!(workflow.self_review_output?.batch_status || []).includes(CONFIRMED_BOX_EXPANSION_STATUS)) {
-    pushIssue(errors, 'confirmed_box_expansion_status_missing', {});
-  }
-  if (!String(expansionPolicy?.approval_boundary || '').includes('separate explicit user approval')) {
-    pushIssue(errors, 'confirmed_box_expansion_approval_boundary_missing', {});
-  }
-  const fullTrackPolicy = workflow.full_track_remediation_policy;
-  if (fullTrackPolicy?.review_scope_type !== 'full_track_remediation') {
-    pushIssue(errors, 'full_track_remediation_policy_missing', {});
-  }
-  if (!(workflow.self_review_output?.batch_status || []).includes(FULL_TRACK_READY_STATUS)) {
-    pushIssue(errors, 'full_track_ready_status_missing', {});
-  }
-  if (fullTrackPolicy?.approval_model !== 'execution_team_remediates_and_reviews_the_full_track; user_performs_one_final_complete_batch_approval') {
-    pushIssue(errors, 'full_track_approval_model_drift', {});
-  }
-  if (workflow.approval_record_policy?.full_track_final_mode?.approval_mode !== 'full_track_final') {
-    pushIssue(errors, 'full_track_final_approval_mode_missing', {});
-  }
-  const expansionApprovalMode = workflow.approval_record_policy?.confirmed_box_expansion_final_mode;
-  if (expansionApprovalMode?.approval_mode !== 'confirmed_box_expansion_final') {
-    pushIssue(errors, 'confirmed_box_expansion_final_approval_mode_missing', {});
-  }
-  if (expansionApprovalMode?.requires_linked_review_scope_type !== 'confirmed_box_expansion') {
-    pushIssue(errors, 'confirmed_box_expansion_final_review_scope_missing', {});
-  }
-  if (expansionApprovalMode?.requires_linked_review_status !== CONFIRMED_BOX_EXPANSION_STATUS) {
-    pushIssue(errors, 'confirmed_box_expansion_final_review_status_missing', {});
-  }
-  if (
-    expansionApprovalMode?.requires_explicit_final_user_confirmation !== true ||
-    expansionApprovalMode?.sample_confirmation_alone_is_not_formal_approval !== true ||
-    expansionApprovalMode?.audio_qc_required_separately !== true
-  ) {
-    pushIssue(errors, 'confirmed_box_expansion_final_boundary_missing', {});
-  }
-  if (!exists('scripts/build_full_track_remediation_baseline.mjs')) {
-    pushIssue(errors, 'full_track_remediation_baseline_tool_missing', {});
-  } else {
-    const baselineTool = readText('scripts/build_full_track_remediation_baseline.mjs');
-    for (const token of [
-      'full-track-remediation-baseline.v1',
-      'candidate remediation planning only',
-      'human_CET_review_not_recorded',
-      'final_user_approval_not_recorded',
+    for (const field of [
+      'model_and_harness_own_the_complete_acceptance_lifecycle',
+      'auto_merge_after_exact_head_required_gates_pass',
     ]) {
-      if (!baselineTool.includes(token)) {
-        pushIssue(errors, 'full_track_remediation_baseline_guard_missing', { token });
+      if (workflow.standing_authority?.[field] !== true) {
+        pushIssue(errors, 'model_owned_standing_authority_missing', {field});
       }
     }
-  }
-  for (const forbidden of [
-    'declare_final_formal_usability',
-    'batch_generate_before_user_confirms_sample',
-    'delete_cards_without_user_confirmation',
-    'auto_merge_formal_content_without_user_confirmed_sample_and_scope_delegation',
-    'auto_merge_without_standing_or_explicit_user_authorization',
-    'force_push_main_or_shared_base_branches',
-    'mix_harness_changes_with_bulk_card_content_changes',
-  ]) {
-    if (!(workflow.agent_permissions?.must_not || []).includes(forbidden)) {
-      pushIssue(errors, 'agent_forbidden_permission_missing', { forbidden });
+    for (const field of [
+      'request_user_review_or_confirmation',
+      'require_human_review',
+    ]) {
+      if (workflow.standing_authority?.[field] !== false) {
+        pushIssue(errors, 'retired_person_gate_still_active', {field});
+      }
     }
-  }
-  for (const allowed of [
-    'manage_git_lifecycle_for_agent_authored_tracked_changes',
-    'open_or_update_draft_PRs',
-    'auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation',
-  ]) {
-    if (!(workflow.agent_permissions?.may || []).includes(allowed)) {
-      pushIssue(errors, 'agent_git_permission_missing', { allowed });
+    for (const invariant of [
+      'exact immutable commit and scope binding',
+      'current card corpus fingerprint and scoped audit replay',
+      'source provenance remains explicit and AI or simulated content is never presented as true-exam content',
+      'audio perceptual acceptance requires actual complete asset consumption by an audio-capable model',
+      'no deployment, device, GitHub, source-authenticity, or other external fact is inferred or fabricated',
+    ]) {
+      if (!(workflow.non_negotiable_invariants || []).includes(invariant)) {
+        pushIssue(errors, 'model_owned_invariant_missing', {invariant});
+      }
     }
+    if (
+      workflow.historical_compatibility?.mutation !== 'forbidden' ||
+      !String(workflow.historical_compatibility?.policy || '').includes(
+        'immutable archive evidence',
+      )
+    ) {
+      pushIssue(errors, 'legacy_person_authority_archive_boundary_missing', {});
+    }
+    if (
+      workflow.model_acceptance_contract?.semantic_output_policy
+        ?.summary_must_be_non_empty !== true ||
+      workflow.model_acceptance_contract?.semantic_output_policy
+        ?.findings_must_be_structured !== true ||
+      workflow.model_acceptance_contract?.semantic_output_policy
+        ?.accepted_decision_forbids_blocking_findings !== true ||
+      workflow.model_acceptance_contract?.independent_second_pass
+        ?.minimum_acceptances !== 2 ||
+      workflow.model_acceptance_contract?.independent_second_pass
+        ?.run_ids_must_be_distinct !== true
+    ) {
+      pushIssue(errors, 'model_acceptance_semantic_or_independence_policy_missing', {});
+    }
+    return;
   }
-  if (workflow.git_policy?.contract !== 'spec/git-workflow.json') {
-    pushIssue(errors, 'git_policy_contract_missing', {});
-  }
-  if (workflow.git_policy?.pre_edit_status_check !== 'required') {
-    pushIssue(errors, 'git_pre_edit_status_check_not_required', {});
-  }
-  if (workflow.git_policy?.PR_merge !== 'auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation') {
-    pushIssue(errors, 'git_PR_merge_policy_drift', {});
-  }
+  pushIssue(errors, 'review_workflow_version_invalid', {
+    actual: workflow.version,
+  });
 }
 
 function validateReviewDirs(errors) {
-  const expectedTemplateAuthorities = new Map([
+  const modelOwned =
+    readJson('spec/review-workflow.json').version ===
+      'card-make-model-owned-acceptance-v2';
+  const expectedTemplateAuthorities = new Map(modelOwned ? [
+    ['reviews/agent_self_review/FULL_TRACK_TEMPLATE.json', 'full_track_review_template'],
+    ['reviews/agent_self_review/TEMPLATE.json', 'review_template'],
+    ['reviews/approved_batches/FULL_TRACK_TEMPLATE.json', 'model_owned_full_track_authorization_template'],
+    ['reviews/approved_batches/TEMPLATE.json', 'model_owned_content_authorization_template'],
+    ['reviews/sample_confirmations/TEMPLATE.json', 'legacy_sample_confirmation_template'],
+    ['reviews/controlled_pilot_reviews/TEMPLATE.json', 'controlled_pilot_model_review_template'],
+    ['reviews/controlled_pilot_approvals/TEMPLATE.json', 'controlled_pilot_model_authorization_template'],
+  ] : [
     ['reviews/agent_self_review/FULL_TRACK_TEMPLATE.json', 'full_track_review_template'],
     ['reviews/agent_self_review/TEMPLATE.json', 'review_template'],
     ['reviews/approved_batches/FULL_TRACK_TEMPLATE.json', 'full_track_approval_template'],
@@ -4136,143 +3768,118 @@ function validateHistoricalFullTrackLifecycleSelfTest(errors) {
 }
 
 function validateReviewTemplatesAndRecords(errors, warnings) {
-  validateReviewRecordDiscovery(errors);
-  validateStandardSampleBoxDistributionSelfTest(errors);
-  validateCurrentCardSnapshotIdentitySelfTest(errors);
-  validateReviewIdentityUniquenessSelfTest(errors);
-  validateApprovalRecordShapeSelfTest(errors);
-  validateApprovalRecordModeSelfTest(errors);
-  validateHistoricalScopedAuditRecordAgingSelfTest(errors);
-  validateHistoricalSelfReviewLifecycleSelfTest(errors);
-  validateHistoricalFullTrackLifecycleSelfTest(errors);
-  const controlledPilotRecords = validateControlledPilotRecords(ROOT);
-  for (const message of controlledPilotRecords.errors) {
-    pushIssue(errors, 'controlled_pilot_review_or_approval_invalid', {message});
-  }
-  const standardSelfReviewTemplate = readGovernedReviewTemplate(
-    'reviews/agent_self_review/TEMPLATE.json',
-    'standard_self_review',
-    errors,
-  );
-  const fullTrackSelfReviewTemplate = readGovernedReviewTemplate(
-    'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
-    'full_track_self_review',
-    errors,
-  );
-  const standardApprovalTemplate = readGovernedReviewTemplate(
-    'reviews/approved_batches/TEMPLATE.json',
-    'standard_approval',
-    errors,
-  );
-  const fullTrackApprovalTemplate = readGovernedReviewTemplate(
-    'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
-    'full_track_approval',
-    errors,
-  );
-  const sampleConfirmationTemplate = readGovernedReviewTemplate(
-    'reviews/sample_confirmations/TEMPLATE.json',
-    'sample_confirmation',
-    errors,
-  );
-  if (standardSelfReviewTemplate) {
-    validateSelfReviewRecord(
-      standardSelfReviewTemplate,
-      errors,
-      'reviews/agent_self_review/TEMPLATE.json',
-      {template: true},
+  if (
+    readJson('spec/review-workflow.json').version ===
+      'card-make-model-owned-acceptance-v2'
+  ) {
+    const templates = [
+      [
+        'reviews/agent_self_review/TEMPLATE.json',
+        'model-owned-card-review.v2',
+        ['card_semantic_review', 'source_provenance_review'],
+        false,
+      ],
+      [
+        'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+        'model-owned-full-track-review.v2',
+        ['card_semantic_review', 'source_provenance_review'],
+        true,
+      ],
+      [
+        'reviews/approved_batches/TEMPLATE.json',
+        'model-owned-content-authorization.v2',
+        ['content_authorization'],
+        false,
+      ],
+      [
+        'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
+        'model-owned-content-authorization.v2',
+        ['content_authorization'],
+        true,
+      ],
+      [
+        'reviews/controlled_pilot_approvals/TEMPLATE.json',
+        'controlled-pilot-authorization.v2',
+        ['content_authorization'],
+        true,
+      ],
+    ];
+    for (const [templatePath, schemaVersion, capabilities, independent] of templates) {
+      if (!exists(templatePath)) {
+        pushIssue(errors, 'model_owned_template_missing', {path: templatePath});
+        continue;
+      }
+      const template = readJson(templatePath);
+      if (template.schema_version !== schemaVersion) {
+        pushIssue(errors, 'model_owned_template_schema_invalid', {
+          path: templatePath,
+          expected: schemaVersion,
+          actual: template.schema_version,
+        });
+      }
+      if (
+        templatePath === 'reviews/approved_batches/FULL_TRACK_TEMPLATE.json' &&
+        (
+          template.content_version !==
+            'sha256:<64 lowercase hex characters>' ||
+          !String(template.validation?.runtime_payload || '').startsWith(
+            'reviews/runtime_payloads/',
+          ) ||
+          template.validation?.runtime_payload_sha256 !==
+            'sha256:<64 lowercase hex characters>'
+        )
+      ) {
+        pushIssue(errors, 'model_owned_full_track_runtime_binding_missing', {
+          path: templatePath,
+          actual: template.content_version ?? null,
+        });
+      }
+      const acceptanceIssues = independent
+        ? validateIndependentModelAcceptances(template.model_acceptances, {
+            allowTemplatePlaceholders: true,
+            requiredCapabilities: capabilities,
+          })
+        : validateModelAcceptance(template.model_acceptance, {
+            allowTemplatePlaceholders: true,
+            requireAccepted: true,
+            requiredCapabilities: capabilities,
+          });
+      for (const issue of acceptanceIssues) {
+        pushIssue(errors, `model_owned_template_${issue.code}`, {
+          path: templatePath,
+          ...issue,
+        });
+      }
+    }
+    const pilotReviewTemplate = readJson(
+      'reviews/controlled_pilot_reviews/TEMPLATE.json',
     );
-  }
-  if (fullTrackSelfReviewTemplate) {
-    validateSelfReviewRecord(
-      fullTrackSelfReviewTemplate,
-      errors,
-      'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
-      {template: true},
-    );
-  }
-  if (standardApprovalTemplate) {
-    validateApprovalRecord(
-      standardApprovalTemplate,
-      errors,
-      'reviews/approved_batches/TEMPLATE.json',
-      {template: true},
-    );
-  }
-  if (fullTrackApprovalTemplate) {
-    validateApprovalRecord(
-      fullTrackApprovalTemplate,
-      errors,
-      'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
-      {template: true},
-    );
-  }
-  if (sampleConfirmationTemplate) {
-    validateSampleConfirmationRecord(
-      sampleConfirmationTemplate,
-      errors,
+    if (
+      pilotReviewTemplate.schema_version !== 'controlled-pilot-review.v2' ||
+      pilotReviewTemplate.status !== 'ready_for_model_authorization'
+    ) {
+      pushIssue(errors, 'controlled_pilot_model_review_template_invalid', {});
+    }
+    const legacySampleTemplate = readJson(
       'reviews/sample_confirmations/TEMPLATE.json',
-      {template: true},
     );
-  }
-
-  for (const file of listReviewRecordFiles('reviews/sample_confirmations')) {
-    if (!isCanonicalReviewRecordPath(file, 'reviews/sample_confirmations')) {
-      pushIssue(errors, 'sample_confirmation_path_noncanonical', {source: file});
-      continue;
+    if (
+      legacySampleTemplate.status !== 'legacy_archive_only' ||
+      legacySampleTemplate.current_authorization !== false
+    ) {
+      pushIssue(errors, 'legacy_sample_template_boundary_invalid', {});
     }
-    if (hasUnsafeReviewPathCharacters(file)) {
-      pushIssue(errors, 'sample_confirmation_path_characters_invalid', {source: file});
-      continue;
-    }
-    if (!fs.lstatSync(resolveWorkspacePath(file)).isFile()) {
-      pushIssue(errors, 'sample_confirmation_not_regular_file', {source: file});
-      continue;
-    }
-    validateSampleConfirmationRecord(readJson(file), errors, file);
-  }
-
-  for (const file of listReviewRecordFiles('reviews/agent_self_review')) {
-    if (!isCanonicalReviewRecordPath(file, 'reviews/agent_self_review')) {
-      pushIssue(errors, 'agent_self_review_path_noncanonical', {
-        source: file,
-        expected_parent: 'reviews/agent_self_review',
-      });
-      continue;
-    }
-    if (hasUnsafeReviewPathCharacters(file)) {
-      pushIssue(errors, 'agent_self_review_path_characters_invalid', {source: file});
-      continue;
-    }
-    if (!fs.lstatSync(resolveWorkspacePath(file)).isFile()) {
-      pushIssue(errors, 'agent_self_review_not_regular_file', {source: file});
-      continue;
-    }
-    validateSelfReviewRecord(readJson(file), errors, file);
-  }
-  for (const file of listReviewRecordFiles('reviews/approved_batches')) {
-    if (!isCanonicalReviewRecordPath(file, 'reviews/approved_batches')) {
-      pushIssue(errors, 'approved_batch_path_noncanonical', {
-        source: file,
-        expected_parent: 'reviews/approved_batches',
-      });
-      continue;
-    }
-    if (hasUnsafeReviewPathCharacters(file)) {
-      pushIssue(errors, 'approved_batch_path_characters_invalid', {source: file});
-      continue;
-    }
-    if (!fs.lstatSync(resolveWorkspacePath(file)).isFile()) {
-      pushIssue(errors, 'approved_batch_not_regular_file', {source: file});
-      continue;
-    }
-    const record = readJson(file);
-    validateApprovalRecord(record, errors, file);
-    if (!hasCurrentApprovalAuditFingerprint(record)) {
-      pushIssue(warnings, 'historical_approval_record_not_current_authorization', {
-        source: file,
+    const controlledPilotRecords = validateControlledPilotRecords(ROOT);
+    for (const message of controlledPilotRecords.errors) {
+      pushIssue(errors, 'controlled_pilot_review_or_approval_invalid', {
+        message,
       });
     }
+    return;
   }
+  pushIssue(errors, 'review_workflow_version_invalid', {
+    actual: readJson('spec/review-workflow.json').version,
+  });
 }
 
 function validateInteractionPolicy(errors) {
@@ -4364,792 +3971,61 @@ function validateGitWorkflow(errors) {
   const activePaths = new Set((manifest.active_docs || []).map(doc => doc.path));
   const handoffTemplate = readJson('reviews/git_handoffs/TEMPLATE.json');
 
-  if (gitWorkflow.status !== 'active') {
-    pushIssue(errors, 'git_workflow_not_active', { status: gitWorkflow.status });
-  }
-  for (const requiredPath of [
-    'scripts/lib/card_integrity.mjs',
-    'scripts/validate_cards.mjs',
-    'scripts/migrate_cards_to_softbook_contract.mjs',
-    'scripts/validate_pr_scope.mjs',
-    'scripts/validate_delivery_record.mjs',
-  ]) {
-    if (!activePaths.has(requiredPath)) {
-      pushIssue(errors, 'integrity_validator_manifest_entry_missing', { requiredPath });
-    }
-  }
-  if (authorityMap.owners?.content_pr_scope_gate !== 'scripts/validate_pr_scope.mjs') {
-    pushIssue(errors, 'pr_scope_validator_owner_drift', {
-      owner: authorityMap.owners?.content_pr_scope_gate,
-    });
-  }
-  if (authorityMap.owners?.candidate_card_integrity !== 'scripts/lib/card_integrity.mjs') {
-    pushIssue(errors, 'candidate_card_integrity_owner_drift', {
-      owner: authorityMap.owners?.candidate_card_integrity,
-    });
-  }
-  if (authorityMap.owners?.candidate_card_structural_validation !== 'scripts/validate_cards.mjs') {
-    pushIssue(errors, 'candidate_card_validator_owner_drift', {
-      owner: authorityMap.owners?.candidate_card_structural_validation,
-    });
-  }
-  if (authorityMap.owners?.legacy_card_contract_migration !== 'scripts/migrate_cards_to_softbook_contract.mjs') {
-    pushIssue(errors, 'legacy_card_contract_migration_owner_drift', {
-      owner: authorityMap.owners?.legacy_card_contract_migration,
-    });
-  }
-  if (!exists('scripts/validate_pr_scope.mjs')) {
-    pushIssue(errors, 'pr_scope_validator_missing', {});
-  } else {
-    const prScopeValidator = readText('scripts/validate_pr_scope.mjs');
-    for (const token of [
-      'content_sample_global_report_changed',
-      'content_sample_non_scope_self_review_changed',
-      'content_sample_non_scope_scoped_audit_changed',
-      'content_sample_multiple_scope_prefixes_missing_evidence',
-      'content_sample_current_audit_scope_hard_blockers',
-      'content_candidate_front_answer_leak_queue',
-      'content_candidate_residual_blocker_closure',
-      'multi_prefix_review_unit',
-      'no_auto_merge_content_candidate_user_confirmation_required',
-      'scripts/audit_card_quality.mjs',
-      'rev-parse',
-      'resolved_head',
-      'reports/card_quality_audit_report.json',
-      'reports/card_validation_report.json',
-      'validateChangedCardSelfReviewParity',
-      'candidate_quality_metadata_missing',
-      'candidate_self_review_missing',
-      'candidate_self_review_metadata_mismatch',
-      'candidate_card_box_path_invalid',
-      'changed_self_review_current_corpus_parity_invalid',
-      'changed_self_review_deleted',
-      'changed_self_review_path_noncanonical',
-      'changed_self_review_not_regular_file',
-      'changed_self_review_per_box_card_count_invalid',
-      'changed_self_review_card_knowledge_ref_mismatch',
-      'changed_self_review_scope_type_required',
-      'changed_self_review_residual_scoped_audit_required',
-      'changed_self_review_standard_scoped_audit_required',
-      'changed_self_review_batch_box_progression_missing',
-      'changed_added_card_requires_standard_sample_review',
-      'changed_full_track_review_scope_coverage_mismatch',
-      'changed_full_track_review_cards_forbidden',
-      'changed_full_track_review_human_reviewer_invalid',
-      'changed_full_track_review_quality_audit_summary_invalid',
-      'changed_full_track_review_scoped_audit_required',
-      'changed_full_track_review_batch_status_invalid',
-      'changed_full_track_review_track_card_scope_mismatch',
-      'changed_full_track_review_track_box_scope_mismatch',
-      'changed_full_track_review_track_membership_changed',
-      'pre_cutover_report_index_immutable',
-      'changed_scoped_audit_invalid',
-      'changed_scoped_audit_replay_mismatch',
-      'changed_scoped_audit_deleted_or_renamed',
-      'changed_legacy_scoped_audit_immutable',
-      'changed_review_current_scoped_audit_required',
-      'changed_review_scoped_audit_replay_mismatch',
-      'changed_approval_deleted',
-      'changed_approval_linked_self_review_path_invalid',
-      'changed_approval_linked_self_review_scope_mismatch',
-      'git_diff_path_noncanonical',
-      'content_candidate_explicit_head_required',
-      'isCardBoxDirectoryPath',
-      'isReviewTemplatePath',
-      'isSelfReviewJsonPath',
-      'isApprovedBatchPath',
-      'changedSelfReviewScopeType',
-      'isRegularFileAtCommit',
-      'isHumanReviewer',
-      'REVIEW_TEMPLATE_PATHS',
-      'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
-      'materializeHeadCardCorpus',
-      "'-z'",
-      'merge-base',
-    ]) {
-      if (!prScopeValidator.includes(token)) {
-        pushIssue(errors, 'pr_scope_validator_guard_missing', { token });
-      }
-    }
-  }
-  for (const consumerPath of [
-    'scripts/validate_candidate_review_queue.mjs',
-    'scripts/plan_release_gap_samples.mjs',
-  ]) {
+  if (gitWorkflow.version === 'card-make-git-workflow-v2') {
     if (
-      !exists(consumerPath) ||
-      !readText(consumerPath).includes('validateCurrentApprovalRecordReference')
+      gitWorkflow.merge_policy?.default !==
+        'standing_delegation_auto_merge_for_all_validated_change_classes' ||
+      gitWorkflow.merge_policy?.standing_delegation
+        ?.authority_owner !== 'spec/review-workflow.json' ||
+      gitWorkflow.validation_policy?.delivery_record_head_policy === undefined
     ) {
-      pushIssue(errors, 'current_approval_consumer_guard_missing', {
-        consumer: consumerPath,
-      });
+      pushIssue(errors, 'model_owned_git_policy_invalid', {});
     }
-  }
-  const currentApprovalTest = readText('scripts/test_card_integrity.mjs');
-  if (
-    !currentApprovalTest.includes('forged replay') ||
-    !currentApprovalTest.includes('approval_audit_report_replay_mismatch') ||
-    !currentApprovalTest.includes(
-      'approval_linked_self_review_audit_replay_mismatch',
-    ) ||
-    !currentApprovalTest.includes('approval_record_not_committed_at_head') ||
-    !currentApprovalTest.includes(
-      'approval_linked_self_review_not_committed_at_head',
-    ) ||
-    !currentApprovalTest.includes(
-      'approval_linked_self_review_audit_not_committed_at_head',
-    ) ||
-    !currentApprovalTest.includes(
-      'approval_current_fingerprint_override_mismatch',
-    ) ||
-    !currentApprovalTest.includes(
-      'approval_current_audit_replay_unavailable',
-    ) ||
-    !currentApprovalTest.includes('uncommitted authority drift') ||
-    !currentApprovalTest.includes('staged authority drift') ||
-    !currentApprovalTest.includes(
-      'approval_git_snapshot_changed_during_validation',
-    ) ||
-    !currentApprovalTest.includes(
-      'approval_authorization_file_changed_during_validation',
-    ) ||
-    !currentApprovalTest.includes(
-      'approval_current_corpus_changed_during_validation',
-    ) ||
-    !currentApprovalTest.includes('beforeFinalConsistencyCheck') ||
-    !currentApprovalTest.includes('blocked-current-oracle') ||
-    !currentApprovalTest.includes("'restore', '--staged'") ||
-    !currentApprovalTest.includes('fs.chmodSync')
-  ) {
-    pushIssue(errors, 'current_approval_replay_regression_test_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('global report refreshes') && guardrail.includes('non-scope self-review')
-  )) {
-    pushIssue(errors, 'agent_harness_pr_scope_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('multi-prefix content') && guardrail.includes('explicit handoff')
-  )) {
-    pushIssue(errors, 'agent_harness_multi_prefix_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('merge-base-to-head') && guardrail.includes('canonical governed filename')
-  )) {
-    pushIssue(errors, 'agent_harness_candidate_diff_path_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('exact repository-declared template paths') &&
-    guardrail.includes('filename prefix') &&
-    guardrail.includes('approved_batches') &&
-    guardrail.includes('approval records') &&
-    guardrail.includes('direct regular JSON children') &&
-    guardrail.includes('Git paths are preserved exactly')
-  )) {
-    pushIssue(errors, 'agent_harness_unprefixed_review_path_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('complete immutable HEAD card_boxes_json tree') &&
-    guardrail.includes('deleted or renamed base paths')
-  )) {
-    pushIssue(errors, 'agent_harness_head_audit_snapshot_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('HEAD corpus card') && guardrail.includes('review_status')
-  )) {
-    pushIssue(errors, 'agent_harness_candidate_metadata_parity_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('standalone harness validation') &&
-    guardrail.includes('all quality_metadata except review_status')
-  )) {
-    pushIssue(errors, 'agent_harness_standalone_snapshot_parity_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('every new or changed standard, residual-closure, or full-track review') &&
-    guardrail.includes('byte-for-byte immutable')
-  )) {
-    pushIssue(errors, 'agent_harness_pre_cutover_immutability_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('every new or changed direct scoped-audit JSON artifact') &&
-    guardrail.includes('structurally valid unchanged historical fingerprints') &&
-    guardrail.includes('current-track parity') &&
-    guardrail.includes('historical approval') &&
-    guardrail.includes('current authorization') &&
-    guardrail.includes('evidence churn')
-  )) {
-    pushIssue(errors, 'agent_harness_scoped_audit_artifact_lifecycle_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('current-authorization consumers') &&
-    guardrail.includes('direct canonical non-template approval') &&
-    guardrail.includes('complete linked self-review') &&
-    guardrail.includes('regular committed evidence') &&
-    guardrail.includes('active audit script') &&
-    guardrail.includes('active audit rule spec') &&
-    guardrail.includes('worktree, index, and one fixed HEAD modes and bytes agree') &&
-    guardrail.includes('regenerate the complete current card-quality audit') &&
-    guardrail.includes('both scoped reports to be exact replays') &&
-    guardrail.includes('recheck the fixed HEAD/index snapshot') &&
-    guardrail.includes('historical records remain archive-only')
-  )) {
-    pushIssue(errors, 'agent_harness_current_approval_authorization_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('exactly three immutable-HEAD-matching snapshots') &&
-    guardrail.includes('explicit residual scope type and direct scoped audit') &&
-    guardrail.includes('cannot authorize a newly added card')
-  )) {
-    pushIssue(errors, 'agent_harness_standard_sample_box_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('aggregate human-review evidence') &&
-    guardrail.includes('structured non-automation human identity') &&
-    guardrail.includes('quality_audit summary') &&
-    guardrail.includes('complete declared track card and box-prefix sets') &&
-    guardrail.includes('merge-base plus HEAD track membership') &&
-    guardrail.includes('no cards property')
-  )) {
-    pushIssue(errors, 'agent_harness_full_track_aggregate_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('elimination_items IDs') && guardrail.includes('answer_key.correct_items')
-  )) {
-    pushIssue(errors, 'agent_harness_elimination_integrity_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('required v2 literal-pathspec patch digest') &&
-    guardrail.includes('explicit fixed HEAD tree') &&
-    guardrail.includes('100644 JSON blob')
-  )) {
-    pushIssue(errors, 'agent_harness_delivery_payload_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('exact repository-declared handoff template path') &&
-    guardrail.includes('fatal byte-preserving UTF-8 decoding') &&
-    guardrail.includes('leading U+FEFF') &&
-    guardrail.includes('no-ignore gitlink discovery') &&
-    guardrail.includes('full reachable pre- and post-payload commit sets') &&
-    guardrail.includes('merged side histories') &&
-    guardrail.includes('add-delete') &&
-    guardrail.includes('identical-tree merge') &&
-    guardrail.includes('append-only') &&
-    guardrail.includes('card_boxes_json') &&
-    guardrail.includes('auto-merge authority')
-  )) {
-    pushIssue(errors, 'agent_harness_delivery_history_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('fixed base, head, and payload commit OIDs') &&
-    guardrail.includes('canonical no-replace/no-grafts environment') &&
-    guardrail.includes('symlink') &&
-    guardrail.includes('GIT_REPLACE_REF_BASE') &&
-    guardrail.includes('common-dir info/grafts') &&
-    guardrail.includes('linked-worktree grafts') &&
-    guardrail.includes('legacy-hash')
-  )) {
-    pushIssue(errors, 'agent_harness_delivery_object_and_replace_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('mandatory for every current changed handoff') &&
-    guardrail.includes('deterministic environment') &&
-    guardrail.includes('commit-sourced attributes') &&
-    guardrail.includes('custom diff-driver config fail closed') &&
-    guardrail.includes('legacy hashing remains archive-helper-only')
-  )) {
-    pushIssue(errors, 'agent_harness_delivery_v2_canonicalization_guardrail_missing', {});
-  }
-  if (!(agentHarness.operating_model?.guardrails || []).some(guardrail =>
-    guardrail.includes('delivery-record gate') &&
-    guardrail.includes('exact pull_request head SHA') &&
-    guardrail.includes('synthetic merge coverage')
-  )) {
-    pushIssue(errors, 'agent_harness_exact_pr_head_guardrail_missing', {});
-  }
-  if (!agentEntry.includes('## Agent-Managed Git')) {
-    pushIssue(errors, 'agent_entry_missing_git_section', {});
-  }
-  if (!agentEntry.includes('commit, push, and open or update a draft PR')) {
-    pushIssue(errors, 'agent_entry_missing_git_completion_rule', {});
-  }
-
-  for (const owned of [
-    'pre_edit_git_status_check',
-    'commit',
-    'push',
-    'open_or_update_draft_PR',
-    'publish_handoff',
-    'auto_merge_validated_harness_or_tooling_PRs_under_standing_user_delegation',
-  ]) {
-    if (!(gitWorkflow.authority_boundary?.agent_owns || []).includes(owned)) {
-      pushIssue(errors, 'git_agent_owned_step_missing', { owned });
+    if (
+      !(gitWorkflow.validation_policy
+        ?.target_required_github_checks_after_trusted_bootstrap || [])
+        .includes('trusted-model-review') ||
+      gitWorkflow.validation_policy?.trusted_model_review_bootstrap
+        ?.missing_provider_secret_fails_closed !== true ||
+      !exists('.github/workflows/trusted-model-review.yml') ||
+      !exists('scripts/trusted_model_review.py') ||
+      !exists('scripts/test_trusted_model_review.py')
+    ) {
+      pushIssue(errors, 'trusted_model_review_bootstrap_missing', {});
     }
-  }
-  for (const reserved of ['formal_content_approval', 'formal_content_PR_merge_unless_scope_delegated']) {
-    if (!(gitWorkflow.authority_boundary?.user_reserves || []).includes(reserved)) {
-      pushIssue(errors, 'git_user_reserved_authority_missing', { reserved });
-    }
-  }
-
-  if (gitWorkflow.pre_edit_check?.required !== true) {
-    pushIssue(errors, 'git_pre_edit_check_not_required', {});
-  }
-  if (!(gitWorkflow.pre_edit_check?.commands || []).includes('git status --short --branch')) {
-    pushIssue(errors, 'git_pre_edit_status_command_missing', {});
-  }
-
-  for (const prefix of ['harness/', 'content/', 'fix/', 'tooling/']) {
-    if (!(gitWorkflow.branch_policy?.preferred_prefixes || []).includes(prefix)) {
-      pushIssue(errors, 'git_branch_prefix_missing', { prefix });
-    }
-  }
-  if (gitWorkflow.branch_policy?.force_push_shared_base_branches !== 'forbidden') {
-    pushIssue(errors, 'git_force_push_shared_base_not_forbidden', {});
-  }
-  if (gitWorkflow.branch_policy?.stacked_PRs_allowed !== true) {
-    pushIssue(errors, 'git_stacked_PRs_not_allowed', {});
-  }
-
-  for (const condition of ['same_requirement_domain', 'same_base_branch', 'same_review_unit']) {
-    if (!(gitWorkflow.existing_PR_policy?.update_existing_when || []).includes(condition)) {
-      pushIssue(errors, 'git_existing_PR_update_condition_missing', { condition });
-    }
-  }
-  for (const condition of ['new_requirement_domain', 'different_base_branch', 'existing_PR_scope_would_blur']) {
-    if (!(gitWorkflow.existing_PR_policy?.create_new_when || []).includes(condition)) {
-      pushIssue(errors, 'git_new_PR_condition_missing', { condition });
-    }
-  }
-
-  const validationCommands = (gitWorkflow.validation_policy?.before_commit || []).map(entry => entry.command);
-  for (const command of [
-    'node scripts/validate_harness.mjs',
-    'node scripts/validate_audio_qc.mjs',
-    'node scripts/validate_cards.mjs --report-path exports/card_validation_report.json',
-    CARD_INTEGRITY_TEST_COMMAND,
-    SCOPED_AUDIT_VALIDATION_COMMAND,
-    PR_SCOPE_VALIDATION_COMMAND,
-    PR_SCOPE_TEST_COMMAND,
-    DELIVERY_RECORD_TEST_COMMAND,
-    'git diff --check',
-  ]) {
-    if (!validationCommands.includes(command)) {
-      pushIssue(errors, 'git_validation_command_missing', { command });
-    }
-  }
-  const contentPrScopeGate = (gitWorkflow.validation_policy?.before_commit || [])
-    .find(entry => entry.scope === 'content_sample_pr_scope');
-  if (!(contentPrScopeGate?.blocks || []).some(block =>
-    block.includes('candidate-queue or release-gap consumers') &&
-    block.includes('historical approvals') &&
-    block.includes('dirty/staged/mode-drifted audit authority or approval/review/audit evidence') &&
-    block.includes('concurrent HEAD/index/file/corpus drift') &&
-    block.includes('forged current-digest audits') &&
-    block.includes('stale linked self-reviews') &&
-    block.includes('one fixed worktree/index/HEAD snapshot') &&
-    block.includes('regenerating the complete current audit') &&
-    block.includes('exactly replaying both scoped reports') &&
-    block.includes('current authorization')
-  )) {
-    pushIssue(errors, 'git_current_approval_consumer_block_missing', {});
-  }
-  const prGatesWorkflow = readText('.github/workflows/pr-gates.yml');
-  const pullRequestHeadPolicy = String(gitWorkflow.validation_policy?.delivery_record_head_policy || '');
-  if (
-    !pullRequestHeadPolicy.includes('github.event.pull_request.head.sha') ||
-    !pullRequestHeadPolicy.includes('exact number, URL, state, draft, head/base branch, and head/base repository metadata') ||
-    !pullRequestHeadPolicy.includes('synthetic merge checkout')
-  ) {
-    pushIssue(errors, 'git_validation_exact_pr_head_policy_missing', {});
-  }
-  if (
-    !prGatesWorkflow.includes(
-      'node scripts/validate_delivery_record.mjs --base "origin/${{ github.base_ref }}" --head "${{ github.event.pull_request.head.sha }}"',
-    )
-  ) {
-    pushIssue(errors, 'github_delivery_record_exact_head_missing', {});
-  }
-  for (const token of [
-    'DELIVERY_PR_NUMBER: ${{ github.event.pull_request.number }}',
-    'DELIVERY_PR_URL: ${{ github.event.pull_request.html_url }}',
-    'DELIVERY_PR_STATE: ${{ github.event.pull_request.state }}',
-    'DELIVERY_PR_MERGED: ${{ github.event.pull_request.merged }}',
-    'DELIVERY_PR_DRAFT: ${{ github.event.pull_request.draft }}',
-    'DELIVERY_HEAD_SHA: ${{ github.event.pull_request.head.sha }}',
-    'DELIVERY_HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}',
-    'DELIVERY_HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}',
-    'DELIVERY_BASE_BRANCH: ${{ github.event.pull_request.base.ref }}',
-    'DELIVERY_BASE_REPOSITORY: ${{ github.event.pull_request.base.repo.full_name }}',
-  ]) {
-    if (!prGatesWorkflow.includes(token)) {
-      pushIssue(errors, 'github_delivery_record_event_binding_missing', {token});
-    }
-  }
-  if (prGatesWorkflow.includes('ref: ${{ github.event.pull_request.head.sha')) {
-    pushIssue(errors, 'github_pr_gate_synthetic_merge_coverage_removed', {});
-  }
-  for (const command of [
-    CARD_INTEGRITY_TEST_COMMAND,
-    PR_SCOPE_TEST_COMMAND,
-    DELIVERY_RECORD_TEST_COMMAND,
-  ]) {
-    if (!prGatesWorkflow.includes(command)) {
-      pushIssue(errors, 'github_pr_gate_integrity_test_missing', { command });
-    }
-  }
-  if (gitWorkflow.completion_policy?.agent_authored_tracked_changes_default !== 'validated_commit_push_draft_PR') {
-    pushIssue(errors, 'git_completion_default_drift', {});
-  }
-  for (const exception of ['small_samples_for_user_review', 'read_only_audits', 'explicit_user_local_only_request']) {
-    if (!(gitWorkflow.completion_policy?.local_only_exceptions || []).includes(exception)) {
-      pushIssue(errors, 'git_local_only_exception_missing', { exception });
-    }
-  }
-  if (gitWorkflow.merge_policy?.default !== 'standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs') {
-    pushIssue(errors, 'git_merge_default_drift', {});
-  }
-  const delegation = gitWorkflow.merge_policy?.standing_user_delegation || {};
-  if (!delegation.scope?.includes('harness_changes') || !delegation.scope?.includes('tooling_changes')) {
-    pushIssue(errors, 'git_auto_merge_delegation_scope_missing', {});
-  }
-  for (const requirement of [
-    'local_validation_passed',
-    'PR_ready_or_not_draft',
-    'GitHub_mergeable',
-    'no_bulk_card_content_changes',
-    'base_branch_or_target_clear',
-  ]) {
-    if (!(delegation.requires || []).includes(requirement)) {
-      pushIssue(errors, 'git_auto_merge_requirement_missing', { requirement });
-    }
-  }
-  for (const condition of ['formal_content_not_user_approved', 'validator_failing', 'PR_scope_mixes_harness_and_bulk_content']) {
-    if (!(gitWorkflow.merge_policy?.never_merge_when || []).includes(condition)) {
-      pushIssue(errors, 'git_never_merge_condition_missing', { condition });
-    }
-  }
-
-  for (const requiredPath of [
-    'scripts/test_card_integrity.mjs',
-    'scripts/test_validate_pr_scope.mjs',
-    'scripts/test_validate_delivery_record.mjs',
-  ]) {
-    if (!exists(requiredPath)) {
-      pushIssue(errors, 'integrity_regression_test_missing', { requiredPath });
-    }
-  }
-  if (!exists('scripts/validate_delivery_record.mjs')) {
-    pushIssue(errors, 'delivery_record_validator_missing', {});
-  } else {
-    const deliveryValidator = readText('scripts/validate_delivery_record.mjs');
     for (const token of [
-      'git-diff-binary-v2',
-      'patch_sha256',
-      'base_commit_sha',
-      'touched_paths',
-      'PARKED_NO_PR_WIP_LIMIT',
-      '/pull/',
-      '/compare/',
-      '--literal-pathspecs',
-      'readHandoffBlobAtHead',
-      "'ls-tree'",
-      "'cat-file', 'blob'",
-      'REGULAR_HANDOFF_MODE',
-      'canonicalGitEnvironment',
-      'resolveCommitOid',
-      'current handoff scope.patch_format must equal',
-      'HANDOFF_TEMPLATE_PATH',
-      'changedPathsAcrossCommits',
-      'FATAL_UTF8_DECODER',
-      'decodeGitUtf8',
-      'ignoreBOM: true',
-      'V2_INHERITED_ENV_KEYS',
-      'V2_GIT_CONFIG',
-      'V2_DIFF_OPTIONS',
-      'GIT_ATTR_SOURCE',
-      'GIT_GRAFT_FILE',
-      'GIT_NO_REPLACE_OBJECTS',
-      'assertNoRepositoryGrafts',
-      'validateHandoffSchema',
-      'validatePullRequestBinding',
-      'validateParkedPushRef',
-      'payload history contains a transient or restored path',
-      'current handoff record must be append-only',
-      '--ignore-submodules=none',
-      'assertNoRepositoryInfoAttributes',
-      'assertNoCustomDiffDriverConfig',
-      "['core.bigFileThreshold', '512m']",
-      "['diff.compactionHeuristic', 'false']",
-      "['diff.orderFile', os.devNull]",
-      '\\u2028',
-      '\\u2029',
+      'validateModelAcceptance',
+      'changed_candidate_card_deleted_without_model_acceptance',
+      'destructive_change_review',
+      'standing_delegation_auto_merge_for_all_validated_change_classes',
     ]) {
-      if (!deliveryValidator.includes(token)) {
-        pushIssue(errors, 'delivery_record_integrity_guard_missing', { token });
+      const source = token.startsWith('standing_delegation')
+        ? `${readText('scripts/validate_pr_scope.mjs')}\n${readText('scripts/validate_delivery_record.mjs')}`
+        : readText('scripts/validate_pr_scope.mjs');
+      if (!source.includes(token)) {
+        pushIssue(errors, 'model_owned_git_guard_missing', {token});
       }
     }
-    if (deliveryValidator.includes("'--ancestry-path'")) {
-      pushIssue(errors, 'delivery_record_reachable_history_narrowed', {});
+    if (
+      handoffTemplate.merge_authority !==
+        'standing_delegation_auto_merge_for_all_validated_change_classes'
+    ) {
+      pushIssue(errors, 'git_handoff_model_owned_merge_authority_missing', {});
     }
-    if (deliveryValidator.split("execFileSync('git'").length - 1 !== 1) {
-      pushIssue(errors, 'delivery_record_git_helper_bypassed', {});
+    if (
+      !agentEntry.includes('merge after the exact PR head has passed') ||
+      !agentHarness.operating_model?.model_owned_lifecycle?.includes(
+        'exact_head_validated_merge',
+      )
+    ) {
+      pushIssue(errors, 'agent_model_owned_merge_policy_missing', {});
     }
-    for (const option of ['--no-ext-diff', '--ignore-submodules=none']) {
-      const occurrences = deliveryValidator.split(option).length - 1;
-      if (occurrences < 3) {
-        pushIssue(errors, 'delivery_record_path_walk_option_missing', {option, occurrences});
-      }
-    }
+    return;
   }
-  if (exists('scripts/test_validate_delivery_record.mjs')) {
-    const deliveryTests = readText('scripts/test_validate_delivery_record.mjs');
-    for (const token of [
-      'V2_GOLDEN_SHA256',
-      '4fa4d17ca8633b5313260f144fffaf7230b9c19adc5246e34e99685c25578fed',
-      'an arbitrary TEMPLATE suffix remains a governed handoff record',
-      'a post-payload mutation even when a later commit restores the payload tree',
-      'mutations hidden in a pre-payload side branch with an identical-tree merge',
-      'a non-UTF-8 payload path instead of hashing a lossy alias',
-      'a leading UTF-8 BOM in a payload path instead of accepting its stripped alias',
-      'a restored non-UTF-8 path in post-payload history',
-      'the explicit pull-request head when the base branch advances',
-      'ignores ambient diff formatting and attribute config',
-      'prechecks ignore malformed injected Git config environment',
-      'rejects non-empty repository info attributes',
-      'rejects ambient custom diff-driver config',
-      'rejects worktree custom diff-driver config',
-      'includes gitlinks despite ambient submodule ignore config',
-      'payload completeness rejects an omitted gitlink despite ambient submodule ignore config',
-      'requires a direct regular 100644 handoff blob at fixed HEAD',
-      'rejects a valid JSON symlink blob',
-      'rejects an executable JSON blob',
-      'rejects a gitlink in the handoff zone',
-      'rejects nested or anomalous handoff record paths',
-      'rejects removing v2 fields to downgrade a current handoff',
-      'ignores Git replace refs when inspecting fixed payload history',
-      'ignores an injected GIT_REPLACE_REF_BASE when inspecting fixed history',
-      'rejects transient paths anywhere in the complete pre-payload history',
-      'enforces the complete current handoff schema and authority mapping',
-      'requires canonical handoff identity and a real calendar timestamp',
-      'candidate card payload cannot claim harness auto-merge authority',
-      'binds real pull-request records to exact event metadata',
-      'requires parked push_ref evidence to resolve to the explicit head',
-      'requires the current handoff artifact to be append-only',
-      'rejects legacy Git grafts from the common repository directory',
-    ]) {
-      if (!deliveryTests.includes(token)) {
-        pushIssue(errors, 'delivery_record_regression_coverage_missing', {token});
-      }
-    }
-  }
-  if (gitWorkflow.handoff_policy?.directory !== 'reviews/git_handoffs/') {
-    pushIssue(errors, 'git_handoff_directory_drift', {});
-  }
-  if (gitWorkflow.handoff_policy?.template_path !== GIT_HANDOFF_TEMPLATE_PATH) {
-    pushIssue(errors, 'git_handoff_template_path_drift', {});
-  }
-  for (const field of REQUIRED_GIT_HANDOFF_FIELDS) {
-    if (!(gitWorkflow.handoff_policy?.required_fields || []).includes(field)) {
-      pushIssue(errors, 'git_handoff_required_field_missing', { field });
-    }
-    if (!(field in handoffTemplate)) {
-      pushIssue(errors, 'git_handoff_template_field_missing', { field });
-    }
-  }
-  if (handoffTemplate.merge_authority !== 'standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs') {
-    pushIssue(errors, 'git_handoff_template_merge_authority_drift', {});
-  }
-  if (handoffTemplate.PR_state !== 'MERGED') {
-    pushIssue(errors, 'git_handoff_template_PR_state_drift', {});
-  }
-  if (handoffTemplate.is_draft !== false) {
-    pushIssue(errors, 'git_handoff_template_draft_state_drift', {});
-  }
-  const handoffPolicy = gitWorkflow.handoff_policy || {};
-  if (handoffPolicy.payload_commit_policy?.commit_sha_meaning !== 'the final payload commit before the handoff-only commit') {
-    pushIssue(errors, 'git_handoff_payload_commit_policy_drift', {});
-  }
-  if (!String(handoffPolicy.payload_commit_policy?.payload_path_set || '').includes('exactly equal')) {
-    pushIssue(errors, 'git_handoff_payload_path_completeness_missing', {});
-  }
-  for (const token of ['every commit reachable', 'add-delete', 'modify-restore', 'restored side-branch paths fail closed']) {
-    if (!String(handoffPolicy.payload_commit_policy?.payload_path_set || '').includes(token)) {
-      pushIssue(errors, 'git_handoff_payload_history_policy_missing', {token});
-    }
-  }
-  const postPayloadPolicy = String(handoffPolicy.payload_commit_policy?.post_payload_changes || '');
-  if (
-    !postPayloadPolicy.includes('full commit set reachable') ||
-    !postPayloadPolicy.includes('not from commit_sha') ||
-    !postPayloadPolicy.includes('only the current handoff record') ||
-    !postPayloadPolicy.includes('merged side histories') ||
-    !postPayloadPolicy.includes('identical-tree merge')
-  ) {
-    pushIssue(errors, 'git_handoff_post_payload_restriction_missing', {});
-  }
-  const recordObjectPolicy = handoffPolicy.record_object_policy || {};
-  for (const token of ['direct safe', '<record>.json', 'excluding only reviews/git_handoffs/TEMPLATE.json']) {
-    if (!String(recordObjectPolicy.path || '').includes(token)) {
-      pushIssue(errors, 'git_handoff_record_path_policy_missing', {token});
-    }
-  }
-  for (const token of ['100644 blob', 'symlinks', 'executable blobs', 'gitlinks', 'nested records', 'Unicode line separators']) {
-    if (!String(recordObjectPolicy.fixed_head_object || '').includes(token)) {
-      pushIssue(errors, 'git_handoff_record_object_policy_missing', {token});
-    }
-  }
-  for (const token of ['literal-pathspec ls-tree -z', 'exact path/mode/type', 'cat-file blob <object_oid>']) {
-    if (!String(recordObjectPolicy.read_method || '').includes(token)) {
-      pushIssue(errors, 'git_handoff_record_read_policy_missing', {token});
-    }
-  }
-  for (const token of ['absent from both base_commit and commit_sha', 'overwritten', 'deleted and re-added', 'renamed']) {
-    if (!String(recordObjectPolicy.append_only || '').includes(token)) {
-      pushIssue(errors, 'git_handoff_append_only_policy_missing', {token});
-    }
-  }
-  const semanticGitReads = handoffPolicy.semantic_git_reads || {};
-  for (const token of ['base, head, and handoff commit_sha', 'direct full commit OIDs once', 'tree, or blob inspection']) {
-    if (!String(semanticGitReads.fixed_oids || '').includes(token)) {
-      pushIssue(errors, 'git_handoff_fixed_oid_policy_missing', {token});
-    }
-  }
-  if (JSON.stringify(semanticGitReads.environment) !== JSON.stringify(SEMANTIC_GIT_ENVIRONMENT)) {
-    pushIssue(errors, 'git_handoff_semantic_environment_drift', {});
-  }
-  for (const token of ['Git replace refs', 'GIT_REPLACE_REF_BASE', 'info/grafts', 'GIT_GRAFT_FILE', 'linked worktrees', 'ref resolution', 'patch hashing']) {
-    if (!String(semanticGitReads.replace_policy || '').includes(token)) {
-      pushIssue(errors, 'git_handoff_replace_policy_missing', {token});
-    }
-  }
-  for (const field of [
-    'required',
-    'non_empty',
-    'repository_relative',
-    'sorted',
-    'unique',
-    'must_exclude_current_handoff',
-    'must_name_changed_payload_paths_only',
-    'must_reject_transient_or_restored_payload_history',
-  ]) {
-    if (handoffPolicy.touched_paths_policy?.[field] !== true) {
-      pushIssue(errors, 'git_handoff_touched_paths_policy_missing', { field });
-    }
-  }
-  if (handoffPolicy.patch_integrity?.legacy_helper_format !== 'git-diff-binary-scoped-v1') {
-    pushIssue(errors, 'git_handoff_legacy_patch_format_drift', {});
-  }
-  if (
-    !String(handoffPolicy.patch_integrity?.legacy_archive_policy || '').includes('archive tooling only') ||
-    !String(handoffPolicy.patch_integrity?.legacy_archive_policy || '').includes('must never omit or downgrade')
-  ) {
-    pushIssue(errors, 'git_handoff_legacy_downgrade_policy_missing', {});
-  }
-  if (handoffPolicy.patch_integrity?.new_format !== 'git-diff-binary-v2') {
-    pushIssue(errors, 'git_handoff_v2_patch_format_drift', {});
-  }
-  if (handoffPolicy.patch_integrity?.current_handoff_required_format !== 'git-diff-binary-v2') {
-    pushIssue(errors, 'git_handoff_current_v2_requirement_missing', {});
-  }
-  if (!String(handoffPolicy.touched_paths_policy?.git_pathspec_handling || '').includes('--literal-pathspecs')) {
-    pushIssue(errors, 'git_handoff_literal_pathspec_policy_missing', {});
-  }
-  const pathEncodingPolicy = String(handoffPolicy.touched_paths_policy?.path_encoding || '');
-  if (
-    !pathEncodingPolicy.includes('valid UTF-8') ||
-    !pathEncodingPolicy.includes('decoded fatally') ||
-    !pathEncodingPolicy.includes('byte-preservingly') ||
-    !pathEncodingPolicy.includes('leading UTF-8 BOM') ||
-    !pathEncodingPolicy.includes('U+FEFF') ||
-    !pathEncodingPolicy.includes('fail closed')
-  ) {
-    pushIssue(errors, 'git_handoff_path_encoding_policy_missing', {});
-  }
-  const pathDiscoveryPolicy = String(handoffPolicy.touched_paths_policy?.path_discovery || '');
-  for (const token of ['Every payload and post-payload path walk', '--no-ext-diff', '--ignore-submodules=none', 'gitlink']) {
-    if (!pathDiscoveryPolicy.includes(token)) {
-      pushIssue(errors, 'git_handoff_path_discovery_policy_missing', {token});
-    }
-  }
-  const v2PatchPolicy = handoffPolicy.patch_integrity || {};
-  const v2Algorithm = String(v2PatchPolicy.new_algorithm || '');
-  if (
-    !v2Algorithm.includes('exact stdout bytes') ||
-    !v2Algorithm.includes('buildPatchBytes') ||
-    !v2Algorithm.includes('canonical_environment') ||
-    !v2Algorithm.includes('canonical_git_config') ||
-    !v2Algorithm.includes('canonical_diff_options')
-  ) {
-    pushIssue(errors, 'git_handoff_v2_algorithm_under_specified', {});
-  }
-  if (v2PatchPolicy.canonical_null_device !== 'the platform null device returned by node:os.devNull') {
-    pushIssue(errors, 'git_handoff_v2_null_device_policy_drift', {});
-  }
-  for (const [field, expected] of [
-    ['canonical_environment', V2_CANONICAL_ENVIRONMENT],
-    ['canonical_git_config', V2_CANONICAL_GIT_CONFIG],
-    ['canonical_diff_options', V2_CANONICAL_DIFF_OPTIONS],
-  ]) {
-    if (JSON.stringify(v2PatchPolicy[field]) !== JSON.stringify(expected)) {
-      pushIssue(errors, 'git_handoff_v2_canonicalization_drift', {field});
-    }
-  }
-  const attributePolicy = String(v2PatchPolicy.attribute_policy || '');
-  for (const token of ['GIT_ATTR_SOURCE', 'non-empty repository info/attributes', 'diff.<driver>.*', 'fails closed']) {
-    if (!attributePolicy.includes(token)) {
-      pushIssue(errors, 'git_handoff_v2_attribute_policy_missing', {token});
-    }
-  }
-  const v2Golden = v2PatchPolicy.compatibility_golden || {};
-  if (
-    v2Golden.fixture !== 'the fixed text-plus-binary payload in scripts/test_validate_delivery_record.mjs' ||
-    v2Golden.sha256 !== '4fa4d17ca8633b5313260f144fffaf7230b9c19adc5246e34e99685c25578fed' ||
-    !String(v2Golden.requirement || '').includes('must reproduce this digest')
-  ) {
-    pushIssue(errors, 'git_handoff_v2_compatibility_golden_drift', {});
-  }
-  for (const field of ['scope.base_commit_sha', 'scope.patch_sha256']) {
-    if (!(handoffPolicy.patch_integrity?.new_format_requires || []).includes(field)) {
-      pushIssue(errors, 'git_handoff_v2_patch_field_missing', { field });
-    }
-  }
-  if (!String(handoffPolicy.locator_policy?.pull_request || '').includes('/pull/<number>')) {
-    pushIssue(errors, 'git_handoff_pull_locator_policy_missing', {});
-  }
-  if (!String(handoffPolicy.locator_policy?.parked_compare || '').includes('/compare/<base_branch>...<branch>')) {
-    pushIssue(errors, 'git_handoff_compare_locator_policy_missing', {});
-  }
-  if (
-    !String(handoffPolicy.locator_policy?.push_ref || '').includes('must equal origin/<branch>') ||
-    !String(handoffPolicy.locator_policy?.push_ref || '').includes('exact PR event metadata') ||
-    !String(handoffPolicy.locator_policy?.push_ref || '').includes('remote-tracking commit')
-  ) {
-    pushIssue(errors, 'git_handoff_push_ref_policy_missing', {});
-  }
-  for (const token of ['exact GitHub pull_request event binding', 'explicit head SHA', 'same-origin', 'fork records fail closed']) {
-    if (!String(handoffPolicy.locator_policy?.pull_request || '').includes(token)) {
-      pushIssue(errors, 'git_handoff_pull_event_policy_missing', {token});
-    }
-  }
-  for (const token of ['event context must be absent', 'refs/remotes/origin/<branch>', 'explicit validated head']) {
-    if (!String(handoffPolicy.locator_policy?.parked_compare || '').includes(token)) {
-      pushIssue(errors, 'git_handoff_parked_ref_policy_missing', {token});
-    }
-  }
-  for (const token of ['complete template field set', 'strict string', 'change_type enum', 'merge_authority-to-scope consistency', 'changes card_boxes_json', 'no-auto-merge authority']) {
-    if (!String(handoffPolicy.locator_policy?.record_schema || '').includes(token)) {
-      pushIssue(errors, 'git_handoff_record_schema_policy_missing', {token});
-    }
-  }
-  if (handoffTemplate.scope?.patch_format !== 'git-diff-binary-v2') {
-    pushIssue(errors, 'git_handoff_template_patch_format_drift', {});
-  }
-  for (const field of ['base_commit_sha', 'patch_sha256']) {
-    if (!(field in (handoffTemplate.scope || {}))) {
-      pushIssue(errors, 'git_handoff_template_patch_field_missing', { field });
-    }
-  }
+
+  pushIssue(errors, 'git_workflow_version_invalid', {
+    actual: gitWorkflow.version,
+  });
 }
 
 function validateEvalsAndPerturbation(errors) {
@@ -5179,7 +4055,7 @@ function validateEvalsAndPerturbation(errors) {
     'requires_current_approval_consumers_to_fail_closed_when_audit_replay_is_unavailable_or_the_caller_fingerprint_is_forged',
     'binds_current_audit_script_and_rule_spec_to_committed_authority_and_rechecks_one_fixed_authorization_snapshot',
     'rejects_residual_closure_coverage_for_newly_added_cards',
-    'requires_structured_non_automation_human_identity_for_full_track_review',
+    'requires_two_independent_model_acceptance_runs_for_full_track_review',
     'rejects_nested_symlinked_or_unusual_path_self_review_evidence',
     'rejects_partial_or_wrong_track_full_track_aggregate_coverage',
     'rejects_full_track_aggregate_coverage_for_cards_absent_from_merge_base',
@@ -5204,23 +4080,18 @@ function validateEvalsAndPerturbation(errors) {
   }
   const currentApprovalGuard = (perturbation.anti_drift_guards || [])
     .find(guard => guard.id === 'PA-CARD-013');
-  if (
-    !String(currentApprovalGuard?.reject || '').includes('candidate-queue or release-gap consumers') ||
-    !String(currentApprovalGuard?.reject || '').includes('historical approvals') ||
-    !String(currentApprovalGuard?.reject || '').includes('dirty/staged/mode-drifted audit authority or approval/review/audit evidence') ||
-    !String(currentApprovalGuard?.reject || '').includes('concurrent HEAD/index/file/corpus drift') ||
-    !String(currentApprovalGuard?.reject || '').includes('forged current-digest audits') ||
-    !String(currentApprovalGuard?.reject || '').includes('stale linked self-reviews') ||
-    !String(currentApprovalGuard?.recovery || '').includes('current-authorization consumer') ||
-    !String(currentApprovalGuard?.recovery || '').includes('direct canonical non-template approval and linked review evidence') ||
-    !String(currentApprovalGuard?.recovery || '').includes('active audit script') ||
-    !String(currentApprovalGuard?.recovery || '').includes('active audit rule spec') ||
-    !String(currentApprovalGuard?.recovery || '').includes('one fixed HEAD modes and bytes agree') ||
-    !String(currentApprovalGuard?.recovery || '').includes('regenerate the complete current card-quality audit') ||
-    !String(currentApprovalGuard?.recovery || '').includes('exactly replay both scoped reports') ||
-    !String(currentApprovalGuard?.recovery || '').includes('recheck the fixed HEAD/index snapshot')
-  ) {
-    pushIssue(errors, 'current_approval_perturbation_guard_incomplete', {});
+  const currentAcceptanceText = `${currentApprovalGuard?.reject || ''} ${currentApprovalGuard?.recovery || ''}`;
+  for (const token of [
+    'model identity',
+    'two distinct high-risk run IDs',
+    'immutable input hash',
+    'current corpus fingerprint',
+    'scoped-audit replay',
+    'stale or forged evidence',
+  ]) {
+    if (!currentAcceptanceText.includes(token)) {
+      pushIssue(errors, 'current_acceptance_perturbation_guard_incomplete', {token});
+    }
   }
   const deliveryPerturbation = (perturbation.anti_drift_guards || [])
     .find(guard => guard.id === 'PA-CARD-011');
@@ -5538,6 +4409,48 @@ function validateEvalFixtures(errors) {
   }
 }
 
+function validateActiveModelOwnedPolicy(errors) {
+  const activePolicyPaths = [
+    'AGENTS.md',
+    'spec/authority-map.json',
+    'spec/workspace-contract.json',
+    'spec/content-quality-contract.json',
+    'spec/review-workflow.json',
+    'spec/audio-generation-contract.json',
+    'spec/audio-perceptual-worklist.schema.json',
+    'spec/git-workflow.json',
+    'spec/agent-harness.json',
+    'reviews/agent_self_review/TEMPLATE.json',
+    'reviews/agent_self_review/FULL_TRACK_TEMPLATE.json',
+    'reviews/approved_batches/TEMPLATE.json',
+    'reviews/approved_batches/FULL_TRACK_TEMPLATE.json',
+    'reviews/audio_qc/TEMPLATE.json',
+    'reviews/controlled_pilot_reviews/TEMPLATE.json',
+    'reviews/controlled_pilot_approvals/TEMPLATE.json',
+  ];
+  const forbidden = [
+    '"approved_by_user"',
+    '"confirmed_by_user"',
+    '"human_reviewer"',
+    '"human_perceptual_qc"',
+    'approval:authorized',
+    'no_auto_merge_content_candidate_user_confirmation_required',
+    'batch_generation_requires_user_confirmation',
+    'final_user_approval_required',
+  ];
+  for (const file of activePolicyPaths) {
+    const source = readText(file);
+    for (const token of forbidden) {
+      if (source.includes(token)) {
+        pushIssue(errors, 'retired_person_gate_in_active_policy', {
+          path: file,
+          token,
+        });
+      }
+    }
+  }
+}
+
 const errors = [];
 const warnings = [];
 
@@ -5556,6 +4469,7 @@ validateInteractionPolicy(errors);
 validateGitWorkflow(errors);
 validateEvalsAndPerturbation(errors);
 validateEvalFixtures(errors);
+validateActiveModelOwnedPolicy(errors);
 
 const result = {
   ok: errors.length === 0,

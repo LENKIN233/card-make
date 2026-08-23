@@ -1,5 +1,5 @@
 {
-  "version": "card-make-harness-v1",
+  "version": "card-make-harness-v2",
   "status": "active",
   "purpose": "Active index for the card content production harness.",
   "active_docs": [
@@ -24,7 +24,7 @@
     {
       "path": "spec/content-quality-contract.json",
       "authority": "content_quality_contract",
-      "owner": "card_quality_and_user_approval",
+      "owner": "card_quality_and_model_acceptance",
       "status": "active"
     },
     {
@@ -47,8 +47,38 @@
     },
     {
       "path": "spec/review-workflow.json",
-      "authority": "review_workflow",
-      "owner": "sample_review_approval_and_delivery",
+      "authority": "model_owned_acceptance_owner",
+      "owner": "model_owned_review_authorization_removal_and_merge",
+      "status": "active"
+    },
+    {
+      "path": "scripts/lib/model_acceptance.mjs",
+      "authority": "model_acceptance_validator",
+      "owner": "model_owned_acceptance_evidence",
+      "status": "active"
+    },
+    {
+      "path": "scripts/test_model_acceptance.mjs",
+      "authority": "model_acceptance_validator_tests",
+      "owner": "model_owned_acceptance_evidence",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/trusted-model-review.yml",
+      "authority": "trusted_model_review_workflow",
+      "owner": "trusted_model_execution_provenance",
+      "status": "active"
+    },
+    {
+      "path": "scripts/trusted_model_review.py",
+      "authority": "trusted_model_review_aggregator",
+      "owner": "trusted_model_execution_provenance",
+      "status": "active"
+    },
+    {
+      "path": "scripts/test_trusted_model_review.py",
+      "authority": "trusted_model_review_tests",
+      "owner": "trusted_model_execution_provenance",
       "status": "active"
     },
     {
@@ -130,12 +160,6 @@
       "status": "active"
     },
     {
-      "path": "scripts/plan_release_gap_samples.mjs",
-      "authority": "release_gap_sample_planner",
-      "owner": "release_gap_sample_planning",
-      "status": "active"
-    },
-    {
       "path": "scripts/validate_candidate_review_queue.mjs",
       "authority": "validator",
       "owner": "candidate_review_queue_validation",
@@ -166,6 +190,12 @@
       "status": "active"
     },
     {
+      "path": "scripts/test_validate_audio_qc_model.mjs",
+      "authority": "model_audio_input_regression",
+      "owner": "audio_qc_records",
+      "status": "active"
+    },
+    {
       "path": "scripts/audit_audio_technical.mjs",
       "authority": "technical_audio_audit_tool",
       "owner": "audio_generation_and_qc",
@@ -184,21 +214,21 @@
       "status": "active"
     },
     {
-      "path": "scripts/serve_audio_perceptual_review.mjs",
-      "authority": "audio_perceptual_review_station",
-      "owner": "audio_perceptual_worklists",
+      "path": "scripts/build_audio_qc_drafts.mjs",
+      "authority": "model_audio_qc_bridge",
+      "owner": "audio_qc_records",
+      "status": "active"
+    },
+    {
+      "path": "scripts/test_build_audio_qc_drafts.mjs",
+      "authority": "model_audio_qc_bridge_tests",
+      "owner": "audio_qc_records",
       "status": "active"
     },
     {
       "path": "reviews/audio_perceptual_worklists/README.md",
       "authority": "audio_perceptual_worklist_zone",
       "owner": "audio_perceptual_worklists",
-      "status": "active"
-    },
-    {
-      "path": "scripts/build_full_track_remediation_baseline.mjs",
-      "authority": "full_track_remediation_baseline_tool",
-      "owner": "sample_review_approval_and_delivery",
       "status": "active"
     },
     {
@@ -215,63 +245,69 @@
     },
     {
       "path": "reviews/approved_batches/TEMPLATE.json",
-      "authority": "approval_template",
-      "owner": "user_approved_batch_records",
+      "authority": "model_owned_content_authorization_template",
+      "owner": "model_owned_content_authorization_records",
       "status": "active"
     },
     {
       "path": "reviews/approved_batches/FULL_TRACK_TEMPLATE.json",
-      "authority": "full_track_approval_template",
-      "owner": "user_approved_batch_records",
+      "authority": "model_owned_full_track_authorization_template",
+      "owner": "model_owned_content_authorization_records",
+      "status": "active"
+    },
+    {
+      "path": "reviews/runtime_payloads/README.md",
+      "authority": "runtime_payload_binding_zone",
+      "owner": "model_owned_content_authorization_records",
       "status": "active"
     },
     {
       "path": "reviews/controlled_pilot_reviews/TEMPLATE.json",
-      "authority": "controlled_pilot_review_template",
-      "owner": "controlled_pilot_review_records",
+      "authority": "controlled_pilot_model_review_template",
+      "owner": "model_owned_acceptance_compatibility",
       "status": "active"
     },
     {
       "path": "reviews/controlled_pilot_reviews/README.md",
       "authority": "controlled_pilot_review_zone",
       "owner": "controlled_pilot_review_records",
-      "status": "active"
+      "status": "legacy_archive"
     },
     {
       "path": "reviews/controlled_pilot_approvals/TEMPLATE.json",
-      "authority": "controlled_pilot_approval_template",
-      "owner": "controlled_pilot_approval_artifacts",
+      "authority": "controlled_pilot_model_authorization_template",
+      "owner": "model_owned_acceptance_compatibility",
       "status": "active"
     },
     {
       "path": "reviews/controlled_pilot_approvals/README.md",
       "authority": "controlled_pilot_approval_zone",
       "owner": "controlled_pilot_approval_artifacts",
-      "status": "active"
+      "status": "legacy_archive"
     },
     {
       "path": "scripts/manage_controlled_pilot_approval.mjs",
-      "authority": "controlled_pilot_approval_manager",
-      "owner": "controlled_pilot_review_records",
+      "authority": "controlled_pilot_model_acceptance_compatibility_manager",
+      "owner": "model_owned_acceptance_compatibility",
       "status": "active"
     },
     {
       "path": "scripts/test_manage_controlled_pilot_approval.mjs",
-      "authority": "controlled_pilot_approval_manager_tests",
-      "owner": "controlled_pilot_review_records",
+      "authority": "controlled_pilot_model_acceptance_compatibility_tests",
+      "owner": "model_owned_acceptance_compatibility",
       "status": "active"
     },
     {
       "path": "reviews/sample_confirmations/TEMPLATE.json",
-      "authority": "sample_confirmation_template",
-      "owner": "sample_confirmation_records",
-      "status": "active"
+      "authority": "legacy_sample_confirmation_template",
+      "owner": "historical_person_authority_records",
+      "status": "legacy_archive"
     },
     {
       "path": "reviews/sample_confirmations/README.md",
       "authority": "sample_confirmation_zone",
       "owner": "sample_confirmation_records",
-      "status": "active"
+      "status": "legacy_archive"
     },
     {
       "path": "reviews/audit_scopes/README.md",

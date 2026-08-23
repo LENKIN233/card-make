@@ -1,5 +1,5 @@
 {
-  "version": "card-make-perturbation-audit-v1",
+  "version": "card-make-perturbation-audit-v2",
   "status": "active",
   "anti_drift_guards": [
     {
@@ -15,22 +15,22 @@
     {
       "id": "PA-CARD-003",
       "reject": "Making true-exam source the only formal quality criterion.",
-      "recovery": "True exam is a high-quality source and calibration reference; AI/simulation/human original can be formal candidates after quality review and user approval."
+      "recovery": "True exam is a high-quality source and calibration reference; generated, simulated, or original material can become formal only after exact-scope model acceptance and required deterministic checks."
     },
     {
       "id": "PA-CARD-004",
       "reject": "Passing a batch because fields validate while content quality is weak.",
-      "recovery": "Run content-quality blockers, scorecard, and user-approval workflow; structural validation is not release approval."
+      "recovery": "Run content-quality blockers, scorecard, semantic model review, and current authorization validation; structural validation alone is not acceptance."
     },
     {
       "id": "PA-CARD-005",
-      "reject": "Batch-generating before a 3-card sample is reviewed.",
-      "recovery": "Produce a small sample, self-review it, then wait for user confirmation before batch expansion."
+      "reject": "Batch-generating without exact-scope semantic review and measurable quality checks.",
+      "recovery": "The model may generate the complete authorized scope, but current authorization requires exact-input model evidence, audit replay, and zero blocking findings without a person checkpoint."
     },
     {
       "id": "PA-CARD-006",
-      "reject": "Agent claims content is finally usable or approved.",
-      "recovery": "Agent may recommend user confirmation only. Formal usability requires user approval record."
+      "reject": "Agent claims content is usable without current model evidence or required gates.",
+      "recovery": "The model-and-harness system may authorize formal use when model-acceptance.v2 and every required deterministic gate bind the same immutable input."
     },
     {
       "id": "PA-CARD-007",
@@ -39,8 +39,8 @@
     },
     {
       "id": "PA-CARD-008",
-      "reject": "Treating a chat confirmation or PR status as enough to approve a sample without a linked agent self-review record.",
-      "recovery": "Require a scoped agent self-review record with quality metadata and blocker scan before any approved batch record can mark the scope user-approved."
+      "reject": "Treating chat text or PR status as enough to authorize content without linked semantic evidence.",
+      "recovery": "Require a scoped model review with quality metadata, blocker scan, exact input hash, structured findings, and current authorization evidence."
     },
     {
       "id": "PA-CARD-009",
@@ -64,8 +64,8 @@
     },
     {
       "id": "PA-CARD-013",
-      "reject": "Counting a semantically incomplete, automation-reviewed, nested, symlinked, unusually encoded, current-corpus-drifted, or archived-global-audit-reusing self-review artifact as changed-card coverage; accepting an empty, forged, deleted, renamed, or non-replayed scoped-audit artifact merely because it is unlinked; swapping, truncating, or symlinking standard/full-track authority templates; accepting formal approval with an empty timestamp, summary, scope, or representative evidence; mutating the pre-cutover archive index or one of its named records; forcing unrelated historical scoped reports to refresh whenever the corpus fingerprint changes; or letting candidate-queue or release-gap consumers count templates, traversal, symlinks, incomplete records, historical approvals, dirty/staged/mode-drifted audit authority or approval/review/audit evidence, concurrent HEAD/index/file/corpus drift, forged current-digest audits, stale audits, or stale linked self-reviews as current authorization.",
-      "recovery": "Require the complete canonical standard or full-track evidence shape before coverage can count, including standard batch progression/risk/representative-card/next-step conclusions; prove exactly three immutable-HEAD-matching snapshots for every declared standard-sample box; compare current review interaction, knowledge, and quality metadata in standalone harness validation; bind every exact regular-file template path and complete placeholder shape to its distinct standard/full-track doc-manifest authority; require valid ISO approval time, non-empty summary, unique non-empty scope arrays, and non-empty unique in-scope representative cards; require a direct current scoped audit for every new or changed review; replay every new or changed scoped report against immutable HEAD even when unlinked, while allowing structurally valid unchanged historical fingerprints and proving hash-pinned legacy exceptions at the active index-introduction commit; freeze the pre-cutover index and complete referenced record bytes against the same commit; forbid residual closure evidence from authorizing newly added cards; use structured human reviewer identities that reject agent and automation tokens; preserve Git paths exactly; reject unsafe path characters and non-regular files; recursively discover nested records so only direct canonical JSON records can pass; and require every current-authorization consumer to validate direct canonical non-template approval and linked review evidence with complete fields and exact current scope, bind those records, both scoped reports, the active audit script, and active audit rule spec to regular committed files whose worktree, index, and one fixed HEAD modes and bytes agree, independently regenerate the complete current card-quality audit, exactly replay both scoped reports, and recheck the fixed HEAD/index snapshot, captured file modes/bytes, and corpus fingerprint before returning."
+      "reject": "Counting a semantically incomplete, legacy-person-authority, nested, symlinked, unusually encoded, current-corpus-drifted, or archived-global-audit-reusing review artifact as changed-card coverage; accepting an empty, forged, deleted, renamed, or non-replayed scoped-audit artifact merely because it is unlinked; swapping, truncating, or symlinking standard/full-track authority templates; accepting content authorization with an empty timestamp, summary, scope, representative evidence, direct runtime payload binding, or trusted repository model check; replaying full-track authorization across payloads or canonical runtime content_version values; mutating the pre-cutover archive index or one of its named records; or letting consumers count templates, traversal, symlinks, incomplete records, historical approvals, dirty/staged/mode-drifted authority or evidence, concurrent snapshot drift, forged current-digest audits, stale audits, or stale linked reviews as current authorization.",
+      "recovery": "Require the complete canonical model review and authorization shape before coverage can count; bind exact scope, immutable input hash, current corpus fingerprint, scoped-audit replay, model identity, two distinct high-risk run IDs, non-empty summary, structured findings, and required capabilities. For full-track authorization, rehash one direct runtime payload, derive its normalized content_version, require exact track/card scope, and bind that version through buildModelAcceptanceInputSha256 additionalBindings in both runs. Treat author-editable model records as structural and require the pinned base-only trusted model check for repository authority. Preserve Git paths exactly; reject unsafe paths, non-regular files, stale or forged evidence, dirty authority inputs, incomplete coverage, and generated or simulated content presented as true exam material."
     }
   ],
   "bad_card_patterns": [

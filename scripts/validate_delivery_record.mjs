@@ -17,8 +17,8 @@ const REAL_PR_STATES = new Set(['OPEN', 'CLOSED', 'MERGED']);
 const PARKED_STATE = 'PARKED_NO_PR_WIP_LIMIT';
 const PATCH_FORMAT_V2 = 'git-diff-binary-v2';
 const REGULAR_HANDOFF_MODE = '100644';
-const AUTO_MERGE_AUTHORITY = 'standing_user_delegation_auto_merge_for_validated_harness_or_tooling_PRs';
-const CONTENT_NO_AUTO_MERGE_AUTHORITY = 'no_auto_merge_content_candidate_user_confirmation_required';
+const AUTO_MERGE_AUTHORITY =
+  'standing_delegation_auto_merge_for_all_validated_change_classes';
 const CONTENT_CHANGE_TYPES = new Set([
   'content_sample',
   'content_candidate_front_answer_leak_queue',
@@ -27,7 +27,9 @@ const CONTENT_CHANGE_TYPES = new Set([
 const CHANGE_TYPE_AUTHORITIES = new Map([
   ['harness', AUTO_MERGE_AUTHORITY],
   ['tooling', AUTO_MERGE_AUTHORITY],
-  ...[...CONTENT_CHANGE_TYPES].map(changeType => [changeType, CONTENT_NO_AUTO_MERGE_AUTHORITY]),
+  ['audio', AUTO_MERGE_AUTHORITY],
+  ['authorization', AUTO_MERGE_AUTHORITY],
+  ...[...CONTENT_CHANGE_TYPES].map(changeType => [changeType, AUTO_MERGE_AUTHORITY]),
 ]);
 const HANDOFF_ID_RE = /^[0-9]{8}-[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const RFC3339_WITH_ZONE_RE = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|([+-])(\d{2}):(\d{2}))$/;
@@ -1045,6 +1047,20 @@ export function validateDeliveryRecord({
     file !== HANDOFF_TEMPLATE_PATH
   ));
   const cardFiles = files.filter(file => file.startsWith('card_boxes_json/'));
+  const audioAuthorityFiles = files.filter(file =>
+    file.startsWith('ai_tts/') ||
+    ((file.startsWith('reviews/audio_qc/') ||
+      file.startsWith('reviews/audio_perceptual_worklists/')) &&
+      !file.endsWith('/TEMPLATE.json') &&
+      !file.endsWith('/README.md'))
+  );
+  const authorizationFiles = files.filter(file =>
+    (file.startsWith('reviews/approved_batches/') ||
+      file.startsWith('reviews/controlled_pilot_approvals/') ||
+      file.startsWith('reviews/controlled_pilot_reviews/')) &&
+    !file.endsWith('/TEMPLATE.json') &&
+    !file.endsWith('/README.md')
+  );
   const selfReviews = files.filter(file => file.startsWith('reviews/agent_self_review/') && file.endsWith('.json'));
   const scopedAudits = files.filter(file => file.startsWith('reviews/audit_scopes/') && file.endsWith('.json'));
 
@@ -1078,7 +1094,16 @@ export function validateDeliveryRecord({
         validateCandidateEvidenceBundle(root, resolvedHeadOid, record, selfReviews, scopedAudits, errors);
       }
       if (cardFiles.length > 0 && !CONTENT_CHANGE_TYPES.has(record.scope?.change_type)) {
-        errors.push('candidate card payload must use a content change_type and no-auto-merge authority');
+        errors.push('candidate card payload must use a content change_type and validated auto-merge authority');
+      }
+      if (audioAuthorityFiles.length > 0 && record.scope?.change_type !== 'audio') {
+        errors.push('audio assets and acceptance evidence must use scope.change_type=audio');
+      }
+      if (
+        authorizationFiles.length > 0 &&
+        record.scope?.change_type !== 'authorization'
+      ) {
+        errors.push('content authorization evidence must use scope.change_type=authorization');
       }
       if (record.branch !== resolvedBranch) errors.push(`handoff branch mismatch: ${record.branch} != ${resolvedBranch}`);
       if (record.base_branch !== baseBranch) errors.push(`handoff base mismatch: ${record.base_branch} != ${baseBranch}`);

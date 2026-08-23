@@ -1,0 +1,106 @@
+{
+  "handoff_id": "20260823-harness-model-owned-acceptance-v1",
+  "created_at": "2026-08-23T22:47:15+08:00",
+  "agent": "codex",
+  "branch": "harness/model-owned-acceptance-v1",
+  "base_branch": "main",
+  "commit_sha": "f4b327cdda471fa6eeb21aec9d7e2c11a677be9b",
+  "push_ref": "origin/harness/model-owned-acceptance-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/190",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "authorization",
+    "touched_paths": [
+      ".github/workflows/pr-gates.yml",
+      ".github/workflows/trusted-model-review.yml",
+      "AGENTS.md",
+      "README.md",
+      "reviews/agent_self_review/FULL_TRACK_TEMPLATE.json",
+      "reviews/agent_self_review/TEMPLATE.json",
+      "reviews/approved_batches/FULL_TRACK_TEMPLATE.json",
+      "reviews/approved_batches/TEMPLATE.json",
+      "reviews/audio_perceptual_worklists/README.md",
+      "reviews/audio_qc/README.md",
+      "reviews/audio_qc/TEMPLATE.json",
+      "reviews/audit_scopes/README.md",
+      "reviews/controlled_pilot_approvals/README.md",
+      "reviews/controlled_pilot_approvals/TEMPLATE.json",
+      "reviews/controlled_pilot_reviews/README.md",
+      "reviews/controlled_pilot_reviews/TEMPLATE.json",
+      "reviews/drafts/README.md",
+      "reviews/git_handoffs/TEMPLATE.json",
+      "reviews/runtime_payloads/README.md",
+      "reviews/sample_confirmations/README.md",
+      "reviews/sample_confirmations/TEMPLATE.json",
+      "scripts/build_audio_qc_drafts.mjs",
+      "scripts/build_full_track_remediation_baseline.mjs",
+      "scripts/lib/card_integrity.mjs",
+      "scripts/lib/model_acceptance.mjs",
+      "scripts/manage_audio_perceptual_worklist.mjs",
+      "scripts/manage_controlled_pilot_approval.mjs",
+      "scripts/plan_release_gap_samples.mjs",
+      "scripts/serve_audio_perceptual_review.mjs",
+      "scripts/test_audio_perceptual_review_station.mjs",
+      "scripts/test_audio_perceptual_worklist.mjs",
+      "scripts/test_build_audio_qc_drafts.mjs",
+      "scripts/test_card_integrity.mjs",
+      "scripts/test_manage_controlled_pilot_approval.mjs",
+      "scripts/test_model_acceptance.mjs",
+      "scripts/test_trusted_model_review.py",
+      "scripts/test_validate_audio_qc_model.mjs",
+      "scripts/test_validate_delivery_record.mjs",
+      "scripts/test_validate_pr_scope.mjs",
+      "scripts/trusted_model_review.py",
+      "scripts/validate_audio_qc.mjs",
+      "scripts/validate_delivery_boundary.mjs",
+      "scripts/validate_delivery_record.mjs",
+      "scripts/validate_harness.mjs",
+      "scripts/validate_pr_scope.mjs",
+      "spec/agent-harness.json",
+      "spec/audio-generation-contract.json",
+      "spec/audio-perceptual-worklist.schema.json",
+      "spec/authority-map.json",
+      "spec/card-quality-audit.json",
+      "spec/content-quality-contract.json",
+      "spec/doc-manifest.json",
+      "spec/evals.json",
+      "spec/git-workflow.json",
+      "spec/perturbation-audit.json",
+      "spec/review-workflow.json",
+      "spec/workspace-contract.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "8a4fed1d0b5c9561d497287b61451b704f62ff00",
+    "patch_sha256": "a81db2101837876d3a5125e6c1f95fd1225e3cb7cb80891f3ec24f5681d8f9ef"
+  },
+  "validation": [
+    {
+      "command": "node --test scripts/test_model_acceptance.mjs scripts/test_card_integrity.mjs scripts/test_validate_pr_scope.mjs scripts/test_validate_delivery_record.mjs scripts/test_manage_controlled_pilot_approval.mjs scripts/test_audio_perceptual_worklist.mjs scripts/test_build_audio_qc_drafts.mjs scripts/test_validate_audio_qc_model.mjs",
+      "result": "passed: 234 tests"
+    },
+    {
+      "command": "python3 scripts/test_trusted_model_review.py",
+      "result": "passed: 8 tests"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with only six recorded upstream catalog-alignment warnings"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed: zero errors"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Exact payload commit is signed, pushed, model-owned acceptance bypasses are closed, and the final handoff is the only post-payload change.",
+  "remaining_risks": [
+    "OPENAI_API_KEY is not yet configured, so trusted-model-review activation remains the documented post-merge bootstrap step.",
+    "This authorization/harness PR does not repair the existing CET4 corpus hard blockers or create formal content/audio authorization records.",
+    "Formal audio claims still require a trusted exact-media consumption receipt in addition to structural model-owned QC."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}

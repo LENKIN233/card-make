@@ -9,17 +9,18 @@ import test from 'node:test';
 
 import {
   PERCEPTUAL_CHECKS,
+  audioPerceptualDecisionInputSha256,
   buildAudioPerceptualWorklist,
   parseArguments,
   reviewAudioPerceptualEntry,
   validateAudioPerceptualWorklist,
 } from './manage_audio_perceptual_worklist.mjs';
 
-test('a passing technical audit builds a pending human-only queue', t => {
+test('a passing technical audit builds a pending model-owned v3 queue', t => {
   const fixture = createFixture(t);
   const result = buildFixtureWorklist(fixture);
 
-  assert.equal(result.worklist.schema_version, 'audio-perceptual-worklist.v2');
+  assert.equal(result.worklist.schema_version, 'audio-perceptual-worklist.v3');
   assert.deepEqual(result.worklist.scope, {
     mode: 'full_track',
     card_ids: ['000001'],
@@ -30,9 +31,9 @@ test('a passing technical audit builds a pending human-only queue', t => {
   assert.deepEqual(result.worklist.progress, {
     total: 1,
     pending: 1,
-    in_progress: 0,
     passed: 0,
     failed: 0,
+    capability_unavailable: 0,
     complete: false,
   });
   assert.deepEqual(result.worklist.context_quality, {
@@ -55,27 +56,18 @@ test('a passing technical audit builds a pending human-only queue', t => {
   );
 });
 
-test('one-card review is resumable and becomes passed only after every check', t => {
+test('one-card model review requires complete consumption, all checks, and two exact-input runs', t => {
   const fixture = createFixture(t);
   const initial = buildFixtureWorklist(fixture).worklist;
-  const partial = reviewAudioPerceptualEntry({
-    cardId: '000001',
-    checkUpdates: [{name: PERCEPTUAL_CHECKS[0], value: 'pass'}],
-    clock: () => new Date('2026-07-30T01:00:00.000Z'),
-    listenedToEntireAsset: true,
-    reviewer: 'github:human-reviewer',
-    worklist: initial,
-  });
-  assert.equal(partial.entries[0].review.status, 'in_progress');
-  assert.equal(partial.progress.in_progress, 1);
-
+  const checkUpdates = PERCEPTUAL_CHECKS.map(name => ({name, value: 'pass'}));
+  const modelAcceptances = acceptancesForEntry(initial.entries[0], checkUpdates);
   const completed = reviewAudioPerceptualEntry({
     cardId: '000001',
-    checkUpdates: PERCEPTUAL_CHECKS.slice(1).map(name => ({name, value: 'pass'})),
+    checkUpdates,
     clock: () => new Date('2026-07-30T01:05:00.000Z'),
-    listenedToEntireAsset: true,
-    reviewer: 'github:human-reviewer',
-    worklist: partial,
+    completeAssetConsumed: true,
+    modelAcceptances,
+    worklist: initial,
   });
   assert.equal(completed.entries[0].review.status, 'passed');
   assert.equal(completed.entries[0].review.replacement_required, false);
@@ -92,38 +84,39 @@ test('one-card review is resumable and becomes passed only after every check', t
     () =>
       reviewAudioPerceptualEntry({
         cardId: '000001',
-        checkUpdates: [{name: PERCEPTUAL_CHECKS[0], value: 'fail'}],
-        listenedToEntireAsset: true,
-        reviewer: 'github:human-reviewer',
+        checkUpdates,
+        completeAssetConsumed: true,
+        modelAcceptances,
         worklist: completed,
       }),
     /cannot be overwritten/,
   );
 });
 
-test('agent identities and incomplete failure records fail closed', t => {
+test('missing model capability, incomplete consumption, and incomplete failure evidence fail closed', t => {
   const fixture = createFixture(t);
   const initial = buildFixtureWorklist(fixture).worklist;
+  const passChecks = PERCEPTUAL_CHECKS.map(name => ({name, value: 'pass'}));
   assert.throws(
     () =>
       reviewAudioPerceptualEntry({
         cardId: '000001',
-        checkUpdates: [{name: PERCEPTUAL_CHECKS[0], value: 'pass'}],
-        listenedToEntireAsset: true,
-        reviewer: 'team:codex-agent',
+        checkUpdates: passChecks,
+        completeAssetConsumed: true,
+        modelAcceptances: [],
         worklist: initial,
       }),
-    /identify a human/,
+    /model acceptance is invalid/,
   );
   assert.throws(
     () =>
       reviewAudioPerceptualEntry({
         cardId: '000001',
-        checkUpdates: [{name: PERCEPTUAL_CHECKS[0], value: 'pass'}],
-        reviewer: 'team:cet-reviewer',
+        checkUpdates: passChecks,
+        modelAcceptances: acceptancesForEntry(initial.entries[0], passChecks),
         worklist: initial,
       }),
-    /listening attestation/,
+    /complete_asset_consumed/,
   );
   assert.throws(
     () =>
@@ -133,8 +126,14 @@ test('agent identities and incomplete failure records fail closed', t => {
           name,
           value: name === 'accurate_pronunciation' ? 'fail' : 'pass',
         })),
-        listenedToEntireAsset: true,
-        reviewer: 'team:cet-reviewer',
+        completeAssetConsumed: true,
+        modelAcceptances: acceptancesForEntry(
+          initial.entries[0],
+          PERCEPTUAL_CHECKS.map(name => ({
+            name,
+            value: name === 'accurate_pronunciation' ? 'fail' : 'pass',
+          })),
+        ),
         worklist: initial,
       }),
     /requires notes/,
@@ -146,24 +145,38 @@ test('agent identities and incomplete failure records fail closed', t => {
       name,
       value: name === 'accurate_pronunciation' ? 'fail' : 'pass',
     })),
-    listenedToEntireAsset: true,
+    completeAssetConsumed: true,
+    modelAcceptances: acceptancesForEntry(
+      initial.entries[0],
+      PERCEPTUAL_CHECKS.map(name => ({
+        name,
+        value: name === 'accurate_pronunciation' ? 'fail' : 'pass',
+      })),
+    ),
     notes: 'The final consonant is pronounced incorrectly.',
-    reviewer: 'team:cet-reviewer',
     worklist: initial,
   });
   assert.equal(failed.entries[0].review.status, 'failed');
   assert.deepEqual(failed.entries[0].review.failure_codes, ['pronunciation_error']);
   assert.equal(failed.entries[0].review.replacement_required, true);
+  const unavailable = reviewAudioPerceptualEntry({
+    cardId: '000001',
+    capabilityUnavailable: true,
+    notes: 'No audio-capable model was available.',
+    worklist: initial,
+  });
+  assert.equal(unavailable.entries[0].review.status, 'capability_unavailable');
 });
 
 test('reviewed entries survive stable refresh and changed identity requires acknowledgement', t => {
   const fixture = createFixture(t);
   const initial = buildFixtureWorklist(fixture).worklist;
+  const checkUpdates = PERCEPTUAL_CHECKS.map(name => ({name, value: 'pass'}));
   const reviewed = reviewAudioPerceptualEntry({
     cardId: '000001',
-    checkUpdates: PERCEPTUAL_CHECKS.map(name => ({name, value: 'pass'})),
-    listenedToEntireAsset: true,
-    reviewer: 'external:cet-listener',
+    checkUpdates,
+    completeAssetConsumed: true,
+    modelAcceptances: acceptancesForEntry(initial.entries[0], checkUpdates),
     worklist: initial,
   });
   const stable = buildFixtureWorklist(fixture, {existing: reviewed});
@@ -189,7 +202,7 @@ test('scoped queue binds an exact subset while revalidating the full technical a
   addSecondAudioCard(fixture);
   const result = buildFixtureWorklist(fixture, {scopeCardIds: ['000002']});
 
-  assert.equal(result.worklist.schema_version, 'audio-perceptual-worklist.v2');
+  assert.equal(result.worklist.schema_version, 'audio-perceptual-worklist.v3');
   assert.match(result.worklist.worklist_id, /^cet4-scoped-audio-perceptual-qc-/);
   assert.deepEqual(result.worklist.scope, {
     mode: 'card_ids',
@@ -240,12 +253,48 @@ test('legacy v1 full-track worklists remain valid and cannot declare a subset', 
   const legacy = structuredClone(current);
   legacy.schema_version = 'audio-perceptual-worklist.v1';
   delete legacy.scope;
+  legacy.review_policy = {
+    review_mode: 'human_perceptual_qc',
+    agent_may_mark_passed: false,
+    one_card_per_review_action: true,
+    full_asset_listening_attestation_required: true,
+    all_checks_required_before_terminal_status: true,
+    failed_audio_requires_replacement: true,
+    terminal_review_immutable: true,
+    passing_worklist_is_not_formal_audio_qc: true,
+  };
+  legacy.entries[0].review = {
+    status: 'pending',
+    reviewer: null,
+    listening_attestation: null,
+    started_at: null,
+    completed_at: null,
+    notes: '',
+    failure_codes: [],
+    replacement_required: null,
+  };
+  legacy.progress = {
+    total: 1,
+    pending: 1,
+    in_progress: 0,
+    passed: 0,
+    failed: 0,
+    complete: false,
+  };
   assert.deepEqual(
     validateAudioPerceptualWorklist(legacy, {
       root: fixture.root,
       technicalAudit: fixture.audit,
     }),
     [],
+  );
+  assert.match(
+    validateAudioPerceptualWorklist(legacy, {
+      requireComplete: true,
+      root: fixture.root,
+      technicalAudit: fixture.audit,
+    }).join('\n'),
+    /archive-only/,
   );
   legacy.scope = current.scope;
   assert.match(
@@ -280,61 +329,31 @@ test('worklist validation detects transcript and audio byte tampering', t => {
   );
 });
 
-test('CLI arguments preserve repeated one-card check updates', () => {
-  assert.deepEqual(
-    parseArguments([
+test('CLI arguments require model acceptances, complete consumption, and all checks', () => {
+  const args = [
       'review',
       '--file',
       'exports/worklist.json',
       '--card-id',
       '000001',
-      '--reviewer',
-      'github:human-reviewer',
-      '--attest-listened',
-      '--check',
-      'audio_matches_text=pass',
-      '--check',
-      'accurate_pronunciation=fail',
+      '--acceptances',
+      'exports/acceptances.json',
+      '--complete-asset-consumed',
+      ...PERCEPTUAL_CHECKS.flatMap(name => ['--check', `${name}=pass`]),
       '--notes',
       'Pronunciation issue.',
       '--apply',
-    ]),
-    {
-      allowReviewedReset: false,
-      apply: true,
-      attestListened: true,
-      cardId: '000001',
-      checkUpdates: [
-        {name: 'audio_matches_text', value: 'pass'},
-        {name: 'accurate_pronunciation', value: 'fail'},
-      ],
-      command: 'review',
-      existingPath: null,
-      notes: 'Pronunciation issue.',
-      outputPath: null,
-      requireComplete: false,
-      reviewer: 'github:human-reviewer',
-      scopeCardIds: null,
-      technicalAuditPath: null,
-      track: 'cet4',
-      worklistPath: 'exports/worklist.json',
-    },
-  );
+    ];
+  const parsed = parseArguments(args);
+  assert.equal(parsed.modelAcceptancesPath, 'exports/acceptances.json');
+  assert.equal(parsed.completeAssetConsumed, true);
+  assert.equal(parsed.checkUpdates.length, 7);
+  assert.equal(parsed.apply, true);
   assert.throws(
     () =>
       parseArguments([
-        'review',
-        '--file',
-        'exports/worklist.json',
-        '--card-id',
-        '000001',
-        '--reviewer',
-        'github:human-reviewer',
-        '--attest-listened',
-        '--check',
-        'audio_matches_text=pass',
-        '--check',
-        'audio_matches_text=fail',
+        ...args,
+        '--check', 'audio_matches_text=fail',
       ]),
     /duplicate --check/,
   );
@@ -488,6 +507,35 @@ function buildFixtureWorklist(fixture, options = {}) {
     track: 'cet4',
     ...options,
   });
+}
+
+function acceptancesForEntry(entry, checkUpdates) {
+  const checks = Object.fromEntries(checkUpdates.map(update => [update.name, update.value]));
+  const inputSha256 = audioPerceptualDecisionInputSha256(entry, checks);
+  return [
+    modelAcceptance(inputSha256, `audio-entry-${entry.card_id}-first`),
+    modelAcceptance(inputSha256, `audio-entry-${entry.card_id}-second`),
+  ];
+}
+
+function modelAcceptance(inputSha256, runId) {
+  return {
+    schema_version: 'model-acceptance.v2',
+    actor: {
+      kind: 'model_harness',
+      agent: 'codex',
+      model: 'audio-capable-model',
+      run_id: runId,
+    },
+    evidence: {
+      reviewed_at: '2026-07-30T01:00:00.000Z',
+      input_sha256: inputSha256,
+      capabilities: ['audio_perceptual_review'],
+      summary: 'The exact audio asset and all seven checks were reviewed.',
+      findings: [],
+    },
+    decision: 'accepted',
+  };
 }
 
 function digest(value) {

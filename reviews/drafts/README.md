@@ -1,12 +1,6 @@
-# Draft Review Zone
+# Draft and rejected content
 
-Use this directory for unapproved samples, blocked cards, discard candidates, or
-other content drafts that are not formal usable content.
-
-Rules:
-
-- Drafts are not formal product content.
-- Blocked cards may stay here for diagnosis, but they must not enter candidate
-  batches.
-- Card deletion requires explicit user confirmation.
-- Keep draft records scoped by library/group/box and date.
+Use this directory for blocked or rejected model-review artifacts that must not
+enter current authorized content. Card removal is not performed by moving a
+card here: it requires governed destructive-change evidence under
+`spec/review-workflow.json#card_removal_record` and exact PR-scope validation.

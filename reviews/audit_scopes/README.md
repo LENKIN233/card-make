@@ -6,5 +6,7 @@ Use scoped reports for candidate content PRs so a single box sample can carry
 its own audit fingerprint and scoped issue summary without committing global
 report refreshes under `reports/`.
 
-Formal approval records may still link the global report when the approved merge
-order is known and the global corpus reports have been refreshed intentionally.
+Current model-owned review and content-authorization records must link direct
+scoped reports replayed against immutable HEAD. Archived legacy approvals may
+retain their historical global-report references, but those references never
+create current authorization.

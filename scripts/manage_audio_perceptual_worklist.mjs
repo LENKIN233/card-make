@@ -5,12 +5,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
+import {validateIndependentModelAcceptances} from './lib/model_acceptance.mjs';
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const LEGACY_WORKLIST_SCHEMA = 'audio-perceptual-worklist.v1';
-export const WORKLIST_SCHEMA = 'audio-perceptual-worklist.v2';
+export const LEGACY_HUMAN_WORKLIST_SCHEMA = 'audio-perceptual-worklist.v2';
+export const WORKLIST_SCHEMA = 'audio-perceptual-worklist.v3';
 const TECHNICAL_AUDIT_SCHEMA = 'audio-technical-audit.v1';
 const SHA256_RE = /^[0-9a-f]{64}$/;
-const REVIEW_STATUSES = new Set(['pending', 'in_progress', 'passed', 'failed']);
+const REVIEW_STATUSES = new Set(['pending', 'passed', 'failed', 'capability_unavailable']);
 const CHECK_STATES = new Set(['pending', 'pass', 'fail']);
 export const PERCEPTUAL_CHECKS = Object.freeze([
   'audio_matches_text',
@@ -21,6 +24,17 @@ export const PERCEPTUAL_CHECKS = Object.freeze([
   'stress_and_pauses_do_not_mislead',
   'no_unwanted_noise_or_clipping',
 ]);
+
+export function audioPerceptualDecisionInputSha256(entry, checks = entry?.checks) {
+  return `sha256:${sha256(canonicalStringify({
+    schema_version: 'audio-perceptual-decision-input.v1',
+    entry_identity_sha256: entry?.entry_identity_sha256 ?? null,
+    complete_asset_consumed: true,
+    checks: Object.fromEntries(
+      PERCEPTUAL_CHECKS.map(check => [check, checks?.[check] ?? null]),
+    ),
+  }))}`;
+}
 const FAILURE_CODE_BY_CHECK = Object.freeze({
   audio_matches_text: 'audio_text_mismatch',
   target_signal_audible: 'target_signal_missing_or_misleading',
@@ -68,6 +82,9 @@ export function buildAudioPerceptualWorklist({
       : [],
   );
   if (existing) {
+    if (existing.schema_version !== WORKLIST_SCHEMA) {
+      throw new Error('Legacy human worklists are archive-only and cannot be refreshed into current model evidence.');
+    }
     const existingScope = resolveWorklistScope(existing, allContexts);
     if (
       canonicalStringify(existingScope.card_ids) !==
@@ -110,7 +127,7 @@ export function buildAudioPerceptualWorklist({
     } else if (prior?.review?.status && prior.review.status !== 'pending') {
       if (!allowReviewedReset) {
         throw new Error(
-          `Reviewed audio identity changed for ${context.card_id}; rerun with --allow-reviewed-reset only after human acknowledgement.`,
+          `Reviewed audio identity changed for ${context.card_id}; rerun with --allow-reviewed-reset and create new model evidence.`,
         );
       }
       resetReviews += 1;
@@ -131,12 +148,13 @@ export function buildAudioPerceptualWorklist({
     generated_at: now,
     track,
     authority_boundary:
-      'operational human-listening queue only; pending or completed entries do not approve card content, prove text source authenticity, or replace reviews/audio_qc formal evidence',
+      'model perceptual evidence binds exact audio bytes and transcript; worklists do not approve card content or prove text source authenticity, deployment, or device state',
     review_policy: {
-      review_mode: 'human_perceptual_qc',
-      agent_may_mark_passed: false,
+      review_mode: 'model_perceptual_qc',
+      required_model_capability: 'audio_perceptual_review',
+      independent_model_runs_required: 2,
       one_card_per_review_action: true,
-      full_asset_listening_attestation_required: true,
+      complete_asset_consumption_attestation_required: true,
       all_checks_required_before_terminal_status: true,
       failed_audio_requires_replacement: true,
       terminal_review_immutable: true,
@@ -171,52 +189,74 @@ export function reviewAudioPerceptualEntry({
   cardId,
   checkUpdates,
   clock = () => new Date(),
-  listenedToEntireAsset = false,
+  completeAssetConsumed = false,
+  capabilityUnavailable = false,
+  modelAcceptances = [],
   notes = null,
-  reviewer,
   worklist,
 } = {}) {
-  if (!isHumanReviewer(reviewer)) {
-    throw new Error('Reviewer must identify a human github, team, or external reviewer.');
-  }
-  if (listenedToEntireAsset !== true) {
-    throw new Error('Review requires explicit full-asset listening attestation.');
-  }
-  if (!Array.isArray(checkUpdates) || checkUpdates.length === 0) {
-    throw new Error('At least one --check name=pass|fail update is required.');
-  }
   const entry = worklist?.entries?.find(candidate => candidate.card_id === String(cardId));
   if (!entry) throw new Error(`Audio worklist card ${String(cardId)} does not exist.`);
-  if (['passed', 'failed'].includes(entry.review.status)) {
+  if (['passed', 'failed', 'capability_unavailable'].includes(entry.review.status)) {
     throw new Error('Terminal audio review entries cannot be overwritten.');
-  }
-  if (entry.review.reviewer && entry.review.reviewer !== reviewer) {
-    throw new Error('An in-progress audio review must be continued by the same reviewer.');
   }
   const updated = structuredClone(worklist);
   const target = updated.entries.find(candidate => candidate.card_id === String(cardId));
+  const now = asIso(clock());
+  if (capabilityUnavailable) {
+    if (typeof notes !== 'string' || !notes.trim()) {
+      throw new Error('Capability-unavailable audio review requires notes.');
+    }
+    target.review = {
+      status: 'capability_unavailable',
+      model_acceptances: [],
+      complete_asset_consumed: false,
+      started_at: now,
+      completed_at: now,
+      notes: notes.trim(),
+      failure_codes: ['audio_perceptual_capability_unavailable'],
+      replacement_required: null,
+    };
+    updated.progress = summarizeEntries(updated.entries);
+    return updated;
+  }
+  if (completeAssetConsumed !== true) {
+    throw new Error('Review requires complete_asset_consumed=true for the exact asset.');
+  }
+  if (
+    !Array.isArray(checkUpdates) ||
+    checkUpdates.length !== PERCEPTUAL_CHECKS.length ||
+    new Set(checkUpdates.map(update => update.name)).size !== PERCEPTUAL_CHECKS.length
+  ) {
+    throw new Error('Review requires exactly one result for every perceptual check.');
+  }
   for (const update of checkUpdates) {
     if (!PERCEPTUAL_CHECKS.includes(update.name) || !['pass', 'fail'].includes(update.value)) {
       throw new Error(`Invalid perceptual check update ${update.name}=${update.value}.`);
     }
     target.checks[update.name] = update.value;
   }
-  const now = asIso(clock());
-  target.review.reviewer = reviewer;
-  target.review.listening_attestation =
-    'listened_to_entire_asset_with_transcript_and_target_context';
-  target.review.started_at ??= now;
-  if (notes !== null) target.review.notes = String(notes).trim();
-  const states = Object.values(target.checks);
-  const complete = states.every(state => state === 'pass' || state === 'fail');
-  if (!complete) {
-    target.review.status = 'in_progress';
-    target.review.completed_at = null;
-    target.review.failure_codes = failedChecks(target.checks).map(
-      check => FAILURE_CODE_BY_CHECK[check],
+  const acceptanceIssues = validateIndependentModelAcceptances(
+    modelAcceptances,
+    {requiredCapabilities: ['audio_perceptual_review']},
+  );
+  if (acceptanceIssues.length > 0) {
+    throw new Error(
+      `Audio model acceptance is invalid: ${acceptanceIssues.map(issue => issue.code).join(', ')}`,
     );
-    target.review.replacement_required = null;
-  } else if (states.includes('fail')) {
+  }
+  const expectedInput = audioPerceptualDecisionInputSha256(target);
+  if (modelAcceptances.some(
+    acceptance => acceptance.evidence.input_sha256 !== expectedInput,
+  )) {
+    throw new Error('Audio model acceptance does not bind the exact worklist entry and seven check results.');
+  }
+  target.review.model_acceptances = structuredClone(modelAcceptances);
+  target.review.complete_asset_consumed = true;
+  target.review.started_at = now;
+  target.review.notes = notes === null ? null : String(notes).trim();
+  const states = Object.values(target.checks);
+  if (states.includes('fail')) {
     if (!target.review.notes) throw new Error('Failed audio review requires notes.');
     target.review.status = 'failed';
     target.review.completed_at = now;
@@ -239,8 +279,12 @@ export function validateAudioPerceptualWorklist(
   {requireComplete = false, root = ROOT, technicalAudit = null} = {},
 ) {
   const errors = [];
-  const isLegacy = worklist?.schema_version === LEGACY_WORKLIST_SCHEMA;
+  const isLegacy = [
+    LEGACY_WORKLIST_SCHEMA,
+    LEGACY_HUMAN_WORKLIST_SCHEMA,
+  ].includes(worklist?.schema_version);
   const isCurrent = worklist?.schema_version === WORKLIST_SCHEMA;
+  const hasScope = worklist?.schema_version !== LEGACY_WORKLIST_SCHEMA;
   exactKeys(
     worklist,
     [
@@ -250,7 +294,7 @@ export function validateAudioPerceptualWorklist(
       'track',
       'authority_boundary',
       'review_policy',
-      ...(isCurrent ? ['scope'] : []),
+      ...(hasScope ? ['scope'] : []),
       'source_technical_audit',
       'corpus_fingerprint',
       'context_quality',
@@ -283,7 +327,7 @@ export function validateAudioPerceptualWorklist(
   ) {
     errors.push('authority_boundary is missing');
   }
-  validateReviewPolicy(worklist?.review_policy, errors);
+  validateReviewPolicy(worklist?.review_policy, errors, {current: isCurrent});
   validateTechnicalAuditReference(worklist?.source_technical_audit, errors);
 
   if (!Array.isArray(worklist?.entries) || worklist.entries.length === 0) {
@@ -291,8 +335,26 @@ export function validateAudioPerceptualWorklist(
   } else {
     const seenCards = new Set();
     const seenAssets = new Set();
+    const seenModelRunIds = new Set();
     for (let index = 0; index < worklist.entries.length; index += 1) {
-      validateEntry(worklist.entries[index], index, seenCards, seenAssets, root, errors);
+      validateEntry(
+        worklist.entries[index],
+        index,
+        seenCards,
+        seenAssets,
+        root,
+        errors,
+        {current: isCurrent},
+      );
+      if (isCurrent) {
+        for (const acceptance of worklist.entries[index]?.review?.model_acceptances || []) {
+          const runId = acceptance?.actor?.run_id;
+          if (seenModelRunIds.has(runId)) {
+            errors.push(`entries[${index}].review reuses model run_id ${String(runId)}`);
+          }
+          seenModelRunIds.add(runId);
+        }
+      }
     }
     const expectedCorpusFingerprint = sha256(
       canonicalStringify(worklist.entries.map(entry => entry.entry_identity_sha256)),
@@ -300,12 +362,17 @@ export function validateAudioPerceptualWorklist(
     if (worklist.corpus_fingerprint !== expectedCorpusFingerprint) {
       errors.push('corpus_fingerprint does not match entries');
     }
-    const expectedProgress = summarizeEntries(worklist.entries);
+    const expectedProgress = isCurrent
+      ? summarizeEntries(worklist.entries)
+      : summarizeLegacyEntries(worklist.entries);
     if (canonicalStringify(worklist.progress) !== canonicalStringify(expectedProgress)) {
       errors.push('progress does not match entries');
     }
     if (requireComplete && expectedProgress.complete !== true) {
       errors.push('worklist is not complete');
+    }
+    if (requireComplete && isLegacy) {
+      errors.push('legacy human worklists are archive-only and cannot create current audio QC');
     }
     const expectedContextQuality = summarizeContextQuality(worklist.entries);
     if (
@@ -397,7 +464,7 @@ function resolveWorklistScope(worklist, contexts) {
   if (worklist?.schema_version === LEGACY_WORKLIST_SCHEMA) {
     return createWorklistScope(null, contexts);
   }
-  if (worklist?.schema_version !== WORKLIST_SCHEMA) {
+  if (![LEGACY_HUMAN_WORKLIST_SCHEMA, WORKLIST_SCHEMA].includes(worklist?.schema_version)) {
     throw new Error('schema version cannot define an audio scope.');
   }
   exactScopeKeys(worklist.scope);
@@ -533,7 +600,15 @@ function validateTechnicalAudit(audit, contexts, root, track) {
   return errors;
 }
 
-function validateEntry(entry, index, seenCards, seenAssets, root, errors) {
+function validateEntry(
+  entry,
+  index,
+  seenCards,
+  seenAssets,
+  root,
+  errors,
+  {current = false} = {},
+) {
   const label = `entries[${index}]`;
   exactKeys(
     entry,
@@ -608,7 +683,7 @@ function validateEntry(entry, index, seenCards, seenAssets, root, errors) {
     errors.push(`${label}.entry_identity_sha256 is invalid`);
   }
   validateChecks(entry?.checks, label, errors);
-  validateReview(entry?.review, entry?.checks, label, errors);
+  validateReview(entry?.review, entry?.checks, entry, label, errors, {current});
 }
 
 function validateChecks(checks, label, errors) {
@@ -618,13 +693,17 @@ function validateChecks(checks, label, errors) {
   }
 }
 
-function validateReview(review, checks, label, errors) {
+function validateReview(review, checks, entry, label, errors, {current = false} = {}) {
+  if (!current) {
+    validateLegacyHumanReview(review, checks, label, errors);
+    return;
+  }
   exactKeys(
     review,
     [
       'status',
-      'reviewer',
-      'listening_attestation',
+      'model_acceptances',
+      'complete_asset_consumed',
       'started_at',
       'completed_at',
       'notes',
@@ -639,24 +718,27 @@ function validateReview(review, checks, label, errors) {
   if (review?.status === 'pending') {
     if (!states.every(state => state === 'pending')) errors.push(`${label} pending review contains resolved checks`);
     if (
-      review.reviewer !== null ||
-      review.listening_attestation !== null ||
+      review.model_acceptances?.length !== 0 ||
+      review.complete_asset_consumed !== null ||
       review.started_at !== null ||
       review.completed_at !== null
     ) errors.push(`${label} pending review has reviewer timestamps or attestation`);
     if (review.replacement_required !== null || review.failure_codes?.length) errors.push(`${label} pending review has outcome data`);
   } else {
-    if (!isHumanReviewer(review?.reviewer)) errors.push(`${label}.review.reviewer is not human`);
-    if (
-      review?.listening_attestation !==
-      'listened_to_entire_asset_with_transcript_and_target_context'
-    ) errors.push(`${label}.review listening attestation is invalid`);
+    if (review?.status !== 'capability_unavailable') {
+      for (const issue of validateIndependentModelAcceptances(
+        review?.model_acceptances,
+        {requiredCapabilities: ['audio_perceptual_review']},
+      )) errors.push(`${label}.review.${issue.code}`);
+      if (review?.complete_asset_consumed !== true) {
+        errors.push(`${label}.review.complete_asset_consumed must be true`);
+      }
+      if (review?.model_acceptances?.some(
+        acceptance => acceptance?.evidence?.input_sha256 !==
+          audioPerceptualDecisionInputSha256(entry, checks)
+      )) errors.push(`${label}.review model acceptance input does not match entry identity`);
+    }
     if (!isIso(review?.started_at)) errors.push(`${label}.review.started_at is invalid`);
-  }
-  if (review?.status === 'in_progress') {
-    if (review.completed_at !== null) errors.push(`${label} in-progress review is completed`);
-    if (!states.includes('pending') || states.every(state => state === 'pending')) errors.push(`${label} in-progress review check state is invalid`);
-    if (review.replacement_required !== null) errors.push(`${label} in-progress review has replacement outcome`);
   }
   if (review?.status === 'passed') {
     if (!states.every(state => state === 'pass')) errors.push(`${label} passed review has non-pass checks`);
@@ -668,6 +750,20 @@ function validateReview(review, checks, label, errors) {
     if (!isIso(review.completed_at)) errors.push(`${label}.review.completed_at is invalid`);
     if (review.replacement_required !== true || !review.failure_codes?.length) errors.push(`${label} failed review outcome is invalid`);
     if (typeof review.notes !== 'string' || !review.notes.trim()) errors.push(`${label} failed review requires notes`);
+  }
+  if (review?.status === 'capability_unavailable') {
+    if (!states.every(state => state === 'pending')) {
+      errors.push(`${label} capability-unavailable review must keep checks pending`);
+    }
+    if (
+      review.complete_asset_consumed !== false ||
+      review.model_acceptances?.length !== 0 ||
+      !isIso(review.completed_at) ||
+      !String(review.notes || '').trim() ||
+      review.replacement_required !== null ||
+      canonicalStringify(review.failure_codes) !==
+        canonicalStringify(['audio_perceptual_capability_unavailable'])
+    ) errors.push(`${label} capability-unavailable review evidence is invalid`);
   }
   if (
     isIso(review?.started_at) &&
@@ -682,14 +778,45 @@ function validateReview(review, checks, label, errors) {
   }
 }
 
-function validateReviewPolicy(policy, errors) {
+function validateLegacyHumanReview(review, checks, label, errors) {
+  const legacyStatuses = new Set(['pending', 'in_progress', 'passed', 'failed']);
+  exactKeys(
+    review,
+    [
+      'status', 'reviewer', 'listening_attestation', 'started_at',
+      'completed_at', 'notes', 'failure_codes', 'replacement_required',
+    ],
+    `${label}.review`,
+    errors,
+  );
+  if (!legacyStatuses.has(review?.status)) errors.push(`${label}.review.status is invalid`);
+  const states = PERCEPTUAL_CHECKS.map(check => checks?.[check]);
+  if (review?.status === 'pending') {
+    if (!states.every(state => state === 'pending')) errors.push(`${label} pending review contains resolved checks`);
+    if (review.reviewer !== null || review.listening_attestation !== null) errors.push(`${label} pending review has legacy authority data`);
+    return;
+  }
+  if (!isHumanReviewer(review?.reviewer)) errors.push(`${label}.review.reviewer is not human`);
+  if (review?.listening_attestation !== 'listened_to_entire_asset_with_transcript_and_target_context') {
+    errors.push(`${label}.review listening attestation is invalid`);
+  }
+}
+
+function validateReviewPolicy(policy, errors, {current = false} = {}) {
+  if (!current) {
+    if (policy?.review_mode !== 'human_perceptual_qc') {
+      errors.push('legacy review_policy is invalid');
+    }
+    return;
+  }
   exactKeys(
     policy,
     [
       'review_mode',
-      'agent_may_mark_passed',
+      'required_model_capability',
+      'independent_model_runs_required',
       'one_card_per_review_action',
-      'full_asset_listening_attestation_required',
+      'complete_asset_consumption_attestation_required',
       'all_checks_required_before_terminal_status',
       'failed_audio_requires_replacement',
       'terminal_review_immutable',
@@ -699,10 +826,11 @@ function validateReviewPolicy(policy, errors) {
     errors,
   );
   if (
-    policy?.review_mode !== 'human_perceptual_qc' ||
-    policy?.agent_may_mark_passed !== false ||
+    policy?.review_mode !== 'model_perceptual_qc' ||
+    policy?.required_model_capability !== 'audio_perceptual_review' ||
+    policy?.independent_model_runs_required !== 2 ||
     policy?.one_card_per_review_action !== true ||
-    policy?.full_asset_listening_attestation_required !== true ||
+    policy?.complete_asset_consumption_attestation_required !== true ||
     policy?.all_checks_required_before_terminal_status !== true ||
     policy?.failed_audio_requires_replacement !== true ||
     policy?.terminal_review_immutable !== true ||
@@ -726,11 +854,35 @@ function validateTechnicalAuditReference(reference, errors) {
 }
 
 function summarizeEntries(entries) {
-  const progress = {total: entries.length, pending: 0, in_progress: 0, passed: 0, failed: 0, complete: false};
+  const progress = {
+    total: entries.length,
+    pending: 0,
+    passed: 0,
+    failed: 0,
+    capability_unavailable: 0,
+    complete: false,
+  };
   for (const entry of entries) {
     if (entry?.review?.status in progress) progress[entry.review.status] += 1;
   }
-  progress.complete = progress.total > 0 && progress.pending === 0 && progress.in_progress === 0;
+  progress.complete = progress.total > 0 && progress.pending === 0;
+  return progress;
+}
+
+function summarizeLegacyEntries(entries) {
+  const progress = {
+    total: entries.length,
+    pending: 0,
+    in_progress: 0,
+    passed: 0,
+    failed: 0,
+    complete: false,
+  };
+  for (const entry of entries) {
+    if (entry?.review?.status in progress) progress[entry.review.status] += 1;
+  }
+  progress.complete =
+    progress.total > 0 && progress.pending === 0 && progress.in_progress === 0;
   return progress;
 }
 
@@ -761,8 +913,8 @@ function pendingChecks() {
 function pendingReview() {
   return {
     status: 'pending',
-    reviewer: null,
-    listening_attestation: null,
+    model_acceptances: [],
+    complete_asset_consumed: null,
     started_at: null,
     completed_at: null,
     notes: '',
@@ -880,7 +1032,9 @@ export function parseArguments(argv) {
   const options = {
     allowReviewedReset: false,
     apply: false,
-    attestListened: false,
+    completeAssetConsumed: false,
+    capabilityUnavailable: false,
+    modelAcceptancesPath: null,
     cardId: null,
     checkUpdates: [],
     command,
@@ -888,7 +1042,6 @@ export function parseArguments(argv) {
     notes: null,
     outputPath: null,
     requireComplete: false,
-    reviewer: null,
     scopeCardIds: null,
     technicalAuditPath: null,
     track: 'cet4',
@@ -897,10 +1050,11 @@ export function parseArguments(argv) {
   for (let index = 0; index < rest.length; index += 1) {
     const argument = rest[index];
     if (argument === '--apply') options.apply = true;
-    else if (argument === '--attest-listened') options.attestListened = true;
+    else if (argument === '--complete-asset-consumed') options.completeAssetConsumed = true;
+    else if (argument === '--capability-unavailable') options.capabilityUnavailable = true;
     else if (argument === '--allow-reviewed-reset') options.allowReviewedReset = true;
     else if (argument === '--require-complete') options.requireComplete = true;
-    else if (['--track', '--technical-audit', '--output', '--existing', '--file', '--card-id', '--reviewer', '--notes', '--check', '--scope-card-ids'].includes(argument)) {
+    else if (['--track', '--technical-audit', '--output', '--existing', '--file', '--card-id', '--acceptances', '--notes', '--check', '--scope-card-ids'].includes(argument)) {
       const value = rest[index + 1];
       if (!value || value.startsWith('--')) throw new Error(`${argument} requires a value`);
       index += 1;
@@ -910,7 +1064,7 @@ export function parseArguments(argv) {
       if (argument === '--existing') options.existingPath = value;
       if (argument === '--file') options.worklistPath = value;
       if (argument === '--card-id') options.cardId = value;
-      if (argument === '--reviewer') options.reviewer = value;
+      if (argument === '--acceptances') options.modelAcceptancesPath = value;
       if (argument === '--notes') options.notes = value;
       if (argument === '--scope-card-ids') {
         options.scopeCardIds = value.split(',').map(cardId => cardId.trim());
@@ -928,18 +1082,29 @@ export function parseArguments(argv) {
   if (['next', 'review', 'validate'].includes(command) && !options.worklistPath) {
     throw new Error(`${command} requires --file`);
   }
-  if (command === 'review' && (!options.cardId || !options.reviewer || options.checkUpdates.length === 0)) {
-    throw new Error('review requires --card-id, --reviewer, and at least one --check');
-  }
-  if (command === 'review' && options.attestListened !== true) {
-    throw new Error('review requires --attest-listened');
+  if (command === 'review' && !options.cardId) {
+    throw new Error('review requires --card-id');
   }
   if (new Set(options.checkUpdates.map(update => update.name)).size !== options.checkUpdates.length) {
     throw new Error('duplicate --check updates are not allowed');
   }
+  if (
+    command === 'review' &&
+    !options.capabilityUnavailable &&
+    (!options.modelAcceptancesPath ||
+      !options.completeAssetConsumed ||
+      options.checkUpdates.length !== PERCEPTUAL_CHECKS.length)
+  ) {
+    throw new Error('review requires --acceptances, --complete-asset-consumed, and all seven --check results');
+  }
   if (command !== 'review' && options.apply) throw new Error('--apply is valid only for review');
-  if (command !== 'review' && options.attestListened) {
-    throw new Error('--attest-listened is valid only for review');
+  if (
+    command !== 'review' &&
+    (options.completeAssetConsumed ||
+      options.capabilityUnavailable ||
+      options.modelAcceptancesPath)
+  ) {
+    throw new Error('model review evidence options are valid only for review');
   }
   if (command !== 'build' && options.allowReviewedReset) {
     throw new Error('--allow-reviewed-reset is valid only for build');
@@ -1021,17 +1186,20 @@ async function runCli() {
     }
     if (options.command === 'next') {
       const entry = loaded.worklist.entries.find(
-        candidate => candidate.review.status === 'in_progress',
-      ) ?? loaded.worklist.entries.find(candidate => candidate.review.status === 'pending');
+        candidate => candidate.review.status === 'pending',
+      );
       console.log(JSON.stringify({ok: true, complete: !entry, entry: entry ?? null}, null, 2));
       return;
     }
     const updated = reviewAudioPerceptualEntry({
       cardId: options.cardId,
       checkUpdates: options.checkUpdates,
-      listenedToEntireAsset: options.attestListened,
+      completeAssetConsumed: options.completeAssetConsumed,
+      capabilityUnavailable: options.capabilityUnavailable,
+      modelAcceptances: options.modelAcceptancesPath
+        ? readJson(requireRegularFile(options.modelAcceptancesPath, ROOT))
+        : [],
       notes: options.notes,
-      reviewer: options.reviewer,
       worklist: loaded.worklist,
     });
     const updatedErrors = validateAudioPerceptualWorklist(updated, {

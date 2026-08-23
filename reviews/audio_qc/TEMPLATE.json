@@ -1,7 +1,44 @@
 {
+  "schema_version": "model-owned-audio-qc.v2",
   "audio_qc_id": "YYYYMMDD-box-prefix-audio-qc",
   "created_at": "YYYY-MM-DDTHH:mm:ss+08:00",
-  "agent": "codex",
+  "model_acceptances": [{
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "<agent-id>",
+      "model": "<audio-capable-model-id>",
+      "run_id": "<run-id>"
+    },
+    "evidence": {
+      "reviewed_at": "<RFC3339_WITH_TIMEZONE>",
+      "input_sha256": "sha256:<64 lowercase hex characters>",
+      "capabilities": [
+        "audio_perceptual_review"
+      ],
+      "summary": "<semantic-review-summary>",
+      "findings": []
+    },
+    "decision": "accepted"
+  }, {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "<independent-agent-id>",
+      "model": "<independent-audio-capable-model-id>",
+      "run_id": "<independent-run-id>"
+    },
+    "evidence": {
+      "reviewed_at": "<RFC3339_WITH_TIMEZONE>",
+      "input_sha256": "sha256:<64 lowercase hex characters>",
+      "capabilities": [
+        "audio_perceptual_review"
+      ],
+      "summary": "<semantic-review-summary>",
+      "findings": []
+    },
+    "decision": "accepted"
+  }],
   "scope": {
     "library": "",
     "group": "",
@@ -11,8 +48,10 @@
   },
   "source_records": {
     "card_files": [],
-    "linked_agent_self_review": "",
-    "linked_approved_batch": ""
+    "linked_agent_self_reviews": [],
+    "linked_approved_batch": "",
+    "linked_perceptual_worklist": "",
+    "perceptual_worklist_sha256": ""
   },
   "text_gate": {
     "tts_text_reviewed": false,
@@ -40,7 +79,6 @@
   "legacy_adoption": {
     "enabled": false,
     "reviewed_at": "",
-    "reviewer": "",
     "reproducibility_status": "reproducible"
   },
   "generated_assets": [
@@ -70,8 +108,14 @@
     {
       "card_id": "",
       "asset_path": "ai_tts/",
-      "audio_matches_text": false,
-      "target_signal_audible": false,
+      "complete_asset_consumed": false,
+      "matches_text": false,
+      "target_signal": false,
+      "pronunciation": false,
+      "speed": false,
+      "rhythm": false,
+      "stress_pauses": false,
+      "no_noise": false,
       "notes": ""
     }
   ],
@@ -83,8 +127,8 @@
   },
   "approval_boundary": {
     "tts_audio_is_not_source_authenticity_evidence": true,
-    "formal_content_approval_still_requires_user": true,
-    "content_approval_record_required_for_formal_use": true
+    "current_model_owned_content_authorization_required": true,
+    "external_facts_must_not_be_inferred": true
   },
   "validation": {
     "audio_qc": "node scripts/validate_audio_qc.mjs",

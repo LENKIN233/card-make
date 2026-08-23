@@ -1,72 +1,37 @@
 {
-  "version": "card-make-agent-harness-v1",
+  "version": "card-make-agent-harness-v2",
   "status": "active",
-  "influences": {
-    "openai_agents_pattern": [
-      "separate_instructions_from_tools_and_guardrails",
-      "use_evals_for_repeatable_quality_checks",
-      "use_tracing_or_review_records_for decisions_and_tool_outputs",
-      "make_guardrails capable_of_blocking_bad_outputs"
-    ],
-    "anthropic_harness_pattern": [
-      "start_with_simple_workflows_before_complex_agents",
-      "ground_long_running_agents_in_environment_truth",
-      "use_checkpoints_and_artifacts_for_long_tasks",
-      "use_hooks_or_validators_to_turn_preferences_into repeated_checks"
-    ],
-    "project_interpretation": "External agent-harness ideas inform the operating model, but user-confirmed card quality rules are the final authority for this workspace."
-  },
+  "authority_owner": "spec/review-workflow.json",
   "operating_model": {
-    "task_start": [
-      "briefly_restate_user_request",
-      "list_specs_read",
-      "stop_if_restatement_is_wrong"
+    "principles": [
+      "prefer the capable model plus small outcome-focused guardrails over process choreography",
+      "bind semantic decisions to exact immutable inputs",
+      "use deterministic tools for structural and objective facts",
+      "use behavioral evals instead of duplicated prose-token assertions",
+      "record capability limits and reject unsupported claims",
+      "continue independent work when one scope is blocked"
     ],
-    "progressive_disclosure": "Read the smallest relevant spec subset, escalate only when the task crosses product, content, interaction, or box boundaries.",
-    "ground_truth_sources": [
-      "current_workspace_files",
-      "../softbook_cet/spec/product-core.json",
-      "../softbook_cet/spec/card-system.json",
-      "../softbook_cet/spec/box-catalog.json",
-      "user_interview_confirmed_rules"
+    "model_owned_lifecycle": [
+      "generate",
+      "semantic_review",
+      "content_authorization",
+      "audio_perceptual_review",
+      "governed_removal",
+      "exact_head_validated_merge"
     ],
     "guardrails": [
       "content-quality blockers",
-      "sample before batch",
-      "user-only final approval",
-      "legacy status demotion",
-      "tts text/audio separation",
-      "formal audio readiness requires audio generation contract and reviews/audio_qc record",
+      "model-acceptance.v2 actor and evidence validation",
+      "legacy person-authority records are immutable archive evidence only",
+      "exact current scope and corpus fingerprint",
+      "current scoped audit replay",
+      "complete changed-card metadata and answer-reference parity",
+      "source provenance and true-exam claim integrity",
+      "audio technical audit plus actual model asset-consumption evidence",
+      "no invented provider voice source deployment device GitHub or other external facts",
       "no harness and bulk-content mixed PR",
-      "recorded upstream catalog alignment issues",
-      "read-only card quality audit for legacy and candidate corpus risk signals",
-      "card quality audit reports must match the current card corpus fingerprint",
-      "new or changed sample and approval records must link the current card quality audit report; historical records remain archive evidence and only complete current approval plus complete current linked self-review may authorize current formal use",
-      "candidate sample PRs use scoped audit reports under reviews/audit_scopes instead of committing global report refreshes",
-      "content sample PRs must not carry global report refreshes or non-scope self-review fingerprint churn",
-      "content sample PRs must replay the current scoped card quality audit before accepting changed scoped-audit evidence",
-      "all cards that carry quality_metadata must use schema and content-quality enums; untouched legacy cards may omit metadata, but any added or modified candidate card must pass current complete metadata validation without grandfathering",
-      "all files consumed under card_boxes_json use the canonical governed filename, and changed candidate cards are derived from NUL-delimited merge-base-to-head card objects rather than declared scope",
-      "every JSON change under agent_self_review, approved_batches, drafts, or audit_scopes triggers content-candidate validation without relying on a filename prefix; only the four exact repository-declared template paths are excluded; agent_self_review and approval records must be direct regular JSON children, recursive discovery rejects nested records, and Git paths are preserved exactly with unusual separators failing closed",
-      "current scoped audits materialize the complete immutable HEAD card_boxes_json tree so deleted or renamed base paths cannot leak into the replay",
-      "each changed candidate requires exactly one changed review coverage; standard self-review entries are compared with their unique HEAD corpus card even when the card did not change, and quality_metadata deeply matches every field except the independently validated artifact-local review_status",
-      "standard three-card samples prove exactly three immutable-HEAD-matching snapshots per declared box prefix, carry complete batch-level progression, risk, representative-card, and next-step conclusions, and standalone harness validation compares snapshot interaction, knowledge, and all quality_metadata except review_status with the current corpus; residual closure evidence requires an explicit residual scope type and direct scoped audit and cannot authorize a newly added card",
-      "every new or changed standard, residual-closure, or full-track review or approval record uses a direct current scoped audit; the pre-cutover index and every legacy record it names are byte-for-byte immutable against the active repository commit that introduced the index",
-      "every new or changed direct scoped-audit JSON artifact exactly matches a current immutable-HEAD replay even when unlinked; standalone harness validation rejects malformed tracked artifacts, replays current-fingerprint artifacts, permits structurally valid unchanged historical fingerprints, validates unchanged historical self-review against the immutable artifact fingerprint and historical rule set without current-card or current-track parity, classifies historical approval as archive evidence rather than current authorization, and hash-pins explicit legacy exceptions so unrelated future card changes do not force evidence churn",
-      "the four exact review and approval template paths are regular files whose complete standard or full-track placeholder shape matches the distinct doc-manifest authority, and actual approval records require a timezone-qualified ISO approved_at, non-empty summary, non-empty unique scope arrays, and non-empty unique representative cards inside scope; current-authorization consumers accept only direct canonical non-template approval evidence with complete formal fields, exact queue scope, and a direct canonical complete linked self-review when those records, both scoped reports, the active audit script, and active audit rule spec are regular committed evidence or authority whose worktree, index, and one fixed HEAD modes and bytes agree, independently regenerate the complete current card-quality audit, require both scoped reports to be exact replays, and recheck the fixed HEAD/index snapshot, captured file modes/bytes, and corpus fingerprint before returning rather than trusting tracked status, a current digest, or self-declared summary, while historical records remain archive-only",
-      "full-track remediation records are aggregate human-review evidence with no cards property; exact sample flags, direct current scoped audit, structured non-automation human identity, per-box pass evidence, complete zero-hard-blocker quality_audit summary, non-empty unique in-scope representative cards, and complete ready batch summary/empty-risk/next-step evidence are required before strict equal non-empty unique scope and coverage IDs can count; those IDs must equal the complete declared track card and box-prefix sets in immutable HEAD, and merge-base plus HEAD track membership must be the same non-empty set so aggregate coverage cannot authorize added cards",
-      "changed elimination cards use explicit unique elimination_items IDs, ID-based answer_key.correct_items, and a temporary eliminable_items text/is_correct preview projection; untouched legacy text-as-ID migrations remain read-only compatibility only",
-      "multi-prefix content PRs require explicit handoff or residual-closure evidence proving a single review unit",
-      "residual blocker closure reviews are not 3-card sample approvals and must not recommend user confirmation",
-      "agent-managed git lifecycle for tracked-file changes",
-      "git handoffs exclude only the exact repository-declared handoff template path, require the complete typed template schema and change-type/merge-authority consistency, forbid any card_boxes_json payload from claiming harness/tooling auto-merge authority, require fatal byte-preserving UTF-8 decoding including leading U+FEFF and no-ignore gitlink discovery for Git paths, bind the complete payload path set and required v2 literal-pathspec patch digest to the final payload commit, read one append-only direct safe non-executable 100644 JSON blob from the explicit fixed HEAD tree via ls-tree plus cat-file, preserve historical handoffs, and audit the full reachable pre- and post-payload commit sets including merged side histories so add-delete, modify-restore, gitlink, non-UTF-8, reverted mutation, or identical-tree merge paths still fail",
-      "all delivery-record Git semantic reads resolve fixed base, head, and payload commit OIDs and use one canonical no-replace/no-grafts environment; symlink, executable, gitlink, nested, control-character, Unicode-line-separator, replace-ref, GIT_REPLACE_REF_BASE, common-dir info/grafts including linked-worktree grafts, legacy-hash, and missing-hash handoff evidence fails closed",
-      "git-diff-binary-v2 patch evidence is mandatory for every current changed handoff and uses the authority-declared deterministic environment, Git config, diff options, and commit-sourced attributes; non-empty repository info attributes or custom diff-driver config fail closed, while legacy hashing remains archive-helper-only",
-      "real pull-request handoffs use /pull URLs and exactly match event number, URL, state, draft, explicit head SHA, head/base branches, and same-origin repositories; parked no-PR handoffs use clearly identified /compare locators and a remote-tracking ref equal to the explicit head",
-      "the GitHub delivery-record gate validates the exact pull_request head SHA and complete PR event binding while other pull-request jobs preserve synthetic merge coverage",
-      "hint_layer enhancement is not a standalone card interaction",
-      "sample quality gate links quality metadata, blocker scan, self-review, and user approval records",
-      "new or changed self-review evidence explicitly attests that answer truth, option or word-bank references, and distractor labels match the exact card source; this semantic attestation complements but does not overstate structural automation"
+      "required checks and exact PR head before automatic merge",
+      "governed destructive-change evidence before card removal"
     ],
     "records": [
       "reviews/agent_self_review/",
@@ -74,8 +39,20 @@
       "reviews/audio_qc/",
       "reviews/git_handoffs/",
       "reviews/audit_scopes/",
-      "ephemeral reports generated with --report-path",
-      "spec/eval-fixtures.json"
+      "ephemeral reports generated with --report-path"
+    ],
+    "historical_records": [
+      "reviews/sample_confirmations/",
+      "reviews/controlled_pilot_reviews/",
+      "reviews/controlled_pilot_approvals/"
     ]
+  },
+  "validator_architecture": {
+    "shared_model_acceptance": "scripts/lib/model_acceptance.mjs",
+    "harness_wiring": "scripts/validate_harness.mjs",
+    "content_scope": "scripts/validate_pr_scope.mjs",
+    "current_authorization_consumer": "scripts/lib/card_integrity.mjs",
+    "audio_qc": "scripts/validate_audio_qc.mjs",
+    "delivery_record": "scripts/validate_delivery_record.mjs"
   }
 }

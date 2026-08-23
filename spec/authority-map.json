@@ -1,5 +1,5 @@
 {
-  "version": "card-make-harness-v1",
+  "version": "card-make-model-owned-acceptance-v2",
   "status": "active",
   "owners": {
     "workspace_role": "spec/workspace-contract.json",
@@ -11,22 +11,21 @@
     "card_content_quality": "spec/content-quality-contract.json",
     "audio_generation_and_qc": "spec/audio-generation-contract.json",
     "audio_qc_records": "reviews/audio_qc/TEMPLATE.json",
+    "model_audio_input_validation": "scripts/validate_audio_qc.mjs",
     "audio_perceptual_worklists": "spec/audio-perceptual-worklist.schema.json",
-    "audio_perceptual_review_station": "scripts/serve_audio_perceptual_review.mjs",
+    "model_owned_acceptance": "spec/review-workflow.json",
+    "model_acceptance_validator": "scripts/lib/model_acceptance.mjs",
+    "trusted_model_execution_provenance": ".github/workflows/trusted-model-review.yml",
     "card_quality_audit_rules": "spec/card-quality-audit.json",
     "card_quality_audit_tool": "scripts/audit_card_quality.mjs",
     "front_answer_leak_queue_audit": "scripts/audit_front_leak_queue.mjs",
-    "release_gap_sample_planning": "scripts/plan_release_gap_samples.mjs",
-    "candidate_review_queue": "spec/candidate-review-queue.schema.json",
-    "candidate_review_queue_validation": "scripts/validate_candidate_review_queue.mjs",
     "repository_health": "scripts/report_repo_health.mjs",
     "delivery_boundary": "scripts/validate_delivery_boundary.mjs",
     "delivery_record_validation": "scripts/validate_delivery_record.mjs",
     "candidate_sample_audit_evidence": "reviews/audit_scopes/README.md",
     "tts_text_and_audio_policy": "spec/content-quality-contract.json",
     "agent_permissions": "spec/review-workflow.json",
-    "sample_then_batch_flow": "spec/review-workflow.json",
-    "sample_confirmation_records": "reviews/sample_confirmations/TEMPLATE.json",
+    "content_acceptance_flow": "spec/review-workflow.json",
     "agent_managed_git_lifecycle": "spec/git-workflow.json",
     "content_pr_scope_gate": "scripts/validate_pr_scope.mjs",
     "candidate_metadata": "spec/card-metadata.schema.json",
@@ -38,15 +37,15 @@
     "golden_task_regression_fixtures": "spec/eval-fixtures.json",
     "anti_drift": "spec/perturbation-audit.json",
     "harness_validation": "scripts/validate_harness.mjs",
-    "user_approval_records": "reviews/approved_batches/TEMPLATE.json",
-    "controlled_pilot_review_records": "reviews/controlled_pilot_reviews/TEMPLATE.json",
-    "controlled_pilot_approval_artifacts": "reviews/controlled_pilot_approvals/TEMPLATE.json",
+    "content_authorization_records": "reviews/approved_batches/TEMPLATE.json",
+    "historical_sample_confirmation_records": "spec/review-workflow.json#historical_compatibility",
+    "historical_controlled_pilot_records": "spec/review-workflow.json#historical_compatibility",
     "agent_git_completion_records": "reviews/git_handoffs/TEMPLATE.json"
   },
   "conflict_policy": {
     "product_boundary_conflict": "The softbook_cet product specs win unless the user explicitly authorizes a separate spec-change task.",
     "content_quality_conflict": "The interview-confirmed card make harness can be stricter than softbook_cet, but it must not redefine product truth.",
-    "box_catalog_conflict": "Use ../softbook_cet/spec/box-catalog.json first, record the conflict, and ask the user before changing box structure.",
-    "approval_conflict": "No agent, script, legacy field, or PR status can override explicit user approval for formal usable content."
+    "box_catalog_conflict": "Use ../softbook_cet/spec/box-catalog.json first, record the conflict, and block only the affected scope rather than inventing a placement.",
+    "acceptance_conflict": "spec/review-workflow.json is the sole owner of model-owned acceptance. Legacy person-authority records are archive-only and cannot authorize current content."
   }
 }

@@ -1,10 +1,49 @@
 {
-  "approval_id": "YYYYMMDD-cet4-full-track-final",
-  "approval_mode": "full_track_final",
-  "approved_by_user": true,
-  "approved_at": "YYYY-MM-DDTHH:mm:ss+08:00",
+  "schema_version": "model-owned-content-authorization.v2",
+  "authorization_id": "YYYYMMDD-cet4-full-track-authorization",
+  "authorization_mode": "full_track",
+  "content_version": "sha256:<64 lowercase hex characters>",
+  "authorized_at": "<RFC3339_WITH_TIMEZONE>",
+  "model_acceptances": [{
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "<agent-id>",
+      "model": "<model-id>",
+      "run_id": "<run-id>"
+    },
+    "evidence": {
+      "reviewed_at": "<RFC3339_WITH_TIMEZONE>",
+      "input_sha256": "sha256:<64 lowercase hex characters>",
+      "capabilities": [
+        "content_authorization"
+      ],
+      "summary": "<semantic-review-summary>",
+      "findings": []
+    },
+    "decision": "accepted"
+  }, {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "<independent-agent-id>",
+      "model": "<independent-model-id>",
+      "run_id": "<independent-run-id>"
+    },
+    "evidence": {
+      "reviewed_at": "<RFC3339_WITH_TIMEZONE>",
+      "input_sha256": "sha256:<64 lowercase hex characters>",
+      "capabilities": [
+        "content_authorization"
+      ],
+      "summary": "<semantic-review-summary>",
+      "findings": []
+    },
+    "decision": "accepted"
+  }],
   "scope": {
     "track": "cet4",
+    "purpose": "formal_content",
     "box_prefixes": [],
     "card_ids": []
   },
@@ -25,33 +64,21 @@
         "review_gap": 0,
         "source_risk": 0
       },
-      "by_rule": {
-        "multiple_choice_no_options": 0,
-        "multiple_choice_answer_not_in_options": 0,
-        "front_leaks_correct_answer": 0,
-        "front_leaks_analysis_conclusion": 0,
-        "front_missing_or_too_short": 0,
-        "analysis_missing_or_too_short": 0,
-        "generic_front_pattern": 0,
-        "template_analysis_pattern": 0,
-        "exact_repeated_front": 0,
-        "exact_repeated_analysis": 0,
-        "missing_quality_metadata": 0,
-        "unverified_source": 0,
-        "synthetic_source": 0
-      }
+      "by_rule": {}
     }
   },
   "validation": {
     "harness": "node scripts/validate_harness.mjs",
     "cards": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
-    "card_quality_audit": "node scripts/audit_card_quality.mjs --report-path reports/card_quality_audit_report.json",
-    "card_quality_audit_report": "reports/card_quality_audit_report.json",
-    "agent_self_review": "reviews/agent_self_review/YYYYMMDD-cet4-full-track-remediation.json"
+    "card_quality_audit": "node scripts/audit_card_quality.mjs --report-path exports/card_quality_audit_report.json",
+    "runtime_payload": "reviews/runtime_payloads/YYYYMMDD-track-full-runtime-payload.json",
+    "runtime_payload_sha256": "sha256:<64 lowercase hex characters>",
+    "model_review": "reviews/agent_self_review/YYYYMMDD-track-full-model-review.json",
+    "model_review_sha256": "sha256:<64 lowercase hex characters>"
   },
-  "approval_limits": [
-    "Only the named track, box prefixes, card IDs, and corpus fingerprint are approved.",
-    "Approval does not authorize unrelated generation or another track.",
-    "Approval does not change softbook_cet product specs."
+  "authorization_limits": [
+    "Only the exact current track, card IDs, box prefixes, corpus fingerprint, and canonical runtime content_version are authorized.",
+    "No source, audio-consumption, deployment, device, or remote-state fact is inferred.",
+    "Any input change requires new model acceptance and deterministic replay."
   ]
 }
