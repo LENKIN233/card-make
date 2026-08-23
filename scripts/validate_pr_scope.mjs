@@ -14,6 +14,7 @@ import {
   validateQualityMetadata,
 } from './lib/card_integrity.mjs';
 import {
+  buildContentAuthorizationAdditionalBindings,
   buildModelAcceptanceInputSha256,
   validateIndependentModelAcceptances,
   validateModelAcceptance,
@@ -2722,6 +2723,21 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
         });
         continue;
       }
+      let authorizationAdditionalBindings = {};
+      try {
+        authorizationAdditionalBindings =
+          buildContentAuthorizationAdditionalBindings({
+            authorizationMode: record.authorization_mode,
+            contentVersion: record.content_version,
+          });
+      } catch (error) {
+        authorizationAdditionalBindings = null;
+        issues.push({
+          code: 'changed_approval_content_version_invalid',
+          path: filePath,
+          message: error instanceof Error ? error.message : String(error),
+        });
+      }
       const linkedReviewPath = record.validation?.model_review;
       if (!isSelfReviewPath(linkedReviewPath)) {
         issues.push({
@@ -2791,6 +2807,11 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
           }
           let expectedAcceptanceInput = null;
           try {
+            if (authorizationAdditionalBindings === null) {
+              throw new Error(
+                'Full-track content authorization requires a canonical runtime content_version binding.',
+              );
+            }
             expectedAcceptanceInput = buildModelAcceptanceInputSha256({
               decisionType: record.authorization_mode === 'full_track'
                 ? 'full_track_content_authorization'
@@ -2802,6 +2823,7 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
                 path: linkedReviewPath,
                 sha256: linkedReviewSha256,
               },
+              additionalBindings: authorizationAdditionalBindings,
             });
           } catch (error) {
             issues.push({

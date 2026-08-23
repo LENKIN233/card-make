@@ -8,7 +8,10 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import {buildModelAcceptanceInputSha256} from './lib/model_acceptance.mjs';
+import {
+  buildContentAuthorizationAdditionalBindings,
+  buildModelAcceptanceInputSha256,
+} from './lib/model_acceptance.mjs';
 import {validateFullTrackAggregateSemantics} from './validate_pr_scope.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -995,8 +998,53 @@ test('a model-owned authorization passes with canonical scope, audit, and linked
     },
   );
   commit(repo.root, 'add model-owned authorization');
-  const result = validate(repo);
+  let result = validate(repo);
   assert.equal(result.status, 0, result.stderr || result.stdout);
+
+  const authorizationPath = path.join(
+    repo.root,
+    'reviews/approved_batches/model-authorization.json',
+  );
+  const fullTrack = JSON.parse(fs.readFileSync(authorizationPath, 'utf8'));
+  const contentVersionA = `sha256:${'d'.repeat(64)}`;
+  const contentVersionB = `sha256:${'e'.repeat(64)}`;
+  const fullTrackInput = buildModelAcceptanceInputSha256({
+    decisionType: 'full_track_content_authorization',
+    scope: authorizationScope,
+    corpusFingerprint: 'f'.repeat(64),
+    auditSha256,
+    linkedReviewIdentity: {path: reviewPath, sha256: reviewSha256},
+    additionalBindings: buildContentAuthorizationAdditionalBindings({
+      authorizationMode: 'full_track',
+      contentVersion: contentVersionA,
+    }),
+  });
+  fullTrack.authorization_mode = 'full_track';
+  fullTrack.content_version = contentVersionA;
+  fullTrack.model_acceptances = [
+    testModelAcceptance(
+      fullTrackInput,
+      ['content_authorization'],
+      'full-track-authorization-run-a',
+    ),
+    testModelAcceptance(
+      fullTrackInput,
+      ['content_authorization'],
+      'full-track-authorization-run-b',
+    ),
+  ];
+  delete fullTrack.model_acceptance;
+  writeJson(authorizationPath, fullTrack);
+  commit(repo.root, 'bind full-track authorization to runtime version');
+  result = validate(repo);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+
+  fullTrack.content_version = contentVersionB;
+  writeJson(authorizationPath, fullTrack);
+  commit(repo.root, 'attempt cross-version authorization replay');
+  result = validate(repo);
+  assert.notEqual(result.status, 0, result.stdout);
+  assertIssue(result.report, 'changed_approval_model_input_mismatch');
 });
 
 test('formal approval evidence cannot be deleted', () => {

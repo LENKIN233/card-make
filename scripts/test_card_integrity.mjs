@@ -18,7 +18,10 @@ import {
   validateQualityMetadata,
 } from './lib/card_integrity.mjs';
 import {buildEliminationContract} from './migrate_cards_to_softbook_contract.mjs';
-import {buildModelAcceptanceInputSha256} from './lib/model_acceptance.mjs';
+import {
+  buildContentAuthorizationAdditionalBindings,
+  buildModelAcceptanceInputSha256,
+} from './lib/model_acceptance.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const POLICY = loadIntegrityPolicy(ROOT);
@@ -89,14 +92,18 @@ function clone(value) {
   return structuredClone(value);
 }
 
-function modelAcceptance(inputDigest, capabilities) {
+function modelAcceptance(
+  inputDigest,
+  capabilities,
+  runId = 'codex-task:card-integrity-fixture',
+) {
   return {
     schema_version: 'model-acceptance.v2',
     actor: {
       kind: 'model_harness',
       agent: 'codex',
       model: 'gpt-5.6-sol',
-      run_id: 'codex-task:card-integrity-fixture',
+      run_id: runId,
     },
     evidence: {
       reviewed_at: '2026-07-31T12:00:00+08:00',
@@ -631,6 +638,143 @@ test('current approval consumers reject forged replay, stale, template, traversa
       currentFingerprint,
     });
     assert.equal(result.ok, true, JSON.stringify(result.issues));
+
+    const standardApproval = JSON.parse(fs.readFileSync(
+      path.join(root, approvalPath),
+      'utf8',
+    ));
+    const contentVersionA = `sha256:${'d'.repeat(64)}`;
+    const contentVersionB = `sha256:${'e'.repeat(64)}`;
+    const fullTrackReviewPath =
+      'reviews/agent_self_review/current-full-track-review.json';
+    const fullTrackReviewScope = {
+      track: 'cet4',
+      box_prefixes: ['0000'],
+      card_ids: cardIds,
+    };
+    const fullTrackReviewInput = buildModelAcceptanceInputSha256({
+      decisionType: 'full_track_review',
+      scope: fullTrackReviewScope,
+      corpusFingerprint: currentFingerprint.digest,
+      auditSha256: reviewAuditSha256,
+    });
+    writeJson(fullTrackReviewPath, {
+      schema_version: 'model-owned-full-track-review.v2',
+      review_id: 'current-full-track-review',
+      created_at: '2026-07-31T12:15:00+08:00',
+      model_acceptances: [
+        modelAcceptance(
+          fullTrackReviewInput,
+          ['card_semantic_review', 'source_provenance_review'],
+          'codex-task:full-track-review-a',
+        ),
+        modelAcceptance(
+          fullTrackReviewInput,
+          ['card_semantic_review', 'source_provenance_review'],
+          'codex-task:full-track-review-b',
+        ),
+      ],
+      scope: fullTrackReviewScope,
+      specs_read: ['spec/review-workflow.json'],
+      coverage: {
+        expected_card_count: cardIds.length,
+        reviewed_card_ids: cardIds,
+        analysis_reference_check: {
+          answer_matches_card: true,
+          choice_or_bank_references_match_source: true,
+          distractor_labels_match_explanations: true,
+        },
+        boxes: [{box_prefix: '0000', status: 'pass'}],
+      },
+      quality_audit: {
+        report: 'reviews/audit_scopes/current-review-audit.json',
+        report_sha256: reviewAuditSha256,
+        corpus_fingerprint: currentFingerprint.digest,
+        scope_has_no_hard_blockers: true,
+        scope_summary: structuredClone(currentScopedReport.scope_summary),
+      },
+      representative_cards: ['000001'],
+      removed_cards: [],
+      batch_review: {
+        status: 'ready_for_model_authorization',
+        summary: 'Complete exact-track model review fixture.',
+        remaining_risks: [],
+        next_step: 'Create runtime-version-bound authorization.',
+      },
+    });
+    const fullTrackReviewSha256 = `sha256:${cryptoHashFile(
+      path.join(root, fullTrackReviewPath),
+    )}`;
+    const fullTrackInput = buildModelAcceptanceInputSha256({
+      decisionType: 'full_track_content_authorization',
+      scope: approvalScope,
+      corpusFingerprint: currentFingerprint.digest,
+      auditSha256: approvalAuditSha256,
+      linkedReviewIdentity: {
+        path: fullTrackReviewPath,
+        sha256: fullTrackReviewSha256,
+      },
+      additionalBindings: buildContentAuthorizationAdditionalBindings({
+        authorizationMode: 'full_track',
+        contentVersion: contentVersionA,
+      }),
+    });
+    const fullTrackApproval = {
+      ...structuredClone(standardApproval),
+      authorization_mode: 'full_track',
+      content_version: contentVersionA,
+      validation: {
+        ...structuredClone(standardApproval.validation),
+        model_review: fullTrackReviewPath,
+        model_review_sha256: fullTrackReviewSha256,
+      },
+      model_acceptances: [
+        modelAcceptance(
+          fullTrackInput,
+          ['content_authorization'],
+          'codex-task:full-track-authorization-a',
+        ),
+        modelAcceptance(
+          fullTrackInput,
+          ['content_authorization'],
+          'codex-task:full-track-authorization-b',
+        ),
+      ],
+    };
+    delete fullTrackApproval.model_acceptance;
+    writeJson(approvalPath, fullTrackApproval);
+    execFileSync('git', ['add', '--all'], {cwd: root});
+    execFileSync('git', ['commit', '-qm', 'bind full-track runtime version'], {
+      cwd: root,
+    });
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, true, JSON.stringify(result.issues));
+
+    fullTrackApproval.content_version = contentVersionB;
+    writeJson(approvalPath, fullTrackApproval);
+    execFileSync('git', ['add', '--all'], {cwd: root});
+    execFileSync('git', ['commit', '-qm', 'attempt full-track version replay'], {
+      cwd: root,
+    });
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code === 'model_acceptance_input_scope_mismatch',
+    ));
+
+    writeJson(approvalPath, standardApproval);
+    execFileSync('git', ['add', '--all'], {cwd: root});
+    execFileSync('git', ['commit', '-qm', 'restore ordinary authorization'], {
+      cwd: root,
+    });
 
     result = validateCurrentApprovalRecordReference({
       root,

@@ -2,6 +2,7 @@
   "schema_version": "model-owned-content-authorization.v2",
   "authorization_id": "YYYYMMDD-cet4-full-track-authorization",
   "authorization_mode": "full_track",
+  "content_version": "sha256:<64 lowercase hex characters>",
   "authorized_at": "<RFC3339_WITH_TIMEZONE>",
   "model_acceptances": [{
     "schema_version": "model-acceptance.v2",
@@ -74,7 +75,7 @@
     "model_review_sha256": "sha256:<64 lowercase hex characters>"
   },
   "authorization_limits": [
-    "Only the exact current track, card IDs, box prefixes, and corpus fingerprint are authorized.",
+    "Only the exact current track, card IDs, box prefixes, corpus fingerprint, and canonical runtime content_version are authorized.",
     "No source, audio-consumption, deployment, device, or remote-state fact is inferred.",
     "Any input change requires new model acceptance and deterministic replay."
   ]

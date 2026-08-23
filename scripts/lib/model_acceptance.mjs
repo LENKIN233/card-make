@@ -104,6 +104,22 @@ export function buildModelAcceptanceInputSha256({
     .digest('hex')}`;
 }
 
+export function buildContentAuthorizationAdditionalBindings({
+  authorizationMode,
+  contentVersion,
+} = {}) {
+  const required = authorizationMode === 'full_track';
+  if (!required && (contentVersion === undefined || contentVersion === null)) {
+    return {};
+  }
+  if (!SHA256_RE.test(String(contentVersion || ''))) {
+    throw new Error(
+      `${required ? 'full-track ' : ''}content authorization content_version must be sha256:<64 lowercase hex characters>`,
+    );
+  }
+  return {content_version: contentVersion};
+}
+
 function isPlainObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }

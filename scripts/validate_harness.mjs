@@ -4388,6 +4388,16 @@ function validateReviewTemplatesAndRecords(errors, warnings) {
           actual: template.schema_version,
         });
       }
+      if (
+        templatePath === 'reviews/approved_batches/FULL_TRACK_TEMPLATE.json' &&
+        template.content_version !==
+          'sha256:<64 lowercase hex characters>'
+      ) {
+        pushIssue(errors, 'model_owned_full_track_content_version_missing', {
+          path: templatePath,
+          actual: template.content_version ?? null,
+        });
+      }
       const acceptanceIssues = independent
         ? validateIndependentModelAcceptances(template.model_acceptances, {
             allowTemplatePlaceholders: true,

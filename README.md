@@ -23,6 +23,12 @@ immutable input. Legacy records containing `approved_by_user`,
 `confirmed_by_user`, or human-review fields are frozen historical evidence and
 cannot create current authorization.
 
+A full-track formal content authorization also declares the canonical runtime
+`content_version` and includes it in the canonical model-input hash. The two
+independent runs therefore cannot be replayed for the same card scope under a
+different normalized runtime version. Ordinary scoped authorization does not
+require a runtime version before one exists.
+
 ## Non-negotiable facts
 
 - Keep card scope, current corpus fingerprint, audit replay, answer/reference

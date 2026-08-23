@@ -6,6 +6,7 @@ import path from 'node:path';
 import {isDeepStrictEqual} from 'node:util';
 
 import {
+  buildContentAuthorizationAdditionalBindings,
   buildModelAcceptanceInputSha256,
   MODEL_ACCEPTANCE_SCHEMA,
   validateIndependentModelAcceptances,
@@ -604,6 +605,21 @@ export function validateCurrentApprovalRecordReference({
   const isFullTrackFinal = isModelOwned
     ? approval.authorization_mode === 'full_track'
     : approval.approval_mode === 'full_track_final';
+  let authorizationAdditionalBindings = {};
+  if (isModelOwned) {
+    try {
+      authorizationAdditionalBindings =
+        buildContentAuthorizationAdditionalBindings({
+          authorizationMode: approval.authorization_mode,
+          contentVersion: approval.content_version,
+        });
+    } catch (error) {
+      authorizationAdditionalBindings = null;
+      add('approval_record_content_version_invalid', {
+        message: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
   if (isModelOwned) {
     const acceptanceIssues = isFullTrackFinal
       ? validateIndependentModelAcceptances(approval.model_acceptances, {
@@ -841,7 +857,11 @@ export function validateCurrentApprovalRecordReference({
     ) {
       add('approval_linked_model_review_hash_mismatch');
     }
-    if (isModelOwned && auditReport) {
+    if (
+      isModelOwned &&
+      auditReport &&
+      authorizationAdditionalBindings !== null
+    ) {
       const auditSha256 = `sha256:${crypto
         .createHash('sha256')
         .update(recordBytesByPath.get(auditRecord.report))
@@ -859,6 +879,7 @@ export function validateCurrentApprovalRecordReference({
             path: linkedReviewPath,
             sha256: linkedReviewSha256,
           },
+          additionalBindings: authorizationAdditionalBindings,
         });
       } catch (error) {
         add('model_acceptance_input_contract_invalid', {message: error.message});

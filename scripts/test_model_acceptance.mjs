@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  buildContentAuthorizationAdditionalBindings,
   buildModelAcceptanceInputSha256,
   isCurrentModelAcceptance,
   isLegacyV1HumanAuthorityRecord,
@@ -47,6 +48,61 @@ test('canonical model input binds decision, exact scope, audit, corpus, and link
   ]) {
     assert.notEqual(buildModelAcceptanceInputSha256(changed), digest);
   }
+});
+
+test('full-track authorization binds canonical runtime content_version without burdening ordinary authorization', () => {
+  const base = {
+    decisionType: 'full_track_content_authorization',
+    scope: {
+      track: 'cet4',
+      purpose: 'formal_content',
+      box_prefixes: ['0000'],
+      card_ids: ['000001'],
+    },
+    corpusFingerprint: `sha256:${'a'.repeat(64)}`,
+    auditSha256: `sha256:${'b'.repeat(64)}`,
+    linkedReviewIdentity: {
+      path: 'reviews/agent_self_review/full-track-review.json',
+      sha256: `sha256:${'c'.repeat(64)}`,
+    },
+  };
+  const versionA = `sha256:${'d'.repeat(64)}`;
+  const versionB = `sha256:${'e'.repeat(64)}`;
+  const inputA = buildModelAcceptanceInputSha256({
+    ...base,
+    additionalBindings: buildContentAuthorizationAdditionalBindings({
+      authorizationMode: 'full_track',
+      contentVersion: versionA,
+    }),
+  });
+  const inputB = buildModelAcceptanceInputSha256({
+    ...base,
+    additionalBindings: buildContentAuthorizationAdditionalBindings({
+      authorizationMode: 'full_track',
+      contentVersion: versionB,
+    }),
+  });
+  assert.notEqual(inputA, inputB);
+  assert.throws(
+    () => buildContentAuthorizationAdditionalBindings({
+      authorizationMode: 'full_track',
+    }),
+    /content_version/,
+  );
+  assert.deepEqual(
+    buildContentAuthorizationAdditionalBindings({
+      authorizationMode: undefined,
+      contentVersion: undefined,
+    }),
+    {},
+  );
+  assert.deepEqual(
+    buildContentAuthorizationAdditionalBindings({
+      authorizationMode: undefined,
+      contentVersion: versionA,
+    }),
+    {content_version: versionA},
+  );
 });
 
 function acceptance(overrides = {}) {
