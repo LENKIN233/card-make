@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
+import {fileURLToPath} from 'node:url';
 
 import {
   isHumanReviewerIdentity,
@@ -599,7 +600,7 @@ function appendLibraryIssues(target, libraryIssues, context) {
   }
 }
 
-function validateFullTrackAggregateSemantics({
+export function validateFullTrackAggregateSemantics({
   record,
   filePath,
   scopeCardIds,
@@ -669,14 +670,83 @@ function validateFullTrackAggregateSemantics({
     const boxes = Array.isArray(record.coverage?.boxes)
       ? record.coverage.boxes
       : [];
+    const reviewedCardIds = Array.isArray(record.coverage?.reviewed_card_ids)
+      ? record.coverage.reviewed_card_ids
+      : [];
     if (
+      record.coverage?.expected_card_count !== scopeCardIds.size ||
+      reviewedCardIds.length !== scopeCardIds.size ||
+      new Set(reviewedCardIds).size !== reviewedCardIds.length ||
+      !setsEqual(new Set(reviewedCardIds), scopeCardIds) ||
       boxes.length !== scopeBoxPrefixes.size ||
+      new Set(boxes.map(box => box?.box_prefix)).size !== boxes.length ||
+      !setsEqual(new Set(boxes.map(box => box?.box_prefix)), scopeBoxPrefixes) ||
       boxes.some(box => box?.status !== 'pass' || !hasText(box?.box_prefix))
     ) {
       push(
         'changed_full_track_review_box_model_pass_invalid',
-        'Every declared box requires exact model-owned pass evidence.',
+        'Model-owned coverage must exactly match every declared card and box with pass evidence.',
       );
+    }
+    for (const field of ANALYSIS_REFERENCE_CHECK_FIELDS) {
+      if (record.coverage?.analysis_reference_check?.[field] !== true) {
+        push(
+          'changed_full_track_review_analysis_reference_check_invalid',
+          'Model-owned full-track review must confirm answer and source-reference parity.',
+          {field},
+        );
+      }
+    }
+    if (
+      !Array.isArray(record.representative_cards) ||
+      record.representative_cards.length === 0 ||
+      !record.representative_cards.every(hasText) ||
+      new Set(record.representative_cards).size !== record.representative_cards.length ||
+      record.representative_cards.some(cardId => !scopeCardIds.has(cardId))
+    ) {
+      push(
+        'changed_full_track_review_representative_cards_invalid',
+        'Model-owned representative_cards must be non-empty, unique, and within scope.',
+      );
+    }
+    const qualityAudit = record.quality_audit;
+    const summary = qualityAudit?.scope_summary;
+    const summaryCardIds = Array.isArray(summary?.card_ids)
+      ? summary.card_ids
+      : [];
+    if (
+      !isScopedQualityAuditReportPath(qualityAudit?.report) ||
+      !hasText(qualityAudit?.corpus_fingerprint) ||
+      qualityAudit?.scope_has_no_hard_blockers !== true ||
+      !summary ||
+      summary.card_count !== scopeCardIds.size ||
+      summaryCardIds.length !== scopeCardIds.size ||
+      new Set(summaryCardIds).size !== summaryCardIds.length ||
+      !setsEqual(new Set(summaryCardIds), scopeCardIds) ||
+      !isNonNegativeInteger(summary.issue_count) ||
+      summary.by_severity?.hard_blocker !== 0 ||
+      QUALITY_AUDIT_SEVERITIES.some(
+        severity => !isNonNegativeInteger(summary.by_severity?.[severity]),
+      ) ||
+      REQUIRED_QUALITY_AUDIT_RULES.some(
+        ruleId => !isNonNegativeInteger(summary.by_rule?.[ruleId]),
+      )
+    ) {
+      push(
+        'changed_full_track_review_quality_audit_summary_invalid',
+        'Model-owned full-track review requires a complete exact-scope zero-blocker quality summary.',
+      );
+    } else {
+      const severityTotal = QUALITY_AUDIT_SEVERITIES.reduce(
+        (total, severity) => total + summary.by_severity[severity],
+        0,
+      );
+      if (severityTotal !== summary.issue_count) {
+        push(
+          'changed_full_track_review_quality_audit_severity_total_mismatch',
+          'Model-owned quality issue_count must equal the severity total.',
+        );
+      }
     }
     if (
       !Array.isArray(record.removed_cards) ||
@@ -3403,20 +3473,24 @@ function validate({ base, head }) {
   };
 }
 
-const base = readOption('--base', DEFAULT_BASE);
-const head = readOption('--head', null);
-
-try {
-  const result = validate({ base, head });
-  result.head = head || 'WORKTREE';
-  console.log(JSON.stringify(result, null, 2));
-  if (!result.ok) process.exitCode = 1;
-} catch (error) {
-  console.error(JSON.stringify({
-    ok: false,
-    base,
-    head: head || 'WORKTREE',
-    error: error.message,
-  }, null, 2));
-  process.exitCode = 1;
+if (
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+) {
+  const base = readOption('--base', DEFAULT_BASE);
+  const head = readOption('--head', null);
+  try {
+    const result = validate({ base, head });
+    result.head = head || 'WORKTREE';
+    console.log(JSON.stringify(result, null, 2));
+    if (!result.ok) process.exitCode = 1;
+  } catch (error) {
+    console.error(JSON.stringify({
+      ok: false,
+      base,
+      head: head || 'WORKTREE',
+      error: error.message,
+    }, null, 2));
+    process.exitCode = 1;
+  }
 }

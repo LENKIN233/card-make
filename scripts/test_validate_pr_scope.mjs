@@ -9,12 +9,53 @@ import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import {buildModelAcceptanceInputSha256} from './lib/model_acceptance.mjs';
+import {validateFullTrackAggregateSemantics} from './validate_pr_scope.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const TEMP_ROOTS = new Set();
 
 test.after(() => {
   for (const root of TEMP_ROOTS) fs.rmSync(root, { force: true, recursive: true });
+});
+
+test('model-owned full-track semantic review cannot omit reference or representative evidence', () => {
+  const cardIds = new Set(['000001']);
+  const boxPrefixes = new Set(['0000']);
+  const record = {
+    schema_version: 'model-owned-full-track-review.v2',
+    model_acceptances: [],
+    scope: {track: 'cet4', box_prefixes: ['0000'], card_ids: ['000001']},
+    specs_read: ['spec/review-workflow.json'],
+    coverage: {
+      expected_card_count: 1,
+      reviewed_card_ids: ['000001'],
+      boxes: [{box_prefix: '0000', status: 'pass'}],
+    },
+    quality_audit: {
+      report: 'reviews/audit_scopes/fixture.json',
+      report_sha256: null,
+      corpus_fingerprint: 'f'.repeat(64),
+      scope_has_no_hard_blockers: true,
+      scope_summary: qualityAuditSummary(['000001']),
+    },
+    representative_cards: [],
+    removed_cards: [],
+    batch_review: {
+      status: 'ready_for_model_authorization',
+      summary: 'Fixture summary.',
+      remaining_risks: [],
+      next_step: 'Create authorization.',
+    },
+  };
+  const issues = validateFullTrackAggregateSemantics({
+    record,
+    filePath: 'reviews/agent_self_review/full-track.json',
+    scopeCardIds: cardIds,
+    scopeBoxPrefixes: boxPrefixes,
+    head: null,
+  });
+  assertIssue({issues}, 'changed_full_track_review_analysis_reference_check_invalid');
+  assertIssue({issues}, 'changed_full_track_review_representative_cards_invalid');
 });
 
 test('a diff with no card or self-review change passes', () => {

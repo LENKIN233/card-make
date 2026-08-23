@@ -14,6 +14,7 @@ import {
   validateCurrentApprovalRecordReference,
   validateChangedCardSelfReviewParity,
   validateEliminationIntegrity,
+  validateModelOwnedFullTrackReviewShape,
   validateQualityMetadata,
 } from './lib/card_integrity.mjs';
 import {buildEliminationContract} from './migrate_cards_to_softbook_contract.mjs';
@@ -46,6 +47,42 @@ test('structured human reviewer identities allow real short and Unicode IDs but 
   ]) {
     assert.equal(isHumanReviewerIdentity(identity), false, identity);
   }
+});
+
+test('model-owned full-track review requires complete reference, box, batch, and representative evidence', () => {
+  const review = {
+    schema_version: 'model-owned-full-track-review.v2',
+    scope: {track: 'cet4', box_prefixes: ['0000'], card_ids: ['000001']},
+    coverage: {
+      expected_card_count: 1,
+      reviewed_card_ids: ['000001'],
+      analysis_reference_check: {
+        answer_matches_card: true,
+        choice_or_bank_references_match_source: true,
+        distractor_labels_match_explanations: true,
+      },
+      boxes: [{box_prefix: '0000', status: 'pass'}],
+    },
+    representative_cards: ['000001'],
+    batch_review: {
+      status: 'ready_for_model_authorization',
+      summary: 'Complete exact-scope model review.',
+      remaining_risks: [],
+      next_step: 'Create bound authorization.',
+    },
+  };
+  assert.equal(validateModelOwnedFullTrackReviewShape(review).ok, true);
+  const incomplete = structuredClone(review);
+  delete incomplete.coverage.analysis_reference_check;
+  incomplete.representative_cards = [];
+  const result = validateModelOwnedFullTrackReviewShape(incomplete);
+  assert.equal(result.ok, false);
+  assert.ok(result.issues.some(
+    issue => issue.code === 'model_full_track_review_reference_check_invalid',
+  ));
+  assert.ok(result.issues.some(
+    issue => issue.code === 'model_full_track_review_representatives_invalid',
+  ));
 });
 
 function clone(value) {

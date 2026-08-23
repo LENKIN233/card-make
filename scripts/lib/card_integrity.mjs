@@ -66,6 +66,49 @@ function sameStringSet(left, right) {
   return new Set(left).size === left.length && left.every(value => rightSet.has(value));
 }
 
+export function validateModelOwnedFullTrackReviewShape(
+  review,
+  {expectedBoxPrefixes = review?.scope?.box_prefixes, expectedCardIds = review?.scope?.card_ids} = {},
+) {
+  const issues = [];
+  const add = code => issues.push({code});
+  if (review?.schema_version !== 'model-owned-full-track-review.v2') {
+    add('model_full_track_review_schema_invalid');
+    return {issues, ok: false};
+  }
+  if (
+    review.batch_review?.status !== 'ready_for_model_authorization' ||
+    !hasText(review.batch_review?.summary) ||
+    !hasText(review.batch_review?.next_step) ||
+    !Array.isArray(review.batch_review?.remaining_risks) ||
+    review.batch_review.remaining_risks.length !== 0
+  ) add('model_full_track_review_batch_invalid');
+  if (
+    review.coverage?.expected_card_count !== expectedCardIds?.length ||
+    !sameStringSet(review.coverage?.reviewed_card_ids, expectedCardIds)
+  ) add('model_full_track_review_coverage_invalid');
+  for (const field of [
+    'answer_matches_card',
+    'choice_or_bank_references_match_source',
+    'distractor_labels_match_explanations',
+  ]) {
+    if (review.coverage?.analysis_reference_check?.[field] !== true) {
+      issues.push({code: 'model_full_track_review_reference_check_invalid', field});
+    }
+  }
+  const boxes = review.coverage?.boxes;
+  if (
+    !Array.isArray(boxes) ||
+    !sameStringSet(boxes.map(box => box?.box_prefix), expectedBoxPrefixes) ||
+    boxes.some(box => box?.status !== 'pass')
+  ) add('model_full_track_review_boxes_invalid');
+  if (
+    !hasUniqueNonEmptyTextArray(review.representative_cards) ||
+    !review.representative_cards.every(cardId => expectedCardIds?.includes(cardId))
+  ) add('model_full_track_review_representatives_invalid');
+  return {issues, ok: issues.length === 0};
+}
+
 function isDirectGovernedJsonPath(value, directory, templatePaths = []) {
   if (!hasText(value) || value.includes('\\')) return false;
   if (/[\u0000-\u001f\u007f\u2028\u2029]/u.test(value)) return false;
@@ -903,11 +946,14 @@ export function validateCurrentApprovalRecordReference({
       if (isFullTrackFinal !== fullTrackReview) {
         add('approval_linked_model_review_mode_mismatch');
       }
-      if (
-        fullTrackReview &&
-        linkedReview.batch_review?.status !== 'ready_for_model_authorization'
-      ) {
-        add('approval_linked_full_track_review_batch_invalid');
+      if (fullTrackReview) {
+        const shape = validateModelOwnedFullTrackReviewShape(linkedReview, {
+          expectedBoxPrefixes: approval.scope?.box_prefixes,
+          expectedCardIds: approval.scope?.card_ids,
+        });
+        for (const issue of shape.issues) {
+          add(`approval_linked_${issue.code}`, issue);
+        }
       }
       if (
         !fullTrackReview &&
@@ -972,13 +1018,6 @@ export function validateCurrentApprovalRecordReference({
             });
           }
         }
-      }
-      if (
-        fullTrackReview &&
-        linkedReview.coverage?.expected_card_count !==
-          approval.scope?.card_ids?.length
-      ) {
-        add('approval_linked_full_track_review_coverage_invalid');
       }
       if (
         Array.isArray(linkedReview.removed_cards) &&
