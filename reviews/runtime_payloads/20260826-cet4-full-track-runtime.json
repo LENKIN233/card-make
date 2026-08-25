@@ -3239,17 +3239,17 @@
       "card_id": "000104",
       "track": "cet4",
       "knowledge_ref": "0001",
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
         "eyebrow": "这张练习 | 听前预测",
-        "prompt": "听后说出需要查明的原因及其完整限定范围。",
+        "prompt": "根据四个选项共同回答的对象，预测最可能的考点。",
         "support": "在“根据选项预测考点”任务中识别并解释关键知识或解题线索",
         "context": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。"
       },
       "analysis": {
         "title": "在“根据选项预测考点”任务中识别并解释关键知识或解题线索",
-        "summary": "① 识别信号：key point 宣告重点，identify the cause 说明接下来要抓的是原因对象。\n\n② 核心规律：听到 cause、reason、factor 等考点词时，继续向后保留完整名词短语，不能只记一个宽泛主题。\n\n③ 验证：本句的完整目标是 declining attendance in evening workshops。只答 attendance 会丢掉下降这一变化和晚间工作坊这一范围。",
-        "exam_tip": "听到 key point 或 identify 时，准备记录其后的目标信息。"
+        "summary": "① 听前识别：四个选项都在陈述可能原因，且围绕 workshop 时间、课程冲突、通知与交通展开，因此应先预测 why 类考点。\n\n② 核心规律：选项共同的语义角色能预告题目类型；先判断它们是在给原因、时间、数量、地点还是行动建议。\n\n③ 播放验证：音频明确说 identify the cause of declining attendance in evening workshops，与 A 的预测完全一致。",
+        "exam_tip": "选项若都像 because 后的内容，优先预测 why / cause 类问题。"
       },
       "space_metadata": {
         "box_ref": "0001",
@@ -3257,7 +3257,32 @@
         "group": "听前预测",
         "box": "根据选项预测考点"
       },
-      "back_text": "答案：需要查明晚间工作坊出席人数下降的原因（the cause of declining attendance in evening workshops）。",
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "为什么晚间工作坊的出席人数正在下降"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "晚间工作坊通常在几点开始"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "有多少学生参加晚间工作坊"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "晚间工作坊安排在哪个地点"
+        }
+      ],
+      "auto_scoring": true,
+      "answer_key": {
+        "correct_option": "A"
+      },
       "audio": {
         "asset_id": "cet4-000104-audio",
         "duration_ms": 6000,
@@ -12973,7 +12998,7 @@
       "interaction_id": "swipe",
       "front": {
         "eyebrow": "这张练习 | 定位词抓取",
-        "prompt": "阅读片段：The fine dining establishment received its first three-star Michelin rating in 2011 when the menu was famed for its fancy animal-based dishes. However, last year, Daniel Humm made the bold decision to remove meat from the menu. Last night, we were honored to be awarded three Michelin stars for the 11th year in a row.\n\n任务：判断下列说法是否成立：当一段里同时出现多个时间信息时，像 2011、11th year in a row 这类硬数字通常比 last year 更适合做快速定位锚点。",
+        "prompt": "阅读片段：The fine dining establishment received its first three-star Michelin rating in 2011 when the menu was famed for its fancy animal-based dishes. However, last year, Daniel Humm made the bold decision to remove meat from the menu. Last night, the restaurant was honored to be awarded three Michelin stars for the 11th year in a row.\n\n任务：判断下列说法是否成立：当一段里同时出现多个时间信息时，像 2011、11th year in a row 这类硬数字通常比 last year 更适合做快速定位锚点。",
         "support": "比较硬年份与相对时间的定位效率",
         "context": "帮助用户在多个时间表达并存时优先选择排他性更强的硬数字。"
       },
@@ -28655,7 +28680,7 @@
       "analysis": {
         "title": "用特定读者与交际动作区分应用文和议论文",
         "summary": "正确判断是：否。expressing your view 是说理任务，题目没有指定读者或平台，也没有 invite、request、inform 等交际动作。providing examples 只是论证要求，不会把它变成应用文。若改为 Write a letter to the editor...，即使仍表达观点，也会因读者与载体明确而转成应用文。",
-        "exam_tip": "\"expressing/discussing/explaining your view\"通常是议论文的任务词，而\"write a letter to/for\"才是应用文的任务词"
+        "exam_tip": "expressing/discussing/explaining your view 通常指向说理，但仍要结合读者、载体和交际目的判断"
       },
       "space_metadata": {
         "box_ref": "0300",
@@ -33080,14 +33105,14 @@
       "interaction_id": "swipe",
       "front": {
         "eyebrow": "这张练习 | 高级句子",
-        "prompt": "原句：随着城市更新，一些老厂房被改造成文化空间，它们仍保留着原有的工业结构。\n\n判断：下面译文中的 which 挂载清晰，无需调整。\n\nAs cities are renewed, some old factory buildings have been converted into cultural spaces, which retain their original industrial structures.",
-        "support": "诊断定语从句被近邻名词错误吸附的问题",
-        "context": "同时核验定语从句的位置和语义归属，避免翻译逻辑错位。"
+        "prompt": "原句：随着城市更新，一些老厂房被改造成文化空间，这些空间仍保留着原有的工业结构。\n\n判断：下面译文中的 which 自然回指 cultural spaces，语义与原句一致。\n\nAs cities are renewed, some old factory buildings have been converted into cultural spaces, which retain their original industrial structures.",
+        "support": "结合距离数一致与语义确认 which 先行词",
+        "context": "同时核验定语从句的邻近挂载、数的一致和语义归属。"
       },
       "analysis": {
-        "title": "诊断定语从句被近邻名词错误吸附的问题",
-        "summary": "定语从句的语法位置和语义归属必须同时清楚。原句里 cultural spaces 是最近的名词短语，却不是 retain industrial structures 的合理执行者。把 which 从句紧跟 old factory buildings，既恢复正确先行词，也让主句 have been converted 保持完整。",
-        "exam_tip": "先问从句动作真正由谁完成。"
+        "title": "结合距离数一致与语义确认 which 先行词",
+        "summary": "① 识别信号：which 紧跟 cultural spaces，默认回指这个最近的复数名词短语。\n\n② 核心规律：判断定语从句先行词时，要同时检查距离、数的一致和语义合理性，不能只凭中文中的实体来源改写挂载位置。\n\n③ 验证：文化空间由老厂房改造而来，因此说这些 spaces retain their original industrial structures 自然且与中文一致。",
+        "exam_tip": "先找 which 前最近、数一致且语义合理的名词短语。"
       },
       "space_metadata": {
         "box_ref": "0401",
@@ -33109,7 +33134,7 @@
       ],
       "auto_scoring": true,
       "answer_key": {
-        "correct_state": "false"
+        "correct_state": "true"
       }
     },
     {
@@ -38732,14 +38757,14 @@
       "knowledge_ref": "0501",
       "interaction_id": "flip",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "阅读或听力里，命题人不一定重复原词，而是常把同一词根换成另一种词性。比如：\n\n1. retire -> retirement\n2. protect -> protection / protective\n3. improve -> improvement\n\n为什么这类改写比单纯背近义词更重要？你判断时应该优先盯哪三个点？",
         "support": "建立同词根词性转换的保义判断框架",
         "context": "训练词根、句法槽位和语义边界联合判断。"
       },
       "analysis": {
         "title": "建立同词根词性转换的保义判断框架",
-        "summary": "① 识别信号：原句和改写句里常出现明显同词根形式，如 retire / retirement、protect / protection、isolate / isolated。词面看起来不同，但核心义仍围绕同一动作、状态或结果。\n\n② 核心规律：命题人常通过词性转换把意思塞进不同句法槽位。动作常被改写成名词结果（improve -> improvement），抽象名词常被改写成动词行为（protection -> protect），状态名词也常被改成形容词表语（isolation -> isolated）。\n\n③ 验证：如果改写后主体不变、方向不反、句意主干仍是同一件事，那么这类词形变化就属于有效同义替换，而不是新信息。",
+        "summary": "① 识别信号：原句和改写句里常出现明显同词根形式，如 retire / retirement、protect / protection、isolate / isolated。词面看起来不同，但核心义仍围绕同一动作、状态或结果。\n\n② 核心规律：命题人常通过词性转换把意思塞进不同句法槽位。动作常被改写成名词结果（improve -> improvement），抽象名词常被改写成动词行为（protection -> protect），状态名词也常被改成形容词表语（isolation -> isolated）。\n\n③ 验证：如果改写后主体不变、方向不反、句意主干仍是同一件事，那么这类词形变化就属于有效同义词替换，而不是新信息。",
         "exam_tip": "先认词根，再看句法位置；不要只看词尾。"
       },
       "space_metadata": {
@@ -38762,7 +38787,7 @@
       "knowledge_ref": "0501",
       "interaction_id": "multiple_choice",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "原句：\n\"Workers in more physical jobs may be more likely to look forward to retiring.\"\n\n改写句：\n\"For many manual workers, retirement is something they actively look forward to.\"\n\n为什么这里的 retiring 和 retirement 能稳定对上？",
         "support": "识别 retire 到 retirement 的动作事件名词化",
         "context": "训练动词与事件名词的等值改写。"
@@ -38811,7 +38836,7 @@
       "knowledge_ref": "0501",
       "interaction_id": "multiple_choice",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "原句：\n\"Quitting a career can lead to feelings of isolation and loneliness.\"\n\n改写句：\n\"After leaving work, some people may feel isolated and lonely.\"\n\n哪一项最准确说明 isolation 和 isolated 在这里的关系？",
         "support": "识别 isolation 到 isolated 的状态表语转换",
         "context": "训练抽象状态名词与形容词对应。"
@@ -38860,7 +38885,7 @@
       "knowledge_ref": "0501",
       "interaction_id": "multiple_choice",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "原句：\n\"Strengthening the protection of forest resources can improve the ecological environment.\"\n\n改写句：\n\"Taking stronger measures to protect forest resources can improve the environment.\"\n\n为什么 protection 和 protect 在这里能对齐？",
         "support": "把 protection of X 还原为 protect X",
         "context": "训练名词化动作与动词短语互换。"
@@ -38909,7 +38934,7 @@
       "knowledge_ref": "0501",
       "interaction_id": "multiple_choice",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "原句：\n\"The ecological environment in many areas has been significantly improved.\"\n\n改写句：\n\"There has been a significant improvement in the ecological environment in many areas.\"\n\n这组改写成立的关键是什么？",
         "support": "把被动改善结果改写为 improvement 名词结构",
         "context": "训练动词结果的名词化。"
@@ -38958,7 +38983,7 @@
       "knowledge_ref": "0501",
       "interaction_id": "multiple_choice",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "原句：\n\"Lucid waters and lush mountains have promoted local industries, creating considerable economic benefits.\"\n\n改写句：\n\"A healthy ecological environment is economically beneficial to local industries.\"\n\n为什么 benefits 和 beneficial 在这里能对上？",
         "support": "区分 benefits 与 beneficial 的结果和性质表达",
         "context": "训练名词结果与形容词评价转换。"
@@ -39007,7 +39032,7 @@
       "knowledge_ref": "0501",
       "interaction_id": "lock",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "For many manual workers, {{blank}} is not just a date on the calendar; it is the life stage they have been waiting for.\n\n【分析提示】空格前没有冠词修饰别的名词，后面 is 提示这里需要一个能直接做主语的名词。想想 retire 这个词族里，哪一个词最适合给\"退休这件事\"命名？",
         "support": "依据主语槽位选择 retirement",
         "context": "训练词族成员与主语句法匹配。"
@@ -39050,7 +39075,7 @@
       "knowledge_ref": "0501",
       "interaction_id": "lock",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "Without daily workplace contact, some older adults may feel {{blank}} even when they are financially secure.\n\n【分析提示】空格前是 feel，后面是在描述人的主观状态。你需要从 isolate 这个词族里选一个最适合做表语的形式。",
         "support": "依据 feel 后表语槽位选择 isolated",
         "context": "训练系动词后的形容词选择。"
@@ -39093,7 +39118,7 @@
       "knowledge_ref": "0501",
       "interaction_id": "lock",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "Stricter laws are meant to {{blank}} forest resources instead of discussing environmental goals in the abstract.\n\n【分析提示】空格前是 to，后面直接接宾语 forest resources。这里需要的是一个能表示\"实施保护\"动作的动词，而不是抽象名词。",
         "support": "依据不定式和宾语选择 protect",
         "context": "训练动词原形槽位与词族筛选。"
@@ -39136,7 +39161,7 @@
       "knowledge_ref": "0501",
       "interaction_id": "lock",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "Natural food is often more {{blank}} than protein bars when you also need vitamins, antioxidants and other nutrients.\n\n【分析提示】more 后面需要能被程度比较的词；句子是在评价\"真实食物对身体更有益\"。从 benefit 词族里选最合适的形式。",
         "support": "依据比较表语结构选择 beneficial",
         "context": "迁移比较结构中的词性定位。"
@@ -39179,7 +39204,7 @@
       "knowledge_ref": "0501",
       "interaction_id": "lock",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "用词库补全词族转换句：\n\nThe committee's {{blank}} of the proposal made its main point easier to follow.",
         "support": "从 clarify 词族中选择主语名词 clarification",
         "context": "迁移所有格和 of 短语的双重词性线索。"
@@ -39222,7 +39247,7 @@
       "knowledge_ref": "0501",
       "interaction_id": "multiple_choice",
       "front": {
-        "eyebrow": "这张练习 | 同义替换",
+        "eyebrow": "这张练习 | 同义词替换",
         "prompt": "原句：\nThe committee emphasized the importance of transparent communication.\n\n下列哪种结构转换能在不改变原句肯定方向的前提下完成等值改写？",
         "support": "识别 importance 到 important 从句的等值展开",
         "context": "迁移词性转换中的主体、对象和极性核验。"
@@ -50841,7 +50866,7 @@
       }
     }
   ],
-  "content_version": "sha256:c72dd7f8e8fcb45cc7ce3f7e8bea96ec432c9d27e701a0fad93dcadf7501cc16",
+  "content_version": "sha256:d722516df787907dad17678a13b662951d6d4e34f43eb23540daddb98548cd17",
   "release": null,
   "source": {
     "id": "card-make-cet4-formal-candidate",
