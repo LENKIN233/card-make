@@ -522,16 +522,16 @@
       "box": 1,
       "card_no": 4,
       "card_box_code": "0001",
-      "interaction_type": 3,
+  "interaction_type": 0,
       "card_box_name": "根据选项预测考点",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，完成考点预测训练。\n\n先处理句子主干，再回看修饰语是否改变范围。",
-        "task_prompt": "任务：先听音频，完成考点预测训练。\n\n先处理句子主干，再回看修饰语是否改变范围。",
+    "text": "任务：先完整听一遍音频。翻面前先复述：说话者认为需要查明哪一个具体问题的原因？",
+    "task_prompt": "听后说出需要查明的原因及其完整限定范围。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "考点预测",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+      "action": "听后复述目标信息",
+      "focus": "cause 后的对象与范围",
+      "success_criteria": "说出 declining attendance in evening workshops，不丢失 evening 限定"
         },
         "audio_first": true,
         "image_url": null,
@@ -539,15 +539,15 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "目标区间：约 4.2 秒\n\n解析：按住覆盖关键结构段，结束后松手。",
-        "explanation": "语境揭示：The key point is to identify the cause of declining attendance in evening workshops."
+    "text": "答案：需要查明晚间工作坊出席人数下降的原因（the cause of declining attendance in evening workshops）。",
+    "explanation": "key point 提示任务核心，identify the cause 提示信息类型；declining attendance 是对象，in evening workshops 是不可漏掉的范围限定。"
       },
       "analysis_content": {
-        "text": "① 本题定位：题面要求完成“根据选项预测考点”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The key point is to identify the cause of declining attendance in evening workshops.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：The key point is to identify the cause of declining attendance in evening workshops.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“根据选项预测考点”，下一题应先复述证据关系，再提交答案。",
+    "text": "① 识别信号：key point 宣告重点，identify the cause 说明接下来要抓的是原因对象。\n\n② 核心规律：听到 cause、reason、factor 等考点词时，继续向后保留完整名词短语，不能只记一个宽泛主题。\n\n③ 验证：本句的完整目标是 declining attendance in evening workshops。只答 attendance 会丢掉下降这一变化和晚间工作坊这一范围。",
         "tips": [
-          "根据选项预测考点题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The key point is to identify the cause of declin”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+      "听到 key point 或 identify 时，准备记录其后的目标信息。",
+      "原因类考点要把 cause 后的对象和范围一起带走。",
+      "复述后再回听，检查是否漏掉变化方向或限定语。"
         ]
       },
       "options": null,
@@ -558,7 +558,6 @@
         "transcript": "The key point is to identify the cause of declining attendance in evening workshops.",
         "path": "ai_tts/cet4/0001/000104.mp3"
       },
-      "target_duration_ms": 4200,
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
@@ -581,30 +580,30 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，完成考点预测训练。\n\n先处理句子主干，再回看修饰语是否改变范围。",
-        "task_prompt": "任务：先听音频，完成考点预测训练。\n\n先处理句子主干，再回看修饰语是否改变范围。",
+    "text": "任务：先完整听一遍音频。翻面前先复述：说话者认为需要查明哪一个具体问题的原因？",
+    "task_prompt": "听后说出需要查明的原因及其完整限定范围。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "考点预测",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+      "action": "听后复述目标信息",
+      "focus": "cause 后的对象与范围",
+      "success_criteria": "说出 declining attendance in evening workshops，不丢失 evening 限定"
         }
       },
       "analysis": {
-        "text": "① 本题定位：题面要求完成“根据选项预测考点”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The key point is to identify the cause of declining attendance in evening workshops.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：The key point is to identify the cause of declining attendance in evening workshops.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“根据选项预测考点”，下一题应先复述证据关系，再提交答案。",
+    "text": "① 识别信号：key point 宣告重点，identify the cause 说明接下来要抓的是原因对象。\n\n② 核心规律：听到 cause、reason、factor 等考点词时，继续向后保留完整名词短语，不能只记一个宽泛主题。\n\n③ 验证：本句的完整目标是 declining attendance in evening workshops。只答 attendance 会丢掉下降这一变化和晚间工作坊这一范围。",
         "tips": [
-          "根据选项预测考点题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The key point is to identify the cause of declin”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+      "听到 key point 或 identify 时，准备记录其后的目标信息。",
+      "原因类考点要把 cause 后的对象和范围一起带走。",
+      "复述后再回听，检查是否漏掉变化方向或限定语。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+    "type": 0,
+    "label": "T0",
+    "product_mapping_reason": "content normalized to the product flip interaction"
       },
       "quality_flags": [
         "synthetic_source"
