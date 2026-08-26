@@ -99,6 +99,13 @@ exact-input model runs, `complete_asset_consumed`, and all seven per-card
 results. Older v1/v2 person-authority worklists remain frozen archive evidence;
 the executable browser review station has been removed.
 
+Formal media execution provenance uses `.github/workflows/trusted-media-run.yml`.
+That main-only workflow runs `scripts/run_trusted_media_review.py` on a protected
+Apple Silicon runner, rebuilds all 301 decisions with
+`scripts/build_trusted_media_run_receipt.mjs`, and applies a GitHub Artifact
+Attestation to the exact receipt bytes. A passing worklist or self-declared JSON
+without that run and attestation is not formal media evidence.
+
 ## Delivery
 
 Use a scoped topic branch. After exact-head validation and model review, push,

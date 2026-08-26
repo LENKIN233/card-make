@@ -9,4 +9,7 @@ Each terminal pass uses two distinct run IDs bound to the exact entry identity,
 `complete_asset_consumed=true`, and all seven per-card results.
 
 Passing worklist evidence may be converted into audio QC records, but it does
-not prove source authenticity, deployment, or device behavior.
+not prove source authenticity, trusted model execution, deployment, or device
+behavior. Formal media execution additionally requires the fixed trusted-media
+workflow and GitHub-attested receipt defined by
+`spec/trusted-media-run-producer.json`.

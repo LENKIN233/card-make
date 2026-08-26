@@ -1,0 +1,65 @@
+{
+  "version": "trusted-media-run-producer-v1",
+  "status": "active",
+  "classification": "harness_execution_contract",
+  "owners": ["spec/review-workflow.json", "spec/audio-generation-contract.json"],
+  "purpose": "Produce one GitHub-attested CET4 media receipt only after a trusted main-branch workflow actually runs two complete exact-asset audio-capable model passes, resolves bounded disagreements, rebuilds all 301 per-card acceptances, and passes current content and audio contracts.",
+  "workflow": {
+    "path": ".github/workflows/trusted-media-run.yml",
+    "trigger": "workflow_dispatch_on_refs_heads_main_only",
+    "runner": ["self-hosted", "macOS", "ARM64", "softbook-media"],
+    "timeout_minutes": 180,
+    "permissions": ["contents:read", "id-token:write", "attestations:write"],
+    "worklist_path_pattern": "reviews/audio_perceptual_worklists/[A-Za-z0-9._-]+.json",
+    "authorization_path_pattern": "reviews/approved_batches/[A-Za-z0-9._-]+.json",
+    "inputs_must_be_tracked_regular_non_symlink_files": true,
+    "checkout_must_materialize_Git_LFS_audio_bytes": true,
+    "repository_worktree_must_be_clean_exact_GITHUB_SHA": true,
+    "model_root_is_runner_managed_and_outside_repository": true,
+    "human_or_user_environment_gate": false
+  },
+  "execution": {
+    "runner": "scripts/run_trusted_media_review.py",
+    "builder": "scripts/build_trusted_media_run_receipt.mjs",
+    "lock": "spec/trusted-media-runner-lock.json",
+    "technical_audit_zone": "reviews/audio_technical_audits/",
+    "exact_scope": {"track": "cet4", "card_count": 1180, "box_count": 108, "audio_asset_count": 301},
+    "full_perceptual_runs": ["a", "b"],
+    "bounded_adjudication_run": "c",
+    "pronunciation_specialists": ["d", "e"],
+    "blind_full_transcript_specialists": ["f", "g"],
+    "every_model_call_receives_the_exact_SHA_verified_asset_path": true,
+    "two_distinct_complete_301_asset_run_artifacts_required": true,
+    "unresolved_three_run_disagreement_fails_closed": true,
+    "failed_final_perceptual_check_prevents_attestation": true
+  },
+  "attestation": {
+    "provider": "github_artifact_attestations_sigstore",
+    "action": "actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6",
+    "subject": "trusted-media-run-receipt.json",
+    "uploaded_artifact_action": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+    "consumer_contract": "../softbook_cet/spec/trusted-media-run-receipt.json",
+    "attestation_proves_provenance_not_result_correctness": true,
+    "type_specific_consumer_validation_required": true
+  },
+  "outputs": [
+    "run-a.jsonl",
+    "run-b.jsonl",
+    "optional-run-c-through-g.jsonl",
+    "run-package.json",
+    "model-weights-manifest.json",
+    "audio-manifest.json",
+    "reviewed-worklist.json",
+    "raw-run-manifest.json",
+    "trusted-media-run-receipt.json",
+    "attestation-bundle.jsonl"
+  ],
+  "current_boundary": {
+    "implementation_present_on_topic_branch": true,
+    "installed_on_main": false,
+    "self_hosted_runner_observed": false,
+    "real_attestation_observed": false,
+    "formal_media_evidence_created": false,
+    "does_not_claim": ["model_execution_before_workflow_run", "provider_or_voice_identity", "deployment", "device_playback", "closed_beta_readiness"]
+  }
+}

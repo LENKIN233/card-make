@@ -1,5 +1,5 @@
 {
-  "version": "card-make-harness-v2",
+  "version": "card-make-harness-v3",
   "status": "active",
   "purpose": "Active index for the card content production harness.",
   "active_docs": [
@@ -31,6 +31,18 @@
       "path": "spec/audio-generation-contract.json",
       "authority": "audio_generation_contract",
       "owner": "audio_generation_and_qc",
+      "status": "active"
+    },
+    {
+      "path": "spec/trusted-media-run-producer.json",
+      "authority": "trusted_media_run_producer_contract",
+      "owner": "trusted_media_run_producer",
+      "status": "active"
+    },
+    {
+      "path": "spec/trusted-media-runner-lock.json",
+      "authority": "trusted_media_runner_lock",
+      "owner": "trusted_media_run_producer",
       "status": "active"
     },
     {
@@ -79,6 +91,36 @@
       "path": "scripts/test_trusted_model_review.py",
       "authority": "trusted_model_review_tests",
       "owner": "trusted_model_execution_provenance",
+      "status": "active"
+    },
+    {
+      "path": ".github/workflows/trusted-media-run.yml",
+      "authority": "trusted_media_run_workflow",
+      "owner": "trusted_media_run_producer",
+      "status": "active"
+    },
+    {
+      "path": "scripts/run_trusted_media_review.py",
+      "authority": "trusted_media_model_runner",
+      "owner": "trusted_media_run_producer",
+      "status": "active"
+    },
+    {
+      "path": "scripts/test_run_trusted_media_review.py",
+      "authority": "trusted_media_model_runner_tests",
+      "owner": "trusted_media_run_producer",
+      "status": "active"
+    },
+    {
+      "path": "scripts/build_trusted_media_run_receipt.mjs",
+      "authority": "trusted_media_receipt_builder",
+      "owner": "trusted_media_run_producer",
+      "status": "active"
+    },
+    {
+      "path": "scripts/test_build_trusted_media_run_receipt.mjs",
+      "authority": "trusted_media_receipt_builder_tests",
+      "owner": "trusted_media_run_producer",
       "status": "active"
     },
     {
@@ -229,6 +271,12 @@
       "path": "reviews/audio_perceptual_worklists/README.md",
       "authority": "audio_perceptual_worklist_zone",
       "owner": "audio_perceptual_worklists",
+      "status": "active"
+    },
+    {
+      "path": "reviews/audio_technical_audits/README.md",
+      "authority": "audio_technical_audit_zone",
+      "owner": "trusted_media_run_producer",
       "status": "active"
     },
     {
