@@ -1046,6 +1046,42 @@ test('a model-owned authorization passes with canonical scope, audit, and linked
   result = validate(repo);
   assert.equal(result.status, 0, result.stderr || result.stdout);
 
+  const runtimeShardPath =
+    'reviews/runtime_payloads/model-authorization-runtime-001.json';
+  const runtimeShard = {
+    schema_version: 'card-make-runtime-card-shard.v1',
+    track: 'cet4',
+    card_records: runtimePayload.card_records,
+  };
+  writeJson(path.join(repo.root, runtimeShardPath), runtimeShard);
+  const runtimeShardSha256 = `sha256:${crypto
+    .createHash('sha256')
+    .update(fs.readFileSync(path.join(repo.root, runtimeShardPath)))
+    .digest('hex')}`;
+  writeJson(path.join(repo.root, runtimePayloadPath), {
+    schema_version: 'card-make-runtime-payload-manifest.v1',
+    source: runtimePayload.source,
+    track: runtimePayload.track,
+    content_version: contentVersionA,
+    card_record_shards: [{
+      path: runtimeShardPath,
+      sha256: runtimeShardSha256,
+      card_count: runtimeShard.card_records.length,
+      first_card_id: runtimeShard.card_records[0].card_id,
+      last_card_id: runtimeShard.card_records.at(-1).card_id,
+    }],
+    assets: [],
+    release: null,
+  });
+  fullTrack.validation.runtime_payload_sha256 = `sha256:${crypto
+    .createHash('sha256')
+    .update(fs.readFileSync(path.join(repo.root, runtimePayloadPath)))
+    .digest('hex')}`;
+  writeJson(authorizationPath, fullTrack);
+  commit(repo.root, 'replace direct runtime payload with a hash-bound shard manifest');
+  result = validate(repo);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+
   fullTrack.approved_by_user = true;
   writeJson(authorizationPath, fullTrack);
   commit(repo.root, 'attempt person-authority field injection');

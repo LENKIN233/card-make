@@ -24,11 +24,12 @@ immutable input. Legacy records containing `approved_by_user`,
 cannot create current authorization.
 
 A full-track formal content authorization also binds one direct immutable
-runtime payload and its SHA-256. Validators derive the canonical
-`content_version` from that payload, require exact track/card scope, and include
-the version in the canonical model-input hash. The two independent runs cannot
-be replayed for a different payload or normalized runtime version. Ordinary
-scoped authorization does not require a runtime version before one exists.
+runtime payload or hash-bound shard manifest and its SHA-256. Validators
+reconstruct every direct regular JSON shard in one fixed snapshot, derive the
+canonical `content_version`, require exact track/card scope, and include the
+version in the canonical model-input hash. Missing, swapped, overlapping, or
+cross-version shards cannot replay the two independent runs. Ordinary scoped
+authorization does not require a runtime version before one exists.
 
 `model-acceptance.v2` is structural decision evidence, not cryptographic proof
 that a provider model executed. The pinned base-only `trusted-model-review`

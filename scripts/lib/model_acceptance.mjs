@@ -19,6 +19,10 @@ export const MODEL_ACCEPTANCE_CAPABILITIES = Object.freeze([
 const SHA256_RE = /^sha256:[a-f0-9]{64}$/;
 const RFC3339_WITH_ZONE_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 const ID_RE = /^[A-Za-z0-9][A-Za-z0-9:._/@-]{2,255}$/;
+const RUNTIME_MANIFEST_SCHEMA = 'card-make-runtime-payload-manifest.v1';
+const RUNTIME_CARD_SHARD_SCHEMA = 'card-make-runtime-card-shard.v1';
+const RUNTIME_SHARD_PATH_RE =
+  /^reviews\/runtime_payloads\/[A-Za-z0-9][A-Za-z0-9._-]*\.json$/;
 
 function canonicalize(value) {
   if (Array.isArray(value)) return value.map(canonicalize);
@@ -120,7 +124,80 @@ export function buildContentAuthorizationAdditionalBindings({
   return {content_version: contentVersion};
 }
 
-export function deriveRuntimePayloadContentIdentity(payload) {
+export function resolveRuntimePayloadForIdentity(payload, {loadShard} = {}) {
+  if (payload?.schema_version !== RUNTIME_MANIFEST_SCHEMA) return payload;
+  if (
+    !isPlainObject(payload.source) ||
+    !hasText(payload.source.id) ||
+    !hasText(payload.source.label) ||
+    !['cet4', 'cet6'].includes(payload.track) ||
+    !Array.isArray(payload.card_record_shards) ||
+    payload.card_record_shards.length === 0 ||
+    typeof loadShard !== 'function'
+  ) {
+    throw new Error('runtime payload manifest is incomplete');
+  }
+  const assets = payload.assets === undefined ? [] : payload.assets;
+  if (!Array.isArray(assets)) {
+    throw new Error('runtime payload manifest assets must be an array');
+  }
+  const paths = new Set();
+  const cardRecords = [];
+  let previousLastCardId = null;
+  for (const descriptor of payload.card_record_shards) {
+    if (
+      !isPlainObject(descriptor) ||
+      !RUNTIME_SHARD_PATH_RE.test(String(descriptor.path || '')) ||
+      !SHA256_RE.test(String(descriptor.sha256 || '')) ||
+      !Number.isSafeInteger(descriptor.card_count) ||
+      descriptor.card_count <= 0 ||
+      !/^\d{6}$/.test(String(descriptor.first_card_id || '')) ||
+      !/^\d{6}$/.test(String(descriptor.last_card_id || '')) ||
+      paths.has(descriptor.path)
+    ) {
+      throw new Error('runtime payload manifest shard descriptor is invalid');
+    }
+    paths.add(descriptor.path);
+    const loaded = loadShard(descriptor.path);
+    if (
+      !isPlainObject(loaded) ||
+      loaded.sha256 !== descriptor.sha256 ||
+      !isPlainObject(loaded.payload) ||
+      loaded.payload.schema_version !== RUNTIME_CARD_SHARD_SCHEMA ||
+      loaded.payload.track !== payload.track ||
+      !Array.isArray(loaded.payload.card_records) ||
+      loaded.payload.card_records.length !== descriptor.card_count
+    ) {
+      throw new Error(`runtime payload shard is invalid: ${descriptor.path}`);
+    }
+    const shardIds = loaded.payload.card_records.map(card =>
+      String(card?.card_id || '')
+    );
+    if (
+      shardIds.some(cardId => !/^\d{6}$/.test(cardId)) ||
+      new Set(shardIds).size !== shardIds.length ||
+      shardIds.some((cardId, index) => index > 0 && cardId <= shardIds[index - 1]) ||
+      shardIds[0] !== descriptor.first_card_id ||
+      shardIds.at(-1) !== descriptor.last_card_id ||
+      (previousLastCardId !== null && shardIds[0] <= previousLastCardId)
+    ) {
+      throw new Error(`runtime payload shard card range is invalid: ${descriptor.path}`);
+    }
+    previousLastCardId = shardIds.at(-1);
+    cardRecords.push(...loaded.payload.card_records);
+  }
+  return {
+    assets,
+    card_records: cardRecords,
+    content_version: payload.content_version,
+    release: payload.release ?? null,
+    source: payload.source,
+    track: payload.track,
+  };
+}
+
+export function deriveRuntimePayloadContentIdentity(payload, options = {}) {
+  payload = resolveRuntimePayloadForIdentity(payload, options);
   if (
     !isPlainObject(payload) ||
     !isPlainObject(payload.source) ||

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import test from 'node:test';
 
 import {
@@ -129,6 +130,77 @@ test('full-track runtime content_version is derived from normalized immutable pa
       content_version: `sha256:${'0'.repeat(64)}`,
     }),
     /does not match normalized content/,
+  );
+});
+
+test('sharded runtime manifest reconstructs one canonical content identity and rejects shard replay', () => {
+  const direct = {
+    source: {id: 'fixture', label: 'Fixture'},
+    track: 'cet4',
+    card_records: [
+      {card_id: '000001', front: {text: 'One'}},
+      {card_id: '000002', front: {text: 'Two'}},
+    ],
+    assets: [{
+      asset_id: 'audio-1',
+      duration_ms: 1000,
+      media_type: 'audio/mpeg',
+      sha256: `sha256:${'a'.repeat(64)}`,
+      size_bytes: 100,
+    }],
+  };
+  const contentVersion =
+    deriveRuntimePayloadContentIdentity(direct).content_version;
+  const shards = new Map([
+    ['reviews/runtime_payloads/fixture-001.json', {
+      schema_version: 'card-make-runtime-card-shard.v1',
+      track: 'cet4',
+      card_records: [direct.card_records[0]],
+    }],
+    ['reviews/runtime_payloads/fixture-002.json', {
+      schema_version: 'card-make-runtime-card-shard.v1',
+      track: 'cet4',
+      card_records: [direct.card_records[1]],
+    }],
+  ]);
+  const sha256 = value => `sha256:${crypto
+    .createHash('sha256')
+    .update(JSON.stringify(value))
+    .digest('hex')}`;
+  const manifest = {
+    schema_version: 'card-make-runtime-payload-manifest.v1',
+    source: direct.source,
+    track: 'cet4',
+    content_version: contentVersion,
+    card_record_shards: [...shards].map(([path, shard]) => ({
+      path,
+      sha256: sha256(shard),
+      card_count: 1,
+      first_card_id: shard.card_records[0].card_id,
+      last_card_id: shard.card_records[0].card_id,
+    })),
+    assets: direct.assets,
+    release: null,
+  };
+  const loadShard = path => ({
+    payload: structuredClone(shards.get(path)),
+    sha256: sha256(shards.get(path)),
+  });
+  assert.deepEqual(
+    deriveRuntimePayloadContentIdentity(manifest, {loadShard}),
+    deriveRuntimePayloadContentIdentity({...direct, content_version: contentVersion}),
+  );
+  assert.throws(
+    () => deriveRuntimePayloadContentIdentity(manifest, {
+      loadShard: path => ({...loadShard(path), sha256: `sha256:${'0'.repeat(64)}`}),
+    }),
+    /shard is invalid/,
+  );
+  const replayed = structuredClone(manifest);
+  replayed.card_record_shards.reverse();
+  assert.throws(
+    () => deriveRuntimePayloadContentIdentity(replayed, {loadShard}),
+    /card range is invalid/,
   );
 });
 

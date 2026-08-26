@@ -2786,6 +2786,22 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
             const runtimePayload = readChangedJson(runtimePayloadPath, head);
             const runtimeIdentity = deriveRuntimePayloadContentIdentity(
               runtimePayload,
+              {
+                loadShard: shardPath => {
+                  if (
+                    !isRuntimePayloadPath(shardPath) ||
+                    !isRegularFileAtCommit(head, shardPath)
+                  ) {
+                    throw new Error(
+                      `runtime payload shard is not a direct regular JSON file: ${shardPath}`,
+                    );
+                  }
+                  return {
+                    payload: readChangedJson(shardPath, head),
+                    sha256: fileSha256AtCommit(shardPath, head),
+                  };
+                },
+              },
             );
             if (
               runtimeIdentity.content_version !== record.content_version ||

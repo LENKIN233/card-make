@@ -651,6 +651,25 @@ export function validateCurrentApprovalRecordReference({
         try {
           const runtimeIdentity = deriveRuntimePayloadContentIdentity(
             runtimePayload,
+            {
+              loadShard: shardPath => {
+                const shard = checkRecordFile(
+                  shardPath,
+                  isDirectRuntimePayloadPath,
+                  'approval_runtime_payload_shard',
+                );
+                const shardBytes = recordBytesByPath.get(shardPath);
+                return {
+                  payload: shard,
+                  sha256: shardBytes
+                    ? `sha256:${crypto
+                      .createHash('sha256')
+                      .update(shardBytes)
+                      .digest('hex')}`
+                    : null,
+                };
+              },
+            },
           );
           if (
             runtimeIdentity.content_version !== approval.content_version ||

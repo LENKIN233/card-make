@@ -771,6 +771,63 @@ test('current approval consumers reject forged replay, stale, template, traversa
     });
     assert.equal(result.ok, true, JSON.stringify(result.issues));
 
+    const runtimeShardPath =
+      'reviews/runtime_payloads/current-full-track-runtime-001.json';
+    const runtimeShard = {
+      schema_version: 'card-make-runtime-card-shard.v1',
+      track: 'cet4',
+      card_records: currentCards,
+    };
+    writeJson(runtimeShardPath, runtimeShard);
+    const runtimeShardSha256 = `sha256:${cryptoHashFile(
+      path.join(root, runtimeShardPath),
+    )}`;
+    writeJson(runtimePayloadPath, {
+      schema_version: 'card-make-runtime-payload-manifest.v1',
+      source: runtimePayload.source,
+      track: runtimePayload.track,
+      content_version: contentVersionA,
+      card_record_shards: [{
+        path: runtimeShardPath,
+        sha256: runtimeShardSha256,
+        card_count: currentCards.length,
+        first_card_id: currentCards[0].card_id,
+        last_card_id: currentCards.at(-1).card_id,
+      }],
+      assets: [],
+      release: null,
+    });
+    fullTrackApproval.validation.runtime_payload_sha256 =
+      `sha256:${cryptoHashFile(path.join(root, runtimePayloadPath))}`;
+    writeJson(approvalPath, fullTrackApproval);
+    execFileSync('git', ['add', '--all'], {cwd: root});
+    execFileSync(
+      'git',
+      ['commit', '-qm', 'replace direct runtime with tracked shard manifest'],
+      {cwd: root},
+    );
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, true, JSON.stringify(result.issues));
+
+    const tamperedShard = structuredClone(runtimeShard);
+    tamperedShard.card_records[0].dirty_shard_replay = true;
+    writeJson(runtimeShardPath, tamperedShard);
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(issue =>
+      issue.code === 'approval_runtime_payload_shard_not_committed_at_head'
+      || issue.code === 'approval_runtime_payload_invalid'
+    ));
+    writeJson(runtimeShardPath, runtimeShard);
+
     fullTrackApproval.content_version = contentVersionB;
     writeJson(approvalPath, fullTrackApproval);
     execFileSync('git', ['add', '--all'], {cwd: root});
