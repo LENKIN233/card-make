@@ -1,0 +1,62 @@
+{
+  "handoff_id": "20260826-content-cet4-full-track-source-review-v2",
+  "created_at": "2026-08-26T10:32:59+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-track-review-v2",
+  "base_branch": "main",
+  "commit_sha": "ea5b09da4ff860dd97a3da3f225a89856981109c",
+  "push_ref": "origin/content/cet4-full-track-review-v2",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/193",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_sample",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_bankedcloze_0200.json",
+      "card_boxes_json/card_boxes_seed_cet4_grammar_0600.json",
+      "card_boxes_json/card_boxes_seed_cet4_listening_0000.json",
+      "card_boxes_json/card_boxes_seed_cet4_listening_0001.json",
+      "card_boxes_json/card_boxes_seed_cet4_reading_0100.json",
+      "card_boxes_json/card_boxes_seed_cet4_translation_0400.json",
+      "card_boxes_json/card_boxes_seed_cet4_translation_0401.json",
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0500.json",
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0501.json",
+      "card_boxes_json/card_boxes_seed_cet4_writing_0300.json",
+      "reviews/agent_self_review/20260826-cet4-full-track-source-model-review.json",
+      "reviews/audit_scopes/20260826-cet4-full-track-model-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "369625c24110e52e42eaeeb1cb5fd03e6552448d",
+    "patch_sha256": "e3619b44361d941961fb745021f04519c20793be422d913f729fca508dd1af29"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --strict",
+      "result": "passed: 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with only six recorded upstream catalog-alignment warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed: zero issues and one documented multi-prefix warning"
+    },
+    {
+      "command": "node --test scripts/test_card_integrity.mjs scripts/test_model_acceptance.mjs",
+      "result": "passed: 29/29"
+    },
+    {
+      "command": "two independent gpt-5.6-sol exact-input source reviews",
+      "result": "accepted: 1180 cards, 108 boxes, zero blocking findings"
+    }
+  ],
+  "local_status": "The complete CET4 source candidate is reviewed and audit-bound without an oversized runtime blob; all representative semantic, provenance, answer, interaction, metadata-specificity, and progression defects are closed.",
+  "remaining_risks": [
+    "Repository trusted-model-review checks remain blocked until a valid OpenAI credential or approved workload identity is configured.",
+    "Formal runtime content binding requires a shard-safe manifest design and remains a separate harness/runtime review unit.",
+    "The 301 audio assets have technical evidence only; formal perceptual audio QC remains separate.",
+    "This source-review PR does not authorize content, deploy, distribute, or prove device/runtime state."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
