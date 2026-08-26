@@ -367,7 +367,7 @@
           "audio_generation_method": "none"
         },
         "exam_value": "把关系词选择推进到所属关系与标点约束，避免只按人或物机械选词。",
-        "box_progression_role": "transfer",
+        "box_progression_role": "application",
         "review_status": "draft"
       }
     },
@@ -443,9 +443,9 @@
           "grammar_weak"
         ],
         "difficulty": {
-          "primary": "foundation",
+          "primary": "pass",
           "secondary": [
-            "pass"
+            "foundation"
           ]
         },
         "card_prototype": "solving_action",
@@ -455,7 +455,7 @@
           "audio_generation_method": "none"
         },
         "exam_value": "汉译英时先保住主干，再用非限制性定语从句压缩补充信息。",
-        "box_progression_role": "recognition",
+        "box_progression_role": "application",
         "review_status": "agent_pass"
       },
       "track_index": 0,
@@ -515,23 +515,23 @@
       "card_box_name": "定语从句",
       "card_group_name": "高级句子",
       "front_content": {
-        "text": "原句：随着城市更新，一些老厂房被改造成文化空间，它们仍保留着原有的工业结构。\n\n判断：下面译文中的 which 挂载清晰，无需调整。\n\nAs cities are renewed, some old factory buildings have been converted into cultural spaces, which retain their original industrial structures.",
+    "text": "原句：随着城市更新，一些老厂房被改造成文化空间，这些空间仍保留着原有的工业结构。\n\n判断：下面译文中的 which 自然回指 cultural spaces，语义与原句一致。\n\nAs cities are renewed, some old factory buildings have been converted into cultural spaces, which retain their original industrial structures.",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：错误。可改为：As cities are renewed, some old factory buildings, which retain their original industrial structures, have been converted into cultural spaces.",
-        "explanation": "原译文把 which 紧放在 cultural spaces 后面，读者会优先把它理解为修饰 spaces；但“保留工业结构”的主体是 old factory buildings。"
+    "text": "答案：正确。which 紧跟 cultural spaces，清楚回指由老厂房改造而成的文化空间；这些空间保留原有工业结构，语义自然。",
+    "explanation": "非限制性定语从句通常优先回指最近的名词短语。这里 cultural spaces 与原句中的“这些空间”对应，retain their original industrial structures 也符合改造语境。"
       },
       "analysis_content": {
-        "text": "定语从句的语法位置和语义归属必须同时清楚。原句里 cultural spaces 是最近的名词短语，却不是 retain industrial structures 的合理执行者。把 which 从句紧跟 old factory buildings，既恢复正确先行词，也让主句 have been converted 保持完整。",
+    "text": "① 识别信号：which 紧跟 cultural spaces，默认回指这个最近的复数名词短语。\n\n② 核心规律：判断定语从句先行词时，要同时检查距离、数的一致和语义合理性，不能只凭中文中的实体来源改写挂载位置。\n\n③ 验证：文化空间由老厂房改造而来，因此说这些 spaces retain their original industrial structures 自然且与中文一致。",
         "tips": [
-          "先问从句动作真正由谁完成。",
-          "不要让不相关的近邻名词抢走先行词。"
+      "先找 which 前最近、数一致且语义合理的名词短语。",
+      "实体由另一实体改造而来时，两者可能共指同一物理空间，不能据此制造伪歧义。"
         ]
       },
-      "correct_answer": false,
+  "correct_answer": true,
       "options": null,
       "eliminable_items": null,
       "word_bank": null,
@@ -548,7 +548,7 @@
         "model": "unknown"
       },
       "quality_metadata": {
-        "main_training_goal": "诊断定语从句被近邻名词错误吸附的问题",
+    "main_training_goal": "结合距离数一致与语义确认 which 先行词",
         "weak_point_tags": [
           "translation_output_weak",
           "grammar_weak"
@@ -559,13 +559,13 @@
             "foundation"
           ]
         },
-        "card_prototype": "error_correction",
+    "card_prototype": "solving_action",
         "material": {
           "text_source_type": "ai_generated",
           "source_note": "Original AI-authored simulation for the controlled-pilot candidate expansion; explicitly not represented as true exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "同时核验定语从句的位置和语义归属，避免翻译逻辑错位。",
+    "exam_value": "同时核验定语从句的邻近挂载、数的一致和语义归属。",
         "box_progression_role": "application",
         "review_status": "agent_pass"
       },
@@ -583,18 +583,18 @@
       },
       "interaction_id": "swipe",
       "front": {
-        "text": "原句：随着城市更新，一些老厂房被改造成文化空间，它们仍保留着原有的工业结构。\n\n判断：下面译文中的 which 挂载清晰，无需调整。\n\nAs cities are renewed, some old factory buildings have been converted into cultural spaces, which retain their original industrial structures.",
-        "task_prompt": "原句：随着城市更新，一些老厂房被改造成文化空间，它们仍保留着原有的工业结构。\n\n判断：下面译文中的 which 挂载清晰，无需调整。\n\nAs cities are renewed, some old factory buildings have been converted into cultural spaces, which retain their original industrial structures.",
+    "text": "原句：随着城市更新，一些老厂房被改造成文化空间，这些空间仍保留着原有的工业结构。\n\n判断：下面译文中的 which 自然回指 cultural spaces，语义与原句一致。\n\nAs cities are renewed, some old factory buildings have been converted into cultural spaces, which retain their original industrial structures.",
+    "task_prompt": "原句：随着城市更新，一些老厂房被改造成文化空间，这些空间仍保留着原有的工业结构。\n\n判断：下面译文中的 which 自然回指 cultural spaces，语义与原句一致。\n\nAs cities are renewed, some old factory buildings have been converted into cultural spaces, which retain their original industrial structures.",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "定语从句的语法位置和语义归属必须同时清楚。原句里 cultural spaces 是最近的名词短语，却不是 retain industrial structures 的合理执行者。把 which 从句紧跟 old factory buildings，既恢复正确先行词，也让主句 have been converted 保持完整。",
+    "text": "① 识别信号：which 紧跟 cultural spaces，默认回指这个最近的复数名词短语。\n\n② 核心规律：判断定语从句先行词时，要同时检查距离、数的一致和语义合理性，不能只凭中文中的实体来源改写挂载位置。\n\n③ 验证：文化空间由老厂房改造而来，因此说这些 spaces retain their original industrial structures 自然且与中文一致。",
         "tips": [
-          "先问从句动作真正由谁完成。",
-          "不要让不相关的近邻名词抢走先行词。"
+      "先找 which 前最近、数一致且语义合理的名词短语。",
+      "实体由另一实体改造而来时，两者可能共指同一物理空间，不能据此制造伪歧义。"
         ]
       },
       "auto_scoring": true,
@@ -611,7 +611,7 @@
         "version": "softbook-card-contract-2026-07-31-elimination-ids"
       },
       "answer_key": {
-        "correct_state": false
+    "correct_state": true
       },
       "swipe_states": [
         {
