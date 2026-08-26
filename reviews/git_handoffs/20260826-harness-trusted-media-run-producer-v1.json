@@ -1,0 +1,77 @@
+{
+  "handoff_id": "20260826-harness-trusted-media-run-producer-v1",
+  "created_at": "2026-08-26T22:14:20+08:00",
+  "agent": "codex",
+  "branch": "harness/trusted-media-run-producer-v1",
+  "base_branch": "main",
+  "commit_sha": "c30f40eb54dee16127e38bb13296f6b7d0720aa9",
+  "push_ref": "origin/harness/trusted-media-run-producer-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...harness/trusted-media-run-producer-v1",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      ".github/workflows/pr-gates.yml",
+      ".github/workflows/trusted-media-run.yml",
+      "AGENTS.md",
+      "README.md",
+      "reviews/audio_perceptual_worklists/README.md",
+      "reviews/audio_technical_audits/README.md",
+      "scripts/build_trusted_media_run_receipt.mjs",
+      "scripts/run_trusted_media_review.py",
+      "scripts/test_build_trusted_media_run_receipt.mjs",
+      "scripts/test_run_trusted_media_review.py",
+      "scripts/validate_harness.mjs",
+      "spec/agent-harness.json",
+      "spec/audio-generation-contract.json",
+      "spec/authority-map.json",
+      "spec/doc-manifest.json",
+      "spec/eval-fixtures.json",
+      "spec/evals.json",
+      "spec/git-workflow.json",
+      "spec/perturbation-audit.json",
+      "spec/review-workflow.json",
+      "spec/trusted-media-run-producer.json",
+      "spec/trusted-media-runner-lock.json",
+      "spec/workspace-contract.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "369625c24110e52e42eaeeb1cb5fd03e6552448d",
+    "patch_sha256": "26735798c6f0e3be425f405cb37e8ffa6032e9229d13689a04abc65922143b00"
+  },
+  "validation": [
+    {
+      "command": "python3 scripts/test_run_trusted_media_review.py && node --test scripts/test_build_trusted_media_run_receipt.mjs",
+      "result": "passed: 3 Python runner scenarios and 3 exact 301-card receipt-builder scenarios"
+    },
+    {
+      "command": "real Qwen2-Audio one-card exact-asset smoke",
+      "result": "passed: two complete model calls, seven checks passed, distinct run artifact SHA-256 values"
+    },
+    {
+      "command": "model, trusted-review, card-integrity, PR-scope, delivery-record, audio worklist/QC suites",
+      "result": "passed: 9 + 8 + 20 + 106 + 80 + 17 tests"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs && node scripts/validate_audio_qc.mjs",
+      "result": "passed; only six pre-recorded upstream catalog-alignment warnings"
+    },
+    {
+      "command": "node scripts/report_repo_health.mjs --base origin/main --strict",
+      "result": "passed: 23 changed blobs, zero oversized blobs, zero dirty worktrees"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed"
+    }
+  ],
+  "local_status": "The trusted main-only workflow now performs real two-pass exact-media model execution on a protected Apple Silicon runner, rebuilds all 301 acceptances, emits a bounded receipt, and applies GitHub OIDC/Sigstore attestation only after every final check passes.",
+  "remaining_risks": [
+    "Parked without a PR because PR #194 already occupies the single parallel harness/tooling PR slot.",
+    "The workflow is not installed on main and no self-hosted softbook-media runner or real GitHub attestation has been observed.",
+    "Execution still requires merged exact CET4 content authorization, a tracked complete technical audit, and a tracked pending 301-card worklist.",
+    "Repository trusted-model-review remains blocked until a valid OpenAI credential or approved workload identity is configured."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
