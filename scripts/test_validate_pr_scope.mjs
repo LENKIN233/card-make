@@ -1004,6 +1004,8 @@ test('a model-owned authorization passes with canonical scope, audit, and linked
   const runtimePayloadPath =
     'reviews/runtime_payloads/model-authorization-runtime.json';
   const runtimePayload = runtimePayloadForCards([card]);
+  runtimePayload.card_records[0].large_runtime_fixture =
+    'x'.repeat(2 * 1024 * 1024);
   const contentVersionA =
     deriveRuntimePayloadContentIdentity(runtimePayload).content_version;
   runtimePayload.content_version = contentVersionA;

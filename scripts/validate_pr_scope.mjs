@@ -103,6 +103,7 @@ const STANDARD_SELF_REVIEW_BATCH_STATUSES = [
 const RESIDUAL_BLOCKER_CLOSURE_STATUS = 'documented_residual_closure';
 const CONFIRMED_BOX_EXPANSION_STATUS = 'reviewed_confirmed_box_expansion';
 const CORE_INTERACTION_IDS = ['flip', 'multiple_choice', 'lock', 'elimination', 'swipe'];
+const SUBPROCESS_MAX_BUFFER_BYTES = 64 * 1024 * 1024;
 const SELF_REVIEW_CARD_STATUSES = ['pass', 'revise', 'block'];
 const ANALYSIS_REFERENCE_CHECK_FIELDS = [
   'answer_matches_card',
@@ -124,6 +125,7 @@ function runCommand(command, args, options = {}) {
       ? {...process.env, ...options.env}
       : process.env,
     encoding: 'utf8',
+    maxBuffer: SUBPROCESS_MAX_BUFFER_BYTES,
     stdio: ['ignore', 'pipe', 'pipe'],
   });
   if (result.status !== 0) {
