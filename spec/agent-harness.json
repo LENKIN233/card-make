@@ -1,5 +1,5 @@
 {
-  "version": "card-make-agent-harness-v2",
+  "version": "card-make-agent-harness-v3",
   "status": "active",
   "authority_owner": "spec/review-workflow.json",
   "operating_model": {
@@ -37,6 +37,7 @@
       "reviews/agent_self_review/",
       "reviews/approved_batches/",
       "reviews/audio_qc/",
+      "reviews/audio_technical_audits/",
       "reviews/git_handoffs/",
       "reviews/audit_scopes/",
       "ephemeral reports generated with --report-path"
@@ -53,6 +54,8 @@
     "content_scope": "scripts/validate_pr_scope.mjs",
     "current_authorization_consumer": "scripts/lib/card_integrity.mjs",
     "audio_qc": "scripts/validate_audio_qc.mjs",
+    "trusted_media_model_runner": "scripts/run_trusted_media_review.py",
+    "trusted_media_receipt_builder": "scripts/build_trusted_media_run_receipt.mjs",
     "delivery_record": "scripts/validate_delivery_record.mjs"
   }
 }

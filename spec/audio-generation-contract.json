@@ -197,6 +197,18 @@
     "passing_worklist_is_not_formal_audio_qc": true,
     "formal_audio_qc_record_still_required": true
   },
+  "trusted_media_run": {
+    "contract": "spec/trusted-media-run-producer.json",
+    "workflow": ".github/workflows/trusted-media-run.yml",
+    "runner": "scripts/run_trusted_media_review.py",
+    "receipt_builder": "scripts/build_trusted_media_run_receipt.mjs",
+    "runner_lock": "spec/trusted-media-runner-lock.json",
+    "requires_two_complete_301_asset_model_runs": true,
+    "requires_current_full_track_content_authorization": true,
+    "requires_GitHub_attestation_of_exact_receipt_bytes": true,
+    "technical_or_structural_records_alone_are_formal_execution_provenance": false,
+    "current_real_attestation_observed": false
+  },
   "asset_change_policy": {
     "do_not_replace_audio_in_content_PRs": true,
     "audio_asset_changes_belong_in_audio_or_tooling_branch": true,

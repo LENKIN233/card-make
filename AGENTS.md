@@ -26,8 +26,9 @@ Read only the minimum relevant subset:
 4. `spec/review-workflow.json`
 5. `spec/content-quality-contract.json`
 6. `spec/audio-generation-contract.json` for audio work
-7. `spec/git-workflow.json` for tracked delivery
-8. the relevant `../softbook_cet/spec/*.json` product owners
+7. `spec/trusted-media-run-producer.json` for formal media execution or attestation work
+8. `spec/git-workflow.json` for tracked delivery
+9. the relevant `../softbook_cet/spec/*.json` product owners
 
 `spec/review-workflow.json` is the sole owner of model-owned acceptance. Older
 records under sample-confirmation or controlled-pilot person-authority paths are

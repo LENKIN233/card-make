@@ -1,5 +1,5 @@
 {
-  "version": "card-make-perturbation-audit-v2",
+  "version": "card-make-perturbation-audit-v3",
   "status": "active",
   "anti_drift_guards": [
     {
@@ -66,6 +66,11 @@
       "id": "PA-CARD-013",
       "reject": "Counting a semantically incomplete, legacy-person-authority, nested, symlinked, unusually encoded, current-corpus-drifted, or archived-global-audit-reusing review artifact as changed-card coverage; accepting an empty, forged, deleted, renamed, or non-replayed scoped-audit artifact merely because it is unlinked; swapping, truncating, or symlinking standard/full-track authority templates; accepting content authorization with an empty timestamp, summary, scope, representative evidence, direct runtime payload or shard-manifest binding, or trusted repository model check; accepting missing, reordered, overlapping, hash-mismatched, untracked, dirty, or replayed runtime shards; replaying full-track authorization across payloads or canonical runtime content_version values; mutating the pre-cutover archive index or one of its named records; or letting consumers count templates, traversal, symlinks, incomplete records, historical approvals, dirty/staged/mode-drifted authority or evidence, concurrent snapshot drift, forged current-digest audits, stale audits, or stale linked reviews as current authorization.",
       "recovery": "Require the complete canonical model review and authorization shape before coverage can count; bind exact scope, immutable input hash, current corpus fingerprint, scoped-audit replay, model identity, two distinct high-risk run IDs, non-empty summary, structured findings, and required capabilities. For full-track authorization, rehash one direct runtime payload or reconstruct one direct manifest from exact direct regular JSON shards whose bytes, counts, strict order, and non-overlapping card ranges are all bound in the same fixed snapshot; derive normalized content_version, require exact track/card scope, and bind that version through buildModelAcceptanceInputSha256 additionalBindings in both runs. Treat author-editable model records as structural and require the pinned base-only trusted model check for repository authority. Preserve Git paths exactly; reject unsafe paths, non-regular files, stale or forged evidence, dirty authority inputs, incomplete coverage, and generated or simulated content presented as true exam material."
+    },
+    {
+      "id": "PA-CARD-014",
+      "reject": "Treating a passing worklist, model-acceptance JSON, technical audit, or self-declared receipt as cryptographic proof that two complete 301-asset model runs occurred.",
+      "recovery": "Run the fixed card-make main workflow on the protected Apple Silicon runner, SHA-verify every asset before each model call, require two distinct complete full-perceptual run artifacts plus bounded adjudication, rebuild every per-card acceptance, and attest the exact receipt bytes with GitHub OIDC/Sigstore. Keep formal media evidence false until the consumer verifies the attestation and type-specific semantics."
     }
   ],
   "bad_card_patterns": [

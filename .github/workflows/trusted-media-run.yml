@@ -1,0 +1,130 @@
+name: trusted-media-run
+
+on:
+  workflow_dispatch:
+    inputs:
+      worklist_path:
+        description: Tracked pending CET4 audio perceptual worklist
+        required: true
+        type: string
+      authorization_path:
+        description: Tracked current full-track CET4 model authorization
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trusted-media-run-cet4
+  cancel-in-progress: false
+
+jobs:
+  review-and-attest:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, macOS, ARM64, softbook-media]
+    timeout-minutes: 180
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - name: Checkout exact trusted main commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          lfs: true
+
+      - name: Validate trusted source and bounded inputs
+        env:
+          WORKLIST_PATH: ${{ inputs.worklist_path }}
+          AUTHORIZATION_PATH: ${{ inputs.authorization_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/main
+          test -z "$(git status --porcelain)"
+          [[ "$WORKLIST_PATH" =~ ^reviews/audio_perceptual_worklists/[A-Za-z0-9._-]+\.json$ ]]
+          [[ "$AUTHORIZATION_PATH" =~ ^reviews/approved_batches/[A-Za-z0-9._-]+\.json$ ]]
+          test -f "$WORKLIST_PATH" && test ! -L "$WORKLIST_PATH"
+          test -f "$AUTHORIZATION_PATH" && test ! -L "$AUTHORIZATION_PATH"
+          git ls-files --error-unmatch -- "$WORKLIST_PATH" "$AUTHORIZATION_PATH" >/dev/null
+
+      - name: Validate trusted runner runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${CARD_MAKE_TRUSTED_MEDIA_MODEL_ROOT:-}"
+          test -d "$CARD_MAKE_TRUSTED_MEDIA_MODEL_ROOT"
+          model_root="$(cd "$CARD_MAKE_TRUSTED_MEDIA_MODEL_ROOT" && pwd -P)"
+          workspace_root="$(pwd -P)"
+          case "$model_root/" in
+            "$workspace_root/"*) echo "model root must remain outside the repository" >&2; exit 1 ;;
+          esac
+          test "$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')" = 3.12
+          test "$(python3 -c 'import importlib.metadata; print(importlib.metadata.version("mlx-audio"))')" = 0.5.0
+          python3 -c 'import mlx_audio'
+
+      - name: Validate current content and audio contracts
+        run: |
+          node --test scripts/test_model_acceptance.mjs
+          node scripts/validate_harness.mjs
+          node scripts/validate_cards.mjs --report-path "$RUNNER_TEMP/card-validation.json"
+          node scripts/audit_card_quality.mjs --report-path "$RUNNER_TEMP/card-quality-audit.json"
+          node scripts/validate_audio_lfs.mjs
+          node scripts/validate_audio_qc.mjs
+
+      - name: Run two-pass exact-asset media review
+        env:
+          WORKLIST_PATH: ${{ inputs.worklist_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          output_dir="$RUNNER_TEMP/trusted-media-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          test ! -e "$output_dir"
+          python3 scripts/run_trusted_media_review.py \
+            --worklist "$WORKLIST_PATH" \
+            --asset-root "$GITHUB_WORKSPACE" \
+            --model-root "$CARD_MAKE_TRUSTED_MEDIA_MODEL_ROOT" \
+            --output-dir "$output_dir" \
+            --workflow-run-id "$GITHUB_RUN_ID" \
+            --workflow-run-attempt "$GITHUB_RUN_ATTEMPT"
+          echo "TRUSTED_MEDIA_OUTPUT_DIR=$output_dir" >> "$GITHUB_ENV"
+
+      - name: Build exact receipt and review artifacts
+        env:
+          WORKLIST_PATH: ${{ inputs.worklist_path }}
+          AUTHORIZATION_PATH: ${{ inputs.authorization_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/build_trusted_media_run_receipt.mjs \
+            --worklist "$WORKLIST_PATH" \
+            --authorization "$AUTHORIZATION_PATH" \
+            --run-package "$TRUSTED_MEDIA_OUTPUT_DIR/run-package.json" \
+            --output-dir "$TRUSTED_MEDIA_OUTPUT_DIR" \
+            --source-commit "$GITHUB_SHA"
+
+      - name: Attest exact trusted media receipt
+        id: attest
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
+        with:
+          subject-path: ${{ env.TRUSTED_MEDIA_OUTPUT_DIR }}/trusted-media-run-receipt.json
+
+      - name: Bind attestation bundle to uploaded run artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp "${{ steps.attest.outputs.bundle-path }}" \
+            "$TRUSTED_MEDIA_OUTPUT_DIR/attestation-bundle.jsonl"
+
+      - name: Upload exact run package, receipt, and attestation
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: trusted-media-run-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.TRUSTED_MEDIA_OUTPUT_DIR }}
+          if-no-files-found: error
+          retention-days: 30

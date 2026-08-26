@@ -1,0 +1,24 @@
+{
+  "schema_version": "trusted-media-runner-lock.v1",
+  "model": {
+    "id": "mlx-community/Qwen2-Audio-7B-Instruct-4bit",
+    "revision": "c65570002626f41b4dc08b7b54f42f99f3e82e7f"
+  },
+  "runtime": {
+    "python": "3.12",
+    "mlx_audio": "0.5.0",
+    "runner_class": "self_hosted_macos_arm64"
+  },
+  "runs": [
+    {"name": "a", "purpose": "full_perceptual", "temperature": 0.0},
+    {"name": "b", "purpose": "full_perceptual", "temperature": 0.1},
+    {"name": "c", "purpose": "adjudication", "temperature": 0.2},
+    {"name": "d", "purpose": "pronunciation", "temperature": 0.1},
+    {"name": "e", "purpose": "pronunciation", "temperature": 0.2},
+    {"name": "f", "purpose": "blind_transcript", "temperature": 0.0},
+    {"name": "g", "purpose": "blind_transcript", "temperature": 0.1}
+  ],
+  "transcript_similarity_threshold": 0.85,
+  "full_perceptual_runs_required": 2,
+  "exact_cet4_audio_asset_count": 301
+}

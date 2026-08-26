@@ -1,5 +1,5 @@
 {
-  "version": "card-make-evals-v2",
+  "version": "card-make-evals-v3",
   "status": "active",
   "fixture_suite": "spec/eval-fixtures.json",
   "golden_tasks": [
@@ -106,6 +106,20 @@
         "requires_target_signal_audible_for_pronunciation_boxes",
         "keeps_tts_audio_separate_from_source_authenticity",
         "does_not_treat_existing_ai_tts_asset_as_formal_by_path_only"
+      ]
+    },
+    {
+      "id": "GT-CARD-007",
+      "name": "trusted_media_run_requires_real_execution_and_attestation",
+      "prompt": "Promote a passing 301-card audio worklist to formal media execution evidence.",
+      "expected": [
+        "requires_two_distinct_complete_301_asset_model_runs",
+        "requires_exact_asset_SHA_and_entry_identity_for_every_call",
+        "requires_current_full_track_content_authorization",
+        "requires_fixed_main_branch_trusted_workflow",
+        "requires_GitHub_OIDC_artifact_attestation_of_exact_receipt_bytes",
+        "rejects_self_declared_provider_or_execution_JSON",
+        "keeps_formal_media_and_closed_beta_state_false_before_real_attestation"
       ]
     }
   ],

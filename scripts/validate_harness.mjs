@@ -50,7 +50,7 @@ const REQUIRED_METADATA_FIELDS = [
 
 const REQUIRED_CARD_FIELDS = ['card_id', 'track', 'knowledge_ref', 'interaction_id', 'front', 'analysis'];
 const CORE_INTERACTION_IDS = ['flip', 'multiple_choice', 'lock', 'elimination', 'swipe'];
-const REQUIRED_GOLDEN_TASKS = ['GT-CARD-001', 'GT-CARD-002', 'GT-CARD-003', 'GT-CARD-004', 'GT-CARD-005', 'GT-CARD-006'];
+const REQUIRED_GOLDEN_TASKS = ['GT-CARD-001', 'GT-CARD-002', 'GT-CARD-003', 'GT-CARD-004', 'GT-CARD-005', 'GT-CARD-006', 'GT-CARD-007'];
 const REQUIRED_AUDIO_QC_CHECKS = [
   'audio_matches_text',
   'target_signal_audible',
@@ -4004,6 +4004,50 @@ function validateGitWorkflow(errors) {
     ) {
       pushIssue(errors, 'trusted_model_review_bootstrap_missing', {});
     }
+    const mediaProducer = readJson('spec/trusted-media-run-producer.json');
+    const mediaWorkflow = readText('.github/workflows/trusted-media-run.yml');
+    const mediaAssets = [
+      'spec/trusted-media-run-producer.json',
+      'spec/trusted-media-runner-lock.json',
+      '.github/workflows/trusted-media-run.yml',
+      'scripts/run_trusted_media_review.py',
+      'scripts/test_run_trusted_media_review.py',
+      'scripts/build_trusted_media_run_receipt.mjs',
+      'scripts/test_build_trusted_media_run_receipt.mjs',
+      'reviews/audio_technical_audits/README.md',
+    ];
+    if (mediaAssets.some(asset => !exists(asset))) {
+      pushIssue(errors, 'trusted_media_run_asset_missing', {});
+    }
+    if (
+      mediaProducer.version !== 'trusted-media-run-producer-v1' ||
+      mediaProducer.current_boundary?.real_attestation_observed !== false ||
+      mediaProducer.current_boundary?.formal_media_evidence_created !== false ||
+      mediaProducer.workflow?.human_or_user_environment_gate !== false ||
+      mediaProducer.attestation?.attestation_proves_provenance_not_result_correctness !== true
+    ) {
+      pushIssue(errors, 'trusted_media_run_boundary_invalid', {});
+    }
+    for (const token of [
+      "github.ref == 'refs/heads/main'",
+      'runs-on: [self-hosted, macOS, ARM64, softbook-media]',
+      'id-token: write',
+      'attestations: write',
+      'scripts/run_trusted_media_review.py',
+      'scripts/build_trusted_media_run_receipt.mjs',
+      'lfs: true',
+      'model root must remain outside the repository',
+      'scripts/validate_audio_lfs.mjs',
+      'actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6',
+      'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02',
+    ]) {
+      if (!mediaWorkflow.includes(token)) {
+        pushIssue(errors, 'trusted_media_run_workflow_guard_missing', {token});
+      }
+    }
+    if (/\benvironment\s*:/.test(mediaWorkflow)) {
+      pushIssue(errors, 'trusted_media_run_human_environment_forbidden', {});
+    }
     for (const token of [
       'validateModelAcceptance',
       'changed_candidate_card_deleted_without_model_acceptance',
@@ -4084,7 +4128,7 @@ function validateEvalsAndPerturbation(errors) {
 
   const perturbation = readJson('spec/perturbation-audit.json');
   const guards = new Set((perturbation.anti_drift_guards || []).map(guard => guard.id));
-  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009', 'PA-CARD-010', 'PA-CARD-011', 'PA-CARD-012', 'PA-CARD-013']) {
+  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009', 'PA-CARD-010', 'PA-CARD-011', 'PA-CARD-012', 'PA-CARD-013', 'PA-CARD-014']) {
     if (!guards.has(id)) {
       pushIssue(errors, 'anti_drift_guard_missing', { id });
     }
@@ -4365,6 +4409,21 @@ function validateEvalFixtures(errors) {
       }
       if (!expectedGateErrors.includes('target_signal_audible_required_for_formal_audio')) {
         pushIssue(errors, 'formal_audio_fixture_expected_gate_missing', { fixture: testCase.id });
+      }
+    }
+
+    if (testCase.golden_task_id === 'GT-CARD-007') {
+      const expectedGateErrors = expected.expected_gate_errors || [];
+      if (
+        testCase.type !== 'trusted_media_receipt' ||
+        testCase.fixture_flags?.structural_receipt_only !== true ||
+        testCase.fixture_flags?.real_model_run_missing !== true ||
+        testCase.fixture_flags?.github_attestation_missing !== true ||
+        expected.trusted_media_status !== 'block' ||
+        !expectedGateErrors.includes('trusted_media_real_model_execution_missing') ||
+        !expectedGateErrors.includes('trusted_media_GitHub_attestation_missing')
+      ) {
+        pushIssue(errors, 'trusted_media_unattested_fixture_invalid', {fixture: testCase.id});
       }
     }
 
