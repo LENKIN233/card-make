@@ -510,7 +510,7 @@
           "tts_audio_reviewed": false
         },
         "exam_value": "帮助用户把建议信号转化为答案预期，提升听后抓动作的效率。",
-        "box_progression_role": "transfer",
+        "box_progression_role": "application",
         "review_status": "draft"
       }
     },
@@ -522,35 +522,56 @@
       "box": 1,
       "card_no": 4,
       "card_box_code": "0001",
-      "interaction_type": 3,
+  "interaction_type": 1,
       "card_box_name": "根据选项预测考点",
       "card_group_name": "听前预测",
       "front_content": {
-        "text": "任务：先听音频，完成考点预测训练。\n\n先处理句子主干，再回看修饰语是否改变范围。",
-        "task_prompt": "任务：先听音频，完成考点预测训练。\n\n先处理句子主干，再回看修饰语是否改变范围。",
+    "text": "听前先看一组答案选项：\n① The workshops are scheduled too late.\n② They overlap with required courses.\n③ Students receive too little advance notice.\n④ Evening transport is inconvenient.\n\n这些选项都在解释同一个现象。你应预测题目最可能考什么？选完再播放音频验证。",
+    "task_prompt": "听前先看一组答案选项：\n① The workshops are scheduled too late.\n② They overlap with required courses.\n③ Students receive too little advance notice.\n④ Evening transport is inconvenient.\n\n这些选项都在解释同一个现象。你应预测题目最可能考什么？选完再播放音频验证。",
         "task_schema": {
-          "action": "听后判断",
-          "focus": "考点预测",
-          "success_criteria": "能基于音频线索给出可解释的判断"
+      "action": "根据选项预测考点",
+      "focus": "四个原因选项共同解释的现象",
+      "success_criteria": "预测题目会问晚间工作坊出席人数下降的原因，并用音频复核"
         },
-        "audio_first": true,
+    "audio_first": false,
         "image_url": null,
         "audio_url": "ai_tts/cet4/0001/000104.mp3",
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "目标区间：约 4.2 秒\n\n解析：按住覆盖关键结构段，结束后松手。",
-        "explanation": "语境揭示：The key point is to identify the cause of declining attendance in evening workshops."
+    "text": "答案：A。四个听前选项都是原因陈述，因此共同预告的问题是“为什么晚间工作坊出席人数下降”。音频中的 identify the cause of declining attendance in evening workshops 完整验证了这个预测。",
+    "explanation": "先看选项的共同语义角色：四项都能回答 why，而不是 when、how many 或 where。再用音频中的 cause 和完整对象复核。"
       },
       "analysis_content": {
-        "text": "① 本题定位：题面要求完成“根据选项预测考点”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The key point is to identify the cause of declining attendance in evening workshops.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：The key point is to identify the cause of declining attendance in evening workshops.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“根据选项预测考点”，下一题应先复述证据关系，再提交答案。",
+    "text": "① 听前识别：四个选项都在陈述可能原因，且围绕 workshop 时间、课程冲突、通知与交通展开，因此应先预测 why 类考点。\n\n② 核心规律：选项共同的语义角色能预告题目类型；先判断它们是在给原因、时间、数量、地点还是行动建议。\n\n③ 播放验证：音频明确说 identify the cause of declining attendance in evening workshops，与 A 的预测完全一致。",
         "tips": [
-          "根据选项预测考点题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The key point is to identify the cause of declin”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+      "选项若都像 because 后的内容，优先预测 why / cause 类问题。",
+      "预测时要同时保留被解释的现象与限定范围。",
+      "播放后用明示的 question signal 验证，不把预测冒充已听到的事实。"
         ]
       },
-      "options": null,
+  "options": [
+    {
+      "key": "A",
+      "text": "为什么晚间工作坊的出席人数正在下降",
+      "is_correct": true
+    },
+    {
+      "key": "B",
+      "text": "晚间工作坊通常在几点开始",
+      "is_correct": false
+    },
+    {
+      "key": "C",
+      "text": "有多少学生参加晚间工作坊",
+      "is_correct": false
+    },
+    {
+      "key": "D",
+      "text": "晚间工作坊安排在哪个地点",
+      "is_correct": false
+    }
+  ],
       "eliminable_items": null,
       "audio": {
         "url": "ai_tts/cet4/0001/000104.mp3",
@@ -558,7 +579,6 @@
         "transcript": "The key point is to identify the cause of declining attendance in evening workshops.",
         "path": "ai_tts/cet4/0001/000104.mp3"
       },
-      "target_duration_ms": 4200,
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
@@ -579,32 +599,54 @@
         "box_name": "根据选项预测考点",
         "box_prefix": "0001"
       },
-      "interaction_id": "flip",
+      "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，完成考点预测训练。\n\n先处理句子主干，再回看修饰语是否改变范围。",
-        "task_prompt": "任务：先听音频，完成考点预测训练。\n\n先处理句子主干，再回看修饰语是否改变范围。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+    "text": "听前先看一组答案选项：\n① The workshops are scheduled too late.\n② They overlap with required courses.\n③ Students receive too little advance notice.\n④ Evening transport is inconvenient.\n\n这些选项都在解释同一个现象。你应预测题目最可能考什么？选完再播放音频验证。",
+    "task_prompt": "听前先看一组答案选项：\n① The workshops are scheduled too late.\n② They overlap with required courses.\n③ Students receive too little advance notice.\n④ Evening transport is inconvenient.\n\n这些选项都在解释同一个现象。你应预测题目最可能考什么？选完再播放音频验证。",
+    "audio_first": false,
+    "display_mode": "options_then_audio",
         "highlight_ranges": [],
         "task_schema": {
-          "action": "听后判断",
-          "focus": "考点预测",
-          "success_criteria": "能基于音频线索给出可解释的判断"
-        }
+      "action": "根据选项预测考点",
+      "focus": "四个原因选项共同解释的现象",
+      "success_criteria": "预测题目会问晚间工作坊出席人数下降的原因，并用音频复核"
+    },
+    "options": [
+      {
+        "key": "A",
+        "text": "为什么晚间工作坊的出席人数正在下降",
+        "is_correct": true
+      },
+      {
+        "key": "B",
+        "text": "晚间工作坊通常在几点开始",
+        "is_correct": false
+      },
+      {
+        "key": "C",
+        "text": "有多少学生参加晚间工作坊",
+        "is_correct": false
+      },
+      {
+        "key": "D",
+        "text": "晚间工作坊安排在哪个地点",
+        "is_correct": false
+      }
+    ]
       },
       "analysis": {
-        "text": "① 本题定位：题面要求完成“根据选项预测考点”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The key point is to identify the cause of declining attendance in evening workshops.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：The key point is to identify the cause of declining attendance in evening workshops.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“根据选项预测考点”，下一题应先复述证据关系，再提交答案。",
+    "text": "① 听前识别：四个选项都在陈述可能原因，且围绕 workshop 时间、课程冲突、通知与交通展开，因此应先预测 why 类考点。\n\n② 核心规律：选项共同的语义角色能预告题目类型；先判断它们是在给原因、时间、数量、地点还是行动建议。\n\n③ 播放验证：音频明确说 identify the cause of declining attendance in evening workshops，与 A 的预测完全一致。",
         "tips": [
-          "根据选项预测考点题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The key point is to identify the cause of declin”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+      "选项若都像 because 后的内容，优先预测 why / cause 类问题。",
+      "预测时要同时保留被解释的现象与限定范围。",
+      "播放后用明示的 question signal 验证，不把预测冒充已听到的事实。"
         ]
       },
-      "auto_scoring": false,
+  "auto_scoring": true,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+    "type": 1,
+    "label": "T1",
+    "product_mapping_reason": "option-based test-point prediction maps to multiple_choice"
       },
       "quality_flags": [
         "synthetic_source"
@@ -613,6 +655,9 @@
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
+      "answer_key": {
+        "correct_option": "A"
+      },
       "quality_metadata": {
         "main_training_goal": "在“根据选项预测考点”任务中识别并解释关键知识或解题线索",
         "weak_point_tags": [
@@ -620,16 +665,19 @@
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "foundation"
+          "primary": "pass",
+          "secondary": [
+            "foundation"
+          ]
         },
-        "card_prototype": "knowledge_explanation",
+    "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
           "source_note": "CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "TTS_AI_generated"
         },
         "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
-        "box_progression_role": "recognition",
+    "box_progression_role": "application",
         "review_status": "draft"
       }
     },
