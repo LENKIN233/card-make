@@ -1084,11 +1084,13 @@ function validateAudioGenerationContract(errors) {
       const bridgeSource = readText('scripts/build_audio_qc_drafts.mjs');
       for (const token of [
         'model-owned-audio-qc.v2',
-        'modelAcceptancesByBox',
+        'buildAggregateModelAcceptances',
+        'contentAuthorizationPath',
+        'linked_approved_batch',
+        'audio-evidence-aggregate-lane',
         'complete_asset_consumed',
         'stress_pauses',
         'no_noise',
-        'planOnly',
         'currentModelOwnedTextReviewCoversCard',
       ]) {
         if (!bridgeSource.includes(token)) {

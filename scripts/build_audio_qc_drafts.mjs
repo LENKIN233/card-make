@@ -7,6 +7,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 import {
+  canonicalStringify,
   PERCEPTUAL_CHECKS,
   validateAudioPerceptualWorklist,
 } from './manage_audio_perceptual_worklist.mjs';
@@ -28,8 +29,7 @@ const REQUIRED_ATTESTATIONS = Object.freeze([
 export function buildAudioQcDrafts({
   attestations = {},
   clock = () => new Date(),
-  modelAcceptancesByBox = {},
-  planOnly = false,
+  contentAuthorizationPath,
   root = ROOT,
   worklistPath,
 } = {}) {
@@ -38,6 +38,11 @@ export function buildAudioQcDrafts({
   const sourceBytes = fs.readFileSync(linkedWorklist);
   requireTrackedHeadBytes(linkedWorklist, sourceBytes, normalizedRoot);
   const sourceWorklist = JSON.parse(sourceBytes.toString('utf8'));
+  const contentAuthorization = requireCurrentContentAuthorization({
+    contentAuthorizationPath,
+    root: normalizedRoot,
+    scopedCardIds: sourceWorklist.entries?.map(entry => entry.card_id) || [],
+  });
   const technicalAuditFile = requireRegularWorkspaceFile(
     sourceWorklist.source_technical_audit?.path,
     normalizedRoot,
@@ -76,12 +81,11 @@ export function buildAudioQcDrafts({
   const acceptanceInputs = {};
   for (const entries of grouped.values()) {
     const boxPrefix = entries[0]?.knowledge_ref?.box_prefix;
-    const modelAcceptances = modelAcceptancesByBox[boxPrefix];
     const record = buildBoxRecord({
       attestations,
+      contentAuthorizationPath: contentAuthorization.relativePath,
       createdAt,
       entries,
-      modelAcceptances,
       root: normalizedRoot,
       sourceWorklist,
       worklistRelativePath,
@@ -92,18 +96,19 @@ export function buildAudioQcDrafts({
       throw new Error(`Box ${boxPrefix} audio identity is invalid: ${identity.issues.map(issue => issue.code).join(', ')}`);
     }
     acceptanceInputs[boxPrefix] = identity.input_sha256;
-    if (planOnly) {
-      records.push(record);
-      continue;
-    }
+    record.model_acceptances = buildAggregateModelAcceptances({
+      boxPrefix,
+      entries,
+      inputSha256: identity.input_sha256,
+    });
     const acceptanceIssues = validateIndependentModelAcceptances(
-      modelAcceptances,
+      record.model_acceptances,
       {requiredCapabilities: ['audio_perceptual_review']},
     );
     if (acceptanceIssues.length > 0) {
       throw new Error(`Box ${boxPrefix} model acceptance is invalid: ${acceptanceIssues.map(issue => issue.code).join(', ')}`);
     }
-    if (modelAcceptances.some(
+    if (record.model_acceptances.some(
       acceptance => acceptance.evidence.input_sha256 !== identity.input_sha256,
     )) {
       throw new Error(`Box ${boxPrefix} model acceptance does not bind the exact audio QC input.`);
@@ -115,6 +120,8 @@ export function buildAudioQcDrafts({
     summary: {
       card_count: sourceWorklist.entries.length,
       formal_content_approval_created: false,
+      linked_content_authorization: contentAuthorization.relativePath,
+      linked_content_authorization_sha256: contentAuthorization.sha256,
       acceptance_inputs: acceptanceInputs,
       record_count: records.length,
       model_run_ids: [...new Set(records.flatMap(record =>
@@ -127,9 +134,9 @@ export function buildAudioQcDrafts({
 
 function buildBoxRecord({
   attestations,
+  contentAuthorizationPath,
   createdAt,
   entries,
-  modelAcceptances,
   root,
   sourceWorklist,
   worklistRelativePath,
@@ -161,7 +168,7 @@ function buildBoxRecord({
     schema_version: 'model-owned-audio-qc.v2',
     audio_qc_id: `${date}-${sourceWorklist.track}-${knowledge.box_prefix}-audio-qc`,
     created_at: createdAt,
-    model_acceptances: structuredClone(modelAcceptances),
+    model_acceptances: [],
     scope: {
       library: knowledge.library_name,
       group: knowledge.group_name,
@@ -172,7 +179,7 @@ function buildBoxRecord({
     source_records: {
       card_files: [...new Set(entries.map(entry => entry.card_source_file))],
       linked_agent_self_reviews: selfReviews,
-      linked_approved_batch: '',
+      linked_approved_batch: contentAuthorizationPath,
       linked_perceptual_worklist: worklistRelativePath,
       perceptual_worklist_sha256: worklistSha256,
     },
@@ -251,6 +258,94 @@ function buildBoxRecord({
       harness: 'node scripts/validate_harness.mjs',
     },
   };
+}
+
+function buildAggregateModelAcceptances({boxPrefix, entries, inputSha256}) {
+  return [0, 1].map(lane => {
+    const sourceAcceptances = entries.map(entry => {
+      const acceptance = entry.review?.model_acceptances?.[lane];
+      const issues = validateModelAcceptance(acceptance, {
+        requireAccepted: true,
+        requiredCapabilities: ['audio_perceptual_review'],
+      });
+      if (issues.length > 0) {
+        throw new Error(
+          `Card ${entry.card_id} lane ${lane + 1} audio evidence is invalid: ${issues.map(issue => issue.code).join(', ')}`,
+        );
+      }
+      return {
+        card_id: entry.card_id,
+        input_sha256: acceptance.evidence.input_sha256,
+        model: acceptance.actor.model,
+        reviewed_at: acceptance.evidence.reviewed_at,
+        run_id: acceptance.actor.run_id,
+      };
+    });
+    if (new Set(sourceAcceptances.map(item => item.run_id)).size !== sourceAcceptances.length) {
+      throw new Error(`Box ${boxPrefix} lane ${lane + 1} reuses a per-card run ID.`);
+    }
+    const evidenceSha256 = sha256(
+      Buffer.from(canonicalStringify(sourceAcceptances), 'utf8'),
+    );
+    const models = [...new Set(sourceAcceptances.map(item => item.model))];
+    return {
+      schema_version: 'model-acceptance.v2',
+      actor: {
+        kind: 'model_harness',
+        agent: `audio-evidence-aggregate-lane-${lane + 1}`,
+        model: models.length === 1 ? models[0] : 'multi-model-audio-evidence',
+        run_id: `audio-evidence:${boxPrefix}:lane-${lane + 1}:${evidenceSha256.slice(0, 16)}`,
+      },
+      evidence: {
+        reviewed_at: sourceAcceptances.map(item => item.reviewed_at).sort().at(-1),
+        input_sha256: inputSha256,
+        capabilities: ['audio_perceptual_review'],
+        summary: `Deterministic lane ${lane + 1} aggregation of ${sourceAcceptances.length} exact per-card audio-capable acceptances; source evidence sha256:${evidenceSha256}. No new media, provider, deployment, or device fact is inferred.`,
+        findings: [],
+      },
+      decision: 'accepted',
+    };
+  });
+}
+
+function requireCurrentContentAuthorization({
+  contentAuthorizationPath,
+  root,
+  scopedCardIds,
+}) {
+  const absolute = requireRegularWorkspaceFile(contentAuthorizationPath, root);
+  const relativePath = relativeToRoot(absolute, root);
+  if (
+    !relativePath.startsWith('reviews/approved_batches/') ||
+    path.posix.dirname(relativePath) !== 'reviews/approved_batches' ||
+    !relativePath.endsWith('.json') ||
+    relativePath.endsWith('/TEMPLATE.json')
+  ) {
+    throw new Error('Current content authorization must be a direct non-template JSON record.');
+  }
+  const bytes = fs.readFileSync(absolute);
+  requireTrackedHeadBytes(absolute, bytes, root);
+  const record = JSON.parse(bytes.toString('utf8'));
+  const acceptanceIssues = validateIndependentModelAcceptances(
+    record.model_acceptances,
+    {requiredCapabilities: ['content_authorization']},
+  );
+  const authorizedCards = new Set((record.scope?.card_ids || []).map(String));
+  if (
+    record.schema_version !== 'model-owned-content-authorization.v2' ||
+    record.authorization_mode !== 'full_track' ||
+    record.scope?.track !== 'cet4' ||
+    record.scope?.purpose !== 'formal_content' ||
+    acceptanceIssues.length > 0 ||
+    scopedCardIds.some(cardId => !authorizedCards.has(String(cardId))) ||
+    record.card_quality_audit?.scope_has_no_hard_blockers !== true ||
+    record.card_quality_audit?.scope_summary?.by_severity?.hard_blocker !== 0 ||
+    record.card_quality_audit?.scope_summary?.by_severity?.content_risk !== 0 ||
+    record.card_quality_audit?.scope_summary?.by_severity?.review_gap !== 0
+  ) {
+    throw new Error('Current model-owned content authorization is invalid or does not cover the audio scope.');
+  }
+  return {relativePath, sha256: sha256(bytes)};
 }
 
 function readBoundCard(entry, root) {
@@ -438,51 +533,34 @@ function asIso(value) {
 
 function parseArguments(argv) {
   const options = {
-    acceptancesDirectory: null,
     apply: false,
     attestations: {},
+    contentAuthorizationPath: null,
     outputDirectory: AUDIO_QC_DIR,
-    planOnly: false,
     worklistPath: null,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
     if (argument === '--apply') options.apply = true;
-    else if (argument === '--plan-model-inputs') options.planOnly = true;
     else if (argument === '--attest-no-autoplay') {
       options.attestations.no_autoplay_assumption = true;
     } else if (argument === '--attest-front-no-required-subtitles') {
       options.attestations.front_side_no_required_subtitles = true;
     } else if (argument === '--attest-tts-not-source-authenticity') {
       options.attestations.tts_audio_not_used_as_source_authenticity = true;
-    } else if (['--worklist', '--output-dir', '--acceptances-dir'].includes(argument)) {
+    } else if (['--worklist', '--authorization', '--output-dir'].includes(argument)) {
       const value = argv[index + 1];
       if (!value || value.startsWith('--')) throw new Error(`${argument} requires a value`);
       index += 1;
       if (argument === '--worklist') options.worklistPath = value;
+      if (argument === '--authorization') options.contentAuthorizationPath = value;
       if (argument === '--output-dir') options.outputDirectory = value;
-      if (argument === '--acceptances-dir') options.acceptancesDirectory = value;
     } else throw new Error(`unknown argument ${argument}`);
   }
-  if (!options.worklistPath) throw new Error('--worklist is required');
-  if (options.apply && (options.planOnly || !options.acceptancesDirectory)) {
-    throw new Error('--apply requires --acceptances-dir and cannot use --plan-model-inputs');
+  if (!options.worklistPath || !options.contentAuthorizationPath) {
+    throw new Error('--worklist and --authorization are required');
   }
   return options;
-}
-
-function readModelAcceptancesByBox(directory, root) {
-  if (!directory) return {};
-  const absolute = path.resolve(root, directory);
-  if (!absolute.startsWith(`${path.resolve(root)}${path.sep}`) || !fs.lstatSync(absolute).isDirectory()) {
-    throw new Error('acceptances directory must be a workspace directory');
-  }
-  return Object.fromEntries(
-    fs.readdirSync(absolute)
-      .filter(name => /^\d{4}\.json$/.test(name))
-      .sort()
-      .map(name => [name.slice(0, 4), JSON.parse(fs.readFileSync(path.join(absolute, name), 'utf8'))]),
-  );
 }
 
 function requireOutputDirectory(value, root) {
@@ -497,11 +575,7 @@ async function runCli() {
     const options = parseArguments(process.argv.slice(2));
     const result = buildAudioQcDrafts({
       attestations: options.attestations,
-      modelAcceptancesByBox: readModelAcceptancesByBox(
-        options.acceptancesDirectory,
-        ROOT,
-      ),
-      planOnly: options.planOnly,
+      contentAuthorizationPath: options.contentAuthorizationPath,
       root: ROOT,
       worklistPath: options.worklistPath,
     });
