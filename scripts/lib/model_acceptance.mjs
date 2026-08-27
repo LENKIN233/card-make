@@ -19,6 +19,7 @@ export const MODEL_ACCEPTANCE_CAPABILITIES = Object.freeze([
 const SHA256_RE = /^sha256:[a-f0-9]{64}$/;
 const RFC3339_WITH_ZONE_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 const ID_RE = /^[A-Za-z0-9][A-Za-z0-9:._/@-]{2,255}$/;
+const PRINCIPAL_RE = /^(?:agent|model|service):[A-Za-z0-9][A-Za-z0-9_.@/-]{1,127}$/;
 
 function canonicalize(value) {
   if (Array.isArray(value)) return value.map(canonicalize);
@@ -248,6 +249,11 @@ export function validateModelAcceptance(
       if (!placeholder && (!hasText(value) || !ID_RE.test(value))) {
         issues.push({code: `model_acceptance_actor_${field}_invalid`});
       }
+    }
+    const agentPlaceholder =
+      allowTemplatePlaceholders && /^<[^>]+>$/.test(String(acceptance.actor.agent || ''));
+    if (!agentPlaceholder && !PRINCIPAL_RE.test(String(acceptance.actor.agent || ''))) {
+      issues.push({code: 'model_acceptance_actor_agent_principal_invalid'});
     }
   }
 
