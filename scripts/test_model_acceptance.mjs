@@ -209,7 +209,7 @@ function acceptance(overrides = {}) {
     schema_version: 'model-acceptance.v2',
     actor: {
       kind: 'model_harness',
-      agent: 'codex',
+      agent: 'agent:codex',
       model: 'gpt-5.6-sol',
       run_id: 'codex-task:01a02d8b-6046-7f12-b336-3772cd02707d',
     },
@@ -256,6 +256,15 @@ test('rejects missing evidence, invented capabilities, and non-accepted decision
   assert.ok(codes.includes('model_acceptance_capabilities_invalid'));
   assert.ok(codes.includes('model_acceptance_summary_missing'));
   assert.ok(codes.includes('model_acceptance_not_accepted'));
+});
+
+test('requires a typed machine principal for current model acceptance', () => {
+  const value = acceptance();
+  value.actor.agent = 'codex-untyped';
+  assert.ok(validateModelAcceptance(value).some(
+    issue => issue.code === 'model_acceptance_actor_agent_principal_invalid'));
+  value.actor.agent = 'agent:codex-typed';
+  assert.equal(validateModelAcceptance(value).length, 0);
 });
 
 test('classifies legacy human authority fields as archive-only evidence', () => {

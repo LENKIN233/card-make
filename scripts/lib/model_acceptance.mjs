@@ -23,6 +23,7 @@ const RUNTIME_MANIFEST_SCHEMA = 'card-make-runtime-payload-manifest.v1';
 const RUNTIME_CARD_SHARD_SCHEMA = 'card-make-runtime-card-shard.v1';
 const RUNTIME_SHARD_PATH_RE =
   /^reviews\/runtime_payloads\/[A-Za-z0-9][A-Za-z0-9._-]*\.json$/;
+const PRINCIPAL_RE = /^(?:agent|model|service):[A-Za-z0-9][A-Za-z0-9_.@/-]{1,127}$/;
 
 function canonicalize(value) {
   if (Array.isArray(value)) return value.map(canonicalize);
@@ -325,6 +326,11 @@ export function validateModelAcceptance(
       if (!placeholder && (!hasText(value) || !ID_RE.test(value))) {
         issues.push({code: `model_acceptance_actor_${field}_invalid`});
       }
+    }
+    const agentPlaceholder =
+      allowTemplatePlaceholders && /^<[^>]+>$/.test(String(acceptance.actor.agent || ''));
+    if (!agentPlaceholder && !PRINCIPAL_RE.test(String(acceptance.actor.agent || ''))) {
+      issues.push({code: 'model_acceptance_actor_agent_principal_invalid'});
     }
   }
 

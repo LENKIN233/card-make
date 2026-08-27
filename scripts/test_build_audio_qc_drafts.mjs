@@ -46,7 +46,7 @@ test('builds one formal-ready model-owned QC record per box after complete model
     assert.equal(record.model_acceptances.length, 2);
     assert.deepEqual(
       record.model_acceptances.map(acceptance => acceptance.actor.agent),
-      ['audio-evidence-aggregate-lane-1', 'audio-evidence-aggregate-lane-2'],
+      ['agent:audio-evidence-aggregate-lane-1', 'agent:audio-evidence-aggregate-lane-2'],
     );
     assert.equal(record.generation_plan.provider, 'legacy_unknown');
     assert.equal(record.source_records.linked_approved_batch, fixture.authorizationPath);
@@ -463,7 +463,7 @@ function modelAcceptance(inputSha256, runId) {
     schema_version: 'model-acceptance.v2',
     actor: {
       kind: 'model_harness',
-      agent: 'codex',
+      agent: 'agent:codex',
       model: 'audio-capable-model',
       run_id: runId,
     },

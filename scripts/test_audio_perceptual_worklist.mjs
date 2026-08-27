@@ -523,7 +523,7 @@ function modelAcceptance(inputSha256, runId) {
     schema_version: 'model-acceptance.v2',
     actor: {
       kind: 'model_harness',
-      agent: 'codex',
+      agent: 'agent:codex',
       model: 'audio-capable-model',
       run_id: runId,
     },

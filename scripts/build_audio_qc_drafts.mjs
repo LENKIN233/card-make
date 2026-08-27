@@ -292,7 +292,7 @@ function buildAggregateModelAcceptances({boxPrefix, entries, inputSha256}) {
       schema_version: 'model-acceptance.v2',
       actor: {
         kind: 'model_harness',
-        agent: `audio-evidence-aggregate-lane-${lane + 1}`,
+        agent: `agent:audio-evidence-aggregate-lane-${lane + 1}`,
         model: models.length === 1 ? models[0] : 'multi-model-audio-evidence',
         run_id: `audio-evidence:${boxPrefix}:lane-${lane + 1}:${evidenceSha256.slice(0, 16)}`,
       },

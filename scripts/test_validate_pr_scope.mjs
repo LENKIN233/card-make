@@ -2028,7 +2028,7 @@ function testModelAcceptance(inputSha256, capabilities, runId) {
     schema_version: 'model-acceptance.v2',
     actor: {
       kind: 'model_harness',
-      agent: 'codex',
+      agent: 'agent:codex',
       model: 'gpt-5.6-sol',
       run_id: runId,
     },
