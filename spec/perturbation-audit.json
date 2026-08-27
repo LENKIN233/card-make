@@ -69,8 +69,8 @@
     },
     {
       "id": "PA-CARD-014",
-      "reject": "Treating a passing worklist, model-acceptance JSON, technical audit, or self-declared receipt as cryptographic proof that two complete 301-asset model runs occurred.",
-      "recovery": "Run the fixed card-make main workflow on the protected Apple Silicon runner, SHA-verify every asset before each model call, require two distinct complete full-perceptual run artifacts plus bounded adjudication, rebuild every per-card acceptance, and attest the exact receipt bytes with GitHub OIDC/Sigstore. Keep formal media evidence false until the consumer verifies the attestation and type-specific semantics."
+      "reject": "Treating a passing worklist, model-acceptance JSON, technical audit, self-declared complete_asset_consumed boolean, lock-file identity claim, candidate-conditioned transcript check, mutable checkout, partial content-authorization shape check, or self-declared receipt as cryptographic proof that two complete 301-asset model runs occurred.",
+      "recovery": "Run the fixed card-make main workflow from a read-only exact-commit snapshot on the protected Apple Silicon runner without OIDC or attestation permissions; lock and rehash the model weights and mlx_audio package; reject audio exceeding the model window; prove decoded sample count equals the actual model input without truncation; run two blind full transcriptions for every asset; treat candidate transcript and training goal only as untrusted data; replay the complete current content authorization including runtime identity, linked review, audit and acceptance input; reverify HEAD, status and driver blobs before receipt creation; upload only an unprivileged raw artifact; then use a separate GitHub-hosted minimal-permission job to rebuild and byte-compare the receipt before applying GitHub OIDC/Sigstore attestation. Keep formal media evidence false until the consumer verifies the attestation and type-specific semantics."
     }
   ],
   "bad_card_patterns": [

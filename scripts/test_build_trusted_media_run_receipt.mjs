@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -11,9 +12,11 @@ import {
   buildAudioPerceptualWorklist,
   canonicalStringify,
 } from './manage_audio_perceptual_worklist.mjs';
+import {createCurrentFullTrackAuthorizationFixture} from './test_current_full_track_authorization_fixture.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const sha256 = value => createHash('sha256').update(value).digest('hex');
+const LOCK = JSON.parse(fs.readFileSync(path.join(ROOT, 'spec/trusted-media-runner-lock.json')));
 
 function write(root, relativePath, value) {
   const target = path.join(root, relativePath);
@@ -31,6 +34,8 @@ function copyProducerAssets(root) {
     'scripts/run_trusted_media_review.py',
     'scripts/build_trusted_media_run_receipt.mjs',
     'scripts/manage_audio_perceptual_worklist.mjs',
+    'scripts/lib/card_integrity.mjs',
+    'scripts/lib/model_acceptance.mjs',
     'spec/trusted-media-runner-lock.json',
   ]) {
     write(root, relativePath, fs.readFileSync(path.join(ROOT, relativePath)));
@@ -43,13 +48,14 @@ function buildFixture(t) {
   copyProducerAssets(root);
   const cards = [];
   const assets = [];
-  for (let index = 1; index <= 301; index += 1) {
+  for (let index = 1; index <= 1180; index += 1) {
     const cardId = String(index).padStart(6, '0');
     const transcript = `Trusted media sentence ${cardId}.`;
-    const relativeAsset = `ai_tts/cet4/0000/${cardId}.mp3`;
-    const file = write(root, relativeAsset, Buffer.from(`audio-${cardId}`));
-    cards.push({
+    const boxPrefix = String((index - 1) % 108).padStart(4, '0');
+    const card = {
       card_id: cardId,
+      track: 'cet4',
+      interaction_id: 'flip',
       knowledge_ref: {
         library_id: '0',
         library_name: '听力',
@@ -57,23 +63,41 @@ function buildFixture(t) {
         group_name: '测试',
         box_id: '0',
         box_name: '测试盒',
-        box_prefix: '0000',
+        box_prefix: boxPrefix,
       },
       quality_metadata: {
         main_training_goal: '完整听取音频',
+        secondary_training_goals: [],
+        weak_point_tags: ['listening_weak'],
+        difficulty: {primary: 'pass', secondary: []},
+        card_prototype: 'integrated_micro_drill',
         box_progression_role: 'recognition',
+        material: {
+          text_source_type: 'simulation',
+          source_note: 'Test-only simulated CET material.',
+          audio_generation_method: index <= 301 ? 'TTS_AI_generated' : 'none',
+          tts_text_reviewed: true,
+          tts_audio_reviewed: false,
+        },
+        exam_value: 'Test-only listening transfer value.',
+        review_status: 'draft',
       },
-      audio: {path: relativeAsset, transcript},
-    });
-    assets.push({
-      card_id: cardId,
-      asset_path: relativeAsset,
-      file_sha256: file.sha256,
-      size_bytes: file.size_bytes,
-      transcript_sha256: sha256(transcript),
-      declared_duration_ms: 1000,
-      technical: {duration_ms: 1000},
-    });
+    };
+    if (index <= 301) {
+      const relativeAsset = `ai_tts/cet4/${boxPrefix}/${cardId}.mp3`;
+      const file = write(root, relativeAsset, Buffer.from(`audio-${cardId}`));
+      card.audio = {path: relativeAsset, transcript};
+      assets.push({
+        card_id: cardId,
+        asset_path: relativeAsset,
+        file_sha256: file.sha256,
+        size_bytes: file.size_bytes,
+        transcript_sha256: sha256(transcript),
+        declared_duration_ms: 1000,
+        technical: {duration_ms: 1000},
+      });
+    }
+    cards.push(card);
   }
   write(root, 'card_boxes_json/test.json', {track: 'cet4', cards});
   const technicalAudit = {
@@ -100,62 +124,50 @@ function buildFixture(t) {
     'reviews/audio_perceptual_worklists/cet4-pending.json',
     `${JSON.stringify(worklist)}\n`,
   );
-  const modelReview = write(
+  const {authorizationPath} = createCurrentFullTrackAuthorizationFixture({
     root,
-    'reviews/agent_self_review/cet4-full-review.json',
-    {schema_version: 'model-owned-full-track-review.v2'},
-  );
-  const qualityAudit = write(
-    root,
-    'reviews/audit_scopes/cet4-full-audit.json',
-    {schema_version: 'card-quality-audit.v1'},
-  );
-  const authorization = {
-    schema_version: 'model-owned-content-authorization.v2',
-    authorization_mode: 'full_track',
-    content_version: `sha256:${sha256('content')}`,
-    scope: {
-      track: 'cet4',
-      purpose: 'formal_content',
-      card_ids: Array.from({length: 1180}, (_, index) => String(index + 1).padStart(6, '0')),
-      box_prefixes: Array.from({length: 108}, (_, index) => String(index).padStart(4, '0')),
-    },
-    validation: {
-      model_review: path.relative(root, modelReview.path),
-      model_review_sha256: `sha256:${modelReview.sha256}`,
-    },
-    card_quality_audit: {
-      report: path.relative(root, qualityAudit.path),
-      report_sha256: `sha256:${qualityAudit.sha256}`,
-      scope_has_no_hard_blockers: true,
-      scope_summary: {
-        card_count: 1180,
-        by_severity: {hard_blocker: 0, content_risk: 0, review_gap: 0},
-      },
-    },
+    repositoryRoot: ROOT,
+    cards,
+  });
+  const gitEnv = {
+    ...process.env,
+    GIT_AUTHOR_NAME: 'Trusted Media Test',
+    GIT_AUTHOR_EMAIL: 'test@example.test',
+    GIT_COMMITTER_NAME: 'Trusted Media Test',
+    GIT_COMMITTER_EMAIL: 'test@example.test',
   };
-  const authorizationFile = write(
-    root,
-    'reviews/approved_batches/cet4-full.json',
-    authorization,
-  );
+  for (const args of [['init', '-q'], ['add', '.'], ['commit', '-qm', 'fixture']]) {
+    execFileSync('git', args, {cwd: root, env: gitEnv, stdio: 'ignore'});
+  }
+  const sourceCommit = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim();
   const runDir = path.join(root, 'run-output');
   fs.mkdirSync(runDir);
   const runFiles = [];
-  for (const name of ['a', 'b']) {
+  for (const name of ['a', 'b', 'f', 'g']) {
+    const definition = LOCK.runs.find(run => run.name === name);
     const records = worklist.entries.map(entry => ({
       schema_version: 'trusted-media-model-run-record.v1',
       run_id: `32975067429:1:${name}`,
       run_name: name,
-      purpose: 'full_perceptual',
-      temperature: name === 'a' ? 0 : 0.1,
+      purpose: definition.purpose,
+      temperature: definition.temperature,
       card_id: entry.card_id,
       entry_identity_sha256: entry.entry_identity_sha256,
       asset_path: entry.audio.asset_path,
       asset_sha256: entry.audio.file_sha256,
+      audio_coverage: {
+        decoder: 'mlx_audio.stt.utils.load_audio',
+        decoded_sample_count: 16000,
+        model_input_sample_count: 16000,
+        model_max_sample_count: LOCK.runtime.model_max_sample_count,
+        sample_rate_hz: LOCK.runtime.sample_rate_hz,
+        truncated: false,
+      },
       complete_asset_consumed: true,
       status: 'ok',
-      result: {
+      result: definition.purpose === 'blind_transcript' ? {
+        transcript_heard: entry.audio.transcript,
+      } : {
         transcript_heard: entry.audio.transcript,
         matches_text: true,
         target_signal_audible: true,
@@ -174,8 +186,8 @@ function buildFixture(t) {
     runFiles.push({
       name,
       run_id: `32975067429:1:${name}`,
-      purpose: 'full_perceptual',
-      temperature: name === 'a' ? 0 : 0.1,
+      purpose: definition.purpose,
+      temperature: definition.temperature,
       path: path.basename(file.path),
       sha256: file.sha256,
       size_bytes: file.size_bytes,
@@ -187,14 +199,14 @@ function buildFixture(t) {
   const runPackage = {
     schema_version: 'trusted-media-model-run-package.v1',
     model: {
-      id: 'mlx-community/Qwen2-Audio-7B-Instruct-4bit',
-      revision: 'c65570002626f41b4dc08b7b54f42f99f3e82e7f',
-      weights_manifest_sha256: sha256('weights'),
+      id: LOCK.model.id,
+      revision: LOCK.model.revision,
+      weights_manifest_sha256: LOCK.model.weights_manifest_sha256,
     },
     execution: {
       workflow_run_id: '32975067429',
       workflow_run_attempt: 1,
-      runner_class: 'self_hosted_macos_arm64',
+      runner_class: LOCK.runtime.runner_class,
       started_at: '2026-08-26T12:02:00.000Z',
       completed_at: '2026-08-26T12:59:00.000Z',
     },
@@ -202,12 +214,19 @@ function buildFixture(t) {
     decisions: worklist.entries.map(entry => ({
       card_id: entry.card_id,
       checks,
-      acceptance_sources: [['a'], ['b']],
+      acceptance_sources: [['a', 'f'], ['b', 'g']],
     })),
     result: {reviewed_card_count: 301, passed_card_count: 301, failed_card_count: 0},
   };
   const runPackageFile = write(root, 'run-output/run-package.json', runPackage);
-  return {authorizationFile, root, runDir, runPackageFile, worklistFile};
+  return {
+    authorizationFile: {path: path.join(root, authorizationPath)},
+    root,
+    runDir,
+    runPackageFile,
+    sourceCommit,
+    worklistFile,
+  };
 }
 
 test('builder emits exact 301-asset reviewed worklist and receipt', t => {
@@ -217,21 +236,21 @@ test('builder emits exact 301-asset reviewed worklist and receipt', t => {
     outputDir: fixture.runDir,
     repoRoot: fixture.root,
     runPackagePath: fixture.runPackageFile.path,
-    sourceCommit: sha256('commit').slice(0, 40),
+    sourceCommit: fixture.sourceCommit,
     worklistPath: fixture.worklistFile.path,
     createdAt: new Date('2026-08-26T13:00:00.000Z'),
   });
   const receipt = JSON.parse(fs.readFileSync(result.receipt.path));
   const reviewed = JSON.parse(fs.readFileSync(result.reviewed_worklist.path));
   assert.equal(receipt.result.passed_card_count, 301);
-  assert.equal(receipt.review_runs.length, 2);
+  assert.equal(receipt.review_runs.length, 4);
   assert.equal(receipt.source.workflow_path, '.github/workflows/trusted-media-run.yml');
   assert.equal(reviewed.progress.passed, 301);
   assert.equal(reviewed.progress.failed, 0);
   assert.equal(reviewed.entries[0].review.model_acceptances.length, 2);
   assert.deepEqual(
     reviewed.entries[0].review.model_acceptances.map(acceptance => acceptance.actor.agent),
-    ['agent:trusted-media-a', 'agent:trusted-media-b'],
+    ['agent:trusted-media-af', 'agent:trusted-media-bg'],
   );
   assert.equal(result.receipt.size_bytes < 1024 * 1024, true);
 });
@@ -245,7 +264,7 @@ test('builder rejects a run file changed after package creation', t => {
       outputDir: fixture.runDir,
       repoRoot: fixture.root,
       runPackagePath: fixture.runPackageFile.path,
-      sourceCommit: sha256('commit').slice(0, 40),
+      sourceCommit: fixture.sourceCommit,
       worklistPath: fixture.worklistFile.path,
     }),
     /file identity does not match package/,
@@ -255,7 +274,7 @@ test('builder rejects a run file changed after package creation', t => {
 test('builder rejects one general run reused as both acceptances', t => {
   const fixture = buildFixture(t);
   const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
-  runPackage.decisions[0].acceptance_sources = [['a'], ['a']];
+  runPackage.decisions[0].acceptance_sources = [['a', 'f'], ['a', 'g']];
   fs.writeFileSync(fixture.runPackageFile.path, `${JSON.stringify(runPackage)}\n`);
   assert.throws(
     () => buildTrustedMediaArtifacts({
@@ -263,9 +282,88 @@ test('builder rejects one general run reused as both acceptances', t => {
       outputDir: fixture.runDir,
       repoRoot: fixture.root,
       runPackagePath: fixture.runPackageFile.path,
-      sourceCommit: sha256('commit').slice(0, 40),
+      sourceCommit: fixture.sourceCommit,
       worklistPath: fixture.worklistFile.path,
     }),
     /reuses one general run/,
   );
+});
+
+test('builder rejects model identity drift from the trusted runner lock', t => {
+  const fixture = buildFixture(t);
+  const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
+  runPackage.model.weights_manifest_sha256 = sha256('different-weights');
+  fs.writeFileSync(fixture.runPackageFile.path, `${JSON.stringify(runPackage)}\n`);
+  assert.throws(
+    () => buildTrustedMediaArtifacts({
+      authorizationPath: fixture.authorizationFile.path,
+      outputDir: fixture.runDir,
+      repoRoot: fixture.root,
+      runPackagePath: fixture.runPackageFile.path,
+      sourceCommit: fixture.sourceCommit,
+      worklistPath: fixture.worklistFile.path,
+    }),
+    /model identity does not match the trusted runner lock/,
+  );
+});
+
+test('builder recomputes complete audio coverage instead of trusting the boolean', t => {
+  const fixture = buildFixture(t);
+  const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
+  const run = runPackage.runs.find(item => item.name === 'a');
+  const runPath = path.join(fixture.runDir, run.path);
+  const records = fs.readFileSync(runPath, 'utf8').trim().split('\n').map(JSON.parse);
+  records[0].audio_coverage.model_input_sample_count -= 1;
+  const bytes = Buffer.from(`${records.map(record => JSON.stringify(record)).join('\n')}\n`);
+  fs.writeFileSync(runPath, bytes);
+  run.sha256 = sha256(bytes);
+  run.size_bytes = bytes.length;
+  fs.writeFileSync(fixture.runPackageFile.path, `${JSON.stringify(runPackage)}\n`);
+  assert.throws(
+    () => buildTrustedMediaArtifacts({
+      authorizationPath: fixture.authorizationFile.path,
+      outputDir: fixture.runDir,
+      repoRoot: fixture.root,
+      runPackagePath: fixture.runPackageFile.path,
+      sourceCommit: fixture.sourceCommit,
+      worklistPath: fixture.worklistFile.path,
+    }),
+    /does not prove complete untruncated model input/,
+  );
+});
+
+test('builder refuses a source commit that is not the exact repository HEAD', t => {
+  const fixture = buildFixture(t);
+  assert.throws(
+    () => buildTrustedMediaArtifacts({
+      authorizationPath: fixture.authorizationFile.path,
+      outputDir: fixture.runDir,
+      repoRoot: fixture.root,
+      runPackagePath: fixture.runPackageFile.path,
+      sourceCommit: 'f'.repeat(40),
+      worklistPath: fixture.worklistFile.path,
+    }),
+    /source commit must equal the exact repository HEAD/,
+  );
+});
+
+test('workflow isolates self-hosted model execution from OIDC attestation authority', () => {
+  const workflow = fs.readFileSync(path.join(ROOT, '.github/workflows/trusted-media-run.yml'), 'utf8');
+  const reviewJob = workflow.slice(
+    workflow.indexOf('  review:'),
+    workflow.indexOf('\n  attest:'),
+  );
+  const attestJob = workflow.slice(workflow.indexOf('  attest:'));
+  assert.match(reviewJob, /runs-on: \[self-hosted, macOS, ARM64, softbook-media\]/);
+  assert.doesNotMatch(reviewJob, /id-token: write|attestations: write|actions\/attest@/);
+  assert.match(reviewJob, /name: trusted-media-raw-/);
+  assert.match(attestJob, /runs-on: ubuntu-latest/);
+  assert.match(attestJob, /id-token: write/);
+  assert.match(attestJob, /attestations: write/);
+  assert.match(attestJob, /actions\/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c/);
+  assert.ok(
+    attestJob.indexOf('Rebuild and byte-verify receipt on GitHub-hosted runner') <
+      attestJob.indexOf('Attest exact rebuilt trusted media receipt'),
+  );
+  assert.match(attestJob, /cmp "\$downloaded\/\$artifact" "\$rebuilt\/\$artifact"/);
 });

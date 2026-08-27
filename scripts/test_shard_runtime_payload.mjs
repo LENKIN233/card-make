@@ -51,3 +51,35 @@ test('runtime sharder rejects one card larger than the configured shard limit', 
     /exceeds shard limit/,
   );
 });
+
+test('runtime sharder rejects unsorted or duplicate card IDs before emitting shards', () => {
+  const payload = {
+    source: {id: 'fixture', label: 'Fixture'},
+    track: 'cet4',
+    card_records: [
+      {card_id: '000001', front: {text: 'a'}},
+      {card_id: '000002', front: {text: 'b'}},
+      {card_id: '000003', front: {text: 'c'}},
+    ],
+  };
+  payload.card_records = [
+    payload.card_records[1],
+    payload.card_records[0],
+    payload.card_records[2],
+  ];
+  assert.throws(
+    () => buildRuntimePayloadShards({
+      payload,
+      manifestPath: 'reviews/runtime_payloads/unsorted.json',
+    }),
+    /strictly ordered by unique card_id/,
+  );
+  payload.card_records = [payload.card_records[0], payload.card_records[0]];
+  assert.throws(
+    () => buildRuntimePayloadShards({
+      payload,
+      manifestPath: 'reviews/runtime_payloads/duplicate.json',
+    }),
+    /strictly ordered by unique card_id/,
+  );
+});

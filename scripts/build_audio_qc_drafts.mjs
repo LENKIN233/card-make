@@ -15,6 +15,10 @@ import {
   validateIndependentModelAcceptances,
   validateModelAcceptance,
 } from './lib/model_acceptance.mjs';
+import {
+  computeCardCorpusFingerprint,
+  validateCurrentApprovalRecordReference,
+} from './lib/card_integrity.mjs';
 import {validateAudioAcceptanceInput} from './validate_audio_qc.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -38,11 +42,6 @@ export function buildAudioQcDrafts({
   const sourceBytes = fs.readFileSync(linkedWorklist);
   requireTrackedHeadBytes(linkedWorklist, sourceBytes, normalizedRoot);
   const sourceWorklist = JSON.parse(sourceBytes.toString('utf8'));
-  const contentAuthorization = requireCurrentContentAuthorization({
-    contentAuthorizationPath,
-    root: normalizedRoot,
-    scopedCardIds: sourceWorklist.entries?.map(entry => entry.card_id) || [],
-  });
   const technicalAuditFile = requireRegularWorkspaceFile(
     sourceWorklist.source_technical_audit?.path,
     normalizedRoot,
@@ -73,6 +72,11 @@ export function buildAudioQcDrafts({
       throw new Error(`Explicit ${attestation} attestation is required.`);
     }
   }
+  const contentAuthorization = requireCurrentContentAuthorization({
+    contentAuthorizationPath,
+    root: normalizedRoot,
+    scopedCardIds: sourceWorklist.entries.map(entry => entry.card_id),
+  });
   const grouped = groupByBox(sourceWorklist.entries);
   const createdAt = asIso(clock());
   const worklistRelativePath = relativeToRoot(linkedWorklist, normalizedRoot);
@@ -325,23 +329,28 @@ function requireCurrentContentAuthorization({
   }
   const bytes = fs.readFileSync(absolute);
   requireTrackedHeadBytes(absolute, bytes, root);
-  const record = JSON.parse(bytes.toString('utf8'));
-  const acceptanceIssues = validateIndependentModelAcceptances(
-    record.model_acceptances,
-    {requiredCapabilities: ['content_authorization']},
-  );
+  const currentFingerprint = computeCardCorpusFingerprint(root);
+  const validation = validateCurrentApprovalRecordReference({
+    root,
+    approvalPath: relativePath,
+    currentFingerprint,
+  });
+  if (!validation.ok) {
+    throw new Error(
+      `Current model-owned content authorization failed canonical replay: ${validation.issues
+        .map(issue => issue.code)
+        .join(', ')}`,
+    );
+  }
+  const record = validation.approval;
   const authorizedCards = new Set((record.scope?.card_ids || []).map(String));
   if (
     record.schema_version !== 'model-owned-content-authorization.v2' ||
     record.authorization_mode !== 'full_track' ||
     record.scope?.track !== 'cet4' ||
     record.scope?.purpose !== 'formal_content' ||
-    acceptanceIssues.length > 0 ||
     scopedCardIds.some(cardId => !authorizedCards.has(String(cardId))) ||
-    record.card_quality_audit?.scope_has_no_hard_blockers !== true ||
-    record.card_quality_audit?.scope_summary?.by_severity?.hard_blocker !== 0 ||
-    record.card_quality_audit?.scope_summary?.by_severity?.content_risk !== 0 ||
-    record.card_quality_audit?.scope_summary?.by_severity?.review_gap !== 0
+    authorizedCards.size !== currentFingerprint.card_count
   ) {
     throw new Error('Current model-owned content authorization is invalid or does not cover the audio scope.');
   }

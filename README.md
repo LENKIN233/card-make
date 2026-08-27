@@ -101,8 +101,11 @@ results. Older v1/v2 person-authority worklists remain frozen archive evidence;
 the executable browser review station has been removed.
 
 Formal media execution provenance uses `.github/workflows/trusted-media-run.yml`.
-That main-only workflow runs `scripts/run_trusted_media_review.py` on a protected
-Apple Silicon runner, rebuilds all 301 decisions with
+That main-only workflow runs `scripts/run_trusted_media_review.py` from a
+read-only exact-commit snapshot on a protected Apple Silicon runner. It locks
+and rehashes the model and `mlx_audio` package, rejects truncated model input,
+and requires two blind full transcriptions for every asset before it rebuilds
+all 301 decisions with
 `scripts/build_trusted_media_run_receipt.mjs`, and applies a GitHub Artifact
 Attestation to the exact receipt bytes. A passing worklist or self-declared JSON
 without that run and attestation is not formal media evidence.

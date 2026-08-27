@@ -43,8 +43,17 @@ export function buildRuntimePayloadShards({
   ) {
     throw new Error('max shard bytes must be between 1024 and 1048575');
   }
-  const identity = deriveRuntimePayloadContentIdentity(payload);
   const records = payload.card_records;
+  if (
+    !Array.isArray(records) ||
+    records.length === 0 ||
+    records.some((record, index) =>
+      typeof record?.card_id !== 'string' ||
+      (index > 0 && records[index - 1].card_id.localeCompare(record.card_id) >= 0))
+  ) {
+    throw new Error('runtime cards must be strictly ordered by unique card_id before sharding');
+  }
+  const identity = deriveRuntimePayloadContentIdentity(payload);
   const base = manifestPath.slice(0, -'.json'.length);
   const groups = [];
   let current = [];

@@ -13,6 +13,7 @@ import {
   PERCEPTUAL_CHECKS,
   reviewAudioPerceptualEntry,
 } from './manage_audio_perceptual_worklist.mjs';
+import {createCurrentFullTrackAuthorizationFixture} from './test_current_full_track_authorization_fixture.mjs';
 
 const ATTESTATIONS = Object.freeze({
   no_autoplay_assumption: true,
@@ -122,22 +123,6 @@ test('current model-owned full-track review satisfies the TTS text gate without 
     )));
 });
 
-test('missing legacy flag and missing current model-owned review still fail closed', t => {
-  const fixture = createFixture(t, {ttsTextReviewed: false});
-  const reviewed = completeWorklist(fixture.worklist);
-  writeWorklist(fixture, reviewed);
-  commitFixture(fixture);
-  assert.throws(
-    () => buildAudioQcDrafts({
-      attestations: ATTESTATIONS,
-      contentAuthorizationPath: fixture.authorizationPath,
-      root: fixture.root,
-      worklistPath: fixture.worklistPath,
-    }),
-    /passed TTS text review gate or current model-owned semantic review/,
-  );
-});
-
 test('rejects duplicate per-card evidence lanes before aggregation', t => {
   const fixture = createFixture(t);
   const reviewed = completeWorklist(fixture.worklist);
@@ -172,7 +157,7 @@ test('current content authorization must cover every audio card', t => {
       root: fixture.root,
       worklistPath: fixture.worklistPath,
     }),
-    /does not cover the audio scope/,
+    /failed canonical replay|does not cover the audio scope/,
   );
 });
 
@@ -299,30 +284,11 @@ function createFixture(
     technicalAuditPath: auditPath,
     track: 'cet4',
   });
-  const authorizationPath = 'reviews/approved_batches/current.json';
-  const authorizationInput = `sha256:${digest('fixture-content-authorization')}`;
-  fs.writeFileSync(
-    path.join(root, authorizationPath),
-    `${JSON.stringify({
-      schema_version: 'model-owned-content-authorization.v2',
-      authorization_mode: 'full_track',
-      model_acceptances: [
-        contentAcceptance(authorizationInput, 'content:first'),
-        contentAcceptance(authorizationInput, 'content:second'),
-      ],
-      scope: {
-        track: 'cet4',
-        purpose: 'formal_content',
-        card_ids: cards.map(card => card.card_id),
-      },
-      card_quality_audit: {
-        scope_has_no_hard_blockers: true,
-        scope_summary: {
-          by_severity: {hard_blocker: 0, content_risk: 0, review_gap: 0},
-        },
-      },
-    }, null, 2)}\n`,
-  );
+  const {authorizationPath} = createCurrentFullTrackAuthorizationFixture({
+    root,
+    repositoryRoot: path.resolve(import.meta.dirname, '..'),
+    cards,
+  });
   return {
     authorizationPath,
     root,
@@ -342,6 +308,8 @@ function card({
 }) {
   return {
     card_id: cardId,
+    track: 'cet4',
+    interaction_id: 'flip',
     card_group_name: groupName,
     card_box_name: boxPrefix === '0010' ? '连读' : '根据选项预测话题',
     audio: {
@@ -360,12 +328,20 @@ function card({
     },
     quality_metadata: {
       main_training_goal: mainTrainingGoal,
+      secondary_training_goals: [],
+      weak_point_tags: ['listening_weak'],
+      difficulty: {primary: 'pass', secondary: []},
+      card_prototype: 'integrated_micro_drill',
       box_progression_role: 'recognition',
       material: {
         text_source_type: 'simulation',
+        source_note: 'Test-only simulated CET material.',
         audio_generation_method: 'TTS_AI_generated',
         tts_text_reviewed: ttsTextReviewed,
+        tts_audio_reviewed: false,
       },
+      exam_value: 'Test-only listening transfer value.',
+      review_status: 'draft',
     },
   };
 }

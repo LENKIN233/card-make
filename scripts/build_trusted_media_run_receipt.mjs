@@ -13,6 +13,10 @@ import {
   reviewAudioPerceptualEntry,
   validateAudioPerceptualWorklist,
 } from './manage_audio_perceptual_worklist.mjs';
+import {
+  computeCardCorpusFingerprint,
+  validateCurrentApprovalRecordReference,
+} from './lib/card_integrity.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SHA256_RE = /^[0-9a-f]{64}$/;
@@ -93,7 +97,7 @@ function readJsonl(bytes, label) {
   });
 }
 
-function validateAuthorization(authorization, authorizationBytes, root) {
+function validateAuthorization(authorization, authorizationBytes, root, authorizationPath) {
   if (
     authorization?.schema_version !== 'model-owned-content-authorization.v2' ||
     authorization?.authorization_mode !== 'full_track' ||
@@ -106,6 +110,25 @@ function validateAuthorization(authorization, authorizationBytes, root) {
     new Set(authorization.scope.box_prefixes).size !== 108
   ) {
     throw new Error('content authorization does not bind exact CET4 1180/108 scope');
+  }
+  const relativeAuthorizationPath = path
+    .relative(root, authorizationPath)
+    .split(path.sep)
+    .join('/');
+  const currentFingerprint = computeCardCorpusFingerprint(root);
+  const canonicalValidation = validateCurrentApprovalRecordReference({
+    root,
+    approvalPath: relativeAuthorizationPath,
+    currentFingerprint,
+    expectedCardIds: authorization.scope.card_ids,
+    expectedBoxPrefixes: authorization.scope.box_prefixes,
+  });
+  if (!canonicalValidation.ok) {
+    throw new Error(
+      `content authorization failed canonical replay: ${canonicalValidation.issues
+        .map(issue => issue.code)
+        .join(', ')}`,
+    );
   }
   const bindings = [
     ['model review', authorization.validation?.model_review, authorization.validation?.model_review_sha256],
@@ -120,15 +143,6 @@ function validateAuthorization(authorization, authorizationBytes, root) {
     }
     loaded[name] = {relativePath, sha256: observedSha};
   }
-  if (
-    authorization.card_quality_audit?.scope_has_no_hard_blockers !== true ||
-    authorization.card_quality_audit?.scope_summary?.card_count !== 1180 ||
-    authorization.card_quality_audit?.scope_summary?.by_severity?.hard_blocker !== 0 ||
-    authorization.card_quality_audit?.scope_summary?.by_severity?.content_risk !== 0 ||
-    authorization.card_quality_audit?.scope_summary?.by_severity?.review_gap !== 0
-  ) {
-    throw new Error('content authorization quality audit is not exact and clean');
-  }
   return {
     authorization_sha256: sha256(authorizationBytes),
     model_review_sha256: loaded['model review'].sha256,
@@ -136,7 +150,34 @@ function validateAuthorization(authorization, authorizationBytes, root) {
   };
 }
 
-function validateRunPackage(runPackage, runRoot, worklist) {
+function validateAudioCoverage(value, lock, label) {
+  exactKeys(
+    value,
+    [
+      'decoder',
+      'decoded_sample_count',
+      'model_input_sample_count',
+      'model_max_sample_count',
+      'sample_rate_hz',
+      'truncated',
+    ],
+    label,
+  );
+  if (
+    value.decoder !== 'mlx_audio.stt.utils.load_audio' ||
+    !Number.isSafeInteger(value.decoded_sample_count) ||
+    value.decoded_sample_count < 1 ||
+    value.model_input_sample_count !== value.decoded_sample_count ||
+    value.model_max_sample_count !== lock.runtime.model_max_sample_count ||
+    value.decoded_sample_count > value.model_max_sample_count ||
+    value.sample_rate_hz !== lock.runtime.sample_rate_hz ||
+    value.truncated !== false
+  ) {
+    throw new Error(`${label} does not prove complete untruncated model input`);
+  }
+}
+
+function validateRunPackage(runPackage, runRoot, worklist, lock) {
   exactKeys(
     runPackage,
     ['schema_version', 'model', 'execution', 'runs', 'decisions', 'result'],
@@ -146,8 +187,12 @@ function validateRunPackage(runPackage, runRoot, worklist) {
     throw new Error('run package schema is invalid');
   }
   exactKeys(runPackage.model, ['id', 'revision', 'weights_manifest_sha256'], 'run package model');
-  if (!/^[0-9a-f]{40}$/.test(runPackage.model.revision || '')) {
-    throw new Error('run package model revision is invalid');
+  if (
+    runPackage.model.id !== lock.model.id ||
+    runPackage.model.revision !== lock.model.revision ||
+    runPackage.model.weights_manifest_sha256 !== lock.model.weights_manifest_sha256
+  ) {
+    throw new Error('run package model identity does not match the trusted runner lock');
   }
   requireSha(runPackage.model.weights_manifest_sha256, 'model weights manifest');
   exactKeys(
@@ -159,7 +204,7 @@ function validateRunPackage(runPackage, runRoot, worklist) {
     !/^[1-9][0-9]{5,19}$/.test(runPackage.execution.workflow_run_id || '') ||
     !Number.isInteger(runPackage.execution.workflow_run_attempt) ||
     runPackage.execution.workflow_run_attempt < 1 ||
-    runPackage.execution.runner_class !== 'self_hosted_macos_arm64' ||
+    runPackage.execution.runner_class !== lock.runtime.runner_class ||
     !Number.isFinite(Date.parse(runPackage.execution.started_at)) ||
     !Number.isFinite(Date.parse(runPackage.execution.completed_at)) ||
     Date.parse(runPackage.execution.completed_at) <= Date.parse(runPackage.execution.started_at)
@@ -170,6 +215,7 @@ function validateRunPackage(runPackage, runRoot, worklist) {
     throw new Error('run package must contain at least two runs');
   }
   const runMap = new Map();
+  const runDefinitions = new Map(lock.runs.map(run => [run.name, run]));
   for (const run of runPackage.runs) {
     exactKeys(
       run,
@@ -177,6 +223,15 @@ function validateRunPackage(runPackage, runRoot, worklist) {
       `run ${String(run?.name)}`,
     );
     if (runMap.has(run.name)) throw new Error(`duplicate run name ${run.name}`);
+    const definition = runDefinitions.get(run.name);
+    if (
+      !definition ||
+      run.purpose !== definition.purpose ||
+      run.temperature !== definition.temperature ||
+      run.run_id !== `${runPackage.execution.workflow_run_id}:${runPackage.execution.workflow_run_attempt}:${run.name}`
+    ) {
+      throw new Error(`run ${run.name} identity does not match the trusted runner lock`);
+    }
     const file = safeRegularFile(runRoot, run.path, `run ${run.name}`);
     if (
       sha256(file.bytes) !== requireSha(run.sha256, `run ${run.name} SHA-256`) ||
@@ -188,7 +243,11 @@ function validateRunPackage(runPackage, runRoot, worklist) {
     if (
       records.length !== run.card_count ||
       run.complete_asset_count !== run.card_count ||
-      records.some(record => record.complete_asset_consumed !== true || record.status !== 'ok')
+      records.some((record, index) => {
+        if (record.complete_asset_consumed !== true || record.status !== 'ok') return true;
+        validateAudioCoverage(record.audio_coverage, lock, `run ${run.name} record ${index} audio coverage`);
+        return false;
+      })
     ) {
       throw new Error(`run ${run.name} does not prove complete exact-asset consumption`);
     }
@@ -308,6 +367,14 @@ export function buildTrustedMediaArtifacts({
   createdAt = new Date(),
 } = {}) {
   if (!COMMIT_RE.test(sourceCommit || '')) throw new Error('source commit is invalid');
+  const repositoryHead = execFileSync('git', ['rev-parse', '--verify', 'HEAD^{commit}'], {
+    cwd: repoRoot,
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  }).trim();
+  if (repositoryHead !== sourceCommit) {
+    throw new Error('source commit must equal the exact repository HEAD used by the builder');
+  }
   const worklistFile = readJsonFile(worklistPath, 'pending worklist');
   const authorizationFile = readJsonFile(authorizationPath, 'content authorization');
   const runPackageFile = readJsonFile(runPackagePath, 'run package');
@@ -339,6 +406,7 @@ export function buildTrustedMediaArtifacts({
     authorizationFile.value,
     authorizationFile.bytes,
     repoRoot,
+    authorizationPath,
   );
   const authorizedCards = new Set(authorizationFile.value.scope.card_ids);
   if (worklist.entries.some(entry => !authorizedCards.has(entry.card_id))) {
@@ -352,7 +420,9 @@ export function buildTrustedMediaArtifacts({
   if (!outputStats.isDirectory() || outputStats.isSymbolicLink()) {
     throw new Error('output directory must be a regular directory');
   }
-  const validated = validateRunPackage(runPackageFile.value, runRoot, worklist);
+  const lockFile = safeRegularFile(repoRoot, 'spec/trusted-media-runner-lock.json', 'runner lock');
+  const lock = JSON.parse(lockFile.bytes.toString('utf8'));
+  const validated = validateRunPackage(runPackageFile.value, runRoot, worklist, lock);
   validated.runMap.executionCompletedAt = runPackageFile.value.execution.completed_at;
   let reviewed = structuredClone(worklist);
   for (const entry of worklist.entries) {
@@ -445,6 +515,8 @@ export function buildTrustedMediaArtifacts({
     'scripts/run_trusted_media_review.py',
     'scripts/build_trusted_media_run_receipt.mjs',
     'scripts/manage_audio_perceptual_worklist.mjs',
+    'scripts/lib/card_integrity.mjs',
+    'scripts/lib/model_acceptance.mjs',
     'spec/trusted-media-runner-lock.json',
   ];
   const driverBundle = driverPaths.map(relativePath => {
@@ -452,7 +524,6 @@ export function buildTrustedMediaArtifacts({
     return {path: relativePath, sha256: sha256(file.bytes), size_bytes: file.size_bytes};
   });
   const driverBundleSha256 = sha256(Buffer.from(canonicalStringify(driverBundle)));
-  const lockFile = safeRegularFile(repoRoot, 'spec/trusted-media-runner-lock.json', 'runner lock');
   const workflowFile = safeRegularFile(repoRoot, '.github/workflows/trusted-media-run.yml', 'trusted media workflow');
   const receipt = {
     schema_version: 'trusted-media-run-receipt.v1',

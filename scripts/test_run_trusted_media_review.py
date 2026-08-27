@@ -36,45 +36,63 @@ def general_result(transcript: str, **overrides):
 
 
 class FakeAdapter:
-    def __init__(self, *, unresolved=False):
+    def __init__(self, *, unresolved=False, bad_blind=False, truncated=False):
         self.unresolved = unresolved
+        self.bad_blind = bad_blind
+        self.truncated = truncated
 
-    def generate(self, audio_path: Path, prompt: str, temperature: float) -> str:
+    def generate(self, audio_path: Path, prompt: str, temperature: float):
         card_id = audio_path.stem
         expected = f"Sentence one for {card_id}. Sentence two is complete."
         if "Use exactly one key" in prompt:
-            return repr({"transcript_heard": expected})
-        if "Focus only on English pronunciation" in prompt:
-            return repr(
+            text = repr({"transcript_heard": "unrelated words" if self.bad_blind else expected})
+        elif "Focus only on English pronunciation" in prompt:
+            text = repr(
                 {
                     "transcript_heard": expected,
                     "accurate_pronunciation": True,
                     "specific_error": "",
                 }
             )
-        if card_id == "000002":
-            return general_result(expected, accurate_pronunciation=False)
-        if card_id == "000003":
-            return general_result(
+        elif card_id == "000002":
+            text = general_result(expected, accurate_pronunciation=False)
+        elif card_id == "000003":
+            text = general_result(
                 f"Sentence one for {card_id}.",
                 matches_text=False,
             )
-        if card_id == "000005":
-            return general_result(
+        elif card_id == "000005":
+            text = general_result(
                 f"Sentence one for {card_id}.",
                 matches_text=False,
                 accurate_pronunciation=False,
             )
-        if card_id == "000004":
+        elif card_id == "000004":
             if self.unresolved:
                 if temperature == 0.0:
-                    return general_result(expected, natural_rhythm=False)
-                if temperature == 0.1:
-                    return general_result(expected, suitable_speed=False)
-                return general_result(expected, target_signal_audible=False)
-            if temperature == 0.1:
-                return general_result(expected, natural_rhythm=False)
-        return general_result(expected)
+                    text = general_result(expected, natural_rhythm=False)
+                elif temperature == 0.1:
+                    text = general_result(expected, suitable_speed=False)
+                else:
+                    text = general_result(expected, target_signal_audible=False)
+            elif temperature == 0.1:
+                text = general_result(expected, natural_rhythm=False)
+            else:
+                text = general_result(expected)
+        else:
+            text = general_result(expected)
+        sample_count = len(audio_path.read_bytes())
+        return {
+            "text": text,
+            "audio_coverage": {
+                "decoder": "mlx_audio.stt.utils.load_audio",
+                "decoded_sample_count": sample_count,
+                "model_input_sample_count": sample_count - 1 if self.truncated else sample_count,
+                "model_max_sample_count": LOCK["runtime"]["model_max_sample_count"],
+                "sample_rate_hz": LOCK["runtime"]["sample_rate_hz"],
+                "truncated": self.truncated,
+            },
+        }
 
 
 def worklist(asset_root: Path, count=4):
@@ -127,16 +145,16 @@ class TrustedMediaRunnerTests(unittest.TestCase):
             self.assertEqual(runs["c"]["card_count"], 1)
             self.assertEqual(runs["d"]["card_count"], 2)
             self.assertEqual(runs["e"]["card_count"], 2)
-            self.assertEqual(runs["f"]["card_count"], 2)
-            self.assertEqual(runs["g"]["card_count"], 2)
+            self.assertEqual(runs["f"]["card_count"], 5)
+            self.assertEqual(runs["g"]["card_count"], 5)
             self.assertEqual(package["result"]["passed_card_count"], 5)
             decisions = {item["card_id"]: item for item in package["decisions"]}
-            self.assertEqual(decisions["000002"]["acceptance_sources"], [["a", "d"], ["b", "e"]])
+            self.assertEqual(decisions["000002"]["acceptance_sources"], [["a", "f", "d"], ["b", "g", "e"]])
             self.assertEqual(decisions["000003"]["acceptance_sources"], [["a", "f"], ["b", "g"]])
-            self.assertEqual(decisions["000004"]["acceptance_sources"], [["a"], ["c"]])
+            self.assertEqual(decisions["000004"]["acceptance_sources"], [["a", "f"], ["c", "g"]])
             self.assertEqual(
                 decisions["000005"]["acceptance_sources"],
-                [["a", "d", "f"], ["b", "e", "g"]],
+                [["a", "f", "d"], ["b", "g", "e"]],
             )
             for run in runs.values():
                 self.assertEqual(run["complete_asset_count"], run["card_count"])
@@ -169,6 +187,40 @@ class TrustedMediaRunnerTests(unittest.TestCase):
                     asset_root=root,
                     output_dir=root / "output",
                     adapter=FakeAdapter(),
+                    lock=LOCK,
+                    model_manifest_sha256=digest(b"weights"),
+                    workflow_run_id="32975067429",
+                    workflow_run_attempt=1,
+                    expected_asset_count=1,
+                )
+
+    def test_blind_transcripts_are_always_required_and_own_text_parity(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = run_review_package(
+                worklist=worklist(root, count=1),
+                asset_root=root,
+                output_dir=root / "output",
+                adapter=FakeAdapter(bad_blind=True),
+                lock=LOCK,
+                model_manifest_sha256=digest(b"weights"),
+                workflow_run_id="32975067429",
+                workflow_run_attempt=1,
+                expected_asset_count=1,
+            )
+            self.assertEqual(package["runs"][0]["card_count"], 1)
+            self.assertFalse(package["decisions"][0]["checks"]["audio_matches_text"])
+            self.assertEqual(package["result"]["failed_card_count"], 1)
+
+    def test_truncated_model_input_cannot_claim_complete_consumption(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with self.assertRaisesRegex(ValueError, "complete untruncated model input"):
+                run_review_package(
+                    worklist=worklist(root, count=1),
+                    asset_root=root,
+                    output_dir=root / "output",
+                    adapter=FakeAdapter(truncated=True),
                     lock=LOCK,
                     model_manifest_sha256=digest(b"weights"),
                     workflow_run_id="32975067429",
