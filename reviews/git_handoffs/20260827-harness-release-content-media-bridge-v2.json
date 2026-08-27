@@ -1,0 +1,95 @@
+{
+  "handoff_id": "20260827-harness-release-content-media-bridge-v2",
+  "created_at": "2026-08-27T22:42:57+08:00",
+  "agent": "codex",
+  "branch": "harness/release-content-media-bridge-v2",
+  "base_branch": "main",
+  "commit_sha": "b2ef6fd71f5f2d12e81ea4d8390e0390053c8097",
+  "push_ref": "origin/harness/release-content-media-bridge-v2",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/197",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      ".github/workflows/pr-gates.yml",
+      ".github/workflows/trusted-media-run.yml",
+      "AGENTS.md",
+      "README.md",
+      "reviews/audio_perceptual_worklists/README.md",
+      "reviews/audio_qc/README.md",
+      "reviews/audio_technical_audits/README.md",
+      "reviews/runtime_payloads/README.md",
+      "scripts/build_audio_qc_drafts.mjs",
+      "scripts/build_trusted_media_run_receipt.mjs",
+      "scripts/lib/card_integrity.mjs",
+      "scripts/lib/model_acceptance.mjs",
+      "scripts/run_trusted_media_review.py",
+      "scripts/shard_runtime_payload.mjs",
+      "scripts/test_audio_perceptual_worklist.mjs",
+      "scripts/test_build_audio_qc_drafts.mjs",
+      "scripts/test_build_trusted_media_run_receipt.mjs",
+      "scripts/test_card_integrity.mjs",
+      "scripts/test_manage_controlled_pilot_approval.mjs",
+      "scripts/test_model_acceptance.mjs",
+      "scripts/test_run_trusted_media_review.py",
+      "scripts/test_shard_runtime_payload.mjs",
+      "scripts/test_validate_pr_scope.mjs",
+      "scripts/validate_harness.mjs",
+      "scripts/validate_pr_scope.mjs",
+      "spec/agent-harness.json",
+      "spec/audio-generation-contract.json",
+      "spec/authority-map.json",
+      "spec/content-quality-contract.json",
+      "spec/doc-manifest.json",
+      "spec/eval-fixtures.json",
+      "spec/evals.json",
+      "spec/git-workflow.json",
+      "spec/perturbation-audit.json",
+      "spec/review-workflow.json",
+      "spec/trusted-media-run-producer.json",
+      "spec/trusted-media-runner-lock.json",
+      "spec/workspace-contract.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "369625c24110e52e42eaeeb1cb5fd03e6552448d",
+    "patch_sha256": "9b9a1ac9c3ea4e041472c46e3347ca4e5bb740674fcdde692063717cd4129996"
+  },
+  "validation": [
+    {
+      "command": "model acceptance, shard, card integrity, PR-scope, and delivery-record suites",
+      "result": "passed"
+    },
+    {
+      "command": "audio perceptual, QC builder, QC model, and trusted receipt builder suites",
+      "result": "passed"
+    },
+    {
+      "command": "python3 scripts/test_trusted_model_review.py && python3 scripts/test_run_trusted_media_review.py",
+      "result": "passed: 8 trusted-review tests and 3 producer-runner tests"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs && node scripts/validate_audio_qc.mjs",
+      "result": "passed; only six pre-recorded upstream catalog-alignment warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed: zero issues and zero warnings"
+    },
+    {
+      "command": "node scripts/report_repo_health.mjs --base origin/main --strict",
+      "result": "passed: 38 changed paths, zero dirty worktrees, zero oversized blobs"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed"
+    }
+  ],
+  "local_status": "One consolidated harness lane now supports shard-safe formal content delivery, authorization-bound model-owned audio QC, typed machine principals, and the protected main-only GitHub-attested trusted-media producer.",
+  "remaining_risks": [
+    "Repository trusted-model-review remains blocked until a valid OpenAI API credential or approved workload identity is configured.",
+    "No complete 301-asset trusted-media workflow run or GitHub attestation has occurred; the producer must first merge to main with exact content and media inputs.",
+    "The local 301-card integration proof and formal bundle dry-run remain gate-ineligible until prerequisite PRs merge and exact-head artifacts are regenerated."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
