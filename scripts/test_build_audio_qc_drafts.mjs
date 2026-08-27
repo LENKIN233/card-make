@@ -93,6 +93,44 @@ test('requires all three product-semantics attestations', t => {
   );
 });
 
+test('current model-owned full-track review satisfies the TTS text gate without a legacy boolean', t => {
+  const fixture = createFixture(t, {
+    modelOwnedTextReview: true,
+    ttsTextReviewed: false,
+  });
+  const reviewed = completeWorklist(fixture.worklist);
+  writeWorklist(fixture, reviewed);
+  commitFixture(fixture);
+  const result = buildAudioQcDrafts({
+    attestations: ATTESTATIONS,
+    planOnly: true,
+    root: fixture.root,
+    worklistPath: fixture.worklistPath,
+  });
+  assert.equal(result.records.length, 2);
+  assert.ok(result.records.every(record =>
+    record.text_gate.tts_text_reviewed === true &&
+    record.source_records.linked_agent_self_reviews.includes(
+      'reviews/agent_self_review/current-full-track.json',
+    )));
+});
+
+test('missing legacy flag and missing current model-owned review still fail closed', t => {
+  const fixture = createFixture(t, {ttsTextReviewed: false});
+  const reviewed = completeWorklist(fixture.worklist);
+  writeWorklist(fixture, reviewed);
+  commitFixture(fixture);
+  assert.throws(
+    () => buildAudioQcDrafts({
+      attestations: ATTESTATIONS,
+      planOnly: true,
+      root: fixture.root,
+      worklistPath: fixture.worklistPath,
+    }),
+    /passed TTS text review gate or current model-owned semantic review/,
+  );
+});
+
 test('requires two exact-input model runs for every box record', t => {
   const fixture = createFixture(t);
   const reviewed = completeWorklist(fixture.worklist);
@@ -135,7 +173,10 @@ test('refuses an untracked or dirty reviewed worklist', t => {
   );
 });
 
-function createFixture(t, {sameBox = false} = {}) {
+function createFixture(
+  t,
+  {modelOwnedTextReview = false, sameBox = false, ttsTextReviewed = true} = {},
+) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'audio-qc-drafts-'));
   t.after(() => fs.rmSync(root, {force: true, recursive: true}));
   const cards = [
@@ -145,6 +186,7 @@ function createFixture(t, {sameBox = false} = {}) {
       groupId: '0',
       groupName: '听前预测',
       mainTrainingGoal: '根据选项关键词组合预测听力主话题',
+      ttsTextReviewed,
       transcript: 'The speaker compares electric buses with diesel fleets.',
     }),
     sameBox
@@ -155,6 +197,7 @@ function createFixture(t, {sameBox = false} = {}) {
           groupName: '听前预测',
           mainTrainingGoal: '根据选项关键词组合预测听力主话题',
           transcript: 'The speaker introduces a second comparison topic.',
+          ttsTextReviewed,
         })
       : card({
           boxPrefix: '0010',
@@ -163,6 +206,7 @@ function createFixture(t, {sameBox = false} = {}) {
           groupName: '语音现象',
           mainTrainingGoal: '识别 turn off 中的辅音加元音连读',
           transcript: 'We need to turn off the old server before midnight.',
+          ttsTextReviewed,
         }),
   ];
   fs.mkdirSync(path.join(root, 'card_boxes_json'), {recursive: true});
@@ -216,6 +260,7 @@ function createFixture(t, {sameBox = false} = {}) {
   };
   const auditPath = path.join(root, 'exports/audit.json');
   fs.writeFileSync(auditPath, `${JSON.stringify(audit, null, 2)}\n`);
+  if (modelOwnedTextReview) writeModelOwnedTextReview(root, cards);
   const {worklist} = buildAudioPerceptualWorklist({
     clock: () => new Date('2026-08-11T01:00:00.000Z'),
     root,
@@ -231,7 +276,15 @@ function createFixture(t, {sameBox = false} = {}) {
   };
 }
 
-function card({boxPrefix, cardId, groupId, groupName, mainTrainingGoal, transcript}) {
+function card({
+  boxPrefix,
+  cardId,
+  groupId,
+  groupName,
+  mainTrainingGoal,
+  transcript,
+  ttsTextReviewed = true,
+}) {
   return {
     card_id: cardId,
     card_group_name: groupName,
@@ -256,10 +309,74 @@ function card({boxPrefix, cardId, groupId, groupName, mainTrainingGoal, transcri
       material: {
         text_source_type: 'simulation',
         audio_generation_method: 'TTS_AI_generated',
-        tts_text_reviewed: true,
+        tts_text_reviewed: ttsTextReviewed,
       },
     },
   };
+}
+
+function writeModelOwnedTextReview(root, cards) {
+  const cardIds = cards.map(card => card.card_id);
+  const audit = {
+    schema_version: 'card-quality-scoped-audit.v1',
+    scope_summary: {
+      card_ids: cardIds,
+      card_count: cardIds.length,
+      issue_count: 0,
+      by_severity: {
+        hard_blocker: 0,
+        content_risk: 0,
+        review_gap: 0,
+        source_risk: 0,
+      },
+      by_rule: {},
+    },
+  };
+  const auditRelative = 'reviews/audit_scopes/current-text-audit.json';
+  const auditBytes = Buffer.from(`${JSON.stringify(audit, null, 2)}\n`);
+  fs.mkdirSync(path.join(root, 'reviews/audit_scopes'), {recursive: true});
+  fs.writeFileSync(path.join(root, auditRelative), auditBytes);
+  const inputSha256 = `sha256:${digest('current-model-text-review')}`;
+  const review = {
+    schema_version: 'model-owned-full-track-review.v2',
+    review_id: 'current-model-text-review',
+    created_at: '2026-08-12T00:00:00.000Z',
+    model_acceptances: [
+      semanticAcceptance(inputSha256, 'text-review:first'),
+      semanticAcceptance(inputSha256, 'text-review:second'),
+    ],
+    scope: {
+      track: 'cet4',
+      box_prefixes: [...new Set(cards.map(card => card.knowledge_ref.box_prefix))],
+      card_ids: cardIds,
+    },
+    quality_audit: {
+      report: auditRelative,
+      report_sha256: `sha256:${digest(auditBytes)}`,
+      corpus_fingerprint: digest('fixture-corpus'),
+      scope_has_no_hard_blockers: true,
+      scope_summary: audit.scope_summary,
+    },
+    batch_review: {
+      status: 'ready_for_model_authorization',
+      summary: 'Current model-owned text review passed.',
+      remaining_risks: [],
+      next_step: 'Build audio QC.',
+    },
+  };
+  fs.writeFileSync(
+    path.join(root, 'reviews/agent_self_review/current-full-track.json'),
+    `${JSON.stringify(review, null, 2)}\n`,
+  );
+}
+
+function semanticAcceptance(inputSha256, runId) {
+  const acceptance = modelAcceptance(inputSha256, runId);
+  acceptance.evidence.capabilities = [
+    'card_semantic_review',
+    'source_provenance_review',
+  ];
+  return acceptance;
 }
 
 function completeWorklist(worklist) {
