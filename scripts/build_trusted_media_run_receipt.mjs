@@ -377,7 +377,7 @@ export function buildTrustedMediaArtifacts({
       schema_version: 'model-acceptance.v2',
       actor: {
         kind: 'model_harness',
-        agent: `trusted-media-${group.sourceNames.join('')}`,
+        agent: `agent:trusted-media-${group.sourceNames.join('')}`,
         model: runPackageFile.value.model.id,
         run_id: `${runPackageFile.value.execution.workflow_run_id}:${entry.card_id}:${group.sourceNames.join('')}`,
       },

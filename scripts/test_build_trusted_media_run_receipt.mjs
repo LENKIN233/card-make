@@ -229,6 +229,10 @@ test('builder emits exact 301-asset reviewed worklist and receipt', t => {
   assert.equal(reviewed.progress.passed, 301);
   assert.equal(reviewed.progress.failed, 0);
   assert.equal(reviewed.entries[0].review.model_acceptances.length, 2);
+  assert.deepEqual(
+    reviewed.entries[0].review.model_acceptances.map(acceptance => acceptance.actor.agent),
+    ['agent:trusted-media-a', 'agent:trusted-media-b'],
+  );
   assert.equal(result.receipt.size_bytes < 1024 * 1024, true);
 });
 
