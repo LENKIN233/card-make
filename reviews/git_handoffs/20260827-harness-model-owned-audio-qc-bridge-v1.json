@@ -1,0 +1,65 @@
+{
+  "handoff_id": "20260827-harness-model-owned-audio-qc-bridge-v1",
+  "created_at": "2026-08-27T22:08:51+08:00",
+  "agent": "codex",
+  "branch": "harness/model-owned-audio-qc-bridge-v1",
+  "base_branch": "main",
+  "commit_sha": "f0edccc9e16c2bc8e1e4ca847a675f73ec39edd3",
+  "push_ref": "origin/harness/model-owned-audio-qc-bridge-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/compare/main...harness/model-owned-audio-qc-bridge-v1",
+  "PR_state": "PARKED_NO_PR_WIP_LIMIT",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      "reviews/audio_qc/README.md",
+      "scripts/build_audio_qc_drafts.mjs",
+      "scripts/lib/model_acceptance.mjs",
+      "scripts/test_audio_perceptual_worklist.mjs",
+      "scripts/test_build_audio_qc_drafts.mjs",
+      "scripts/test_card_integrity.mjs",
+      "scripts/test_manage_controlled_pilot_approval.mjs",
+      "scripts/test_model_acceptance.mjs",
+      "scripts/test_validate_pr_scope.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/audio-generation-contract.json",
+      "spec/review-workflow.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "369625c24110e52e42eaeeb1cb5fd03e6552448d",
+    "patch_sha256": "3f182ca3cd91d8fc1e81239f39d873c48e20090f3387b23849567fe1cf5ee000"
+  },
+  "validation": [
+    {
+      "command": "model acceptance, audio worklist/QC builder, card integrity, controlled-pilot, and PR-scope suites",
+      "result": "passed: 158/158"
+    },
+    {
+      "command": "python3 scripts/test_trusted_model_review.py",
+      "result": "passed: 8/8"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs && node scripts/validate_audio_qc.mjs",
+      "result": "passed; only six pre-recorded upstream catalog-alignment warnings"
+    },
+    {
+      "command": "real CET4 integration replay",
+      "result": "passed: 301 reviewed cards -> 27 QC records -> 301 QC index entries -> verified formal bundle dry-run"
+    },
+    {
+      "command": "node scripts/report_repo_health.mjs --base origin/main --strict",
+      "result": "passed: 12 changed paths, zero oversized blobs, zero dirty worktrees"
+    },
+    {
+      "command": "git diff --check origin/main...HEAD",
+      "result": "passed"
+    }
+  ],
+  "local_status": "The audio-QC bridge now accepts a stronger current model-owned semantic review instead of requiring a legacy TTS boolean, requires a tracked covering content authorization, deterministically aggregates each card's two audio-capable evidence lanes, and requires typed machine principals.",
+  "remaining_risks": [
+    "Parked without a PR because #194 remains the repository's single open harness/tooling PR.",
+    "Repository trusted-model-review remains blocked until a valid OpenAI credential or approved workload identity is configured.",
+    "The 301-card integration proof is local and gate-ineligible until prerequisite PRs merge and the clean exact-head artifacts are regenerated."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
