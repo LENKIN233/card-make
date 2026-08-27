@@ -25,12 +25,11 @@ test('builds one formal-ready model-owned QC record per box after complete model
   const reviewed = completeWorklist(fixture.worklist);
   writeWorklist(fixture, reviewed);
   commitFixture(fixture);
-  const modelAcceptancesByBox = boxAcceptances(fixture);
 
   const result = buildAudioQcDrafts({
     attestations: ATTESTATIONS,
     clock: () => new Date('2026-08-12T08:00:00.000Z'),
-    modelAcceptancesByBox,
+    contentAuthorizationPath: fixture.authorizationPath,
     root: fixture.root,
     worklistPath: fixture.worklistPath,
   });
@@ -39,12 +38,18 @@ test('builds one formal-ready model-owned QC record per box after complete model
   assert.deepEqual(result.records.map(record => record.scope.box_prefixes[0]), ['0000', '0010']);
   assert.equal(result.summary.card_count, 2);
   assert.equal(result.summary.formal_content_approval_created, false);
+  assert.equal(result.summary.linked_content_authorization, fixture.authorizationPath);
+  assert.match(result.summary.linked_content_authorization_sha256, /^[a-f0-9]{64}$/);
   for (const record of result.records) {
     assert.equal(record.verdict.formal_audio_ready, true);
     assert.equal(record.schema_version, 'model-owned-audio-qc.v2');
     assert.equal(record.model_acceptances.length, 2);
+    assert.deepEqual(
+      record.model_acceptances.map(acceptance => acceptance.actor.agent),
+      ['audio-evidence-aggregate-lane-1', 'audio-evidence-aggregate-lane-2'],
+    );
     assert.equal(record.generation_plan.provider, 'legacy_unknown');
-    assert.equal(record.source_records.linked_approved_batch, '');
+    assert.equal(record.source_records.linked_approved_batch, fixture.authorizationPath);
     assert.equal(record.source_records.linked_agent_self_reviews.length, 1);
     assert.equal(record.generated_assets[0].file_sha256.length, 64);
     assert.equal(record.qa_checks.tts_audio_not_used_as_source_authenticity, true);
@@ -68,6 +73,7 @@ test('fails closed while any perceptual entry is pending', t => {
   assert.throws(
     () => buildAudioQcDrafts({
       attestations: ATTESTATIONS,
+      contentAuthorizationPath: fixture.authorizationPath,
       root: fixture.root,
       worklistPath: fixture.worklistPath,
     }),
@@ -86,6 +92,7 @@ test('requires all three product-semantics attestations', t => {
         no_autoplay_assumption: true,
         front_side_no_required_subtitles: true,
       },
+      contentAuthorizationPath: fixture.authorizationPath,
       root: fixture.root,
       worklistPath: fixture.worklistPath,
     }),
@@ -103,7 +110,7 @@ test('current model-owned full-track review satisfies the TTS text gate without 
   commitFixture(fixture);
   const result = buildAudioQcDrafts({
     attestations: ATTESTATIONS,
-    planOnly: true,
+    contentAuthorizationPath: fixture.authorizationPath,
     root: fixture.root,
     worklistPath: fixture.worklistPath,
   });
@@ -123,7 +130,7 @@ test('missing legacy flag and missing current model-owned review still fail clos
   assert.throws(
     () => buildAudioQcDrafts({
       attestations: ATTESTATIONS,
-      planOnly: true,
+      contentAuthorizationPath: fixture.authorizationPath,
       root: fixture.root,
       worklistPath: fixture.worklistPath,
     }),
@@ -131,21 +138,41 @@ test('missing legacy flag and missing current model-owned review still fail clos
   );
 });
 
-test('requires two exact-input model runs for every box record', t => {
+test('rejects duplicate per-card evidence lanes before aggregation', t => {
   const fixture = createFixture(t);
   const reviewed = completeWorklist(fixture.worklist);
+  reviewed.entries[0].review.model_acceptances[1] =
+    reviewed.entries[0].review.model_acceptances[0];
   writeWorklist(fixture, reviewed);
   commitFixture(fixture);
-  const modelAcceptancesByBox = boxAcceptances(fixture);
-  modelAcceptancesByBox['0000'][1] = modelAcceptancesByBox['0000'][0];
   assert.throws(
     () => buildAudioQcDrafts({
       attestations: ATTESTATIONS,
-      modelAcceptancesByBox,
+      contentAuthorizationPath: fixture.authorizationPath,
       root: fixture.root,
       worklistPath: fixture.worklistPath,
     }),
-    /run_id_duplicate/,
+    /worklist is invalid|run_id_duplicate|reuses model run_id/,
+  );
+});
+
+test('current content authorization must cover every audio card', t => {
+  const fixture = createFixture(t);
+  const reviewed = completeWorklist(fixture.worklist);
+  writeWorklist(fixture, reviewed);
+  const authorizationFile = path.join(fixture.root, fixture.authorizationPath);
+  const authorization = JSON.parse(fs.readFileSync(authorizationFile));
+  authorization.scope.card_ids.pop();
+  fs.writeFileSync(authorizationFile, `${JSON.stringify(authorization, null, 2)}\n`);
+  commitFixture(fixture);
+  assert.throws(
+    () => buildAudioQcDrafts({
+      attestations: ATTESTATIONS,
+      contentAuthorizationPath: fixture.authorizationPath,
+      root: fixture.root,
+      worklistPath: fixture.worklistPath,
+    }),
+    /does not cover the audio scope/,
   );
 });
 
@@ -156,6 +183,7 @@ test('refuses an untracked or dirty reviewed worklist', t => {
   assert.throws(
     () => buildAudioQcDrafts({
       attestations: ATTESTATIONS,
+      contentAuthorizationPath: fixture.authorizationPath,
       root: fixture.root,
       worklistPath: fixture.worklistPath,
     }),
@@ -166,6 +194,7 @@ test('refuses an untracked or dirty reviewed worklist', t => {
   assert.throws(
     () => buildAudioQcDrafts({
       attestations: ATTESTATIONS,
+      contentAuthorizationPath: fixture.authorizationPath,
       root: fixture.root,
       worklistPath: fixture.worklistPath,
     }),
@@ -213,6 +242,7 @@ function createFixture(
   fs.mkdirSync(path.join(root, 'exports'), {recursive: true});
   fs.mkdirSync(path.join(root, 'reviews/audio_perceptual_worklists'), {recursive: true});
   fs.mkdirSync(path.join(root, 'reviews/agent_self_review'), {recursive: true});
+  fs.mkdirSync(path.join(root, 'reviews/approved_batches'), {recursive: true});
   fs.writeFileSync(
     path.join(root, 'card_boxes_json/cet4.json'),
     `${JSON.stringify({track: 'cet4', cards}, null, 2)}\n`,
@@ -269,7 +299,32 @@ function createFixture(
     technicalAuditPath: auditPath,
     track: 'cet4',
   });
+  const authorizationPath = 'reviews/approved_batches/current.json';
+  const authorizationInput = `sha256:${digest('fixture-content-authorization')}`;
+  fs.writeFileSync(
+    path.join(root, authorizationPath),
+    `${JSON.stringify({
+      schema_version: 'model-owned-content-authorization.v2',
+      authorization_mode: 'full_track',
+      model_acceptances: [
+        contentAcceptance(authorizationInput, 'content:first'),
+        contentAcceptance(authorizationInput, 'content:second'),
+      ],
+      scope: {
+        track: 'cet4',
+        purpose: 'formal_content',
+        card_ids: cards.map(card => card.card_id),
+      },
+      card_quality_audit: {
+        scope_has_no_hard_blockers: true,
+        scope_summary: {
+          by_severity: {hard_blocker: 0, content_risk: 0, review_gap: 0},
+        },
+      },
+    }, null, 2)}\n`,
+  );
   return {
+    authorizationPath,
     root,
     worklist,
     worklistPath: 'reviews/audio_perceptual_worklists/pilot.json',
@@ -403,24 +458,6 @@ function reviewAll(worklist, cardId) {
   });
 }
 
-function boxAcceptances(fixture) {
-  const plan = buildAudioQcDrafts({
-    attestations: ATTESTATIONS,
-    planOnly: true,
-    root: fixture.root,
-    worklistPath: fixture.worklistPath,
-  });
-  return Object.fromEntries(
-    Object.entries(plan.summary.acceptance_inputs).map(([boxPrefix, inputSha256]) => [
-      boxPrefix,
-      [
-        modelAcceptance(inputSha256, `box:${boxPrefix}:first`),
-        modelAcceptance(inputSha256, `box:${boxPrefix}:second`),
-      ],
-    ]),
-  );
-}
-
 function modelAcceptance(inputSha256, runId) {
   return {
     schema_version: 'model-acceptance.v2',
@@ -439,6 +476,12 @@ function modelAcceptance(inputSha256, runId) {
     },
     decision: 'accepted',
   };
+}
+
+function contentAcceptance(inputSha256, runId) {
+  const acceptance = modelAcceptance(inputSha256, runId);
+  acceptance.evidence.capabilities = ['content_authorization'];
+  return acceptance;
 }
 
 function writeWorklist(fixture, worklist) {
