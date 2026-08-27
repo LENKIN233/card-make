@@ -1089,10 +1089,19 @@ function validateAudioGenerationContract(errors) {
         'stress_pauses',
         'no_noise',
         'planOnly',
+        'currentModelOwnedTextReviewCoversCard',
       ]) {
         if (!bridgeSource.includes(token)) {
           pushIssue(errors, 'model_audio_qc_bridge_guard_missing', {token});
         }
+      }
+      if (
+        v2Contract.formal_audio_qc?.completed_worklist_bridge
+          ?.tts_text_gate_accepts_explicit_metadata_or_current_model_owned_review !== true ||
+        v2Contract.formal_audio_qc?.completed_worklist_bridge
+          ?.legacy_boolean_is_not_required_when_stronger_current_model_evidence_exists !== true
+      ) {
+        pushIssue(errors, 'model_owned_tts_text_gate_policy_missing', {});
       }
       try {
         const output = execFileSync(

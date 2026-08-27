@@ -10,7 +10,10 @@ import {
   PERCEPTUAL_CHECKS,
   validateAudioPerceptualWorklist,
 } from './manage_audio_perceptual_worklist.mjs';
-import {validateIndependentModelAcceptances} from './lib/model_acceptance.mjs';
+import {
+  validateIndependentModelAcceptances,
+  validateModelAcceptance,
+} from './lib/model_acceptance.mjs';
 import {validateAudioAcceptanceInput} from './validate_audio_qc.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -136,15 +139,19 @@ function buildBoxRecord({
   const knowledge = first.knowledge_ref;
   const cardIds = entries.map(entry => entry.card_id);
   const cards = entries.map(entry => readBoundCard(entry, root));
+  const selfReviews = findCurrentSelfReviews(cardIds, root);
   for (const card of cards) {
-    if (card.quality_metadata?.material?.tts_text_reviewed !== true) {
-      throw new Error(`Card ${card.card_id} does not have a passed TTS text review gate.`);
+    if (
+      card.quality_metadata?.material?.tts_text_reviewed !== true &&
+      !selfReviews.some(reviewPath =>
+        currentModelOwnedTextReviewCoversCard(reviewPath, card.card_id, root))
+    ) {
+      throw new Error(`Card ${card.card_id} does not have a passed TTS text review gate or current model-owned semantic review.`);
     }
     if (card.quality_metadata?.material?.audio_generation_method !== 'TTS_AI_generated') {
       throw new Error(`Card ${card.card_id} is not a legacy TTS candidate asset.`);
     }
   }
-  const selfReviews = findCurrentSelfReviews(cardIds, root);
   const completedAt = entries
     .map(entry => entry.review.completed_at)
     .sort()
@@ -280,9 +287,56 @@ function findCurrentSelfReviews(cardIds, root) {
       .filter(candidate => candidate.scoped.includes(cardId))
       .sort((left, right) => right.created_at.localeCompare(left.created_at));
     if (matching.length === 0) throw new Error(`Card ${cardId} has no linked agent self-review.`);
-    chosen.set(matching[0].path, matching[0]);
+    const currentModelReview = matching.find(candidate =>
+      currentModelOwnedTextReviewCoversCard(candidate.path, cardId, root));
+    const selected = currentModelReview ?? matching[0];
+    chosen.set(selected.path, selected);
   }
   return [...chosen.keys()].sort();
+}
+
+function currentModelOwnedTextReviewCoversCard(relativePath, cardId, root) {
+  const absolute = requireRegularWorkspaceFile(relativePath, root);
+  const record = JSON.parse(fs.readFileSync(absolute, 'utf8'));
+  if (!Array.isArray(record.scope?.card_ids) || !record.scope.card_ids.map(String).includes(String(cardId))) {
+    return false;
+  }
+  let acceptanceIssues;
+  if (record.schema_version === 'model-owned-full-track-review.v2') {
+    acceptanceIssues = validateIndependentModelAcceptances(record.model_acceptances, {
+      requiredCapabilities: ['card_semantic_review', 'source_provenance_review'],
+    });
+    if (
+      record.batch_review?.status !== 'ready_for_model_authorization' ||
+      !Array.isArray(record.batch_review?.remaining_risks) ||
+      record.batch_review.remaining_risks.length !== 0
+    ) return false;
+  } else if (record.schema_version === 'model-owned-card-review.v2') {
+    acceptanceIssues = validateModelAcceptance(record.model_acceptance, {
+      requireAccepted: true,
+      requiredCapabilities: ['card_semantic_review', 'source_provenance_review'],
+    });
+    if (record.batch_review?.status !== 'model_accepted') return false;
+  } else {
+    return false;
+  }
+  if (acceptanceIssues.length > 0) return false;
+  const audit = record.quality_audit;
+  if (
+    audit?.scope_has_no_hard_blockers !== true ||
+    !Array.isArray(audit.scope_summary?.card_ids) ||
+    !audit.scope_summary.card_ids.map(String).includes(String(cardId)) ||
+    audit.scope_summary?.by_severity?.hard_blocker !== 0 ||
+    audit.scope_summary?.by_severity?.content_risk !== 0 ||
+    audit.scope_summary?.by_severity?.review_gap !== 0
+  ) return false;
+  let auditFile;
+  try {
+    auditFile = requireRegularWorkspaceFile(audit.report, root);
+  } catch {
+    return false;
+  }
+  return `sha256:${sha256(fs.readFileSync(auditFile))}` === audit.report_sha256;
 }
 
 function pronunciationNotes(entry) {
