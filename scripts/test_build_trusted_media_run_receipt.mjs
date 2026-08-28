@@ -160,6 +160,8 @@ function buildFixture(t) {
         decoded_sample_count: 16000,
         model_input_sample_count: 16000,
         model_max_sample_count: LOCK.runtime.model_max_sample_count,
+        model_feature_frame_count: LOCK.runtime.model_feature_frame_count,
+        model_audio_token_count: LOCK.runtime.model_audio_token_count,
         sample_rate_hz: LOCK.runtime.sample_rate_hz,
         truncated: false,
       },
@@ -219,6 +221,18 @@ function buildFixture(t) {
     result: {reviewed_card_count: 301, passed_card_count: 301, failed_card_count: 0},
   };
   const runPackageFile = write(root, 'run-output/run-package.json', runPackage);
+  write(root, 'run-output/model-weights-manifest.json', {
+    files: [{path: 'weights.safetensors', size_bytes: 1, sha256: sha256('weights')}],
+    sha256: LOCK.model.weights_manifest_sha256,
+  });
+  write(root, 'run-output/mlx-audio-package-manifest.json', {
+    files: [{path: '__init__.py', size_bytes: 1, sha256: sha256('mlx-audio')}],
+    sha256: LOCK.runtime.mlx_audio_package_manifest_sha256,
+  });
+  write(root, 'run-output/python-environment-manifest.json', {
+    files: [{path: 'mlx_audio/__init__.py', size_bytes: 1, sha256: sha256('python-env')}],
+    sha256: LOCK.runtime.python_environment_manifest_sha256,
+  });
   return {
     authorizationFile: {path: path.join(root, authorizationPath)},
     root,
@@ -366,4 +380,38 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
       attestJob.indexOf('Attest exact rebuilt trusted media receipt'),
   );
   assert.match(attestJob, /cmp "\$downloaded\/\$artifact" "\$rebuilt\/\$artifact"/);
+});
+
+test('independent builders derive byte-identical receipt time from the run package', t => {
+  const fixture = buildFixture(t);
+  const rebuildDir = path.join(fixture.root, 'run-output-rebuild');
+  fs.mkdirSync(rebuildDir);
+  for (const filename of fs.readdirSync(fixture.runDir).filter(name =>
+    (name.startsWith('run-') && (name.endsWith('.jsonl') || name === 'run-package.json')) ||
+    [
+      'model-weights-manifest.json',
+      'mlx-audio-package-manifest.json',
+      'python-environment-manifest.json',
+    ].includes(name)
+  )) {
+    fs.copyFileSync(path.join(fixture.runDir, filename), path.join(rebuildDir, filename));
+  }
+  const first = buildTrustedMediaArtifacts({
+    authorizationPath: fixture.authorizationFile.path,
+    outputDir: fixture.runDir,
+    repoRoot: fixture.root,
+    runPackagePath: fixture.runPackageFile.path,
+    sourceCommit: fixture.sourceCommit,
+    worklistPath: fixture.worklistFile.path,
+  });
+  const second = buildTrustedMediaArtifacts({
+    authorizationPath: fixture.authorizationFile.path,
+    outputDir: rebuildDir,
+    repoRoot: fixture.root,
+    runPackagePath: path.join(rebuildDir, 'run-package.json'),
+    sourceCommit: fixture.sourceCommit,
+    worklistPath: fixture.worklistFile.path,
+  });
+  assert.equal(first.receipt.sha256, second.receipt.sha256);
+  assert.deepEqual(fs.readFileSync(first.receipt.path), fs.readFileSync(second.receipt.path));
 });

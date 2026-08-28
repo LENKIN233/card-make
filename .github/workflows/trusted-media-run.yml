@@ -76,7 +76,22 @@ jobs:
           esac
           test "$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')" = 3.12
           test "$(python3 -c 'import importlib.metadata; print(importlib.metadata.version("mlx-audio"))')" = 0.5.0
-          python3 -c 'import mlx_audio'
+          site_packages="$(python3 -B -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')"
+          trusted_python_root="$RUNNER_TEMP/trusted-python-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          test ! -e "$trusted_python_root"
+          mkdir "$trusted_python_root"
+          rsync -a \
+            --exclude '__pycache__' \
+            --exclude '*.pyc' \
+            --exclude '*.pyo' \
+            "$site_packages/" "$trusted_python_root/"
+          test -z "$(find "$trusted_python_root" -type l -print -quit)"
+          test -z "$(find "$trusted_python_root" \( -name __pycache__ -o -name '*.py[co]' \) -print -quit)"
+          chmod -R a-w "$trusted_python_root"
+          echo "TRUSTED_MEDIA_PYTHON_ROOT=$trusted_python_root" >> "$GITHUB_ENV"
+          echo "PYTHONPATH=$trusted_python_root" >> "$GITHUB_ENV"
+          echo "PYTHONDONTWRITEBYTECODE=1" >> "$GITHUB_ENV"
+          echo "PYTHONPYCACHEPREFIX=$RUNNER_TEMP/trusted-python-cache-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
 
       - name: Validate current content and audio contracts
         run: |
@@ -98,7 +113,7 @@ jobs:
           set -euo pipefail
           output_dir="$RUNNER_TEMP/trusted-media-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           test ! -e "$output_dir"
-          python3 "$TRUSTED_SOURCE_ROOT/scripts/run_trusted_media_review.py" \
+          python3 -B "$TRUSTED_SOURCE_ROOT/scripts/run_trusted_media_review.py" \
             --worklist "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH" \
             --asset-root "$TRUSTED_SOURCE_ROOT" \
             --model-root "$CARD_MAKE_TRUSTED_MEDIA_MODEL_ROOT" \
@@ -185,6 +200,7 @@ jobs:
           cp "$downloaded/run-package.json" "$rebuilt/"
           cp "$downloaded/model-weights-manifest.json" "$rebuilt/"
           cp "$downloaded/mlx-audio-package-manifest.json" "$rebuilt/"
+          cp "$downloaded/python-environment-manifest.json" "$rebuilt/"
           test "$(jq -r .execution.workflow_run_id "$rebuilt/run-package.json")" = "$GITHUB_RUN_ID"
           test "$(jq -r .execution.workflow_run_attempt "$rebuilt/run-package.json")" = "$GITHUB_RUN_ATTEMPT"
           python3 - "$rebuilt" <<'PY'
@@ -194,6 +210,7 @@ jobs:
           for filename, expected in [
               ('model-weights-manifest.json', lock['model']['weights_manifest_sha256']),
               ('mlx-audio-package-manifest.json', lock['runtime']['mlx_audio_package_manifest_sha256']),
+              ('python-environment-manifest.json', lock['runtime']['python_environment_manifest_sha256']),
           ]:
               value = json.loads((root / filename).read_text())
               payload = json.dumps(value['files'], sort_keys=True, separators=(',', ':')).encode()

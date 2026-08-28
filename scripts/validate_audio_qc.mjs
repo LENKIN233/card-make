@@ -133,9 +133,37 @@ export function validateAudioAcceptanceInput(record, {root = ROOT, template = fa
   }
   identities.sort((left, right) =>
     left.card_id.localeCompare(right.card_id) || left.path.localeCompare(right.path));
+  const trustedMedia = {
+    receipt_path: record.source_records?.trusted_media_receipt,
+    receipt_sha256: record.source_records?.trusted_media_receipt_sha256,
+    attestation_bundle_path:
+      record.source_records?.trusted_media_attestation_bundle,
+    attestation_bundle_sha256:
+      record.source_records?.trusted_media_attestation_bundle_sha256,
+    source_commit: record.source_records?.trusted_media_source_commit,
+    model_id: record.source_records?.trusted_media_model_id,
+    model_revision: record.source_records?.trusted_media_model_revision,
+  };
+  if (
+    typeof trustedMedia.receipt_path !== 'string' ||
+    !trustedMedia.receipt_path.startsWith('reviews/trusted_media_receipts/') ||
+    !/^[a-f0-9]{64}$/.test(trustedMedia.receipt_sha256 || '') ||
+    typeof trustedMedia.attestation_bundle_path !== 'string' ||
+    !trustedMedia.attestation_bundle_path.startsWith('reviews/trusted_media_receipts/') ||
+    !/^[a-f0-9]{64}$/.test(trustedMedia.attestation_bundle_sha256 || '') ||
+    !/^[a-f0-9]{40}$/.test(trustedMedia.source_commit || '') ||
+    typeof trustedMedia.model_id !== 'string' ||
+    trustedMedia.model_id.length < 3 ||
+    !/^[a-f0-9]{40}$/.test(trustedMedia.model_revision || '')
+  ) {
+    issues.push({code: 'audio_qc_trusted_media_receipt_binding_invalid'});
+  }
   return {
     issues,
-    input_sha256: `sha256:${sha256(Buffer.from(JSON.stringify(identities), 'utf8'))}`,
+    input_sha256: `sha256:${sha256(Buffer.from(JSON.stringify({
+      assets: identities,
+      trusted_media: trustedMedia,
+    }), 'utf8'))}`,
   };
 }
 

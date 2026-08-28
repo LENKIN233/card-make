@@ -6,7 +6,10 @@ Every card records `complete_asset_consumed` and all seven perceptual results;
 every box record carries two deterministic evidence lanes aggregated from the
 first and second exact-input audio-capable acceptance of every scoped card. The
 builder requires a tracked current model-owned content authorization and binds
-it in `source_records.linked_approved_batch`; it does not request redundant new
+it in `source_records.linked_approved_batch`. Formal-ready output additionally
+requires the tracked exact trusted-media receipt and GitHub attestation bundle;
+their hashes, signer source commit, model identity and reviewed-worklist bytes
+are bound into every box acceptance input. It does not request redundant new
 box-level model runs. Validate the output with `scripts/validate_audio_qc.mjs`.
 
 Audio QC does not prove text-source authenticity, provider or voice provenance,

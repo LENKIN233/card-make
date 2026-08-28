@@ -109,6 +109,9 @@ all 301 decisions with
 `scripts/build_trusted_media_run_receipt.mjs`, and applies a GitHub Artifact
 Attestation to the exact receipt bytes. A passing worklist or self-declared JSON
 without that run and attestation is not formal media evidence.
+`scripts/build_audio_qc_drafts.mjs` also requires the tracked receipt and
+attestation bundle and binds their hashes, source commit, model identity and
+reviewed-worklist identity into every formal QC acceptance input.
 
 ## Delivery
 

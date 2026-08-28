@@ -137,6 +137,8 @@
       "requires_all_seven_per_card_results": true,
       "splits_records_by_box": true,
       "requires_current_tracked_model_owned_content_authorization": true,
+      "requires_tracked_GitHub_attested_trusted_media_receipt_and_bundle": true,
+      "every_QC_acceptance_input_binds_receipt_bundle_source_commit_model_and_worklist_hashes": true,
       "box_evidence_lanes_bind_exact_audio_QC_input_and_do_not_claim_new_media_consumption": true,
       "requires_explicit_product_semantics_attestations": [
         "no_autoplay_assumption",
@@ -227,7 +229,7 @@
     "node --test scripts/test_build_audio_qc_drafts.mjs",
     "node scripts/audit_audio_technical.mjs --track cet4 --report-path exports/cet4-audio-technical-audit.json",
     "node scripts/manage_audio_perceptual_worklist.mjs validate --file exports/cet4-audio-perceptual-worklist.json",
-    "node scripts/build_audio_qc_drafts.mjs --worklist reviews/audio_perceptual_worklists/<reviewed-worklist>.json --authorization reviews/approved_batches/<current-authorization>.json --attest-no-autoplay --attest-front-no-required-subtitles --attest-tts-not-source-authenticity",
+    "node scripts/build_audio_qc_drafts.mjs --worklist reviews/audio_perceptual_worklists/<reviewed-worklist>.json --authorization reviews/approved_batches/<current-authorization>.json --trusted-receipt reviews/trusted_media_receipts/<receipt>.json --attestation-bundle reviews/trusted_media_receipts/<bundle>.jsonl --attest-no-autoplay --attest-front-no-required-subtitles --attest-tts-not-source-authenticity",
     "node scripts/validate_audio_qc.mjs",
     "node scripts/validate_harness.mjs"
   ]

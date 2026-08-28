@@ -158,6 +158,8 @@ function validateAudioCoverage(value, lock, label) {
       'decoded_sample_count',
       'model_input_sample_count',
       'model_max_sample_count',
+      'model_feature_frame_count',
+      'model_audio_token_count',
       'sample_rate_hz',
       'truncated',
     ],
@@ -169,6 +171,8 @@ function validateAudioCoverage(value, lock, label) {
     value.decoded_sample_count < 1 ||
     value.model_input_sample_count !== value.decoded_sample_count ||
     value.model_max_sample_count !== lock.runtime.model_max_sample_count ||
+    value.model_feature_frame_count !== lock.runtime.model_feature_frame_count ||
+    value.model_audio_token_count !== lock.runtime.model_audio_token_count ||
     value.decoded_sample_count > value.model_max_sample_count ||
     value.sample_rate_hz !== lock.runtime.sample_rate_hz ||
     value.truncated !== false
@@ -292,7 +296,14 @@ function validateRunPackage(runPackage, runRoot, worklist, lock) {
   return {decisions, runMap};
 }
 
-function validateAcceptanceGroup({decision, entry, group, runMap, groupIndex}) {
+function validateAcceptanceGroup({
+  decision,
+  entry,
+  group,
+  runMap,
+  groupIndex,
+  transcriptThreshold,
+}) {
   if (new Set(group).size !== group.length) {
     throw new Error(`decision ${entry.card_id} acceptance group reuses a run`);
   }
@@ -322,7 +333,7 @@ function validateAcceptanceGroup({decision, entry, group, runMap, groupIndex}) {
       }
       specialistChecks.add(SPECIALIST_CHECK[run.purpose]);
     } else if (run.purpose === 'blind_transcript') {
-      if (!(record.transcript_similarity >= 0.85)) {
+      if (!(record.transcript_similarity >= transcriptThreshold)) {
         throw new Error(`decision ${entry.card_id} transcript specialist did not pass`);
       }
       specialistChecks.add(SPECIALIST_CHECK[run.purpose]);
@@ -364,7 +375,7 @@ export function buildTrustedMediaArtifacts({
   runPackagePath,
   sourceCommit,
   worklistPath,
-  createdAt = new Date(),
+  createdAt = null,
 } = {}) {
   if (!COMMIT_RE.test(sourceCommit || '')) throw new Error('source commit is invalid');
   const repositoryHead = execFileSync('git', ['rev-parse', '--verify', 'HEAD^{commit}'], {
@@ -423,6 +434,10 @@ export function buildTrustedMediaArtifacts({
   const lockFile = safeRegularFile(repoRoot, 'spec/trusted-media-runner-lock.json', 'runner lock');
   const lock = JSON.parse(lockFile.bytes.toString('utf8'));
   const validated = validateRunPackage(runPackageFile.value, runRoot, worklist, lock);
+  const receiptCreatedAt = createdAt ?? new Date(runPackageFile.value.execution.completed_at);
+  if (!Number.isFinite(receiptCreatedAt.getTime())) {
+    throw new Error('receipt creation time is invalid');
+  }
   validated.runMap.executionCompletedAt = runPackageFile.value.execution.completed_at;
   let reviewed = structuredClone(worklist);
   for (const entry of worklist.entries) {
@@ -434,6 +449,7 @@ export function buildTrustedMediaArtifacts({
         group,
         groupIndex,
         runMap: validated.runMap,
+        transcriptThreshold: lock.transcript_similarity_threshold,
       }),
     );
     if (groups[0].generalName === groups[1].generalName) {
@@ -495,6 +511,16 @@ export function buildTrustedMediaArtifacts({
   };
   const audioManifestPath = path.join(outputDir, 'audio-manifest.json');
   const audioManifestIdentity = writeJson(audioManifestPath, audioManifest);
+  const runPackageIdentity = artifactIdentity(runPackagePath);
+  const modelWeightsManifestIdentity = artifactIdentity(
+    path.join(runRoot, 'model-weights-manifest.json'),
+  );
+  const mlxAudioPackageManifestIdentity = artifactIdentity(
+    path.join(runRoot, 'mlx-audio-package-manifest.json'),
+  );
+  const pythonEnvironmentManifestIdentity = artifactIdentity(
+    path.join(runRoot, 'python-environment-manifest.json'),
+  );
   const rawRunManifest = {
     schema_version: 'trusted-media-raw-run-manifest.v1',
     model: runPackageFile.value.model,
@@ -502,6 +528,7 @@ export function buildTrustedMediaArtifacts({
       name: run.name,
       run_id: run.run_id,
       purpose: run.purpose,
+      temperature: run.temperature,
       path: run.path,
       sha256: run.sha256,
       size_bytes: run.size_bytes,
@@ -528,7 +555,7 @@ export function buildTrustedMediaArtifacts({
   const receipt = {
     schema_version: 'trusted-media-run-receipt.v1',
     receipt_id: `cet4-audio-${runPackageFile.value.execution.workflow_run_id}-${runPackageFile.value.execution.workflow_run_attempt}`,
-    created_at: createdAt.toISOString(),
+    created_at: receiptCreatedAt.toISOString(),
     source: {
       repository: 'LENKIN233/card-make',
       ref: 'refs/heads/main',
@@ -558,6 +585,10 @@ export function buildTrustedMediaArtifacts({
       audio_manifest: audioManifestIdentity,
       review_worklist: reviewedIdentity,
       raw_run_manifest: rawRunManifestIdentity,
+      run_package: runPackageIdentity,
+      model_weights_manifest: modelWeightsManifestIdentity,
+      mlx_audio_package_manifest: mlxAudioPackageManifestIdentity,
+      python_environment_manifest: pythonEnvironmentManifestIdentity,
     },
     review_runs: runPackageFile.value.runs.map(run => ({
       run_id: run.run_id,
@@ -577,7 +608,7 @@ export function buildTrustedMediaArtifacts({
       all_required_checks_passed: true,
     },
   };
-  if (createdAt.getTime() < Date.parse(runPackageFile.value.execution.completed_at)) {
+  if (receiptCreatedAt.getTime() < Date.parse(runPackageFile.value.execution.completed_at)) {
     throw new Error('receipt creation time predates model execution completion');
   }
   const receiptPath = path.join(outputDir, 'trusted-media-run-receipt.json');

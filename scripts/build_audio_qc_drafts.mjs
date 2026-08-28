@@ -24,6 +24,7 @@ import {validateAudioAcceptanceInput} from './validate_audio_qc.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REVIEWED_WORKLIST_DIR = 'reviews/audio_perceptual_worklists';
 const AUDIO_QC_DIR = 'reviews/audio_qc';
+const TRUSTED_MEDIA_RECEIPT_DIR = 'reviews/trusted_media_receipts';
 const REQUIRED_ATTESTATIONS = Object.freeze([
   'no_autoplay_assumption',
   'front_side_no_required_subtitles',
@@ -31,10 +32,13 @@ const REQUIRED_ATTESTATIONS = Object.freeze([
 ]);
 
 export function buildAudioQcDrafts({
+  attestationBundlePath,
   attestations = {},
   clock = () => new Date(),
   contentAuthorizationPath,
+  execFile = execFileSync,
   root = ROOT,
+  trustedReceiptPath,
   worklistPath,
 } = {}) {
   const normalizedRoot = path.resolve(root);
@@ -77,6 +81,14 @@ export function buildAudioQcDrafts({
     root: normalizedRoot,
     scopedCardIds: sourceWorklist.entries.map(entry => entry.card_id),
   });
+  const trustedMedia = requireTrustedMediaReceipt({
+    attestationBundlePath,
+    authorization: contentAuthorization,
+    execFile,
+    root: normalizedRoot,
+    trustedReceiptPath,
+    worklistBytes: sourceBytes,
+  });
   const grouped = groupByBox(sourceWorklist.entries);
   const createdAt = asIso(clock());
   const worklistRelativePath = relativeToRoot(linkedWorklist, normalizedRoot);
@@ -92,6 +104,7 @@ export function buildAudioQcDrafts({
       entries,
       root: normalizedRoot,
       sourceWorklist,
+      trustedMedia,
       worklistRelativePath,
       worklistSha256,
     });
@@ -126,6 +139,8 @@ export function buildAudioQcDrafts({
       formal_content_approval_created: false,
       linked_content_authorization: contentAuthorization.relativePath,
       linked_content_authorization_sha256: contentAuthorization.sha256,
+      trusted_media_receipt: trustedMedia.receiptPath,
+      trusted_media_receipt_sha256: trustedMedia.receiptSha256,
       acceptance_inputs: acceptanceInputs,
       record_count: records.length,
       model_run_ids: [...new Set(records.flatMap(record =>
@@ -143,6 +158,7 @@ function buildBoxRecord({
   entries,
   root,
   sourceWorklist,
+  trustedMedia,
   worklistRelativePath,
   worklistSha256,
 }) {
@@ -186,6 +202,13 @@ function buildBoxRecord({
       linked_approved_batch: contentAuthorizationPath,
       linked_perceptual_worklist: worklistRelativePath,
       perceptual_worklist_sha256: worklistSha256,
+      trusted_media_receipt: trustedMedia.receiptPath,
+      trusted_media_receipt_sha256: trustedMedia.receiptSha256,
+      trusted_media_attestation_bundle: trustedMedia.bundlePath,
+      trusted_media_attestation_bundle_sha256: trustedMedia.bundleSha256,
+      trusted_media_source_commit: trustedMedia.sourceCommit,
+      trusted_media_model_id: trustedMedia.modelId,
+      trusted_media_model_revision: trustedMedia.modelRevision,
     },
     text_gate: {
       tts_text_reviewed: true,
@@ -262,6 +285,124 @@ function buildBoxRecord({
       harness: 'node scripts/validate_harness.mjs',
     },
   };
+}
+
+function requireTrustedMediaReceipt({
+  attestationBundlePath,
+  authorization,
+  execFile,
+  root,
+  trustedReceiptPath,
+  worklistBytes,
+}) {
+  const receiptFile = requireTrustedMediaEvidenceFile(
+    trustedReceiptPath,
+    '.json',
+    'trusted media receipt',
+    root,
+  );
+  const bundleFile = requireTrustedMediaEvidenceFile(
+    attestationBundlePath,
+    '.jsonl',
+    'trusted media attestation bundle',
+    root,
+  );
+  const receiptBytes = fs.readFileSync(receiptFile.absolute);
+  const bundleBytes = fs.readFileSync(bundleFile.absolute);
+  requireTrackedHeadBytes(receiptFile.absolute, receiptBytes, root);
+  requireTrackedHeadBytes(bundleFile.absolute, bundleBytes, root);
+  const receipt = JSON.parse(receiptBytes.toString('utf8'));
+  const receiptSha256 = sha256(receiptBytes);
+  const worklistSha256 = sha256(worklistBytes);
+  if (
+    receipt.schema_version !== 'trusted-media-run-receipt.v1' ||
+    receipt.source?.repository !== 'LENKIN233/card-make' ||
+    receipt.source?.ref !== 'refs/heads/main' ||
+    receipt.source?.workflow_path !== '.github/workflows/trusted-media-run.yml' ||
+    !/^[a-f0-9]{40}$/.test(receipt.source?.commit_sha || '') ||
+    receipt.candidate?.track !== 'cet4' ||
+    receipt.candidate?.card_count !== 1180 ||
+    receipt.candidate?.box_count !== 108 ||
+    receipt.candidate?.audio_asset_count !== 301 ||
+    receipt.candidate?.content_version !== authorization.record.content_version ||
+    receipt.candidate?.content_authorization_sha256 !== authorization.sha256 ||
+    receipt.artifacts?.review_worklist?.sha256 !== worklistSha256 ||
+    receipt.artifacts?.review_worklist?.size_bytes !== worklistBytes.length ||
+    receipt.execution?.model?.id?.length < 3 ||
+    !/^[a-f0-9]{40}$/.test(receipt.execution?.model?.revision || '') ||
+    receipt.result?.reviewed_card_count !== 301 ||
+    receipt.result?.passed_card_count !== 301 ||
+    receipt.result?.failed_card_count !== 0 ||
+    receipt.result?.every_card_has_two_independent_acceptances !== true ||
+    receipt.result?.all_assets_complete_consumed !== true ||
+    receipt.result?.all_required_checks_passed !== true
+  ) {
+    throw new Error('trusted media receipt does not bind the current authorization and reviewed worklist');
+  }
+  const args = [
+    'attestation',
+    'verify',
+    receiptFile.absolute,
+    '--repo',
+    'LENKIN233/card-make',
+    '--bundle',
+    bundleFile.absolute,
+    '--signer-workflow',
+    'LENKIN233/card-make/.github/workflows/trusted-media-run.yml',
+    '--signer-digest',
+    receipt.source.commit_sha,
+    '--source-digest',
+    receipt.source.commit_sha,
+    '--source-ref',
+    'refs/heads/main',
+    '--cert-oidc-issuer',
+    'https://token.actions.githubusercontent.com',
+    '--predicate-type',
+    'https://slsa.dev/provenance/v1',
+    '--format',
+    'json',
+  ];
+  let verification;
+  try {
+    verification = JSON.parse(execFile('gh', args, {
+      encoding: 'utf8',
+      maxBuffer: 16 * 1024 * 1024,
+    }));
+  } catch {
+    throw new Error('trusted media GitHub Artifact Attestation verification failed');
+  }
+  if (!Array.isArray(verification) || !verification.some(item =>
+    Array.isArray(item?.verificationResult?.verifiedTimestamps) &&
+    item.verificationResult.verifiedTimestamps.length > 0 &&
+    item.verificationResult?.statement?.subject?.some(
+      subject => subject?.digest?.sha256 === receiptSha256,
+    )
+  )) {
+    throw new Error('trusted media attestation does not bind the exact receipt bytes');
+  }
+  return {
+    bundlePath: bundleFile.relativePath,
+    bundleSha256: sha256(bundleBytes),
+    modelId: receipt.execution.model.id,
+    modelRevision: receipt.execution.model.revision,
+    receiptPath: receiptFile.relativePath,
+    receiptSha256,
+    sourceCommit: receipt.source.commit_sha,
+  };
+}
+
+function requireTrustedMediaEvidenceFile(file, suffix, label, root) {
+  const absolute = requireRegularWorkspaceFile(file, root);
+  const relativePath = relativeToRoot(absolute, root);
+  const expectedDirectory = path.join(root, TRUSTED_MEDIA_RECEIPT_DIR);
+  if (
+    !absolute.startsWith(`${expectedDirectory}${path.sep}`) ||
+    path.dirname(absolute) !== expectedDirectory ||
+    !relativePath.endsWith(suffix)
+  ) {
+    throw new Error(`${label} must be a direct ${suffix} file below ${TRUSTED_MEDIA_RECEIPT_DIR}/`);
+  }
+  return {absolute, relativePath};
 }
 
 function buildAggregateModelAcceptances({boxPrefix, entries, inputSha256}) {
@@ -354,7 +495,7 @@ function requireCurrentContentAuthorization({
   ) {
     throw new Error('Current model-owned content authorization is invalid or does not cover the audio scope.');
   }
-  return {relativePath, sha256: sha256(bytes)};
+  return {record, relativePath, sha256: sha256(bytes)};
 }
 
 function readBoundCard(entry, root) {
@@ -544,8 +685,10 @@ function parseArguments(argv) {
   const options = {
     apply: false,
     attestations: {},
+    attestationBundlePath: null,
     contentAuthorizationPath: null,
     outputDirectory: AUDIO_QC_DIR,
+    trustedReceiptPath: null,
     worklistPath: null,
   };
   for (let index = 0; index < argv.length; index += 1) {
@@ -557,17 +700,30 @@ function parseArguments(argv) {
       options.attestations.front_side_no_required_subtitles = true;
     } else if (argument === '--attest-tts-not-source-authenticity') {
       options.attestations.tts_audio_not_used_as_source_authenticity = true;
-    } else if (['--worklist', '--authorization', '--output-dir'].includes(argument)) {
+    } else if ([
+      '--worklist',
+      '--authorization',
+      '--trusted-receipt',
+      '--attestation-bundle',
+      '--output-dir',
+    ].includes(argument)) {
       const value = argv[index + 1];
       if (!value || value.startsWith('--')) throw new Error(`${argument} requires a value`);
       index += 1;
       if (argument === '--worklist') options.worklistPath = value;
       if (argument === '--authorization') options.contentAuthorizationPath = value;
+      if (argument === '--trusted-receipt') options.trustedReceiptPath = value;
+      if (argument === '--attestation-bundle') options.attestationBundlePath = value;
       if (argument === '--output-dir') options.outputDirectory = value;
     } else throw new Error(`unknown argument ${argument}`);
   }
-  if (!options.worklistPath || !options.contentAuthorizationPath) {
-    throw new Error('--worklist and --authorization are required');
+  if (
+    !options.worklistPath ||
+    !options.contentAuthorizationPath ||
+    !options.trustedReceiptPath ||
+    !options.attestationBundlePath
+  ) {
+    throw new Error('--worklist, --authorization, --trusted-receipt and --attestation-bundle are required');
   }
   return options;
 }
@@ -583,9 +739,11 @@ async function runCli() {
   try {
     const options = parseArguments(process.argv.slice(2));
     const result = buildAudioQcDrafts({
+      attestationBundlePath: options.attestationBundlePath,
       attestations: options.attestations,
       contentAuthorizationPath: options.contentAuthorizationPath,
       root: ROOT,
+      trustedReceiptPath: options.trustedReceiptPath,
       worklistPath: options.worklistPath,
     });
     const outputDirectory = requireOutputDirectory(options.outputDirectory, ROOT);

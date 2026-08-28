@@ -25,6 +25,7 @@ test('model audio input binds exact bytes, transcript, and scope', () => {
     fs.writeFileSync(absolute, bytes);
     const record = {
       scope: {card_ids: ['000001']},
+      source_records: trustedSourceRecords(),
       text_gate: {transcripts: [{card_id: '000001', transcript}]},
       generated_assets: [{
         card_id: '000001',
@@ -62,6 +63,7 @@ test('model audio input rejects transcript and scope drift', () => {
     fs.writeFileSync(absolute, Buffer.from('audio'));
     const result = validateAudioAcceptanceInput({
       scope: {card_ids: ['000001', '000002']},
+      source_records: trustedSourceRecords(),
       text_gate: {transcripts: [{card_id: '000001', transcript: 'Changed'}]},
       generated_assets: [{
         card_id: '000001',
@@ -92,6 +94,7 @@ test('model audio input rejects a symbolic-link asset', t => {
     const transcript = 'Exact transcript.';
     const result = validateAudioAcceptanceInput({
       scope: {card_ids: ['000001']},
+      source_records: trustedSourceRecords(),
       text_gate: {transcripts: [{card_id: '000001', transcript}]},
       generated_assets: [{
         card_id: '000001',
@@ -133,5 +136,18 @@ function perCardPass(cardId, assetPath) {
     stress_pauses: true,
     no_noise: true,
     notes: 'fixture pass',
+  };
+}
+
+function trustedSourceRecords() {
+  return {
+    trusted_media_receipt: 'reviews/trusted_media_receipts/fixture.json',
+    trusted_media_receipt_sha256: digest('receipt'),
+    trusted_media_attestation_bundle:
+      'reviews/trusted_media_receipts/fixture-bundle.jsonl',
+    trusted_media_attestation_bundle_sha256: digest('bundle'),
+    trusted_media_source_commit: 'a'.repeat(40),
+    trusted_media_model_id: 'mlx-community/Qwen2-Audio-7B-Instruct-4bit',
+    trusted_media_model_revision: 'b'.repeat(40),
   };
 }
