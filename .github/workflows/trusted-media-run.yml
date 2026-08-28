@@ -319,6 +319,11 @@ jobs:
               files = value['files']
               if value.get('sha256') != expected:
                   raise SystemExit(f'{filename} top-level digest does not match the trusted lock')
+              if (
+                  filename == 'python-environment-manifest.json'
+                  and value.get('schema_version') != 'trusted-media-tree-manifest.v2'
+              ):
+                  raise SystemExit(f'{filename} must use the compact v2 schema')
               if value.get('schema_version') == 'trusted-media-tree-manifest.v2':
                   if set(value) != {'schema_version', 'files', 'sha256'} or not files:
                       raise SystemExit(f'{filename} compact manifest shape is invalid')

@@ -623,6 +623,7 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(verifyJob, /trusted-media-tree-manifest\.v2/);
   assert.match(verifyJob, /'size_bytes': item\[1\]/);
   assert.match(verifyJob, /value\.get\('sha256'\) != expected/);
+  assert.match(verifyJob, /filename == 'python-environment-manifest\.json'/);
   assert.match(verifyJob, /len\(item\) != 3/);
 });
 
