@@ -57,7 +57,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LENKIN233/softbook_cet
-          ref: 3993a9bdf7e889b0c4c15bc6644a77a4e9cf3701
+          ref: 8226c77383f69cee034918e3e1682c8b2d9bc3da
           path: product-authority-review
           fetch-depth: 1
           persist-credentials: false
@@ -73,7 +73,7 @@ jobs:
           test "$(git -C "$source_root" rev-parse HEAD)" = "$GITHUB_SHA"
           test -z "$(git -C "$source_root" status --porcelain --untracked-files=all)"
           product_root="$RUNNER_TEMP/softbook_cet"
-          product_commit=3993a9bdf7e889b0c4c15bc6644a77a4e9cf3701
+          product_commit=8226c77383f69cee034918e3e1682c8b2d9bc3da
           test ! -e "$product_root"
           test "$(git -C "$GITHUB_WORKSPACE/product-authority-review" rev-parse HEAD)" = "$product_commit"
           git -C "$GITHUB_WORKSPACE/product-authority-review" worktree add \
@@ -249,7 +249,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LENKIN233/softbook_cet
-          ref: 3993a9bdf7e889b0c4c15bc6644a77a4e9cf3701
+          ref: 8226c77383f69cee034918e3e1682c8b2d9bc3da
           path: product-authority-verify
           fetch-depth: 1
           persist-credentials: false
@@ -260,7 +260,7 @@ jobs:
           set -euo pipefail
           source_root="$RUNNER_TEMP/trusted-source-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           product_root="$RUNNER_TEMP/softbook_cet"
-          product_commit=3993a9bdf7e889b0c4c15bc6644a77a4e9cf3701
+          product_commit=8226c77383f69cee034918e3e1682c8b2d9bc3da
           test ! -e "$source_root"
           test ! -e "$product_root"
           git worktree add --detach "$source_root" "$GITHUB_SHA"
@@ -317,7 +317,13 @@ jobs:
           ]:
               value = json.loads((root / filename).read_text())
               files = value['files']
+              if value.get('sha256') != expected:
+                  raise SystemExit(f'{filename} top-level digest does not match the trusted lock')
               if value.get('schema_version') == 'trusted-media-tree-manifest.v2':
+                  if set(value) != {'schema_version', 'files', 'sha256'} or not files:
+                      raise SystemExit(f'{filename} compact manifest shape is invalid')
+                  if any(not isinstance(item, list) or len(item) != 3 for item in files):
+                      raise SystemExit(f'{filename} compact file tuple is invalid')
                   files = [
                       {'path': item[0], 'size_bytes': item[1], 'sha256': item[2]}
                       for item in files
