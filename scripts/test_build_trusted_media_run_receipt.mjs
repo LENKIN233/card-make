@@ -626,6 +626,15 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(verifyJob, /len\(item\) != 3/);
 });
 
+test('PR contract gate downloads LFS only for formal media evidence changes', () => {
+  const workflow = fs.readFileSync(path.join(ROOT, '.github/workflows/pr-gates.yml'), 'utf8');
+  const contractJob = workflow.split('  contract-harness:')[1].split('  content-scope:')[0];
+  assert.match(contractJob, /lfs: false/);
+  assert.match(contractJob, /formal_media_evidence_changed/);
+  assert.match(contractJob, /reviews\/trusted_media_receipts/);
+  assert.match(contractJob, /git lfs pull --include='ai_tts\/\*\*\/\*\.mp3'/);
+});
+
 test('independent builders derive byte-identical receipt time from the run package', t => {
   const fixture = buildFixture(t);
   const rebuildDir = path.join(fixture.root, 'run-output-rebuild');

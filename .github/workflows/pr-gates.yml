@@ -32,9 +32,22 @@ jobs:
         with:
           path: card-make
           fetch-depth: 0
-          # Formal trusted-media QC rehashes and replays exact MP3 bytes.
-          # Materialize LFS here so a formal evidence PR can satisfy its required gate.
-          lfs: true
+          # Tooling-only PRs validate pointers without spending LFS bandwidth.
+          lfs: false
+
+      - name: Materialize LFS only for formal media evidence changes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only "$BASE_SHA" HEAD)"
+          formal_media_evidence_changed="$(printf '%s\n' "$changed" | \
+            grep -E '^(reviews/audio_qc|reviews/trusted_media_receipts|reviews/trusted_media_runs)/' | \
+            grep -Ev '/(README\.md|TEMPLATE\.json)$' || true)"
+          if [[ -n "$formal_media_evidence_changed" ]]; then
+            git lfs pull --include='ai_tts/**/*.mp3'
+          fi
 
       - name: Checkout product authority
         uses: actions/checkout@v7
