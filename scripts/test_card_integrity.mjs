@@ -732,6 +732,7 @@ test('current approval consumers reject forged replay, stale, template, traversa
       additionalBindings: buildContentAuthorizationAdditionalBindings({
         authorizationMode: 'full_track',
         contentVersion: contentVersionA,
+        runtimePayloadSha256,
       }),
     });
     const fullTrackApproval = {
@@ -799,6 +800,34 @@ test('current approval consumers reject forged replay, stale, template, traversa
     });
     fullTrackApproval.validation.runtime_payload_sha256 =
       `sha256:${cryptoHashFile(path.join(root, runtimePayloadPath))}`;
+    const shardedFullTrackInput = buildModelAcceptanceInputSha256({
+      decisionType: 'full_track_content_authorization',
+      scope: approvalScope,
+      corpusFingerprint: currentFingerprint.digest,
+      auditSha256: approvalAuditSha256,
+      linkedReviewIdentity: {
+        path: fullTrackReviewPath,
+        sha256: fullTrackReviewSha256,
+      },
+      additionalBindings: buildContentAuthorizationAdditionalBindings({
+        authorizationMode: 'full_track',
+        contentVersion: contentVersionA,
+        runtimePayloadSha256:
+          fullTrackApproval.validation.runtime_payload_sha256,
+      }),
+    });
+    fullTrackApproval.model_acceptances = [
+      modelAcceptance(
+        shardedFullTrackInput,
+        ['content_authorization'],
+        'codex-task:sharded-full-track-authorization-a',
+      ),
+      modelAcceptance(
+        shardedFullTrackInput,
+        ['content_authorization'],
+        'codex-task:sharded-full-track-authorization-b',
+      ),
+    ];
     writeJson(approvalPath, fullTrackApproval);
     execFileSync('git', ['add', '--all'], {cwd: root});
     execFileSync(

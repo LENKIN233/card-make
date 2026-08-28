@@ -70,11 +70,14 @@ test('full-track authorization binds canonical runtime content_version without b
   };
   const versionA = `sha256:${'d'.repeat(64)}`;
   const versionB = `sha256:${'e'.repeat(64)}`;
+  const payloadA = `sha256:${'f'.repeat(64)}`;
+  const payloadB = `sha256:${'1'.repeat(64)}`;
   const inputA = buildModelAcceptanceInputSha256({
     ...base,
     additionalBindings: buildContentAuthorizationAdditionalBindings({
       authorizationMode: 'full_track',
       contentVersion: versionA,
+      runtimePayloadSha256: payloadA,
     }),
   });
   const inputB = buildModelAcceptanceInputSha256({
@@ -82,14 +85,33 @@ test('full-track authorization binds canonical runtime content_version without b
     additionalBindings: buildContentAuthorizationAdditionalBindings({
       authorizationMode: 'full_track',
       contentVersion: versionB,
+      runtimePayloadSha256: payloadA,
     }),
   });
   assert.notEqual(inputA, inputB);
+  assert.notEqual(
+    inputA,
+    buildModelAcceptanceInputSha256({
+      ...base,
+      additionalBindings: buildContentAuthorizationAdditionalBindings({
+        authorizationMode: 'full_track',
+        contentVersion: versionA,
+        runtimePayloadSha256: payloadB,
+      }),
+    }),
+  );
   assert.throws(
     () => buildContentAuthorizationAdditionalBindings({
       authorizationMode: 'full_track',
     }),
     /content_version/,
+  );
+  assert.throws(
+    () => buildContentAuthorizationAdditionalBindings({
+      authorizationMode: 'full_track',
+      contentVersion: versionA,
+    }),
+    /runtime_payload_sha256/,
   );
   assert.deepEqual(
     buildContentAuthorizationAdditionalBindings({

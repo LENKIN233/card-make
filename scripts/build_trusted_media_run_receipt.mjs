@@ -220,6 +220,10 @@ function validateRunPackage(runPackage, runRoot, worklist, lock) {
   }
   const runMap = new Map();
   const runDefinitions = new Map(lock.runs.map(run => [run.name, run]));
+  const expectedCardIds = worklist.entries.map(entry => entry.card_id);
+  const expectedCardIdSet = new Set(expectedCardIds);
+  const runPaths = new Set();
+  const runHashes = new Set();
   for (const run of runPackage.runs) {
     exactKeys(
       run,
@@ -236,6 +240,10 @@ function validateRunPackage(runPackage, runRoot, worklist, lock) {
     ) {
       throw new Error(`run ${run.name} identity does not match the trusted runner lock`);
     }
+    if (runPaths.has(run.path)) throw new Error(`duplicate run path ${run.path}`);
+    if (runHashes.has(run.sha256)) throw new Error(`duplicate run SHA-256 ${run.sha256}`);
+    runPaths.add(run.path);
+    runHashes.add(run.sha256);
     const file = safeRegularFile(runRoot, run.path, `run ${run.name}`);
     if (
       sha256(file.bytes) !== requireSha(run.sha256, `run ${run.name} SHA-256`) ||
@@ -244,8 +252,16 @@ function validateRunPackage(runPackage, runRoot, worklist, lock) {
       throw new Error(`run ${run.name} file identity does not match package`);
     }
     const records = readJsonl(file.bytes, `run ${run.name}`);
+    const recordCardIds = records.map(record => record?.card_id);
+    const exactFullCoverage = ['full_perceptual', 'blind_transcript'].includes(run.purpose);
     if (
       records.length !== run.card_count ||
+      new Set(recordCardIds).size !== recordCardIds.length ||
+      recordCardIds.some(cardId => !expectedCardIdSet.has(cardId)) ||
+      (exactFullCoverage && (
+        recordCardIds.length !== expectedCardIds.length ||
+        expectedCardIds.some(cardId => !recordCardIds.includes(cardId))
+      )) ||
       run.complete_asset_count !== run.card_count ||
       records.some((record, index) => {
         if (record.complete_asset_consumed !== true || record.status !== 'ok') return true;
@@ -258,12 +274,16 @@ function validateRunPackage(runPackage, runRoot, worklist, lock) {
     runMap.set(run.name, {...run, records: new Map(records.map(record => [record.card_id, record]))});
   }
   const fullRuns = [...runMap.values()].filter(run => run.purpose === 'full_perceptual');
+  const blindRuns = [...runMap.values()].filter(run => run.purpose === 'blind_transcript');
   if (
     fullRuns.length < 2 ||
     fullRuns.some(run => run.card_count !== 301) ||
-    new Set(fullRuns.map(run => run.sha256)).size !== fullRuns.length
+    new Set(fullRuns.map(run => run.sha256)).size !== fullRuns.length ||
+    blindRuns.length < 2 ||
+    blindRuns.some(run => run.card_count !== 301) ||
+    new Set(blindRuns.map(run => run.sha256)).size !== blindRuns.length
   ) {
-    throw new Error('run package lacks two distinct complete 301-asset perceptual runs');
+    throw new Error('run package lacks two distinct complete 301-asset perceptual and blind transcript runs');
   }
   if (!Array.isArray(runPackage.decisions) || runPackage.decisions.length !== 301) {
     throw new Error('run package must contain exactly 301 decisions');
@@ -273,8 +293,8 @@ function validateRunPackage(runPackage, runRoot, worklist, lock) {
     exactKeys(decision, ['card_id', 'checks', 'acceptance_sources'], `decision ${decision?.card_id}`);
     if (decisions.has(decision.card_id)) throw new Error(`duplicate decision ${decision.card_id}`);
     exactKeys(decision.checks, PERCEPTUAL_CHECKS, `decision ${decision.card_id} checks`);
-    if (PERCEPTUAL_CHECKS.some(check => typeof decision.checks[check] !== 'boolean')) {
-      throw new Error(`decision ${decision.card_id} checks must be booleans`);
+    if (PERCEPTUAL_CHECKS.some(check => decision.checks[check] !== true)) {
+      throw new Error(`passing decision ${decision.card_id} checks must all be true`);
     }
     if (
       !Array.isArray(decision.acceptance_sources) ||
@@ -322,8 +342,12 @@ function validateAcceptanceGroup({
     return {name, record, run};
   });
   const general = runs.filter(({run}) => ['full_perceptual', 'adjudication'].includes(run.purpose));
+  const blind = runs.filter(({run}) => run.purpose === 'blind_transcript');
   if (general.length !== 1) {
     throw new Error(`decision ${entry.card_id} acceptance group must contain one general run`);
+  }
+  if (blind.length !== 1) {
+    throw new Error(`decision ${entry.card_id} acceptance group must contain one blind transcript run`);
   }
   const specialistChecks = new Set();
   for (const {record, run} of runs) {
@@ -353,6 +377,7 @@ function validateAcceptanceGroup({
     sourceNames: group,
     reviewedAt: runMap.executionCompletedAt,
     generalName: general[0].name,
+    blindName: blind[0].name,
     groupIndex,
   };
 }
@@ -454,6 +479,9 @@ export function buildTrustedMediaArtifacts({
     );
     if (groups[0].generalName === groups[1].generalName) {
       throw new Error(`decision ${entry.card_id} reuses one general run`);
+    }
+    if (groups[0].blindName === groups[1].blindName) {
+      throw new Error(`decision ${entry.card_id} reuses one blind transcript run`);
     }
     const checks = Object.fromEntries(
       PERCEPTUAL_CHECKS.map(check => [check, decision.checks[check] ? 'pass' : 'fail']),

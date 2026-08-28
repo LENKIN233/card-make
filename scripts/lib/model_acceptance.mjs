@@ -112,6 +112,7 @@ export function buildModelAcceptanceInputSha256({
 export function buildContentAuthorizationAdditionalBindings({
   authorizationMode,
   contentVersion,
+  runtimePayloadSha256,
 } = {}) {
   const required = authorizationMode === 'full_track';
   if (!required && (contentVersion === undefined || contentVersion === null)) {
@@ -122,7 +123,15 @@ export function buildContentAuthorizationAdditionalBindings({
       `${required ? 'full-track ' : ''}content authorization content_version must be sha256:<64 lowercase hex characters>`,
     );
   }
-  return {content_version: contentVersion};
+  if (required && !SHA256_RE.test(String(runtimePayloadSha256 || ''))) {
+    throw new Error(
+      'full-track content authorization runtime_payload_sha256 must be sha256:<64 lowercase hex characters>',
+    );
+  }
+  return {
+    content_version: contentVersion,
+    ...(runtimePayloadSha256 ? {runtime_payload_sha256: runtimePayloadSha256} : {}),
+  };
 }
 
 export function resolveRuntimePayloadForIdentity(payload, {loadShard} = {}) {

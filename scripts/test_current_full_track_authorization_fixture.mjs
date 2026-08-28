@@ -157,6 +157,7 @@ export function createCurrentFullTrackAuthorizationFixture({
     additionalBindings: buildContentAuthorizationAdditionalBindings({
       authorizationMode: 'full_track',
       contentVersion: runtimePayload.content_version,
+      runtimePayloadSha256: runtimeIdentity.sha256,
     }),
   });
   const authorization = {

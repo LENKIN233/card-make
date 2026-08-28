@@ -27,7 +27,8 @@ A full-track formal content authorization also binds one direct immutable
 runtime payload or hash-bound shard manifest and its SHA-256. Validators
 reconstruct every direct regular JSON shard in one fixed snapshot, derive the
 canonical `content_version`, require exact track/card scope, and include the
-version in the canonical model-input hash. Missing, swapped, overlapping, or
+version plus the direct payload/manifest byte SHA-256 in the canonical
+model-input hash. Missing, swapped, overlapping, or
 cross-version shards cannot replay the two independent runs. Ordinary scoped
 authorization does not require a runtime version before one exists.
 

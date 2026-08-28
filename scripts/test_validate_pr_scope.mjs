@@ -1022,6 +1022,7 @@ test('a model-owned authorization passes with canonical scope, audit, and linked
     additionalBindings: buildContentAuthorizationAdditionalBindings({
       authorizationMode: 'full_track',
       contentVersion: contentVersionA,
+      runtimePayloadSha256,
     }),
   });
   fullTrack.authorization_mode = 'full_track';
@@ -1077,6 +1078,30 @@ test('a model-owned authorization passes with canonical scope, audit, and linked
     .createHash('sha256')
     .update(fs.readFileSync(path.join(repo.root, runtimePayloadPath)))
     .digest('hex')}`;
+  const shardedFullTrackInput = buildModelAcceptanceInputSha256({
+    decisionType: 'full_track_content_authorization',
+    scope: authorizationScope,
+    corpusFingerprint: 'f'.repeat(64),
+    auditSha256,
+    linkedReviewIdentity: {path: reviewPath, sha256: reviewSha256},
+    additionalBindings: buildContentAuthorizationAdditionalBindings({
+      authorizationMode: 'full_track',
+      contentVersion: contentVersionA,
+      runtimePayloadSha256: fullTrack.validation.runtime_payload_sha256,
+    }),
+  });
+  fullTrack.model_acceptances = [
+    testModelAcceptance(
+      shardedFullTrackInput,
+      ['content_authorization'],
+      'sharded-full-track-authorization-run-a',
+    ),
+    testModelAcceptance(
+      shardedFullTrackInput,
+      ['content_authorization'],
+      'sharded-full-track-authorization-run-b',
+    ),
+  ];
   writeJson(authorizationPath, fullTrack);
   commit(repo.root, 'replace direct runtime payload with a hash-bound shard manifest');
   result = validate(repo);

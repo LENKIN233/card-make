@@ -26,6 +26,9 @@ jobs:
     timeout-minutes: 180
     permissions:
       contents: read
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONNOUSERSITE: "1"
     steps:
       - name: Checkout exact trusted main commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -169,13 +172,13 @@ jobs:
       id-token: write
       attestations: write
     steps:
-      - name: Checkout exact trusted main commit without LFS media
+      - name: Checkout exact trusted main commit with LFS media
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
-          lfs: false
+          lfs: true
 
       - name: Download unprivileged raw review package
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c

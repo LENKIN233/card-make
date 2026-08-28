@@ -303,6 +303,52 @@ test('builder rejects one general run reused as both acceptances', t => {
   );
 });
 
+test('builder requires two distinct blind transcript runs in every acceptance', t => {
+  const fixture = buildFixture(t);
+  const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
+  runPackage.runs = runPackage.runs.filter(run => !['f', 'g'].includes(run.name));
+  for (const decision of runPackage.decisions) {
+    decision.acceptance_sources = [['a'], ['b']];
+  }
+  fs.writeFileSync(fixture.runPackageFile.path, `${JSON.stringify(runPackage)}\n`);
+  assert.throws(
+    () => buildTrustedMediaArtifacts({
+      authorizationPath: fixture.authorizationFile.path,
+      outputDir: fixture.runDir,
+      repoRoot: fixture.root,
+      runPackagePath: fixture.runPackageFile.path,
+      sourceCommit: fixture.sourceCommit,
+      worklistPath: fixture.worklistFile.path,
+    }),
+    /blind transcript runs|one blind transcript run/,
+  );
+});
+
+test('builder rejects duplicate card rows hidden behind a 301-line run', t => {
+  const fixture = buildFixture(t);
+  const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
+  const run = runPackage.runs.find(item => item.name === 'a');
+  const runPath = path.join(fixture.runDir, run.path);
+  const records = fs.readFileSync(runPath, 'utf8').trim().split('\n').map(JSON.parse);
+  records[1] = structuredClone(records[0]);
+  const bytes = Buffer.from(`${records.map(record => JSON.stringify(record)).join('\n')}\n`);
+  fs.writeFileSync(runPath, bytes);
+  run.sha256 = sha256(bytes);
+  run.size_bytes = bytes.length;
+  fs.writeFileSync(fixture.runPackageFile.path, `${JSON.stringify(runPackage)}\n`);
+  assert.throws(
+    () => buildTrustedMediaArtifacts({
+      authorizationPath: fixture.authorizationFile.path,
+      outputDir: fixture.runDir,
+      repoRoot: fixture.root,
+      runPackagePath: fixture.runPackageFile.path,
+      sourceCommit: fixture.sourceCommit,
+      worklistPath: fixture.worklistFile.path,
+    }),
+    /complete exact-asset consumption/,
+  );
+});
+
 test('builder rejects model identity drift from the trusted runner lock', t => {
   const fixture = buildFixture(t);
   const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
@@ -372,6 +418,7 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.doesNotMatch(reviewJob, /id-token: write|attestations: write|actions\/attest@/);
   assert.match(reviewJob, /name: trusted-media-raw-/);
   assert.match(attestJob, /runs-on: ubuntu-latest/);
+  assert.match(attestJob, /lfs: true/);
   assert.match(attestJob, /id-token: write/);
   assert.match(attestJob, /attestations: write/);
   assert.match(attestJob, /actions\/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c/);
@@ -380,6 +427,7 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
       attestJob.indexOf('Attest exact rebuilt trusted media receipt'),
   );
   assert.match(attestJob, /cmp "\$downloaded\/\$artifact" "\$rebuilt\/\$artifact"/);
+  assert.match(reviewJob, /PYTHONNOUSERSITE: "1"/);
 });
 
 test('independent builders derive byte-identical receipt time from the run package', t => {

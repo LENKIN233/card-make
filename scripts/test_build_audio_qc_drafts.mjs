@@ -14,6 +14,7 @@ import {
   reviewAudioPerceptualEntry,
 } from './manage_audio_perceptual_worklist.mjs';
 import {createCurrentFullTrackAuthorizationFixture} from './test_current_full_track_authorization_fixture.mjs';
+import {validateAudioQcRecord} from './validate_audio_qc.mjs';
 
 const ATTESTATIONS = Object.freeze({
   no_autoplay_assumption: true,
@@ -68,12 +69,40 @@ test('builds one formal-ready model-owned QC record per box after complete model
       'matches_text', 'target_signal', 'pronunciation', 'speed', 'rhythm',
       'stress_pauses', 'no_noise',
     ]) assert.equal(record.per_card_qc[0][field], true);
+    assert.deepEqual(
+      validateAudioQcRecord(record, {
+        execFile: fixture.execFile,
+        root: fixture.root,
+      }),
+      [],
+    );
   }
   assert.equal(
     result.records.find(record => record.scope.box_prefixes[0] === '0010')
       .text_gate.transcripts[0].target_signal,
     '识别 turn off 中的辅音加元音连读',
   );
+});
+
+test('formal QC re-verifies exact tracked receipt and attestation bytes', t => {
+  const fixture = createFixture(t);
+  const reviewed = completeWorklist(fixture.worklist);
+  writeWorklist(fixture, reviewed);
+  commitFixture(fixture);
+  const result = buildFixtureAudioQc(fixture, {
+    attestations: ATTESTATIONS,
+    contentAuthorizationPath: fixture.authorizationPath,
+    root: fixture.root,
+    worklistPath: fixture.worklistPath,
+  });
+  const forged = structuredClone(result.records[0]);
+  forged.source_records.trusted_media_receipt_sha256 = '0'.repeat(64);
+  const issues = validateAudioQcRecord(forged, {
+    execFile: fixture.execFile,
+    root: fixture.root,
+  });
+  assert.ok(issues.some(issue =>
+    issue.code === 'audio_qc_trusted_media_evidence_verification_failed'));
 });
 
 test('fails closed while any perceptual entry is pending', t => {
@@ -208,7 +237,7 @@ test('formal QC cannot be built without a tracked trusted receipt and attestatio
       root: fixture.root,
       worklistPath: fixture.worklistPath,
     }),
-    /path escapes workspace|required regular file is missing/,
+    /escapes the workspace|is missing/,
   );
 });
 
@@ -292,6 +321,14 @@ function createFixture(
   fs.writeFileSync(
     path.join(root, 'card_boxes_json/cet4.json'),
     `${JSON.stringify({track: 'cet4', cards}, null, 2)}\n`,
+  );
+  const cet6Card = structuredClone(cards.at(-1));
+  cet6Card.card_id = '900001';
+  cet6Card.track = 'cet6';
+  cet6Card.knowledge_ref.box_prefix = '9000';
+  fs.writeFileSync(
+    path.join(root, 'card_boxes_json/cet6.json'),
+    `${JSON.stringify({track: 'cet6', cards: [cet6Card]}, null, 2)}\n`,
   );
   for (const entry of audioCards) {
     const absolute = path.join(root, entry.audio.path);

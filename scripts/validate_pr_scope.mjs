@@ -2761,9 +2761,11 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
           message: 'Model-owned content authorization must not contain legacy person-authority fields.',
         });
       }
+      let boundRuntimePayloadSha256 = null;
       if (record.authorization_mode === 'full_track') {
         const runtimePayloadPath = record.validation?.runtime_payload;
         const runtimePayloadSha256 = fileSha256AtCommit(runtimePayloadPath, head);
+        boundRuntimePayloadSha256 = runtimePayloadSha256;
         if (
           !isRuntimePayloadPath(runtimePayloadPath) ||
           !isRegularFileAtCommit(head, runtimePayloadPath)
@@ -2833,6 +2835,7 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
           buildContentAuthorizationAdditionalBindings({
             authorizationMode: record.authorization_mode,
             contentVersion: record.content_version,
+            runtimePayloadSha256: boundRuntimePayloadSha256,
           });
       } catch (error) {
         authorizationAdditionalBindings = null;
