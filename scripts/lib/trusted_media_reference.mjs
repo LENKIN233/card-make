@@ -9,6 +9,21 @@ import {
 } from './card_integrity.mjs';
 
 const RECEIPT_DIRECTORY = 'reviews/trusted_media_receipts';
+const VERIFICATION_CACHE_BY_EXECUTOR = new WeakMap();
+
+function verificationCache(execFile, typeSpecificVerifier) {
+  let byVerifier = VERIFICATION_CACHE_BY_EXECUTOR.get(execFile);
+  if (!byVerifier) {
+    byVerifier = new WeakMap();
+    VERIFICATION_CACHE_BY_EXECUTOR.set(execFile, byVerifier);
+  }
+  let cache = byVerifier.get(typeSpecificVerifier);
+  if (!cache) {
+    cache = new Map();
+    byVerifier.set(typeSpecificVerifier, cache);
+  }
+  return cache;
+}
 
 export function verifyTrustedMediaEvidence({
   attestationBundlePath,
@@ -60,6 +75,34 @@ export function verifyTrustedMediaEvidence({
   } catch {
     throw new Error('trusted media receipt or authorization is not JSON');
   }
+  if (expectedSourceRecords && (
+    expectedSourceRecords.trusted_media_receipt_sha256 !== receiptSha256 ||
+    expectedSourceRecords.trusted_media_attestation_bundle_sha256 !== bundleSha256 ||
+    expectedSourceRecords.trusted_media_source_commit !== receipt.source?.commit_sha ||
+    expectedSourceRecords.trusted_media_model_id !== receipt.execution?.model?.id ||
+    expectedSourceRecords.trusted_media_model_revision !== receipt.execution?.model?.revision
+  )) {
+    throw new Error('audio QC trusted media source records do not match exact evidence bytes');
+  }
+  const repositoryHead = execFileSync('git', ['rev-parse', '--verify', 'HEAD^{commit}'], {
+    cwd: root,
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  }).trim();
+  const cacheKey = JSON.stringify({
+    root: path.resolve(root),
+    repositoryHead,
+    receiptPath: receiptFile.relativePath,
+    receiptSha256,
+    bundlePath: bundleFile.relativePath,
+    bundleSha256,
+    authorizationPath: authorizationFile.relativePath,
+    authorizationSha256,
+    worklistPath: worklistFile.relativePath,
+    worklistSha256: actualWorklistSha256,
+  });
+  const cache = verificationCache(execFile, typeSpecificVerifier);
+  if (cache.has(cacheKey)) return cache.get(cacheKey);
   const currentAuthorization = validateCurrentApprovalRecordReference({
     approvalPath: authorizationFile.relativePath,
     currentFingerprint: computeCardCorpusFingerprint(root),
@@ -95,15 +138,6 @@ export function verifyTrustedMediaEvidence({
     throw new Error(
       'trusted media receipt does not bind the current authorization and reviewed worklist',
     );
-  }
-  if (expectedSourceRecords && (
-    expectedSourceRecords.trusted_media_receipt_sha256 !== receiptSha256 ||
-    expectedSourceRecords.trusted_media_attestation_bundle_sha256 !== bundleSha256 ||
-    expectedSourceRecords.trusted_media_source_commit !== receipt.source.commit_sha ||
-    expectedSourceRecords.trusted_media_model_id !== receipt.execution.model.id ||
-    expectedSourceRecords.trusted_media_model_revision !== receipt.execution.model.revision
-  )) {
-    throw new Error('audio QC trusted media source records do not match exact evidence bytes');
   }
   const args = [
     'attestation',
@@ -171,7 +205,7 @@ export function verifyTrustedMediaEvidence({
   ) {
     throw new Error('trusted media type-specific artifact replay is not formal-ready');
   }
-  return {
+  const result = {
     artifactDirectory: path.relative(root, artifactDirectory).split(path.sep).join('/'),
     bundlePath: bundleFile.relativePath,
     bundleSha256,
@@ -182,6 +216,8 @@ export function verifyTrustedMediaEvidence({
     receiptSha256,
     sourceCommit: receipt.source.commit_sha,
   };
+  cache.set(cacheKey, result);
+  return result;
 }
 
 function requireTrackedArtifactDirectory({receiptRelativePath, root}) {

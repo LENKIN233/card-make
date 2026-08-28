@@ -27,6 +27,15 @@ jobs:
     permissions:
       contents: read
     env:
+      GIT_ATTR_NOSYSTEM: "1"
+      GIT_CONFIG_GLOBAL: /dev/null
+      GIT_CONFIG_NOSYSTEM: "1"
+      GIT_CONFIG_SYSTEM: /dev/null
+      GIT_GRAFT_FILE: /dev/null
+      GIT_NO_REPLACE_OBJECTS: "1"
+      GIT_REPLACE_REF_BASE: refs/disabled/softbook-trusted-media
+      LANG: C
+      LC_ALL: C
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONNOUSERSITE: "1"
     steps:
@@ -42,7 +51,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LENKIN233/softbook_cet
-          ref: d98bdca56a776427a4a5c03a4450bb945e776a5f
+          ref: 40769ec013c9da0a7358ffb4a1da9ec4940f194a
           path: product-authority-review
           fetch-depth: 1
           persist-credentials: false
@@ -58,7 +67,7 @@ jobs:
           test "$(git -C "$source_root" rev-parse HEAD)" = "$GITHUB_SHA"
           test -z "$(git -C "$source_root" status --porcelain --untracked-files=all)"
           product_root="$RUNNER_TEMP/softbook_cet"
-          product_commit=d98bdca56a776427a4a5c03a4450bb945e776a5f
+          product_commit=40769ec013c9da0a7358ffb4a1da9ec4940f194a
           test ! -e "$product_root"
           test "$(git -C "$GITHUB_WORKSPACE/product-authority-review" rev-parse HEAD)" = "$product_commit"
           git -C "$GITHUB_WORKSPACE/product-authority-review" worktree add \
@@ -128,6 +137,20 @@ jobs:
           test -z "$(git status --porcelain --untracked-files=all)"
           chmod -R a-w "$TRUSTED_SOURCE_ROOT"
 
+      - name: Replay exact technical audio audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v ffprobe >/dev/null
+          command -v ffmpeg >/dev/null
+          replay="$RUNNER_TEMP/trusted-audio-technical-review.json"
+          node "$TRUSTED_SOURCE_ROOT/scripts/audit_audio_technical.mjs" \
+            --track cet4 \
+            --probe ffprobe \
+            --signal-probe ffmpeg \
+            --report-path "$replay"
+          echo "TRUSTED_MEDIA_TECHNICAL_AUDIT_REPLAY=$replay" >> "$GITHUB_ENV"
+
       - name: Run two-pass exact-asset media review
         env:
           WORKLIST_PATH: ${{ inputs.worklist_path }}
@@ -136,6 +159,7 @@ jobs:
           set -euo pipefail
           output_dir="$RUNNER_TEMP/trusted-media-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           test ! -e "$output_dir"
+          echo "TRUSTED_MEDIA_OUTPUT_DIR=$output_dir" >> "$GITHUB_ENV"
           set +e
           python3 -B "$TRUSTED_SOURCE_ROOT/scripts/run_trusted_media_review.py" \
             --worklist "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH" \
@@ -143,10 +167,10 @@ jobs:
             --model-root "$CARD_MAKE_TRUSTED_MEDIA_MODEL_ROOT" \
             --output-dir "$output_dir" \
             --workflow-run-id "$GITHUB_RUN_ID" \
-            --workflow-run-attempt "$GITHUB_RUN_ATTEMPT"
+            --workflow-run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --maximum-runtime-seconds 9900
           review_status=$?
           set -e
-          echo "TRUSTED_MEDIA_OUTPUT_DIR=$output_dir" >> "$GITHUB_ENV"
           echo "TRUSTED_MEDIA_REVIEW_EXIT_CODE=$review_status" >> "$GITHUB_ENV"
           if [[ "$review_status" != 0 && "$review_status" != 2 ]]; then
             echo "unexpected trusted media runner exit code: $review_status" >&2
@@ -167,6 +191,7 @@ jobs:
             .github/workflows/trusted-media-run.yml \
             scripts/run_trusted_media_review.py \
             scripts/build_trusted_media_run_receipt.mjs \
+            scripts/audit_audio_technical.mjs \
             scripts/manage_audio_perceptual_worklist.mjs \
             scripts/lib/card_integrity.mjs \
             scripts/lib/model_acceptance.mjs \
@@ -179,6 +204,7 @@ jobs:
             --authorization "$TRUSTED_SOURCE_ROOT/$AUTHORIZATION_PATH" \
             --run-package "$TRUSTED_MEDIA_OUTPUT_DIR/run-package.json" \
             --output-dir "$TRUSTED_MEDIA_OUTPUT_DIR" \
+            --technical-audit-replay "$TRUSTED_MEDIA_TECHNICAL_AUDIT_REPLAY" \
             --source-commit "$GITHUB_SHA"
           test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
           test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
@@ -216,7 +242,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LENKIN233/softbook_cet
-          ref: d98bdca56a776427a4a5c03a4450bb945e776a5f
+          ref: 40769ec013c9da0a7358ffb4a1da9ec4940f194a
           path: product-authority-verify
           fetch-depth: 1
           persist-credentials: false
@@ -227,7 +253,7 @@ jobs:
           set -euo pipefail
           source_root="$RUNNER_TEMP/trusted-source-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           product_root="$RUNNER_TEMP/softbook_cet"
-          product_commit=d98bdca56a776427a4a5c03a4450bb945e776a5f
+          product_commit=40769ec013c9da0a7358ffb4a1da9ec4940f194a
           test ! -e "$source_root"
           test ! -e "$product_root"
           git worktree add --detach "$source_root" "$GITHUB_SHA"
@@ -261,6 +287,7 @@ jobs:
           test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
           downloaded="$RUNNER_TEMP/trusted-media-downloaded"
           rebuilt="$RUNNER_TEMP/trusted-media-rebuilt"
+          audit_replay="$RUNNER_TEMP/trusted-audio-technical-verify.json"
           mkdir "$rebuilt"
           cp "$downloaded"/run-*.jsonl "$rebuilt/"
           cp "$downloaded/run-package.json" "$rebuilt/"
@@ -287,11 +314,19 @@ jobs:
                   raise SystemExit(f'{filename} does not match the trusted lock')
           PY
           cd "$TRUSTED_SOURCE_ROOT"
+          command -v ffprobe >/dev/null
+          command -v ffmpeg >/dev/null
+          node scripts/audit_audio_technical.mjs \
+            --track cet4 \
+            --probe ffprobe \
+            --signal-probe ffmpeg \
+            --report-path "$audit_replay"
           node scripts/build_trusted_media_run_receipt.mjs \
             --worklist "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH" \
             --authorization "$TRUSTED_SOURCE_ROOT/$AUTHORIZATION_PATH" \
             --run-package "$rebuilt/run-package.json" \
             --output-dir "$rebuilt" \
+            --technical-audit-replay "$audit_replay" \
             --source-commit "$GITHUB_SHA"
           for artifact in \
             audio-manifest.json \

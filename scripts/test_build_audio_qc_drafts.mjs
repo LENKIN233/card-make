@@ -79,6 +79,7 @@ test('builds one formal-ready model-owned QC record per box after complete model
       [],
     );
   }
+  assert.deepEqual(fixture.verificationCalls(), {attestation: 1, semantic: 1});
   assert.equal(
     result.records.find(record => record.scope.box_prefixes[0] === '0010')
       .text_gate.transcripts[0].target_signal,
@@ -289,6 +290,8 @@ function createFixture(
   t,
   {modelOwnedTextReview = false, ttsTextReviewed = true} = {},
 ) {
+  let attestationCalls = 0;
+  let semanticCalls = 0;
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'audio-qc-drafts-'));
   t.after(() => fs.rmSync(root, {force: true, recursive: true}));
   const cards = [
@@ -419,6 +422,7 @@ function createFixture(
     attestationBundlePath: 'reviews/trusted_media_receipts/current-bundle.jsonl',
     authorizationPath,
     execFile(command, args) {
+      attestationCalls += 1;
       assert.equal(command, 'gh');
       assert.ok(args.includes('--signer-workflow'));
       const receiptBytes = fs.readFileSync(
@@ -433,6 +437,7 @@ function createFixture(
     },
     root,
     typeSpecificVerifier({receiptPath}) {
+      semanticCalls += 1;
       const receiptBytes = fs.readFileSync(receiptPath);
       const receipt = JSON.parse(receiptBytes);
       return {
@@ -443,6 +448,7 @@ function createFixture(
       };
     },
     trustedReceiptPath: 'reviews/trusted_media_receipts/current-receipt.json',
+    verificationCalls: () => ({attestation: attestationCalls, semantic: semanticCalls}),
     worklist,
     worklistPath: 'reviews/audio_perceptual_worklists/pilot.json',
   };

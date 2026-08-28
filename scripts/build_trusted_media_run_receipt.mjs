@@ -477,6 +477,7 @@ export function buildTrustedMediaArtifacts({
   repoRoot = ROOT,
   runPackagePath,
   sourceCommit,
+  technicalAuditReplayPath,
   worklistPath,
   createdAt = null,
 } = {}) {
@@ -509,9 +510,15 @@ export function buildTrustedMediaArtifacts({
   if (sha256(technicalAuditFile.bytes) !== worklist.source_technical_audit?.file_sha256) {
     throw new Error('source technical audit SHA-256 does not match worklist');
   }
+  const sourceTechnicalAudit = JSON.parse(technicalAuditFile.bytes.toString('utf8'));
+  const replayTechnicalAuditFile = readJsonFile(
+    technicalAuditReplayPath,
+    'replayed technical audit',
+  );
+  validateTechnicalAuditReplay(sourceTechnicalAudit, replayTechnicalAuditFile.value);
   const worklistIssues = validateAudioPerceptualWorklist(worklist, {
     root: repoRoot,
-    technicalAudit: JSON.parse(technicalAuditFile.bytes.toString('utf8')),
+    technicalAudit: sourceTechnicalAudit,
   });
   if (worklistIssues.length > 0) {
     throw new Error(`pending worklist is invalid: ${worklistIssues.join('; ')}`);
@@ -672,6 +679,7 @@ export function buildTrustedMediaArtifacts({
   const driverPaths = [
     'scripts/run_trusted_media_review.py',
     'scripts/build_trusted_media_run_receipt.mjs',
+    'scripts/audit_audio_technical.mjs',
     'scripts/manage_audio_perceptual_worklist.mjs',
     'scripts/lib/card_integrity.mjs',
     'scripts/lib/model_acceptance.mjs',
@@ -759,6 +767,51 @@ export function buildTrustedMediaArtifacts({
   };
 }
 
+function validateTechnicalAuditReplay(source, replay) {
+  for (const [label, value] of [['source', source], ['replay', replay]]) {
+    if (
+      value?.schema_version !== 'audio-technical-audit.v1' ||
+      value.track !== 'cet4' ||
+      value.ok !== true ||
+      value.summary?.errors !== 0 ||
+      !Array.isArray(value.assets) ||
+      value.assets.length !== 301 ||
+      ![
+        'unique_asset_path_per_card',
+        'file_hash_and_size',
+        'decoder_probe',
+        'declared_duration_binding',
+        'transcript_presence_and_hash',
+        'coarse_signal_diagnostics',
+      ].every(field => value.verification?.[field] === 'passed') ||
+      value.assets.some(asset =>
+        !asset.signal ||
+        !Number.isFinite(asset.signal.estimated_transcript_wpm) ||
+        !Number.isFinite(asset.signal.mean_volume_db) ||
+        !Number.isFinite(asset.signal.peak_volume_db) ||
+        !Number.isFinite(asset.signal.track_mean_volume_deviation_db) ||
+        !asset.technical ||
+        asset.technical.format !== 'mp3' ||
+        !Number.isInteger(asset.technical.channels) ||
+        !Number.isInteger(asset.technical.sample_rate_hz) ||
+        !Number.isFinite(asset.technical.bitrate_bps) ||
+        !Number.isInteger(asset.technical.duration_ms))
+    ) {
+      throw new Error(`${label} technical audit lacks complete passing signal measurements`);
+    }
+  }
+  const withoutTimestamp = value => {
+    const {generated_at: _generatedAt, ...semantic} = value;
+    return semantic;
+  };
+  if (
+    canonicalStringify(withoutTimestamp(source)) !==
+    canonicalStringify(withoutTimestamp(replay))
+  ) {
+    throw new Error('replayed technical audit does not match the tracked exact-media audit');
+  }
+}
+
 function parseArgs(argv) {
   const result = {};
   const flags = new Map([
@@ -766,6 +819,7 @@ function parseArgs(argv) {
     ['--output-dir', 'outputDir'],
     ['--run-package', 'runPackagePath'],
     ['--source-commit', 'sourceCommit'],
+    ['--technical-audit-replay', 'technicalAuditReplayPath'],
     ['--worklist', 'worklistPath'],
   ]);
   for (let index = 0; index < argv.length; index += 1) {

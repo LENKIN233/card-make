@@ -98,6 +98,7 @@ function createFixture({
   multiPrefixEvidence = false,
   customDiffDriver = false,
   declareGitlink = true,
+  existingTrustedReceipt = false,
   gitlinkPath = false,
   historicalHandoffPath = null,
   parked = false,
@@ -129,6 +130,9 @@ function createFixture({
     }
   }
   if (historicalHandoffPath) write(root, historicalHandoffPath, '{"archived":true}\n');
+  if (existingTrustedReceipt) {
+    write(root, 'reviews/trusted_media_receipts/existing.json', '{"version":"base"}\n');
+  }
   const baseCommitSha = commitAll(root, 'base');
 
   git(root, 'switch', '-c', 'harness/test-delivery');
@@ -139,6 +143,9 @@ function createFixture({
     write(root, 'assets/payload.bin', Buffer.from([0, 1, 2, 9, 8, 7, 6, 5]));
     if (literalMagicPath) write(root, ':(exclude)**', 'changed magic path\n');
     if (unicodePath) write(root, 'docs/听力.txt', 'changed listening text\n');
+    if (existingTrustedReceipt) {
+      write(root, 'reviews/trusted_media_receipts/existing.json', '{"version":"changed"}\n');
+    }
     if (candidateCard) {
       const prefixes = multiPrefixEvidence ? ['0000', '0001'] : ['0000'];
       for (const prefix of prefixes) {
@@ -223,6 +230,9 @@ function createFixture({
     }
   }
   if (audioRecord) payloadPaths.push('reviews/audio_qc/current.json');
+  if (existingTrustedReceipt) {
+    payloadPaths.push('reviews/trusted_media_receipts/existing.json');
+  }
   if (audioEvidenceDirectories) payloadPaths.push(
     'reviews/audio_technical_audits/current.json',
     'reviews/trusted_media_receipts/current.json',
@@ -1094,7 +1104,6 @@ test('candidate card payload cannot claim harness auto-merge authority', t => {
 
 for (const [name, option, expectedType, errorPattern] of [
   ['audio', {audioRecord: true}, 'audio', /scope\.change_type=audio/],
-  ['trusted media', {audioEvidenceDirectories: true}, 'audio', /scope\.change_type=audio/],
   ['authorization', {authorizationRecord: true}, 'authorization', /scope\.change_type=authorization/],
 ]) {
   test(`${name} evidence requires its explicit delivery change type`, t => {
@@ -1108,6 +1117,28 @@ for (const [name, option, expectedType, errorPattern] of [
     assert.equal(result.ok, true, JSON.stringify(result.errors, null, 2));
   });
 }
+
+test('orphan trusted media evidence cannot enter through an audio handoff', t => {
+  const fixture = createFixture({audioEvidenceDirectories: true});
+  cleanUp(t, fixture);
+  assertError(validate(fixture), /scope\.change_type=audio/);
+  mutateRecord(fixture, record => {
+    record.scope.change_type = 'audio';
+  });
+  assertError(
+    validate(fixture),
+    /must be consumed by changed formal QC|not bound by changed formal QC/,
+  );
+});
+
+test('existing trusted media receipt cannot be modified by an audio handoff', t => {
+  const fixture = createFixture({existingTrustedReceipt: true});
+  cleanUp(t, fixture);
+  mutateRecord(fixture, record => {
+    record.scope.change_type = 'audio';
+  });
+  assertError(validate(fixture), /trusted media evidence is append-only and cannot be M/);
+});
 
 test('accepts one sample plus one confirmed-expansion evidence pair for a candidate card payload', t => {
   const fixture = createFixture({candidateCard: true, confirmedExpansionEvidence: true});

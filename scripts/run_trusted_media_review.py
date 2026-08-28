@@ -13,7 +13,9 @@ import json
 import os
 import platform
 import re
+import signal
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -476,6 +478,8 @@ def run_review_package(
     workflow_run_id: str,
     workflow_run_attempt: int,
     expected_asset_count: int = 301,
+    maximum_runtime_seconds: int | None = None,
+    monotonic=time.monotonic,
 ):
     entries = worklist.get("entries")
     if worklist.get("schema_version") != "audio-perceptual-worklist.v3":
@@ -492,10 +496,17 @@ def run_review_package(
         raise ValueError("output directory already exists")
     output_dir.mkdir(parents=True)
     started_at = iso_now()
+    deadline = (
+        monotonic() + maximum_runtime_seconds
+        if maximum_runtime_seconds is not None
+        else None
+    )
     run_definitions = {item["name"]: item for item in lock["runs"]}
     records = {name: [] for name in run_definitions}
 
     def execute(entry, name, prompt_builder, parser):
+        if deadline is not None and monotonic() >= deadline:
+            raise TimeoutError("trusted media review reached its bounded runtime")
         definition = run_definitions[name]
         record = run_one(
             adapter=adapter,
@@ -511,6 +522,18 @@ def run_review_package(
             lock=lock,
         )
         records[name].append(record)
+        checkpoint_path = output_dir / f"run-{name}.jsonl"
+        with checkpoint_path.open("ab") as checkpoint:
+            checkpoint.write(
+                json.dumps(
+                    record,
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+                + b"\n"
+            )
+            checkpoint.flush()
+            os.fsync(checkpoint.fileno())
         return record
 
     decisions = []
@@ -528,12 +551,17 @@ def run_review_package(
             b = execute(entry, "b", general_prompt, parse_general)
             a_checks = checks_for(a)
             b_checks = checks_for(b)
+            # Blind runs are the sole authority for text parity. Remove the
+            # general vote before selecting the agreeing general evidence pair.
+            a_checks["audio_matches_text"] = True
+            b_checks["audio_matches_text"] = True
             if a_checks == b_checks:
                 pair = ["a", "b"]
                 final_checks = a_checks
             else:
                 c = execute(entry, "c", general_prompt, parse_general)
                 c_checks = checks_for(c)
+                c_checks["audio_matches_text"] = True
                 if a_checks == c_checks:
                     pair = ["a", "c"]
                     final_checks = a_checks
@@ -566,7 +594,7 @@ def run_review_package(
                     "acceptance_sources": acceptance_sources,
                 }
             )
-    except Exception as error:
+    except BaseException as error:
         run_metadata = write_run_records(
             output_dir,
             records,
@@ -648,6 +676,7 @@ def parse_args(argv=None):
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--workflow-run-id", required=True)
     parser.add_argument("--workflow-run-attempt", required=True, type=int)
+    parser.add_argument("--maximum-runtime-seconds", type=int)
     return parser.parse_args(argv)
 
 
@@ -665,6 +694,11 @@ def main(argv=None) -> int:
     if model_manifest["sha256"] != lock["model"]["weights_manifest_sha256"]:
         raise ValueError("model weights tree does not match the locked revision")
     adapter = MlxQwenAdapter(args.model_root, lock)
+
+    def terminate(_signum, _frame):
+        raise InterruptedError("trusted media review received SIGTERM")
+
+    signal.signal(signal.SIGTERM, terminate)
     package = run_review_package(
         worklist=load_json(args.worklist),
         asset_root=args.asset_root.resolve(),
@@ -674,6 +708,7 @@ def main(argv=None) -> int:
         model_manifest_sha256=model_manifest["sha256"],
         workflow_run_id=args.workflow_run_id,
         workflow_run_attempt=args.workflow_run_attempt,
+        maximum_runtime_seconds=args.maximum_runtime_seconds,
     )
     (args.output_dir / "model-weights-manifest.json").write_bytes(
         canonical_json(model_manifest) + b"\n"

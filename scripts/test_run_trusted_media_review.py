@@ -41,10 +41,18 @@ def general_result(transcript: str, **overrides):
 
 
 class FakeAdapter:
-    def __init__(self, *, unresolved=False, bad_blind=False, truncated=False):
+    def __init__(
+        self,
+        *,
+        unresolved=False,
+        bad_blind=False,
+        truncated=False,
+        text_vote_only=False,
+    ):
         self.unresolved = unresolved
         self.bad_blind = bad_blind
         self.truncated = truncated
+        self.text_vote_only = text_vote_only
 
     def generate(self, audio_path: Path, prompt: str, temperature: float):
         card_id = audio_path.stem
@@ -59,6 +67,8 @@ class FakeAdapter:
                     "specific_error": "",
                 }
             )
+        elif self.text_vote_only and temperature == 0.1:
+            text = general_result(expected, matches_text=False)
         elif card_id == "000002":
             text = general_result(expected, accurate_pronunciation=False)
         elif card_id == "000003":
@@ -250,6 +260,55 @@ class TrustedMediaRunnerTests(unittest.TestCase):
             self.assertEqual(package["runs"][0]["card_count"], 1)
             self.assertFalse(package["decisions"][0]["checks"]["audio_matches_text"])
             self.assertEqual(package["result"]["failed_card_count"], 1)
+
+    def test_general_text_vote_does_not_force_unnecessary_adjudication(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = run_review_package(
+                worklist=worklist(root, count=1),
+                asset_root=root,
+                output_dir=root / "output",
+                adapter=FakeAdapter(text_vote_only=True),
+                lock=LOCK,
+                model_manifest_sha256=digest(b"weights"),
+                workflow_run_id="32975067429",
+                workflow_run_attempt=1,
+                expected_asset_count=1,
+            )
+            self.assertEqual(package["result"]["passed_card_count"], 1)
+            self.assertNotIn("c", {run["name"] for run in package["runs"]})
+
+    def test_keyboard_interrupt_retains_incremental_checkpoints(self):
+        class InterruptAdapter(FakeAdapter):
+            def __init__(self):
+                super().__init__()
+                self.calls = 0
+
+            def generate(self, audio_path, prompt, temperature):
+                self.calls += 1
+                if self.calls == 5:
+                    raise KeyboardInterrupt()
+                return super().generate(audio_path, prompt, temperature)
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root / "output"
+            with self.assertRaises(KeyboardInterrupt):
+                run_review_package(
+                    worklist=worklist(root, count=2),
+                    asset_root=root,
+                    output_dir=output,
+                    adapter=InterruptAdapter(),
+                    lock=LOCK,
+                    model_manifest_sha256=digest(b"weights"),
+                    workflow_run_id="32975067429",
+                    workflow_run_attempt=1,
+                    expected_asset_count=2,
+                )
+            failure = json.loads((output / "failure-package.json").read_text())
+            self.assertEqual(failure["failure"]["error_type"], "KeyboardInterrupt")
+            self.assertGreater(len(failure["runs"]), 0)
+            self.assertTrue((output / "run-f.jsonl").is_file())
 
     def test_truncated_model_input_cannot_claim_complete_consumption(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -105,7 +105,9 @@ Formal media execution provenance uses `.github/workflows/trusted-media-run.yml`
 That main-only workflow runs `scripts/run_trusted_media_review.py` from a
 read-only exact-commit snapshot on a protected Apple Silicon runner, with the
 exact pinned `softbook_cet` product-authority commit materialized as its sibling
-in both review and GitHub-hosted verification jobs. It locks
+in both review and GitHub-hosted verification jobs. Git replacements and grafts
+are disabled before trusted tree reads. Both unprivileged jobs independently
+replay the exact `ffprobe` + `ffmpeg` technical audit. It locks
 and rehashes the model and `mlx_audio` package, rejects truncated model input,
 and requires two blind full transcriptions for every asset before it rebuilds
 all 301 decisions with
@@ -116,8 +118,14 @@ An unprivileged GitHub-hosted verifier rebuilds the package and audio first; a
 separate minimal signer job downloads only those verified bytes and executes no
 repository code under OIDC authority. Failed or exceptionally aborted model runs
 retain completed raw records and a failure package before the review job fails.
+Each completed model call is fsynced incrementally, and the runner deadline
+reserves time for the failure artifact upload.
 Formal QC later replays the matching tracked
 `reviews/trusted_media_runs/<receipt-id>/` package with the product verifier.
+The required formal-QC gate materializes Git LFS media bytes; shared receipt,
+attestation and 301-asset semantic replay is cached once per exact HEAD/evidence
+identity. Receipt, bundle, run-package and formal-QC evidence is append-only and
+new trusted evidence must be atomically consumed by changed formal QC.
 `scripts/build_audio_qc_drafts.mjs` also requires the tracked receipt and
 attestation bundle and binds their hashes, source commit, model identity and
 reviewed-worklist identity into every formal QC acceptance input.

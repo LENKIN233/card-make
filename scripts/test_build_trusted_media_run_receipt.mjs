@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 
-import {buildTrustedMediaArtifacts} from './build_trusted_media_run_receipt.mjs';
+import {buildTrustedMediaArtifacts as buildTrustedMediaArtifactsImpl} from './build_trusted_media_run_receipt.mjs';
 import {
   PERCEPTUAL_CHECKS,
   buildAudioPerceptualWorklist,
@@ -17,6 +17,15 @@ import {createCurrentFullTrackAuthorizationFixture} from './test_current_full_tr
 const ROOT = path.resolve(import.meta.dirname, '..');
 const sha256 = value => createHash('sha256').update(value).digest('hex');
 const LOCK = JSON.parse(fs.readFileSync(path.join(ROOT, 'spec/trusted-media-runner-lock.json')));
+
+function buildTrustedMediaArtifacts(options) {
+  return buildTrustedMediaArtifactsImpl({
+    ...options,
+    technicalAuditReplayPath:
+      options.technicalAuditReplayPath ??
+      path.join(options.repoRoot, 'reviews/audio_technical_audits/cet4.json'),
+  });
+}
 
 function write(root, relativePath, value) {
   const target = path.join(root, relativePath);
@@ -33,6 +42,7 @@ function copyProducerAssets(root) {
     '.github/workflows/trusted-media-run.yml',
     'scripts/run_trusted_media_review.py',
     'scripts/build_trusted_media_run_receipt.mjs',
+    'scripts/audit_audio_technical.mjs',
     'scripts/manage_audio_perceptual_worklist.mjs',
     'scripts/lib/card_integrity.mjs',
     'scripts/lib/model_acceptance.mjs',
@@ -94,7 +104,20 @@ function buildFixture(t) {
         size_bytes: file.size_bytes,
         transcript_sha256: sha256(transcript),
         declared_duration_ms: 1000,
-        technical: {duration_ms: 1000},
+        signal: {
+          estimated_transcript_wpm: 120,
+          mean_volume_db: -20,
+          peak_volume_db: -1,
+          track_mean_volume_deviation_db: 0,
+          transcript_word_count: 4,
+        },
+        technical: {
+          bitrate_bps: 64000,
+          channels: 1,
+          duration_ms: 1000,
+          format: 'mp3',
+          sample_rate_hz: 16000,
+        },
       });
     }
     cards.push(card);
@@ -104,8 +127,17 @@ function buildFixture(t) {
     schema_version: 'audio-technical-audit.v1',
     track: 'cet4',
     generated_at: '2026-08-26T12:00:00.000Z',
+    authority_boundary: 'technical integrity only',
     ok: true,
     summary: {errors: 0},
+    verification: {
+      unique_asset_path_per_card: 'passed',
+      file_hash_and_size: 'passed',
+      decoder_probe: 'passed',
+      declared_duration_binding: 'passed',
+      transcript_presence_and_hash: 'passed',
+      coarse_signal_diagnostics: 'passed',
+    },
     assets,
   };
   const auditFile = write(
@@ -270,6 +302,28 @@ test('builder emits exact 301-asset reviewed worklist and receipt', t => {
   assert.deepEqual(
     fs.readFileSync(path.join(fixture.runDir, 'ai_tts/cet4/0000/000001.mp3')),
     fs.readFileSync(path.join(fixture.root, 'ai_tts/cet4/0000/000001.mp3')),
+  );
+});
+
+test('builder rejects a hand-authored technical audit without replayed signals', t => {
+  const fixture = buildFixture(t);
+  const replayPath = path.join(fixture.root, 'replayed-technical-audit.json');
+  const replay = JSON.parse(fs.readFileSync(
+    path.join(fixture.root, 'reviews/audio_technical_audits/cet4.json'),
+  ));
+  delete replay.assets[0].signal;
+  fs.writeFileSync(replayPath, `${JSON.stringify(replay)}\n`);
+  assert.throws(
+    () => buildTrustedMediaArtifacts({
+      authorizationPath: fixture.authorizationFile.path,
+      outputDir: fixture.runDir,
+      repoRoot: fixture.root,
+      runPackagePath: fixture.runPackageFile.path,
+      sourceCommit: fixture.sourceCommit,
+      technicalAuditReplayPath: replayPath,
+      worklistPath: fixture.worklistFile.path,
+    }),
+    /lacks complete passing signal measurements/,
   );
 });
 
@@ -507,7 +561,7 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /if: always\(\)/);
   assert.match(reviewJob, /Fail after retaining rejected review evidence/);
   assert.match(reviewJob, /repository: LENKIN233\/softbook_cet/);
-  assert.match(reviewJob, /ref: d98bdca56a776427a4a5c03a4450bb945e776a5f/);
+  assert.match(reviewJob, /ref: 40769ec013c9da0a7358ffb4a1da9ec4940f194a/);
   assert.match(reviewJob, /product-authority-review/);
   assert.match(verifyJob, /runs-on: ubuntu-latest/);
   assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);
@@ -523,6 +577,13 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(attestJob, /actions\/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c/);
   assert.doesNotMatch(attestJob, /actions\/checkout@|node scripts\/|python3 -/);
   assert.match(reviewJob, /PYTHONNOUSERSITE: "1"/);
+  assert.match(reviewJob, /GIT_NO_REPLACE_OBJECTS: "1"/);
+  assert.match(reviewJob, /GIT_GRAFT_FILE: \/dev\/null/);
+  assert.match(reviewJob, /GIT_REPLACE_REF_BASE: refs\/disabled\/softbook-trusted-media/);
+  assert.match(reviewJob, /Replay exact technical audio audit/);
+  assert.match(reviewJob, /--technical-audit-replay/);
+  assert.match(verifyJob, /audit_audio_technical\.mjs/);
+  assert.match(verifyJob, /--technical-audit-replay/);
 });
 
 test('independent builders derive byte-identical receipt time from the run package', t => {

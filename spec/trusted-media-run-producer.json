@@ -12,7 +12,7 @@
     "verification_runner": ["ubuntu-latest"],
     "product_authority": {
       "repository": "LENKIN233/softbook_cet",
-      "commit_sha": "d98bdca56a776427a4a5c03a4450bb945e776a5f",
+      "commit_sha": "40769ec013c9da0a7358ffb4a1da9ec4940f194a",
       "materialized_as_card_workspace_sibling_in_review_and_verification": true
     },
     "timeout_minutes": 180,
@@ -26,9 +26,11 @@
     "inputs_must_be_tracked_regular_non_symlink_files": true,
     "checkout_must_materialize_Git_LFS_audio_bytes": true,
     "repository_worktree_must_be_clean_exact_GITHUB_SHA": true,
+    "git_replacements_and_grafts_disabled_before_all_trusted_tree_reads": true,
     "model_root_is_runner_managed_and_outside_repository": true,
     "source_executes_from_read_only_exact_commit_worktree": true,
     "source_head_status_and_driver_blobs_reverified_before_receipt": true,
+    "technical_audit_replayed_with_ffprobe_and_ffmpeg_on_review_and_verification_runners": true,
     "human_or_user_environment_gate": false
   },
   "execution": {
@@ -43,6 +45,7 @@
     "pronunciation_override_lanes_must_use_distinct_specialists": true,
     "blind_full_transcript_specialists": ["f", "g"],
     "two_blind_full_transcript_runs_required_for_every_asset": true,
+    "general_text_parity_votes_are_excluded_before_general_adjudication": true,
     "candidate_transcript_and_training_goal_are_untrusted_data_not_instructions": true,
     "every_model_call_receives_the_exact_SHA_verified_asset_path": true,
     "decoded_sample_count_must_equal_model_input_sample_count_without_truncation": true,
@@ -54,7 +57,9 @@
     "unresolved_three_run_disagreement_fails_closed": true,
     "failed_final_perceptual_check_prevents_attestation": true,
     "failed_review_package_is_retained_before_the_job_fails": true,
-    "exceptional_abort_writes_completed_raw_runs_and_failure_package_before_rethrow": true
+    "exceptional_abort_writes_completed_raw_runs_and_failure_package_before_rethrow": true,
+    "every_completed_model_call_is_fsynced_to_an_incremental_raw_checkpoint": true,
+    "runner_deadline_reserves_fifteen_minutes_for_failure_artifact_upload": true
   },
   "attestation": {
     "provider": "github_artifact_attestations_sigstore",
@@ -67,7 +72,8 @@
     "consumer_contract": "../softbook_cet/spec/trusted-media-run-receipt.json",
     "attestation_proves_provenance_not_result_correctness": true,
     "type_specific_consumer_validation_required": true,
-    "formal_QC_requires_product_verifier_replay_of_tracked_raw_run_package": true
+    "formal_QC_requires_product_verifier_replay_of_tracked_raw_run_package": true,
+    "formal_QC_shared_receipt_attestation_and_semantic_replay_cached_once_per_exact_HEAD_and_evidence_identity": true
   },
   "outputs": [
     "run-a.jsonl",
