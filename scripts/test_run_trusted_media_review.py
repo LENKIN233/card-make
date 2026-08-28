@@ -7,10 +7,13 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from run_trusted_media_review import (
+    compact_tree_manifest,
     general_prompt,
     hash_regular_tree,
+    main,
     pronunciation_prompt,
     run_review_package,
 )
@@ -146,6 +149,67 @@ def worklist(asset_root: Path, count=4):
 
 
 class TrustedMediaRunnerTests(unittest.TestCase):
+    def test_compact_environment_manifest_stays_below_repository_blob_limit(self):
+        files = [
+            {
+                "path": f"package_{index % 250:03d}/module_{index:04d}.py",
+                "size_bytes": index + 1,
+                "sha256": digest(f"file-{index}".encode()),
+            }
+            for index in range(8080)
+        ]
+        manifest = {"files": files, "sha256": digest(json.dumps(files).encode())}
+        compact = compact_tree_manifest(manifest)
+        encoded = json.dumps(
+            compact, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode() + b"\n"
+        self.assertLessEqual(len(encoded), 1024 * 1024)
+        self.assertEqual(compact["sha256"], manifest["sha256"])
+        self.assertEqual(len(compact["files"]), 8080)
+
+    def test_main_retains_failure_package_when_setup_aborts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root / "output"
+            model_root = root / "model"
+            model_root.mkdir()
+            worklist_path = root / "worklist.json"
+            worklist_path.write_text("{}\n")
+            with mock.patch(
+                "run_trusted_media_review.hash_model_tree",
+                side_effect=ValueError("setup hashing failed"),
+            ), mock.patch(
+                "run_trusted_media_review.platform.system",
+                return_value=LOCK["runtime"]["operating_system"],
+            ), mock.patch(
+                "run_trusted_media_review.platform.machine",
+                return_value=LOCK["runtime"]["machine"],
+            ):
+                with self.assertRaisesRegex(ValueError, "setup hashing failed"):
+                    main(
+                        [
+                            "--worklist",
+                            str(worklist_path),
+                            "--asset-root",
+                            str(root),
+                            "--model-root",
+                            str(model_root),
+                            "--output-dir",
+                            str(output),
+                            "--workflow-run-id",
+                            "32975067429",
+                            "--workflow-run-attempt",
+                            "1",
+                        ]
+                    )
+            failure = json.loads((output / "failure-package.json").read_text())
+            self.assertEqual(
+                failure["failure"]["reason"],
+                "trusted_media_setup_or_finalization_aborted",
+            )
+            self.assertEqual(failure["failure"]["error_type"], "ValueError")
+            self.assertEqual(failure["runs"], [])
+
     def test_locked_python_environment_rejects_executable_bytecode_cache(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

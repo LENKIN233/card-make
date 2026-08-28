@@ -190,6 +190,8 @@ export function verifyTrustedMediaEvidence({
     semanticResult = typeSpecificVerifier({
       artifactDirectory,
       audioRoot: path.resolve(root),
+      candidateRoot: path.resolve(root),
+      authorizationPath: authorizationFile.absolute,
       bundlePath: bundleFile.absolute,
       receiptPath: receiptFile.absolute,
       root: path.resolve(root),
@@ -262,6 +264,8 @@ function requireTrackedArtifactDirectory({receiptRelativePath, root}) {
 function runProductTrustedMediaVerifier({
   artifactDirectory,
   audioRoot,
+  candidateRoot,
+  authorizationPath,
   bundlePath,
   receiptPath,
   root,
@@ -286,6 +290,10 @@ function runProductTrustedMediaVerifier({
     artifactDirectory,
     '--audio-root',
     audioRoot,
+    '--candidate-root',
+    candidateRoot,
+    '--authorization',
+    authorizationPath,
     '--verify-attestation',
   ], {
     cwd: root,

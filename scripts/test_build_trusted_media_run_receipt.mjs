@@ -463,7 +463,7 @@ test('builder rejects one pronunciation specialist reused across acceptance lane
       sourceCommit: fixture.sourceCommit,
       worklistPath: fixture.worklistFile.path,
     }),
-    /reuses one pronunciation specialist run/,
+    /no pronunciation specialist or two distinct specialists/,
   );
 });
 
@@ -597,7 +597,7 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /TRUSTED_MEDIA_DEADLINE_EPOCH/);
   assert.match(reviewJob, /--deadline-epoch/);
   assert.match(reviewJob, /repository: LENKIN233\/softbook_cet/);
-  assert.match(reviewJob, /ref: 4ca4e5af9873e693f8e8624b18fe2145ff962738/);
+  assert.match(reviewJob, /ref: d2bb0582217a8389c8b90ceb1828ff183249f580/);
   assert.match(reviewJob, /product-authority-review/);
   assert.match(verifyJob, /runs-on: ubuntu-latest/);
   assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);
@@ -654,4 +654,70 @@ test('independent builders derive byte-identical receipt time from the run packa
   });
   assert.equal(first.receipt.sha256, second.receipt.sha256);
   assert.deepEqual(fs.readFileSync(first.receipt.path), fs.readFileSync(second.receipt.path));
+});
+
+test('builder rejects a pronunciation override supported by only one acceptance lane', t => {
+  const fixture = buildFixture(t);
+  const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
+  const generalRun = runPackage.runs.find(item => item.name === 'a');
+  const generalPath = path.join(fixture.runDir, generalRun.path);
+  const generalRecords = fs.readFileSync(generalPath, 'utf8').trim().split('\n').map(JSON.parse);
+  for (const record of generalRecords) {
+    record.result.accurate_pronunciation = false;
+    record.raw_outputs = [JSON.stringify(record.result)];
+  }
+  const generalBytes = Buffer.from(
+    `${generalRecords.map(record => JSON.stringify(record)).join('\n')}\n`,
+  );
+  fs.writeFileSync(generalPath, generalBytes);
+  generalRun.sha256 = sha256(generalBytes);
+  generalRun.size_bytes = generalBytes.length;
+
+  const definition = LOCK.runs.find(item => item.name === 'd');
+  const specialistRecords = generalRecords.map(record => {
+    const result = {
+      transcript_heard: record.result.transcript_heard,
+      accurate_pronunciation: true,
+      specific_error: '',
+    };
+    return {
+      ...record,
+      run_id: '32975067429:1:d',
+      run_name: 'd',
+      purpose: definition.purpose,
+      temperature: definition.temperature,
+      result,
+      raw_outputs: [JSON.stringify(result)],
+    };
+  });
+  const specialistBytes = Buffer.from(
+    `${specialistRecords.map(record => JSON.stringify(record)).join('\n')}\n`,
+  );
+  const specialistFile = write(fixture.root, 'run-output/run-d.jsonl', specialistBytes);
+  runPackage.runs.push({
+    name: 'd',
+    run_id: '32975067429:1:d',
+    purpose: definition.purpose,
+    temperature: definition.temperature,
+    path: 'run-d.jsonl',
+    sha256: specialistFile.sha256,
+    size_bytes: specialistFile.size_bytes,
+    card_count: 301,
+    complete_asset_count: 301,
+  });
+  for (const decision of runPackage.decisions) {
+    decision.acceptance_sources = [['a', 'f', 'd'], ['b', 'g']];
+  }
+  fs.writeFileSync(fixture.runPackageFile.path, `${JSON.stringify(runPackage)}\n`);
+  assert.throws(
+    () => buildTrustedMediaArtifacts({
+      authorizationPath: fixture.authorizationFile.path,
+      outputDir: fixture.runDir,
+      repoRoot: fixture.root,
+      runPackagePath: fixture.runPackageFile.path,
+      sourceCommit: fixture.sourceCommit,
+      worklistPath: fixture.worklistFile.path,
+    }),
+    /no pronunciation specialist or two distinct specialists/,
+  );
 });

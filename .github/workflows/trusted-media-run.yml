@@ -57,7 +57,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LENKIN233/softbook_cet
-          ref: 4ca4e5af9873e693f8e8624b18fe2145ff962738
+          ref: d2bb0582217a8389c8b90ceb1828ff183249f580
           path: product-authority-review
           fetch-depth: 1
           persist-credentials: false
@@ -73,7 +73,7 @@ jobs:
           test "$(git -C "$source_root" rev-parse HEAD)" = "$GITHUB_SHA"
           test -z "$(git -C "$source_root" status --porcelain --untracked-files=all)"
           product_root="$RUNNER_TEMP/softbook_cet"
-          product_commit=4ca4e5af9873e693f8e8624b18fe2145ff962738
+          product_commit=d2bb0582217a8389c8b90ceb1828ff183249f580
           test ! -e "$product_root"
           test "$(git -C "$GITHUB_WORKSPACE/product-authority-review" rev-parse HEAD)" = "$product_commit"
           git -C "$GITHUB_WORKSPACE/product-authority-review" worktree add \
@@ -249,7 +249,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LENKIN233/softbook_cet
-          ref: 4ca4e5af9873e693f8e8624b18fe2145ff962738
+          ref: d2bb0582217a8389c8b90ceb1828ff183249f580
           path: product-authority-verify
           fetch-depth: 1
           persist-credentials: false
@@ -260,7 +260,7 @@ jobs:
           set -euo pipefail
           source_root="$RUNNER_TEMP/trusted-source-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           product_root="$RUNNER_TEMP/softbook_cet"
-          product_commit=4ca4e5af9873e693f8e8624b18fe2145ff962738
+          product_commit=d2bb0582217a8389c8b90ceb1828ff183249f580
           test ! -e "$source_root"
           test ! -e "$product_root"
           git worktree add --detach "$source_root" "$GITHUB_SHA"

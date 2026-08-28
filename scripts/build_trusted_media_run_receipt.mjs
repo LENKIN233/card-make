@@ -634,10 +634,16 @@ export function buildTrustedMediaArtifacts({
       throw new Error(`decision ${entry.card_id} reuses one blind transcript run`);
     }
     if (
-      groups[0].pronunciationName !== null &&
-      groups[0].pronunciationName === groups[1].pronunciationName
+      (groups[0].pronunciationName === null) !==
+        (groups[1].pronunciationName === null) ||
+      (
+        groups[0].pronunciationName !== null &&
+        groups[0].pronunciationName === groups[1].pronunciationName
+      )
     ) {
-      throw new Error(`decision ${entry.card_id} reuses one pronunciation specialist run`);
+      throw new Error(
+        `decision ${entry.card_id} must use no pronunciation specialist or two distinct specialists`,
+      );
     }
     const checks = Object.fromEntries(
       PERCEPTUAL_CHECKS.map(check => [check, decision.checks[check] ? 'pass' : 'fail']),

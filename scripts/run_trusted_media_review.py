@@ -104,6 +104,58 @@ def hash_regular_tree(
     return {"files": files, "sha256": sha256_bytes(canonical_json(files))}
 
 
+def compact_tree_manifest(manifest):
+    """Retain the exact tree digest while keeping the tracked artifact below 1 MiB."""
+    files = manifest.get("files")
+    if not isinstance(files, list) or not files:
+        raise ValueError("tree manifest must contain files")
+    compact = {
+        "schema_version": "trusted-media-tree-manifest.v2",
+        "files": [
+            [entry["path"], entry["size_bytes"], entry["sha256"]]
+            for entry in files
+        ],
+        "sha256": manifest["sha256"],
+    }
+    if len(canonical_json(compact) + b"\n") > 1024 * 1024:
+        raise ValueError("compact tree manifest exceeds the repository blob limit")
+    return compact
+
+
+def write_setup_failure_package(output_dir: Path, args, error, lock=None):
+    target = output_dir / "failure-package.json"
+    if target.exists():
+        return
+    runtime = lock.get("runtime", {}) if isinstance(lock, dict) else {}
+    model = lock.get("model", {}) if isinstance(lock, dict) else {}
+    failure = {
+        "schema_version": "trusted-media-model-run-failure-package.v1",
+        "model": {
+            "id": model.get("id"),
+            "revision": model.get("revision"),
+            "weights_manifest_sha256": None,
+        },
+        "execution": {
+            "workflow_run_id": args.workflow_run_id,
+            "workflow_run_attempt": args.workflow_run_attempt,
+            "runner_class": runtime.get("runner_class"),
+            "started_at": json.loads(
+                (output_dir / "execution-start.json").read_text(encoding="utf-8")
+            )["started_at"],
+            "failed_at": iso_now(),
+        },
+        "runs": [],
+        "attempts": [],
+        "completed_decisions": [],
+        "failure": {
+            "card_id": None,
+            "error_type": type(error).__name__,
+            "reason": "trusted_media_setup_or_finalization_aborted",
+        },
+    }
+    target.write_bytes(canonical_json(failure) + b"\n")
+
+
 def load_json(path: Path):
     with path.open(encoding="utf-8") as handle:
         return json.load(handle)
@@ -748,50 +800,59 @@ def main(argv=None) -> int:
     def terminate(_signum, _frame):
         raise InterruptedError("trusted media review reached its job deadline")
 
-    if args.deadline_epoch is not None:
-        remaining = args.deadline_epoch - int(time.time())
-        if remaining < 1:
-            raise TimeoutError("trusted media review deadline has already elapsed")
-        signal.signal(signal.SIGALRM, terminate)
-        signal.setitimer(signal.ITIMER_REAL, remaining)
-    signal.signal(signal.SIGTERM, terminate)
-    lock = load_json(LOCK_PATH)
-    if sys.version_info[:2] != tuple(map(int, lock["runtime"]["python"].split("."))):
-        raise ValueError(f"Python must be exactly {lock['runtime']['python']}.x")
-    if (
-        platform.system() != lock["runtime"]["operating_system"]
-        or platform.machine() != lock["runtime"]["machine"]
-    ):
-        raise ValueError("runner operating system or architecture does not match the lock")
-    model_manifest = hash_model_tree(args.model_root)
-    if model_manifest["sha256"] != lock["model"]["weights_manifest_sha256"]:
-        raise ValueError("model weights tree does not match the locked revision")
-    adapter = MlxQwenAdapter(args.model_root, lock)
+    lock = None
+    try:
+        if args.deadline_epoch is not None:
+            remaining = args.deadline_epoch - int(time.time())
+            if remaining < 1:
+                raise TimeoutError("trusted media review deadline has already elapsed")
+            signal.signal(signal.SIGALRM, terminate)
+            signal.setitimer(signal.ITIMER_REAL, remaining)
+        signal.signal(signal.SIGTERM, terminate)
+        lock = load_json(LOCK_PATH)
+        if sys.version_info[:2] != tuple(map(int, lock["runtime"]["python"].split("."))):
+            raise ValueError(f"Python must be exactly {lock['runtime']['python']}.x")
+        if (
+            platform.system() != lock["runtime"]["operating_system"]
+            or platform.machine() != lock["runtime"]["machine"]
+        ):
+            raise ValueError("runner operating system or architecture does not match the lock")
+        model_manifest = hash_model_tree(args.model_root)
+        if model_manifest["sha256"] != lock["model"]["weights_manifest_sha256"]:
+            raise ValueError("model weights tree does not match the locked revision")
+        adapter = MlxQwenAdapter(args.model_root, lock)
+        compact_environment_manifest = compact_tree_manifest(
+            adapter.environment_manifest
+        )
 
-    package = run_review_package(
-        worklist=load_json(args.worklist),
-        asset_root=args.asset_root.resolve(),
-        output_dir=output_dir,
-        adapter=adapter,
-        lock=lock,
-        model_manifest_sha256=model_manifest["sha256"],
-        workflow_run_id=args.workflow_run_id,
-        workflow_run_attempt=args.workflow_run_attempt,
-        maximum_runtime_seconds=None,
-        allow_existing_output_dir=True,
-    )
-    signal.setitimer(signal.ITIMER_REAL, 0)
-    (args.output_dir / "model-weights-manifest.json").write_bytes(
-        canonical_json(model_manifest) + b"\n"
-    )
-    (args.output_dir / "mlx-audio-package-manifest.json").write_bytes(
-        canonical_json(adapter.package_manifest) + b"\n"
-    )
-    (args.output_dir / "python-environment-manifest.json").write_bytes(
-        canonical_json(adapter.environment_manifest) + b"\n"
-    )
-    print(json.dumps(package["result"], sort_keys=True))
-    return 0 if package["result"]["failed_card_count"] == 0 else 2
+        package = run_review_package(
+            worklist=load_json(args.worklist),
+            asset_root=args.asset_root.resolve(),
+            output_dir=output_dir,
+            adapter=adapter,
+            lock=lock,
+            model_manifest_sha256=model_manifest["sha256"],
+            workflow_run_id=args.workflow_run_id,
+            workflow_run_attempt=args.workflow_run_attempt,
+            maximum_runtime_seconds=None,
+            allow_existing_output_dir=True,
+        )
+        (args.output_dir / "model-weights-manifest.json").write_bytes(
+            canonical_json(model_manifest) + b"\n"
+        )
+        (args.output_dir / "mlx-audio-package-manifest.json").write_bytes(
+            canonical_json(adapter.package_manifest) + b"\n"
+        )
+        (args.output_dir / "python-environment-manifest.json").write_bytes(
+            canonical_json(compact_environment_manifest) + b"\n"
+        )
+        print(json.dumps(package["result"], sort_keys=True))
+        return 0 if package["result"]["failed_card_count"] == 0 else 2
+    except BaseException as error:
+        write_setup_failure_package(output_dir, args, error, lock)
+        raise
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
 
 
 if __name__ == "__main__":

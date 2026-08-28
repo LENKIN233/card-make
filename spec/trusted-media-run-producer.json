@@ -12,7 +12,7 @@
     "verification_runner": ["ubuntu-latest"],
     "product_authority": {
       "repository": "LENKIN233/softbook_cet",
-      "commit_sha": "4ca4e5af9873e693f8e8624b18fe2145ff962738",
+      "commit_sha": "d2bb0582217a8389c8b90ceb1828ff183249f580",
       "materialized_as_card_workspace_sibling_in_review_and_verification": true
     },
     "timeout_minutes": 180,
@@ -60,6 +60,7 @@
     "failed_final_perceptual_check_prevents_attestation": true,
     "failed_review_package_is_retained_before_the_job_fails": true,
     "exceptional_abort_writes_completed_raw_runs_and_failure_package_before_rethrow": true,
+    "setup_or_finalization_abort_writes_a_failure_package_before_rethrow": true,
     "every_completed_model_attempt_is_fsynced_before_parse_or_retry": true,
     "job_start_deadline_reserves_thirty_minutes_for_failure_artifact_upload": true
   },
@@ -92,6 +93,9 @@
     "trusted-media-run-receipt.json",
     "attestation-bundle.jsonl"
   ],
+  "artifact_formats": {
+    "python_environment_manifest": "compact trusted-media-tree-manifest.v2 with exact normalized tree digest and a tracked blob no larger than 1 MiB"
+  },
   "current_boundary": {
     "implementation_present_on_topic_branch": true,
     "installed_on_main": false,

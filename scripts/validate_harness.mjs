@@ -4044,7 +4044,7 @@ function validateGitWorkflow(errors) {
       '--technical-audit-replay',
       'scripts/validate_audio_lfs.mjs',
       'repository: LENKIN233/softbook_cet',
-      '4ca4e5af9873e693f8e8624b18fe2145ff962738',
+      'd2bb0582217a8389c8b90ceb1828ff183249f580',
       'product-authority-review',
       'product-authority-verify',
       'actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6',
