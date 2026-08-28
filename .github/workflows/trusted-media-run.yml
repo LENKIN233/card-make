@@ -38,6 +38,15 @@ jobs:
           persist-credentials: false
           lfs: true
 
+      - name: Checkout pinned softbook product authority
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LENKIN233/softbook_cet
+          ref: d98bdca56a776427a4a5c03a4450bb945e776a5f
+          path: product-authority-review
+          fetch-depth: 1
+          persist-credentials: false
+
       - name: Materialize isolated exact source snapshot
         shell: bash
         run: |
@@ -48,7 +57,18 @@ jobs:
           git -C "$source_root" lfs pull
           test "$(git -C "$source_root" rev-parse HEAD)" = "$GITHUB_SHA"
           test -z "$(git -C "$source_root" status --porcelain --untracked-files=all)"
+          product_root="$RUNNER_TEMP/softbook_cet"
+          product_commit=d98bdca56a776427a4a5c03a4450bb945e776a5f
+          test ! -e "$product_root"
+          test "$(git -C "$GITHUB_WORKSPACE/product-authority-review" rev-parse HEAD)" = "$product_commit"
+          git -C "$GITHUB_WORKSPACE/product-authority-review" worktree add \
+            --detach "$product_root" "$product_commit"
+          test "$(git -C "$product_root" rev-parse HEAD)" = "$product_commit"
+          test -z "$(git -C "$product_root" status --porcelain --untracked-files=all)"
+          test "$(jq -r .product_authority.commit_sha "$source_root/spec/trusted-media-runner-lock.json")" = \
+            "$product_commit"
           echo "TRUSTED_SOURCE_ROOT=$source_root" >> "$GITHUB_ENV"
+          echo "TRUSTED_PRODUCT_AUTHORITY_ROOT=$product_root" >> "$GITHUB_ENV"
 
       - name: Validate trusted source and bounded inputs
         env:
@@ -192,6 +212,37 @@ jobs:
           persist-credentials: false
           lfs: true
 
+      - name: Checkout pinned softbook product authority
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LENKIN233/softbook_cet
+          ref: d98bdca56a776427a4a5c03a4450bb945e776a5f
+          path: product-authority-verify
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Materialize isolated source and product authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_root="$RUNNER_TEMP/trusted-source-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          product_root="$RUNNER_TEMP/softbook_cet"
+          product_commit=d98bdca56a776427a4a5c03a4450bb945e776a5f
+          test ! -e "$source_root"
+          test ! -e "$product_root"
+          git worktree add --detach "$source_root" "$GITHUB_SHA"
+          git -C "$source_root" lfs pull
+          git -C "$GITHUB_WORKSPACE/product-authority-verify" worktree add \
+            --detach "$product_root" "$product_commit"
+          test "$(git -C "$source_root" rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C "$product_root" rev-parse HEAD)" = "$product_commit"
+          test -z "$(git -C "$source_root" status --porcelain --untracked-files=all)"
+          test -z "$(git -C "$product_root" status --porcelain --untracked-files=all)"
+          test "$(jq -r .product_authority.commit_sha "$source_root/spec/trusted-media-runner-lock.json")" = \
+            "$product_commit"
+          echo "TRUSTED_SOURCE_ROOT=$source_root" >> "$GITHUB_ENV"
+          echo "TRUSTED_PRODUCT_AUTHORITY_ROOT=$product_root" >> "$GITHUB_ENV"
+
       - name: Download unprivileged raw review package
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
         with:
@@ -205,9 +256,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
           test "$GITHUB_REF" = refs/heads/main
-          test -z "$(git status --porcelain --untracked-files=all)"
+          test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
           downloaded="$RUNNER_TEMP/trusted-media-downloaded"
           rebuilt="$RUNNER_TEMP/trusted-media-rebuilt"
           mkdir "$rebuilt"
@@ -221,7 +272,10 @@ jobs:
           python3 - "$rebuilt" <<'PY'
           import hashlib, json, pathlib, sys
           root = pathlib.Path(sys.argv[1])
-          lock = json.loads(pathlib.Path('spec/trusted-media-runner-lock.json').read_text())
+          lock = json.loads(pathlib.Path(
+              pathlib.Path.cwd(),
+              'spec/trusted-media-runner-lock.json',
+          ).read_text())
           for filename, expected in [
               ('model-weights-manifest.json', lock['model']['weights_manifest_sha256']),
               ('mlx-audio-package-manifest.json', lock['runtime']['mlx_audio_package_manifest_sha256']),
@@ -232,9 +286,10 @@ jobs:
               if hashlib.sha256(payload).hexdigest() != expected:
                   raise SystemExit(f'{filename} does not match the trusted lock')
           PY
+          cd "$TRUSTED_SOURCE_ROOT"
           node scripts/build_trusted_media_run_receipt.mjs \
-            --worklist "$WORKLIST_PATH" \
-            --authorization "$AUTHORIZATION_PATH" \
+            --worklist "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH" \
+            --authorization "$TRUSTED_SOURCE_ROOT/$AUTHORIZATION_PATH" \
             --run-package "$rebuilt/run-package.json" \
             --output-dir "$rebuilt" \
             --source-commit "$GITHUB_SHA"

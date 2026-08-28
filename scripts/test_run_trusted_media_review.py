@@ -193,11 +193,12 @@ class TrustedMediaRunnerTests(unittest.TestCase):
     def test_unresolved_three_run_disagreement_fails_closed(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
+            output = root / "output"
             with self.assertRaisesRegex(ValueError, "unresolved three-run disagreement"):
                 run_review_package(
                     worklist=worklist(root),
                     asset_root=root,
-                    output_dir=root / "output",
+                    output_dir=output,
                     adapter=FakeAdapter(unresolved=True),
                     lock=LOCK,
                     model_manifest_sha256=digest(b"weights"),
@@ -205,6 +206,14 @@ class TrustedMediaRunnerTests(unittest.TestCase):
                     workflow_run_attempt=1,
                     expected_asset_count=4,
                 )
+            failure = json.loads((output / "failure-package.json").read_text())
+            self.assertEqual(
+                failure["schema_version"],
+                "trusted-media-model-run-failure-package.v1",
+            )
+            self.assertEqual(failure["failure"]["card_id"], "000004")
+            self.assertGreater(len(failure["runs"]), 0)
+            self.assertTrue((output / "run-a.jsonl").is_file())
 
     def test_exact_asset_hash_mismatch_fails_before_model_acceptance(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -454,6 +454,8 @@ function validateAcceptanceGroup({
     reviewedAt: runMap.executionCompletedAt,
     generalName: general[0].name,
     blindName: blind[0].name,
+    pronunciationName:
+      runs.find(({run}) => run.purpose === 'pronunciation')?.name ?? null,
     groupIndex,
   };
 }
@@ -558,6 +560,12 @@ export function buildTrustedMediaArtifacts({
     }
     if (groups[0].blindName === groups[1].blindName) {
       throw new Error(`decision ${entry.card_id} reuses one blind transcript run`);
+    }
+    if (
+      groups[0].pronunciationName !== null &&
+      groups[0].pronunciationName === groups[1].pronunciationName
+    ) {
+      throw new Error(`decision ${entry.card_id} reuses one pronunciation specialist run`);
     }
     const checks = Object.fromEntries(
       PERCEPTUAL_CHECKS.map(check => [check, decision.checks[check] ? 'pass' : 'fail']),

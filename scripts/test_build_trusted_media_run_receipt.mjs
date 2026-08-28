@@ -328,6 +328,59 @@ test('builder requires two distinct blind transcript runs in every acceptance', 
   );
 });
 
+test('builder rejects one pronunciation specialist reused across acceptance lanes', t => {
+  const fixture = buildFixture(t);
+  const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
+  const sourceRun = runPackage.runs.find(run => run.name === 'a');
+  const sourceRecords = fs.readFileSync(
+    path.join(fixture.runDir, sourceRun.path),
+    'utf8',
+  ).trim().split('\n').map(JSON.parse);
+  const definition = LOCK.runs.find(run => run.name === 'd');
+  const records = sourceRecords.map(record => ({
+    ...record,
+    run_id: '32975067429:1:d',
+    run_name: 'd',
+    purpose: definition.purpose,
+    temperature: definition.temperature,
+    result: {
+      transcript_heard: record.result.transcript_heard,
+      accurate_pronunciation: true,
+      specific_error: '',
+    },
+  }));
+  const bytes = Buffer.from(
+    `${records.map(record => JSON.stringify(record)).join('\n')}\n`,
+  );
+  const runFile = write(fixture.root, 'run-output/run-d.jsonl', bytes);
+  runPackage.runs.push({
+    name: 'd',
+    run_id: '32975067429:1:d',
+    purpose: definition.purpose,
+    temperature: definition.temperature,
+    path: path.basename(runFile.path),
+    sha256: runFile.sha256,
+    size_bytes: runFile.size_bytes,
+    card_count: 301,
+    complete_asset_count: 301,
+  });
+  for (const decision of runPackage.decisions) {
+    decision.acceptance_sources = [['a', 'f', 'd'], ['b', 'g', 'd']];
+  }
+  fs.writeFileSync(fixture.runPackageFile.path, `${JSON.stringify(runPackage)}\n`);
+  assert.throws(
+    () => buildTrustedMediaArtifacts({
+      authorizationPath: fixture.authorizationFile.path,
+      outputDir: fixture.runDir,
+      repoRoot: fixture.root,
+      runPackagePath: fixture.runPackageFile.path,
+      sourceCommit: fixture.sourceCommit,
+      worklistPath: fixture.worklistFile.path,
+    }),
+    /reuses one pronunciation specialist run/,
+  );
+});
+
 test('builder rejects duplicate card rows hidden behind a 301-line run', t => {
   const fixture = buildFixture(t);
   const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
@@ -453,10 +506,16 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /name: trusted-media-raw-/);
   assert.match(reviewJob, /if: always\(\)/);
   assert.match(reviewJob, /Fail after retaining rejected review evidence/);
+  assert.match(reviewJob, /repository: LENKIN233\/softbook_cet/);
+  assert.match(reviewJob, /ref: d98bdca56a776427a4a5c03a4450bb945e776a5f/);
+  assert.match(reviewJob, /product-authority-review/);
   assert.match(verifyJob, /runs-on: ubuntu-latest/);
   assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);
   assert.match(verifyJob, /lfs: true/);
   assert.match(verifyJob, /Rebuild and byte-verify receipt on GitHub-hosted runner/);
+  assert.match(verifyJob, /repository: LENKIN233\/softbook_cet/);
+  assert.match(verifyJob, /product-authority-verify/);
+  assert.match(verifyJob, /TRUSTED_SOURCE_ROOT/);
   assert.match(verifyJob, /diff -qr "\$downloaded\/ai_tts" "\$rebuilt\/ai_tts"/);
   assert.match(attestJob, /runs-on: ubuntu-latest/);
   assert.match(attestJob, /id-token: write/);

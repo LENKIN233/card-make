@@ -4038,6 +4038,10 @@ function validateGitWorkflow(errors) {
       'lfs: true',
       'model root must remain outside the repository',
       'scripts/validate_audio_lfs.mjs',
+      'repository: LENKIN233/softbook_cet',
+      'd98bdca56a776427a4a5c03a4450bb945e776a5f',
+      'product-authority-review',
+      'product-authority-verify',
       'actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6',
       'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02',
     ]) {

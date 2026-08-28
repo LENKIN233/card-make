@@ -103,7 +103,9 @@ the executable browser review station has been removed.
 
 Formal media execution provenance uses `.github/workflows/trusted-media-run.yml`.
 That main-only workflow runs `scripts/run_trusted_media_review.py` from a
-read-only exact-commit snapshot on a protected Apple Silicon runner. It locks
+read-only exact-commit snapshot on a protected Apple Silicon runner, with the
+exact pinned `softbook_cet` product-authority commit materialized as its sibling
+in both review and GitHub-hosted verification jobs. It locks
 and rehashes the model and `mlx_audio` package, rejects truncated model input,
 and requires two blind full transcriptions for every asset before it rebuilds
 all 301 decisions with
@@ -112,8 +114,9 @@ Attestation to the exact receipt bytes. A passing worklist or self-declared JSON
 without that run and attestation is not formal media evidence.
 An unprivileged GitHub-hosted verifier rebuilds the package and audio first; a
 separate minimal signer job downloads only those verified bytes and executes no
-repository code under OIDC authority. Failed model runs retain their raw package
-before the review job fails. Formal QC later replays the matching tracked
+repository code under OIDC authority. Failed or exceptionally aborted model runs
+retain completed raw records and a failure package before the review job fails.
+Formal QC later replays the matching tracked
 `reviews/trusted_media_runs/<receipt-id>/` package with the product verifier.
 `scripts/build_audio_qc_drafts.mjs` also requires the tracked receipt and
 attestation bundle and binds their hashes, source commit, model identity and

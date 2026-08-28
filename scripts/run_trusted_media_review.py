@@ -434,6 +434,37 @@ def write_jsonl(path: Path, records):
     return {"sha256": sha256_bytes(payload), "size_bytes": len(payload)}
 
 
+def write_run_records(
+    output_dir: Path,
+    records,
+    run_definitions,
+    workflow_run_id,
+    workflow_run_attempt,
+):
+    run_metadata = []
+    for name, definition in run_definitions.items():
+        if not records[name]:
+            continue
+        run_path = output_dir / f"run-{name}.jsonl"
+        identity = write_jsonl(run_path, records[name])
+        run_metadata.append(
+            {
+                "name": name,
+                "run_id": f"{workflow_run_id}:{workflow_run_attempt}:{name}",
+                "purpose": definition["purpose"],
+                "temperature": definition["temperature"],
+                "path": run_path.name,
+                "sha256": identity["sha256"],
+                "size_bytes": identity["size_bytes"],
+                "card_count": len(records[name]),
+                "complete_asset_count": sum(
+                    record["complete_asset_consumed"] for record in records[name]
+                ),
+            }
+        )
+    return run_metadata
+
+
 def run_review_package(
     *,
     worklist,
@@ -483,77 +514,100 @@ def run_review_package(
         return record
 
     decisions = []
-    for entry in entries:
-        f = execute(entry, "f", transcript_prompt, parse_transcript)
-        g = execute(entry, "g", transcript_prompt, parse_transcript)
-        blind_transcript_passed = (
-            f["transcript_similarity"] >= lock["transcript_similarity_threshold"]
-            and g["transcript_similarity"] >= lock["transcript_similarity_threshold"]
-        )
-        a = execute(entry, "a", general_prompt, parse_general)
-        b = execute(entry, "b", general_prompt, parse_general)
-        a_checks = checks_for(a)
-        b_checks = checks_for(b)
-        if a_checks == b_checks:
-            pair = ["a", "b"]
-            final_checks = a_checks
-        else:
-            c = execute(entry, "c", general_prompt, parse_general)
-            c_checks = checks_for(c)
-            if a_checks == c_checks:
-                pair = ["a", "c"]
+    current_card_id = None
+    try:
+        for entry in entries:
+            current_card_id = entry["card_id"]
+            f = execute(entry, "f", transcript_prompt, parse_transcript)
+            g = execute(entry, "g", transcript_prompt, parse_transcript)
+            blind_transcript_passed = (
+                f["transcript_similarity"] >= lock["transcript_similarity_threshold"]
+                and g["transcript_similarity"] >= lock["transcript_similarity_threshold"]
+            )
+            a = execute(entry, "a", general_prompt, parse_general)
+            b = execute(entry, "b", general_prompt, parse_general)
+            a_checks = checks_for(a)
+            b_checks = checks_for(b)
+            if a_checks == b_checks:
+                pair = ["a", "b"]
                 final_checks = a_checks
-            elif b_checks == c_checks:
-                pair = ["b", "c"]
-                final_checks = b_checks
             else:
-                raise ValueError(
-                    f"unresolved three-run disagreement for {entry['card_id']}"
-                )
-        # The independent blind transcripts are the sole authority for text
-        # parity. General runs may use candidate context for the other checks,
-        # but cannot override or manufacture this result.
-        final_checks["audio_matches_text"] = blind_transcript_passed
-        acceptance_sources = [[pair[0], "f"], [pair[1], "g"]]
-        if not final_checks["accurate_pronunciation"]:
-            d = execute(entry, "d", pronunciation_prompt, parse_pronunciation)
-            e = execute(entry, "e", pronunciation_prompt, parse_pronunciation)
-            if (
-                d["result"]["accurate_pronunciation"]
-                and e["result"]["accurate_pronunciation"]
-            ):
-                final_checks["accurate_pronunciation"] = True
-                acceptance_sources[0].append("d")
-                acceptance_sources[1].append("e")
-        decisions.append(
-            {
-                "card_id": entry["card_id"],
-                "checks": final_checks,
-                "acceptance_sources": acceptance_sources,
-            }
+                c = execute(entry, "c", general_prompt, parse_general)
+                c_checks = checks_for(c)
+                if a_checks == c_checks:
+                    pair = ["a", "c"]
+                    final_checks = a_checks
+                elif b_checks == c_checks:
+                    pair = ["b", "c"]
+                    final_checks = b_checks
+                else:
+                    raise ValueError(
+                        f"unresolved three-run disagreement for {entry['card_id']}"
+                    )
+            # The independent blind transcripts are the sole authority for text
+            # parity. General runs may use candidate context for the other checks,
+            # but cannot override or manufacture this result.
+            final_checks["audio_matches_text"] = blind_transcript_passed
+            acceptance_sources = [[pair[0], "f"], [pair[1], "g"]]
+            if not final_checks["accurate_pronunciation"]:
+                d = execute(entry, "d", pronunciation_prompt, parse_pronunciation)
+                e = execute(entry, "e", pronunciation_prompt, parse_pronunciation)
+                if (
+                    d["result"]["accurate_pronunciation"]
+                    and e["result"]["accurate_pronunciation"]
+                ):
+                    final_checks["accurate_pronunciation"] = True
+                    acceptance_sources[0].append("d")
+                    acceptance_sources[1].append("e")
+            decisions.append(
+                {
+                    "card_id": entry["card_id"],
+                    "checks": final_checks,
+                    "acceptance_sources": acceptance_sources,
+                }
+            )
+    except Exception as error:
+        run_metadata = write_run_records(
+            output_dir,
+            records,
+            run_definitions,
+            workflow_run_id,
+            workflow_run_attempt,
         )
+        failure = {
+            "schema_version": "trusted-media-model-run-failure-package.v1",
+            "model": {
+                "id": lock["model"]["id"],
+                "revision": lock["model"]["revision"],
+                "weights_manifest_sha256": model_manifest_sha256,
+            },
+            "execution": {
+                "workflow_run_id": workflow_run_id,
+                "workflow_run_attempt": workflow_run_attempt,
+                "runner_class": lock["runtime"]["runner_class"],
+                "started_at": started_at,
+                "failed_at": iso_now(),
+            },
+            "runs": run_metadata,
+            "completed_decisions": decisions,
+            "failure": {
+                "card_id": current_card_id,
+                "error_type": type(error).__name__,
+                "reason": "trusted_media_review_aborted",
+            },
+        }
+        (output_dir / "failure-package.json").write_bytes(
+            canonical_json(failure) + b"\n"
+        )
+        raise
 
-    run_metadata = []
-    for name, definition in run_definitions.items():
-        if not records[name]:
-            continue
-        run_path = output_dir / f"run-{name}.jsonl"
-        identity = write_jsonl(run_path, records[name])
-        run_metadata.append(
-            {
-                "name": name,
-                "run_id": f"{workflow_run_id}:{workflow_run_attempt}:{name}",
-                "purpose": definition["purpose"],
-                "temperature": definition["temperature"],
-                "path": run_path.name,
-                "sha256": identity["sha256"],
-                "size_bytes": identity["size_bytes"],
-                "card_count": len(records[name]),
-                "complete_asset_count": sum(
-                    record["complete_asset_consumed"] for record in records[name]
-                ),
-            }
-        )
+    run_metadata = write_run_records(
+        output_dir,
+        records,
+        run_definitions,
+        workflow_run_id,
+        workflow_run_attempt,
+    )
     completed_at = iso_now()
     package = {
         "schema_version": "trusted-media-model-run-package.v1",

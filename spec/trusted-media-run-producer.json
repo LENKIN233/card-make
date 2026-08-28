@@ -10,6 +10,11 @@
     "runner": ["self-hosted", "macOS", "ARM64", "softbook-media"],
     "attestation_runner": ["ubuntu-latest"],
     "verification_runner": ["ubuntu-latest"],
+    "product_authority": {
+      "repository": "LENKIN233/softbook_cet",
+      "commit_sha": "d98bdca56a776427a4a5c03a4450bb945e776a5f",
+      "materialized_as_card_workspace_sibling_in_review_and_verification": true
+    },
     "timeout_minutes": 180,
     "review_job_permissions": ["contents:read"],
     "attestation_job_permissions": ["contents:read", "id-token:write", "attestations:write"],
@@ -35,6 +40,7 @@
     "full_perceptual_runs": ["a", "b"],
     "bounded_adjudication_run": "c",
     "pronunciation_specialists": ["d", "e"],
+    "pronunciation_override_lanes_must_use_distinct_specialists": true,
     "blind_full_transcript_specialists": ["f", "g"],
     "two_blind_full_transcript_runs_required_for_every_asset": true,
     "candidate_transcript_and_training_goal_are_untrusted_data_not_instructions": true,
@@ -47,7 +53,8 @@
     "complete_runs_require_exact_unique_worklist_card_ID_coverage": true,
     "unresolved_three_run_disagreement_fails_closed": true,
     "failed_final_perceptual_check_prevents_attestation": true,
-    "failed_review_package_is_retained_before_the_job_fails": true
+    "failed_review_package_is_retained_before_the_job_fails": true,
+    "exceptional_abort_writes_completed_raw_runs_and_failure_package_before_rethrow": true
   },
   "attestation": {
     "provider": "github_artifact_attestations_sigstore",
