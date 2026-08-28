@@ -632,6 +632,8 @@ test('PR contract gate downloads LFS only for formal media evidence changes', ()
   const contractJob = workflow.split('  contract-harness:')[1].split('  content-scope:')[0];
   assert.match(contractJob, /lfs: false/);
   assert.match(contractJob, /formal_media_evidence_changed/);
+  assert.match(contractJob, /formal_media_evidence_present/);
+  assert.match(contractJob, /git cat-file -e/);
   assert.match(contractJob, /reviews\/trusted_media_receipts/);
   assert.match(contractJob, /git lfs pull --include='ai_tts\/\*\*\/\*\.mp3'/);
 });
