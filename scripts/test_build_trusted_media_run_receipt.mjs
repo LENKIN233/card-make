@@ -597,7 +597,7 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /TRUSTED_MEDIA_DEADLINE_EPOCH/);
   assert.match(reviewJob, /--deadline-epoch/);
   assert.match(reviewJob, /repository: LENKIN233\/softbook_cet/);
-  assert.match(reviewJob, /ref: d2bb0582217a8389c8b90ceb1828ff183249f580/);
+  assert.match(reviewJob, /ref: 3993a9bdf7e889b0c4c15bc6644a77a4e9cf3701/);
   assert.match(reviewJob, /product-authority-review/);
   assert.match(verifyJob, /runs-on: ubuntu-latest/);
   assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);
@@ -620,6 +620,8 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /--technical-audit-replay/);
   assert.match(verifyJob, /audit_audio_technical\.mjs/);
   assert.match(verifyJob, /--technical-audit-replay/);
+  assert.match(verifyJob, /trusted-media-tree-manifest\.v2/);
+  assert.match(verifyJob, /'size_bytes': item\[1\]/);
 });
 
 test('independent builders derive byte-identical receipt time from the run package', t => {
