@@ -110,6 +110,11 @@ all 301 decisions with
 `scripts/build_trusted_media_run_receipt.mjs`, and applies a GitHub Artifact
 Attestation to the exact receipt bytes. A passing worklist or self-declared JSON
 without that run and attestation is not formal media evidence.
+An unprivileged GitHub-hosted verifier rebuilds the package and audio first; a
+separate minimal signer job downloads only those verified bytes and executes no
+repository code under OIDC authority. Failed model runs retain their raw package
+before the review job fails. Formal QC later replays the matching tracked
+`reviews/trusted_media_runs/<receipt-id>/` package with the product verifier.
 `scripts/build_audio_qc_drafts.mjs` also requires the tracked receipt and
 attestation bundle and binds their hashes, source commit, model identity and
 reviewed-worklist identity into every formal QC acceptance input.

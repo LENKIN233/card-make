@@ -116,6 +116,7 @@ jobs:
           set -euo pipefail
           output_dir="$RUNNER_TEMP/trusted-media-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           test ! -e "$output_dir"
+          set +e
           python3 -B "$TRUSTED_SOURCE_ROOT/scripts/run_trusted_media_review.py" \
             --worklist "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH" \
             --asset-root "$TRUSTED_SOURCE_ROOT" \
@@ -123,9 +124,16 @@ jobs:
             --output-dir "$output_dir" \
             --workflow-run-id "$GITHUB_RUN_ID" \
             --workflow-run-attempt "$GITHUB_RUN_ATTEMPT"
+          review_status=$?
+          set -e
           echo "TRUSTED_MEDIA_OUTPUT_DIR=$output_dir" >> "$GITHUB_ENV"
+          echo "TRUSTED_MEDIA_REVIEW_EXIT_CODE=$review_status" >> "$GITHUB_ENV"
+          if [[ "$review_status" != 0 && "$review_status" != 2 ]]; then
+            echo "unexpected trusted media runner exit code: $review_status" >&2
+          fi
 
       - name: Build exact receipt and review artifacts
+        if: env.TRUSTED_MEDIA_REVIEW_EXIT_CODE == '0'
         env:
           WORKLIST_PATH: ${{ inputs.worklist_path }}
           AUTHORIZATION_PATH: ${{ inputs.authorization_path }}
@@ -156,6 +164,7 @@ jobs:
           test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
 
       - name: Upload unprivileged raw review package
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: trusted-media-raw-${{ github.run_id }}-${{ github.run_attempt }}
@@ -163,14 +172,17 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
-  attest:
+      - name: Fail after retaining rejected review evidence
+        if: env.TRUSTED_MEDIA_REVIEW_EXIT_CODE != '0'
+        shell: bash
+        run: exit "${TRUSTED_MEDIA_REVIEW_EXIT_CODE:-1}"
+
+  verify:
     needs: review
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
       contents: read
-      id-token: write
-      attestations: write
     steps:
       - name: Checkout exact trusted main commit with LFS media
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -234,25 +246,49 @@ jobs:
             cmp "$downloaded/$artifact" "$rebuilt/$artifact"
           done
           test -z "$(git status --porcelain --untracked-files=all)"
-          echo "ATTESTED_MEDIA_DIR=$rebuilt" >> "$GITHUB_ENV"
+          diff -qr "$downloaded/ai_tts" "$rebuilt/ai_tts"
+          echo "VERIFIED_MEDIA_DIR=$rebuilt" >> "$GITHUB_ENV"
+
+      - name: Upload code-free verified media package
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: trusted-media-verified-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.VERIFIED_MEDIA_DIR }}
+          if-no-files-found: error
+          retention-days: 1
+
+  attest:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - name: Download code-free verified media package
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: trusted-media-verified-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/trusted-media-verified
 
       - name: Attest exact rebuilt trusted media receipt
         id: attest
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
         with:
-          subject-path: ${{ env.ATTESTED_MEDIA_DIR }}/trusted-media-run-receipt.json
+          subject-path: ${{ runner.temp }}/trusted-media-verified/trusted-media-run-receipt.json
 
       - name: Bind attestation bundle to verified run artifacts
         shell: bash
         run: |
           set -euo pipefail
           cp "${{ steps.attest.outputs.bundle-path }}" \
-            "$ATTESTED_MEDIA_DIR/attestation-bundle.jsonl"
+            "$RUNNER_TEMP/trusted-media-verified/attestation-bundle.jsonl"
 
       - name: Upload verified run package, receipt, and attestation
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: trusted-media-run-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ env.ATTESTED_MEDIA_DIR }}
+          path: ${{ runner.temp }}/trusted-media-verified
           if-no-files-found: error
           retention-days: 30

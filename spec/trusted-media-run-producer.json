@@ -9,10 +9,13 @@
     "trigger": "workflow_dispatch_on_refs_heads_main_only",
     "runner": ["self-hosted", "macOS", "ARM64", "softbook-media"],
     "attestation_runner": ["ubuntu-latest"],
+    "verification_runner": ["ubuntu-latest"],
     "timeout_minutes": 180,
     "review_job_permissions": ["contents:read"],
     "attestation_job_permissions": ["contents:read", "id-token:write", "attestations:write"],
+    "verification_job_permissions": ["contents:read"],
     "model_and_runner_managed_code_never_receive_oidc_or_attestation_permissions": true,
+    "repository_code_never_executes_in_the_OIDC_signer_job": true,
     "worklist_path_pattern": "reviews/audio_perceptual_worklists/[A-Za-z0-9._-]+.json",
     "authorization_path_pattern": "reviews/approved_batches/[A-Za-z0-9._-]+.json",
     "inputs_must_be_tracked_regular_non_symlink_files": true,
@@ -43,7 +46,8 @@
     "two_distinct_complete_301_asset_run_artifacts_required": true,
     "complete_runs_require_exact_unique_worklist_card_ID_coverage": true,
     "unresolved_three_run_disagreement_fails_closed": true,
-    "failed_final_perceptual_check_prevents_attestation": true
+    "failed_final_perceptual_check_prevents_attestation": true,
+    "failed_review_package_is_retained_before_the_job_fails": true
   },
   "attestation": {
     "provider": "github_artifact_attestations_sigstore",
@@ -51,10 +55,12 @@
     "subject": "trusted-media-run-receipt.json",
     "uploaded_artifact_action": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
     "downloaded_artifact_action": "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
-    "github_hosted_job_rebuilds_and_byte_compares_receipt_before_attestation": true,
+    "unprivileged_GitHub_hosted_job_rebuilds_and_byte_compares_receipt_and_audio_before_attestation": true,
+    "minimal_signer_job_downloads_only_the_code_free_verified_package": true,
     "consumer_contract": "../softbook_cet/spec/trusted-media-run-receipt.json",
     "attestation_proves_provenance_not_result_correctness": true,
-    "type_specific_consumer_validation_required": true
+    "type_specific_consumer_validation_required": true,
+    "formal_QC_requires_product_verifier_replay_of_tracked_raw_run_package": true
   },
   "outputs": [
     "run-a.jsonl",
@@ -65,6 +71,7 @@
     "mlx-audio-package-manifest.json",
     "python-environment-manifest.json",
     "audio-manifest.json",
+    "exact ai_tts/cet4 audio bytes",
     "reviewed-worklist.json",
     "raw-run-manifest.json",
     "trusted-media-run-receipt.json",

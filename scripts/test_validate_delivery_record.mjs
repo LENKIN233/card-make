@@ -91,6 +91,7 @@ function mutateRecord(fixture, mutate) {
 function createFixture({
   bomAliasOnly = false,
   audioRecord = false,
+  audioEvidenceDirectories = false,
   authorizationRecord = false,
   candidateCard = false,
   confirmedExpansionEvidence = false,
@@ -178,6 +179,11 @@ function createFixture({
     if (audioRecord) {
       write(root, 'reviews/audio_qc/current.json', '{"schema_version":"model-owned-audio-qc.v2"}\n');
     }
+    if (audioEvidenceDirectories) {
+      write(root, 'reviews/audio_technical_audits/current.json', '{"ok":true}\n');
+      write(root, 'reviews/trusted_media_receipts/current.json', '{"receipt":true}\n');
+      write(root, 'reviews/trusted_media_runs/current/run-package.json', '{"run":true}\n');
+    }
     if (authorizationRecord) {
       write(root, 'reviews/approved_batches/current.json', '{"schema_version":"model-owned-content-authorization.v2"}\n');
     }
@@ -217,6 +223,11 @@ function createFixture({
     }
   }
   if (audioRecord) payloadPaths.push('reviews/audio_qc/current.json');
+  if (audioEvidenceDirectories) payloadPaths.push(
+    'reviews/audio_technical_audits/current.json',
+    'reviews/trusted_media_receipts/current.json',
+    'reviews/trusted_media_runs/current/run-package.json',
+  );
   if (authorizationRecord) payloadPaths.push('reviews/approved_batches/current.json');
   payloadPaths.sort();
 
@@ -1083,6 +1094,7 @@ test('candidate card payload cannot claim harness auto-merge authority', t => {
 
 for (const [name, option, expectedType, errorPattern] of [
   ['audio', {audioRecord: true}, 'audio', /scope\.change_type=audio/],
+  ['trusted media', {audioEvidenceDirectories: true}, 'audio', /scope\.change_type=audio/],
   ['authorization', {authorizationRecord: true}, 'authorization', /scope\.change_type=authorization/],
 ]) {
   test(`${name} evidence requires its explicit delivery change type`, t => {

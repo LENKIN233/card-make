@@ -27,6 +27,7 @@ function buildFixtureAudioQc(fixture, options) {
     attestationBundlePath: fixture.attestationBundlePath,
     execFile: fixture.execFile,
     trustedReceiptPath: fixture.trustedReceiptPath,
+    typeSpecificVerifier: fixture.typeSpecificVerifier,
     ...options,
   });
 }
@@ -73,6 +74,7 @@ test('builds one formal-ready model-owned QC record per box after complete model
       validateAudioQcRecord(record, {
         execFile: fixture.execFile,
         root: fixture.root,
+        typeSpecificVerifier: fixture.typeSpecificVerifier,
       }),
       [],
     );
@@ -93,6 +95,7 @@ test('formal QC re-verifies exact tracked receipt and attestation bytes', t => {
     attestations: ATTESTATIONS,
     contentAuthorizationPath: fixture.authorizationPath,
     root: fixture.root,
+    typeSpecificVerifier: fixture.typeSpecificVerifier,
     worklistPath: fixture.worklistPath,
   });
   const forged = structuredClone(result.records[0]);
@@ -103,6 +106,23 @@ test('formal QC re-verifies exact tracked receipt and attestation bytes', t => {
   });
   assert.ok(issues.some(issue =>
     issue.code === 'audio_qc_trusted_media_evidence_verification_failed'));
+});
+
+test('formal QC rejects attested evidence whose raw package cannot replay', t => {
+  const fixture = createFixture(t);
+  const reviewed = completeWorklist(fixture.worklist);
+  writeWorklist(fixture, reviewed);
+  commitFixture(fixture);
+  assert.throws(
+    () => buildFixtureAudioQc(fixture, {
+      attestations: ATTESTATIONS,
+      contentAuthorizationPath: fixture.authorizationPath,
+      root: fixture.root,
+      typeSpecificVerifier: () => ({ok: false, formal_ready: false}),
+      worklistPath: fixture.worklistPath,
+    }),
+    /type-specific artifact replay is not formal-ready/,
+  );
 });
 
 test('fails closed while any perceptual entry is pending', t => {
@@ -318,6 +338,22 @@ function createFixture(
   fs.mkdirSync(path.join(root, 'reviews/audio_perceptual_worklists'), {recursive: true});
   fs.mkdirSync(path.join(root, 'reviews/agent_self_review'), {recursive: true});
   fs.mkdirSync(path.join(root, 'reviews/approved_batches'), {recursive: true});
+  const trustedRunDirectory = path.join(
+    root,
+    'reviews/trusted_media_runs/current-receipt',
+  );
+  fs.mkdirSync(trustedRunDirectory, {recursive: true});
+  for (const filename of [
+    'run-package.json',
+    'model-weights-manifest.json',
+    'mlx-audio-package-manifest.json',
+    'python-environment-manifest.json',
+  ]) {
+    fs.writeFileSync(
+      path.join(trustedRunDirectory, filename),
+      `${JSON.stringify({fixture: filename})}\n`,
+    );
+  }
   fs.writeFileSync(
     path.join(root, 'card_boxes_json/cet4.json'),
     `${JSON.stringify({track: 'cet4', cards}, null, 2)}\n`,
@@ -396,6 +432,16 @@ function createFixture(
       }]);
     },
     root,
+    typeSpecificVerifier({receiptPath}) {
+      const receiptBytes = fs.readFileSync(receiptPath);
+      const receipt = JSON.parse(receiptBytes);
+      return {
+        ok: true,
+        formal_ready: true,
+        receipt_sha256: digest(receiptBytes),
+        source_commit_sha: receipt.source.commit_sha,
+      };
+    },
     trustedReceiptPath: 'reviews/trusted_media_receipts/current-receipt.json',
     worklist,
     worklistPath: 'reviews/audio_perceptual_worklists/pilot.json',

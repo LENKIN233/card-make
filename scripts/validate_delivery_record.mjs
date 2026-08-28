@@ -1050,7 +1050,10 @@ export function validateDeliveryRecord({
   const audioAuthorityFiles = files.filter(file =>
     file.startsWith('ai_tts/') ||
     ((file.startsWith('reviews/audio_qc/') ||
-      file.startsWith('reviews/audio_perceptual_worklists/')) &&
+      file.startsWith('reviews/audio_perceptual_worklists/') ||
+      file.startsWith('reviews/audio_technical_audits/') ||
+      file.startsWith('reviews/trusted_media_receipts/') ||
+      file.startsWith('reviews/trusted_media_runs/')) &&
       !file.endsWith('/TEMPLATE.json') &&
       !file.endsWith('/README.md'))
   );

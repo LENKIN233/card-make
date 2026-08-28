@@ -3,6 +3,11 @@ import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
+import {
+  computeCardCorpusFingerprint,
+  validateCurrentApprovalRecordReference,
+} from './card_integrity.mjs';
+
 const RECEIPT_DIRECTORY = 'reviews/trusted_media_receipts';
 
 export function verifyTrustedMediaEvidence({
@@ -11,6 +16,7 @@ export function verifyTrustedMediaEvidence({
   execFile = execFileSync,
   expectedSourceRecords = null,
   root,
+  typeSpecificVerifier = runProductTrustedMediaVerifier,
   trustedReceiptPath,
   worklistPath,
   worklistSha256,
@@ -53,6 +59,14 @@ export function verifyTrustedMediaEvidence({
     authorization = JSON.parse(authorizationFile.bytes.toString('utf8'));
   } catch {
     throw new Error('trusted media receipt or authorization is not JSON');
+  }
+  const currentAuthorization = validateCurrentApprovalRecordReference({
+    approvalPath: authorizationFile.relativePath,
+    currentFingerprint: computeCardCorpusFingerprint(root),
+    root,
+  });
+  if (!currentAuthorization.ok) {
+    throw new Error('trusted media content authorization is not current');
   }
   if (
     receipt.schema_version !== 'trusted-media-run-receipt.v1' ||
@@ -99,6 +113,7 @@ export function verifyTrustedMediaEvidence({
     'LENKIN233/card-make',
     '--bundle',
     bundleFile.absolute,
+    '--deny-self-hosted-runners',
     '--signer-workflow',
     'LENKIN233/card-make/.github/workflows/trusted-media-run.yml',
     '--signer-digest',
@@ -132,7 +147,32 @@ export function verifyTrustedMediaEvidence({
   )) {
     throw new Error('trusted media attestation does not bind the exact receipt bytes');
   }
+  const artifactDirectory = requireTrackedArtifactDirectory({
+    receiptRelativePath: receiptFile.relativePath,
+    root,
+  });
+  let semanticResult;
+  try {
+    semanticResult = typeSpecificVerifier({
+      artifactDirectory,
+      audioRoot: path.resolve(root),
+      bundlePath: bundleFile.absolute,
+      receiptPath: receiptFile.absolute,
+      root: path.resolve(root),
+    });
+  } catch {
+    throw new Error('trusted media type-specific artifact replay failed');
+  }
+  if (
+    semanticResult?.ok !== true ||
+    semanticResult?.formal_ready !== true ||
+    semanticResult?.receipt_sha256 !== receiptSha256 ||
+    semanticResult?.source_commit_sha !== receipt.source.commit_sha
+  ) {
+    throw new Error('trusted media type-specific artifact replay is not formal-ready');
+  }
   return {
+    artifactDirectory: path.relative(root, artifactDirectory).split(path.sep).join('/'),
     bundlePath: bundleFile.relativePath,
     bundleSha256,
     modelId: receipt.execution.model.id,
@@ -142,6 +182,81 @@ export function verifyTrustedMediaEvidence({
     receiptSha256,
     sourceCommit: receipt.source.commit_sha,
   };
+}
+
+function requireTrackedArtifactDirectory({receiptRelativePath, root}) {
+  const receiptStem = path.basename(receiptRelativePath, '.json');
+  if (!/^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$/.test(receiptStem)) {
+    throw new Error('trusted media receipt filename cannot identify its artifact directory');
+  }
+  const directory = path.resolve(root, 'reviews/trusted_media_runs', receiptStem);
+  const expectedParent = path.resolve(root, 'reviews/trusted_media_runs');
+  if (
+    path.dirname(directory) !== expectedParent ||
+    !fs.existsSync(directory) ||
+    !fs.lstatSync(directory).isDirectory() ||
+    fs.lstatSync(directory).isSymbolicLink()
+  ) {
+    throw new Error('trusted media artifact directory is missing or invalid');
+  }
+  const entries = fs.readdirSync(directory, {withFileTypes: true});
+  if (entries.length === 0 || entries.some(entry => !entry.isFile())) {
+    throw new Error('trusted media artifact directory must contain only direct files');
+  }
+  for (const entry of entries) {
+    requireTrackedWorkspaceFile({
+      file: path.join(directory, entry.name),
+      label: `trusted media artifact ${entry.name}`,
+      root,
+    });
+  }
+  for (const required of [
+    'run-package.json',
+    'model-weights-manifest.json',
+    'mlx-audio-package-manifest.json',
+    'python-environment-manifest.json',
+  ]) {
+    if (!entries.some(entry => entry.name === required)) {
+      throw new Error(`trusted media artifact directory omits ${required}`);
+    }
+  }
+  return directory;
+}
+
+function runProductTrustedMediaVerifier({
+  artifactDirectory,
+  audioRoot,
+  bundlePath,
+  receiptPath,
+  root,
+}) {
+  const verifier = path.resolve(
+    root,
+    '..',
+    'softbook_cet',
+    'scripts',
+    'verify_trusted_media_run_receipt.mjs',
+  );
+  if (!fs.existsSync(verifier) || !fs.lstatSync(verifier).isFile()) {
+    throw new Error('softbook trusted media verifier is unavailable');
+  }
+  const output = execFileSync(process.execPath, [
+    verifier,
+    '--receipt',
+    receiptPath,
+    '--bundle',
+    bundlePath,
+    '--artifact-dir',
+    artifactDirectory,
+    '--audio-root',
+    audioRoot,
+    '--verify-attestation',
+  ], {
+    cwd: root,
+    encoding: 'utf8',
+    maxBuffer: 32 * 1024 * 1024,
+  });
+  return JSON.parse(output);
 }
 
 function requireTrackedEvidenceFile({file, label, root, suffix}) {

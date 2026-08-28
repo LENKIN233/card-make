@@ -50,8 +50,9 @@ immutable historical evidence only and cannot authorize current content.
   a capability blocker and continue independent work.
 - Keep exact scope, immutable commit/input SHA, current corpus fingerprint,
   scoped-audit replay, answer/reference parity, and technical audio invariants.
-- Full-track authorization must bind one direct immutable runtime payload and
-  derive its canonical `content_version`; caller-chosen versions fail closed.
+- Full-track authorization must bind one direct immutable runtime payload or
+  shard manifest, its exact byte SHA-256, and the derived canonical
+  `content_version`; caller-chosen versions fail closed.
 - Treat `model-acceptance.v2` as structural evidence. Repository authority also
   requires the trusted base-only model check after its documented bootstrap.
 - Do not delete a card without governed destructive-change evidence bound to

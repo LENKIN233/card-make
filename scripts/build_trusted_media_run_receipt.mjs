@@ -36,6 +36,52 @@ const SPECIALIST_CHECK = Object.freeze({
   blind_transcript: 'audio_matches_text',
 });
 
+function normalizedWords(value) {
+  return String(value ?? '').toLowerCase().match(/[a-z0-9]+/g) ?? [];
+}
+
+function transcriptSimilarity(expected, heard) {
+  const a = normalizedWords(expected);
+  const b = normalizedWords(heard);
+  if (a.length + b.length === 0) return 1;
+  const b2j = new Map();
+  for (const [index, token] of b.entries()) {
+    if (!b2j.has(token)) b2j.set(token, []);
+    b2j.get(token).push(index);
+  }
+  const queue = [[0, a.length, 0, b.length]];
+  let matches = 0;
+  while (queue.length > 0) {
+    const [alo, ahi, blo, bhi] = queue.pop();
+    let bestI = alo;
+    let bestJ = blo;
+    let bestSize = 0;
+    let previous = new Map();
+    for (let i = alo; i < ahi; i += 1) {
+      const current = new Map();
+      for (const j of b2j.get(a[i]) ?? []) {
+        if (j < blo) continue;
+        if (j >= bhi) break;
+        const size = (previous.get(j - 1) ?? 0) + 1;
+        current.set(j, size);
+        if (size > bestSize) {
+          bestI = i - size + 1;
+          bestJ = j - size + 1;
+          bestSize = size;
+        }
+      }
+      previous = current;
+    }
+    if (bestSize === 0) continue;
+    matches += bestSize;
+    if (alo < bestI && blo < bestJ) queue.push([alo, bestI, blo, bestJ]);
+    const afterI = bestI + bestSize;
+    const afterJ = bestJ + bestSize;
+    if (afterI < ahi && afterJ < bhi) queue.push([afterI, ahi, afterJ, bhi]);
+  }
+  return (2 * matches) / (a.length + b.length);
+}
+
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
 function exactKeys(value, expected, label) {
@@ -222,6 +268,9 @@ function validateRunPackage(runPackage, runRoot, worklist, lock) {
   const runDefinitions = new Map(lock.runs.map(run => [run.name, run]));
   const expectedCardIds = worklist.entries.map(entry => entry.card_id);
   const expectedCardIdSet = new Set(expectedCardIds);
+  const expectedEntryByCard = new Map(
+    worklist.entries.map(entry => [entry.card_id, entry]),
+  );
   const runPaths = new Set();
   const runHashes = new Set();
   for (const run of runPackage.runs) {
@@ -270,6 +319,33 @@ function validateRunPackage(runPackage, runRoot, worklist, lock) {
       })
     ) {
       throw new Error(`run ${run.name} does not prove complete exact-asset consumption`);
+    }
+    for (const [index, record] of records.entries()) {
+      const entry = expectedEntryByCard.get(record.card_id);
+      if (
+        record.run_id !== run.run_id ||
+        record.run_name !== run.name ||
+        record.purpose !== run.purpose ||
+        record.temperature !== run.temperature ||
+        record.entry_identity_sha256 !== entry?.entry_identity_sha256 ||
+        record.asset_path !== entry?.audio?.asset_path ||
+        record.asset_sha256 !== entry?.audio?.file_sha256
+      ) {
+        throw new Error(`run ${run.name} record ${index} identity is invalid`);
+      }
+      if (run.purpose === 'blind_transcript') {
+        const heard = record.result?.transcript_heard;
+        const recomputed = Number(
+          transcriptSimilarity(entry.audio.transcript, heard).toFixed(6),
+        );
+        if (
+          typeof heard !== 'string' ||
+          !heard.trim() ||
+          record.transcript_similarity !== recomputed
+        ) {
+          throw new Error(`run ${run.name} record ${index} transcript similarity is invalid`);
+        }
+      }
     }
     runMap.set(run.name, {...run, records: new Map(records.map(record => [record.card_id, record]))});
   }
@@ -539,6 +615,25 @@ export function buildTrustedMediaArtifacts({
   };
   const audioManifestPath = path.join(outputDir, 'audio-manifest.json');
   const audioManifestIdentity = writeJson(audioManifestPath, audioManifest);
+  for (const entry of reviewed.entries) {
+    const source = safeRegularFile(
+      repoRoot,
+      entry.audio.asset_path,
+      `reviewed audio ${entry.card_id}`,
+    );
+    if (
+      sha256(source.bytes) !== entry.audio.file_sha256 ||
+      source.size_bytes !== entry.audio.size_bytes
+    ) {
+      throw new Error(`reviewed audio ${entry.card_id} bytes do not match worklist`);
+    }
+    const target = path.resolve(outputDir, entry.audio.asset_path);
+    if (!target.startsWith(`${path.resolve(outputDir)}${path.sep}`)) {
+      throw new Error(`reviewed audio ${entry.card_id} path escapes output`);
+    }
+    fs.mkdirSync(path.dirname(target), {recursive: true});
+    fs.copyFileSync(source.path, target, fs.constants.COPYFILE_EXCL);
+  }
   const runPackageIdentity = artifactIdentity(runPackagePath);
   const modelWeightsManifestIdentity = artifactIdentity(
     path.join(runRoot, 'model-weights-manifest.json'),
@@ -597,6 +692,10 @@ export function buildTrustedMediaArtifacts({
       harness: {
         driver_bundle_sha256: driverBundleSha256,
         dependency_lock_sha256: sha256(lockFile.bytes),
+        mlx_audio_package_manifest_sha256:
+          lock.runtime.mlx_audio_package_manifest_sha256,
+        python_environment_manifest_sha256:
+          lock.runtime.python_environment_manifest_sha256,
       },
     },
     candidate: {

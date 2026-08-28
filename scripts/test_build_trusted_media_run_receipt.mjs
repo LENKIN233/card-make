@@ -267,6 +267,10 @@ test('builder emits exact 301-asset reviewed worklist and receipt', t => {
     ['agent:trusted-media-af', 'agent:trusted-media-bg'],
   );
   assert.equal(result.receipt.size_bytes < 1024 * 1024, true);
+  assert.deepEqual(
+    fs.readFileSync(path.join(fixture.runDir, 'ai_tts/cet4/0000/000001.mp3')),
+    fs.readFileSync(path.join(fixture.root, 'ai_tts/cet4/0000/000001.mp3')),
+  );
 });
 
 test('builder rejects a run file changed after package creation', t => {
@@ -349,6 +353,32 @@ test('builder rejects duplicate card rows hidden behind a 301-line run', t => {
   );
 });
 
+test('builder recomputes blind transcript similarity from raw text', t => {
+  const fixture = buildFixture(t);
+  const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
+  const run = runPackage.runs.find(item => item.name === 'f');
+  const runPath = path.join(fixture.runDir, run.path);
+  const records = fs.readFileSync(runPath, 'utf8').trim().split('\n').map(JSON.parse);
+  records[0].result.transcript_heard = 'unrelated blind transcript';
+  records[0].transcript_similarity = 1;
+  const bytes = Buffer.from(`${records.map(record => JSON.stringify(record)).join('\n')}\n`);
+  fs.writeFileSync(runPath, bytes);
+  run.sha256 = sha256(bytes);
+  run.size_bytes = bytes.length;
+  fs.writeFileSync(fixture.runPackageFile.path, `${JSON.stringify(runPackage)}\n`);
+  assert.throws(
+    () => buildTrustedMediaArtifacts({
+      authorizationPath: fixture.authorizationFile.path,
+      outputDir: fixture.runDir,
+      repoRoot: fixture.root,
+      runPackagePath: fixture.runPackageFile.path,
+      sourceCommit: fixture.sourceCommit,
+      worklistPath: fixture.worklistFile.path,
+    }),
+    /transcript similarity is invalid/,
+  );
+});
+
 test('builder rejects model identity drift from the trusted runner lock', t => {
   const fixture = buildFixture(t);
   const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
@@ -411,22 +441,28 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   const workflow = fs.readFileSync(path.join(ROOT, '.github/workflows/trusted-media-run.yml'), 'utf8');
   const reviewJob = workflow.slice(
     workflow.indexOf('  review:'),
+    workflow.indexOf('\n  verify:'),
+  );
+  const verifyJob = workflow.slice(
+    workflow.indexOf('  verify:'),
     workflow.indexOf('\n  attest:'),
   );
   const attestJob = workflow.slice(workflow.indexOf('  attest:'));
   assert.match(reviewJob, /runs-on: \[self-hosted, macOS, ARM64, softbook-media\]/);
   assert.doesNotMatch(reviewJob, /id-token: write|attestations: write|actions\/attest@/);
   assert.match(reviewJob, /name: trusted-media-raw-/);
+  assert.match(reviewJob, /if: always\(\)/);
+  assert.match(reviewJob, /Fail after retaining rejected review evidence/);
+  assert.match(verifyJob, /runs-on: ubuntu-latest/);
+  assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);
+  assert.match(verifyJob, /lfs: true/);
+  assert.match(verifyJob, /Rebuild and byte-verify receipt on GitHub-hosted runner/);
+  assert.match(verifyJob, /diff -qr "\$downloaded\/ai_tts" "\$rebuilt\/ai_tts"/);
   assert.match(attestJob, /runs-on: ubuntu-latest/);
-  assert.match(attestJob, /lfs: true/);
   assert.match(attestJob, /id-token: write/);
   assert.match(attestJob, /attestations: write/);
   assert.match(attestJob, /actions\/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c/);
-  assert.ok(
-    attestJob.indexOf('Rebuild and byte-verify receipt on GitHub-hosted runner') <
-      attestJob.indexOf('Attest exact rebuilt trusted media receipt'),
-  );
-  assert.match(attestJob, /cmp "\$downloaded\/\$artifact" "\$rebuilt\/\$artifact"/);
+  assert.doesNotMatch(attestJob, /actions\/checkout@|node scripts\/|python3 -/);
   assert.match(reviewJob, /PYTHONNOUSERSITE: "1"/);
 });
 

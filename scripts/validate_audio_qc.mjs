@@ -173,7 +173,12 @@ function validateRecord(
   record,
   errors,
   source,
-  {execFile = execFileSync, root = ROOT, template = false} = {},
+  {
+    execFile = execFileSync,
+    root = ROOT,
+    template = false,
+    typeSpecificVerifier,
+  } = {},
 ) {
   const spec = readJson(SPEC_PATH);
   const modelOwned = record.schema_version === 'model-owned-audio-qc.v2';
@@ -373,6 +378,7 @@ function validateRecord(
         execFile,
         expectedSourceRecords: record.source_records,
         root,
+        typeSpecificVerifier,
         trustedReceiptPath: record.source_records?.trusted_media_receipt,
         worklistPath: record.source_records?.linked_perceptual_worklist,
         worklistSha256: record.source_records?.perceptual_worklist_sha256,
@@ -435,10 +441,16 @@ export function validateAudioQcRecord(
     root = ROOT,
     source = 'audio-qc-record',
     template = false,
+    typeSpecificVerifier,
   } = {},
 ) {
   const errors = [];
-  validateRecord(record, errors, source, {execFile, root, template});
+  validateRecord(record, errors, source, {
+    execFile,
+    root,
+    template,
+    typeSpecificVerifier,
+  });
   return errors;
 }
 
