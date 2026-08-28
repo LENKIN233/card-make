@@ -3420,6 +3420,16 @@ function validate({ base, head }) {
         isSelfReviewPath(entry.paths[0]) &&
         !isSelfReviewPath(entry.path)
       );
+      const mutatesRuntimePayload = entry.paths.some(isRuntimePayloadPath) &&
+        statusType !== 'A';
+      if (mutatesRuntimePayload) {
+        issues.push({
+          code: 'changed_runtime_payload_not_append_only',
+          path: entry.paths.find(isRuntimePayloadPath) || entry.path,
+          status: entry.status,
+          message: 'Runtime payload and shard-manifest evidence is append-only; authorize new immutable paths instead of modifying or deleting prior payload bytes.',
+        });
+      }
       if (removesSelfReview) {
         issues.push({
           code: 'changed_self_review_deleted',

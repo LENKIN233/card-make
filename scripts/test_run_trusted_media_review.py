@@ -37,7 +37,7 @@ def general_result(transcript: str, **overrides):
         "notes": "",
     }
     value.update(overrides)
-    return repr(value)
+    return json.dumps(value)
 
 
 class FakeAdapter:
@@ -48,19 +48,23 @@ class FakeAdapter:
         bad_blind=False,
         truncated=False,
         text_vote_only=False,
+        malformed=False,
     ):
         self.unresolved = unresolved
         self.bad_blind = bad_blind
         self.truncated = truncated
         self.text_vote_only = text_vote_only
+        self.malformed = malformed
 
     def generate(self, audio_path: Path, prompt: str, temperature: float):
         card_id = audio_path.stem
         expected = f"Sentence one for {card_id}. Sentence two is complete."
-        if "Use exactly one key" in prompt:
-            text = repr({"transcript_heard": "unrelated words" if self.bad_blind else expected})
+        if self.malformed:
+            text = "not-json"
+        elif "Use exactly one key" in prompt:
+            text = json.dumps({"transcript_heard": "unrelated words" if self.bad_blind else expected})
         elif "Focus only on English pronunciation" in prompt:
-            text = repr(
+            text = json.dumps(
                 {
                     "transcript_heard": expected,
                     "accurate_pronunciation": True,
@@ -309,6 +313,28 @@ class TrustedMediaRunnerTests(unittest.TestCase):
             self.assertEqual(failure["failure"]["error_type"], "KeyboardInterrupt")
             self.assertGreater(len(failure["runs"]), 0)
             self.assertTrue((output / "run-f.jsonl").is_file())
+
+    def test_malformed_retries_are_checkpointed_before_parse_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root / "output"
+            with self.assertRaisesRegex(ValueError, "model output parse failed"):
+                run_review_package(
+                    worklist=worklist(root, count=1),
+                    asset_root=root,
+                    output_dir=output,
+                    adapter=FakeAdapter(malformed=True),
+                    lock=LOCK,
+                    model_manifest_sha256=digest(b"weights"),
+                    workflow_run_id="32975067429",
+                    workflow_run_attempt=1,
+                    expected_asset_count=1,
+                )
+            failure = json.loads((output / "failure-package.json").read_text())
+            attempts = {item["name"]: item for item in failure["attempts"]}
+            self.assertEqual(attempts["f"]["attempt_count"], 2)
+            lines = (output / "attempt-f.jsonl").read_text().strip().splitlines()
+            self.assertEqual(len(lines), 2)
 
     def test_truncated_model_input_cannot_claim_complete_consumption(self):
         with tempfile.TemporaryDirectory() as directory:

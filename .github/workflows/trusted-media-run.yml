@@ -39,6 +39,12 @@ jobs:
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONNOUSERSITE: "1"
     steps:
+      - name: Initialize bounded review deadline
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "TRUSTED_MEDIA_DEADLINE_EPOCH=$(( $(date +%s) + 9000 ))" >> "$GITHUB_ENV"
+
       - name: Checkout exact trusted main commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -51,7 +57,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LENKIN233/softbook_cet
-          ref: 40769ec013c9da0a7358ffb4a1da9ec4940f194a
+          ref: 4ca4e5af9873e693f8e8624b18fe2145ff962738
           path: product-authority-review
           fetch-depth: 1
           persist-credentials: false
@@ -67,7 +73,7 @@ jobs:
           test "$(git -C "$source_root" rev-parse HEAD)" = "$GITHUB_SHA"
           test -z "$(git -C "$source_root" status --porcelain --untracked-files=all)"
           product_root="$RUNNER_TEMP/softbook_cet"
-          product_commit=40769ec013c9da0a7358ffb4a1da9ec4940f194a
+          product_commit=4ca4e5af9873e693f8e8624b18fe2145ff962738
           test ! -e "$product_root"
           test "$(git -C "$GITHUB_WORKSPACE/product-authority-review" rev-parse HEAD)" = "$product_commit"
           git -C "$GITHUB_WORKSPACE/product-authority-review" worktree add \
@@ -168,7 +174,7 @@ jobs:
             --output-dir "$output_dir" \
             --workflow-run-id "$GITHUB_RUN_ID" \
             --workflow-run-attempt "$GITHUB_RUN_ATTEMPT" \
-            --maximum-runtime-seconds 9900
+            --deadline-epoch "$TRUSTED_MEDIA_DEADLINE_EPOCH"
           review_status=$?
           set -e
           echo "TRUSTED_MEDIA_REVIEW_EXIT_CODE=$review_status" >> "$GITHUB_ENV"
@@ -191,6 +197,7 @@ jobs:
             .github/workflows/trusted-media-run.yml \
             scripts/run_trusted_media_review.py \
             scripts/build_trusted_media_run_receipt.mjs \
+            scripts/replay_trusted_media_raw_outputs.py \
             scripts/audit_audio_technical.mjs \
             scripts/manage_audio_perceptual_worklist.mjs \
             scripts/lib/card_integrity.mjs \
@@ -242,7 +249,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LENKIN233/softbook_cet
-          ref: 40769ec013c9da0a7358ffb4a1da9ec4940f194a
+          ref: 4ca4e5af9873e693f8e8624b18fe2145ff962738
           path: product-authority-verify
           fetch-depth: 1
           persist-credentials: false
@@ -253,7 +260,7 @@ jobs:
           set -euo pipefail
           source_root="$RUNNER_TEMP/trusted-source-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           product_root="$RUNNER_TEMP/softbook_cet"
-          product_commit=40769ec013c9da0a7358ffb4a1da9ec4940f194a
+          product_commit=4ca4e5af9873e693f8e8624b18fe2145ff962738
           test ! -e "$source_root"
           test ! -e "$product_root"
           git worktree add --detach "$source_root" "$GITHUB_SHA"

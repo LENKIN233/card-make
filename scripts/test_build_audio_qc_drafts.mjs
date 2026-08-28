@@ -175,10 +175,13 @@ test('current model-owned full-track review satisfies the TTS text gate without 
     worklistPath: fixture.worklistPath,
   });
   assert.equal(result.records.length, 108);
+  const authorization = JSON.parse(fs.readFileSync(
+    path.join(fixture.root, fixture.authorizationPath),
+  ));
   assert.ok(result.records.every(record =>
     record.text_gate.tts_text_reviewed === true &&
     record.source_records.linked_agent_self_reviews.includes(
-      'reviews/agent_self_review/current-full-track.json',
+      authorization.validation.model_review,
     )));
 });
 

@@ -230,9 +230,20 @@ function isTrustedRunArtifactPath(repositoryPath) {
   );
 }
 
+function isTrustedTechnicalAuditPath(repositoryPath) {
+  return (
+    repositoryPath.startsWith('reviews/audio_technical_audits/') &&
+    repositoryPath.endsWith('.json') &&
+    !repositoryPath.endsWith('/README.md') &&
+    !repositoryPath.endsWith('/TEMPLATE.json')
+  );
+}
+
 function validateTrustedMediaLifecycle(root, baseOid, headOid, entries, errors) {
   const trustedEntries = entries.filter(entry =>
-    isTrustedReceiptArtifactPath(entry.path) || isTrustedRunArtifactPath(entry.path));
+    isTrustedReceiptArtifactPath(entry.path) ||
+    isTrustedRunArtifactPath(entry.path) ||
+    isTrustedTechnicalAuditPath(entry.path));
   for (const entry of trustedEntries) {
     if (entry.status !== 'A') {
       errors.push(`trusted media evidence is append-only and cannot be ${entry.status}: ${entry.path}`);

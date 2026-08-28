@@ -118,14 +118,18 @@ An unprivileged GitHub-hosted verifier rebuilds the package and audio first; a
 separate minimal signer job downloads only those verified bytes and executes no
 repository code under OIDC authority. Failed or exceptionally aborted model runs
 retain completed raw records and a failure package before the review job fails.
-Each completed model call is fsynced incrementally, and the runner deadline
-reserves time for the failure artifact upload.
+Each completed model attempt is fsynced before parsing or retry. Final results
+must replay from the retained bounded JSON-or-Python-literal response. A deadline initialized at
+job start reserves thirty minutes for failure artifact upload.
 Formal QC later replays the matching tracked
 `reviews/trusted_media_runs/<receipt-id>/` package with the product verifier.
 The required formal-QC gate materializes Git LFS media bytes; shared receipt,
 attestation and 301-asset semantic replay is cached once per exact HEAD/evidence
 identity. Receipt, bundle, run-package and formal-QC evidence is append-only and
 new trusted evidence must be atomically consumed by changed formal QC.
+Technical audits are direct tracked 100644 JSON records and append-only. The
+formal text gate reuses the current authorization's already canonically replayed
+linked model review instead of selecting a looser review by timestamp.
 `scripts/build_audio_qc_drafts.mjs` also requires the tracked receipt and
 attestation bundle and binds their hashes, source commit, model identity and
 reviewed-worklist identity into every formal QC acceptance input.

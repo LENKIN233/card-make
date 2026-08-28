@@ -99,6 +99,7 @@ function createFixture({
   customDiffDriver = false,
   declareGitlink = true,
   existingTrustedReceipt = false,
+  existingTechnicalAudit = false,
   gitlinkPath = false,
   historicalHandoffPath = null,
   parked = false,
@@ -133,6 +134,9 @@ function createFixture({
   if (existingTrustedReceipt) {
     write(root, 'reviews/trusted_media_receipts/existing.json', '{"version":"base"}\n');
   }
+  if (existingTechnicalAudit) {
+    write(root, 'reviews/audio_technical_audits/existing.json', '{"version":"base"}\n');
+  }
   const baseCommitSha = commitAll(root, 'base');
 
   git(root, 'switch', '-c', 'harness/test-delivery');
@@ -145,6 +149,9 @@ function createFixture({
     if (unicodePath) write(root, 'docs/听力.txt', 'changed listening text\n');
     if (existingTrustedReceipt) {
       write(root, 'reviews/trusted_media_receipts/existing.json', '{"version":"changed"}\n');
+    }
+    if (existingTechnicalAudit) {
+      write(root, 'reviews/audio_technical_audits/existing.json', '{"version":"changed"}\n');
     }
     if (candidateCard) {
       const prefixes = multiPrefixEvidence ? ['0000', '0001'] : ['0000'];
@@ -232,6 +239,9 @@ function createFixture({
   if (audioRecord) payloadPaths.push('reviews/audio_qc/current.json');
   if (existingTrustedReceipt) {
     payloadPaths.push('reviews/trusted_media_receipts/existing.json');
+  }
+  if (existingTechnicalAudit) {
+    payloadPaths.push('reviews/audio_technical_audits/existing.json');
   }
   if (audioEvidenceDirectories) payloadPaths.push(
     'reviews/audio_technical_audits/current.json',
@@ -1133,6 +1143,15 @@ test('orphan trusted media evidence cannot enter through an audio handoff', t =>
 
 test('existing trusted media receipt cannot be modified by an audio handoff', t => {
   const fixture = createFixture({existingTrustedReceipt: true});
+  cleanUp(t, fixture);
+  mutateRecord(fixture, record => {
+    record.scope.change_type = 'audio';
+  });
+  assertError(validate(fixture), /trusted media evidence is append-only and cannot be M/);
+});
+
+test('existing technical audit cannot be modified by an audio handoff', t => {
+  const fixture = createFixture({existingTechnicalAudit: true});
   cleanUp(t, fixture);
   mutateRecord(fixture, record => {
     record.scope.change_type = 'audio';

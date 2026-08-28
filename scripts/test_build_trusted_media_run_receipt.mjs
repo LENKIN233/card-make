@@ -42,6 +42,7 @@ function copyProducerAssets(root) {
     '.github/workflows/trusted-media-run.yml',
     'scripts/run_trusted_media_review.py',
     'scripts/build_trusted_media_run_receipt.mjs',
+    'scripts/replay_trusted_media_raw_outputs.py',
     'scripts/audit_audio_technical.mjs',
     'scripts/manage_audio_perceptual_worklist.mjs',
     'scripts/lib/card_integrity.mjs',
@@ -212,9 +213,12 @@ function buildFixture(t) {
         no_unwanted_noise_or_clipping: true,
         notes: '',
       },
-      raw_outputs: ['accepted'],
+      raw_outputs: [],
       transcript_similarity: 1,
     }));
+    for (const record of records) {
+      record.raw_outputs = [JSON.stringify(record.result)];
+    }
     const payload = Buffer.from(records.map(record => JSON.stringify(record)).join('\n') + '\n');
     const file = write(root, `run-output/run-${name}.jsonl`, payload);
     runFiles.push({
@@ -339,7 +343,32 @@ test('builder rejects a run file changed after package creation', t => {
       sourceCommit: fixture.sourceCommit,
       worklistPath: fixture.worklistFile.path,
     }),
-    /file identity does not match package/,
+    /file identity does not match package|retained raw model outputs do not replay packaged results/,
+  );
+});
+
+test('builder rejects a result not supported by the retained raw model output', t => {
+  const fixture = buildFixture(t);
+  const runPackage = JSON.parse(fs.readFileSync(fixture.runPackageFile.path));
+  const run = runPackage.runs.find(item => item.name === 'a');
+  const runPath = path.join(fixture.runDir, run.path);
+  const records = fs.readFileSync(runPath, 'utf8').trim().split('\n').map(JSON.parse);
+  records[0].result.natural_rhythm = false;
+  const bytes = Buffer.from(`${records.map(record => JSON.stringify(record)).join('\n')}\n`);
+  fs.writeFileSync(runPath, bytes);
+  run.sha256 = sha256(bytes);
+  run.size_bytes = bytes.length;
+  fs.writeFileSync(fixture.runPackageFile.path, `${JSON.stringify(runPackage)}\n`);
+  assert.throws(
+    () => buildTrustedMediaArtifacts({
+      authorizationPath: fixture.authorizationFile.path,
+      outputDir: fixture.runDir,
+      repoRoot: fixture.root,
+      runPackagePath: fixture.runPackageFile.path,
+      sourceCommit: fixture.sourceCommit,
+      worklistPath: fixture.worklistFile.path,
+    }),
+    /retained raw model outputs do not replay packaged results/,
   );
 });
 
@@ -403,6 +432,9 @@ test('builder rejects one pronunciation specialist reused across acceptance lane
       specific_error: '',
     },
   }));
+  for (const record of records) {
+    record.raw_outputs = [JSON.stringify(record.result)];
+  }
   const bytes = Buffer.from(
     `${records.map(record => JSON.stringify(record)).join('\n')}\n`,
   );
@@ -467,6 +499,7 @@ test('builder recomputes blind transcript similarity from raw text', t => {
   const runPath = path.join(fixture.runDir, run.path);
   const records = fs.readFileSync(runPath, 'utf8').trim().split('\n').map(JSON.parse);
   records[0].result.transcript_heard = 'unrelated blind transcript';
+  records[0].raw_outputs = [JSON.stringify(records[0].result)];
   records[0].transcript_similarity = 1;
   const bytes = Buffer.from(`${records.map(record => JSON.stringify(record)).join('\n')}\n`);
   fs.writeFileSync(runPath, bytes);
@@ -560,8 +593,11 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /name: trusted-media-raw-/);
   assert.match(reviewJob, /if: always\(\)/);
   assert.match(reviewJob, /Fail after retaining rejected review evidence/);
+  assert.match(reviewJob, /Initialize bounded review deadline/);
+  assert.match(reviewJob, /TRUSTED_MEDIA_DEADLINE_EPOCH/);
+  assert.match(reviewJob, /--deadline-epoch/);
   assert.match(reviewJob, /repository: LENKIN233\/softbook_cet/);
-  assert.match(reviewJob, /ref: 40769ec013c9da0a7358ffb4a1da9ec4940f194a/);
+  assert.match(reviewJob, /ref: 4ca4e5af9873e693f8e8624b18fe2145ff962738/);
   assert.match(reviewJob, /product-authority-review/);
   assert.match(verifyJob, /runs-on: ubuntu-latest/);
   assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);

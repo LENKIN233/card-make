@@ -1091,7 +1091,7 @@ function validateAudioGenerationContract(errors) {
         'complete_asset_consumed',
         'stress_pauses',
         'no_noise',
-        'currentModelOwnedTextReviewCoversCard',
+        'canonicalTextReviewPath',
       ]) {
         if (!bridgeSource.includes(token)) {
           pushIssue(errors, 'model_audio_qc_bridge_guard_missing', {token});
@@ -4013,6 +4013,7 @@ function validateGitWorkflow(errors) {
       'scripts/run_trusted_media_review.py',
       'scripts/test_run_trusted_media_review.py',
       'scripts/build_trusted_media_run_receipt.mjs',
+      'scripts/replay_trusted_media_raw_outputs.py',
       'scripts/test_build_trusted_media_run_receipt.mjs',
       'reviews/audio_technical_audits/README.md',
     ];
@@ -4043,7 +4044,7 @@ function validateGitWorkflow(errors) {
       '--technical-audit-replay',
       'scripts/validate_audio_lfs.mjs',
       'repository: LENKIN233/softbook_cet',
-      '40769ec013c9da0a7358ffb4a1da9ec4940f194a',
+      '4ca4e5af9873e693f8e8624b18fe2145ff962738',
       'product-authority-review',
       'product-authority-verify',
       'actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6',

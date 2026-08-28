@@ -43,7 +43,7 @@ function normalizedWords(value) {
 function transcriptSimilarity(expected, heard) {
   const a = normalizedWords(expected);
   const b = normalizedWords(heard);
-  if (a.length + b.length === 0) return 1;
+  if (a.length === 0 || b.length === 0) return 0;
   const b2j = new Map();
   for (const [index, token] of b.entries()) {
     if (!b2j.has(token)) b2j.set(token, []);
@@ -123,6 +123,32 @@ function safeRegularFile(root, relativePath, label, {maximumBytes = 8 * 1024 * 1
     throw new Error(`${label} must be a non-empty regular file no larger than ${maximumBytes} bytes`);
   }
   return {bytes: fs.readFileSync(resolved), path: resolved, size_bytes: stats.size};
+}
+
+function requireTrackedHeadBlob(root, relativePath, file, label) {
+  let entry;
+  let headBytes;
+  try {
+    entry = execFileSync(
+      'git',
+      ['--literal-pathspecs', 'ls-tree', 'HEAD', '--', relativePath],
+      {cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe']},
+    ).trim();
+    headBytes = execFileSync(
+      'git',
+      ['--literal-pathspecs', 'show', `HEAD:${relativePath}`],
+      {cwd: root, encoding: null, stdio: ['ignore', 'pipe', 'pipe']},
+    );
+  } catch {
+    throw new Error(`${label} must be tracked at exact HEAD`);
+  }
+  if (
+    !entry.startsWith('100644 blob ') ||
+    !entry.endsWith(`\t${relativePath}`) ||
+    !file.bytes.equals(Buffer.from(headBytes))
+  ) {
+    throw new Error(`${label} must equal one regular 100644 blob at exact HEAD`);
+  }
 }
 
 function readJsonFile(filePath, label) {
@@ -502,9 +528,24 @@ export function buildTrustedMediaArtifacts({
   ) {
     throw new Error('trusted builder requires an exact fully pending 301-card CET4 worklist');
   }
+  const technicalAuditPath = worklist.source_technical_audit?.path;
+  if (
+    typeof technicalAuditPath !== 'string' ||
+    path.posix.dirname(technicalAuditPath) !== 'reviews/audio_technical_audits' ||
+    !/^[A-Za-z0-9][A-Za-z0-9._-]*\.json$/u.test(path.posix.basename(technicalAuditPath)) ||
+    technicalAuditPath.endsWith('/TEMPLATE.json')
+  ) {
+    throw new Error('source technical audit must be one direct governed JSON record');
+  }
   const technicalAuditFile = safeRegularFile(
     repoRoot,
-    worklist.source_technical_audit?.path,
+    technicalAuditPath,
+    'source technical audit',
+  );
+  requireTrackedHeadBlob(
+    repoRoot,
+    technicalAuditPath,
+    technicalAuditFile,
     'source technical audit',
   );
   if (sha256(technicalAuditFile.bytes) !== worklist.source_technical_audit?.file_sha256) {
@@ -543,6 +584,30 @@ export function buildTrustedMediaArtifacts({
   }
   const lockFile = safeRegularFile(repoRoot, 'spec/trusted-media-runner-lock.json', 'runner lock');
   const lock = JSON.parse(lockFile.bytes.toString('utf8'));
+  let rawReplay;
+  try {
+    rawReplay = JSON.parse(execFileSync(
+      'python3',
+      [
+        '-B',
+        path.join(repoRoot, 'scripts/replay_trusted_media_raw_outputs.py'),
+        '--run-package',
+        runPackagePath,
+        '--run-root',
+        runRoot,
+        '--worklist',
+        worklistPath,
+        '--lock',
+        path.join(repoRoot, 'spec/trusted-media-runner-lock.json'),
+      ],
+      {cwd: repoRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe']},
+    ));
+  } catch {
+    throw new Error('retained raw model outputs do not replay packaged results');
+  }
+  if (rawReplay?.ok !== true || !Number.isSafeInteger(rawReplay.records)) {
+    throw new Error('retained raw model output replay returned an invalid result');
+  }
   const validated = validateRunPackage(runPackageFile.value, runRoot, worklist, lock);
   const receiptCreatedAt = createdAt ?? new Date(runPackageFile.value.execution.completed_at);
   if (!Number.isFinite(receiptCreatedAt.getTime())) {
@@ -679,6 +744,7 @@ export function buildTrustedMediaArtifacts({
   const driverPaths = [
     'scripts/run_trusted_media_review.py',
     'scripts/build_trusted_media_run_receipt.mjs',
+    'scripts/replay_trusted_media_raw_outputs.py',
     'scripts/audit_audio_technical.mjs',
     'scripts/manage_audio_perceptual_worklist.mjs',
     'scripts/lib/card_integrity.mjs',
