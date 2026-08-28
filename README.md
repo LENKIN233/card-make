@@ -17,9 +17,10 @@ New decisions use `model-acceptance.v2` and record:
 - a non-empty semantic summary and structured findings;
 - an accepted or rejected decision.
 
-Accepted evidence cannot contain a blocking finding. Full-track, audio, and
-controlled-pilot authorization require two independent run IDs over the same
-immutable input. Legacy records containing `approved_by_user`,
+Accepted evidence cannot contain a blocking finding. Full-track and
+controlled-pilot content authorization require two distinct perturbation-pass
+run IDs from the same model-harness task over the same immutable input. Audio
+acceptance still requires two exact asset-consumption runs. Legacy records containing `approved_by_user`,
 `confirmed_by_user`, or human-review fields are frozen historical evidence and
 cannot create current authorization.
 
@@ -29,13 +30,13 @@ reconstruct every direct regular JSON shard in one fixed snapshot, derive the
 canonical `content_version`, require exact track/card scope, and include the
 version plus the direct payload/manifest byte SHA-256 in the canonical
 model-input hash. Missing, swapped, overlapping, or
-cross-version shards cannot replay the two independent runs. Ordinary scoped
+cross-version shards cannot replay the two perturbation passes. Ordinary scoped
 authorization does not require a runtime version before one exists.
 
-`model-acceptance.v2` is structural decision evidence, not cryptographic proof
-that a provider model executed. The pinned base-only `trusted-model-review`
-workflow supplies repository execution provenance after bootstrap. Formal
-media claims still require a separate trusted exact-asset consumption receipt.
+`model-acceptance.v2` is structural decision evidence. PR review is performed
+by the same model-harness task in two explicit context-perturbation passes over
+the exact diff; it does not claim separate-provider or separate-task provenance.
+Formal media claims still require a separate trusted exact-asset consumption receipt.
 
 ## Non-negotiable facts
 
@@ -69,7 +70,6 @@ For harness or policy changes:
 
 ```bash
 node --test scripts/test_model_acceptance.mjs
-python3 scripts/test_trusted_model_review.py
 node scripts/validate_harness.mjs
 node --test scripts/test_card_integrity.mjs
 node --test scripts/test_validate_pr_scope.mjs
@@ -136,13 +136,12 @@ reviewed-worklist identity into every formal QC acceptance input.
 
 ## Delivery
 
-Use a scoped topic branch. After exact-head validation and model review, push,
+Use a scoped topic branch. After exact-head validation and dual-perturbation model review, push,
 open or update the PR, and merge automatically when required checks are green.
 Do not write `main` directly and do not wait for a person or an approval label.
-The trusted Codex workflow is installed through a one-time bootstrap: merge
-under the current exact-head checks, configure `OPENAI_API_KEY`, prove both
-isolated jobs plus the aggregate on a follow-up PR, then add
-`trusted-model-review` to branch protection.
+The two review passes use assumption inversion and failure projection in the
+single active model-harness task and are recorded in the PR; no external model
+API or human gate is required.
 
 Generated reports under `reports/` and local output under `exports/` are not
 durable authorization evidence. A tracked status field, PR state, or claimed

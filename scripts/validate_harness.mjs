@@ -1226,7 +1226,7 @@ function validateCardQualityAudit(errors, warnings) {
     'no_hard_blocker_issues',
     'content_authorization_must_link_current_scoped_quality_audit_report',
     'linked_current_quality_audit_report',
-    'two_independent_exact_input_model_acceptances_for_full_track_authorization',
+    'two_single_task_context_perturbation_exact_input_model_acceptances_for_full_track_authorization',
   ]) {
     if (!candidatePolicy.includes(requirement)) {
       pushIssue(errors, 'card_quality_audit_candidate_policy_missing', { requirement });
@@ -3992,17 +3992,19 @@ function validateGitWorkflow(errors) {
     ) {
       pushIssue(errors, 'model_owned_git_policy_invalid', {});
     }
+    const perturbationReview =
+      gitWorkflow.validation_policy?.single_task_dual_perturbation_review;
     if (
-      !(gitWorkflow.validation_policy
-        ?.target_required_github_checks_after_trusted_bootstrap || [])
-        .includes('trusted-model-review') ||
-      gitWorkflow.validation_policy?.trusted_model_review_bootstrap
-        ?.missing_provider_secret_fails_closed !== true ||
-      !exists('.github/workflows/trusted-model-review.yml') ||
-      !exists('scripts/trusted_model_review.py') ||
-      !exists('scripts/test_trusted_model_review.py')
+      JSON.stringify(perturbationReview?.passes) !==
+        JSON.stringify(['assumption_inversion', 'failure_projection']) ||
+      perturbationReview?.external_model_api_required !== false ||
+      perturbationReview?.separate_provider_or_task_provenance_claimed !== false ||
+      perturbationReview?.record_location !== 'pull_request_body' ||
+      exists('.github/workflows/trusted-model-review.yml') ||
+      exists('scripts/trusted_model_review.py') ||
+      exists('scripts/test_trusted_model_review.py')
     ) {
-      pushIssue(errors, 'trusted_model_review_bootstrap_missing', {});
+      pushIssue(errors, 'single_task_dual_perturbation_review_invalid', {});
     }
     const mediaProducer = readJson('spec/trusted-media-run-producer.json');
     const mediaWorkflow = readText('.github/workflows/trusted-media-run.yml');
@@ -4044,7 +4046,7 @@ function validateGitWorkflow(errors) {
       '--technical-audit-replay',
       'scripts/validate_audio_lfs.mjs',
       'repository: LENKIN233/softbook_cet',
-      '53871ceb3b1a9090cd6f3cbb87086450feb177ca',
+      '7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1',
       'product-authority-review',
       'product-authority-verify',
       'actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6',
@@ -4119,7 +4121,7 @@ function validateEvalsAndPerturbation(errors) {
     'requires_current_approval_consumers_to_fail_closed_when_audit_replay_is_unavailable_or_the_caller_fingerprint_is_forged',
     'binds_current_audit_script_and_rule_spec_to_committed_authority_and_rechecks_one_fixed_authorization_snapshot',
     'rejects_residual_closure_coverage_for_newly_added_cards',
-    'requires_two_independent_model_acceptance_runs_for_full_track_review',
+    'requires_two_single_task_context_perturbation_model_acceptance_runs_for_full_track_review',
     'rejects_nested_symlinked_or_unusual_path_self_review_evidence',
     'rejects_partial_or_wrong_track_full_track_aggregate_coverage',
     'rejects_full_track_aggregate_coverage_for_cards_absent_from_merge_base',

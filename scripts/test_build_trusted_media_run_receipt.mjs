@@ -597,7 +597,7 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /TRUSTED_MEDIA_DEADLINE_EPOCH/);
   assert.match(reviewJob, /--deadline-epoch/);
   assert.match(reviewJob, /repository: LENKIN233\/softbook_cet/);
-  assert.match(reviewJob, /ref: 53871ceb3b1a9090cd6f3cbb87086450feb177ca/);
+  assert.match(reviewJob, /ref: 7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1/);
   assert.match(reviewJob, /product-authority-review/);
   assert.match(verifyJob, /runs-on: ubuntu-latest/);
   assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);

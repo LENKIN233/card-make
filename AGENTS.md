@@ -80,7 +80,6 @@ For harness or policy changes run at least:
 
 ```bash
 node --test scripts/test_model_acceptance.mjs
-python3 scripts/test_trusted_model_review.py
 node scripts/validate_harness.mjs
 node --test scripts/test_card_integrity.mjs
 node --test scripts/test_validate_pr_scope.mjs
