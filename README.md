@@ -118,6 +118,10 @@ An unprivileged GitHub-hosted verifier rebuilds the package and audio first; a
 separate minimal signer job downloads only those verified bytes and executes no
 repository code under OIDC authority. Failed or exceptionally aborted model runs
 retain completed raw records and a failure package before the review job fails.
+When every model run completed but receipt finalization failed, the same main
+workflow may download that exact retained GitHub raw artifact and finalize it
+without rerunning the model. The v2 receipt keeps the original execution commit
+separate from the later OIDC-attested finalizer commit; both remain verifiable.
 Each completed model attempt is fsynced before parsing or retry. Final results
 must replay from the retained bounded JSON-or-Python-literal response. A deadline initialized at
 job start reserves thirty minutes for failure artifact upload.

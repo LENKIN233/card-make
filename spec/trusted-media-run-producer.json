@@ -1,9 +1,9 @@
 {
-  "version": "trusted-media-run-producer-v1",
+  "version": "trusted-media-run-producer-v2",
   "status": "active",
   "classification": "harness_execution_contract",
   "owners": ["spec/review-workflow.json", "spec/audio-generation-contract.json"],
-  "purpose": "Produce one GitHub-attested CET4 media receipt only after a trusted main-branch workflow actually runs two complete exact-asset audio-capable model passes, resolves bounded disagreements, rebuilds all 301 per-card acceptances, and passes current content and audio contracts.",
+  "purpose": "Produce one GitHub-attested CET4 media receipt only after a trusted main-branch workflow actually runs two complete exact-asset audio-capable model passes, or truthfully finalizes their retained GitHub raw artifact later with separate execution and finalizer commits, then rebuilds all 301 per-card acceptances and passes current content and audio contracts.",
   "workflow": {
     "path": ".github/workflows/trusted-media-run.yml",
     "trigger": "workflow_dispatch_on_refs_heads_main_only",
@@ -38,6 +38,9 @@
     "asset_cache_bytes_are_reverified_against_the_exact_worklist_and_technical_audit": true,
     "GitHub_hosted_verifier_uses_unprivileged_artifact_media_without_Git_LFS_download": true,
     "source_executes_from_read_only_exact_commit_worktree": true,
+    "retained_raw_finalization_supported_without_model_rerun": true,
+    "retained_raw_finalization_requires_same_repository_run_id_attempt_artifact_name_and_ancestor_execution_commit": true,
+    "receipt_v2_separately_binds_model_execution_and_attested_finalizer_commits": true,
     "read_only_source_reverification_uses_isolated_writable_temporary_index": true,
     "read_only_source_reverification_excludes_all_audio_paths_already_covered_by_exact_media_audits": true,
     "source_head_status_and_driver_blobs_reverified_before_receipt": true,

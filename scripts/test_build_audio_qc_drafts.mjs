@@ -447,7 +447,8 @@ function createFixture(
         ok: true,
         formal_ready: true,
         receipt_sha256: digest(receiptBytes),
-        source_commit_sha: receipt.source.commit_sha,
+        source_commit_sha: receipt.finalization.commit_sha,
+        execution_source_commit_sha: receipt.source.commit_sha,
       };
     },
     trustedReceiptPath: 'reviews/trusted_media_receipts/current-receipt.json',
@@ -633,14 +634,27 @@ function writeWorklist(fixture, worklist) {
   );
   const authorization = JSON.parse(authorizationBytes);
   const receipt = {
-    schema_version: 'trusted-media-run-receipt.v1',
+    schema_version: 'trusted-media-run-receipt.v2',
     source: {
       repository: 'LENKIN233/card-make',
       ref: 'refs/heads/main',
       workflow_path: '.github/workflows/trusted-media-run.yml',
       commit_sha: 'a'.repeat(40),
     },
+    finalization: {
+      repository: 'LENKIN233/card-make',
+      ref: 'refs/heads/main',
+      workflow_path: '.github/workflows/trusted-media-run.yml',
+      commit_sha: 'c'.repeat(40),
+      retained_raw_artifact: {
+        workflow_run_id: '32939841276',
+        workflow_run_attempt: 1,
+        artifact_name: 'trusted-media-raw-32939841276-1',
+      },
+    },
     execution: {
+      workflow_run_id: '32939841276',
+      workflow_run_attempt: 1,
       model: {
         id: 'mlx-community/Qwen2-Audio-7B-Instruct-4bit',
         revision: 'b'.repeat(40),

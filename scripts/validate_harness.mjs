@@ -4023,7 +4023,9 @@ function validateGitWorkflow(errors) {
       pushIssue(errors, 'trusted_media_run_asset_missing', {});
     }
     if (
-      mediaProducer.version !== 'trusted-media-run-producer-v1' ||
+      mediaProducer.version !== 'trusted-media-run-producer-v2' ||
+      mediaProducer.workflow?.retained_raw_finalization_supported_without_model_rerun !== true ||
+      mediaProducer.workflow?.receipt_v2_separately_binds_model_execution_and_attested_finalizer_commits !== true ||
       mediaProducer.current_boundary?.real_attestation_observed !== false ||
       mediaProducer.current_boundary?.formal_media_evidence_created !== false ||
       mediaProducer.workflow?.human_or_user_environment_gate !== false ||
@@ -4064,6 +4066,9 @@ function validateGitWorkflow(errors) {
       'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02',
       'timeout-minutes: 240',
       '$(date +%s) + 12600',
+      'Download retained complete raw review package',
+      '--execution-source-commit',
+      '--path-format=absolute --git-path index',
     ]) {
       if (!mediaWorkflow.includes(token)) {
         pushIssue(errors, 'trusted_media_run_workflow_guard_missing', {token});
