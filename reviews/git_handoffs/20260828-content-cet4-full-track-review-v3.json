@@ -1,0 +1,75 @@
+{
+  "handoff_id": "20260828-content-cet4-full-track-review-v3",
+  "created_at": "2026-08-28T19:40:29+08:00",
+  "agent": "codex",
+  "branch": "content/cet4-full-track-review-v3",
+  "base_branch": "main",
+  "commit_sha": "4b63a7f40da3d428283b898955f4873cc844ba30",
+  "push_ref": "origin/content/cet4-full-track-review-v3",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/199",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_sample",
+    "box_prefixes": [
+      "0000",
+      "0001",
+      "0100",
+      "0200",
+      "0300",
+      "0400",
+      "0401",
+      "0500",
+      "0501",
+      "0600"
+    ],
+    "multi_prefix_review_unit": true,
+    "scope_reason": "Replay one complete CET4 full-track semantic review unit on main after trusted-media harness merge while changing only the ten card-box files that required final metadata and content remediation.",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_bankedcloze_0200.json",
+      "card_boxes_json/card_boxes_seed_cet4_grammar_0600.json",
+      "card_boxes_json/card_boxes_seed_cet4_listening_0000.json",
+      "card_boxes_json/card_boxes_seed_cet4_listening_0001.json",
+      "card_boxes_json/card_boxes_seed_cet4_reading_0100.json",
+      "card_boxes_json/card_boxes_seed_cet4_translation_0400.json",
+      "card_boxes_json/card_boxes_seed_cet4_translation_0401.json",
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0500.json",
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0501.json",
+      "card_boxes_json/card_boxes_seed_cet4_writing_0300.json",
+      "reviews/agent_self_review/20260826-cet4-full-track-source-model-review.json",
+      "reviews/audit_scopes/20260826-cet4-full-track-model-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "9f2c4fe1ff21f21157a6fc85bcab2637c04453db",
+    "patch_sha256": "515c9de8f2ef19e22d462c6233027bc8cd9d4963311cf4f6170fe61fafd8a04b"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --strict --report-path exports/card_validation_report.json",
+      "result": "passed: 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base 9f2c4fe1ff21f21157a6fc85bcab2637c04453db --head HEAD",
+      "result": "passed: 0 issues; current CET4 scope has 1180 cards, 108 boxes, 0 hard blockers, 0 content risks, and 0 review gaps"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with only six recorded upstream catalog-alignment warnings"
+    },
+    {
+      "command": "node --test scripts/test_model_acceptance.mjs scripts/test_card_integrity.mjs scripts/test_validate_pr_scope.mjs scripts/test_validate_delivery_record.mjs",
+      "result": "passed: 220/220"
+    },
+    {
+      "command": "git diff --check 9f2c4fe1ff21f21157a6fc85bcab2637c04453db HEAD",
+      "result": "passed"
+    }
+  ],
+  "local_status": "The existing two-run CET4 full-track source review is replayed on the trusted-media harness base with typed model principals and a current exact 1180-card audit; the source remains candidate-only until separate formal authorization and trusted media execution complete.",
+  "remaining_risks": [
+    "Base PR #198 must merge before this stacked PR can target main.",
+    "The required trusted-model-review check cannot run until an approved OpenAI machine credential or workload identity is configured.",
+    "This source review does not provide full-track content authorization, trusted 301-asset media execution, deployment, device, distribution, or launch evidence."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
