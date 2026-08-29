@@ -601,12 +601,17 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
     reviewJob,
     /env\.TRUSTED_MEDIA_OUTPUT_DIR \|\| env\.TRUSTED_MEDIA_PREFLIGHT_DIR/,
   );
-  assert.equal((reviewJob.match(/set-safe-directory: false/g) || []).length, 2);
+  assert.doesNotMatch(reviewJob, /actions\/checkout@/);
   assert.match(reviewJob, /TRUSTED_MEDIA_DEADLINE_EPOCH/);
   assert.match(reviewJob, /--deadline-epoch/);
-  assert.match(reviewJob, /repository: LENKIN233\/softbook_cet/);
-  assert.match(reviewJob, /ref: 7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1/);
-  assert.match(reviewJob, /product-authority-review/);
+  assert.match(reviewJob, /CARD_MAKE_TRUSTED_SOURCE_REPOSITORY/);
+  assert.match(reviewJob, /CARD_MAKE_TRUSTED_PRODUCT_AUTHORITY_REPOSITORY/);
+  assert.match(reviewJob, /source mirrors must remain outside runner job directories/);
+  assert.match(reviewJob, /rev-parse refs\/heads\/main/);
+  assert.match(reviewJob, /fsck --strict --no-reflogs/);
+  assert.match(reviewJob, /git clone --shared --no-checkout/);
+  assert.match(reviewJob, /find "\$repository" -perm -222/);
+  assert.match(reviewJob, /product_commit=7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1/);
   assert.match(verifyJob, /runs-on: ubuntu-latest/);
   assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);
   assert.match(verifyJob, /lfs: false/);
@@ -625,7 +630,7 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /PYTHONNOUSERSITE: "1"/);
   assert.match(reviewJob, /GIT_NO_REPLACE_OBJECTS: "1"/);
   assert.match(reviewJob, /GIT_GRAFT_FILE: \/dev\/null/);
-  assert.match(reviewJob, /GIT_REPLACE_REF_BASE: refs\/disabled\/softbook-trusted-media/);
+  assert.match(reviewJob, /GIT_REPLACE_REF_BASE: refs\/disabled\/softbook-trusted-media\//);
   assert.match(reviewJob, /GIT_LFS_SKIP_SMUDGE: "1"/);
   assert.match(reviewJob, /CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT/);
   assert.match(reviewJob, /asset cache must remain outside the repository/);
