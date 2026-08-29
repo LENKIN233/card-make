@@ -768,6 +768,8 @@ test('PR contract gate downloads LFS only for formal media evidence changes', ()
   assert.match(contractJob, /cmp "\$receipt" "\$artifact_dir\/trusted-media-run-receipt\.json"/);
   assert.match(contractJob, /rsync -a "\$artifact_dir\/ai_tts\/cet4\/" ai_tts\/cet4\//);
   assert.match(contractJob, /name: Validate contracts[\s\S]*GH_TOKEN: \$\{\{ github\.token \}\}/);
+  assert.match(contractJob, /apt-get install --no-install-recommends -y ffmpeg/);
+  assert.match(contractJob, /ffprobe -version/);
 });
 
 test('independent builders derive byte-identical receipt time from the run package', t => {
