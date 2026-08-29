@@ -109,6 +109,8 @@ jobs:
           node-version: "22.11.0"
 
       - name: Validate contracts
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           node scripts/validate_harness.mjs
           node scripts/validate_audio_qc.mjs
