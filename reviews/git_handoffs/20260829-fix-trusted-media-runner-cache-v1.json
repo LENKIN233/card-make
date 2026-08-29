@@ -1,0 +1,52 @@
+{
+  "handoff_id": "20260829-fix-trusted-media-runner-cache-v1",
+  "created_at": "2026-08-29T13:19:00+08:00",
+  "agent": "codex",
+  "branch": "fix/trusted-media-runner-cache-v1",
+  "base_branch": "main",
+  "commit_sha": "34311d4f6c87b5fe4a8650a878a2c67de147d6be",
+  "push_ref": "origin/fix/trusted-media-runner-cache-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/203",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      ".github/workflows/trusted-media-run.yml",
+      "scripts/test_build_trusted_media_run_receipt.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/trusted-media-run-producer.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "2c8aa84222b3468a703bfe66eefe772e3e0edcef",
+    "patch_sha256": "ec0aed3e04f0153b64bed34ae20c25e5b3f0636fc0eb9eb1d76302ba862ec29e"
+  },
+  "validation": [
+    {
+      "command": "node --test scripts/test_build_trusted_media_run_receipt.mjs",
+      "result": "passed: 16/16"
+    },
+    {
+      "command": "python3 scripts/test_run_trusted_media_review.py",
+      "result": "passed: 12/12"
+    },
+    {
+      "command": "runner-cache overlay technical smoke",
+      "result": "passed: 301/301 exact CET4 MP3 assets, zero technical errors, zero non-media Git drift"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs && git diff --check",
+      "result": "passed with only six recorded catalog warnings"
+    },
+    {
+      "command": "single-task dual-perturbation exact-diff review",
+      "result": "passed: assumption inversion and failure projection, 0 blocking findings"
+    }
+  ],
+  "local_status": "The formal media workflow can consume a read-only runner-managed 301-asset cache, reverify every byte, and transfer exact media through an unprivileged artifact without GitHub LFS download.",
+  "remaining_risks": [
+    "The next real workflow run must prove both self-hosted model execution and GitHub-hosted byte reconstruction end to end.",
+    "No media model result or attestation is claimed by this cache plumbing change."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
