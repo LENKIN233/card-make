@@ -1,0 +1,63 @@
+{
+  "handoff_id": "20260829-fix-trusted-media-bounded-output-v1",
+  "created_at": "2026-08-29T17:11:39+08:00",
+  "agent": "codex",
+  "branch": "fix/trusted-media-bounded-output",
+  "base_branch": "main",
+  "commit_sha": "f5b77fddde6815462abb3703727e5aace305cf3d",
+  "push_ref": "origin/fix/trusted-media-bounded-output",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/210",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      "scripts/replay_trusted_media_raw_outputs.py",
+      "scripts/run_trusted_media_review.py",
+      "scripts/test_build_trusted_media_run_receipt.mjs",
+      "scripts/test_run_trusted_media_review.py",
+      "spec/audio-generation-contract.json",
+      "spec/trusted-media-run-producer.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "d1c381c964e775986005c501b73ea682d95c877e",
+    "patch_sha256": "8d141db6130505b4f5e55ba0775f131626dc2a0b899206b7ae93b8d894489c3e"
+  },
+  "validation": [
+    {
+      "command": "python3 scripts/test_run_trusted_media_review.py",
+      "result": "passed: 20/20 including strict 001206 truncated-notes rejection"
+    },
+    {
+      "command": "node --test scripts/test_build_trusted_media_run_receipt.mjs",
+      "result": "passed: 17/17 with raw-output replay parity"
+    },
+    {
+      "command": "locked local Qwen2-Audio exact-card smoke for 001206 at temperatures 0.0 and 0.1",
+      "result": "passed: both returned one closed 308-character transcript-plus-seven-booleans object; similarity 1.0; 87552/87552 samples; no notes; untruncated"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs && node scripts/validate_audio_qc.mjs",
+      "result": "passed with only six recorded catalog warnings"
+    },
+    {
+      "command": "node --test scripts/test_card_integrity.mjs scripts/test_validate_pr_scope.mjs",
+      "result": "passed: 126/126"
+    },
+    {
+      "command": "node --test scripts/test_validate_delivery_record.mjs scripts/test_model_acceptance.mjs scripts/test_validate_audio_qc_model.mjs",
+      "result": "passed: 98/98"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "General model output now requires only transcript_heard plus all seven existing booleans; raw responses remain verbatim while persisted result.notes is harness-authored empty text.",
+  "remaining_risks": [
+    "The read-only runner source mirror must be refreshed to the merged main commit before dispatching the next formal media run.",
+    "The locked local 001206 smoke proves schema completion only; formal 301-asset perceptual acceptance and GitHub attestation still require a successful main-branch workflow run.",
+    "The failed run 33242725675 remains failure evidence and is not converted into acceptance."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
