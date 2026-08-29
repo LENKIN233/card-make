@@ -25,7 +25,10 @@
     "worklist_path_pattern": "reviews/audio_perceptual_worklists/[A-Za-z0-9._-]+.json",
     "authorization_path_pattern": "reviews/approved_batches/[A-Za-z0-9._-]+.json",
     "inputs_must_be_tracked_regular_non_symlink_files": true,
-    "checkout_must_materialize_Git_LFS_audio_bytes": true,
+    "self_hosted_source_checkout_uses_runner_managed_read_only_bare_mirrors": true,
+    "source_mirror_main_ref_must_equal_exact_GitHub_SHA": true,
+    "source_mirrors_require_strict_object_verification_and_forbid_replacements_grafts_symlinks_or_writable_entries": true,
+    "GitHub_hosted_verifier_independently_checkouts_the_same_exact_commits": true,
     "repository_worktree_must_be_clean_exact_GITHUB_SHA": true,
     "git_replacements_and_grafts_disabled_before_all_trusted_tree_reads": true,
     "model_root_is_runner_managed_and_outside_repository": true,
@@ -102,8 +105,8 @@
   },
   "current_boundary": {
     "implementation_present_on_topic_branch": true,
-    "installed_on_main": false,
-    "self_hosted_runner_observed": false,
+    "installed_on_main": true,
+    "self_hosted_runner_observed": true,
     "real_attestation_observed": false,
     "formal_media_evidence_created": false,
     "does_not_claim": ["model_execution_before_workflow_run", "provider_or_voice_identity", "deployment", "device_playback", "closed_beta_readiness"]

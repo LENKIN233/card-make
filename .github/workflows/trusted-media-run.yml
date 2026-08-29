@@ -33,7 +33,7 @@ jobs:
       GIT_CONFIG_SYSTEM: /dev/null
       GIT_GRAFT_FILE: /dev/null
       GIT_NO_REPLACE_OBJECTS: "1"
-      GIT_REPLACE_REF_BASE: refs/disabled/softbook-trusted-media
+      GIT_REPLACE_REF_BASE: refs/disabled/softbook-trusted-media/
       GIT_LFS_SKIP_SMUDGE: "1"
       LANG: C
       LC_ALL: C
@@ -50,33 +50,42 @@ jobs:
           echo "TRUSTED_MEDIA_PREFLIGHT_DIR=$preflight_dir" >> "$GITHUB_ENV"
           echo "TRUSTED_MEDIA_DEADLINE_EPOCH=$(( $(date +%s) + 9000 ))" >> "$GITHUB_ENV"
 
-      - name: Checkout exact trusted main commit
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          ref: ${{ github.sha }}
-          fetch-depth: 1
-          persist-credentials: false
-          set-safe-directory: false
-          lfs: false
-
-      - name: Checkout pinned softbook product authority
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          repository: LENKIN233/softbook_cet
-          ref: 7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1
-          path: product-authority-review
-          fetch-depth: 1
-          persist-credentials: false
-          set-safe-directory: false
-
-      - name: Materialize isolated exact source snapshot
+      - name: Materialize isolated exact source snapshots from runner mirrors
         shell: bash
         run: |
           set -euo pipefail
+          test -n "${CARD_MAKE_TRUSTED_SOURCE_REPOSITORY:-}"
+          test -n "${CARD_MAKE_TRUSTED_PRODUCT_AUTHORITY_REPOSITORY:-}"
+          test ! -L "$CARD_MAKE_TRUSTED_SOURCE_REPOSITORY"
+          test ! -L "$CARD_MAKE_TRUSTED_PRODUCT_AUTHORITY_REPOSITORY"
+          source_repository="$(cd "$CARD_MAKE_TRUSTED_SOURCE_REPOSITORY" && pwd -P)"
+          product_repository="$(cd "$CARD_MAKE_TRUSTED_PRODUCT_AUTHORITY_REPOSITORY" && pwd -P)"
+          for repository in "$source_repository" "$product_repository"; do
+            test "$(git --git-dir="$repository" rev-parse --is-bare-repository)" = true
+            test -z "$(find "$repository" -type l -print -quit)"
+            test -z "$(find "$repository" -perm -222 -print -quit)"
+            test -z "$(git --git-dir="$repository" replace -l)"
+            grafts="$(git --git-dir="$repository" rev-parse --git-path info/grafts)"
+            test ! -s "$grafts"
+            case "$repository/" in
+              "$GITHUB_WORKSPACE/"*|"$RUNNER_TEMP/"*)
+                echo "source mirrors must remain outside runner job directories" >&2
+                exit 1
+                ;;
+            esac
+          done
+          test "$(git --git-dir="$source_repository" rev-parse refs/heads/main)" = "$GITHUB_SHA"
+          git --git-dir="$source_repository" cat-file -e "$GITHUB_SHA^{commit}"
+          git --git-dir="$source_repository" fsck --strict --no-reflogs --no-dangling "$GITHUB_SHA"
+          product_commit=7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1
+          git --git-dir="$product_repository" cat-file -e "$product_commit^{commit}"
+          git --git-dir="$product_repository" fsck --strict --no-reflogs --no-dangling "$product_commit"
           source_root="$RUNNER_TEMP/trusted-source-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           test ! -e "$source_root"
-          git worktree add --detach "$source_root" "$GITHUB_SHA"
+          git clone --shared --no-checkout "$source_repository" "$source_root"
+          git -C "$source_root" checkout --detach "$GITHUB_SHA"
           test "$(git -C "$source_root" rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C "$source_root" rev-parse refs/remotes/origin/main)" = "$GITHUB_SHA"
           test -n "${CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT:-}"
           asset_root="$(cd "$CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT" && pwd -P)"
           test -d "$asset_root/ai_tts/cet4"
@@ -90,11 +99,9 @@ jobs:
           git -C "$source_root" diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
           test -z "$(git -C "$source_root" ls-files --others --exclude-standard)"
           product_root="$RUNNER_TEMP/softbook_cet"
-          product_commit=7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1
           test ! -e "$product_root"
-          test "$(git -C "$GITHUB_WORKSPACE/product-authority-review" rev-parse HEAD)" = "$product_commit"
-          git -C "$GITHUB_WORKSPACE/product-authority-review" worktree add \
-            --detach "$product_root" "$product_commit"
+          git clone --shared --no-checkout "$product_repository" "$product_root"
+          git -C "$product_root" checkout --detach "$product_commit"
           test "$(git -C "$product_root" rev-parse HEAD)" = "$product_commit"
           test -z "$(git -C "$product_root" status --porcelain --untracked-files=all)"
           test "$(jq -r .product_authority.commit_sha "$source_root/spec/trusted-media-runner-lock.json")" = \
