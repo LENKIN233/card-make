@@ -10,6 +10,7 @@ from pathlib import Path
 from unittest import mock
 
 from run_trusted_media_review import (
+    GENERAL_BOOL_KEYS,
     compact_tree_manifest,
     general_prompt,
     hash_regular_tree,
@@ -42,7 +43,6 @@ def general_result(transcript: str, **overrides):
         "natural_rhythm": True,
         "stress_pauses_do_not_mislead": True,
         "no_unwanted_noise_or_clipping": True,
-        "notes": "",
     }
     value.update(overrides)
     return json.dumps(value)
@@ -239,12 +239,11 @@ class TrustedMediaRunnerTests(unittest.TestCase):
             "'target_signal_audible': True, 'accurate_pronunciation': True, "
             "'suitable_speed': True, 'natural_rhythm': True, "
             "'stress_pauses_do_not_mislead': True, "
-            "'no_unwanted_noise_or_clipping': True, "
-            "'notes': 'The speaker's pacing is clear.'}"
+            "'no_unwanted_noise_or_clipping': True}"
         )
         parsed_general = parse_general(general)
         self.assertEqual(parsed_general["transcript_heard"], transcript)
-        self.assertEqual(parsed_general["notes"], "The speaker's pacing is clear.")
+        self.assertNotIn("notes", parsed_general)
         pronunciation = (
             f"{{'transcript_heard': '{transcript}', "
             "'accurate_pronunciation': True, 'specific_error': ''}"
@@ -263,31 +262,28 @@ class TrustedMediaRunnerTests(unittest.TestCase):
                 "'matches_text': True, 'target_signal_audible': True, "
                 "'accurate_pronunciation': True, 'suitable_speed': True, "
                 "'natural_rhythm': True, 'stress_pauses_do_not_mislead': True, "
-                "'no_unwanted_noise_or_clipping': True, 'notes': ''}"
+                "'no_unwanted_noise_or_clipping': True}"
             )
 
-    def test_known_shape_parser_replays_retained_escaped_quote_notes(self):
-        transcript = (
-            "After introducing a recycling campaign, the report emphasizes that "
-            "participation rose only after schools joined with parent workshops."
+    def test_truncated_001206_notes_are_not_partially_rescued(self):
+        truncated = (
+            "{'transcript_heard': 'They asked for quick updates, but delayed feedback "
+            "blocked final approval.', 'matches_text': True, "
+            "'target_signal_audible': True, 'accurate_pronunciation': True, "
+            "'suitable_speed': True, 'natural_rhythm': True, "
+            "'stress_pauses_do_not_mislead': True, "
+            "'no_unwanted_noise_or_clipping': True, 'notes': 'The speech contains "
+            "the word \"quickly\" as a key phrase, which is linked"
         )
-        retained = [
-            r"""{'transcript_heard': 'After introducing a recycling campaign, the report emphasizes that participation rose only after schools joined with parent workshops.', 'matches_text': True, 'target_signal_audible': True, 'accurate_pronunciation': True, 'suitable_speed': True, 'natural_rhythm': True, 'stress_pauses_do_not_mislead': True, 'no_unwanted_noise_or_clipping': True, 'notes': \"The speech is a formal statement with clear enunciation and a steady pace. There are no extraneous sounds or disturbances. The transcription accurately reflects the spoken content.\"}""",
-            r"""{'transcript_heard': 'After introducing a recycling campaign, the report emphasizes that participation rose only after schools joined with parent workshops.', 'matches_text': True, 'target_signal_audible': True, 'accurate_pronunciation': True, 'suitable_speed': True, 'natural_rhythm': True, 'stress_pauses_do_not_mislead': True, 'no_unwanted_noise_or_clipping': True, 'notes': \"'After introducing a recycling campaign, the report emphasizes that participation rose only after schools joined with parent workshops.' is the transcription of the speech. The speech is spoken in English with a male voice and has a neutral mood. The speech is delivered in a slow and clear manner, making it easy to understand.\"}""",
-        ]
-        for raw in retained:
-            parsed = parse_general(raw)
-            self.assertEqual(parsed["transcript_heard"], transcript)
-            self.assertTrue(all(parsed[key] for key in (
-                "matches_text",
-                "target_signal_audible",
-                "accurate_pronunciation",
-                "suitable_speed",
-                "natural_rhythm",
-                "stress_pauses_do_not_mislead",
-                "no_unwanted_noise_or_clipping",
-            )))
-            self.assertTrue(parsed["notes"])
+        with self.assertRaises(ValueError):
+            parse_general(truncated)
+
+        bounded = general_result(
+            "They asked for quick updates, but delayed feedback blocked final approval."
+        )
+        parsed = parse_general(bounded)
+        self.assertEqual(set(parsed), {"transcript_heard", *GENERAL_BOOL_KEYS})
+        self.assertTrue(all(parsed[key] for key in GENERAL_BOOL_KEYS))
 
     def test_known_shape_parser_recovers_one_fully_escaped_JSON_object(self):
         raw = r'''{\"transcript_heard\":\"The initial feedback seemed positive; however, several users reported serious security concerns.\",\"target_signal_audible\":true,\"specific_evidence\":\"However is audible.\"}'''
@@ -311,23 +307,14 @@ class TrustedMediaRunnerTests(unittest.TestCase):
                 ],
             )
 
-    def test_known_shape_parser_rejects_ambiguous_escaped_quote_strings(self):
-        prefix = (
-            "{'transcript_heard': 'Text', 'matches_text': True, "
-            "'target_signal_audible': True, 'accurate_pronunciation': True, "
-            "'suitable_speed': True, 'natural_rhythm': True, "
-            "'stress_pauses_do_not_mislead': True, "
-            "'no_unwanted_noise_or_clipping': True, 'notes': "
-        )
-        with self.assertRaisesRegex(ValueError, "string is invalid"):
-            parse_general(prefix + r'\"missing close}')
-        with self.assertRaisesRegex(ValueError, "string is invalid"):
-            parse_general(prefix + r'\"valid\" trailing}')
-        with self.assertRaisesRegex(ValueError, "ambiguous"):
-            parse_general(prefix + r'\"line\\nbreak\"}')
+    def test_general_parser_rejects_legacy_notes_and_non_boolean_checks(self):
+        with self.assertRaisesRegex(ValueError, "keys are invalid"):
+            parse_general(
+                general_result("Text")[:-1] + ', "notes":"legacy model prose"}'
+            )
         with self.assertRaisesRegex(ValueError, "boolean is invalid"):
             parse_general(
-                r"""{'transcript_heard': 'Text', 'matches_text': \"True\", 'target_signal_audible': True, 'accurate_pronunciation': True, 'suitable_speed': True, 'natural_rhythm': True, 'stress_pauses_do_not_mislead': True, 'no_unwanted_noise_or_clipping': True, 'notes': ''}"""
+                r"""{'transcript_heard': 'Text', 'matches_text': \"True\", 'target_signal_audible': True, 'accurate_pronunciation': True, 'suitable_speed': True, 'natural_rhythm': True, 'stress_pauses_do_not_mislead': True, 'no_unwanted_noise_or_clipping': True}"""
             )
 
     def test_compact_environment_manifest_stays_below_repository_blob_limit(self):
@@ -420,6 +407,8 @@ class TrustedMediaRunnerTests(unittest.TestCase):
                 "Do not require the audio to explain that it is training material",
                 general_prompt(entry),
             )
+            self.assertIn("do not add notes", general_prompt(entry))
+            self.assertNotIn("notes (string)", general_prompt(entry))
 
     def test_full_runs_adjudication_and_specialists_produce_passed_decisions(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -455,6 +444,18 @@ class TrustedMediaRunnerTests(unittest.TestCase):
             for run in runs.values():
                 self.assertEqual(run["complete_asset_count"], run["card_count"])
                 self.assertTrue((root / "output" / run["path"]).is_file())
+            for name in ("a", "b", "c"):
+                records = [
+                    json.loads(line)
+                    for line in (root / "output" / f"run-{name}.jsonl")
+                    .read_text()
+                    .splitlines()
+                ]
+                for record in records:
+                    self.assertEqual(record["result"]["notes"], "")
+                    self.assertTrue(
+                        all("notes" not in raw for raw in record["raw_outputs"])
+                    )
 
     def test_unresolved_three_run_disagreement_fails_closed(self):
         with tempfile.TemporaryDirectory() as directory:
