@@ -78,7 +78,7 @@ export function verifyTrustedMediaEvidence({
   if (expectedSourceRecords && (
     expectedSourceRecords.trusted_media_receipt_sha256 !== receiptSha256 ||
     expectedSourceRecords.trusted_media_attestation_bundle_sha256 !== bundleSha256 ||
-    expectedSourceRecords.trusted_media_source_commit !== receipt.source?.commit_sha ||
+    expectedSourceRecords.trusted_media_source_commit !== receipt.finalization?.commit_sha ||
     expectedSourceRecords.trusted_media_model_id !== receipt.execution?.model?.id ||
     expectedSourceRecords.trusted_media_model_revision !== receipt.execution?.model?.revision
   )) {
@@ -112,11 +112,19 @@ export function verifyTrustedMediaEvidence({
     throw new Error('trusted media content authorization is not current');
   }
   if (
-    receipt.schema_version !== 'trusted-media-run-receipt.v1' ||
+    receipt.schema_version !== 'trusted-media-run-receipt.v2' ||
     receipt.source?.repository !== 'LENKIN233/card-make' ||
     receipt.source?.ref !== 'refs/heads/main' ||
     receipt.source?.workflow_path !== '.github/workflows/trusted-media-run.yml' ||
     !/^[a-f0-9]{40}$/.test(receipt.source?.commit_sha || '') ||
+    receipt.finalization?.repository !== 'LENKIN233/card-make' ||
+    receipt.finalization?.ref !== 'refs/heads/main' ||
+    receipt.finalization?.workflow_path !== '.github/workflows/trusted-media-run.yml' ||
+    !/^[a-f0-9]{40}$/.test(receipt.finalization?.commit_sha || '') ||
+    receipt.finalization?.retained_raw_artifact?.workflow_run_id !==
+      receipt.execution?.workflow_run_id ||
+    receipt.finalization?.retained_raw_artifact?.workflow_run_attempt !==
+      receipt.execution?.workflow_run_attempt ||
     receipt.candidate?.track !== 'cet4' ||
     receipt.candidate?.card_count !== 1180 ||
     receipt.candidate?.box_count !== 108 ||
@@ -151,9 +159,9 @@ export function verifyTrustedMediaEvidence({
     '--signer-workflow',
     'LENKIN233/card-make/.github/workflows/trusted-media-run.yml',
     '--signer-digest',
-    receipt.source.commit_sha,
+    receipt.finalization.commit_sha,
     '--source-digest',
-    receipt.source.commit_sha,
+    receipt.finalization.commit_sha,
     '--source-ref',
     'refs/heads/main',
     '--cert-oidc-issuer',
@@ -203,7 +211,8 @@ export function verifyTrustedMediaEvidence({
     semanticResult?.ok !== true ||
     semanticResult?.formal_ready !== true ||
     semanticResult?.receipt_sha256 !== receiptSha256 ||
-    semanticResult?.source_commit_sha !== receipt.source.commit_sha
+    semanticResult?.source_commit_sha !== receipt.finalization.commit_sha ||
+    semanticResult?.execution_source_commit_sha !== receipt.source.commit_sha
   ) {
     throw new Error('trusted media type-specific artifact replay is not formal-ready');
   }
@@ -216,7 +225,7 @@ export function verifyTrustedMediaEvidence({
     receipt,
     receiptPath: receiptFile.relativePath,
     receiptSha256,
-    sourceCommit: receipt.source.commit_sha,
+    sourceCommit: receipt.finalization.commit_sha,
   };
   cache.set(cacheKey, result);
   return result;

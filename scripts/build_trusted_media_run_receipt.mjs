@@ -502,6 +502,51 @@ function artifactIdentity(filePath) {
   return {sha256: sha256(bytes), size_bytes: bytes.length};
 }
 
+function repositoryRelativePath(root, filePath, label) {
+  const relative = path.relative(path.resolve(root), path.resolve(filePath))
+    .split(path.sep)
+    .join('/');
+  if (!relative || relative.startsWith('../') || path.posix.isAbsolute(relative)) {
+    throw new Error(`${label} must remain inside the repository`);
+  }
+  return relative;
+}
+
+function regularBlobAtCommit(root, commitSha, relativePath, label) {
+  let entry;
+  let bytes;
+  try {
+    entry = execFileSync(
+      'git',
+      ['--literal-pathspecs', 'ls-tree', commitSha, '--', relativePath],
+      {cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe']},
+    ).trim();
+    bytes = execFileSync(
+      'git',
+      ['--literal-pathspecs', 'show', `${commitSha}:${relativePath}`],
+      {cwd: root, encoding: null, stdio: ['ignore', 'pipe', 'pipe']},
+    );
+  } catch {
+    throw new Error(`${label} is unavailable at the execution source commit`);
+  }
+  if (
+    !/^(100644|100755) blob [0-9a-f]{40}\t/.test(entry) ||
+    !entry.endsWith(`\t${relativePath}`)
+  ) {
+    throw new Error(`${label} must be one regular Git blob at the execution source commit`);
+  }
+  return {bytes: Buffer.from(bytes), size_bytes: bytes.length};
+}
+
+function requireExecutionBytes(root, commitSha, filePath, expectedBytes, label) {
+  const relativePath = repositoryRelativePath(root, filePath, label);
+  const executionFile = regularBlobAtCommit(root, commitSha, relativePath, label);
+  if (!executionFile.bytes.equals(Buffer.from(expectedBytes))) {
+    throw new Error(`${label} changed after the retained model execution`);
+  }
+  return {relativePath, ...executionFile};
+}
+
 function writeJson(filePath, value) {
   const bytes = Buffer.from(`${JSON.stringify(value)}\n`, 'utf8');
   fs.writeFileSync(filePath, bytes, {flag: 'wx'});
@@ -514,11 +559,15 @@ export function buildTrustedMediaArtifacts({
   repoRoot = ROOT,
   runPackagePath,
   sourceCommit,
+  executionSourceCommit = sourceCommit,
   technicalAuditReplayPath,
   worklistPath,
   createdAt = null,
 } = {}) {
   if (!COMMIT_RE.test(sourceCommit || '')) throw new Error('source commit is invalid');
+  if (!COMMIT_RE.test(executionSourceCommit || '')) {
+    throw new Error('execution source commit is invalid');
+  }
   const repositoryHead = execFileSync('git', ['rev-parse', '--verify', 'HEAD^{commit}'], {
     cwd: repoRoot,
     encoding: 'utf8',
@@ -527,9 +576,32 @@ export function buildTrustedMediaArtifacts({
   if (repositoryHead !== sourceCommit) {
     throw new Error('source commit must equal the exact repository HEAD used by the builder');
   }
+  try {
+    execFileSync(
+      'git',
+      ['merge-base', '--is-ancestor', executionSourceCommit, sourceCommit],
+      {cwd: repoRoot, stdio: ['ignore', 'ignore', 'pipe']},
+    );
+  } catch {
+    throw new Error('execution source commit must be an ancestor of the finalization commit');
+  }
   const worklistFile = readJsonFile(worklistPath, 'pending worklist');
   const authorizationFile = readJsonFile(authorizationPath, 'content authorization');
   const runPackageFile = readJsonFile(runPackagePath, 'run package');
+  requireExecutionBytes(
+    repoRoot,
+    executionSourceCommit,
+    worklistPath,
+    worklistFile.bytes,
+    'pending worklist',
+  );
+  requireExecutionBytes(
+    repoRoot,
+    executionSourceCommit,
+    authorizationPath,
+    authorizationFile.bytes,
+    'content authorization',
+  );
   const worklist = worklistFile.value;
   if (
     worklist?.schema_version !== 'audio-perceptual-worklist.v3' ||
@@ -551,6 +623,13 @@ export function buildTrustedMediaArtifacts({
   const technicalAuditFile = safeRegularFile(
     repoRoot,
     technicalAuditPath,
+    'source technical audit',
+  );
+  requireExecutionBytes(
+    repoRoot,
+    executionSourceCommit,
+    technicalAuditFile.path,
+    technicalAuditFile.bytes,
     'source technical audit',
   );
   requireTrackedHeadBlob(
@@ -594,6 +673,13 @@ export function buildTrustedMediaArtifacts({
     throw new Error('output directory must be a regular directory');
   }
   const lockFile = safeRegularFile(repoRoot, 'spec/trusted-media-runner-lock.json', 'runner lock');
+  requireExecutionBytes(
+    repoRoot,
+    executionSourceCommit,
+    lockFile.path,
+    lockFile.bytes,
+    'runner lock',
+  );
   const lock = JSON.parse(lockFile.bytes.toString('utf8'));
   let rawReplay;
   try {
@@ -769,21 +855,48 @@ export function buildTrustedMediaArtifacts({
     'spec/trusted-media-runner-lock.json',
   ];
   const driverBundle = driverPaths.map(relativePath => {
-    const file = safeRegularFile(repoRoot, relativePath, `driver ${relativePath}`);
+    const file = regularBlobAtCommit(
+      repoRoot,
+      executionSourceCommit,
+      relativePath,
+      `driver ${relativePath}`,
+    );
     return {path: relativePath, sha256: sha256(file.bytes), size_bytes: file.size_bytes};
   });
   const driverBundleSha256 = sha256(Buffer.from(canonicalStringify(driverBundle)));
-  const workflowFile = safeRegularFile(repoRoot, '.github/workflows/trusted-media-run.yml', 'trusted media workflow');
+  const executionWorkflow = regularBlobAtCommit(
+    repoRoot,
+    executionSourceCommit,
+    '.github/workflows/trusted-media-run.yml',
+    'execution trusted media workflow',
+  );
+  const finalizationWorkflow = safeRegularFile(
+    repoRoot,
+    '.github/workflows/trusted-media-run.yml',
+    'finalization trusted media workflow',
+  );
   const receipt = {
-    schema_version: 'trusted-media-run-receipt.v1',
+    schema_version: 'trusted-media-run-receipt.v2',
     receipt_id: `cet4-audio-${runPackageFile.value.execution.workflow_run_id}-${runPackageFile.value.execution.workflow_run_attempt}`,
     created_at: receiptCreatedAt.toISOString(),
     source: {
       repository: 'LENKIN233/card-make',
       ref: 'refs/heads/main',
+      commit_sha: executionSourceCommit,
+      workflow_path: '.github/workflows/trusted-media-run.yml',
+      workflow_sha256: sha256(executionWorkflow.bytes),
+    },
+    finalization: {
+      repository: 'LENKIN233/card-make',
+      ref: 'refs/heads/main',
       commit_sha: sourceCommit,
       workflow_path: '.github/workflows/trusted-media-run.yml',
-      workflow_sha256: sha256(workflowFile.bytes),
+      workflow_sha256: sha256(finalizationWorkflow.bytes),
+      retained_raw_artifact: {
+        workflow_run_id: runPackageFile.value.execution.workflow_run_id,
+        workflow_run_attempt: runPackageFile.value.execution.workflow_run_attempt,
+        artifact_name: `trusted-media-raw-${runPackageFile.value.execution.workflow_run_id}-${runPackageFile.value.execution.workflow_run_attempt}`,
+      },
     },
     execution: {
       ...runPackageFile.value.execution,
@@ -902,6 +1015,7 @@ function parseArgs(argv) {
     ['--output-dir', 'outputDir'],
     ['--run-package', 'runPackagePath'],
     ['--source-commit', 'sourceCommit'],
+    ['--execution-source-commit', 'executionSourceCommit'],
     ['--technical-audit-replay', 'technicalAuditReplayPath'],
     ['--worklist', 'worklistPath'],
   ]);
@@ -909,12 +1023,17 @@ function parseArgs(argv) {
     const key = flags.get(argv[index]);
     if (!key || !argv[index + 1]) throw new Error(`invalid argument ${argv[index]}`);
     result[key] = path.resolve(argv[index + 1]);
-    if (key === 'sourceCommit') result[key] = argv[index + 1];
+    if (key === 'sourceCommit' || key === 'executionSourceCommit') {
+      result[key] = argv[index + 1];
+    }
     index += 1;
   }
   for (const key of flags.values()) {
-    if (!result[key]) throw new Error(`missing ${key}`);
+    if (key !== 'executionSourceCommit' && !result[key]) {
+      throw new Error(`missing ${key}`);
+    }
   }
+  result.executionSourceCommit ??= result.sourceCommit;
   return result;
 }
 

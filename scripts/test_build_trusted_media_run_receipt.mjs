@@ -341,6 +341,54 @@ test('builder emits exact 301-asset reviewed worklist and receipt', t => {
   );
 });
 
+test('retained raw finalization binds original execution and later finalizer commits', t => {
+  const fixture = buildFixture(t);
+  fs.appendFileSync(
+    path.join(fixture.root, '.github/workflows/trusted-media-run.yml'),
+    '\n# retained raw finalizer change\n',
+  );
+  const gitEnv = {
+    ...process.env,
+    GIT_AUTHOR_NAME: 'Trusted Media Test',
+    GIT_AUTHOR_EMAIL: 'test@example.test',
+    GIT_COMMITTER_NAME: 'Trusted Media Test',
+    GIT_COMMITTER_EMAIL: 'test@example.test',
+  };
+  execFileSync('git', ['add', '.github/workflows/trusted-media-run.yml'], {
+    cwd: fixture.root,
+    env: gitEnv,
+    stdio: 'ignore',
+  });
+  execFileSync('git', ['commit', '-qm', 'add retained finalizer'], {
+    cwd: fixture.root,
+    env: gitEnv,
+    stdio: 'ignore',
+  });
+  const finalizationCommit = execFileSync('git', ['rev-parse', 'HEAD'], {
+    cwd: fixture.root,
+    encoding: 'utf8',
+  }).trim();
+  const result = buildTrustedMediaArtifacts({
+    authorizationPath: fixture.authorizationFile.path,
+    executionSourceCommit: fixture.sourceCommit,
+    outputDir: fixture.runDir,
+    repoRoot: fixture.root,
+    runPackagePath: fixture.runPackageFile.path,
+    sourceCommit: finalizationCommit,
+    worklistPath: fixture.worklistFile.path,
+  });
+  const receipt = JSON.parse(fs.readFileSync(result.receipt.path));
+  assert.equal(receipt.schema_version, 'trusted-media-run-receipt.v2');
+  assert.equal(receipt.source.commit_sha, fixture.sourceCommit);
+  assert.equal(receipt.finalization.commit_sha, finalizationCommit);
+  assert.notEqual(receipt.source.workflow_sha256, receipt.finalization.workflow_sha256);
+  assert.deepEqual(receipt.finalization.retained_raw_artifact, {
+    workflow_run_id: '32975067429',
+    workflow_run_attempt: 1,
+    artifact_name: 'trusted-media-raw-32975067429-1',
+  });
+});
+
 test('builder rejects a hand-authored technical audit without replayed signals', t => {
   const fixture = buildFixture(t);
   const replayPath = path.join(fixture.root, 'replayed-technical-audit.json');
@@ -650,6 +698,12 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /fsck --strict --no-reflogs/);
   assert.match(reviewJob, /git clone --shared --no-checkout/);
   assert.match(reviewJob, /find "\$repository" -perm -222/);
+  assert.match(reviewJob, /actions: read/);
+  assert.match(reviewJob, /Download retained complete raw review package/);
+  assert.match(reviewJob, /Restore exact retained model evidence/);
+  assert.match(reviewJob, /retained_run_id/);
+  assert.match(reviewJob, /--execution-source-commit/);
+  assert.match(reviewJob, /--path-format=absolute --git-path index/);
   assert.match(receiptBuildStep, /readonly_index="\$RUNNER_TEMP\/trusted-source-index-/);
   assert.match(receiptBuildStep, /GIT_INDEX_FILE="\$readonly_index" git -C "\$TRUSTED_SOURCE_ROOT"/);
   assert.match(receiptBuildStep, /add --refresh -- \. ':\(exclude\)ai_tts'/);

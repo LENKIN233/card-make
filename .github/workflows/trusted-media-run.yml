@@ -11,6 +11,21 @@ on:
         description: Tracked current full-track CET4 model authorization
         required: true
         type: string
+      retained_run_id:
+        description: Optional completed trusted-media run ID to finalize without rerunning the model
+        required: false
+        default: ""
+        type: string
+      retained_run_attempt:
+        description: Required run attempt when retained_run_id is set
+        required: false
+        default: ""
+        type: string
+      retained_source_commit:
+        description: Original model-execution commit when retained_run_id is set
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -25,6 +40,7 @@ jobs:
     runs-on: [self-hosted, macOS, ARM64, softbook-media]
     timeout-minutes: 240
     permissions:
+      actions: read
       contents: read
     env:
       GIT_ATTR_NOSYSTEM: "1"
@@ -49,6 +65,7 @@ jobs:
           mkdir -m 700 "$preflight_dir"
           echo "TRUSTED_MEDIA_PREFLIGHT_DIR=$preflight_dir" >> "$GITHUB_ENV"
           echo "TRUSTED_MEDIA_DEADLINE_EPOCH=$(( $(date +%s) + 12600 ))" >> "$GITHUB_ENV"
+          echo "TRUSTED_MEDIA_EXECUTION_SOURCE_COMMIT=$GITHUB_SHA" >> "$GITHUB_ENV"
 
       - name: Materialize isolated exact source snapshots from runner mirrors
         shell: bash
@@ -113,6 +130,9 @@ jobs:
         env:
           WORKLIST_PATH: ${{ inputs.worklist_path }}
           AUTHORIZATION_PATH: ${{ inputs.authorization_path }}
+          RETAINED_RUN_ID: ${{ inputs.retained_run_id }}
+          RETAINED_RUN_ATTEMPT: ${{ inputs.retained_run_attempt }}
+          RETAINED_SOURCE_COMMIT: ${{ inputs.retained_source_commit }}
         shell: bash
         run: |
           set -euo pipefail
@@ -125,6 +145,17 @@ jobs:
           test -f "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH" && test ! -L "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH"
           test -f "$TRUSTED_SOURCE_ROOT/$AUTHORIZATION_PATH" && test ! -L "$TRUSTED_SOURCE_ROOT/$AUTHORIZATION_PATH"
           git -C "$TRUSTED_SOURCE_ROOT" ls-files --error-unmatch -- "$WORKLIST_PATH" "$AUTHORIZATION_PATH" >/dev/null
+          if [[ -n "$RETAINED_RUN_ID" ]]; then
+            [[ "$RETAINED_RUN_ID" =~ ^[1-9][0-9]{5,19}$ ]]
+            [[ "$RETAINED_RUN_ATTEMPT" =~ ^[1-9][0-9]{0,8}$ ]]
+            [[ "$RETAINED_SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+            git -C "$TRUSTED_SOURCE_ROOT" cat-file -e "$RETAINED_SOURCE_COMMIT^{commit}"
+            git -C "$TRUSTED_SOURCE_ROOT" merge-base --is-ancestor \
+              "$RETAINED_SOURCE_COMMIT" "$GITHUB_SHA"
+          else
+            test -z "$RETAINED_RUN_ATTEMPT"
+            test -z "$RETAINED_SOURCE_COMMIT"
+          fi
 
       - name: Validate trusted runner runtime
         shell: bash
@@ -184,6 +215,7 @@ jobs:
           echo "TRUSTED_MEDIA_TECHNICAL_AUDIT_REPLAY=$replay" >> "$GITHUB_ENV"
 
       - name: Run two-pass exact-asset media review
+        if: inputs.retained_run_id == ''
         env:
           WORKLIST_PATH: ${{ inputs.worklist_path }}
         shell: bash
@@ -208,6 +240,40 @@ jobs:
             echo "unexpected trusted media runner exit code: $review_status" >&2
           fi
 
+      - name: Download retained complete raw review package
+        if: inputs.retained_run_id != ''
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: trusted-media-raw-${{ inputs.retained_run_id }}-${{ inputs.retained_run_attempt }}
+          path: ${{ runner.temp }}/trusted-media-retained-${{ github.run_id }}-${{ github.run_attempt }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.retained_run_id }}
+
+      - name: Restore exact retained model evidence
+        if: inputs.retained_run_id != ''
+        env:
+          RETAINED_RUN_ID: ${{ inputs.retained_run_id }}
+          RETAINED_RUN_ATTEMPT: ${{ inputs.retained_run_attempt }}
+          RETAINED_SOURCE_COMMIT: ${{ inputs.retained_source_commit }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          retained="$RUNNER_TEMP/trusted-media-retained-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          output_dir="$RUNNER_TEMP/trusted-media-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          test -d "$retained" && test ! -L "$retained"
+          test ! -e "$output_dir"
+          test -z "$(find "$retained" -type l -print -quit)"
+          test "$(jq -r .execution.workflow_run_id "$retained/run-package.json")" = \
+            "$RETAINED_RUN_ID"
+          test "$(jq -r .execution.workflow_run_attempt "$retained/run-package.json")" = \
+            "$RETAINED_RUN_ATTEMPT"
+          mkdir -m 700 "$output_dir"
+          rsync -a "$retained/" "$output_dir/"
+          echo "TRUSTED_MEDIA_OUTPUT_DIR=$output_dir" >> "$GITHUB_ENV"
+          echo "TRUSTED_MEDIA_REVIEW_EXIT_CODE=0" >> "$GITHUB_ENV"
+          echo "TRUSTED_MEDIA_EXECUTION_SOURCE_COMMIT=$RETAINED_SOURCE_COMMIT" >> "$GITHUB_ENV"
+
       - name: Build exact receipt and review artifacts
         if: env.TRUSTED_MEDIA_REVIEW_EXIT_CODE == '0'
         env:
@@ -219,7 +285,7 @@ jobs:
           test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
           readonly_index="$RUNNER_TEMP/trusted-source-index-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           test ! -e "$readonly_index"
-          cp "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse --git-path index)" "$readonly_index"
+          cp "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse --path-format=absolute --git-path index)" "$readonly_index"
           chmod u+w "$readonly_index"
           GIT_INDEX_FILE="$readonly_index" git -C "$TRUSTED_SOURCE_ROOT" \
             add --refresh -- . ':(exclude)ai_tts'
@@ -245,7 +311,8 @@ jobs:
             --run-package "$TRUSTED_MEDIA_OUTPUT_DIR/run-package.json" \
             --output-dir "$TRUSTED_MEDIA_OUTPUT_DIR" \
             --technical-audit-replay "$TRUSTED_MEDIA_TECHNICAL_AUDIT_REPLAY" \
-            --source-commit "$GITHUB_SHA"
+            --source-commit "$GITHUB_SHA" \
+            --execution-source-commit "$TRUSTED_MEDIA_EXECUTION_SOURCE_COMMIT"
           test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
           GIT_INDEX_FILE="$readonly_index" git -C "$TRUSTED_SOURCE_ROOT" \
             diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts'
@@ -359,6 +426,9 @@ jobs:
         env:
           WORKLIST_PATH: ${{ inputs.worklist_path }}
           AUTHORIZATION_PATH: ${{ inputs.authorization_path }}
+          RETAINED_RUN_ID: ${{ inputs.retained_run_id }}
+          RETAINED_RUN_ATTEMPT: ${{ inputs.retained_run_attempt }}
+          RETAINED_SOURCE_COMMIT: ${{ inputs.retained_source_commit }}
         shell: bash
         run: |
           set -euo pipefail
@@ -377,8 +447,12 @@ jobs:
           cp "$downloaded/model-weights-manifest.json" "$rebuilt/"
           cp "$downloaded/mlx-audio-package-manifest.json" "$rebuilt/"
           cp "$downloaded/python-environment-manifest.json" "$rebuilt/"
-          test "$(jq -r .execution.workflow_run_id "$rebuilt/run-package.json")" = "$GITHUB_RUN_ID"
-          test "$(jq -r .execution.workflow_run_attempt "$rebuilt/run-package.json")" = "$GITHUB_RUN_ATTEMPT"
+          expected_run_id="${RETAINED_RUN_ID:-$GITHUB_RUN_ID}"
+          expected_run_attempt="${RETAINED_RUN_ATTEMPT:-$GITHUB_RUN_ATTEMPT}"
+          execution_source_commit="${RETAINED_SOURCE_COMMIT:-$GITHUB_SHA}"
+          test "$(jq -r .execution.workflow_run_id "$rebuilt/run-package.json")" = "$expected_run_id"
+          test "$(jq -r .execution.workflow_run_attempt "$rebuilt/run-package.json")" = \
+            "$expected_run_attempt"
           python3 - "$rebuilt" <<'PY'
           import hashlib, json, pathlib, sys
           root = pathlib.Path(sys.argv[1])
@@ -427,7 +501,8 @@ jobs:
             --run-package "$rebuilt/run-package.json" \
             --output-dir "$rebuilt" \
             --technical-audit-replay "$audit_replay" \
-            --source-commit "$GITHUB_SHA"
+            --source-commit "$GITHUB_SHA" \
+            --execution-source-commit "$execution_source_commit"
           for artifact in \
             audio-manifest.json \
             reviewed-worklist.json \
