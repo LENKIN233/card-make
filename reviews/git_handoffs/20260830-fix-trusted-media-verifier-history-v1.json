@@ -1,0 +1,31 @@
+{
+  "handoff_id": "20260830-fix-trusted-media-verifier-history-v1",
+  "created_at": "2026-08-30T02:53:00+08:00",
+  "agent": "codex",
+  "branch": "fix/trusted-media-verifier-history",
+  "base_branch": "main",
+  "commit_sha": "90f45d5937afb06d8d77f913f77f9c077541658f",
+  "push_ref": "origin/fix/trusted-media-verifier-history",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/215",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      ".github/workflows/trusted-media-run.yml",
+      "scripts/test_build_trusted_media_run_receipt.mjs",
+      "spec/trusted-media-run-producer.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "1380d5bb943ef4bf8922c84bc2b675f626827d10",
+    "patch_sha256": "d4661d8ade73a19f8d0dcbb0c006f18f4fc63445e8030ef2780f2bb75bd317ad"
+  },
+  "validation": [
+    {"command": "node --test scripts/test_build_trusted_media_run_receipt.mjs", "result": "passed: 18/18"},
+    {"command": "node scripts/validate_harness.mjs", "result": "passed with recorded warnings only"},
+    {"command": "git diff --check", "result": "passed"}
+  ],
+  "local_status": "Run 33269214168 passed retained finalization and GitHub-hosted 301 audio audit, then rejected ancestry because the verifier checkout omitted historical execution commit 0a47d1f; fetch-depth zero restores that exact evidence.",
+  "remaining_risks": ["A fresh retained run must still pass byte compare and OIDC attest."],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
