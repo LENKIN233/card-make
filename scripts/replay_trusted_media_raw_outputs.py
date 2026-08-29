@@ -37,16 +37,7 @@ def replay_record(record, purpose: str, expected_transcript: str, threshold: flo
         raise ValueError(f"unsupported run purpose: {purpose}")
     parsed = parser(raw_outputs[-1])
     if purpose in {"full_perceptual", "adjudication"}:
-        if all(parsed[key] for key in (
-            "matches_text",
-            "target_signal_audible",
-            "accurate_pronunciation",
-            "suitable_speed",
-            "natural_rhythm",
-            "stress_pauses_do_not_mislead",
-            "no_unwanted_noise_or_clipping",
-        )):
-            parsed["notes"] = ""
+        parsed["notes"] = ""
         if transcript_similarity(expected_transcript, parsed["transcript_heard"]) < threshold:
             parsed["matches_text"] = False
     if parsed != record.get("result"):

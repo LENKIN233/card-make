@@ -30,6 +30,14 @@ function buildTrustedMediaArtifacts(options) {
   });
 }
 
+function retainedRawOutput(record) {
+  const result = structuredClone(record.result);
+  if (['full_perceptual', 'adjudication'].includes(record.purpose)) {
+    delete result.notes;
+  }
+  return JSON.stringify(result);
+}
+
 test('transcript similarity preserves phonetic spelling while rejecting omitted clauses', () => {
   assert.ok(
     transcriptSimilarity(
@@ -241,7 +249,7 @@ function buildFixture(t) {
       transcript_similarity: 1,
     }));
     for (const record of records) {
-      record.raw_outputs = [JSON.stringify(record.result)];
+      record.raw_outputs = [retainedRawOutput(record)];
     }
     const payload = Buffer.from(records.map(record => JSON.stringify(record)).join('\n') + '\n');
     const file = write(root, `run-output/run-${name}.jsonl`, payload);
@@ -457,7 +465,7 @@ test('builder rejects one pronunciation specialist reused across acceptance lane
     },
   }));
   for (const record of records) {
-    record.raw_outputs = [JSON.stringify(record.result)];
+    record.raw_outputs = [retainedRawOutput(record)];
   }
   const bytes = Buffer.from(
     `${records.map(record => JSON.stringify(record)).join('\n')}\n`,
@@ -523,7 +531,7 @@ test('builder recomputes blind transcript similarity from raw text', t => {
   const runPath = path.join(fixture.runDir, run.path);
   const records = fs.readFileSync(runPath, 'utf8').trim().split('\n').map(JSON.parse);
   records[0].result.transcript_heard = 'unrelated blind transcript';
-  records[0].raw_outputs = [JSON.stringify(records[0].result)];
+  records[0].raw_outputs = [retainedRawOutput(records[0])];
   records[0].transcript_similarity = 1;
   const bytes = Buffer.from(`${records.map(record => JSON.stringify(record)).join('\n')}\n`);
   fs.writeFileSync(runPath, bytes);
@@ -724,7 +732,7 @@ test('builder rejects a pronunciation override supported by only one acceptance 
   const generalRecords = fs.readFileSync(generalPath, 'utf8').trim().split('\n').map(JSON.parse);
   for (const record of generalRecords) {
     record.result.accurate_pronunciation = false;
-    record.raw_outputs = [JSON.stringify(record.result)];
+    record.raw_outputs = [retainedRawOutput(record)];
   }
   const generalBytes = Buffer.from(
     `${generalRecords.map(record => JSON.stringify(record)).join('\n')}\n`,
