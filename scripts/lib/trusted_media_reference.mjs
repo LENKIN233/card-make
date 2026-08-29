@@ -205,7 +205,9 @@ export function verifyTrustedMediaEvidence({
       root: path.resolve(root),
     });
   } catch (error) {
-    const detail = String(error?.stderr || error?.message || 'unknown failure')
+    const detail = String(
+      error?.stderr || error?.stdout || error?.message || 'unknown failure',
+    )
       .replace(/Bearer\s+\S+/gi, 'Bearer [redacted]')
       .replace(/\s+/g, ' ')
       .trim()

@@ -141,7 +141,7 @@ test('type-specific verifier failure keeps one bounded diagnostic without bearer
       trustedReceiptPath: fixture.trustedReceiptPath,
       typeSpecificVerifier() {
         const error = new Error('verifier failed');
-        error.stderr = Buffer.from('Authorization: Bearer secret-value exact replay mismatch');
+        error.stdout = Buffer.from('Authorization: Bearer secret-value exact replay mismatch');
         throw error;
       },
       worklistPath: fixture.worklistPath,
