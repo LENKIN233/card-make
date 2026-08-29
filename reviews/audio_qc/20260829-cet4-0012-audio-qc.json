@@ -1,0 +1,485 @@
+{
+  "schema_version": "model-owned-audio-qc.v2",
+  "audio_qc_id": "20260829-cet4-0012-audio-qc",
+  "created_at": "2026-08-29T19:11:31.220Z",
+  "model_acceptances": [
+    {
+      "schema_version": "model-acceptance.v2",
+      "actor": {
+        "kind": "model_harness",
+        "agent": "agent:audio-evidence-aggregate-lane-1",
+        "model": "mlx-community/Qwen2-Audio-7B-Instruct-4bit",
+        "run_id": "audio-evidence:0012:lane-1:6e5a1762811ae680"
+      },
+      "evidence": {
+        "reviewed_at": "2026-08-29T18:10:49.804Z",
+        "input_sha256": "sha256:fb8afb6f2d17054078ae5557d6d948848c9d76453fb17a259aebbf78bb8e07d5",
+        "capabilities": [
+          "audio_perceptual_review"
+        ],
+        "summary": "Deterministic lane 1 aggregation of 12 exact per-card audio-capable acceptances; source evidence sha256:6e5a1762811ae6800df2e6bfaac383c2dd6aeb5807e458ca85848e3b9d6f8350. No new media, provider, deployment, or device fact is inferred.",
+        "findings": []
+      },
+      "decision": "accepted"
+    },
+    {
+      "schema_version": "model-acceptance.v2",
+      "actor": {
+        "kind": "model_harness",
+        "agent": "agent:audio-evidence-aggregate-lane-2",
+        "model": "mlx-community/Qwen2-Audio-7B-Instruct-4bit",
+        "run_id": "audio-evidence:0012:lane-2:e4a98c8ee5ce88a9"
+      },
+      "evidence": {
+        "reviewed_at": "2026-08-29T18:10:49.804Z",
+        "input_sha256": "sha256:fb8afb6f2d17054078ae5557d6d948848c9d76453fb17a259aebbf78bb8e07d5",
+        "capabilities": [
+          "audio_perceptual_review"
+        ],
+        "summary": "Deterministic lane 2 aggregation of 12 exact per-card audio-capable acceptances; source evidence sha256:e4a98c8ee5ce88a9448dd2a1a4564b0a23debae0272909f030f873a7b728547e. No new media, provider, deployment, or device fact is inferred.",
+        "findings": []
+      },
+      "decision": "accepted"
+    }
+  ],
+  "scope": {
+    "library": "听力",
+    "group": "语音现象",
+    "box": "失去爆破",
+    "box_prefixes": [
+      "0012"
+    ],
+    "card_ids": [
+      "001201",
+      "001202",
+      "001203",
+      "001204",
+      "001205",
+      "001206",
+      "001207",
+      "001208",
+      "001209",
+      "001210",
+      "001211",
+      "001212"
+    ]
+  },
+  "source_records": {
+    "card_files": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0012.json"
+    ],
+    "linked_agent_self_reviews": [
+      "reviews/agent_self_review/20260826-cet4-full-track-source-model-review.json"
+    ],
+    "linked_approved_batch": "reviews/approved_batches/20260829-cet4-full-track-context-perturbation-authorization.json",
+    "linked_perceptual_worklist": "reviews/audio_perceptual_worklists/cet4-audio-33261431967-1-reviewed.json",
+    "perceptual_worklist_sha256": "eee36400f2fe58b66ed88c8fede9c626694de1348146902745f33d271b5e690f",
+    "trusted_media_receipt": "reviews/trusted_media_receipts/cet4-audio-33261431967-1.json",
+    "trusted_media_receipt_sha256": "9a7833df857fa6b351a4fa96261ff58d4dd28aca7b7be9138243756d4094825a",
+    "trusted_media_attestation_bundle": "reviews/trusted_media_receipts/cet4-audio-33261431967-1.attestation.jsonl",
+    "trusted_media_attestation_bundle_sha256": "4882857d5a3b3355c2e889c1eeb0286731f19b415e52c694dd28dceda63b81da",
+    "trusted_media_source_commit": "a63d3c9b39371787b2e9f9f28842e172ec3ff357",
+    "trusted_media_model_id": "mlx-community/Qwen2-Audio-7B-Instruct-4bit",
+    "trusted_media_model_revision": "c65570002626f41b4dc08b7b54f42f99f3e82e7f"
+  },
+  "text_gate": {
+    "tts_text_reviewed": true,
+    "text_source_type": "simulation",
+    "transcripts": [
+      {
+        "card_id": "001201",
+        "transcript": "The report showed rapid growth, but market pressure kept profits unstable.",
+        "target_signal": "区分词尾塞音无可闻爆破与音位删除",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 区分词尾塞音无可闻爆破与音位删除",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "001202",
+        "transcript": "We stopped collecting paper forms because digital records were easier to track.",
+        "target_signal": "定位 stopped collecting 的 /t/ → /k/ 边界",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 定位 stopped collecting 的 /t/ → /k/ 边界",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "001203",
+        "transcript": "The next task requires strict timing so that every step can be checked.",
+        "target_signal": "区分同部位塞音相接与跨部位无可闻爆破",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 区分同部位塞音相接与跨部位无可闻爆破",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "001204",
+        "transcript": "Most participants accepted the draft plan, though budget limits remained.",
+        "target_signal": "区分复杂 /t/ → /p/ 边界的未释放与省音",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 区分复杂 /t/ → /p/ 边界的未释放与省音",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "001205",
+        "transcript": "The first pilot failed, yet the second trial produced consistent results.",
+        "target_signal": "从复杂辅音群中筛选简单 /t/ → /f/ 边界",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 从复杂辅音群中筛选简单 /t/ → /f/ 边界",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "001206",
+        "transcript": "They asked for quick updates, but delayed feedback blocked final approval.",
+        "target_signal": "比较同部位与跨部位 stop-stop 边界",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 比较同部位与跨部位 stop-stop 边界",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "001207",
+        "transcript": "In next train, the t in next is often unreleased before tr, so listeners may hear nex train.",
+        "target_signal": "区分 next train 中未释放与辅音群省音",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 区分 next train 中未释放与辅音群省音",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "001208",
+        "transcript": "The phrase good boy may sound like goo boy, because the final d is not fully released before b.",
+        "target_signal": "区分 good boy 中 /d/ 无可闻爆破与删除",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 区分 good boy 中 /d/ 无可闻爆破与删除",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "001209",
+        "transcript": "At last minute, the t in last is unreleased before m, but minute remains clear and carries timing detail.",
+        "target_signal": "识别 last minute 单一未释放结论的证据缺口",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 识别 last minute 单一未释放结论的证据缺口",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "001210",
+        "transcript": "In kept quiet, the p in kept is lightly released before q, creating a clipped transition in fast speech.",
+        "target_signal": "修正 kept quiet 的跨词音段定位",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 修正 kept quiet 的跨词音段定位",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "001211",
+        "transcript": "When saying big class, many speakers do not release g fully before k, so the boundary becomes tighter.",
+        "target_signal": "区分 big class 中共享闭塞与 /g/ 删除",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 区分 big class 中共享闭塞与 /g/ 删除",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "001212",
+        "transcript": "The phrase stopped by is often heard as stop by, where the final p-t cluster is simplified in rapid delivery.",
+        "target_signal": "区分 stopped by 的释放变化与过去式词形丢失",
+        "pronunciation_notes": "Evaluate the audible pronunciation phenomenon named by this target: 区分 stopped by 的释放变化与过去式词形丢失",
+        "text_review_result": "passed_before_perceptual_review"
+      }
+    ]
+  },
+  "generation_plan": {
+    "method": "TTS_AI_generated",
+    "provider": "legacy_unknown",
+    "voice_or_speaker": "legacy_unknown",
+    "speed": "legacy_unknown",
+    "style_notes": "Pre-existing candidate assets; unavailable generation details are not reconstructed.",
+    "output_dir": "ai_tts/",
+    "overwrite_existing_assets": false,
+    "replacement_reason": ""
+  },
+  "legacy_adoption": {
+    "enabled": true,
+    "reviewed_at": "2026-08-29T18:10:49.804Z",
+    "reproducibility_status": "non_reproducible"
+  },
+  "generated_assets": [
+    {
+      "card_id": "001201",
+      "path": "ai_tts/cet4/0012/001201.mp3",
+      "transcript_sha256": "a9dea64cec44d3d2fc576464d7c67ffdd46686c9dc70912a43ddb4abb8b891ea",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "8d4d9d3f9aa1b9a4e9312efe29e1001b0eba1eb804c8468baa6410680ad74073",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "001202",
+      "path": "ai_tts/cet4/0012/001202.mp3",
+      "transcript_sha256": "a374cfcbb659e5282f37a4d2eb5b64bc56b4bd92b4e61a983a5d0232e0bed816",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "5f81d96300f1b1a94cdc9ea7499dd448e67804dc5a4728f7becfcf0309413686",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "001203",
+      "path": "ai_tts/cet4/0012/001203.mp3",
+      "transcript_sha256": "63f829a6b7220f11df704a7a7382c62633bebe1b236d93c43c37e1beddc3eb15",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "733111acfcec8faed6a393d405217d835b144a93c93a021ecbfa2d61987ff5e8",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "001204",
+      "path": "ai_tts/cet4/0012/001204.mp3",
+      "transcript_sha256": "30a73e85f66e6f0ea9fa52ffda0847852265b7d518e7ef2511cad313b5d4e2ab",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "3f83907cfb49c76470af138d96fe2508f4c8fe28d7c97888b9c9ef48b7a411a4",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "001205",
+      "path": "ai_tts/cet4/0012/001205.mp3",
+      "transcript_sha256": "c3a2425648465a988d0b9ad1d3fe620d9e6628d9e0dcbaf6ec7c34851b24bee3",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "cd42cb4148fc4b74a97f19e35642bcdf068fd469e55f6f5649287ea1a8a88175",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "001206",
+      "path": "ai_tts/cet4/0012/001206.mp3",
+      "transcript_sha256": "5a5106539c29520fb07ae8d7106dfeea6cbc3f6cf13447e5522d381561d29f0b",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "b3fcdb0129ea87f699d1e844910292f96fbc961e4a50ec03ea4611529ea0f522",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "001207",
+      "path": "ai_tts/cet4/0012/001207.mp3",
+      "transcript_sha256": "420a477d2768ed98eed0d40d1174864b6e01f5616d028e2f434bd99aedecab8a",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "ae0d2a7b5fd688c29cb0a8e93b4417bc2ee67b4842a20fea482ba5af03af1b1e",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "001208",
+      "path": "ai_tts/cet4/0012/001208.mp3",
+      "transcript_sha256": "52c57d4d24a19439f9d4a0a77e4d2ae37ea60336e3ced06e3004745e5dfc157b",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "6d87f564d3a29c703d3d985f7b59f420ae64a6d2c09b284a1ca3f80bcf31057d",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "001209",
+      "path": "ai_tts/cet4/0012/001209.mp3",
+      "transcript_sha256": "73a750a5730bfb7d656be679033a193dc1b5d1e687028d9912b0789fc8151b68",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "8488399e8e854833d2c8238c2d1e4d1667a9c36c6ffaa263fb54c17db91dd024",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "001210",
+      "path": "ai_tts/cet4/0012/001210.mp3",
+      "transcript_sha256": "d1e91e926ea056af5ba2f5676b5d179ad637484da1c0e9f50be07baeb52a114d",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "fb772cfc8c1a35f8c75a47c8b6146f4ef104ebdaf652e7f704f1e807bdaf41fa",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "001211",
+      "path": "ai_tts/cet4/0012/001211.mp3",
+      "transcript_sha256": "57b8ce1c835c79a2b19a58ed100f3a7f1c3e7bf493eeedaff2ed67ed593bbb4d",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "13b7685e86c948adc86e4fb411a47021954ba3b7daeed1076f6e22e67ee9d760",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "001212",
+      "path": "ai_tts/cet4/0012/001212.mp3",
+      "transcript_sha256": "e07e0dc733f9ce2eed20b9b0debc8848ee16944f736d426b7e3d96624f242697",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "45c383972e59ed643361f91a313f273b4b2706b9aeb28f28f46d5b3e82d025d0",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    }
+  ],
+  "qa_checks": {
+    "audio_matches_text": true,
+    "target_signal_audible": true,
+    "accurate_pronunciation": true,
+    "suitable_speed": true,
+    "natural_rhythm": true,
+    "stress_and_pauses_do_not_mislead": true,
+    "no_unwanted_noise_or_clipping": true,
+    "no_autoplay_assumption": true,
+    "front_side_no_required_subtitles": true,
+    "tts_audio_not_used_as_source_authenticity": true
+  },
+  "per_card_qc": [
+    {
+      "card_id": "001201",
+      "asset_path": "ai_tts/cet4/0012/001201.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "001202",
+      "asset_path": "ai_tts/cet4/0012/001202.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "001203",
+      "asset_path": "ai_tts/cet4/0012/001203.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "001204",
+      "asset_path": "ai_tts/cet4/0012/001204.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "001205",
+      "asset_path": "ai_tts/cet4/0012/001205.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "001206",
+      "asset_path": "ai_tts/cet4/0012/001206.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "001207",
+      "asset_path": "ai_tts/cet4/0012/001207.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "001208",
+      "asset_path": "ai_tts/cet4/0012/001208.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "001209",
+      "asset_path": "ai_tts/cet4/0012/001209.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "001210",
+      "asset_path": "ai_tts/cet4/0012/001210.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "001211",
+      "asset_path": "ai_tts/cet4/0012/001211.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "001212",
+      "asset_path": "ai_tts/cet4/0012/001212.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-08-29T18:10:49.804Z; cet4-current-audio-perceptual-qc."
+    }
+  ],
+  "verdict": {
+    "candidate_audio_ok": true,
+    "formal_audio_ready": true,
+    "requires_regeneration": false,
+    "reason": "All bound assets passed complete per-card model perceptual QC and the three product-semantics boundaries were explicitly attested."
+  },
+  "approval_boundary": {
+    "tts_audio_is_not_source_authenticity_evidence": true,
+    "current_model_owned_content_authorization_required": true,
+    "external_facts_must_not_be_inferred": true
+  },
+  "validation": {
+    "audio_qc": "node scripts/validate_audio_qc.mjs",
+    "harness": "node scripts/validate_harness.mjs"
+  }
+}
