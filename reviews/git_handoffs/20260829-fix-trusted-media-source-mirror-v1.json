@@ -1,0 +1,61 @@
+{
+  "handoff_id": "20260829-fix-trusted-media-source-mirror-v1",
+  "created_at": "2026-08-29T13:59:48+08:00",
+  "agent": "codex",
+  "branch": "fix/trusted-media-source-mirror",
+  "base_branch": "main",
+  "commit_sha": "cda1a75a13d55b37c8c706b53ee84ebc39b34f5c",
+  "push_ref": "origin/fix/trusted-media-source-mirror",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/204",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      ".github/workflows/trusted-media-run.yml",
+      "scripts/test_build_trusted_media_run_receipt.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/audio-generation-contract.json",
+      "spec/trusted-media-run-producer.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "3180500c529bf328c5b8d6078474aa8a75a9a001",
+    "patch_sha256": "cdb33aad54be70a6d8757b17aa44e306920382f8fc9771d6412e1246129da282"
+  },
+  "validation": [
+    {
+      "command": "node --test scripts/test_build_trusted_media_run_receipt.mjs",
+      "result": "passed: 16/16"
+    },
+    {
+      "command": "python3 scripts/test_run_trusted_media_review.py",
+      "result": "passed: 12/12"
+    },
+    {
+      "command": "node --test scripts/test_model_acceptance.mjs scripts/test_validate_audio_qc_model.mjs scripts/test_audio_perceptual_worklist.mjs scripts/test_build_audio_qc_drafts.mjs",
+      "result": "passed: 34/34"
+    },
+    {
+      "command": "node --test scripts/test_card_integrity.mjs scripts/test_validate_pr_scope.mjs",
+      "result": "passed: 126/126"
+    },
+    {
+      "command": "node --test scripts/test_validate_delivery_record.mjs scripts/test_manage_controlled_pilot_approval.mjs",
+      "result": "passed: 85/85"
+    },
+    {
+      "command": "read-only runner mirror materialization smoke",
+      "result": "passed: exact source commit, pinned product commit, 301 MP3 assets, zero non-media Git drift"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs && node scripts/validate_audio_qc.mjs && git diff --check",
+      "result": "passed with only six recorded catalog warnings"
+    }
+  ],
+  "local_status": "The self-hosted trusted media job can materialize exact source and product commits from read-only runner mirrors without a network checkout while the GitHub-hosted verifier remains independent.",
+  "remaining_risks": [
+    "The runner source mirror must be refreshed to the merged main commit before dispatching the next formal media run.",
+    "No model-listening result or GitHub attestation is claimed until the real workflow completes."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
