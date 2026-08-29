@@ -716,6 +716,7 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(verifyJob, /runs-on: ubuntu-latest/);
   assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);
   assert.match(verifyJob, /lfs: false/);
+  assert.match(verifyJob, /Checkout exact trusted main commit without LFS download[\s\S]*fetch-depth: 0/);
   assert.doesNotMatch(verifyJob, /git -C "\$source_root" lfs pull/);
   assert.match(verifyJob, /rsync -a "\$downloaded\/ai_tts\/cet4\/"/);
   assert.match(verifyJob, /Rebuild and byte-verify receipt on GitHub-hosted runner/);
