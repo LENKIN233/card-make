@@ -14,6 +14,9 @@ from run_trusted_media_review import (
     general_prompt,
     hash_regular_tree,
     main,
+    parse_general,
+    parse_pronunciation,
+    parse_transcript,
     pronunciation_prompt,
     run_review_package,
 )
@@ -149,6 +152,44 @@ def worklist(asset_root: Path, count=4):
 
 
 class TrustedMediaRunnerTests(unittest.TestCase):
+    def test_known_shape_parser_recovers_unescaped_natural_apostrophes(self):
+        transcript = "Today's report explains students' stress during exam season."
+        self.assertEqual(
+            parse_transcript(f"{{'transcript_heard': '{transcript}'}}"),
+            {"transcript_heard": transcript},
+        )
+        general = (
+            f"{{'transcript_heard': '{transcript}', 'matches_text': True, "
+            "'target_signal_audible': True, 'accurate_pronunciation': True, "
+            "'suitable_speed': True, 'natural_rhythm': True, "
+            "'stress_pauses_do_not_mislead': True, "
+            "'no_unwanted_noise_or_clipping': True, "
+            "'notes': 'The speaker's pacing is clear.'}"
+        )
+        parsed_general = parse_general(general)
+        self.assertEqual(parsed_general["transcript_heard"], transcript)
+        self.assertEqual(parsed_general["notes"], "The speaker's pacing is clear.")
+        pronunciation = (
+            f"{{'transcript_heard': '{transcript}', "
+            "'accurate_pronunciation': True, 'specific_error': ''}"
+        )
+        self.assertEqual(
+            parse_pronunciation(pronunciation)["transcript_heard"],
+            transcript,
+        )
+
+    def test_known_shape_parser_rejects_ambiguous_or_reordered_fields(self):
+        with self.assertRaisesRegex(ValueError, "keys are invalid"):
+            parse_transcript("{'other': 'text'}")
+        with self.assertRaisesRegex(ValueError, "delimiter is ambiguous"):
+            parse_general(
+                "{'transcript_heard': 'spoken , 'matches_text': text', "
+                "'matches_text': True, 'target_signal_audible': True, "
+                "'accurate_pronunciation': True, 'suitable_speed': True, "
+                "'natural_rhythm': True, 'stress_pauses_do_not_mislead': True, "
+                "'no_unwanted_noise_or_clipping': True, 'notes': ''}"
+            )
+
     def test_compact_environment_manifest_stays_below_repository_blob_limit(self):
         files = [
             {

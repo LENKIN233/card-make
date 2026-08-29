@@ -165,12 +165,52 @@ def strip_code_fence(text: str) -> str:
     return re.sub(r"^```(?:json|python)?\s*|\s*```$", "", text.strip())
 
 
-def parse_object(text: str):
+def parse_single_quoted_object(candidate: str, fields):
+    """Recover one exact known-key object when natural apostrophes break a model literal."""
+    if not candidate.startswith("{") or not candidate.endswith("}"):
+        raise ValueError("model result is not a bounded object")
+    remainder = candidate[1:-1].strip()
+    first_prefix = f"'{fields[0][0]}': "
+    if not remainder.startswith(first_prefix):
+        raise ValueError("single-quoted model result field order is invalid")
+    remainder = remainder[len(first_prefix):]
+    value = {}
+    for index, (key, expected_type) in enumerate(fields):
+        if index + 1 < len(fields):
+            separator = f", '{fields[index + 1][0]}': "
+            if remainder.count(separator) != 1:
+                raise ValueError("single-quoted model result delimiter is ambiguous")
+            token, remainder = remainder.split(separator, 1)
+        else:
+            token, remainder = remainder, ""
+        token = token.strip()
+        if expected_type is str:
+            if len(token) < 2 or token[0] != "'" or token[-1] != "'":
+                raise ValueError(f"single-quoted model result string is invalid: {key}")
+            parsed = token[1:-1]
+            if any(ord(character) < 32 for character in parsed):
+                raise ValueError(f"single-quoted model result string has controls: {key}")
+        elif expected_type is bool:
+            if token not in {"True", "False", "true", "false"}:
+                raise ValueError(f"single-quoted model result boolean is invalid: {key}")
+            parsed = token.lower() == "true"
+        else:
+            raise ValueError("unsupported single-quoted model result field type")
+        value[key] = parsed
+    if remainder:
+        raise ValueError("single-quoted model result has trailing data")
+    return value
+
+
+def parse_object(text: str, fields):
     candidate = strip_code_fence(text)
     try:
         value = json.loads(candidate)
     except json.JSONDecodeError:
-        value = ast.literal_eval(candidate)
+        try:
+            value = ast.literal_eval(candidate)
+        except (SyntaxError, ValueError):
+            value = parse_single_quoted_object(candidate, fields)
     if not isinstance(value, dict):
         raise ValueError("model result must be an object")
     return value
@@ -182,7 +222,14 @@ def require_exact_keys(value, keys, label: str):
 
 
 def parse_general(text: str):
-    value = parse_object(text)
+    value = parse_object(
+        text,
+        [
+            ("transcript_heard", str),
+            *((key, bool) for key in GENERAL_BOOL_KEYS),
+            ("notes", str),
+        ],
+    )
     required = {"transcript_heard", "notes", *GENERAL_BOOL_KEYS}
     require_exact_keys(value, required, "general result")
     if not isinstance(value["transcript_heard"], str) or not isinstance(
@@ -195,7 +242,14 @@ def parse_general(text: str):
 
 
 def parse_pronunciation(text: str):
-    value = parse_object(text)
+    value = parse_object(
+        text,
+        [
+            ("transcript_heard", str),
+            ("accurate_pronunciation", bool),
+            ("specific_error", str),
+        ],
+    )
     require_exact_keys(
         value,
         {"transcript_heard", "accurate_pronunciation", "specific_error"},
@@ -218,7 +272,7 @@ def parse_pronunciation(text: str):
 
 
 def parse_transcript(text: str):
-    value = parse_object(text)
+    value = parse_object(text, [("transcript_heard", str)])
     require_exact_keys(value, {"transcript_heard"}, "transcript result")
     if not isinstance(value["transcript_heard"], str) or not value[
         "transcript_heard"
