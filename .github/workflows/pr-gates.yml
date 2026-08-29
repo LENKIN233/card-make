@@ -12,6 +12,7 @@ on:
     - cron: "17 3 * * 1"
 
 permissions:
+  actions: read
   contents: read
   pull-requests: read
 
@@ -38,6 +39,7 @@ jobs:
       - name: Materialize LFS only for formal media evidence changes
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
@@ -55,7 +57,42 @@ jobs:
             grep -E '^(reviews/audio_qc|reviews/trusted_media_receipts|reviews/trusted_media_runs)/' | \
             grep -Ev '/(README\.md|TEMPLATE\.json)$' || true)"
           if [[ -n "$formal_media_evidence_present" || -n "$formal_media_evidence_changed" ]]; then
-            git lfs pull --include='ai_tts/**/*.mp3'
+            if ! git lfs pull --include='ai_tts/**/*.mp3'; then
+              mapfile -t receipts < <(
+                for qc in reviews/audio_qc/*.json; do
+                  jq -r 'select(.verdict.formal_audio_ready == true) | .source_records.trusted_media_receipt' \
+                    "$qc"
+                done | sort -u
+              )
+              test "${#receipts[@]}" -gt 0
+              for receipt in "${receipts[@]}"; do
+                [[ "$receipt" =~ ^reviews/trusted_media_receipts/[A-Za-z0-9._-]+\.json$ ]]
+                test -f "$receipt" && test ! -L "$receipt"
+                finalization_commit="$(jq -er .finalization.commit_sha "$receipt")"
+                [[ "$finalization_commit" =~ ^[0-9a-f]{40}$ ]]
+                mapfile -t run_ids < <(
+                  gh api --method GET \
+                    "repos/$GITHUB_REPOSITORY/actions/workflows/trusted-media-run.yml/runs" \
+                    -f head_sha="$finalization_commit" \
+                    -f status=success \
+                    -f per_page=100 \
+                    --jq '.workflow_runs[] | select(.event == "workflow_dispatch") | .id'
+                )
+                test "${#run_ids[@]}" = 1
+                run_id="${run_ids[0]}"
+                run_attempt="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id" --jq .run_attempt)"
+                [[ "$run_attempt" =~ ^[1-9][0-9]{0,8}$ ]]
+                artifact_dir="$RUNNER_TEMP/formal-media-$run_id-$run_attempt"
+                test ! -e "$artifact_dir"
+                gh run download "$run_id" \
+                  --repo "$GITHUB_REPOSITORY" \
+                  --name "trusted-media-run-$run_id-$run_attempt" \
+                  --dir "$artifact_dir"
+                cmp "$receipt" "$artifact_dir/trusted-media-run-receipt.json"
+                test "$(find "$artifact_dir/ai_tts/cet4" -type f -name '*.mp3' | wc -l | tr -d ' ')" = 301
+                rsync -a "$artifact_dir/ai_tts/cet4/" ai_tts/cet4/
+              done
+            fi
           fi
 
       - name: Checkout product authority

@@ -761,6 +761,12 @@ test('PR contract gate downloads LFS only for formal media evidence changes', ()
   assert.match(contractJob, /git cat-file -e/);
   assert.match(contractJob, /reviews\/trusted_media_receipts/);
   assert.match(contractJob, /git lfs pull --include='ai_tts\/\*\*\/\*\.mp3'/);
+  assert.match(contractJob, /\.finalization\.commit_sha/);
+  assert.match(contractJob, /actions\/workflows\/trusted-media-run\.yml\/runs/);
+  assert.match(contractJob, /test "\$\{#run_ids\[@\]\}" = 1/);
+  assert.match(contractJob, /gh run download/);
+  assert.match(contractJob, /cmp "\$receipt" "\$artifact_dir\/trusted-media-run-receipt\.json"/);
+  assert.match(contractJob, /rsync -a "\$artifact_dir\/ai_tts\/cet4\/" ai_tts\/cet4\//);
 });
 
 test('independent builders derive byte-identical receipt time from the run package', t => {
