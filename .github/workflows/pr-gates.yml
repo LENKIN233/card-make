@@ -93,6 +93,9 @@ jobs:
                 rsync -a "$artifact_dir/ai_tts/cet4/" ai_tts/cet4/
               done
             fi
+            sudo apt-get update
+            sudo apt-get install --no-install-recommends -y ffmpeg
+            ffprobe -version
           fi
 
       - name: Checkout product authority
