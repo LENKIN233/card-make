@@ -190,6 +190,48 @@ class TrustedMediaRunnerTests(unittest.TestCase):
                 "'no_unwanted_noise_or_clipping': True, 'notes': ''}"
             )
 
+    def test_known_shape_parser_replays_retained_escaped_quote_notes(self):
+        transcript = (
+            "After introducing a recycling campaign, the report emphasizes that "
+            "participation rose only after schools joined with parent workshops."
+        )
+        retained = [
+            r"""{'transcript_heard': 'After introducing a recycling campaign, the report emphasizes that participation rose only after schools joined with parent workshops.', 'matches_text': True, 'target_signal_audible': True, 'accurate_pronunciation': True, 'suitable_speed': True, 'natural_rhythm': True, 'stress_pauses_do_not_mislead': True, 'no_unwanted_noise_or_clipping': True, 'notes': \"The speech is a formal statement with clear enunciation and a steady pace. There are no extraneous sounds or disturbances. The transcription accurately reflects the spoken content.\"}""",
+            r"""{'transcript_heard': 'After introducing a recycling campaign, the report emphasizes that participation rose only after schools joined with parent workshops.', 'matches_text': True, 'target_signal_audible': True, 'accurate_pronunciation': True, 'suitable_speed': True, 'natural_rhythm': True, 'stress_pauses_do_not_mislead': True, 'no_unwanted_noise_or_clipping': True, 'notes': \"'After introducing a recycling campaign, the report emphasizes that participation rose only after schools joined with parent workshops.' is the transcription of the speech. The speech is spoken in English with a male voice and has a neutral mood. The speech is delivered in a slow and clear manner, making it easy to understand.\"}""",
+        ]
+        for raw in retained:
+            parsed = parse_general(raw)
+            self.assertEqual(parsed["transcript_heard"], transcript)
+            self.assertTrue(all(parsed[key] for key in (
+                "matches_text",
+                "target_signal_audible",
+                "accurate_pronunciation",
+                "suitable_speed",
+                "natural_rhythm",
+                "stress_pauses_do_not_mislead",
+                "no_unwanted_noise_or_clipping",
+            )))
+            self.assertTrue(parsed["notes"])
+
+    def test_known_shape_parser_rejects_ambiguous_escaped_quote_strings(self):
+        prefix = (
+            "{'transcript_heard': 'Text', 'matches_text': True, "
+            "'target_signal_audible': True, 'accurate_pronunciation': True, "
+            "'suitable_speed': True, 'natural_rhythm': True, "
+            "'stress_pauses_do_not_mislead': True, "
+            "'no_unwanted_noise_or_clipping': True, 'notes': "
+        )
+        with self.assertRaisesRegex(ValueError, "string is invalid"):
+            parse_general(prefix + r'\"missing close}')
+        with self.assertRaisesRegex(ValueError, "string is invalid"):
+            parse_general(prefix + r'\"valid\" trailing}')
+        with self.assertRaisesRegex(ValueError, "ambiguous"):
+            parse_general(prefix + r'\"line\\nbreak\"}')
+        with self.assertRaisesRegex(ValueError, "boolean is invalid"):
+            parse_general(
+                r"""{'transcript_heard': 'Text', 'matches_text': \"True\", 'target_signal_audible': True, 'accurate_pronunciation': True, 'suitable_speed': True, 'natural_rhythm': True, 'stress_pauses_do_not_mislead': True, 'no_unwanted_noise_or_clipping': True, 'notes': ''}"""
+            )
+
     def test_compact_environment_manifest_stays_below_repository_blob_limit(self):
         files = [
             {
