@@ -4027,6 +4027,9 @@ function validateGitWorkflow(errors) {
       mediaProducer.current_boundary?.real_attestation_observed !== false ||
       mediaProducer.current_boundary?.formal_media_evidence_created !== false ||
       mediaProducer.workflow?.human_or_user_environment_gate !== false ||
+      mediaProducer.workflow?.timeout_minutes !== 240 ||
+      mediaProducer.workflow?.model_deadline_seconds !== 12600 ||
+      mediaProducer.workflow?.failure_artifact_upload_reserve_minutes !== 30 ||
       mediaProducer.attestation?.attestation_proves_provenance_not_result_correctness !== true
     ) {
       pushIssue(errors, 'trusted_media_run_boundary_invalid', {});
@@ -4059,6 +4062,8 @@ function validateGitWorkflow(errors) {
       'product-authority-verify',
       'actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6',
       'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02',
+      'timeout-minutes: 240',
+      '$(date +%s) + 12600',
     ]) {
       if (!mediaWorkflow.includes(token)) {
         pushIssue(errors, 'trusted_media_run_workflow_guard_missing', {token});
