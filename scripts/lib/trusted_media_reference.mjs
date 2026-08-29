@@ -204,8 +204,15 @@ export function verifyTrustedMediaEvidence({
       receiptPath: receiptFile.absolute,
       root: path.resolve(root),
     });
-  } catch {
-    throw new Error('trusted media type-specific artifact replay failed');
+  } catch (error) {
+    const detail = String(error?.stderr || error?.message || 'unknown failure')
+      .replace(/Bearer\s+\S+/gi, 'Bearer [redacted]')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 1000);
+    throw new Error(
+      `trusted media type-specific artifact replay failed: ${detail}`,
+    );
   }
   if (
     semanticResult?.ok !== true ||
