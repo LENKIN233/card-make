@@ -43,6 +43,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          preflight_dir="$RUNNER_TEMP/trusted-media-preflight-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          test ! -e "$preflight_dir"
+          mkdir -m 700 "$preflight_dir"
+          echo "TRUSTED_MEDIA_PREFLIGHT_DIR=$preflight_dir" >> "$GITHUB_ENV"
           echo "TRUSTED_MEDIA_DEADLINE_EPOCH=$(( $(date +%s) + 9000 ))" >> "$GITHUB_ENV"
 
       - name: Checkout exact trusted main commit
@@ -51,6 +55,7 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
+          set-safe-directory: false
           lfs: true
 
       - name: Checkout pinned softbook product authority
@@ -61,6 +66,7 @@ jobs:
           path: product-authority-review
           fetch-depth: 1
           persist-credentials: false
+          set-safe-directory: false
 
       - name: Materialize isolated exact source snapshot
         shell: bash
@@ -216,12 +222,49 @@ jobs:
           test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
           test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
 
+      - name: Retain pre-model setup failure
+        if: failure() && env.TRUSTED_MEDIA_OUTPUT_DIR == ''
+        env:
+          WORKLIST_PATH: ${{ inputs.worklist_path }}
+          AUTHORIZATION_PATH: ${{ inputs.authorization_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import datetime
+          import json
+          import os
+
+          target = os.path.join(
+              os.environ["TRUSTED_MEDIA_PREFLIGHT_DIR"],
+              "failure-package.json",
+          )
+          payload = {
+              "schema_version": "trusted-media-workflow-preflight-failure.v1",
+              "stage": "before_model_execution",
+              "repository": os.environ["GITHUB_REPOSITORY"],
+              "repository_commit": os.environ["GITHUB_SHA"],
+              "workflow_run_id": os.environ["GITHUB_RUN_ID"],
+              "workflow_run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "worklist_path": os.environ["WORKLIST_PATH"],
+              "authorization_path": os.environ["AUTHORIZATION_PATH"],
+              "failed_at": datetime.datetime.now(
+                  datetime.timezone.utc
+              ).isoformat().replace("+00:00", "Z"),
+              "gate_eligible": False,
+          }
+          with open(target, "x", encoding="utf-8") as handle:
+              json.dump(payload, handle, sort_keys=True, separators=(",", ":"))
+              handle.write("\n")
+          os.chmod(target, 0o600)
+          PY
+
       - name: Upload unprivileged raw review package
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: trusted-media-raw-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ env.TRUSTED_MEDIA_OUTPUT_DIR }}
+          path: ${{ env.TRUSTED_MEDIA_OUTPUT_DIR || env.TRUSTED_MEDIA_PREFLIGHT_DIR }}
           if-no-files-found: error
           retention-days: 1
 

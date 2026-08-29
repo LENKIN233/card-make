@@ -594,6 +594,14 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /if: always\(\)/);
   assert.match(reviewJob, /Fail after retaining rejected review evidence/);
   assert.match(reviewJob, /Initialize bounded review deadline/);
+  assert.match(reviewJob, /TRUSTED_MEDIA_PREFLIGHT_DIR/);
+  assert.match(reviewJob, /Retain pre-model setup failure/);
+  assert.match(reviewJob, /trusted-media-workflow-preflight-failure\.v1/);
+  assert.match(
+    reviewJob,
+    /env\.TRUSTED_MEDIA_OUTPUT_DIR \|\| env\.TRUSTED_MEDIA_PREFLIGHT_DIR/,
+  );
+  assert.equal((reviewJob.match(/set-safe-directory: false/g) || []).length, 2);
   assert.match(reviewJob, /TRUSTED_MEDIA_DEADLINE_EPOCH/);
   assert.match(reviewJob, /--deadline-epoch/);
   assert.match(reviewJob, /repository: LENKIN233\/softbook_cet/);
