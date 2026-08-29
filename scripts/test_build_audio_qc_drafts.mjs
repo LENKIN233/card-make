@@ -126,6 +126,33 @@ test('formal QC rejects attested evidence whose raw package cannot replay', t =>
   );
 });
 
+test('type-specific verifier failure keeps one bounded diagnostic without bearer data', t => {
+  const fixture = createFixture(t);
+  const reviewed = completeWorklist(fixture.worklist);
+  writeWorklist(fixture, reviewed);
+  commitFixture(fixture);
+  assert.throws(
+    () => buildAudioQcDrafts({
+      attestationBundlePath: fixture.attestationBundlePath,
+      attestations: ATTESTATIONS,
+      contentAuthorizationPath: fixture.authorizationPath,
+      execFile: fixture.execFile,
+      root: fixture.root,
+      trustedReceiptPath: fixture.trustedReceiptPath,
+      typeSpecificVerifier() {
+        const error = new Error('verifier failed');
+        error.stderr = Buffer.from('Authorization: Bearer secret-value exact replay mismatch');
+        throw error;
+      },
+      worklistPath: fixture.worklistPath,
+    }),
+    error =>
+      /exact replay mismatch/.test(error.message) &&
+      !/secret-value/.test(error.message) &&
+      error.message.length < 1200,
+  );
+});
+
 test('fails closed while any perceptual entry is pending', t => {
   const fixture = createFixture(t);
   writeWorklist(fixture, fixture.worklist);
