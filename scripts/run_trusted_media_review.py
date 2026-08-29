@@ -335,7 +335,11 @@ Set accurate_pronunciation false only if you can identify the exact word or phra
 
 
 def transcript_prompt(_entry, retry: bool = False) -> str:
-    strict = "Return one-line JSON object only." if retry else "Return a JSON object only."
+    strict = (
+        "Your previous transcription omitted or summarized audible words. Replay the audio and transcribe every word verbatim from the first sample through the final sample. Return one-line JSON only."
+        if retry
+        else "Return a JSON object only."
+    )
     return f"""Listen to the complete audio from the first sample through the final sample. Transcribe every English word you hear. Do not stop after the first sentence; include every sentence in order. {strict}
 Use exactly one key: transcript_heard (string). JSON requires double-quoted keys and strings. Do not use Python single quotes. Do not infer speaker identity, voice, provider, generator, source authenticity, deployment, or device facts."""
 
@@ -525,6 +529,17 @@ def run_one(
             )
         try:
             parsed = parser(raw)
+            if (
+                purpose == "blind_transcript"
+                and attempt == 0
+                and transcript_similarity(
+                    entry["audio"]["transcript"], parsed["transcript_heard"]
+                )
+                < transcript_threshold
+            ):
+                parsed = None
+                last_error = "blind transcript omitted or summarized audible words"
+                continue
             if purpose in {"full_perceptual", "adjudication"} and all(
                 parsed[key] for key in GENERAL_BOOL_KEYS
             ):
