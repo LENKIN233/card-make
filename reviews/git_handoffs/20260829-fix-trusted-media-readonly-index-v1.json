@@ -1,0 +1,49 @@
+{
+  "handoff_id": "20260829-fix-trusted-media-readonly-index-v1",
+  "created_at": "2026-08-29T23:46:13+08:00",
+  "agent": "codex",
+  "branch": "fix/trusted-media-readonly-index",
+  "base_branch": "main",
+  "commit_sha": "36ab565641cedea1627aaaa15cf21c5e04ebf662",
+  "push_ref": "origin/fix/trusted-media-readonly-index",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/212",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      ".github/workflows/trusted-media-run.yml",
+      "scripts/test_build_trusted_media_run_receipt.mjs",
+      "spec/evals.json",
+      "spec/trusted-media-run-producer.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "d8ce488bc23a9a0b0c415b829cbe90fca7d324dc",
+    "patch_sha256": "a4e2786f744b40b9c827a7187ed1614f2e716ac4429996577f2c1308a481bde6"
+  },
+  "validation": [
+    {
+      "command": "required Card Make harness suite",
+      "result": "passed: 270/270 Node tests plus 20/20 Python trusted-media runner tests"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with only six recorded upstream catalog warnings"
+    },
+    {
+      "command": "local exact run 33253496361 raw-package receipt replay",
+      "result": "passed on a read-only d8ce488 source snapshot with 301/301 reviewed assets"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Run 33253496361 completed all 301 exact-asset model work but failed before the receipt builder because chmod made the read-only checkout stat cache stale; the temporary index rehash fixes that exact finalization boundary without changing media decisions or signer isolation.",
+  "remaining_risks": [
+    "The retained raw package from failed run 33253496361 is failure evidence only and cannot be promoted without a matching GitHub attestation.",
+    "A fresh main-branch workflow run is still required after merge and read-only mirror refresh.",
+    "Formal audio QC and release bundle remain pending until that fresh run completes verify and attest jobs."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}

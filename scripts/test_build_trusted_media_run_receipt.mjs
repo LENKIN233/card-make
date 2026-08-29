@@ -620,6 +620,10 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
     workflow.indexOf('\n  attest:'),
   );
   const attestJob = workflow.slice(workflow.indexOf('  attest:'));
+  const receiptBuildStep = reviewJob.slice(
+    reviewJob.indexOf('      - name: Build exact receipt and review artifacts'),
+    reviewJob.indexOf('      - name: Retain pre-model setup failure'),
+  );
   assert.match(reviewJob, /runs-on: \[self-hosted, macOS, ARM64, softbook-media\]/);
   assert.doesNotMatch(reviewJob, /id-token: write|attestations: write|actions\/attest@/);
   assert.match(reviewJob, /name: trusted-media-raw-/);
@@ -646,6 +650,14 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /fsck --strict --no-reflogs/);
   assert.match(reviewJob, /git clone --shared --no-checkout/);
   assert.match(reviewJob, /find "\$repository" -perm -222/);
+  assert.match(receiptBuildStep, /readonly_index="\$RUNNER_TEMP\/trusted-source-index-/);
+  assert.match(receiptBuildStep, /GIT_INDEX_FILE="\$readonly_index" git -C "\$TRUSTED_SOURCE_ROOT"/);
+  assert.match(receiptBuildStep, /add --refresh -- \. ':\(exclude\)ai_tts'/);
+  assert.match(receiptBuildStep, /diff-index --quiet "\$GITHUB_SHA" -- \. ':\(exclude\)ai_tts'/);
+  assert.doesNotMatch(
+    receiptBuildStep,
+    /diff-index --quiet "\$GITHUB_SHA" -- \. ':\(exclude\)ai_tts\/cet4'/,
+  );
   assert.match(reviewJob, /product_commit=7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1/);
   assert.match(verifyJob, /runs-on: ubuntu-latest/);
   assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);

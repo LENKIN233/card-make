@@ -217,7 +217,14 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
-          git -C "$TRUSTED_SOURCE_ROOT" diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          readonly_index="$RUNNER_TEMP/trusted-source-index-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          test ! -e "$readonly_index"
+          cp "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse --git-path index)" "$readonly_index"
+          chmod u+w "$readonly_index"
+          GIT_INDEX_FILE="$readonly_index" git -C "$TRUSTED_SOURCE_ROOT" \
+            add --refresh -- . ':(exclude)ai_tts'
+          GIT_INDEX_FILE="$readonly_index" git -C "$TRUSTED_SOURCE_ROOT" \
+            diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts'
           test -z "$(git -C "$TRUSTED_SOURCE_ROOT" ls-files --others --exclude-standard)"
           for source_path in \
             .github/workflows/trusted-media-run.yml \
@@ -240,7 +247,8 @@ jobs:
             --technical-audit-replay "$TRUSTED_MEDIA_TECHNICAL_AUDIT_REPLAY" \
             --source-commit "$GITHUB_SHA"
           test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
-          git -C "$TRUSTED_SOURCE_ROOT" diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          GIT_INDEX_FILE="$readonly_index" git -C "$TRUSTED_SOURCE_ROOT" \
+            diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts'
           test -z "$(git -C "$TRUSTED_SOURCE_ROOT" ls-files --others --exclude-standard)"
 
       - name: Retain pre-model setup failure
