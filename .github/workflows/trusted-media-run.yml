@@ -23,7 +23,7 @@ jobs:
   review:
     if: github.ref == 'refs/heads/main'
     runs-on: [self-hosted, macOS, ARM64, softbook-media]
-    timeout-minutes: 180
+    timeout-minutes: 240
     permissions:
       contents: read
     env:
@@ -48,7 +48,7 @@ jobs:
           test ! -e "$preflight_dir"
           mkdir -m 700 "$preflight_dir"
           echo "TRUSTED_MEDIA_PREFLIGHT_DIR=$preflight_dir" >> "$GITHUB_ENV"
-          echo "TRUSTED_MEDIA_DEADLINE_EPOCH=$(( $(date +%s) + 9000 ))" >> "$GITHUB_ENV"
+          echo "TRUSTED_MEDIA_DEADLINE_EPOCH=$(( $(date +%s) + 12600 ))" >> "$GITHUB_ENV"
 
       - name: Materialize isolated exact source snapshots from runner mirrors
         shell: bash

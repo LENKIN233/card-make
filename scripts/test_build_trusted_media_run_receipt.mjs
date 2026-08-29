@@ -636,6 +636,9 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.doesNotMatch(reviewJob, /actions\/checkout@/);
   assert.match(reviewJob, /TRUSTED_MEDIA_DEADLINE_EPOCH/);
   assert.match(reviewJob, /--deadline-epoch/);
+  assert.match(reviewJob, /timeout-minutes: 240/);
+  assert.match(reviewJob, /\$\(date \+%s\) \+ 12600/);
+  assert.doesNotMatch(reviewJob, /\$\(date \+%s\) \+ 9000/);
   assert.match(reviewJob, /CARD_MAKE_TRUSTED_SOURCE_REPOSITORY/);
   assert.match(reviewJob, /CARD_MAKE_TRUSTED_PRODUCT_AUTHORITY_REPOSITORY/);
   assert.match(reviewJob, /source mirrors must remain outside runner job directories/);
