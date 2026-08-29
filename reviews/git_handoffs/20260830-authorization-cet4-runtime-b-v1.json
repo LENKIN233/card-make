@@ -1,0 +1,53 @@
+{
+  "handoff_id": "20260830-authorization-cet4-runtime-b-v1",
+  "created_at": "2026-08-29T21:38:11.530Z",
+  "agent": "codex",
+  "branch": "content/cet4-000104-training-goal",
+  "base_branch": "main",
+  "commit_sha": "65478220494ac4781f142b751dadde65047c9a8f",
+  "push_ref": "origin/content/cet4-000104-training-goal",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/227",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "authorization",
+    "touched_paths": [
+      "reviews/approved_batches/20260830-cet4-full-track-runtime-b-authorization.json",
+      "reviews/audit_scopes/20260830-cet4-full-track-runtime-b-audit.json",
+      "reviews/runtime_payloads/20260830-cet4-full-track-runtime-manifest.json",
+      "reviews/runtime_payloads/20260830-cet4-full-track-runtime-manifest.part-001.json",
+      "reviews/runtime_payloads/20260830-cet4-full-track-runtime-manifest.part-002.json",
+      "reviews/runtime_payloads/20260830-cet4-full-track-runtime-manifest.part-003.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "06452fbae155ac1601ad376f31348a22c751df10",
+    "patch_sha256": "5435282e3b187eaf16a3b71ac780eef5cc450dcaab355391e145544db4821385"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "passed: 2414 cards, 0 errors, 0 warnings"
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids <1180 CET4 ids> --write-scope-report reviews/audit_scopes/20260830-cet4-full-track-runtime-b-audit.json",
+      "result": "passed: 1180 scoped cards, zero hard/content/review blockers"
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed on immutable payload commit"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed on immutable payload commit"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed: 27 records covering 301 unchanged audio assets"
+    }
+  ],
+  "local_status": "Runtime B is a genuine eight-card learner-facing projection update with original source identity, exact three-shard content version a58657f..., current model authorization and unchanged 301 audio assets.",
+  "remaining_risks": [
+    "Softbook consumer bundle B, formal evidence ingestion, CloudBase publication and rollback drill remain separate downstream work."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
