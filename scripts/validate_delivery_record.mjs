@@ -189,6 +189,156 @@ function changedPaths(root, from, to) {
   return sortedUnique(decodeGitUtf8(bytes, 'git diff --name-only').split('\0').filter(Boolean));
 }
 
+function changedPathEntries(root, from, to) {
+  const bytes = gitBuffer(root, [
+    'diff',
+    '--name-status',
+    '-z',
+    '--no-renames',
+    '--no-ext-diff',
+    '--ignore-submodules=none',
+    from,
+    to,
+    '--',
+  ]);
+  const tokens = decodeGitUtf8(bytes, 'git diff --name-status')
+    .split('\0')
+    .filter(Boolean);
+  const entries = [];
+  for (let index = 0; index < tokens.length; index += 2) {
+    const status = tokens[index];
+    const repositoryPath = tokens[index + 1];
+    if (!/^[AMD]$/.test(status) || !repositoryPath) {
+      throw new Error('git diff --name-status returned an unsupported entry');
+    }
+    entries.push({status, path: repositoryPath});
+  }
+  return entries;
+}
+
+function isTrustedReceiptArtifactPath(repositoryPath) {
+  return (
+    repositoryPath.startsWith('reviews/trusted_media_receipts/') &&
+    !repositoryPath.endsWith('/README.md')
+  );
+}
+
+function isTrustedRunArtifactPath(repositoryPath) {
+  return (
+    repositoryPath.startsWith('reviews/trusted_media_runs/') &&
+    !repositoryPath.endsWith('/README.md')
+  );
+}
+
+function isTrustedTechnicalAuditPath(repositoryPath) {
+  return (
+    repositoryPath.startsWith('reviews/audio_technical_audits/') &&
+    repositoryPath.endsWith('.json') &&
+    !repositoryPath.endsWith('/README.md') &&
+    !repositoryPath.endsWith('/TEMPLATE.json')
+  );
+}
+
+function validateTrustedMediaLifecycle(root, baseOid, headOid, entries, errors) {
+  const trustedEntries = entries.filter(entry =>
+    isTrustedReceiptArtifactPath(entry.path) ||
+    isTrustedRunArtifactPath(entry.path) ||
+    isTrustedTechnicalAuditPath(entry.path));
+  for (const entry of trustedEntries) {
+    if (entry.status !== 'A') {
+      errors.push(`trusted media evidence is append-only and cannot be ${entry.status}: ${entry.path}`);
+    }
+    if (treeEntryAtCommit(root, baseOid, entry.path, 'trusted media base entry')) {
+      errors.push(`trusted media evidence already exists at the base commit: ${entry.path}`);
+    }
+    const headEntry = treeEntryAtCommit(root, headOid, entry.path, 'trusted media head entry');
+    if (!headEntry || headEntry.mode !== REGULAR_HANDOFF_MODE || headEntry.objectType !== 'blob') {
+      errors.push(`trusted media evidence must be a regular ${REGULAR_HANDOFF_MODE} blob: ${entry.path}`);
+    }
+  }
+
+  const changedQcPaths = entries
+    .filter(entry =>
+      entry.status !== 'D' &&
+      entry.path.startsWith('reviews/audio_qc/') &&
+      entry.path.endsWith('.json') &&
+      !entry.path.endsWith('/TEMPLATE.json'))
+    .map(entry => entry.path);
+  const formalQcRecords = changedQcPaths
+    .map(repositoryPath => ({
+      repositoryPath,
+      record: readRegularJsonBlobAtHead(
+        root,
+        headOid,
+        repositoryPath,
+        errors,
+        'formal audio QC record',
+      ),
+    }))
+    .filter(item => item.record?.verdict?.formal_audio_ready === true);
+  const referencedReceipts = new Set(formalQcRecords.map(item =>
+    item.record.source_records?.trusted_media_receipt).filter(hasText));
+  const referencedBundles = new Set(formalQcRecords.map(item =>
+    item.record.source_records?.trusted_media_attestation_bundle).filter(hasText));
+
+  const addedReceipts = trustedEntries
+    .filter(entry =>
+      entry.status === 'A' &&
+      entry.path.startsWith('reviews/trusted_media_receipts/') &&
+      entry.path.endsWith('.json'))
+    .map(entry => entry.path);
+  const addedBundles = trustedEntries
+    .filter(entry =>
+      entry.status === 'A' &&
+      entry.path.startsWith('reviews/trusted_media_receipts/') &&
+      entry.path.endsWith('.jsonl'))
+    .map(entry => entry.path);
+  const addedRunFiles = trustedEntries.filter(entry =>
+    entry.status === 'A' && isTrustedRunArtifactPath(entry.path));
+
+  for (const receiptPath of addedReceipts) {
+    if (!referencedReceipts.has(receiptPath)) {
+      errors.push(`new trusted media receipt must be consumed by changed formal QC: ${receiptPath}`);
+    }
+    const stem = path.posix.basename(receiptPath, '.json');
+    if (!addedRunFiles.some(entry =>
+      path.posix.dirname(entry.path) === `reviews/trusted_media_runs/${stem}`)) {
+      errors.push(`new trusted media receipt lacks its append-only raw run package: ${receiptPath}`);
+    }
+  }
+  for (const bundlePath of addedBundles) {
+    if (!referencedBundles.has(bundlePath)) {
+      errors.push(`new trusted media attestation bundle must be consumed by changed formal QC: ${bundlePath}`);
+    }
+  }
+  for (const entry of addedRunFiles) {
+    const relative = entry.path.slice('reviews/trusted_media_runs/'.length);
+    const segments = relative.split('/');
+    if (segments.length !== 2 || !segments[0] || !segments[1]) {
+      errors.push(`trusted media run artifact must be one direct file below one receipt directory: ${entry.path}`);
+      continue;
+    }
+    const receiptPath = `reviews/trusted_media_receipts/${segments[0]}.json`;
+    if (!referencedReceipts.has(receiptPath)) {
+      errors.push(`trusted media run artifact is not bound by changed formal QC: ${entry.path}`);
+    }
+  }
+
+  for (const entry of entries.filter(item =>
+    item.path.startsWith('reviews/audio_qc/') && item.path.endsWith('.json'))) {
+    const baseRecord = readRegularJsonBlobAtHead(
+      root,
+      baseOid,
+      entry.path,
+      [],
+      'base formal audio QC record',
+    );
+    if (baseRecord?.verdict?.formal_audio_ready === true && entry.status !== 'A') {
+      errors.push(`formal audio QC evidence is append-only and cannot be ${entry.status}: ${entry.path}`);
+    }
+  }
+}
+
 function changedPathsAcrossCommits(root, fromExclusive, toInclusive) {
   const revisionBytes = gitBuffer(root, [
     'rev-list',
@@ -1034,10 +1184,19 @@ export function validateDeliveryRecord({
   }
 
   let files = [];
+  let fileEntries = [];
   try {
     if (!resolvedBaseOid || !resolvedHeadOid) throw new Error('unresolved commit');
     const mergeBase = gitText(root, ['merge-base', resolvedBaseOid, resolvedHeadOid]);
     files = changedPaths(root, mergeBase, resolvedHeadOid);
+    fileEntries = changedPathEntries(root, mergeBase, resolvedHeadOid);
+    validateTrustedMediaLifecycle(
+      root,
+      mergeBase,
+      resolvedHeadOid,
+      fileEntries,
+      errors,
+    );
   } catch {
     errors.push(`unable to inspect PR diff between ${base} and ${head}`);
   }
@@ -1050,7 +1209,10 @@ export function validateDeliveryRecord({
   const audioAuthorityFiles = files.filter(file =>
     file.startsWith('ai_tts/') ||
     ((file.startsWith('reviews/audio_qc/') ||
-      file.startsWith('reviews/audio_perceptual_worklists/')) &&
+      file.startsWith('reviews/audio_perceptual_worklists/') ||
+      file.startsWith('reviews/audio_technical_audits/') ||
+      file.startsWith('reviews/trusted_media_receipts/') ||
+      file.startsWith('reviews/trusted_media_runs/')) &&
       !file.endsWith('/TEMPLATE.json') &&
       !file.endsWith('/README.md'))
   );

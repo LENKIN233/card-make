@@ -66,22 +66,22 @@
       "delivery-record",
       "repo-health"
     ],
-    "target_required_github_checks_after_trusted_bootstrap": [
+    "target_required_github_checks": [
       "contract-harness",
       "content-scope",
       "approval-boundary",
       "delivery-record",
-      "repo-health",
-      "trusted-model-review"
+      "repo-health"
     ],
-    "trusted_model_review_bootstrap": {
-      "workflow": ".github/workflows/trusted-model-review.yml",
-      "aggregator": "scripts/trusted_model_review.py",
-      "test": "scripts/test_trusted_model_review.py",
-      "trust_root": "two_isolated_pinned_openai_codex_action_jobs_running_base_only_code_and_binding_one_exact_PR_diff",
-      "author_editable_model_acceptance_records_are_execution_provenance": false,
-      "activation_sequence": "merge_under_current_exact_head_checks_then_configure_OPENAI_API_KEY_then_prove_both_review_jobs_and_aggregate_on_a_follow_up_PR_then_add_trusted-model-review_to_branch_protection",
-      "missing_provider_secret_fails_closed": true
+    "single_task_dual_perturbation_review": {
+      "exact_diff_required": true,
+      "passes": [
+        "assumption_inversion",
+        "failure_projection"
+      ],
+      "external_model_api_required": false,
+      "separate_provider_or_task_provenance_claimed": false,
+      "record_location": "pull_request_body"
     },
     "generated_report_policy": "Global validation and quality reports are ephemeral outputs and must not be committed.",
     "before_commit": [
@@ -90,12 +90,12 @@
         "command": "node --test scripts/test_model_acceptance.mjs"
       },
       {
-        "scope": "trusted_model_execution_provenance",
-        "command": "python3 scripts/test_trusted_model_review.py"
-      },
-      {
         "scope": "model_owned_audio_acceptance",
         "command": "node --test scripts/test_validate_audio_qc_model.mjs"
+      },
+      {
+        "scope": "trusted_media_run_producer",
+        "command": "python3 scripts/test_run_trusted_media_review.py && node --test scripts/test_build_trusted_media_run_receipt.mjs"
       },
       {
         "scope": "harness_files",
@@ -277,6 +277,16 @@
         "content_candidate_residual_blocker_closure"
       ],
       "audio_paths_require_audio_type": true,
+      "trusted_media_evidence_lifecycle": "receipt_bundle_and_raw_run_artifacts_are_append_only_regular_blobs_every_new_receipt_bundle_and_run_directory_must_be_atomically_referenced_by_changed_formal_audio_QC_and_existing_formal_QC_cannot_be_modified_or_deleted",
+      "technical_audit_lifecycle": "reviews_audio_technical_audits_direct_JSON_records_are_append_only_regular_blobs",
+      "audio_authority_paths": [
+        "ai_tts/",
+        "reviews/audio_qc/",
+        "reviews/audio_perceptual_worklists/",
+        "reviews/audio_technical_audits/",
+        "reviews/trusted_media_receipts/",
+        "reviews/trusted_media_runs/"
+      ],
       "authorization_paths_require_authorization_type": true
     },
     "semantic_git_reads": {

@@ -2761,9 +2761,11 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
           message: 'Model-owned content authorization must not contain legacy person-authority fields.',
         });
       }
+      let boundRuntimePayloadSha256 = null;
       if (record.authorization_mode === 'full_track') {
         const runtimePayloadPath = record.validation?.runtime_payload;
         const runtimePayloadSha256 = fileSha256AtCommit(runtimePayloadPath, head);
+        boundRuntimePayloadSha256 = runtimePayloadSha256;
         if (
           !isRuntimePayloadPath(runtimePayloadPath) ||
           !isRegularFileAtCommit(head, runtimePayloadPath)
@@ -2786,6 +2788,22 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
             const runtimePayload = readChangedJson(runtimePayloadPath, head);
             const runtimeIdentity = deriveRuntimePayloadContentIdentity(
               runtimePayload,
+              {
+                loadShard: shardPath => {
+                  if (
+                    !isRuntimePayloadPath(shardPath) ||
+                    !isRegularFileAtCommit(head, shardPath)
+                  ) {
+                    throw new Error(
+                      `runtime payload shard is not a direct regular JSON file: ${shardPath}`,
+                    );
+                  }
+                  return {
+                    payload: readChangedJson(shardPath, head),
+                    sha256: fileSha256AtCommit(shardPath, head),
+                  };
+                },
+              },
             );
             if (
               runtimeIdentity.content_version !== record.content_version ||
@@ -2817,6 +2835,7 @@ function validateChangedReviewScopedAuditReferences({base, head, entries}) {
           buildContentAuthorizationAdditionalBindings({
             authorizationMode: record.authorization_mode,
             contentVersion: record.content_version,
+            runtimePayloadSha256: boundRuntimePayloadSha256,
           });
       } catch (error) {
         authorizationAdditionalBindings = null;
@@ -3401,6 +3420,16 @@ function validate({ base, head }) {
         isSelfReviewPath(entry.paths[0]) &&
         !isSelfReviewPath(entry.path)
       );
+      const mutatesRuntimePayload = entry.paths.some(isRuntimePayloadPath) &&
+        statusType !== 'A';
+      if (mutatesRuntimePayload) {
+        issues.push({
+          code: 'changed_runtime_payload_not_append_only',
+          path: entry.paths.find(isRuntimePayloadPath) || entry.path,
+          status: entry.status,
+          message: 'Runtime payload and shard-manifest evidence is append-only; authorize new immutable paths instead of modifying or deleting prior payload bytes.',
+        });
+      }
       if (removesSelfReview) {
         issues.push({
           code: 'changed_self_review_deleted',

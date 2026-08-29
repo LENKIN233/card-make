@@ -612,20 +612,7 @@ export function validateCurrentApprovalRecordReference({
     ? approval.authorization_mode === 'full_track'
     : approval.approval_mode === 'full_track_final';
   let authorizationAdditionalBindings = {};
-  if (isModelOwned) {
-    try {
-      authorizationAdditionalBindings =
-        buildContentAuthorizationAdditionalBindings({
-          authorizationMode: approval.authorization_mode,
-          contentVersion: approval.content_version,
-        });
-    } catch (error) {
-      authorizationAdditionalBindings = null;
-      add('approval_record_content_version_invalid', {
-        message: error instanceof Error ? error.message : String(error),
-      });
-    }
-  }
+  let boundRuntimePayloadSha256 = null;
   if (isModelOwned) {
     if (isLegacyV1HumanAuthorityRecord(approval)) {
       add('approval_record_person_authority_field_forbidden');
@@ -641,6 +628,7 @@ export function validateCurrentApprovalRecordReference({
       const runtimePayloadSha256 = runtimePayloadBytes
         ? `sha256:${crypto.createHash('sha256').update(runtimePayloadBytes).digest('hex')}`
         : null;
+      boundRuntimePayloadSha256 = runtimePayloadSha256;
       if (
         runtimePayloadSha256 !== null &&
         approval.validation?.runtime_payload_sha256 !== runtimePayloadSha256
@@ -651,6 +639,25 @@ export function validateCurrentApprovalRecordReference({
         try {
           const runtimeIdentity = deriveRuntimePayloadContentIdentity(
             runtimePayload,
+            {
+              loadShard: shardPath => {
+                const shard = checkRecordFile(
+                  shardPath,
+                  isDirectRuntimePayloadPath,
+                  'approval_runtime_payload_shard',
+                );
+                const shardBytes = recordBytesByPath.get(shardPath);
+                return {
+                  payload: shard,
+                  sha256: shardBytes
+                    ? `sha256:${crypto
+                      .createHash('sha256')
+                      .update(shardBytes)
+                      .digest('hex')}`
+                    : null,
+                };
+              },
+            },
           );
           if (
             runtimeIdentity.content_version !== approval.content_version ||
@@ -668,6 +675,19 @@ export function validateCurrentApprovalRecordReference({
           });
         }
       }
+    }
+    try {
+      authorizationAdditionalBindings =
+        buildContentAuthorizationAdditionalBindings({
+          authorizationMode: approval.authorization_mode,
+          contentVersion: approval.content_version,
+          runtimePayloadSha256: boundRuntimePayloadSha256,
+        });
+    } catch (error) {
+      authorizationAdditionalBindings = null;
+      add('approval_record_content_version_invalid', {
+        message: error instanceof Error ? error.message : String(error),
+      });
     }
     const acceptanceIssues = isFullTrackFinal
       ? validateIndependentModelAcceptances(approval.model_acceptances, {

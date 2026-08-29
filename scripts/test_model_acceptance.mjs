@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import test from 'node:test';
 
 import {
@@ -69,11 +70,14 @@ test('full-track authorization binds canonical runtime content_version without b
   };
   const versionA = `sha256:${'d'.repeat(64)}`;
   const versionB = `sha256:${'e'.repeat(64)}`;
+  const payloadA = `sha256:${'f'.repeat(64)}`;
+  const payloadB = `sha256:${'1'.repeat(64)}`;
   const inputA = buildModelAcceptanceInputSha256({
     ...base,
     additionalBindings: buildContentAuthorizationAdditionalBindings({
       authorizationMode: 'full_track',
       contentVersion: versionA,
+      runtimePayloadSha256: payloadA,
     }),
   });
   const inputB = buildModelAcceptanceInputSha256({
@@ -81,14 +85,33 @@ test('full-track authorization binds canonical runtime content_version without b
     additionalBindings: buildContentAuthorizationAdditionalBindings({
       authorizationMode: 'full_track',
       contentVersion: versionB,
+      runtimePayloadSha256: payloadA,
     }),
   });
   assert.notEqual(inputA, inputB);
+  assert.notEqual(
+    inputA,
+    buildModelAcceptanceInputSha256({
+      ...base,
+      additionalBindings: buildContentAuthorizationAdditionalBindings({
+        authorizationMode: 'full_track',
+        contentVersion: versionA,
+        runtimePayloadSha256: payloadB,
+      }),
+    }),
+  );
   assert.throws(
     () => buildContentAuthorizationAdditionalBindings({
       authorizationMode: 'full_track',
     }),
     /content_version/,
+  );
+  assert.throws(
+    () => buildContentAuthorizationAdditionalBindings({
+      authorizationMode: 'full_track',
+      contentVersion: versionA,
+    }),
+    /runtime_payload_sha256/,
   );
   assert.deepEqual(
     buildContentAuthorizationAdditionalBindings({
@@ -132,12 +155,83 @@ test('full-track runtime content_version is derived from normalized immutable pa
   );
 });
 
+test('sharded runtime manifest reconstructs one canonical content identity and rejects shard replay', () => {
+  const direct = {
+    source: {id: 'fixture', label: 'Fixture'},
+    track: 'cet4',
+    card_records: [
+      {card_id: '000001', front: {text: 'One'}},
+      {card_id: '000002', front: {text: 'Two'}},
+    ],
+    assets: [{
+      asset_id: 'audio-1',
+      duration_ms: 1000,
+      media_type: 'audio/mpeg',
+      sha256: `sha256:${'a'.repeat(64)}`,
+      size_bytes: 100,
+    }],
+  };
+  const contentVersion =
+    deriveRuntimePayloadContentIdentity(direct).content_version;
+  const shards = new Map([
+    ['reviews/runtime_payloads/fixture-001.json', {
+      schema_version: 'card-make-runtime-card-shard.v1',
+      track: 'cet4',
+      card_records: [direct.card_records[0]],
+    }],
+    ['reviews/runtime_payloads/fixture-002.json', {
+      schema_version: 'card-make-runtime-card-shard.v1',
+      track: 'cet4',
+      card_records: [direct.card_records[1]],
+    }],
+  ]);
+  const sha256 = value => `sha256:${crypto
+    .createHash('sha256')
+    .update(JSON.stringify(value))
+    .digest('hex')}`;
+  const manifest = {
+    schema_version: 'card-make-runtime-payload-manifest.v1',
+    source: direct.source,
+    track: 'cet4',
+    content_version: contentVersion,
+    card_record_shards: [...shards].map(([path, shard]) => ({
+      path,
+      sha256: sha256(shard),
+      card_count: 1,
+      first_card_id: shard.card_records[0].card_id,
+      last_card_id: shard.card_records[0].card_id,
+    })),
+    assets: direct.assets,
+    release: null,
+  };
+  const loadShard = path => ({
+    payload: structuredClone(shards.get(path)),
+    sha256: sha256(shards.get(path)),
+  });
+  assert.deepEqual(
+    deriveRuntimePayloadContentIdentity(manifest, {loadShard}),
+    deriveRuntimePayloadContentIdentity({...direct, content_version: contentVersion}),
+  );
+  assert.throws(
+    () => deriveRuntimePayloadContentIdentity(manifest, {
+      loadShard: path => ({...loadShard(path), sha256: `sha256:${'0'.repeat(64)}`}),
+    }),
+    /shard is invalid/,
+  );
+  const replayed = structuredClone(manifest);
+  replayed.card_record_shards.reverse();
+  assert.throws(
+    () => deriveRuntimePayloadContentIdentity(replayed, {loadShard}),
+    /card range is invalid/,
+  );
+});
+
 function acceptance(overrides = {}) {
   return {
     schema_version: 'model-acceptance.v2',
     actor: {
       kind: 'model_harness',
-      agent: 'codex',
+      agent: 'agent:codex',
       model: 'gpt-5.6-sol',
       run_id: 'codex-task:01a02d8b-6046-7f12-b336-3772cd02707d',
     },
@@ -184,6 +278,15 @@ test('rejects missing evidence, invented capabilities, and non-accepted decision
   assert.ok(codes.includes('model_acceptance_capabilities_invalid'));
   assert.ok(codes.includes('model_acceptance_summary_missing'));
   assert.ok(codes.includes('model_acceptance_not_accepted'));
+});
+
+test('requires a typed machine principal for current model acceptance', () => {
+  const value = acceptance();
+  value.actor.agent = 'codex-untyped';
+  assert.ok(validateModelAcceptance(value).some(
+    issue => issue.code === 'model_acceptance_actor_agent_principal_invalid'));
+  value.actor.agent = 'agent:codex-typed';
+  assert.equal(validateModelAcceptance(value).length, 0);
 });
 
 test('classifies legacy human authority fields as archive-only evidence', () => {

@@ -7,10 +7,19 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 import {
+  canonicalStringify,
   PERCEPTUAL_CHECKS,
   validateAudioPerceptualWorklist,
 } from './manage_audio_perceptual_worklist.mjs';
-import {validateIndependentModelAcceptances} from './lib/model_acceptance.mjs';
+import {
+  validateIndependentModelAcceptances,
+  validateModelAcceptance,
+} from './lib/model_acceptance.mjs';
+import {
+  computeCardCorpusFingerprint,
+  validateCurrentApprovalRecordReference,
+} from './lib/card_integrity.mjs';
+import {verifyTrustedMediaEvidence} from './lib/trusted_media_reference.mjs';
 import {validateAudioAcceptanceInput} from './validate_audio_qc.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -23,11 +32,14 @@ const REQUIRED_ATTESTATIONS = Object.freeze([
 ]);
 
 export function buildAudioQcDrafts({
+  attestationBundlePath,
   attestations = {},
   clock = () => new Date(),
-  modelAcceptancesByBox = {},
-  planOnly = false,
+  contentAuthorizationPath,
+  execFile = execFileSync,
   root = ROOT,
+  typeSpecificVerifier,
+  trustedReceiptPath,
   worklistPath,
 } = {}) {
   const normalizedRoot = path.resolve(root);
@@ -65,6 +77,21 @@ export function buildAudioQcDrafts({
       throw new Error(`Explicit ${attestation} attestation is required.`);
     }
   }
+  const contentAuthorization = requireCurrentContentAuthorization({
+    contentAuthorizationPath,
+    root: normalizedRoot,
+    scopedCardIds: sourceWorklist.entries.map(entry => entry.card_id),
+  });
+  const trustedMedia = requireTrustedMediaReceipt({
+    attestationBundlePath,
+    authorization: contentAuthorization,
+    execFile,
+    root: normalizedRoot,
+    typeSpecificVerifier,
+    trustedReceiptPath,
+    worklistBytes: sourceBytes,
+    worklistPath: relativeToRoot(linkedWorklist, normalizedRoot),
+  });
   const grouped = groupByBox(sourceWorklist.entries);
   const createdAt = asIso(clock());
   const worklistRelativePath = relativeToRoot(linkedWorklist, normalizedRoot);
@@ -73,14 +100,15 @@ export function buildAudioQcDrafts({
   const acceptanceInputs = {};
   for (const entries of grouped.values()) {
     const boxPrefix = entries[0]?.knowledge_ref?.box_prefix;
-    const modelAcceptances = modelAcceptancesByBox[boxPrefix];
     const record = buildBoxRecord({
       attestations,
+      canonicalTextReviewPath: contentAuthorization.record.validation.model_review,
+      contentAuthorizationPath: contentAuthorization.relativePath,
       createdAt,
       entries,
-      modelAcceptances,
       root: normalizedRoot,
       sourceWorklist,
+      trustedMedia,
       worklistRelativePath,
       worklistSha256,
     });
@@ -89,18 +117,19 @@ export function buildAudioQcDrafts({
       throw new Error(`Box ${boxPrefix} audio identity is invalid: ${identity.issues.map(issue => issue.code).join(', ')}`);
     }
     acceptanceInputs[boxPrefix] = identity.input_sha256;
-    if (planOnly) {
-      records.push(record);
-      continue;
-    }
+    record.model_acceptances = buildAggregateModelAcceptances({
+      boxPrefix,
+      entries,
+      inputSha256: identity.input_sha256,
+    });
     const acceptanceIssues = validateIndependentModelAcceptances(
-      modelAcceptances,
+      record.model_acceptances,
       {requiredCapabilities: ['audio_perceptual_review']},
     );
     if (acceptanceIssues.length > 0) {
       throw new Error(`Box ${boxPrefix} model acceptance is invalid: ${acceptanceIssues.map(issue => issue.code).join(', ')}`);
     }
-    if (modelAcceptances.some(
+    if (record.model_acceptances.some(
       acceptance => acceptance.evidence.input_sha256 !== identity.input_sha256,
     )) {
       throw new Error(`Box ${boxPrefix} model acceptance does not bind the exact audio QC input.`);
@@ -112,6 +141,10 @@ export function buildAudioQcDrafts({
     summary: {
       card_count: sourceWorklist.entries.length,
       formal_content_approval_created: false,
+      linked_content_authorization: contentAuthorization.relativePath,
+      linked_content_authorization_sha256: contentAuthorization.sha256,
+      trusted_media_receipt: trustedMedia.receiptPath,
+      trusted_media_receipt_sha256: trustedMedia.receiptSha256,
       acceptance_inputs: acceptanceInputs,
       record_count: records.length,
       model_run_ids: [...new Set(records.flatMap(record =>
@@ -124,11 +157,13 @@ export function buildAudioQcDrafts({
 
 function buildBoxRecord({
   attestations,
+  canonicalTextReviewPath,
+  contentAuthorizationPath,
   createdAt,
   entries,
-  modelAcceptances,
   root,
   sourceWorklist,
+  trustedMedia,
   worklistRelativePath,
   worklistSha256,
 }) {
@@ -136,15 +171,18 @@ function buildBoxRecord({
   const knowledge = first.knowledge_ref;
   const cardIds = entries.map(entry => entry.card_id);
   const cards = entries.map(entry => readBoundCard(entry, root));
+  const selfReviews = [canonicalTextReviewPath];
   for (const card of cards) {
-    if (card.quality_metadata?.material?.tts_text_reviewed !== true) {
-      throw new Error(`Card ${card.card_id} does not have a passed TTS text review gate.`);
+    if (
+      card.quality_metadata?.material?.tts_text_reviewed !== true &&
+      !canonicalTextReviewPath
+    ) {
+      throw new Error(`Card ${card.card_id} does not have a passed TTS text review gate or current model-owned semantic review.`);
     }
     if (card.quality_metadata?.material?.audio_generation_method !== 'TTS_AI_generated') {
       throw new Error(`Card ${card.card_id} is not a legacy TTS candidate asset.`);
     }
   }
-  const selfReviews = findCurrentSelfReviews(cardIds, root);
   const completedAt = entries
     .map(entry => entry.review.completed_at)
     .sort()
@@ -154,7 +192,7 @@ function buildBoxRecord({
     schema_version: 'model-owned-audio-qc.v2',
     audio_qc_id: `${date}-${sourceWorklist.track}-${knowledge.box_prefix}-audio-qc`,
     created_at: createdAt,
-    model_acceptances: structuredClone(modelAcceptances),
+    model_acceptances: [],
     scope: {
       library: knowledge.library_name,
       group: knowledge.group_name,
@@ -165,9 +203,16 @@ function buildBoxRecord({
     source_records: {
       card_files: [...new Set(entries.map(entry => entry.card_source_file))],
       linked_agent_self_reviews: selfReviews,
-      linked_approved_batch: '',
+      linked_approved_batch: contentAuthorizationPath,
       linked_perceptual_worklist: worklistRelativePath,
       perceptual_worklist_sha256: worklistSha256,
+      trusted_media_receipt: trustedMedia.receiptPath,
+      trusted_media_receipt_sha256: trustedMedia.receiptSha256,
+      trusted_media_attestation_bundle: trustedMedia.bundlePath,
+      trusted_media_attestation_bundle_sha256: trustedMedia.bundleSha256,
+      trusted_media_source_commit: trustedMedia.sourceCommit,
+      trusted_media_model_id: trustedMedia.modelId,
+      trusted_media_model_revision: trustedMedia.modelRevision,
     },
     text_gate: {
       tts_text_reviewed: true,
@@ -246,6 +291,122 @@ function buildBoxRecord({
   };
 }
 
+function requireTrustedMediaReceipt({
+  attestationBundlePath,
+  authorization,
+  execFile,
+  root,
+  typeSpecificVerifier,
+  trustedReceiptPath,
+  worklistBytes,
+  worklistPath,
+}) {
+  return verifyTrustedMediaEvidence({
+    attestationBundlePath,
+    authorizationPath: authorization.relativePath,
+    execFile,
+    root,
+    typeSpecificVerifier,
+    trustedReceiptPath,
+    worklistPath,
+    worklistSha256: sha256(worklistBytes),
+  });
+}
+
+function buildAggregateModelAcceptances({boxPrefix, entries, inputSha256}) {
+  return [0, 1].map(lane => {
+    const sourceAcceptances = entries.map(entry => {
+      const acceptance = entry.review?.model_acceptances?.[lane];
+      const issues = validateModelAcceptance(acceptance, {
+        requireAccepted: true,
+        requiredCapabilities: ['audio_perceptual_review'],
+      });
+      if (issues.length > 0) {
+        throw new Error(
+          `Card ${entry.card_id} lane ${lane + 1} audio evidence is invalid: ${issues.map(issue => issue.code).join(', ')}`,
+        );
+      }
+      return {
+        card_id: entry.card_id,
+        input_sha256: acceptance.evidence.input_sha256,
+        model: acceptance.actor.model,
+        reviewed_at: acceptance.evidence.reviewed_at,
+        run_id: acceptance.actor.run_id,
+      };
+    });
+    if (new Set(sourceAcceptances.map(item => item.run_id)).size !== sourceAcceptances.length) {
+      throw new Error(`Box ${boxPrefix} lane ${lane + 1} reuses a per-card run ID.`);
+    }
+    const evidenceSha256 = sha256(
+      Buffer.from(canonicalStringify(sourceAcceptances), 'utf8'),
+    );
+    const models = [...new Set(sourceAcceptances.map(item => item.model))];
+    return {
+      schema_version: 'model-acceptance.v2',
+      actor: {
+        kind: 'model_harness',
+        agent: `agent:audio-evidence-aggregate-lane-${lane + 1}`,
+        model: models.length === 1 ? models[0] : 'multi-model-audio-evidence',
+        run_id: `audio-evidence:${boxPrefix}:lane-${lane + 1}:${evidenceSha256.slice(0, 16)}`,
+      },
+      evidence: {
+        reviewed_at: sourceAcceptances.map(item => item.reviewed_at).sort().at(-1),
+        input_sha256: inputSha256,
+        capabilities: ['audio_perceptual_review'],
+        summary: `Deterministic lane ${lane + 1} aggregation of ${sourceAcceptances.length} exact per-card audio-capable acceptances; source evidence sha256:${evidenceSha256}. No new media, provider, deployment, or device fact is inferred.`,
+        findings: [],
+      },
+      decision: 'accepted',
+    };
+  });
+}
+
+function requireCurrentContentAuthorization({
+  contentAuthorizationPath,
+  root,
+  scopedCardIds,
+}) {
+  const absolute = requireRegularWorkspaceFile(contentAuthorizationPath, root);
+  const relativePath = relativeToRoot(absolute, root);
+  if (
+    !relativePath.startsWith('reviews/approved_batches/') ||
+    path.posix.dirname(relativePath) !== 'reviews/approved_batches' ||
+    !relativePath.endsWith('.json') ||
+    relativePath.endsWith('/TEMPLATE.json')
+  ) {
+    throw new Error('Current content authorization must be a direct non-template JSON record.');
+  }
+  const bytes = fs.readFileSync(absolute);
+  requireTrackedHeadBytes(absolute, bytes, root);
+  const currentFingerprint = computeCardCorpusFingerprint(root);
+  const validation = validateCurrentApprovalRecordReference({
+    root,
+    approvalPath: relativePath,
+    currentFingerprint,
+  });
+  if (!validation.ok) {
+    throw new Error(
+      `Current model-owned content authorization failed canonical replay: ${validation.issues
+        .map(issue => issue.code)
+        .join(', ')}`,
+    );
+  }
+  const record = validation.approval;
+  const authorizedCards = new Set((record.scope?.card_ids || []).map(String));
+  const currentTrackCardCount = countTrackCards(root, 'cet4');
+  if (
+    record.schema_version !== 'model-owned-content-authorization.v2' ||
+    record.authorization_mode !== 'full_track' ||
+    record.scope?.track !== 'cet4' ||
+    record.scope?.purpose !== 'formal_content' ||
+    scopedCardIds.some(cardId => !authorizedCards.has(String(cardId))) ||
+    authorizedCards.size !== currentTrackCardCount
+  ) {
+    throw new Error('Current model-owned content authorization is invalid or does not cover the audio scope.');
+  }
+  return {record, relativePath, sha256: sha256(bytes)};
+}
+
 function readBoundCard(entry, root) {
   const file = requireRegularWorkspaceFile(entry.card_source_file, root);
   const document = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -261,28 +422,14 @@ function readBoundCard(entry, root) {
   return card;
 }
 
-function findCurrentSelfReviews(cardIds, root) {
-  const target = new Set(cardIds);
-  const directory = path.join(root, 'reviews/agent_self_review');
-  const candidates = [];
-  for (const filename of fs.readdirSync(directory).filter(name => name.endsWith('.json')).sort()) {
-    const relative = `reviews/agent_self_review/${filename}`;
-    const record = JSON.parse(fs.readFileSync(path.join(root, relative), 'utf8'));
-    const scoped = Array.isArray(record.scope?.card_ids)
-      ? record.scope.card_ids.map(String).filter(cardId => target.has(cardId))
-      : [];
-    if (scoped.length === 0) continue;
-    candidates.push({created_at: String(record.created_at || ''), path: relative, scoped});
+function countTrackCards(root, track) {
+  let count = 0;
+  const directory = path.join(root, 'card_boxes_json');
+  for (const filename of fs.readdirSync(directory).filter(name => name.endsWith('.json'))) {
+    const document = JSON.parse(fs.readFileSync(path.join(directory, filename), 'utf8'));
+    if (document.track === track && Array.isArray(document.cards)) count += document.cards.length;
   }
-  const chosen = new Map();
-  for (const cardId of cardIds) {
-    const matching = candidates
-      .filter(candidate => candidate.scoped.includes(cardId))
-      .sort((left, right) => right.created_at.localeCompare(left.created_at));
-    if (matching.length === 0) throw new Error(`Card ${cardId} has no linked agent self-review.`);
-    chosen.set(matching[0].path, matching[0]);
-  }
-  return [...chosen.keys()].sort();
+  return count;
 }
 
 function pronunciationNotes(entry) {
@@ -384,51 +531,49 @@ function asIso(value) {
 
 function parseArguments(argv) {
   const options = {
-    acceptancesDirectory: null,
     apply: false,
     attestations: {},
+    attestationBundlePath: null,
+    contentAuthorizationPath: null,
     outputDirectory: AUDIO_QC_DIR,
-    planOnly: false,
+    trustedReceiptPath: null,
     worklistPath: null,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
     if (argument === '--apply') options.apply = true;
-    else if (argument === '--plan-model-inputs') options.planOnly = true;
     else if (argument === '--attest-no-autoplay') {
       options.attestations.no_autoplay_assumption = true;
     } else if (argument === '--attest-front-no-required-subtitles') {
       options.attestations.front_side_no_required_subtitles = true;
     } else if (argument === '--attest-tts-not-source-authenticity') {
       options.attestations.tts_audio_not_used_as_source_authenticity = true;
-    } else if (['--worklist', '--output-dir', '--acceptances-dir'].includes(argument)) {
+    } else if ([
+      '--worklist',
+      '--authorization',
+      '--trusted-receipt',
+      '--attestation-bundle',
+      '--output-dir',
+    ].includes(argument)) {
       const value = argv[index + 1];
       if (!value || value.startsWith('--')) throw new Error(`${argument} requires a value`);
       index += 1;
       if (argument === '--worklist') options.worklistPath = value;
+      if (argument === '--authorization') options.contentAuthorizationPath = value;
+      if (argument === '--trusted-receipt') options.trustedReceiptPath = value;
+      if (argument === '--attestation-bundle') options.attestationBundlePath = value;
       if (argument === '--output-dir') options.outputDirectory = value;
-      if (argument === '--acceptances-dir') options.acceptancesDirectory = value;
     } else throw new Error(`unknown argument ${argument}`);
   }
-  if (!options.worklistPath) throw new Error('--worklist is required');
-  if (options.apply && (options.planOnly || !options.acceptancesDirectory)) {
-    throw new Error('--apply requires --acceptances-dir and cannot use --plan-model-inputs');
+  if (
+    !options.worklistPath ||
+    !options.contentAuthorizationPath ||
+    !options.trustedReceiptPath ||
+    !options.attestationBundlePath
+  ) {
+    throw new Error('--worklist, --authorization, --trusted-receipt and --attestation-bundle are required');
   }
   return options;
-}
-
-function readModelAcceptancesByBox(directory, root) {
-  if (!directory) return {};
-  const absolute = path.resolve(root, directory);
-  if (!absolute.startsWith(`${path.resolve(root)}${path.sep}`) || !fs.lstatSync(absolute).isDirectory()) {
-    throw new Error('acceptances directory must be a workspace directory');
-  }
-  return Object.fromEntries(
-    fs.readdirSync(absolute)
-      .filter(name => /^\d{4}\.json$/.test(name))
-      .sort()
-      .map(name => [name.slice(0, 4), JSON.parse(fs.readFileSync(path.join(absolute, name), 'utf8'))]),
-  );
 }
 
 function requireOutputDirectory(value, root) {
@@ -442,13 +587,11 @@ async function runCli() {
   try {
     const options = parseArguments(process.argv.slice(2));
     const result = buildAudioQcDrafts({
+      attestationBundlePath: options.attestationBundlePath,
       attestations: options.attestations,
-      modelAcceptancesByBox: readModelAcceptancesByBox(
-        options.acceptancesDirectory,
-        ROOT,
-      ),
-      planOnly: options.planOnly,
+      contentAuthorizationPath: options.contentAuthorizationPath,
       root: ROOT,
+      trustedReceiptPath: options.trustedReceiptPath,
       worklistPath: options.worklistPath,
     });
     const outputDirectory = requireOutputDirectory(options.outputDirectory, ROOT);

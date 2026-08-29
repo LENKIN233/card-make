@@ -1,5 +1,5 @@
 {
-  "version": "card-make-eval-fixtures-v1",
+  "version": "card-make-eval-fixtures-v2",
   "status": "active",
   "purpose": "Canonical regression fixtures for the card content harness golden tasks.",
   "fixture_cases": [
@@ -671,6 +671,33 @@
         "audio_qc_status": "block",
         "formal_use_claimed": false,
         "expected_gate_errors": ["target_signal_audible_required_for_formal_audio"]
+      }
+    },
+    {
+      "id": "FIX-GT-CARD-007-BLOCK-UNATTESTED-MEDIA-RECEIPT",
+      "golden_task_id": "GT-CARD-007",
+      "type": "trusted_media_receipt",
+      "cards": [],
+      "fixture_flags": {
+        "structural_receipt_only": true,
+        "real_model_run_missing": true,
+        "github_attestation_missing": true
+      },
+      "trusted_media_receipt": {
+        "schema_version": "trusted-media-run-receipt.v1",
+        "result": {
+          "reviewed_card_count": 301,
+          "passed_card_count": 301,
+          "failed_card_count": 0
+        }
+      },
+      "expected_outcome": {
+        "trusted_media_status": "block",
+        "formal_use_claimed": false,
+        "expected_gate_errors": [
+          "trusted_media_real_model_execution_missing",
+          "trusted_media_GitHub_attestation_missing"
+        ]
       }
     }
   ]

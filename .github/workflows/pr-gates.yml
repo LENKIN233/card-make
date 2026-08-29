@@ -32,10 +32,31 @@ jobs:
         with:
           path: card-make
           fetch-depth: 0
-          # These gates validate paths, pointer OIDs/sizes, manifests, and JSON;
-          # they do not decode audio bytes. Keep LFS objects as pointers so
-          # ordinary content PRs are not coupled to GitHub LFS download quota.
+          # Tooling-only PRs validate pointers without spending LFS bandwidth.
           lfs: false
+
+      - name: Materialize LFS only for formal media evidence changes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          formal_media_evidence_present="$(find \
+            reviews/audio_qc \
+            reviews/trusted_media_receipts \
+            reviews/trusted_media_runs \
+            -type f ! -name README.md ! -name TEMPLATE.json -print -quit)"
+          if [[ -n "${BASE_SHA:-}" ]] && git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
+            changed="$(git diff --name-only "$BASE_SHA" HEAD)"
+          else
+            changed="$(git ls-files)"
+          fi
+          formal_media_evidence_changed="$(printf '%s\n' "$changed" | \
+            grep -E '^(reviews/audio_qc|reviews/trusted_media_receipts|reviews/trusted_media_runs)/' | \
+            grep -Ev '/(README\.md|TEMPLATE\.json)$' || true)"
+          if [[ -n "$formal_media_evidence_present" || -n "$formal_media_evidence_changed" ]]; then
+            git lfs pull --include='ai_tts/**/*.mp3'
+          fi
 
       - name: Checkout product authority
         uses: actions/checkout@v7
@@ -52,7 +73,6 @@ jobs:
 
       - name: Validate contracts
         run: |
-          python3 scripts/test_trusted_model_review.py
           node scripts/validate_harness.mjs
           node scripts/validate_audio_qc.mjs
           node --test scripts/test_validate_audio_qc_model.mjs
@@ -64,6 +84,9 @@ jobs:
           node --test scripts/test_audio_technical_audit.mjs
           node --test scripts/test_audio_perceptual_worklist.mjs
           node --test scripts/test_build_audio_qc_drafts.mjs
+          python3 scripts/test_run_trusted_media_review.py
+          node --test scripts/test_build_trusted_media_run_receipt.mjs
+          node --test scripts/test_shard_runtime_payload.mjs
           node --test scripts/test_manage_controlled_pilot_approval.mjs
           git diff --check
 

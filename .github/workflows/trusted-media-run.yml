@@ -1,0 +1,408 @@
+name: trusted-media-run
+
+on:
+  workflow_dispatch:
+    inputs:
+      worklist_path:
+        description: Tracked pending CET4 audio perceptual worklist
+        required: true
+        type: string
+      authorization_path:
+        description: Tracked current full-track CET4 model authorization
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trusted-media-run-cet4
+  cancel-in-progress: false
+
+jobs:
+  review:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, macOS, ARM64, softbook-media]
+    timeout-minutes: 180
+    permissions:
+      contents: read
+    env:
+      GIT_ATTR_NOSYSTEM: "1"
+      GIT_CONFIG_GLOBAL: /dev/null
+      GIT_CONFIG_NOSYSTEM: "1"
+      GIT_CONFIG_SYSTEM: /dev/null
+      GIT_GRAFT_FILE: /dev/null
+      GIT_NO_REPLACE_OBJECTS: "1"
+      GIT_REPLACE_REF_BASE: refs/disabled/softbook-trusted-media
+      LANG: C
+      LC_ALL: C
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONNOUSERSITE: "1"
+    steps:
+      - name: Initialize bounded review deadline
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "TRUSTED_MEDIA_DEADLINE_EPOCH=$(( $(date +%s) + 9000 ))" >> "$GITHUB_ENV"
+
+      - name: Checkout exact trusted main commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          lfs: true
+
+      - name: Checkout pinned softbook product authority
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LENKIN233/softbook_cet
+          ref: 7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1
+          path: product-authority-review
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Materialize isolated exact source snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_root="$RUNNER_TEMP/trusted-source-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          test ! -e "$source_root"
+          git worktree add --detach "$source_root" "$GITHUB_SHA"
+          git -C "$source_root" lfs pull
+          test "$(git -C "$source_root" rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git -C "$source_root" status --porcelain --untracked-files=all)"
+          product_root="$RUNNER_TEMP/softbook_cet"
+          product_commit=7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1
+          test ! -e "$product_root"
+          test "$(git -C "$GITHUB_WORKSPACE/product-authority-review" rev-parse HEAD)" = "$product_commit"
+          git -C "$GITHUB_WORKSPACE/product-authority-review" worktree add \
+            --detach "$product_root" "$product_commit"
+          test "$(git -C "$product_root" rev-parse HEAD)" = "$product_commit"
+          test -z "$(git -C "$product_root" status --porcelain --untracked-files=all)"
+          test "$(jq -r .product_authority.commit_sha "$source_root/spec/trusted-media-runner-lock.json")" = \
+            "$product_commit"
+          echo "TRUSTED_SOURCE_ROOT=$source_root" >> "$GITHUB_ENV"
+          echo "TRUSTED_PRODUCT_AUTHORITY_ROOT=$product_root" >> "$GITHUB_ENV"
+
+      - name: Validate trusted source and bounded inputs
+        env:
+          WORKLIST_PATH: ${{ inputs.worklist_path }}
+          AUTHORIZATION_PATH: ${{ inputs.authorization_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/main
+          test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
+          [[ "$WORKLIST_PATH" =~ ^reviews/audio_perceptual_worklists/[A-Za-z0-9._-]+\.json$ ]]
+          [[ "$AUTHORIZATION_PATH" =~ ^reviews/approved_batches/[A-Za-z0-9._-]+\.json$ ]]
+          test -f "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH" && test ! -L "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH"
+          test -f "$TRUSTED_SOURCE_ROOT/$AUTHORIZATION_PATH" && test ! -L "$TRUSTED_SOURCE_ROOT/$AUTHORIZATION_PATH"
+          git -C "$TRUSTED_SOURCE_ROOT" ls-files --error-unmatch -- "$WORKLIST_PATH" "$AUTHORIZATION_PATH" >/dev/null
+
+      - name: Validate trusted runner runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${CARD_MAKE_TRUSTED_MEDIA_MODEL_ROOT:-}"
+          test -d "$CARD_MAKE_TRUSTED_MEDIA_MODEL_ROOT"
+          model_root="$(cd "$CARD_MAKE_TRUSTED_MEDIA_MODEL_ROOT" && pwd -P)"
+          workspace_root="$(pwd -P)"
+          case "$model_root/" in
+            "$workspace_root/"*) echo "model root must remain outside the repository" >&2; exit 1 ;;
+          esac
+          test "$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')" = 3.12
+          test "$(python3 -c 'import importlib.metadata; print(importlib.metadata.version("mlx-audio"))')" = 0.5.0
+          site_packages="$(python3 -B -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')"
+          trusted_python_root="$RUNNER_TEMP/trusted-python-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          test ! -e "$trusted_python_root"
+          mkdir "$trusted_python_root"
+          rsync -a \
+            --exclude '__pycache__' \
+            --exclude '*.pyc' \
+            --exclude '*.pyo' \
+            "$site_packages/" "$trusted_python_root/"
+          test -z "$(find "$trusted_python_root" -type l -print -quit)"
+          test -z "$(find "$trusted_python_root" \( -name __pycache__ -o -name '*.py[co]' \) -print -quit)"
+          chmod -R a-w "$trusted_python_root"
+          echo "TRUSTED_MEDIA_PYTHON_ROOT=$trusted_python_root" >> "$GITHUB_ENV"
+          echo "PYTHONPATH=$trusted_python_root" >> "$GITHUB_ENV"
+          echo "PYTHONDONTWRITEBYTECODE=1" >> "$GITHUB_ENV"
+          echo "PYTHONPYCACHEPREFIX=$RUNNER_TEMP/trusted-python-cache-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
+
+      - name: Validate current content and audio contracts
+        run: |
+          cd "$TRUSTED_SOURCE_ROOT"
+          node --test scripts/test_model_acceptance.mjs
+          node scripts/validate_harness.mjs
+          node scripts/validate_cards.mjs --report-path "$RUNNER_TEMP/card-validation.json"
+          node scripts/audit_card_quality.mjs --report-path "$RUNNER_TEMP/card-quality-audit.json"
+          node scripts/validate_audio_lfs.mjs
+          node scripts/validate_audio_qc.mjs
+          test -z "$(git status --porcelain --untracked-files=all)"
+          chmod -R a-w "$TRUSTED_SOURCE_ROOT"
+
+      - name: Replay exact technical audio audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v ffprobe >/dev/null
+          command -v ffmpeg >/dev/null
+          replay="$RUNNER_TEMP/trusted-audio-technical-review.json"
+          node "$TRUSTED_SOURCE_ROOT/scripts/audit_audio_technical.mjs" \
+            --track cet4 \
+            --probe ffprobe \
+            --signal-probe ffmpeg \
+            --report-path "$replay"
+          echo "TRUSTED_MEDIA_TECHNICAL_AUDIT_REPLAY=$replay" >> "$GITHUB_ENV"
+
+      - name: Run two-pass exact-asset media review
+        env:
+          WORKLIST_PATH: ${{ inputs.worklist_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          output_dir="$RUNNER_TEMP/trusted-media-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          test ! -e "$output_dir"
+          echo "TRUSTED_MEDIA_OUTPUT_DIR=$output_dir" >> "$GITHUB_ENV"
+          set +e
+          python3 -B "$TRUSTED_SOURCE_ROOT/scripts/run_trusted_media_review.py" \
+            --worklist "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH" \
+            --asset-root "$TRUSTED_SOURCE_ROOT" \
+            --model-root "$CARD_MAKE_TRUSTED_MEDIA_MODEL_ROOT" \
+            --output-dir "$output_dir" \
+            --workflow-run-id "$GITHUB_RUN_ID" \
+            --workflow-run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --deadline-epoch "$TRUSTED_MEDIA_DEADLINE_EPOCH"
+          review_status=$?
+          set -e
+          echo "TRUSTED_MEDIA_REVIEW_EXIT_CODE=$review_status" >> "$GITHUB_ENV"
+          if [[ "$review_status" != 0 && "$review_status" != 2 ]]; then
+            echo "unexpected trusted media runner exit code: $review_status" >&2
+          fi
+
+      - name: Build exact receipt and review artifacts
+        if: env.TRUSTED_MEDIA_REVIEW_EXIT_CODE == '0'
+        env:
+          WORKLIST_PATH: ${{ inputs.worklist_path }}
+          AUTHORIZATION_PATH: ${{ inputs.authorization_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
+          git -C "$TRUSTED_SOURCE_ROOT" diff-index --quiet "$GITHUB_SHA" --
+          for source_path in \
+            .github/workflows/trusted-media-run.yml \
+            scripts/run_trusted_media_review.py \
+            scripts/build_trusted_media_run_receipt.mjs \
+            scripts/replay_trusted_media_raw_outputs.py \
+            scripts/audit_audio_technical.mjs \
+            scripts/manage_audio_perceptual_worklist.mjs \
+            scripts/lib/card_integrity.mjs \
+            scripts/lib/model_acceptance.mjs \
+            spec/trusted-media-runner-lock.json; do
+            test "$(git -C "$TRUSTED_SOURCE_ROOT" hash-object "$source_path")" = \
+              "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse "$GITHUB_SHA:$source_path")"
+          done
+          node "$TRUSTED_SOURCE_ROOT/scripts/build_trusted_media_run_receipt.mjs" \
+            --worklist "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH" \
+            --authorization "$TRUSTED_SOURCE_ROOT/$AUTHORIZATION_PATH" \
+            --run-package "$TRUSTED_MEDIA_OUTPUT_DIR/run-package.json" \
+            --output-dir "$TRUSTED_MEDIA_OUTPUT_DIR" \
+            --technical-audit-replay "$TRUSTED_MEDIA_TECHNICAL_AUDIT_REPLAY" \
+            --source-commit "$GITHUB_SHA"
+          test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
+
+      - name: Upload unprivileged raw review package
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: trusted-media-raw-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.TRUSTED_MEDIA_OUTPUT_DIR }}
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Fail after retaining rejected review evidence
+        if: env.TRUSTED_MEDIA_REVIEW_EXIT_CODE != '0'
+        shell: bash
+        run: exit "${TRUSTED_MEDIA_REVIEW_EXIT_CODE:-1}"
+
+  verify:
+    needs: review
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact trusted main commit with LFS media
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+          lfs: true
+
+      - name: Checkout pinned softbook product authority
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LENKIN233/softbook_cet
+          ref: 7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1
+          path: product-authority-verify
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Materialize isolated source and product authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_root="$RUNNER_TEMP/trusted-source-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          product_root="$RUNNER_TEMP/softbook_cet"
+          product_commit=7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1
+          test ! -e "$source_root"
+          test ! -e "$product_root"
+          git worktree add --detach "$source_root" "$GITHUB_SHA"
+          git -C "$source_root" lfs pull
+          git -C "$GITHUB_WORKSPACE/product-authority-verify" worktree add \
+            --detach "$product_root" "$product_commit"
+          test "$(git -C "$source_root" rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C "$product_root" rev-parse HEAD)" = "$product_commit"
+          test -z "$(git -C "$source_root" status --porcelain --untracked-files=all)"
+          test -z "$(git -C "$product_root" status --porcelain --untracked-files=all)"
+          test "$(jq -r .product_authority.commit_sha "$source_root/spec/trusted-media-runner-lock.json")" = \
+            "$product_commit"
+          echo "TRUSTED_SOURCE_ROOT=$source_root" >> "$GITHUB_ENV"
+          echo "TRUSTED_PRODUCT_AUTHORITY_ROOT=$product_root" >> "$GITHUB_ENV"
+
+      - name: Download unprivileged raw review package
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: trusted-media-raw-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/trusted-media-downloaded
+
+      - name: Rebuild and byte-verify receipt on GitHub-hosted runner
+        env:
+          WORKLIST_PATH: ${{ inputs.worklist_path }}
+          AUTHORIZATION_PATH: ${{ inputs.authorization_path }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/main
+          test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
+          downloaded="$RUNNER_TEMP/trusted-media-downloaded"
+          rebuilt="$RUNNER_TEMP/trusted-media-rebuilt"
+          audit_replay="$RUNNER_TEMP/trusted-audio-technical-verify.json"
+          mkdir "$rebuilt"
+          cp "$downloaded"/run-*.jsonl "$rebuilt/"
+          cp "$downloaded/run-package.json" "$rebuilt/"
+          cp "$downloaded/model-weights-manifest.json" "$rebuilt/"
+          cp "$downloaded/mlx-audio-package-manifest.json" "$rebuilt/"
+          cp "$downloaded/python-environment-manifest.json" "$rebuilt/"
+          test "$(jq -r .execution.workflow_run_id "$rebuilt/run-package.json")" = "$GITHUB_RUN_ID"
+          test "$(jq -r .execution.workflow_run_attempt "$rebuilt/run-package.json")" = "$GITHUB_RUN_ATTEMPT"
+          python3 - "$rebuilt" <<'PY'
+          import hashlib, json, pathlib, sys
+          root = pathlib.Path(sys.argv[1])
+          lock = json.loads(pathlib.Path(
+              pathlib.Path.cwd(),
+              'spec/trusted-media-runner-lock.json',
+          ).read_text())
+          for filename, expected in [
+              ('model-weights-manifest.json', lock['model']['weights_manifest_sha256']),
+              ('mlx-audio-package-manifest.json', lock['runtime']['mlx_audio_package_manifest_sha256']),
+              ('python-environment-manifest.json', lock['runtime']['python_environment_manifest_sha256']),
+          ]:
+              value = json.loads((root / filename).read_text())
+              files = value['files']
+              if value.get('sha256') != expected:
+                  raise SystemExit(f'{filename} top-level digest does not match the trusted lock')
+              if (
+                  filename == 'python-environment-manifest.json'
+                  and value.get('schema_version') != 'trusted-media-tree-manifest.v2'
+              ):
+                  raise SystemExit(f'{filename} must use the compact v2 schema')
+              if value.get('schema_version') == 'trusted-media-tree-manifest.v2':
+                  if set(value) != {'schema_version', 'files', 'sha256'} or not files:
+                      raise SystemExit(f'{filename} compact manifest shape is invalid')
+                  if any(not isinstance(item, list) or len(item) != 3 for item in files):
+                      raise SystemExit(f'{filename} compact file tuple is invalid')
+                  files = [
+                      {'path': item[0], 'size_bytes': item[1], 'sha256': item[2]}
+                      for item in files
+                  ]
+              payload = json.dumps(files, sort_keys=True, separators=(',', ':')).encode()
+              if hashlib.sha256(payload).hexdigest() != expected:
+                  raise SystemExit(f'{filename} does not match the trusted lock')
+          PY
+          cd "$TRUSTED_SOURCE_ROOT"
+          command -v ffprobe >/dev/null
+          command -v ffmpeg >/dev/null
+          node scripts/audit_audio_technical.mjs \
+            --track cet4 \
+            --probe ffprobe \
+            --signal-probe ffmpeg \
+            --report-path "$audit_replay"
+          node scripts/build_trusted_media_run_receipt.mjs \
+            --worklist "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH" \
+            --authorization "$TRUSTED_SOURCE_ROOT/$AUTHORIZATION_PATH" \
+            --run-package "$rebuilt/run-package.json" \
+            --output-dir "$rebuilt" \
+            --technical-audit-replay "$audit_replay" \
+            --source-commit "$GITHUB_SHA"
+          for artifact in \
+            audio-manifest.json \
+            reviewed-worklist.json \
+            raw-run-manifest.json \
+            trusted-media-run-receipt.json; do
+            cmp "$downloaded/$artifact" "$rebuilt/$artifact"
+          done
+          test -z "$(git status --porcelain --untracked-files=all)"
+          diff -qr "$downloaded/ai_tts" "$rebuilt/ai_tts"
+          echo "VERIFIED_MEDIA_DIR=$rebuilt" >> "$GITHUB_ENV"
+
+      - name: Upload code-free verified media package
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: trusted-media-verified-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.VERIFIED_MEDIA_DIR }}
+          if-no-files-found: error
+          retention-days: 1
+
+  attest:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - name: Download code-free verified media package
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: trusted-media-verified-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/trusted-media-verified
+
+      - name: Attest exact rebuilt trusted media receipt
+        id: attest
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
+        with:
+          subject-path: ${{ runner.temp }}/trusted-media-verified/trusted-media-run-receipt.json
+
+      - name: Bind attestation bundle to verified run artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp "${{ steps.attest.outputs.bundle-path }}" \
+            "$RUNNER_TEMP/trusted-media-verified/attestation-bundle.jsonl"
+
+      - name: Upload verified run package, receipt, and attestation
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: trusted-media-run-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/trusted-media-verified
+          if-no-files-found: error
+          retention-days: 30

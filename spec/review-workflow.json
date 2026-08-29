@@ -24,7 +24,7 @@
     "required_shape": {
       "actor": [
         "kind=model_harness",
-        "agent",
+        "agent=agent:/model:/service: typed machine principal",
         "model",
         "run_id"
       ],
@@ -54,7 +54,10 @@
       ],
       "minimum_acceptances": 2,
       "run_ids_must_be_distinct": true,
-      "input_sha256_must_match": true
+      "input_sha256_must_match": true,
+      "execution_mode": "single_model_task_with_two_explicit_context_perturbation_passes",
+      "external_model_api_required": false,
+      "separate_provider_or_task_provenance_claimed": false
     },
     "required_capabilities_by_decision": {
       "card_review": [
@@ -75,8 +78,8 @@
       ]
     },
     "current_authorization_rule": "Only a complete model-acceptance.v2 record bound to the exact current input can create current authorization.",
-    "execution_provenance_rule": "model-acceptance.v2 is structural decision evidence, not cryptographic proof that a provider model executed. Repository merge authority additionally requires the trusted-model-review exact-diff check after its documented bootstrap; audio claims separately require exact media consumption evidence.",
-    "canonical_input_rule": "Content review and authorization input hashes use scripts/lib/model_acceptance.mjs#buildModelAcceptanceInputSha256 and bind decision type, exact sorted scope, current corpus fingerprint, exact scoped-audit SHA-256, and linked review path/SHA-256 when authorization consumes a review. A full_track_content_authorization additionally binds the exact canonical runtime content_version through additionalBindings.content_version; validators derive that version from one direct immutable runtime payload, rehash its bytes, and require exact track/card scope. Changing the payload or runtime version invalidates authorization.",
+    "execution_provenance_rule": "model-acceptance.v2 binds exact inputs and two explicit perturbation passes in the single active model-harness task; it does not claim separate-provider or separate-task provenance. Repository merge authority additionally requires both exact-diff perturbation decisions plus deterministic required checks; audio claims separately retain exact media-consumption evidence.",
+    "canonical_input_rule": "Content review and authorization input hashes use scripts/lib/model_acceptance.mjs#buildModelAcceptanceInputSha256 and bind decision type, exact sorted scope, current corpus fingerprint, exact scoped-audit SHA-256, and linked review path/SHA-256 when authorization consumes a review. A full_track_content_authorization additionally binds the exact canonical runtime content_version and the direct payload or manifest byte SHA-256 through additionalBindings. Validators accept either one direct immutable payload or a direct immutable manifest whose direct regular JSON shards are path-, SHA-256-, count-, order-, and card-range-bound at the same fixed HEAD; they reconstruct one normalized payload, derive its content_version, and require exact track/card scope. Changing the manifest, any shard, or the runtime version invalidates authorization.",
     "legacy_v1_rule": "Records that claim user confirmation, user approval, or a human reviewer remain immutable historical evidence only and never create current authorization. They must not be rewritten to look model-owned."
   },
   "workflow": {
@@ -116,9 +119,10 @@
     "linked_current_model_review_required": true,
     "exact_scope_and_current_scoped_audit_required": true,
     "full_track_runtime_content_version_required": true,
-    "full_track_runtime_content_version_input_binding": "buildModelAcceptanceInputSha256.additionalBindings.content_version",
+    "full_track_runtime_content_version_input_binding": "buildModelAcceptanceInputSha256.additionalBindings.content_version_plus_runtime_payload_sha256",
     "full_track_runtime_payload_path_and_sha256_required": true,
     "full_track_runtime_payload_content_version_must_be_recomputed": true,
+    "full_track_runtime_manifest_boundary": "A card-make-runtime-payload-manifest.v1 record may replace an oversized direct payload only when every card shard is a direct regular JSON child of reviews/runtime_payloads, hash-bound by exact file bytes, strictly ordered by non-overlapping card ranges, and captured in the same fixed authorization snapshot.",
     "ordinary_scoped_authorization_runtime_version_requirement": "not_required_when_no_canonical_runtime_version_exists; when declared it is validated and bound",
     "legacy_human_authority_records_are_archive_only": true
   },
@@ -128,7 +132,9 @@
     "requires_audio_perceptual_review_capability": true,
     "requires_exact_asset_and_transcript_binding": true,
     "technical_audio_audit_required": true,
-    "source_authenticity_not_inferred": true
+    "source_authenticity_not_inferred": true,
+    "trusted_execution_receipt": "spec/trusted-media-run-producer.json",
+    "formal_media_receipt_requires_real_GitHub_attestation": true
   },
   "card_removal_record": {
     "location": "reviews/agent_self_review/*.json#removed_cards",

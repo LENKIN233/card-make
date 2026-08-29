@@ -1,0 +1,39 @@
+{
+  "schema_version": "trusted-media-runner-lock.v1",
+  "model": {
+    "id": "mlx-community/Qwen2-Audio-7B-Instruct-4bit",
+    "revision": "c65570002626f41b4dc08b7b54f42f99f3e82e7f",
+    "weights_manifest_sha256": "56841b35e12222cb7623b3f45af9dbb5d904db8d8874e55f49bc02fa9f33a503"
+  },
+  "product_authority": {
+    "repository": "LENKIN233/softbook_cet",
+    "commit_sha": "7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1"
+  },
+  "runtime": {
+    "python": "3.12",
+    "mlx_audio": "0.5.0",
+    "mlx_audio_package_manifest_sha256": "e33e60ac7221581591e540aa650ec80a67eaaa387a05e0a6257bce6351748047",
+    "python_environment_manifest_sha256": "cc8661cb36536d6e1e46623058090d2efeb05c56d6eb34a8e74e8bb492eb1a73",
+    "operating_system": "Darwin",
+    "machine": "arm64",
+    "runner_class": "self_hosted_macos_arm64",
+    "sample_rate_hz": 16000,
+    "model_max_sample_count": 480000,
+    "model_n_fft": 400,
+    "model_hop_length": 160,
+    "model_feature_frame_count": 3001,
+    "model_audio_token_count": 750
+  },
+  "runs": [
+    {"name": "a", "purpose": "full_perceptual", "temperature": 0.0},
+    {"name": "b", "purpose": "full_perceptual", "temperature": 0.1},
+    {"name": "c", "purpose": "adjudication", "temperature": 0.2},
+    {"name": "d", "purpose": "pronunciation", "temperature": 0.1},
+    {"name": "e", "purpose": "pronunciation", "temperature": 0.2},
+    {"name": "f", "purpose": "blind_transcript", "temperature": 0.0},
+    {"name": "g", "purpose": "blind_transcript", "temperature": 0.1}
+  ],
+  "transcript_similarity_threshold": 0.85,
+  "full_perceptual_runs_required": 2,
+  "exact_cet4_audio_asset_count": 301
+}

@@ -26,8 +26,9 @@ Read only the minimum relevant subset:
 4. `spec/review-workflow.json`
 5. `spec/content-quality-contract.json`
 6. `spec/audio-generation-contract.json` for audio work
-7. `spec/git-workflow.json` for tracked delivery
-8. the relevant `../softbook_cet/spec/*.json` product owners
+7. `spec/trusted-media-run-producer.json` for formal media execution or attestation work
+8. `spec/git-workflow.json` for tracked delivery
+9. the relevant `../softbook_cet/spec/*.json` product owners
 
 `spec/review-workflow.json` is the sole owner of model-owned acceptance. Older
 records under sample-confirmation or controlled-pilot person-authority paths are
@@ -49,8 +50,9 @@ immutable historical evidence only and cannot authorize current content.
   a capability blocker and continue independent work.
 - Keep exact scope, immutable commit/input SHA, current corpus fingerprint,
   scoped-audit replay, answer/reference parity, and technical audio invariants.
-- Full-track authorization must bind one direct immutable runtime payload and
-  derive its canonical `content_version`; caller-chosen versions fail closed.
+- Full-track authorization must bind one direct immutable runtime payload or
+  shard manifest, its exact byte SHA-256, and the derived canonical
+  `content_version`; caller-chosen versions fail closed.
 - Treat `model-acceptance.v2` as structural evidence. Repository authority also
   requires the trusted base-only model check after its documented bootstrap.
 - Do not delete a card without governed destructive-change evidence bound to
@@ -78,7 +80,6 @@ For harness or policy changes run at least:
 
 ```bash
 node --test scripts/test_model_acceptance.mjs
-python3 scripts/test_trusted_model_review.py
 node scripts/validate_harness.mjs
 node --test scripts/test_card_integrity.mjs
 node --test scripts/test_validate_pr_scope.mjs

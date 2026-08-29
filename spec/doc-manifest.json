@@ -1,5 +1,5 @@
 {
-  "version": "card-make-harness-v2",
+  "version": "card-make-harness-v3",
   "status": "active",
   "purpose": "Active index for the card content production harness.",
   "active_docs": [
@@ -34,6 +34,18 @@
       "status": "active"
     },
     {
+      "path": "spec/trusted-media-run-producer.json",
+      "authority": "trusted_media_run_producer_contract",
+      "owner": "trusted_media_run_producer",
+      "status": "active"
+    },
+    {
+      "path": "spec/trusted-media-runner-lock.json",
+      "authority": "trusted_media_runner_lock",
+      "owner": "trusted_media_run_producer",
+      "status": "active"
+    },
+    {
       "path": "spec/card-quality-audit.json",
       "authority": "card_quality_audit_rules",
       "owner": "card_quality_audit_and_known_risks",
@@ -64,21 +76,39 @@
       "status": "active"
     },
     {
-      "path": ".github/workflows/trusted-model-review.yml",
-      "authority": "trusted_model_review_workflow",
-      "owner": "trusted_model_execution_provenance",
+      "path": ".github/workflows/trusted-media-run.yml",
+      "authority": "trusted_media_run_workflow",
+      "owner": "trusted_media_run_producer",
       "status": "active"
     },
     {
-      "path": "scripts/trusted_model_review.py",
-      "authority": "trusted_model_review_aggregator",
-      "owner": "trusted_model_execution_provenance",
+      "path": "scripts/run_trusted_media_review.py",
+      "authority": "trusted_media_model_runner",
+      "owner": "trusted_media_run_producer",
       "status": "active"
     },
     {
-      "path": "scripts/test_trusted_model_review.py",
-      "authority": "trusted_model_review_tests",
-      "owner": "trusted_model_execution_provenance",
+      "path": "scripts/test_run_trusted_media_review.py",
+      "authority": "trusted_media_model_runner_tests",
+      "owner": "trusted_media_run_producer",
+      "status": "active"
+    },
+    {
+      "path": "scripts/build_trusted_media_run_receipt.mjs",
+      "authority": "trusted_media_receipt_builder",
+      "owner": "trusted_media_run_producer",
+      "status": "active"
+    },
+    {
+      "path": "scripts/replay_trusted_media_raw_outputs.py",
+      "authority": "trusted_media_raw_output_replayer",
+      "owner": "trusted_media_run_producer",
+      "status": "active"
+    },
+    {
+      "path": "scripts/test_build_trusted_media_run_receipt.mjs",
+      "authority": "trusted_media_receipt_builder_tests",
+      "owner": "trusted_media_run_producer",
       "status": "active"
     },
     {
@@ -190,6 +220,12 @@
       "status": "active"
     },
     {
+      "path": "scripts/lib/trusted_media_reference.mjs",
+      "authority": "trusted_media_reference_validator",
+      "owner": "trusted_media_reference_validation",
+      "status": "active"
+    },
+    {
       "path": "scripts/test_validate_audio_qc_model.mjs",
       "authority": "model_audio_input_regression",
       "owner": "audio_qc_records",
@@ -232,6 +268,12 @@
       "status": "active"
     },
     {
+      "path": "reviews/audio_technical_audits/README.md",
+      "authority": "audio_technical_audit_zone",
+      "owner": "trusted_media_run_producer",
+      "status": "active"
+    },
+    {
       "path": "reviews/agent_self_review/TEMPLATE.json",
       "authority": "review_template",
       "owner": "agent_self_review_records",
@@ -258,6 +300,18 @@
     {
       "path": "reviews/runtime_payloads/README.md",
       "authority": "runtime_payload_binding_zone",
+      "owner": "model_owned_content_authorization_records",
+      "status": "active"
+    },
+    {
+      "path": "scripts/shard_runtime_payload.mjs",
+      "authority": "runtime_payload_sharder",
+      "owner": "model_owned_content_authorization_records",
+      "status": "active"
+    },
+    {
+      "path": "scripts/test_shard_runtime_payload.mjs",
+      "authority": "runtime_payload_sharder_tests",
       "owner": "model_owned_content_authorization_records",
       "status": "active"
     },
@@ -325,6 +379,18 @@
       "path": "reviews/audio_qc/TEMPLATE.json",
       "authority": "audio_qc_template",
       "owner": "audio_qc_records",
+      "status": "active"
+    },
+    {
+      "path": "reviews/trusted_media_receipts/README.md",
+      "authority": "trusted_media_receipt_zone",
+      "owner": "trusted_media_receipts",
+      "status": "active"
+    },
+    {
+      "path": "reviews/trusted_media_runs/README.md",
+      "authority": "trusted_media_run_artifact_zone",
+      "owner": "trusted_media_run_artifacts",
       "status": "active"
     },
     {

@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -7,6 +8,7 @@ import {
   isLegacyV1HumanAuthorityRecord,
   validateIndependentModelAcceptances,
 } from './lib/model_acceptance.mjs';
+import {verifyTrustedMediaEvidence} from './lib/trusted_media_reference.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SPEC_PATH = 'spec/audio-generation-contract.json';
@@ -133,13 +135,51 @@ export function validateAudioAcceptanceInput(record, {root = ROOT, template = fa
   }
   identities.sort((left, right) =>
     left.card_id.localeCompare(right.card_id) || left.path.localeCompare(right.path));
+  const trustedMedia = {
+    receipt_path: record.source_records?.trusted_media_receipt,
+    receipt_sha256: record.source_records?.trusted_media_receipt_sha256,
+    attestation_bundle_path:
+      record.source_records?.trusted_media_attestation_bundle,
+    attestation_bundle_sha256:
+      record.source_records?.trusted_media_attestation_bundle_sha256,
+    source_commit: record.source_records?.trusted_media_source_commit,
+    model_id: record.source_records?.trusted_media_model_id,
+    model_revision: record.source_records?.trusted_media_model_revision,
+  };
+  if (
+    typeof trustedMedia.receipt_path !== 'string' ||
+    !trustedMedia.receipt_path.startsWith('reviews/trusted_media_receipts/') ||
+    !/^[a-f0-9]{64}$/.test(trustedMedia.receipt_sha256 || '') ||
+    typeof trustedMedia.attestation_bundle_path !== 'string' ||
+    !trustedMedia.attestation_bundle_path.startsWith('reviews/trusted_media_receipts/') ||
+    !/^[a-f0-9]{64}$/.test(trustedMedia.attestation_bundle_sha256 || '') ||
+    !/^[a-f0-9]{40}$/.test(trustedMedia.source_commit || '') ||
+    typeof trustedMedia.model_id !== 'string' ||
+    trustedMedia.model_id.length < 3 ||
+    !/^[a-f0-9]{40}$/.test(trustedMedia.model_revision || '')
+  ) {
+    issues.push({code: 'audio_qc_trusted_media_receipt_binding_invalid'});
+  }
   return {
     issues,
-    input_sha256: `sha256:${sha256(Buffer.from(JSON.stringify(identities), 'utf8'))}`,
+    input_sha256: `sha256:${sha256(Buffer.from(JSON.stringify({
+      assets: identities,
+      trusted_media: trustedMedia,
+    }), 'utf8'))}`,
   };
 }
 
-function validateRecord(record, errors, source, { template = false } = {}) {
+function validateRecord(
+  record,
+  errors,
+  source,
+  {
+    execFile = execFileSync,
+    root = ROOT,
+    template = false,
+    typeSpecificVerifier,
+  } = {},
+) {
   const spec = readJson(SPEC_PATH);
   const modelOwned = record.schema_version === 'model-owned-audio-qc.v2';
   const requiredTopFields = [
@@ -278,7 +318,7 @@ function validateRecord(record, errors, source, { template = false } = {}) {
 
   const assets = Array.isArray(record.generated_assets) ? record.generated_assets : [];
   if (modelOwned && !template) {
-    const identity = validateAudioAcceptanceInput(record);
+    const identity = validateAudioAcceptanceInput(record, {root});
     for (const issue of identity.issues) pushIssue(errors, issue.code, {source, ...issue});
     for (const acceptance of record.model_acceptances || []) {
       if (acceptance?.evidence?.input_sha256 !== identity.input_sha256) {
@@ -301,7 +341,11 @@ function validateRecord(record, errors, source, { template = false } = {}) {
         path: asset.path,
       });
     }
-    if (!template && hasText(asset.path) && !exists(asset.path)) {
+    if (
+      !template &&
+      hasText(asset.path) &&
+      !fs.existsSync(path.resolve(root, asset.path))
+    ) {
       pushIssue(errors, 'audio_qc_asset_missing_on_disk', {
         source,
         card_id: asset.card_id,
@@ -326,6 +370,25 @@ function validateRecord(record, errors, source, { template = false } = {}) {
 
   const formalReady = record.verdict?.formal_audio_ready === true;
   if (formalReady) {
+    try {
+      verifyTrustedMediaEvidence({
+        attestationBundlePath:
+          record.source_records?.trusted_media_attestation_bundle,
+        authorizationPath: record.source_records?.linked_approved_batch,
+        execFile,
+        expectedSourceRecords: record.source_records,
+        root,
+        typeSpecificVerifier,
+        trustedReceiptPath: record.source_records?.trusted_media_receipt,
+        worklistPath: record.source_records?.linked_perceptual_worklist,
+        worklistSha256: record.source_records?.perceptual_worklist_sha256,
+      });
+    } catch (error) {
+      pushIssue(errors, 'audio_qc_trusted_media_evidence_verification_failed', {
+        source,
+        message: error instanceof Error ? error.message : String(error),
+      });
+    }
     for (const check of spec.formal_audio_qc?.required_checks || []) {
       if (record.qa_checks?.[check] !== true) {
         pushIssue(errors, 'audio_qc_formal_ready_with_failed_check', { source, check });
@@ -373,10 +436,21 @@ function validateRecord(record, errors, source, { template = false } = {}) {
 
 export function validateAudioQcRecord(
   record,
-  {source = 'audio-qc-record', template = false} = {},
+  {
+    execFile = execFileSync,
+    root = ROOT,
+    source = 'audio-qc-record',
+    template = false,
+    typeSpecificVerifier,
+  } = {},
 ) {
   const errors = [];
-  validateRecord(record, errors, source, {template});
+  validateRecord(record, errors, source, {
+    execFile,
+    root,
+    template,
+    typeSpecificVerifier,
+  });
   return errors;
 }
 
