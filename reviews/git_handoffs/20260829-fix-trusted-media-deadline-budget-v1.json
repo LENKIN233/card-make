@@ -1,0 +1,54 @@
+{
+  "handoff_id": "20260829-fix-trusted-media-deadline-budget-v1",
+  "created_at": "2026-08-29T20:22:42+08:00",
+  "agent": "codex",
+  "branch": "fix/trusted-media-deadline-budget",
+  "base_branch": "main",
+  "commit_sha": "5c659ceffe0cc41866f7d0d1da94fafa81d51415",
+  "push_ref": "origin/fix/trusted-media-deadline-budget",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/211",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      ".github/workflows/trusted-media-run.yml",
+      "scripts/test_build_trusted_media_run_receipt.mjs",
+      "scripts/validate_harness.mjs",
+      "spec/evals.json",
+      "spec/trusted-media-run-producer.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "08ac0c90403664425795231c6b36e192ae9ffff1",
+    "patch_sha256": "ca19abee0dcded1360c4fdb7f49570b5f91d30c421df9b55035bae49ef29afa0"
+  },
+  "validation": [
+    {
+      "command": "node --test scripts/test_build_trusted_media_run_receipt.mjs",
+      "result": "passed: 17/17 including exact 240-minute job, 12600-second deadline, and 9000-second negative regression"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with only six recorded upstream catalog warnings"
+    },
+    {
+      "command": "required Card Make harness suite",
+      "result": "passed: 245/245"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed: no formal QC records changed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "The formal review remains bounded at a 240-minute job with a 210-minute model deadline and fixed 30-minute finalization reserve, sized from failed run 33245111229 rather than an idealized throughput estimate.",
+  "remaining_risks": [
+    "The read-only runner source mirror must be refreshed to the merged main commit before the next formal run.",
+    "A fresh complete 301-asset run is still required; failed runs 33242725675 and 33245111229 remain failure evidence only.",
+    "If future observed runtime exceeds the new bounded window, the workflow will still fail and retain raw evidence rather than synthesize acceptance."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
