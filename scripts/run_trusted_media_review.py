@@ -185,9 +185,17 @@ def parse_single_quoted_object(candidate: str, fields):
             token, remainder = remainder, ""
         token = token.strip()
         if expected_type is str:
-            if len(token) < 2 or token[0] != "'" or token[-1] != "'":
+            escaped_quote = r'\"'
+            if token.startswith(escaped_quote) and token.endswith(escaped_quote):
+                parsed = token[len(escaped_quote) : -len(escaped_quote)]
+                if "\\" in parsed:
+                    raise ValueError(
+                        f"escaped-quote model result string is ambiguous: {key}"
+                    )
+            elif len(token) >= 2 and token[0] == "'" and token[-1] == "'":
+                parsed = token[1:-1]
+            else:
                 raise ValueError(f"single-quoted model result string is invalid: {key}")
-            parsed = token[1:-1]
             if any(ord(character) < 32 for character in parsed):
                 raise ValueError(f"single-quoted model result string has controls: {key}")
         elif expected_type is bool:
