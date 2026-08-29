@@ -145,6 +145,34 @@ class SummarizingBlindAdapter(FakeAdapter):
         return super().generate(audio_path, prompt, temperature)
 
 
+class SummarizingGeneralAdapter(FakeAdapter):
+    def __init__(self, *, recover):
+        super().__init__()
+        self.recover = recover
+
+    def generate(self, audio_path: Path, prompt: str, temperature: float):
+        retry = "previous assessment omitted or summarized" in prompt
+        if "Use exactly these keys" in prompt and (not retry or not self.recover):
+            sample_count = len(audio_path.read_bytes())
+            return {
+                "text": general_result(
+                    f"Sentence one for {audio_path.stem}.",
+                    target_signal_audible=False,
+                ),
+                "audio_coverage": {
+                    "decoder": "mlx_audio.stt.utils.load_audio",
+                    "decoded_sample_count": sample_count,
+                    "model_input_sample_count": sample_count,
+                    "model_max_sample_count": LOCK["runtime"]["model_max_sample_count"],
+                    "model_feature_frame_count": LOCK["runtime"]["model_feature_frame_count"],
+                    "model_audio_token_count": LOCK["runtime"]["model_audio_token_count"],
+                    "sample_rate_hz": LOCK["runtime"]["sample_rate_hz"],
+                    "truncated": False,
+                },
+            }
+        return super().generate(audio_path, prompt, temperature)
+
+
 def worklist(asset_root: Path, count=4):
     entries = []
     for index in range(1, count + 1):
@@ -457,6 +485,31 @@ class TrustedMediaRunnerTests(unittest.TestCase):
                 record = json.loads((output / f"run-{name}.jsonl").read_text())
                 self.assertEqual(len(record["raw_outputs"]), 2)
                 self.assertEqual(record["transcript_similarity"], 1.0)
+
+    def test_incomplete_perceptual_transcript_replays_once_and_can_still_fail(self):
+        for recover in (True, False):
+            with self.subTest(recover=recover), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                output = root / "output"
+                package = run_review_package(
+                    worklist=worklist(root, count=1),
+                    asset_root=root,
+                    output_dir=output,
+                    adapter=SummarizingGeneralAdapter(recover=recover),
+                    lock=LOCK,
+                    model_manifest_sha256=digest(b"weights"),
+                    workflow_run_id="32975067429",
+                    workflow_run_attempt=1,
+                    expected_asset_count=1,
+                )
+                self.assertEqual(package["result"]["passed_card_count"], 1 if recover else 0)
+                self.assertEqual(package["result"]["failed_card_count"], 0 if recover else 1)
+                for name in ("a", "b"):
+                    attempts = (output / f"attempt-{name}.jsonl").read_text().splitlines()
+                    self.assertEqual(len(attempts), 2)
+                    record = json.loads((output / f"run-{name}.jsonl").read_text())
+                    self.assertEqual(len(record["raw_outputs"]), 2)
+                    self.assertEqual(record["transcript_similarity"], 1.0 if recover else 0.666667)
 
     def test_general_text_vote_does_not_force_unnecessary_adjudication(self):
         with tempfile.TemporaryDirectory() as directory:
