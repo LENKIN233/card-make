@@ -6,7 +6,10 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 
-import {buildTrustedMediaArtifacts as buildTrustedMediaArtifactsImpl} from './build_trusted_media_run_receipt.mjs';
+import {
+  buildTrustedMediaArtifacts as buildTrustedMediaArtifactsImpl,
+  transcriptSimilarity,
+} from './build_trusted_media_run_receipt.mjs';
 import {
   PERCEPTUAL_CHECKS,
   buildAudioPerceptualWorklist,
@@ -26,6 +29,27 @@ function buildTrustedMediaArtifacts(options) {
       path.join(options.repoRoot, 'reviews/audio_technical_audits/cet4.json'),
   });
 }
+
+test('transcript similarity preserves phonetic spelling while rejecting omitted clauses', () => {
+  assert.ok(
+    transcriptSimilarity(
+      'Listen to turn off the light, where n links into off and sounds closer to tur noff in natural speed.',
+      "Listen to turn off the light. We're in links into off and sounds closer to turn off in natural speed.",
+    ) >= 0.85,
+  );
+  assert.ok(
+    transcriptSimilarity(
+      'In put it on, the final t of put links forward, so the phrase is heard as pu ti ton in connected speech.',
+      'In put it on, the final T of put links forward so the phrase is heard as P U T I-T O N in connected speech.',
+    ) >= 0.85,
+  );
+  assert.ok(
+    transcriptSimilarity(
+      'The initial feedback seemed positive; however, several users reported serious security concerns.',
+      'The initial feedback seemed positive.',
+    ) < 0.85,
+  );
+});
 
 function write(root, relativePath, value) {
   const target = path.join(root, relativePath);

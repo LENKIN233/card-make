@@ -40,9 +40,20 @@ function normalizedWords(value) {
   return String(value ?? '').toLowerCase().match(/[a-z0-9]+/g) ?? [];
 }
 
-function transcriptSimilarity(expected, heard) {
-  const a = normalizedWords(expected);
-  const b = normalizedWords(heard);
+export function transcriptSimilarity(expected, heard) {
+  const expectedWords = normalizedWords(expected);
+  const heardWords = normalizedWords(heard);
+  if (expectedWords.length === 0 || heardWords.length === 0) return 0;
+  return Math.max(
+    sequenceMatcherRatio(expectedWords, heardWords),
+    sequenceMatcherRatio(
+      [...expectedWords.join('')],
+      [...heardWords.join('')],
+    ),
+  );
+}
+
+function sequenceMatcherRatio(a, b) {
   if (a.length === 0 || b.length === 0) return 0;
   const b2j = new Map();
   for (const [index, token] of b.entries()) {
