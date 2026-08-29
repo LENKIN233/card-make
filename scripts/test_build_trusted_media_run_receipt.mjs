@@ -740,6 +740,9 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /Replay exact technical audio audit/);
   assert.match(reviewJob, /--technical-audit-replay/);
   assert.match(verifyJob, /audit_audio_technical\.mjs/);
+  assert.match(verifyJob, /Install GitHub-hosted media probes/);
+  assert.match(verifyJob, /apt-get install --no-install-recommends -y ffmpeg/);
+  assert.match(verifyJob, /ffprobe -version/);
   assert.match(verifyJob, /--technical-audit-replay/);
   assert.match(verifyJob, /trusted-media-tree-manifest\.v2/);
   assert.match(verifyJob, /'size_bytes': item\[1\]/);
