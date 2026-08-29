@@ -34,6 +34,7 @@ jobs:
       GIT_GRAFT_FILE: /dev/null
       GIT_NO_REPLACE_OBJECTS: "1"
       GIT_REPLACE_REF_BASE: refs/disabled/softbook-trusted-media
+      GIT_LFS_SKIP_SMUDGE: "1"
       LANG: C
       LC_ALL: C
       PYTHONDONTWRITEBYTECODE: "1"
@@ -56,7 +57,7 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
           set-safe-directory: false
-          lfs: true
+          lfs: false
 
       - name: Checkout pinned softbook product authority
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -75,9 +76,19 @@ jobs:
           source_root="$RUNNER_TEMP/trusted-source-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           test ! -e "$source_root"
           git worktree add --detach "$source_root" "$GITHUB_SHA"
-          git -C "$source_root" lfs pull
           test "$(git -C "$source_root" rev-parse HEAD)" = "$GITHUB_SHA"
-          test -z "$(git -C "$source_root" status --porcelain --untracked-files=all)"
+          test -n "${CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT:-}"
+          asset_root="$(cd "$CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT" && pwd -P)"
+          test -d "$asset_root/ai_tts/cet4"
+          test ! -L "$CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT"
+          case "$asset_root/" in
+            "$GITHUB_WORKSPACE/"*) echo "asset cache must remain outside the repository" >&2; exit 1 ;;
+          esac
+          test -z "$(find "$asset_root" -type l -print -quit)"
+          test "$(find "$asset_root/ai_tts/cet4" -type f -name '*.mp3' | wc -l | tr -d ' ')" = 301
+          rsync -a "$asset_root/ai_tts/cet4/" "$source_root/ai_tts/cet4/"
+          git -C "$source_root" diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          test -z "$(git -C "$source_root" ls-files --others --exclude-standard)"
           product_root="$RUNNER_TEMP/softbook_cet"
           product_commit=7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1
           test ! -e "$product_root"
@@ -100,7 +111,8 @@ jobs:
           set -euo pipefail
           test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
           test "$GITHUB_REF" = refs/heads/main
-          test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
+          git -C "$TRUSTED_SOURCE_ROOT" diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          test -z "$(git -C "$TRUSTED_SOURCE_ROOT" ls-files --others --exclude-standard)"
           [[ "$WORKLIST_PATH" =~ ^reviews/audio_perceptual_worklists/[A-Za-z0-9._-]+\.json$ ]]
           [[ "$AUTHORIZATION_PATH" =~ ^reviews/approved_batches/[A-Za-z0-9._-]+\.json$ ]]
           test -f "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH" && test ! -L "$TRUSTED_SOURCE_ROOT/$WORKLIST_PATH"
@@ -146,7 +158,8 @@ jobs:
           node scripts/audit_card_quality.mjs --report-path "$RUNNER_TEMP/card-quality-audit.json"
           node scripts/validate_audio_lfs.mjs
           node scripts/validate_audio_qc.mjs
-          test -z "$(git status --porcelain --untracked-files=all)"
+          git diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          test -z "$(git ls-files --others --exclude-standard)"
           chmod -R a-w "$TRUSTED_SOURCE_ROOT"
 
       - name: Replay exact technical audio audit
@@ -197,8 +210,8 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
-          test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
-          git -C "$TRUSTED_SOURCE_ROOT" diff-index --quiet "$GITHUB_SHA" --
+          git -C "$TRUSTED_SOURCE_ROOT" diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          test -z "$(git -C "$TRUSTED_SOURCE_ROOT" ls-files --others --exclude-standard)"
           for source_path in \
             .github/workflows/trusted-media-run.yml \
             scripts/run_trusted_media_review.py \
@@ -220,7 +233,8 @@ jobs:
             --technical-audit-replay "$TRUSTED_MEDIA_TECHNICAL_AUDIT_REPLAY" \
             --source-commit "$GITHUB_SHA"
           test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
-          test -z "$(git -C "$TRUSTED_SOURCE_ROOT" status --porcelain --untracked-files=all)"
+          git -C "$TRUSTED_SOURCE_ROOT" diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          test -z "$(git -C "$TRUSTED_SOURCE_ROOT" ls-files --others --exclude-standard)"
 
       - name: Retain pre-model setup failure
         if: failure() && env.TRUSTED_MEDIA_OUTPUT_DIR == ''
@@ -279,14 +293,16 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: read
+    env:
+      GIT_LFS_SKIP_SMUDGE: "1"
     steps:
-      - name: Checkout exact trusted main commit with LFS media
+      - name: Checkout exact trusted main commit without LFS download
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
-          lfs: true
+          lfs: false
 
       - name: Checkout pinned softbook product authority
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -307,7 +323,6 @@ jobs:
           test ! -e "$source_root"
           test ! -e "$product_root"
           git worktree add --detach "$source_root" "$GITHUB_SHA"
-          git -C "$source_root" lfs pull
           git -C "$GITHUB_WORKSPACE/product-authority-verify" worktree add \
             --detach "$product_root" "$product_commit"
           test "$(git -C "$source_root" rev-parse HEAD)" = "$GITHUB_SHA"
@@ -339,6 +354,9 @@ jobs:
           rebuilt="$RUNNER_TEMP/trusted-media-rebuilt"
           audit_replay="$RUNNER_TEMP/trusted-audio-technical-verify.json"
           mkdir "$rebuilt"
+          test "$(find "$downloaded/ai_tts/cet4" -type f -name '*.mp3' | wc -l | tr -d ' ')" = 301
+          test -z "$(find "$downloaded/ai_tts" -type l -print -quit)"
+          rsync -a "$downloaded/ai_tts/cet4/" "$TRUSTED_SOURCE_ROOT/ai_tts/cet4/"
           cp "$downloaded"/run-*.jsonl "$rebuilt/"
           cp "$downloaded/run-package.json" "$rebuilt/"
           cp "$downloaded/model-weights-manifest.json" "$rebuilt/"
@@ -402,7 +420,8 @@ jobs:
             trusted-media-run-receipt.json; do
             cmp "$downloaded/$artifact" "$rebuilt/$artifact"
           done
-          test -z "$(git status --porcelain --untracked-files=all)"
+          git diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          test -z "$(git ls-files --others --exclude-standard)"
           diff -qr "$downloaded/ai_tts" "$rebuilt/ai_tts"
           echo "VERIFIED_MEDIA_DIR=$rebuilt" >> "$GITHUB_ENV"
 

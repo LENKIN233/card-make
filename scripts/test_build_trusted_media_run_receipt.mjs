@@ -609,7 +609,9 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /product-authority-review/);
   assert.match(verifyJob, /runs-on: ubuntu-latest/);
   assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);
-  assert.match(verifyJob, /lfs: true/);
+  assert.match(verifyJob, /lfs: false/);
+  assert.doesNotMatch(verifyJob, /git -C "\$source_root" lfs pull/);
+  assert.match(verifyJob, /rsync -a "\$downloaded\/ai_tts\/cet4\/"/);
   assert.match(verifyJob, /Rebuild and byte-verify receipt on GitHub-hosted runner/);
   assert.match(verifyJob, /repository: LENKIN233\/softbook_cet/);
   assert.match(verifyJob, /product-authority-verify/);
@@ -624,6 +626,11 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /GIT_NO_REPLACE_OBJECTS: "1"/);
   assert.match(reviewJob, /GIT_GRAFT_FILE: \/dev\/null/);
   assert.match(reviewJob, /GIT_REPLACE_REF_BASE: refs\/disabled\/softbook-trusted-media/);
+  assert.match(reviewJob, /GIT_LFS_SKIP_SMUDGE: "1"/);
+  assert.match(reviewJob, /CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT/);
+  assert.match(reviewJob, /asset cache must remain outside the repository/);
+  assert.match(reviewJob, /find "\$asset_root\/ai_tts\/cet4" -type f -name '\*\.mp3'/);
+  assert.doesNotMatch(reviewJob, /git -C "\$source_root" lfs pull/);
   assert.match(reviewJob, /Replay exact technical audio audit/);
   assert.match(reviewJob, /--technical-audit-replay/);
   assert.match(verifyJob, /audit_audio_technical\.mjs/);
