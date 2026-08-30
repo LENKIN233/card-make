@@ -4146,6 +4146,7 @@ function validateEvalsAndPerturbation(errors) {
     'replays_scoped_audit_against_the_complete_immutable_HEAD_card_corpus',
     'rejects_noncanonical_card_box_paths',
     'requires_elimination_runtime_IDs_and_matching_preview_answer_projection',
+    'rejects_prompt_model_harness_and_credential_fields_from_authorized_runtime_payloads',
   ]) {
     if (!(sampleGateTask?.expected || []).includes(expected)) {
       pushIssue(errors, 'sample_gate_integrity_eval_missing', { expected });
@@ -4157,7 +4158,7 @@ function validateEvalsAndPerturbation(errors) {
 
   const perturbation = readJson('spec/perturbation-audit.json');
   const guards = new Set((perturbation.anti_drift_guards || []).map(guard => guard.id));
-  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009', 'PA-CARD-010', 'PA-CARD-011', 'PA-CARD-012', 'PA-CARD-013', 'PA-CARD-014']) {
+  for (const id of ['PA-CARD-001', 'PA-CARD-002', 'PA-CARD-003', 'PA-CARD-004', 'PA-CARD-005', 'PA-CARD-006', 'PA-CARD-007', 'PA-CARD-008', 'PA-CARD-009', 'PA-CARD-010', 'PA-CARD-011', 'PA-CARD-012', 'PA-CARD-013', 'PA-CARD-014', 'PA-CARD-015']) {
     if (!guards.has(id)) {
       pushIssue(errors, 'anti_drift_guard_missing', { id });
     }
