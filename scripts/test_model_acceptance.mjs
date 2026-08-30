@@ -155,6 +155,36 @@ test('full-track runtime content_version is derived from normalized immutable pa
   );
 });
 
+test('runtime identity rejects prompt, model, harness, and credential authoring fields', () => {
+  const base = {
+    source: {id: 'fixture', label: 'Fixture'},
+    track: 'cet4',
+    card_records: [{card_id: '000001', front: {text: 'Prompt'}}],
+  };
+  const mutations = [
+    card => {
+      card.front.system_prompt = 'sentinel-system-prompt';
+    },
+    card => {
+      card.model = 'sentinel-model';
+    },
+    card => {
+      card.harness = {run_id: 'sentinel-run'};
+    },
+    card => {
+      card.credentials = {token: 'sentinel-token'};
+    },
+  ];
+  for (const mutate of mutations) {
+    const payload = structuredClone(base);
+    mutate(payload.card_records[0]);
+    assert.throws(
+      () => deriveRuntimePayloadContentIdentity(payload),
+      /authoring-only field/,
+    );
+  }
+});
+
 test('sharded runtime manifest reconstructs one canonical content identity and rejects shard replay', () => {
   const direct = {
     source: {id: 'fixture', label: 'Fixture'},

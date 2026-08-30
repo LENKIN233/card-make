@@ -53,6 +53,9 @@ immutable historical evidence only and cannot authorize current content.
 - Full-track authorization must bind one direct immutable runtime payload or
   shard manifest, its exact byte SHA-256, and the derived canonical
   `content_version`; caller-chosen versions fail closed.
+- Authorized runtime cards must not carry authoring-only prompt, model,
+  harness, credential, token, secret, or private-key fields. Source-workspace
+  review metadata stays outside the product payload.
 - Treat `model-acceptance.v2` as structural evidence. Repository authority also
   requires the trusted base-only model check after its documented bootstrap.
 - Do not delete a card without governed destructive-change evidence bound to

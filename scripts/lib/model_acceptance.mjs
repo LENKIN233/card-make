@@ -24,6 +24,20 @@ const RUNTIME_CARD_SHARD_SCHEMA = 'card-make-runtime-card-shard.v1';
 const RUNTIME_SHARD_PATH_RE =
   /^reviews\/runtime_payloads\/[A-Za-z0-9][A-Za-z0-9._-]*\.json$/;
 const PRINCIPAL_RE = /^(?:agent|model|service):[A-Za-z0-9][A-Za-z0-9_.@/-]{1,127}$/;
+const FORBIDDEN_RUNTIME_CARD_FIELDS = new Set([
+  'api_key',
+  'credentials',
+  'developer_prompt',
+  'harness',
+  'model',
+  'model_id',
+  'model_name',
+  'private_key',
+  'prompt_template',
+  'secret',
+  'system_prompt',
+  'token',
+]);
 
 function canonicalize(value) {
   if (Array.isArray(value)) return value.map(canonicalize);
@@ -223,6 +237,7 @@ export function deriveRuntimePayloadContentIdentity(payload, options = {}) {
   if (cardIds.some(cardId => !cardId) || new Set(cardIds).size !== cardIds.length) {
     throw new Error('runtime payload card_records must have unique non-empty card_id values');
   }
+  assertNoForbiddenRuntimeCardFields(payload.card_records);
   const assets = payload.assets === undefined ? [] : payload.assets;
   if (!Array.isArray(assets)) throw new Error('runtime payload assets must be an array');
   const assetIds = assets.map(asset => String(asset?.asset_id || ''));
@@ -260,6 +275,31 @@ export function deriveRuntimePayloadContentIdentity(payload, options = {}) {
     content_version: contentVersion,
     track: payload.track,
   };
+}
+
+function assertNoForbiddenRuntimeCardFields(cardRecords) {
+  const pending = cardRecords.map((value, index) => ({
+    label: `card_records[${index}]`,
+    value,
+  }));
+  while (pending.length > 0) {
+    const current = pending.pop();
+    if (Array.isArray(current.value)) {
+      current.value.forEach((value, index) =>
+        pending.push({label: `${current.label}[${index}]`, value}),
+      );
+      continue;
+    }
+    if (!isPlainObject(current.value)) continue;
+    for (const [key, value] of Object.entries(current.value)) {
+      if (FORBIDDEN_RUNTIME_CARD_FIELDS.has(key)) {
+        throw new Error(
+          `runtime payload ${current.label}.${key} is an authoring-only field`,
+        );
+      }
+      pending.push({label: `${current.label}.${key}`, value});
+    }
+  }
 }
 
 function isPlainObject(value) {
