@@ -357,7 +357,7 @@ jobs:
 
       - name: Upload unprivileged raw review package
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: trusted-media-raw-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ env.TRUSTED_MEDIA_OUTPUT_DIR || env.TRUSTED_MEDIA_PREFLIGHT_DIR }}
@@ -525,7 +525,7 @@ jobs:
           echo "VERIFIED_MEDIA_DIR=$rebuilt" >> "$GITHUB_ENV"
 
       - name: Upload code-free verified media package
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: trusted-media-verified-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ env.VERIFIED_MEDIA_DIR }}
@@ -561,7 +561,7 @@ jobs:
             "$RUNNER_TEMP/trusted-media-verified/attestation-bundle.jsonl"
 
       - name: Upload verified run package, receipt, and attestation
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: trusted-media-run-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/trusted-media-verified
