@@ -1,0 +1,53 @@
+{
+  "handoff_id": "20260904-cet6-1620-audio-assets-v2",
+  "created_at": "2026-09-04T20:09:57+08:00",
+  "agent": "codex",
+  "branch": "fix/cet6-1620-audio-assets-v2",
+  "base_branch": "main",
+  "commit_sha": "aeb4bf6fa99a71c3b2b45f9ea2bd718e24c76ecf",
+  "push_ref": "origin/fix/cet6-1620-audio-assets-v2",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/230",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "audio",
+    "touched_paths": [
+      "ai_tts/audio-lfs-manifest.json",
+      "ai_tts/cet6/1620/162001-v2.mp3",
+      "ai_tts/cet6/1620/162002-v2.mp3",
+      "ai_tts/cet6/1620/162003-v2.mp3",
+      "ai_tts/cet6/1620/162004-v2.mp3",
+      "ai_tts/cet6/1620/162005-v2.mp3",
+      "ai_tts/cet6/1620/162006-v2.mp3",
+      "ai_tts/cet6/1620/162007-v2.mp3",
+      "ai_tts/cet6/1620/162008-v2.mp3"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "fc789eb67972e872e1f22c9435f166ae32521216",
+    "patch_sha256": "3cf3e335830438203e170ec81129c32f458ecfe22b7374783b898881ba08139a"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_audio_lfs.mjs",
+      "result": "passed with 635 tracked MP3 paths matching the LFS manifest"
+    },
+    {
+      "command": "node scripts/validate_delivery_boundary.mjs",
+      "result": "passed with 9 audio paths and 0 card paths"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with six recorded upstream catalog-alignment warnings only"
+    },
+    {
+      "command": "node --test scripts/test_audio_technical_audit.mjs scripts/test_card_integrity.mjs scripts/test_validate_delivery_record.mjs",
+      "result": "passed 108 tests"
+    }
+  ],
+  "local_status": "Eight versioned CET6 1620 media blobs are tracked by Git LFS and remain unbound until the separate card-content PR.",
+  "remaining_risks": [
+    "This asset-only PR creates no perceptual audio-QC or source-authenticity evidence.",
+    "The current CET6 card corpus still binds only 320 assets until the separate content PR lands."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
