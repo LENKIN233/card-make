@@ -511,6 +511,124 @@ function committedGitFileState(
   }
 }
 
+const authorizationScopeStabilityCache = new Map();
+
+function authorizedScopeUnchangedSinceAuthorization({
+  root,
+  approvalPath,
+  headCommit,
+  currentScopeEntries,
+  scopeCardIds,
+}) {
+  const cacheKey = [
+    path.resolve(root),
+    headCommit,
+    approvalPath,
+    [...scopeCardIds].sort().join(','),
+  ].join('\u0000');
+  if (authorizationScopeStabilityCache.has(cacheKey)) {
+    return authorizationScopeStabilityCache.get(cacheKey);
+  }
+
+  let unchanged = false;
+  try {
+    const authorizationCommit = execFileSync(
+      'git',
+      [
+        '--no-replace-objects',
+        '--literal-pathspecs',
+        'log',
+        '-1',
+        '--format=%H',
+        headCommit,
+        '--',
+        approvalPath,
+      ],
+      {cwd: root, encoding: 'utf8'},
+    ).trim();
+    if (!/^[0-9a-f]{40}$/.test(authorizationCommit)) {
+      throw new Error('authorization introduction commit is unavailable');
+    }
+    execFileSync(
+      'git',
+      [
+        '--no-replace-objects',
+        'merge-base',
+        '--is-ancestor',
+        authorizationCommit,
+        headCommit,
+      ],
+      {cwd: root},
+    );
+    const paths = execFileSync(
+      'git',
+      [
+        '--no-replace-objects',
+        '--literal-pathspecs',
+        'ls-tree',
+        '-r',
+        '--name-only',
+        '-z',
+        authorizationCommit,
+        '--',
+        'card_boxes_json',
+      ],
+      {cwd: root, encoding: 'utf8', maxBuffer: 10 * 1024 * 1024},
+    )
+      .split('\u0000')
+      .filter(filePath =>
+        /^card_boxes_json\/card_boxes_seed_(?:cet4|cet6)_[a-z0-9_]+_\d{4}[.]json$/u.test(
+          filePath,
+        ),
+      );
+    const historicalById = new Map();
+    for (const filePath of paths) {
+      const payload = JSON.parse(
+        execFileSync(
+          'git',
+          ['--no-replace-objects', 'show', `${authorizationCommit}:${filePath}`],
+          {cwd: root, encoding: 'utf8', maxBuffer: 20 * 1024 * 1024},
+        ),
+      );
+      for (const card of payload.cards || []) {
+        if (!scopeCardIds.has(card?.card_id)) continue;
+        if (historicalById.has(card.card_id)) {
+          throw new Error(`duplicate historical card ${card.card_id}`);
+        }
+        historicalById.set(card.card_id, card);
+      }
+    }
+    const currentById = new Map(
+      currentScopeEntries.map(entry => [entry.card.card_id, entry.card]),
+    );
+    unchanged =
+      historicalById.size === scopeCardIds.size &&
+      currentById.size === scopeCardIds.size &&
+      [...scopeCardIds].every(cardId =>
+        isDeepStrictEqual(historicalById.get(cardId), currentById.get(cardId)),
+      );
+  } catch {
+    unchanged = false;
+  }
+  authorizationScopeStabilityCache.set(cacheKey, unchanged);
+  return unchanged;
+}
+
+function comparableScopedAuditReplay(
+  currentAudit,
+  scopeCardIds,
+  recordedReport,
+  preserveRecordedFingerprint,
+) {
+  const replay = buildCurrentScopedAuditReplay(currentAudit, scopeCardIds);
+  if (preserveRecordedFingerprint && recordedReport?.corpus_fingerprint) {
+    replay.corpus_fingerprint = structuredClone(
+      recordedReport.corpus_fingerprint,
+    );
+  }
+  return replay;
+}
+
 /**
  * Validates whether an immutable approval record can authorize the current
  * corpus. Historical records remain valid archive evidence. Current
@@ -844,14 +962,44 @@ export function validateCurrentApprovalRecordReference({
       currentScopeEntries.push(matches[0]);
     }
   }
+  const recordedFingerprintDigest = auditRecord?.corpus_fingerprint;
+  const hasGlobalFingerprintDrift =
+    hasText(recordedFingerprintDigest) &&
+    recordedFingerprintDigest !== activeFingerprint.digest;
+  const authorizedScopeStableAcrossOtherTracks =
+    hasGlobalFingerprintDrift &&
+    isFullTrackFinal &&
+    requireTracked &&
+    validationGitSnapshot &&
+    hasUniqueNonEmptyTextArray(approval.scope?.card_ids) &&
+    authorizedScopeUnchangedSinceAuthorization({
+      root,
+      approvalPath,
+      headCommit: validationGitSnapshot.headCommit,
+      currentScopeEntries,
+      scopeCardIds: new Set(approval.scope.card_ids),
+    });
+  if (
+    hasGlobalFingerprintDrift &&
+    isFullTrackFinal &&
+    !authorizedScopeStableAcrossOtherTracks
+  ) {
+    add('approval_authorized_scope_changed_since_authorization');
+  }
+  const acceptanceFingerprintDigest =
+    authorizedScopeStableAcrossOtherTracks
+      ? recordedFingerprintDigest
+      : activeFingerprint.digest;
   if (auditReport) {
     if (
       currentAudit &&
       !isDeepStrictEqual(
         auditReport,
-        buildCurrentScopedAuditReplay(
+        comparableScopedAuditReplay(
           currentAudit,
           approval.scope?.card_ids,
+          auditReport,
+          authorizedScopeStableAcrossOtherTracks,
         ),
       )
     ) {
@@ -864,7 +1012,10 @@ export function validateCurrentApprovalRecordReference({
     ) {
       add('approval_audit_record_fingerprint_mismatch');
     }
-    if (reportDigest !== activeFingerprint.digest) {
+    if (
+      reportDigest !== activeFingerprint.digest &&
+      !authorizedScopeStableAcrossOtherTracks
+    ) {
       add('approval_audit_report_not_current');
     }
     if (auditReport.report_type !== 'scoped_card_quality_audit') {
@@ -942,7 +1093,7 @@ export function validateCurrentApprovalRecordReference({
             ? 'full_track_content_authorization'
             : 'content_authorization',
           scope: approval.scope,
-          corpusFingerprint: activeFingerprint.digest,
+          corpusFingerprint: acceptanceFingerprintDigest,
           auditSha256,
           linkedReviewIdentity: {
             path: linkedReviewPath,
@@ -1308,7 +1459,7 @@ export function validateCurrentApprovalRecordReference({
           expectedReviewInput = buildModelAcceptanceInputSha256({
             decisionType: fullTrackReview ? 'full_track_review' : 'card_review',
             scope: linkedReview.scope,
-            corpusFingerprint: activeFingerprint.digest,
+            corpusFingerprint: acceptanceFingerprintDigest,
             auditSha256: linkedAuditSha256,
           });
         } catch (error) {
@@ -1329,14 +1480,16 @@ export function validateCurrentApprovalRecordReference({
         }
       }
       if (
-        currentAudit &&
-        !isDeepStrictEqual(
+      currentAudit &&
+      !isDeepStrictEqual(
+        linkedReport,
+        comparableScopedAuditReplay(
+          currentAudit,
+          linkedReview.scope?.card_ids,
           linkedReport,
-          buildCurrentScopedAuditReplay(
-            currentAudit,
-            linkedReview.scope?.card_ids,
-          ),
-        )
+          authorizedScopeStableAcrossOtherTracks,
+        ),
+      )
       ) {
         add('approval_linked_self_review_audit_replay_mismatch');
       }
@@ -1347,7 +1500,10 @@ export function validateCurrentApprovalRecordReference({
       ) {
         add('approval_linked_self_review_fingerprint_mismatch');
       }
-      if (linkedDigest !== activeFingerprint.digest) {
+      if (
+        linkedDigest !== activeFingerprint.digest &&
+        !authorizedScopeStableAcrossOtherTracks
+      ) {
         add('approval_linked_self_review_not_current');
       }
       if (!sameStringSet(

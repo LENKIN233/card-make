@@ -772,6 +772,67 @@ test('current approval consumers reject forged replay, stale, template, traversa
     });
     assert.equal(result.ok, true, JSON.stringify(result.issues));
 
+    const unrelatedTrackPath =
+      'card_boxes_json/card_boxes_seed_cet6_fixture_1000.json';
+    writeJson(unrelatedTrackPath, {
+      cards: [validCard({
+        card_id: '100001',
+        track: 'cet6',
+        knowledge_ref: {
+          track: 'cet6',
+          library_id: '0',
+          library: 'fixture-library',
+          group_id: '0',
+          group: 'fixture-group',
+          box_id: '0',
+          box: 'fixture-box',
+          box_prefix: '1000',
+        },
+      })],
+    });
+    execFileSync('git', ['add', '--all'], {cwd: root});
+    execFileSync('git', ['commit', '-qm', 'change unrelated track'], {
+      cwd: root,
+    });
+    const crossTrackFingerprint = computeCardCorpusFingerprint(root);
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint: crossTrackFingerprint,
+    });
+    assert.equal(result.ok, true, JSON.stringify(result.issues));
+
+    const changedAuthorizedCards = structuredClone(currentCards);
+    changedAuthorizedCards[0].quality_metadata.exam_value =
+      'Authorized scope changed.';
+    writeJson('card_boxes_json/card_boxes_seed_cet4_fixture_0000.json', {
+      cards: changedAuthorizedCards,
+    });
+    execFileSync('git', ['add', '--all'], {cwd: root});
+    execFileSync('git', ['commit', '-qm', 'change authorized track'], {
+      cwd: root,
+    });
+    const changedAuthorizedFingerprint = computeCardCorpusFingerprint(root);
+    result = validateCurrentApprovalRecordReference({
+      root,
+      approvalPath,
+      currentFingerprint: changedAuthorizedFingerprint,
+    });
+    assert.equal(result.ok, false);
+    assert.ok(result.issues.some(
+      issue => issue.code ===
+        'approval_authorized_scope_changed_since_authorization',
+    ));
+
+    writeJson('card_boxes_json/card_boxes_seed_cet4_fixture_0000.json', {
+      cards: currentCards,
+    });
+    fs.unlinkSync(path.join(root, unrelatedTrackPath));
+    execFileSync('git', ['add', '--all'], {cwd: root});
+    execFileSync('git', ['commit', '-qm', 'restore fixture corpus'], {
+      cwd: root,
+    });
+
     const runtimeShardPath =
       'reviews/runtime_payloads/current-full-track-runtime-001.json';
     const runtimeShard = {
