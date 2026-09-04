@@ -1,0 +1,46 @@
+{
+  "handoff_id": "20260904-cross-track-content-stability-v1",
+  "created_at": "2026-09-04T20:40:15+08:00",
+  "agent": "codex",
+  "branch": "harness/cross-track-content-stability-v1",
+  "base_branch": "main",
+  "commit_sha": "819b93dc00dcb5a9c7ca7a968fad7086c18185c0",
+  "push_ref": "origin/harness/cross-track-content-stability-v1",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/231",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      "scripts/lib/card_integrity.mjs",
+      "scripts/test_card_integrity.mjs",
+      "spec/content-quality-contract.json",
+      "spec/evals.json",
+      "spec/review-workflow.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "ccf32eee84b308d91f86a40d2cb45202f83bae75",
+    "patch_sha256": "9f8df65f113b4851476a59d58c529e3348f517e8d9642b4951cd51df5c12e0d7"
+  },
+  "validation": [
+    {
+      "command": "node --test scripts/test_card_integrity.mjs",
+      "result": "passed 20 tests including unrelated-track preservation and in-scope rejection"
+    },
+    {
+      "command": "node --test scripts/test_model_acceptance.mjs scripts/test_card_integrity.mjs scripts/test_validate_pr_scope.mjs scripts/test_validate_delivery_record.mjs",
+      "result": "passed 221 tests"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with six recorded upstream catalog-alignment warnings only"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "passed all 27 current CET4 audio-QC records on main and against the CET6-only content branch"
+    }
+  ],
+  "local_status": "Exact Git history preserves unchanged full-track authorization across unrelated-track drift and rejects any authorized-scope mutation.",
+  "remaining_risks": [],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
