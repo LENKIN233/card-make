@@ -1,0 +1,1658 @@
+{
+  "schema_version": "model-owned-card-review.v2",
+  "review_id": "20260904-cet6-runtime-blocker-closure-model-review",
+  "created_at": "2026-09-04T12:21:43Z",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "agent:codex-cet6-runtime-closure",
+      "model": "gpt-5.6-sol",
+      "run_id": "658557b2-b7f0-4661-9a2e-047ca1d813f5"
+    },
+    "evidence": {
+      "reviewed_at": "2026-09-04T12:21:43Z",
+      "input_sha256": "sha256:9a57dd4828314b66f3ec40171a0685b8f254f01683aaee84f1dc3ca61e2ab41e",
+      "capabilities": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "summary": "Accepted the exact 26-card residual closure with no blocking findings. Eighteen reading flip cards now have card-specific conclusions, evidence-led analyses, complete quality metadata, and explicit simulation provenance; eight CET6 1620 cards preserve a progressive flip-choice-elimination sequence with answer, distractor, transcript, and analysis parity. The scoped audit reports zero hard blockers, content risks, or review gaps; all 26 remaining issues are explicit synthetic-source boundaries.",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
+  "scope": {
+    "track": "cet6",
+    "box_prefixes": [
+      "1100",
+      "1101",
+      "1102",
+      "1110",
+      "1111",
+      "1112",
+      "1113",
+      "1120",
+      "1121",
+      "1122",
+      "1123",
+      "1124",
+      "1130",
+      "1131",
+      "1132",
+      "1133",
+      "1140",
+      "1141",
+      "1620"
+    ],
+    "card_ids": [
+      "110001",
+      "110101",
+      "110201",
+      "111001",
+      "111101",
+      "111201",
+      "111301",
+      "112001",
+      "112101",
+      "112201",
+      "112301",
+      "112401",
+      "113001",
+      "113101",
+      "113201",
+      "113301",
+      "114001",
+      "114101",
+      "162001",
+      "162002",
+      "162003",
+      "162004",
+      "162005",
+      "162006",
+      "162007",
+      "162008"
+    ]
+  },
+  "specs_read": [
+    "AGENTS.md",
+    "spec/authority-map.json",
+    "spec/workspace-contract.json",
+    "spec/content-quality-contract.json",
+    "spec/review-workflow.json",
+    "spec/audio-generation-contract.json",
+    "../softbook_cet/spec/product-core.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/box-catalog.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260904-cet6-runtime-blocker-closure-scope-audit.json",
+    "report_sha256": "sha256:64aea972015901b9cb3e18c6ae6ed978a2bed0c07d22d6cab4f7dd602f74143d",
+    "corpus_fingerprint": "8f70c74bf29e26aa7420a99374d4f55e7aace257bcf72c61c60446551156726e",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "110001",
+        "110101",
+        "110201",
+        "111001",
+        "111101",
+        "111201",
+        "111301",
+        "112001",
+        "112101",
+        "112201",
+        "112301",
+        "112401",
+        "113001",
+        "113101",
+        "113201",
+        "113301",
+        "114001",
+        "114101",
+        "162001",
+        "162002",
+        "162003",
+        "162004",
+        "162005",
+        "162006",
+        "162007",
+        "162008"
+      ],
+      "card_count": 26,
+      "issue_count": 26,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 26
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 26,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "110001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "0",
+        "group_name": "定位词抓取",
+        "box_id": "0",
+        "box_name": "专有名词和数字",
+        "box_prefix": "1100"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在“专有名词和数字”任务中识别并解释关键知识或解题线索",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation"
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "CET6 preparation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在CET6仔细阅读任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "110101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "0",
+        "group_name": "定位词抓取",
+        "box_id": "1",
+        "box_name": "实义名词",
+        "box_prefix": "1101"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在“实义名词”任务中识别并解释关键知识或解题线索",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation"
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "CET6 preparation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在CET6仔细阅读任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "110201",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "0",
+        "group_name": "定位词抓取",
+        "box_id": "2",
+        "box_name": "逻辑限定词",
+        "box_prefix": "1102"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在“逻辑限定词”任务中识别并解释关键知识或解题线索",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation"
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "CET6 preparation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在CET6仔细阅读任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "111001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "0",
+        "box_name": "无中生有",
+        "box_prefix": "1110"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在“无中生有”任务中识别并解释关键知识或解题线索",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation"
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "CET6 preparation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在CET6仔细阅读任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "111101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "1",
+        "box_name": "绝对化",
+        "box_prefix": "1111"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在“绝对化”任务中识别并解释关键知识或解题线索",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation"
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "CET6 preparation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在CET6仔细阅读任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "111201",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "2",
+        "box_name": "与原文相反",
+        "box_prefix": "1112"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立方向反转干扰项的基础识别顺序",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "建立先判命题方向、再看词面重合的稳定做题顺序。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "111301",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "1",
+        "group_name": "干扰项排除",
+        "box_id": "3",
+        "box_name": "偷换概念",
+        "box_prefix": "1113"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立概念偷换的四维边界检查法",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练先确认“说的是不是同一件事”，再比较选项方向。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "112001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "0",
+        "box_name": "主谓",
+        "box_prefix": "1120"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立长难句主谓定位的三步流程",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在复杂修饰中先抓主干，降低长句理解负担。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "112101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "1",
+        "box_name": "主谓宾",
+        "box_prefix": "1121"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立长难句主谓宾提取的三问流程",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练快速恢复“谁对什么做了什么”的阅读骨架。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "112201",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "2",
+        "box_name": "主系表",
+        "box_prefix": "1122"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立长难句主系表定位流程",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练快速判断主语是什么或怎么样，降低长句层级混乱。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "112301",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "3",
+        "box_name": "主谓双宾",
+        "box_prefix": "1123"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立主谓双宾四槽定位流程",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练快速判断谁向谁提供什么，避免宾语层级缺失。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "112401",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "4",
+        "box_name": "主谓宾补",
+        "box_prefix": "1124"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立主谓宾补四槽定位流程",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练用状态检验和被动变换识别宾补，避免把补语误判为第二宾语。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "113001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "1130"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立定语与中心名词配对流程",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练先闭合主干再还原限定范围，避免把修饰信息误当核心命题。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "113101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "1",
+        "box_name": "状语",
+        "box_prefix": "1131"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立状语逻辑与作用域定位流程",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练先闭合主干再判断状语逻辑，避免把背景、条件或让步当核心事实。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "113201",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "2",
+        "box_name": "同位语",
+        "box_prefix": "1132"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立宿主名词与命题内容配对流程",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练依据从句完整性和内容等同关系识别同位语从句。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "113301",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "3",
+        "box_name": "插入语",
+        "box_prefix": "1133"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "建立插入层识别与主干恢复流程",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "训练在长句中恢复跨插入主干，同时保留来源、态度和信息重心。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "114001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "4",
+        "group_name": "上下文猜词",
+        "box_id": "0",
+        "box_name": "句内语义线索",
+        "box_prefix": "1140"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在“句内语义线索”任务中识别并解释关键知识或解题线索",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation"
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "CET6 preparation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在CET6仔细阅读任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "114101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "4",
+        "group_name": "上下文猜词",
+        "box_id": "1",
+        "box_name": "句间语义线索",
+        "box_prefix": "1141"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在“句间语义线索”任务中识别并解释关键知识或解题线索",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation"
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "CET6 preparation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "帮助用户在CET6仔细阅读任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "162001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "2",
+        "group_name": "虚拟语气",
+        "box_id": "0",
+        "box_name": "听力",
+        "box_prefix": "1620"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 would've 弱读恢复过去未实现的参加结果",
+        "secondary_training_goals": [
+          "结合 but 后事实还原真实阻碍"
+        ],
+        "weak_point_tags": [
+          "grammar_weak",
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力从情态完成式弱读与转折中恢复未发生的过去结果。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "162002",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "2",
+        "group_name": "虚拟语气",
+        "box_id": "0",
+        "box_name": "听力",
+        "box_prefix": "1620"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 if it weren't for 反推真实存在的支撑条件",
+        "secondary_training_goals": [
+          "区分虚拟结果与现实能力"
+        ],
+        "weak_point_tags": [
+          "grammar_weak",
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力把 if it weren't for 的假设反转为现实支撑关系。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "162003",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "2",
+        "group_name": "虚拟语气",
+        "box_id": "0",
+        "box_name": "听力",
+        "box_prefix": "1620"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "听辨 would've had to 弱读并恢复 otherwise 隐含条件",
+        "secondary_training_goals": [
+          "区分过去未发生必要与当前必要"
+        ],
+        "weak_point_tags": [
+          "grammar_weak",
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力把情态完成式弱读、隐含条件和现实结果连成一条证据链。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "162004",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "2",
+        "group_name": "虚拟语气",
+        "box_id": "0",
+        "box_name": "听力",
+        "box_prefix": "1620"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "听辨 It's time + past form 的当前催促立场",
+        "secondary_training_goals": [
+          "结合持续状态判断行动是否逾期"
+        ],
+        "weak_point_tags": [
+          "grammar_weak",
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力不把虚拟过去形式误听成已完成事实。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "162005",
+      "interaction_id": "elimination",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "2",
+        "group_name": "虚拟语气",
+        "box_id": "0",
+        "box_name": "听力",
+        "box_prefix": "1620"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合 as if/as though 与事实校正排除失实记录",
+        "secondary_training_goals": [
+          "区分说话人批评的表象与确认事实"
+        ],
+        "weak_point_tags": [
+          "grammar_weak",
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": [
+            "high_score"
+          ]
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力区分 as if/as though 营造的表象与后续事实校正。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "162006",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "2",
+        "group_name": "虚拟语气",
+        "box_id": "0",
+        "box_name": "听力",
+        "box_prefix": "1620"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从 but for + might have 恢复真实帮助与未发生风险",
+        "secondary_training_goals": [
+          "保留情态可能性而不升级为必然"
+        ],
+        "weak_point_tags": [
+          "grammar_weak",
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass",
+          "secondary": []
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力恢复 but for 隐含条件并保持 might have 的证据强度。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "162007",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "2",
+        "group_name": "虚拟语气",
+        "box_id": "0",
+        "box_name": "听力",
+        "box_prefix": "1620"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "整合 would rather + had done 与已发生对话时间线",
+        "secondary_training_goals": [
+          "区分事后偏好与未来建议"
+        ],
+        "weak_point_tags": [
+          "grammar_weak",
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力结合上下文判断 would rather 的事后偏好，而非只认 had done。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    },
+    {
+      "card_id": "162008",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "6",
+        "library_name": "语法",
+        "group_id": "2",
+        "group_name": "虚拟语气",
+        "box_id": "0",
+        "box_name": "听力",
+        "box_prefix": "1620"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "综合追踪活动说明中的事实、过去反事实与未发生风险",
+        "secondary_training_goals": [
+          "保留 might have 的不确定性"
+        ],
+        "weak_point_tags": [
+          "grammar_weak",
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score",
+          "secondary": []
+        },
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力在较长语段中合并现实校正、反事实和情态风险。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic CET6 preparation material is explicitly disclosed and is not represented as true-exam content."
+      ],
+      "recommendation": "Retain in the complete CET6 candidate corpus."
+    }
+  ],
+  "removed_cards": [],
+  "batch_review": {
+    "status": "model_accepted",
+    "box_progression": "Reading cards progress from locating evidence through distractor control, sentence structure, modifiers, and context inference; 1620 progresses from recognizing counterfactual audio to integrated fact-risk reconstruction.",
+    "repetition_or_gap_risks": [],
+    "representative_cards": [
+      "110001",
+      "111301",
+      "112401",
+      "114101",
+      "162001",
+      "162005",
+      "162008"
+    ],
+    "next_step": "Merge after exact-head gates pass, then rebuild the complete CET6 runtime candidate and mobile acceptance report."
+  }
+}
