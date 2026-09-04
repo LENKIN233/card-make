@@ -1,0 +1,92 @@
+{
+  "handoff_id": "20260904-cet6-runtime-closure-v3",
+  "created_at": "2026-09-04T21:42:36+08:00",
+  "agent": "codex",
+  "branch": "content/cet6-runtime-closure-v3",
+  "base_branch": "main",
+  "commit_sha": "84126918f72cf44b45bbfa2e651911294a8ae11e",
+  "push_ref": "origin/content/cet6-runtime-closure-v3",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/232",
+  "PR_state": "OPEN",
+  "is_draft": true,
+  "scope": {
+    "change_type": "content_candidate_residual_blocker_closure",
+    "box_prefixes": [
+      "1100",
+      "1101",
+      "1102",
+      "1110",
+      "1111",
+      "1112",
+      "1113",
+      "1120",
+      "1121",
+      "1122",
+      "1123",
+      "1124",
+      "1130",
+      "1131",
+      "1132",
+      "1133",
+      "1140",
+      "1141",
+      "1620"
+    ],
+    "multi_prefix_review_unit": true,
+    "scope_reason": "Close every blocker discovered by the complete CET6 App-runtime candidate: 18 missing flip conclusions and generic analyses, eight missing 1620 audio bindings, and one legacy elimination identity.",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_grammar_1620.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1100.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1101.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1102.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1110.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1111.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1112.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1113.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1120.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1121.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1122.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1123.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1124.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1130.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1131.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1132.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1133.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1140.json",
+      "card_boxes_json/card_boxes_seed_cet6_reading_1141.json",
+      "reviews/agent_self_review/20260904-cet6-runtime-blocker-closure-model-review.json",
+      "reviews/audit_scopes/20260904-cet6-runtime-blocker-closure-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "4dd302b17112104f4f5d2f7f77cd260be6ca1eea",
+    "patch_sha256": "d041c1e08aa36761011f944de7654bf557b37587c5e7322d94d21eb0f019e776"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed for 26 changed cards across 19 boxes with exact review and audit coverage"
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "passed 2414 cards with zero errors and zero warnings"
+    },
+    {
+      "command": "node scripts/audit_audio_technical.mjs --track cet6",
+      "result": "passed 328 of 328 exact audio assets"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs && node scripts/validate_harness.mjs",
+      "result": "passed current CET4 evidence and complete harness"
+    },
+    {
+      "command": "softbook full-track build and mobile acceptance",
+      "result": "passed 1234 cards, 110 boxes, 328 audio assets, five interactions, and five representative UI completions"
+    }
+  ],
+  "local_status": "CET6 complete candidate is parseable, audio-bound, interaction-completable, and scoped-review clean.",
+  "remaining_risks": [
+    "All 26 changed cards are explicitly synthetic preparation material and do not claim true-exam provenance.",
+    "Technical audio and mobile candidate acceptance do not create formal perceptual QC, deployment, signed-manifest, receiver, or device evidence."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
