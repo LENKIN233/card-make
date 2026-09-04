@@ -1,6 +1,11 @@
 {
   "version": "seed-v2-cet6-grammar-1620",
   "track": "cet6",
+  "track_index": 1,
+  "contract_version": "softbook-card-file-v1",
+  "contract_migration": {
+    "version": "softbook-card-contract-2026-05-02"
+  },
   "library": 6,
   "group": 2,
   "box": 0,
@@ -20,16 +25,23 @@
       "card_box_name": "听力",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【虚拟语气-听力入门】混合虚拟识别\n\n听力句子：If I had double-checked the participant list last night, we wouldn't be missing two key reviewers now.\n\n任务：为什么这是‘过去条件 + 现在结果’的混合虚拟，而不是一般过去叙事？"
+        "text": "🎧 点击播放（可重播）。\n\n翻卡前回答：说话人昨天是否参加了职业规划工作坊？说出你听到的语音依据。",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "播放后判断并说出依据",
+          "focus": "情态表达、转折与事件关系",
+          "success_criteria": "结论和依据均与音频相符"
+        }
       },
       "back_content": {
-        "text": "If 从句 had double-checked 指向过去未实现条件；主句 wouldn't be missing 指向当前结果。两者时间轴不同，构成混合虚拟，核心含义是‘过去疏忽导致现在后果’。"
+        "text": "结论：没有参加。\n\nTranscript: I would've gone to the careers workshop yesterday, but my lab ran over by nearly an hour.",
+        "explanation": "would've 是 would have 的自然弱读。would have gone 表示过去原本会发生、实际没有发生的结果；but 后的 lab ran over 给出真实阻碍。"
       },
       "analysis_content": {
-        "text": "① 识别信号：if 从句出现 had done，主句却是 would not be doing，这通常不是同一时间层面的虚拟。\n\n② 核心规律：过去虚拟常写为 if + had done；现在结果虚拟常写为 would/could + do 或 would/could be doing。两者组合即混合虚拟。\n\n③ 验证：将句子改成现实陈述可得‘昨晚没核对名单，所以现在缺人’，说明该句不是叙事回顾，而是反事实推演。",
+        "text": "① 听音信号：would've 在自然语流中压缩为 /wʊdəv/，不能按 would of 理解。\n\n② 语义机制：would have gone 指向未实现的过去结果；but 把话语拉回事实，说明实验拖堂。\n\n③ 现实还原：实验课延长了将近一小时，因此说话人没有去成工作坊。类似题先抓情态完成式，再找 but 后的现实校正。",
         "tips": [
-          "虚拟语气先画时间轴，再看谓语形态。",
-          "主从句时间不一致时，优先考虑混合虚拟。"
+          "听到 would've，先判断它是否在回顾未实现结果。",
+          "but 后的信息常负责说明计划为什么没有落地。"
         ]
       },
       "options": null,
@@ -38,14 +50,21 @@
       "word_bank": null,
       "blank_answers": null,
       "form_options": null,
-      "audio": null,
+      "audio": {
+        "asset_id": "cet6.162001.prompt",
+        "url": "ai_tts/cet6/1620/162001-v2.mp3",
+        "path": "ai_tts/cet6/1620/162001-v2.mp3",
+        "sha256": "sha256:8642c3cd2308c5d7bdcc53c082d5a8104a07c88bd554be64a05670273ae0e67e",
+        "duration_ms": 5847,
+        "transcript": "I would've gone to the careers workshop yesterday, but my lab ran over by nearly an hour."
+      },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_listening_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -61,18 +80,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "【虚拟语气-听力入门】混合虚拟识别\n\n听力句子：If I had double-checked the participant list last night, we wouldn't be missing two key reviewers now.\n\n任务：为什么这是‘过去条件 + 现在结果’的混合虚拟，而不是一般过去叙事？",
-        "task_prompt": "【虚拟语气-听力入门】混合虚拟识别\n\n听力句子：If I had double-checked the participant list last night, we wouldn't be missing two key reviewers now.\n\n任务：为什么这是‘过去条件 + 现在结果’的混合虚拟，而不是一般过去叙事？",
-        "audio_first": false,
-        "display_mode": "text_first",
+        "text": "🎧 点击播放（可重播）。\n\n翻卡前回答：说话人昨天是否参加了职业规划工作坊？说出你听到的语音依据。",
+        "task_prompt": "🎧 点击播放（可重播）。\n\n翻卡前回答：说话人昨天是否参加了职业规划工作坊？说出你听到的语音依据。",
+        "audio_first": true,
+        "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "播放后判断并说出依据",
+          "focus": "情态表达、转折与事件关系",
+          "success_criteria": "结论和依据均与音频相符"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：if 从句出现 had done，主句却是 would not be doing，这通常不是同一时间层面的虚拟。\n\n② 核心规律：过去虚拟常写为 if + had done；现在结果虚拟常写为 would/could + do 或 would/could be doing。两者组合即混合虚拟。\n\n③ 验证：将句子改成现实陈述可得‘昨晚没核对名单，所以现在缺人’，说明该句不是叙事回顾，而是反事实推演。",
+        "text": "① 听音信号：would've 在自然语流中压缩为 /wʊdəv/，不能按 would of 理解。\n\n② 语义机制：would have gone 指向未实现的过去结果；but 把话语拉回事实，说明实验拖堂。\n\n③ 现实还原：实验课延长了将近一小时，因此说话人没有去成工作坊。类似题先抓情态完成式，再找 but 后的现实校正。",
         "tips": [
-          "虚拟语气先画时间轴，再看谓语形态。",
-          "主从句时间不一致时，优先考虑混合虚拟。"
+          "听到 would've，先判断它是否在回顾未实现结果。",
+          "but 后的信息常负责说明计划为什么没有落地。"
         ]
       },
       "auto_scoring": false,
@@ -81,12 +104,27 @@
         "label": "T0",
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": ["synthetic_source"],
       "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
+      "contract_migration": {"version": "softbook-card-contract-2026-05-02"},
+      "answer_key": null,
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "从 would've 弱读恢复过去未实现的参加结果",
+        "secondary_training_goals": ["结合 but 后事实还原真实阻碍"],
+        "weak_point_tags": ["grammar_weak", "listening_weak"],
+        "difficulty": {"primary": "foundation", "secondary": []},
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力从情态完成式弱读与转折中恢复未发生的过去结果。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -101,53 +139,51 @@
       "card_box_name": "听力",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【虚拟语气-听力 T1】当前反事实条件\n\n听力句子：If the instructions were clearer, fewer candidates would misread the submission format.\n\n哪项解释最准确？"
+        "text": "🎧 播放音频后，选择最符合说话人真实处境的一项。",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "播放后选择现实处境",
+          "focus": "条件表达与实际处境",
+          "success_criteria": "所选事实须由整句支持"
+        }
       },
       "back_content": {
-        "text": "正确答案：B\n\n这是对当前现实的反事实设想：现实中 instructions 不够清晰，因此才出现误读。if + were 与 would do 配套表达‘假如现在情况不同，会有不同结果’。"
+        "text": "正确答案：B。\n\nTranscript: If it weren't for the last bus at ten, I couldn't stay for the evening lab.",
+        "explanation": "if it weren't for X 把真实存在的 X 暂时拿掉，再推演结果。现实中十点末班车存在，正是它使说话人能够留校参加晚间实验。"
       },
       "analysis_content": {
-        "text": "① 识别信号：if 从句用 were，主句用 would + 动词原形，指向当前反事实。\n\n② 核心规律：现在虚拟条件句的典型形式是 if + 过去式（be 常用 were）+ would/could/might + do。\n\n③ 验证：把句子改写为现实语义即‘说明不清晰，导致误读较多’，与听力语境一致。",
+        "text": "① 听音信号：if it weren't for 常在语流中连成一组，后面紧跟被假设移除的支撑条件。\n\n② 语义机制：couldn't stay 描述的是“没有末班车”时的结果，不是现实陈述。\n\n③ 现实还原：末班车仍在运行，说话人因此可以留到晚间实验。遇到这类题，要把虚拟条件反转回来，再选现实事实。",
         "tips": [
-          "if 从句出现 were 不一定是过去时，常是虚拟语气标记。",
-          "听力里 would 往往是‘假设推演’，不是单纯将来时。"
+          "weren't for 后的名词通常是真实存在的支撑因素。",
+          "不要把 couldn't 直接抄成说话人的现实能力。"
         ]
       },
       "options": [
-        {
-          "key": "A",
-          "text": "It predicts a guaranteed future event with no hypothetical meaning.",
-          "is_correct": false
-        },
-        {
-          "key": "B",
-          "text": "It presents a present counterfactual: clearer instructions would reduce misreading.",
-          "is_correct": true
-        },
-        {
-          "key": "C",
-          "text": "It reports what definitely happened in the past.",
-          "is_correct": false
-        },
-        {
-          "key": "D",
-          "text": "It compares two file formats without any conditional relation.",
-          "is_correct": false
-        }
+        {"key": "A", "text": "The bus service has stopped for the evening.", "is_correct": false},
+        {"key": "B", "text": "The last bus allows the speaker to stay for the evening lab.", "is_correct": true},
+        {"key": "C", "text": "The speaker avoids the evening lab because of the bus.", "is_correct": false},
+        {"key": "D", "text": "The speaker has decided to drive instead.", "is_correct": false}
       ],
       "eliminable_items": null,
       "correct_answer": null,
       "word_bank": null,
       "blank_answers": null,
       "form_options": null,
-      "audio": null,
+      "audio": {
+        "asset_id": "cet6.162002.prompt",
+        "url": "ai_tts/cet6/1620/162002-v2.mp3",
+        "path": "ai_tts/cet6/1620/162002-v2.mp3",
+        "sha256": "sha256:7e35d5f18c38595be381719718fa33f73254e5408426eb92ffc38218786ee727",
+        "duration_ms": 4717,
+        "transcript": "If it weren't for the last bus at ten, I couldn't stay for the evening lab."
+      },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_listening_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -163,18 +199,22 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "【虚拟语气-听力 T1】当前反事实条件\n\n听力句子：If the instructions were clearer, fewer candidates would misread the submission format.\n\n哪项解释最准确？",
-        "task_prompt": "【虚拟语气-听力 T1】当前反事实条件\n\n听力句子：If the instructions were clearer, fewer candidates would misread the submission format.\n\n哪项解释最准确？",
-        "audio_first": false,
-        "display_mode": "text_first",
+        "text": "🎧 播放音频后，选择最符合说话人真实处境的一项。",
+        "task_prompt": "🎧 播放音频后，选择最符合说话人真实处境的一项。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "播放后选择现实处境",
+          "focus": "条件表达与实际处境",
+          "success_criteria": "所选事实须由整句支持"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：if 从句用 were，主句用 would + 动词原形，指向当前反事实。\n\n② 核心规律：现在虚拟条件句的典型形式是 if + 过去式（be 常用 were）+ would/could/might + do。\n\n③ 验证：把句子改写为现实语义即‘说明不清晰，导致误读较多’，与听力语境一致。",
+        "text": "① 听音信号：if it weren't for 常在语流中连成一组，后面紧跟被假设移除的支撑条件。\n\n② 语义机制：couldn't stay 描述的是“没有末班车”时的结果，不是现实陈述。\n\n③ 现实还原：末班车仍在运行，说话人因此可以留到晚间实验。遇到这类题，要把虚拟条件反转回来，再选现实事实。",
         "tips": [
-          "if 从句出现 were 不一定是过去时，常是虚拟语气标记。",
-          "听力里 would 往往是‘假设推演’，不是单纯将来时。"
+          "weren't for 后的名词通常是真实存在的支撑因素。",
+          "不要把 couldn't 直接抄成说话人的现实能力。"
         ]
       },
       "auto_scoring": true,
@@ -183,15 +223,27 @@
         "label": "T1",
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": ["synthetic_source"],
       "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      },
-      "answer_key": {
-        "correct_option": "B"
+      "contract_migration": {"version": "softbook-card-contract-2026-05-02"},
+      "answer_key": {"correct_option": "B"},
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "从 if it weren't for 反推真实存在的支撑条件",
+        "secondary_training_goals": ["区分虚拟结果与现实能力"],
+        "weak_point_tags": ["grammar_weak", "listening_weak"],
+        "difficulty": {"primary": "foundation", "secondary": []},
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力把 if it weren't for 的假设反转为现实支撑关系。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -206,53 +258,56 @@
       "card_box_name": "听力",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【虚拟语气-听力 T8】过去反事实填空\n\nIf the compliance memo _____ circulated before the briefing, the team would not have repeated the same reporting mistake."
+        "text": "🎧 播放音频后，选出最后一句中实际出现的谓语链。",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "听辨并选择谓语链",
+          "focus": "弱读、时间层级与上下文",
+          "success_criteria": "选择须同时匹配声音和整段事实"
+        }
       },
       "back_content": {
-        "text": "正确答案：had been\n\n过去反事实条件句标准形式是 if + had done（被动则 had been done），主句常用 would have done。"
+        "text": "正确答案：A，would have had to。\n\nTranscript: I saved a copy of my interview notes on my phone. Otherwise, I would've had to repeat every interview.",
+        "explanation": "otherwise 补出“若没有手机备份”的隐含条件；would've had to 表示过去本来会出现、实际没有出现的必要行动。"
       },
       "analysis_content": {
-        "text": "① 识别信号：主句出现 would not have repeated，提示过去结果虚拟。\n\n② 核心规律：与过去虚拟结果配套的 if 从句通常为 had done / had been done。\n\n③ 验证：代入 had been 后构成完整配对：若会前已传达备忘录，就不会重复失误。",
+        "text": "① 听音信号：would've had to 在自然语流中接近 /wʊdəv hæd tə/，要听出 have 与 had 的连续层级。\n\n② 语义机制：otherwise 将第一句反转为隐含条件；手机里有备份，所以重复访谈只是未发生的过去结果。\n\n③ 选项比较：B 把必要性拉到现在或将来；C 把 had to 写成已发生事实；D 建立了题面没有的未来完成参照。",
         "tips": [
-          "看到 would have done，优先反查 if 从句是否应为 had done。",
-          "主动/被动要与主语逻辑关系对齐。"
+          "听到 otherwise，先把前句反转成条件。",
+          "弱读辨形必须和事件时间线互相验证。"
         ]
       },
-      "options": null,
+      "options": [
+        {"key": "A", "text": "would have had to", "is_correct": true},
+        {"key": "B", "text": "would have to", "is_correct": false},
+        {"key": "C", "text": "had had to", "is_correct": false},
+        {"key": "D", "text": "will have had to", "is_correct": false}
+      ],
       "eliminable_items": null,
       "correct_answer": null,
       "word_bank": null,
       "blank_answers": null,
       "form_options": [
-        {
-          "form_no": 1,
-          "text": "had been",
-          "is_correct": true
-        },
-        {
-          "form_no": 2,
-          "text": "was",
-          "is_correct": false
-        },
-        {
-          "form_no": 3,
-          "text": "would be",
-          "is_correct": false
-        },
-        {
-          "form_no": 4,
-          "text": "has been",
-          "is_correct": false
-        }
+        {"form_no": 1, "text": "would have had to", "is_correct": true},
+        {"form_no": 2, "text": "would have to", "is_correct": false},
+        {"form_no": 3, "text": "had had to", "is_correct": false},
+        {"form_no": 4, "text": "will have had to", "is_correct": false}
       ],
-      "audio": null,
+      "audio": {
+        "asset_id": "cet6.162003.prompt",
+        "url": "ai_tts/cet6/1620/162003-v2.mp3",
+        "path": "ai_tts/cet6/1620/162003-v2.mp3",
+        "sha256": "sha256:02b666e612277c22e81797589d26f04390ad2640536fb271c1791c0a4ef9551e",
+        "duration_ms": 7200,
+        "transcript": "I saved a copy of my interview notes on my phone. Otherwise, I would've had to repeat every interview."
+      },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_listening_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -268,35 +323,51 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "【虚拟语气-听力 T8】过去反事实填空\n\nIf the compliance memo _____ circulated before the briefing, the team would not have repeated the same reporting mistake.",
-        "task_prompt": "【虚拟语气-听力 T8】过去反事实填空\n\nIf the compliance memo _____ circulated before the briefing, the team would not have repeated the same reporting mistake.",
-        "audio_first": false,
-        "display_mode": "text_first",
+        "text": "🎧 播放音频后，选出最后一句中实际出现的谓语链。",
+        "task_prompt": "🎧 播放音频后，选出最后一句中实际出现的谓语链。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "听辨并选择谓语链",
+          "focus": "弱读、时间层级与上下文",
+          "success_criteria": "选择须同时匹配声音和整段事实"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：主句出现 would not have repeated，提示过去结果虚拟。\n\n② 核心规律：与过去虚拟结果配套的 if 从句通常为 had done / had been done。\n\n③ 验证：代入 had been 后构成完整配对：若会前已传达备忘录，就不会重复失误。",
+        "text": "① 听音信号：would've had to 在自然语流中接近 /wʊdəv hæd tə/，要听出 have 与 had 的连续层级。\n\n② 语义机制：otherwise 将第一句反转为隐含条件；手机里有备份，所以重复访谈只是未发生的过去结果。\n\n③ 选项比较：B 把必要性拉到现在或将来；C 把 had to 写成已发生事实；D 建立了题面没有的未来完成参照。",
         "tips": [
-          "看到 would have done，优先反查 if 从句是否应为 had done。",
-          "主动/被动要与主语逻辑关系对齐。"
+          "听到 otherwise，先把前句反转成条件。",
+          "弱读辨形必须和事件时间线互相验证。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 8,
         "label": "T8",
-        "product_mapping_reason": "legacy tense-form choice maps to multiple_choice"
+        "product_mapping_reason": "legacy type-8 form choice maps to multiple_choice"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": ["synthetic_source"],
       "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      },
-      "answer_key": {
-        "correct_option": "A"
+      "contract_migration": {"version": "softbook-card-contract-2026-05-02"},
+      "answer_key": {"correct_option": "A"},
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "听辨 would've had to 弱读并恢复 otherwise 隐含条件",
+        "secondary_training_goals": ["区分过去未发生必要与当前必要"],
+        "weak_point_tags": ["grammar_weak", "listening_weak"],
+        "difficulty": {"primary": "pass", "secondary": []},
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力把情态完成式弱读、隐含条件和现实结果连成一条证据链。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -311,53 +382,51 @@
       "card_box_name": "听力",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【虚拟语气-听力 T1】suggest/demand 后的虚拟\n\n听力句子：The external reviewer suggested that the appendix be revised before the final release.\n\n哪项说明最准确？"
+        "text": "🎧 播放音频后，选择说话人的真正用意。",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "播放后选择说话人用意",
+          "focus": "形式时间与交际时间",
+          "success_criteria": "所选意图须与两句语境一致"
+        }
       },
       "back_content": {
-        "text": "正确答案：A\n\nsuggest 后的 that 从句可用虚拟形式‘(should) + 动词原形’，其中 should 常省略，因此 be revised 是标准表达。"
+        "text": "正确答案：B。\n\nTranscript: The heater in our dorm has been broken for a week. It's time the housing office sent someone to fix it.",
+        "explanation": "It's time + past form 指向现在应该采取、而且已经拖延的行动；sent 在这里不是过去事实报告。"
       },
       "analysis_content": {
-        "text": "① 识别信号：谓语动词为 suggested，属于建议/要求类触发词。\n\n② 核心规律：insist, suggest, demand, recommend, require 等后接 that 从句时，常用 (should) do。\n\n③ 验证：把 be revised 换成 is revised 会把语义转为事实陈述，不符合建议语气。",
+        "text": "① 听音信号：第一句的 for a week 建立持续故障，第二句用 It's time 推出逾期行动。\n\n② 语义机制：It's time + 主语 + past form 常表示“现在早该……”，形式后退但交际时间仍是现在。\n\n③ 选项比较：音频既没说维修已经完成，也没说要拆除或继续推迟；唯一合理用意是催促住房办公室现在安排维修。",
         "tips": [
-          "建议/要求类动词后看到 that，从句优先考虑动词原形。",
-          "be revised 属于虚拟被动形式，不要误判为时态错误。"
+          "It's time 后的过去式不一定在讲过去。",
+          "用前句状态判断说话人是在回顾还是催促。"
         ]
       },
       "options": [
-        {
-          "key": "A",
-          "text": "It is a mandative subjunctive: (should) be revised after suggest.",
-          "is_correct": true
-        },
-        {
-          "key": "B",
-          "text": "It is simple present tense describing an ongoing revision.",
-          "is_correct": false
-        },
-        {
-          "key": "C",
-          "text": "It is a relative clause modifying appendix.",
-          "is_correct": false
-        },
-        {
-          "key": "D",
-          "text": "It should be replaced by was revised to match past narration.",
-          "is_correct": false
-        }
+        {"key": "A", "text": "The office repaired the heater last week.", "is_correct": false},
+        {"key": "B", "text": "The office should arrange the overdue repair now.", "is_correct": true},
+        {"key": "C", "text": "The residents have decided to remove the heater.", "is_correct": false},
+        {"key": "D", "text": "The repair should be postponed for another week.", "is_correct": false}
       ],
       "eliminable_items": null,
       "correct_answer": null,
       "word_bank": null,
       "blank_answers": null,
       "form_options": null,
-      "audio": null,
+      "audio": {
+        "asset_id": "cet6.162004.prompt",
+        "url": "ai_tts/cet6/1620/162004-v2.mp3",
+        "path": "ai_tts/cet6/1620/162004-v2.mp3",
+        "sha256": "sha256:4904eedcadc7074b5f315686363b5a44c8b9ab861fe44355dbe4c7d88f2e64f7",
+        "duration_ms": 6451,
+        "transcript": "The heater in our dorm has been broken for a week. It's time the housing office sent someone to fix it."
+      },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_listening_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -373,18 +442,22 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "【虚拟语气-听力 T1】suggest/demand 后的虚拟\n\n听力句子：The external reviewer suggested that the appendix be revised before the final release.\n\n哪项说明最准确？",
-        "task_prompt": "【虚拟语气-听力 T1】suggest/demand 后的虚拟\n\n听力句子：The external reviewer suggested that the appendix be revised before the final release.\n\n哪项说明最准确？",
-        "audio_first": false,
-        "display_mode": "text_first",
+        "text": "🎧 播放音频后，选择说话人的真正用意。",
+        "task_prompt": "🎧 播放音频后，选择说话人的真正用意。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "播放后选择说话人用意",
+          "focus": "形式时间与交际时间",
+          "success_criteria": "所选意图须与两句语境一致"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：谓语动词为 suggested，属于建议/要求类触发词。\n\n② 核心规律：insist, suggest, demand, recommend, require 等后接 that 从句时，常用 (should) do。\n\n③ 验证：把 be revised 换成 is revised 会把语义转为事实陈述，不符合建议语气。",
+        "text": "① 听音信号：第一句的 for a week 建立持续故障，第二句用 It's time 推出逾期行动。\n\n② 语义机制：It's time + 主语 + past form 常表示“现在早该……”，形式后退但交际时间仍是现在。\n\n③ 选项比较：音频既没说维修已经完成，也没说要拆除或继续推迟；唯一合理用意是催促住房办公室现在安排维修。",
         "tips": [
-          "建议/要求类动词后看到 that，从句优先考虑动词原形。",
-          "be revised 属于虚拟被动形式，不要误判为时态错误。"
+          "It's time 后的过去式不一定在讲过去。",
+          "用前句状态判断说话人是在回顾还是催促。"
         ]
       },
       "auto_scoring": true,
@@ -393,15 +466,27 @@
         "label": "T1",
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": ["synthetic_source"],
       "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      },
-      "answer_key": {
-        "correct_option": "A"
+      "contract_migration": {"version": "softbook-card-contract-2026-05-02"},
+      "answer_key": {"correct_option": "B"},
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "听辨 It's time + past form 的当前催促立场",
+        "secondary_training_goals": ["结合持续状态判断行动是否逾期"],
+        "weak_point_tags": ["grammar_weak", "listening_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": []},
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力不把虚拟过去形式误听成已完成事实。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -416,58 +501,52 @@
       "card_box_name": "听力",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【虚拟语气-听力 T4】虚拟语气错误排查\n\n下列句子中，哪些项存在典型虚拟语气错误？（可多选）\n① If the alert had arrived earlier, the team would have canceled the release.\n② If I was you, I would recheck the raw spreadsheet tonight.\n③ The chair demanded that every reference should be verified before publication.\n④ Had the timeline been realistic, the pilot would not have stalled.\n⑤ I wish the intern submits the corrected file now."
+        "text": "🎧 播放音频后，消除所有不能由音频支持的记录（可多选）。",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "播放后消除不成立记录",
+          "focus": "比较表达与事实校正",
+          "success_criteria": "保留项均有音频证据，消除项均越过证据"
+        }
       },
       "back_content": {
-        "text": "错误项：②⑤\n\n② 固定表达应为 If I were you；⑤ wish 表当前愿望应接过去式（I wish the intern submitted...）或过去进行等虚拟形式，不用 submits。"
+        "text": "应消除②⑤；保留①③④。\n\nTranscript: Daniel talks as if he'd run the whole clean-up campaign. In fact, he only showed up on the final afternoon, after the other volunteers had done most of the work, yet he makes it sound as though they contributed nothing.",
+        "explanation": "as if / as though 引出 Daniel 营造的失实印象；In fact 明确说明 Daniel 直到最后一天下午才出现，而其他志愿者此前已经完成了大部分工作。"
       },
       "analysis_content": {
-        "text": "① 识别信号：优先检查 If I was you、wish + 现在时这类高频误区。\n\n② 核心规律：与现在事实相反的 if 从句常用 were；wish 后从句用虚拟过去或过去完成表达非现实愿望。\n\n③ 验证：①③④ 语法与语义均成立；②⑤ 破坏了虚拟形式与时间逻辑的对应关系。",
+        "text": "① 听音信号：as if he'd run 与 as though they contributed nothing 都描述 Daniel 给人的印象，不是事实确认。\n\n② 事实锚点：In fact 后明确说 Daniel 最后一天下午才出现，其他志愿者此前已完成大部分工作。\n\n③ 消除逻辑：②把失实表现升级为事实；⑤直接照抄比较内容，均不能保留。①描述说话方式，③④由事实校正直接支持。",
         "tips": [
-          "虚拟语气错误常见于 be 动词形式和 wish 从句时态。",
-          "先判‘与哪一层现实相反’，再选从句形式。"
+          "听到 as if/as though，先不要把后面的内容写进事实栏。",
+          "In fact 常负责推翻前面的表象。"
         ]
       },
       "options": null,
       "eliminable_items": [
-        {
-          "item_no": 1,
-          "text": "① If the alert had arrived earlier, the team would have canceled the release.",
-          "is_correct": false
-        },
-        {
-          "item_no": 2,
-          "text": "② If I was you, I would recheck the raw spreadsheet tonight.",
-          "is_correct": true
-        },
-        {
-          "item_no": 3,
-          "text": "③ The chair demanded that every reference should be verified before publication.",
-          "is_correct": false
-        },
-        {
-          "item_no": 4,
-          "text": "④ Had the timeline been realistic, the pilot would not have stalled.",
-          "is_correct": false
-        },
-        {
-          "item_no": 5,
-          "text": "⑤ I wish the intern submits the corrected file now.",
-          "is_correct": true
-        }
+        {"item_no": 1, "text": "① Daniel speaks as though he played a leading role.", "is_correct": false},
+        {"item_no": 2, "text": "② Daniel actually ran the entire campaign.", "is_correct": true},
+        {"item_no": 3, "text": "③ Daniel showed up only on the final afternoon.", "is_correct": false},
+        {"item_no": 4, "text": "④ The speaker thinks Daniel understates the other volunteers' contribution.", "is_correct": false},
+        {"item_no": 5, "text": "⑤ The other volunteers did no work.", "is_correct": true}
       ],
       "correct_answer": null,
       "word_bank": null,
       "blank_answers": null,
       "form_options": null,
-      "audio": null,
+      "audio": {
+        "asset_id": "cet6.162005.prompt",
+        "url": "ai_tts/cet6/1620/162005-v2.mp3",
+        "path": "ai_tts/cet6/1620/162005-v2.mp3",
+        "sha256": "sha256:0608215abde6d6e31393c3c31ba113d04674a923c0b602de359c3a38da6e7731",
+        "duration_ms": 14654,
+        "transcript": "Daniel talks as if he'd run the whole clean-up campaign. In fact, he only showed up on the final afternoon, after the other volunteers had done most of the work, yet he makes it sound as though they contributed nothing."
+      },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_listening_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -483,18 +562,22 @@
       },
       "interaction_id": "elimination",
       "front": {
-        "text": "【虚拟语气-听力 T4】虚拟语气错误排查\n\n下列句子中，哪些项存在典型虚拟语气错误？（可多选）\n① If the alert had arrived earlier, the team would have canceled the release.\n② If I was you, I would recheck the raw spreadsheet tonight.\n③ The chair demanded that every reference should be verified before publication.\n④ Had the timeline been realistic, the pilot would not have stalled.\n⑤ I wish the intern submits the corrected file now.",
-        "task_prompt": "【虚拟语气-听力 T4】虚拟语气错误排查\n\n下列句子中，哪些项存在典型虚拟语气错误？（可多选）\n① If the alert had arrived earlier, the team would have canceled the release.\n② If I was you, I would recheck the raw spreadsheet tonight.\n③ The chair demanded that every reference should be verified before publication.\n④ Had the timeline been realistic, the pilot would not have stalled.\n⑤ I wish the intern submits the corrected file now.",
-        "audio_first": false,
-        "display_mode": "text_first",
+        "text": "🎧 播放音频后，消除所有不能由音频支持的记录（可多选）。",
+        "task_prompt": "🎧 播放音频后，消除所有不能由音频支持的记录（可多选）。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "播放后消除不成立记录",
+          "focus": "比较表达与事实校正",
+          "success_criteria": "保留项均有音频证据，消除项均越过证据"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：优先检查 If I was you、wish + 现在时这类高频误区。\n\n② 核心规律：与现在事实相反的 if 从句常用 were；wish 后从句用虚拟过去或过去完成表达非现实愿望。\n\n③ 验证：①③④ 语法与语义均成立；②⑤ 破坏了虚拟形式与时间逻辑的对应关系。",
+        "text": "① 听音信号：as if he'd run 与 as though they contributed nothing 都描述 Daniel 给人的印象，不是事实确认。\n\n② 事实锚点：In fact 后明确说 Daniel 最后一天下午才出现，其他志愿者此前已完成大部分工作。\n\n③ 消除逻辑：②把失实表现升级为事实；⑤直接照抄比较内容，均不能保留。①描述说话方式，③④由事实校正直接支持。",
         "tips": [
-          "虚拟语气错误常见于 be 动词形式和 wish 从句时态。",
-          "先判‘与哪一层现实相反’，再选从句形式。"
+          "听到 as if/as though，先不要把后面的内容写进事实栏。",
+          "In fact 常负责推翻前面的表象。"
         ]
       },
       "auto_scoring": true,
@@ -503,46 +586,39 @@
         "label": "T4",
         "product_mapping_reason": "legacy elimination card maps directly to elimination"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": ["synthetic_source"],
       "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      },
+      "contract_migration": {"version": "softbook-card-contract-2026-05-02"},
       "answer_key": {
         "correct_items": [
-          "② If I was you, I would recheck the raw spreadsheet tonight.",
-          "⑤ I wish the intern submits the corrected file now."
+          "statement_2",
+          "statement_5"
         ]
       },
       "elimination_items": [
-        {
-          "item_no": 1,
-          "text": "① If the alert had arrived earlier, the team would have canceled the release.",
-          "is_correct": false
+        {"id": "statement_1", "text": "① Daniel speaks as though he played a leading role."},
+        {"id": "statement_2", "text": "② Daniel actually ran the entire campaign."},
+        {"id": "statement_3", "text": "③ Daniel showed up only on the final afternoon."},
+        {"id": "statement_4", "text": "④ The speaker thinks Daniel understates the other volunteers' contribution."},
+        {"id": "statement_5", "text": "⑤ The other volunteers did no work."}
+      ],
+      "quality_metadata": {
+        "main_training_goal": "结合 as if/as though 与事实校正排除失实记录",
+        "secondary_training_goals": ["区分说话人批评的表象与确认事实"],
+        "weak_point_tags": ["grammar_weak", "listening_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": ["high_score"]},
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
         },
-        {
-          "item_no": 2,
-          "text": "② If I was you, I would recheck the raw spreadsheet tonight.",
-          "is_correct": true
-        },
-        {
-          "item_no": 3,
-          "text": "③ The chair demanded that every reference should be verified before publication.",
-          "is_correct": false
-        },
-        {
-          "item_no": 4,
-          "text": "④ Had the timeline been realistic, the pilot would not have stalled.",
-          "is_correct": false
-        },
-        {
-          "item_no": 5,
-          "text": "⑤ I wish the intern submits the corrected file now.",
-          "is_correct": true
-        }
-      ]
+        "exam_value": "训练六级听力区分 as if/as though 营造的表象与后续事实校正。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      }
     },
     {
       "card_id": "162006",
@@ -556,16 +632,23 @@
       "card_box_name": "听力",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【虚拟语气-听力进阶】wish 与 if only 的时间层级\n\n听力句子：I wish the data had been archived properly; if only we had followed the backup protocol before the server crash.\n\n任务：说明 wish 与 if only 在这里表达的共同语义，以及它们对应的时间指向。"
+        "text": "🎧 播放音频。翻卡前说出：真实发生的帮助是什么？哪种糟糕结果只是未发生的可能？",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "播放后分别复述事实与未发生可能",
+          "focus": "真实帮助、隐含条件与情态强度",
+          "success_criteria": "两层信息不互换，也不把可能写成必然"
+        }
       },
       "back_content": {
-        "text": "两者都表达对过去事实的遗憾。had been archived / had followed 均为过去完成虚拟，指向‘过去未实现，现已无法改变’。if only 比 wish 语气更强烈、更感叹。"
+        "text": "事实：Nina 在最后时刻陪说话人练习，问答也顺利完成。\n未发生的可能：没有这次练习，说话人可能会在被问到预算时僵住。\n\nTranscript: The Q&A went smoothly. But for a last-minute practice session with Nina, I might have frozen when they asked about the budget.",
+        "explanation": "but for 等于 without，引出隐含反事实条件；might have frozen 只保留未发生风险的可能性，不能升级成 Nina 的帮助保证了成功。"
       },
       "analysis_content": {
-        "text": "① 识别信号：wish / if only 后出现 had done，提示对过去事件的反事实遗憾。\n\n② 核心规律：wish 现在愿望常用过去式；对过去遗憾常用过去完成。if only 在结构上类似，但情感强度更高。\n\n③ 验证：语境中 server crash 已发生，说明说话人不是预测未来，而是追悔过去决策。",
+        "text": "① 事实锚点：The Q&A went smoothly 说明实际没有僵住；with Nina 则交代练习确实发生。\n\n② 语义机制：But for + 名词短语可等值理解为“如果没有……”，后接情态完成式描述过去未实现结果。\n\n③ 强度控制：might have frozen 表示风险可能发生，不是必然会发生。听力概括既要反转隐含条件，也要保留 might 的不确定性。",
         "tips": [
-          "wish 后的时态常‘后退一格’表达非现实。",
-          "if only 常比 wish 更强烈，常用于懊悔语境。"
+          "but for 后的因素通常是现实中存在的帮助或阻碍。",
+          "might have 不能概括成 would certainly have。"
         ]
       },
       "options": null,
@@ -574,14 +657,21 @@
       "word_bank": null,
       "blank_answers": null,
       "form_options": null,
-      "audio": null,
+      "audio": {
+        "asset_id": "cet6.162006.prompt",
+        "url": "ai_tts/cet6/1620/162006-v2.mp3",
+        "path": "ai_tts/cet6/1620/162006-v2.mp3",
+        "sha256": "sha256:2f089c17e939a59a858e19f587623f0591dd119e7a2d33fb853ee2aa016b3ae5",
+        "duration_ms": 7991,
+        "transcript": "The Q&A went smoothly. But for a last-minute practice session with Nina, I might have frozen when they asked about the budget."
+      },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_listening_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -597,18 +687,22 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "【虚拟语气-听力进阶】wish 与 if only 的时间层级\n\n听力句子：I wish the data had been archived properly; if only we had followed the backup protocol before the server crash.\n\n任务：说明 wish 与 if only 在这里表达的共同语义，以及它们对应的时间指向。",
-        "task_prompt": "【虚拟语气-听力进阶】wish 与 if only 的时间层级\n\n听力句子：I wish the data had been archived properly; if only we had followed the backup protocol before the server crash.\n\n任务：说明 wish 与 if only 在这里表达的共同语义，以及它们对应的时间指向。",
-        "audio_first": false,
-        "display_mode": "text_first",
+        "text": "🎧 播放音频。翻卡前说出：真实发生的帮助是什么？哪种糟糕结果只是未发生的可能？",
+        "task_prompt": "🎧 播放音频。翻卡前说出：真实发生的帮助是什么？哪种糟糕结果只是未发生的可能？",
+        "audio_first": true,
+        "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "播放后分别复述事实与未发生可能",
+          "focus": "真实帮助、隐含条件与情态强度",
+          "success_criteria": "两层信息不互换，也不把可能写成必然"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：wish / if only 后出现 had done，提示对过去事件的反事实遗憾。\n\n② 核心规律：wish 现在愿望常用过去式；对过去遗憾常用过去完成。if only 在结构上类似，但情感强度更高。\n\n③ 验证：语境中 server crash 已发生，说明说话人不是预测未来，而是追悔过去决策。",
+        "text": "① 事实锚点：The Q&A went smoothly 说明实际没有僵住；with Nina 则交代练习确实发生。\n\n② 语义机制：But for + 名词短语可等值理解为“如果没有……”，后接情态完成式描述过去未实现结果。\n\n③ 强度控制：might have frozen 表示风险可能发生，不是必然会发生。听力概括既要反转隐含条件，也要保留 might 的不确定性。",
         "tips": [
-          "wish 后的时态常‘后退一格’表达非现实。",
-          "if only 常比 wish 更强烈，常用于懊悔语境。"
+          "but for 后的因素通常是现实中存在的帮助或阻碍。",
+          "might have 不能概括成 would certainly have。"
         ]
       },
       "auto_scoring": false,
@@ -617,12 +711,27 @@
         "label": "T0",
         "product_mapping_reason": "legacy flip card maps directly to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": ["synthetic_source"],
       "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
+      "contract_migration": {"version": "softbook-card-contract-2026-05-02"},
+      "answer_key": null,
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "从 but for + might have 恢复真实帮助与未发生风险",
+        "secondary_training_goals": ["保留情态可能性而不升级为必然"],
+        "weak_point_tags": ["grammar_weak", "listening_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "pass", "secondary": []},
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力恢复 but for 隐含条件并保持 might have 的证据强度。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -637,53 +746,56 @@
       "card_box_name": "听力",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【虚拟语气-听力 T8】假设程度选择\n\nIf the lead analyst _____ to withdraw at this stage, the whole review schedule would need to be redesigned."
+        "text": "🎧 播放音频后，选择最后一句表达的意思。",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "播放后选择最准确概括",
+          "focus": "上下文中的时间与态度",
+          "success_criteria": "所选概括须与完整音频一致"
+        }
       },
       "back_content": {
-        "text": "正确答案：were\n\nIf + 主语 + were to do 常用于较不现实或较委婉的未来假设。"
+        "text": "正确答案：B。\n\nTranscript: You submitted the application before I checked the references, and then you noticed an error. I'd rather you had waited for my feedback.",
+        "explanation": "would rather + 另一主语 + had done 表达对已经发生的过去行为持不同偏好。申请已经提交；说话人希望对方当时先等反馈。"
       },
       "analysis_content": {
-        "text": "① 识别信号：主句是 would need to be redesigned，提示假设推演。\n\n② 核心规律：if ... were to do 可表达不太可能但值得讨论的未来情境，比 if ... does 更虚拟、更策略化。\n\n③ 验证：代入 were 后，语气符合会议讨论中的风险预案表达。",
+        "text": "① 时间线：先提交申请，随后发现错误；这两件事都已发生。\n\n② 听音信号：I'd rather 在这里是 I would rather；you had waited 把偏好指向已经错过的过去选择。\n\n③ 选项比较：A 抹掉已提交事实，C 否定题面明示的检查计划，D 又与 noticed an error 冲突。B 唯一同时保留时间线和事后偏好。",
         "tips": [
-          "were to do 常见于正式讨论中的预案假设。",
-          "如果主句是 would/could/might，if 从句优先检视虚拟标记。"
+          "先确认动作是否已经发生，再判断 would rather 的时间层级。",
+          "I'd 可能是 I had 或 I would，要由后接结构决定。"
         ]
       },
-      "options": null,
+      "options": [
+        {"key": "A", "text": "The application has not been sent, and the listener should wait for feedback before submitting it.", "is_correct": false},
+        {"key": "B", "text": "The speaker would have preferred the listener to wait before submitting.", "is_correct": true},
+        {"key": "C", "text": "The speaker never intended to check the references.", "is_correct": false},
+        {"key": "D", "text": "The speaker believes the submitted application contained no error.", "is_correct": false}
+      ],
       "eliminable_items": null,
       "correct_answer": null,
       "word_bank": null,
       "blank_answers": null,
       "form_options": [
-        {
-          "form_no": 1,
-          "text": "were",
-          "is_correct": true
-        },
-        {
-          "form_no": 2,
-          "text": "is",
-          "is_correct": false
-        },
-        {
-          "form_no": 3,
-          "text": "has",
-          "is_correct": false
-        },
-        {
-          "form_no": 4,
-          "text": "will be",
-          "is_correct": false
-        }
+        {"form_no": 1, "text": "The application has not been sent, and the listener should wait for feedback before submitting it.", "is_correct": false},
+        {"form_no": 2, "text": "The speaker would have preferred the listener to wait before submitting.", "is_correct": true},
+        {"form_no": 3, "text": "The speaker never intended to check the references.", "is_correct": false},
+        {"form_no": 4, "text": "The speaker believes the submitted application contained no error.", "is_correct": false}
       ],
-      "audio": null,
+      "audio": {
+        "asset_id": "cet6.162007.prompt",
+        "url": "ai_tts/cet6/1620/162007-v2.mp3",
+        "path": "ai_tts/cet6/1620/162007-v2.mp3",
+        "sha256": "sha256:5ef7b054658f879904bd0c6e8bbf30e1c8dfb192e14225141db5cc789ebe4cd3",
+        "duration_ms": 8759,
+        "transcript": "You submitted the application before I checked the references, and then you noticed an error. I'd rather you had waited for my feedback."
+      },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_listening_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -699,35 +811,51 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "【虚拟语气-听力 T8】假设程度选择\n\nIf the lead analyst _____ to withdraw at this stage, the whole review schedule would need to be redesigned.",
-        "task_prompt": "【虚拟语气-听力 T8】假设程度选择\n\nIf the lead analyst _____ to withdraw at this stage, the whole review schedule would need to be redesigned.",
-        "audio_first": false,
-        "display_mode": "text_first",
+        "text": "🎧 播放音频后，选择最后一句表达的意思。",
+        "task_prompt": "🎧 播放音频后，选择最后一句表达的意思。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "播放后选择最准确概括",
+          "focus": "上下文中的时间与态度",
+          "success_criteria": "所选概括须与完整音频一致"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：主句是 would need to be redesigned，提示假设推演。\n\n② 核心规律：if ... were to do 可表达不太可能但值得讨论的未来情境，比 if ... does 更虚拟、更策略化。\n\n③ 验证：代入 were 后，语气符合会议讨论中的风险预案表达。",
+        "text": "① 时间线：先提交申请，随后发现错误；这两件事都已发生。\n\n② 听音信号：I'd rather 在这里是 I would rather；you had waited 把偏好指向已经错过的过去选择。\n\n③ 选项比较：A 抹掉已提交事实，C 否定题面明示的检查计划，D 又与 noticed an error 冲突。B 唯一同时保留时间线和事后偏好。",
         "tips": [
-          "were to do 常见于正式讨论中的预案假设。",
-          "如果主句是 would/could/might，if 从句优先检视虚拟标记。"
+          "先确认动作是否已经发生，再判断 would rather 的时间层级。",
+          "I'd 可能是 I had 或 I would，要由后接结构决定。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 8,
         "label": "T8",
-        "product_mapping_reason": "legacy tense-form choice maps to multiple_choice"
+        "product_mapping_reason": "legacy type-8 listening choice maps to multiple_choice"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": ["synthetic_source"],
       "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      },
-      "answer_key": {
-        "correct_option": "A"
+      "contract_migration": {"version": "softbook-card-contract-2026-05-02"},
+      "answer_key": {"correct_option": "B"},
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "整合 would rather + had done 与已发生对话时间线",
+        "secondary_training_goals": ["区分事后偏好与未来建议"],
+        "weak_point_tags": ["grammar_weak", "listening_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "high_score", "secondary": []},
+        "card_prototype": "exam_strategy",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力结合上下文判断 would rather 的事后偏好，而非只认 had done。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -742,53 +870,51 @@
       "card_box_name": "听力",
       "card_group_name": "虚拟语气",
       "front_content": {
-        "text": "【虚拟语气-听力 T1】省略 if 的倒装虚拟\n\n听力句子：Had the moderator clarified the scoring rubric, the panelists would not have argued over weighting criteria.\n\n哪项改写最等值？"
+        "text": "🎧 播放一段活动说明后，选择最符合实际情况的概括。",
+        "highlight_ranges": [],
+        "task_schema": {
+          "action": "播放后选择最准确概括",
+          "focus": "多层信息与整体概括",
+          "success_criteria": "所选概括须由完整音频支持"
+        }
       },
       "back_content": {
-        "text": "正确答案：C\n\nHad + 主语 + 过去分词 是省略 if 的过去虚拟倒装，等值于 If the moderator had clarified the scoring rubric, ..."
+        "text": "正确答案：C。\n\nTranscript: We had hoped to move the lecture indoors before the storm, but the hall was already in use, so the event had to stay outside. If the hall had been available, we'd have moved the audience inside. Without the volunteers quickly covering the equipment, some of it might have been damaged.",
+        "explanation": "but 与 so 先锁定礼堂不可用、活动留在室外；过去反事实再次验证未能转入室内；without + might have 说明志愿者快速覆盖设备降低了受损风险，而不是证明设备已经损坏。"
       },
       "analysis_content": {
-        "text": "① 识别信号：句首 Had the moderator clarified ...，这是虚拟条件倒装形式。\n\n② 核心规律：Had/Were/Should 前置可视为 if 省略；意义不变，语体更正式。\n\n③ 验证：将句子还原为 If the moderator had clarified ... 后，主句 would not have argued 完全对应过去反事实逻辑。",
+        "text": "① 事实链：礼堂已被占用，因此活动只能留在室外；这不是假设。\n\n② 反事实链：If the hall had been available, we'd have moved... 反推礼堂当时不可用，观众没有转入室内。\n\n③ 风险链：Without the volunteers... might have been damaged 表明志愿者确实快速覆盖设备，并降低了可能的损失。C 同时保留三层；A/B 反转场地事实，D 把未发生风险写成确定结果。",
         "tips": [
-          "看到句首 Had/Were/Should，先尝试补回 if。",
-          "倒装虚拟改写时保持主句情态形式不变最关键。"
+          "长音频先分事实句和反事实句，再合并结论。",
+          "might have been damaged 不能听成 was damaged。"
         ]
       },
       "options": [
-        {
-          "key": "A",
-          "text": "If the moderator clarifies the scoring rubric, the panelists would not have argued over weighting criteria.",
-          "is_correct": false
-        },
-        {
-          "key": "B",
-          "text": "If the moderator were clarifying the scoring rubric, the panelists would not argue over weighting criteria.",
-          "is_correct": false
-        },
-        {
-          "key": "C",
-          "text": "If the moderator had clarified the scoring rubric, the panelists would not have argued over weighting criteria.",
-          "is_correct": true
-        },
-        {
-          "key": "D",
-          "text": "Because the moderator clarified the scoring rubric, the panelists did not argue over weighting criteria.",
-          "is_correct": false
-        }
+        {"key": "A", "text": "The lecture was moved into the hall before the storm.", "is_correct": false},
+        {"key": "B", "text": "The hall was available, but the organizers preferred the outdoor site.", "is_correct": false},
+        {"key": "C", "text": "The hall was unavailable, and the volunteers' quick work helped protect the equipment.", "is_correct": true},
+        {"key": "D", "text": "The equipment was definitely damaged during the storm.", "is_correct": false}
       ],
       "eliminable_items": null,
       "correct_answer": null,
       "word_bank": null,
       "blank_answers": null,
       "form_options": null,
-      "audio": null,
+      "audio": {
+        "asset_id": "cet6.162008.prompt",
+        "url": "ai_tts/cet6/1620/162008-v2.mp3",
+        "path": "ai_tts/cet6/1620/162008-v2.mp3",
+        "sha256": "sha256:18f4d89df04dd1a12418c195a5f7d959ecbc626cfdca790779b1a2e6fe16ae2f",
+        "duration_ms": 19176,
+        "transcript": "We had hoped to move the lecture indoors before the storm, but the hall was already in use, so the event had to stay outside. If the hall had been available, we'd have moved the audience inside. Without the volunteers quickly covering the equipment, some of it might have been damaged."
+      },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "constructed_cet6_grammar_subjunctive_listening_context_not_true_exam",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -804,18 +930,22 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "【虚拟语气-听力 T1】省略 if 的倒装虚拟\n\n听力句子：Had the moderator clarified the scoring rubric, the panelists would not have argued over weighting criteria.\n\n哪项改写最等值？",
-        "task_prompt": "【虚拟语气-听力 T1】省略 if 的倒装虚拟\n\n听力句子：Had the moderator clarified the scoring rubric, the panelists would not have argued over weighting criteria.\n\n哪项改写最等值？",
-        "audio_first": false,
-        "display_mode": "text_first",
+        "text": "🎧 播放一段活动说明后，选择最符合实际情况的概括。",
+        "task_prompt": "🎧 播放一段活动说明后，选择最符合实际情况的概括。",
+        "audio_first": true,
+        "display_mode": "audio_then_options",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": {
+          "action": "播放后选择最准确概括",
+          "focus": "多层信息与整体概括",
+          "success_criteria": "所选概括须由完整音频支持"
+        }
       },
       "analysis": {
-        "text": "① 识别信号：句首 Had the moderator clarified ...，这是虚拟条件倒装形式。\n\n② 核心规律：Had/Were/Should 前置可视为 if 省略；意义不变，语体更正式。\n\n③ 验证：将句子还原为 If the moderator had clarified ... 后，主句 would not have argued 完全对应过去反事实逻辑。",
+        "text": "① 事实链：礼堂已被占用，因此活动只能留在室外；这不是假设。\n\n② 反事实链：If the hall had been available, we'd have moved... 反推礼堂当时不可用，观众没有转入室内。\n\n③ 风险链：Without the volunteers... might have been damaged 表明志愿者确实快速覆盖设备，并降低了可能的损失。C 同时保留三层；A/B 反转场地事实，D 把未发生风险写成确定结果。",
         "tips": [
-          "看到句首 Had/Were/Should，先尝试补回 if。",
-          "倒装虚拟改写时保持主句情态形式不变最关键。"
+          "长音频先分事实句和反事实句，再合并结论。",
+          "might have been damaged 不能听成 was damaged。"
         ]
       },
       "auto_scoring": true,
@@ -824,21 +954,28 @@
         "label": "T1",
         "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": ["synthetic_source"],
       "production_status": "needs_review",
-      "contract_migration": {
-        "version": "softbook-card-contract-2026-05-02"
-      },
-      "answer_key": {
-        "correct_option": "C"
+      "contract_migration": {"version": "softbook-card-contract-2026-05-02"},
+      "answer_key": {"correct_option": "C"},
+      "elimination_items": null,
+      "quality_metadata": {
+        "main_training_goal": "综合追踪活动说明中的事实、过去反事实与未发生风险",
+        "secondary_training_goals": ["保留 might have 的不确定性"],
+        "weak_point_tags": ["grammar_weak", "listening_weak", "exam_strategy_weak"],
+        "difficulty": {"primary": "high_score", "secondary": []},
+        "card_prototype": "integrated_micro_drill",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 subjunctive-listening simulation; not true-exam material.",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "tts_audio_reviewed": false
+        },
+        "exam_value": "训练六级听力在较长语段中合并现实校正、反事实和情态风险。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
-  ],
-  "track_index": 1,
-  "contract_version": "softbook-card-file-v1",
-  "contract_migration": {
-    "version": "softbook-card-contract-2026-05-02"
-  }
+  ]
 }
