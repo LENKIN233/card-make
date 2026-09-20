@@ -20,45 +20,35 @@
       "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，判断原因和结果分别是什么。",
-        "task_prompt": "任务：先听音频，判断原因和结果分别是什么。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102101.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，复述诊所补给延迟的原因与时间。",
+        "audio_url": "ai_tts/cet6/1021/102101-kokoro-20260920-e5898b51.mp3"
       },
       "back_content": {
-        "text": "结论：原因是暴雨冲毁道路，结果是山区诊所补给延迟。",
-        "explanation": "语境揭示：Because heavy rain damaged the only road into the valley, the clinic in the mountain village did not receive its medical supplies until late Friday evening."
+        "text": "暴雨损坏通往山谷的唯一道路，诊所直到周五晚才收到补给。",
+        "explanation": "because 引出道路受损这个原因；not...until late Friday evening 说明补给到达的时间，而不是在那时才开始下雨。"
       },
       "analysis_content": {
-        "text": "① 识别信号：Because 直接引出原因，后句给出具体后果。② 核心规律：因果题先分清哪一半是 cause，哪一半是 effect；不要把时间、地点等附加信息误当成主因。③ 验证与迁移：如果你复述时没说出 road damaged 这一步，而只说 supplies were late，就说明原因链还没抓完整。",
+        "text": "because 引出道路受损这个原因；not...until late Friday evening 说明补给到达的时间，而不是在那时才开始下雨。",
         "tips": [
-          "because 从句往往就是 why-question 的答案源。",
-          "only road into the valley 这类限制信息能帮助你判断因果链是否完整。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "audio": {
-        "url": "ai_tts/cet6/1021/102101.mp3",
-        "local_path": "ai_tts/cet6/1021/102101.mp3",
-        "duration_ms": 9816,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102101-kokoro-20260920-e5898b51.mp3",
+        "url": "ai_tts/cet6/1021/102101-kokoro-20260920-e5898b51.mp3",
+        "duration_ms": 9936,
+        "sha256": "sha256:e667d95588a8deebc36b3b2a665919eab7ec6670b70ca72f6b2ce906b9e6b64a",
         "transcript": "Because heavy rain damaged the only road into the valley, the clinic in the mountain village did not receive its medical supplies until late Friday evening.",
-        "path": "ai_tts/cet6/1021/102101.mp3"
+        "voice": "af_heart",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -74,22 +64,17 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，判断原因和结果分别是什么。",
-        "task_prompt": "任务：先听音频，判断原因和结果分别是什么。",
+        "text": "播放录音后，复述诊所补给延迟的原因与时间。",
+        "task_prompt": "播放录音后，复述诊所补给延迟的原因与时间。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：Because 直接引出原因，后句给出具体后果。② 核心规律：因果题先分清哪一半是 cause，哪一半是 effect；不要把时间、地点等附加信息误当成主因。③ 验证与迁移：如果你复述时没说出 road damaged 这一步，而只说 supplies were late，就说明原因链还没抓完整。",
+        "text": "because 引出道路受损这个原因；not...until late Friday evening 说明补给到达的时间，而不是在那时才开始下雨。",
         "tips": [
-          "because 从句往往就是 why-question 的答案源。",
-          "only road into the valley 这类限制信息能帮助你判断因果链是否完整。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": false,
@@ -104,6 +89,25 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "because 从句往往就是 why-question 的答案源。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -118,36 +122,26 @@
       "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断真正导致会议延期的原因是什么。",
-        "task_prompt": "任务：先听音频，再判断真正导致会议延期的原因是什么。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102102.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，区分被排除的原因与实际给出的原因。",
+        "audio_url": "ai_tts/cet6/1021/102102-kokoro-20260920-e3cf0285.mp3"
       },
       "back_content": {
-        "text": "结论：答案是 D，延期是因为关键数据还没审核完。",
-        "explanation": "语境揭示：The board postponed the product meeting, not because the slides were unfinished, but because the finance team had not verified the sales figures from the overseas market."
+        "text": "并非幻灯片未完成，而是财务团队尚未核验海外市场销售数据。",
+        "explanation": "not because...but because...先排除一种解释，再说明另一种；不能只抓住 unfinished 就选择幻灯片选项。"
       },
       "analysis_content": {
-        "text": "① 识别信号：not because... but because... 明确排除了伪原因并给出真实原因。② 核心规律：因果题最怕被第一个 because 迷惑；遇到 not because... but because... 时，后一个 because 才是真答案。③ 验证与迁移：如果你选了 slides were unfinished，说明只听到了表面原因，没有完成因果纠偏。",
+        "text": "not because...but because...先排除一种解释，再说明另一种；不能只抓住 unfinished 就选择幻灯片选项。",
         "tips": [
-          "not because A but because B 是高频排错结构，B 才是真正原因。",
-          "finance team verified the figures 是完整的因果核心，不能只抓 finance team。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "options": [
         {
@@ -172,13 +166,13 @@
         }
       ],
       "audio": {
-        "url": "ai_tts/cet6/1021/102102.mp3",
-        "local_path": "ai_tts/cet6/1021/102102.mp3",
-        "duration_ms": 11136,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102102-kokoro-20260920-e3cf0285.mp3",
+        "url": "ai_tts/cet6/1021/102102-kokoro-20260920-e3cf0285.mp3",
+        "duration_ms": 11544,
+        "sha256": "sha256:89473029828bd22cbfa7c5513f0e2d52ad9cf38c12734e2bd26fa4d0aefc501b",
         "transcript": "The board postponed the product meeting, not because the slides were unfinished, but because the finance team had not verified the sales figures from the overseas market.",
-        "path": "ai_tts/cet6/1021/102102.mp3"
+        "voice": "am_michael",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -194,22 +188,17 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断真正导致会议延期的原因是什么。",
-        "task_prompt": "任务：先听音频，再判断真正导致会议延期的原因是什么。",
+        "text": "播放录音后，区分被排除的原因与实际给出的原因。",
+        "task_prompt": "播放录音后，区分被排除的原因与实际给出的原因。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：not because... but because... 明确排除了伪原因并给出真实原因。② 核心规律：因果题最怕被第一个 because 迷惑；遇到 not because... but because... 时，后一个 because 才是真答案。③ 验证与迁移：如果你选了 slides were unfinished，说明只听到了表面原因，没有完成因果纠偏。",
+        "text": "not because...but because...先排除一种解释，再说明另一种；不能只抓住 unfinished 就选择幻灯片选项。",
         "tips": [
-          "not because A but because B 是高频排错结构，B 才是真正原因。",
-          "finance team verified the figures 是完整的因果核心，不能只抓 finance team。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": true,
@@ -227,6 +216,25 @@
       },
       "answer_key": {
         "correct_option": "D"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "not because A but because B 是高频排错结构，B 才是真正原因。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
       }
     },
     {
@@ -241,49 +249,39 @@
       "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再在时限内复述完整的因果链。",
-        "task_prompt": "任务：先听音频，再在时限内复述完整的因果链。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102103.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，按顺序复述录音中的因果链。",
+        "audio_url": "ai_tts/cet6/1021/102103-kokoro-20260920-61146745.mp3"
       },
       "back_content": {
-        "text": "结论：因果链是：冷却系统失灵 → 服务器过热 → 夜间数据丢失。",
-        "explanation": "语境揭示：After the cooling unit failed over the weekend, several servers overheated, and as a result the research team lost the data collected during the overnight simulation."
+        "text": "冷却设备失灵，服务器过热，研究团队因此丢失夜间模拟收集的数据。",
+        "explanation": "as a result 引出数据丢失；设备故障、过热和数据丢失是不同环节，不应交换先后或省去中间环节。"
       },
       "analysis_content": {
-        "text": "① 识别信号：After... failed、overheated、as a result、lost the data 构成完整三段因果链。② 核心规律：复述因果关系时，要把中间环节说出来；只说首尾会让因果链显得跳跃、不稳。③ 验证与迁移：如果你漏掉 overheated 这一步，就会把设备故障和数据丢失直接硬连，失去过程意识。",
+        "text": "as a result 引出数据丢失；设备故障、过热和数据丢失是不同环节，不应交换先后或省去中间环节。",
         "tips": [
-          "as a result 常把前面多个事件汇总成一个结果，不要只把它看成普通连接词。",
-          "夜间模拟得到的数据丢失是最终后果，不是最初原因。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3500,
         5100
       ],
       "audio": {
-        "url": "ai_tts/cet6/1021/102103.mp3",
-        "local_path": "ai_tts/cet6/1021/102103.mp3",
-        "duration_ms": 11112,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102103-kokoro-20260920-61146745.mp3",
+        "url": "ai_tts/cet6/1021/102103-kokoro-20260920-61146745.mp3",
+        "duration_ms": 10056,
+        "sha256": "sha256:f81cda936ea3136ee143b1fc8c09250c4c751ca98a0e88d0b3adbf3b13c58de4",
         "transcript": "After the cooling unit failed over the weekend, several servers overheated, and as a result the research team lost the data collected during the overnight simulation.",
-        "path": "ai_tts/cet6/1021/102103.mp3"
+        "voice": "bf_emma",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -299,22 +297,17 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再在时限内复述完整的因果链。",
-        "task_prompt": "任务：先听音频，再在时限内复述完整的因果链。",
+        "text": "播放录音后，按顺序复述录音中的因果链。",
+        "task_prompt": "播放录音后，按顺序复述录音中的因果链。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：After... failed、overheated、as a result、lost the data 构成完整三段因果链。② 核心规律：复述因果关系时，要把中间环节说出来；只说首尾会让因果链显得跳跃、不稳。③ 验证与迁移：如果你漏掉 overheated 这一步，就会把设备故障和数据丢失直接硬连，失去过程意识。",
+        "text": "as a result 引出数据丢失；设备故障、过热和数据丢失是不同环节，不应交换先后或省去中间环节。",
         "tips": [
-          "as a result 常把前面多个事件汇总成一个结果，不要只把它看成普通连接词。",
-          "夜间模拟得到的数据丢失是最终后果，不是最初原因。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": false,
@@ -329,6 +322,25 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "as a result 常把前面多个事件汇总成一个结果，不要只把它看成普通连接词。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -343,46 +355,36 @@
       "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再进行影子跟读，注意 because 和 therefore 带出的因果重心。",
-        "task_prompt": "任务：先听音频，再进行影子跟读，注意 because 和 therefore 带出的因果重心。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102104.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，为什么客流下降，又带来了什么后续影响？",
+        "audio_url": "ai_tts/cet6/1021/102104-kokoro-20260920-de972e2e.mp3"
       },
       "back_content": {
-        "text": "结论：完成跟读，重点突出 cause 和 consequence 的连接位置。",
-        "explanation": "语境揭示：Passenger numbers dropped sharply because the express buses were withdrawn, and therefore several small shops inside the terminal had to reduce their opening hours."
+        "text": "快线公交被撤销导致客流下降，车站内几家小店因此缩短营业时间。",
+        "explanation": "because 给出客流下降的原因，therefore 接着引出商店的反应；不能把商店营业时间缩短反过来当成最初原因。"
       },
       "analysis_content": {
-        "text": "① 识别信号：because 给出直接原因，therefore 把影响进一步推到后果层。② 核心规律：影子跟读因果句时，要把原因和结果读出层级差：because 从句解释“为什么”，therefore 后句说明“于是怎样”。③ 验证与迁移：若你把 buses were withdrawn 和 reduce their opening hours 读得没有层次，就听不出因果递进。",
+        "text": "because 给出客流下降的原因，therefore 接着引出商店的反应；不能把商店营业时间缩短反过来当成最初原因。",
         "tips": [
-          "because 和 therefore 同句出现时，通常说明是多层因果，不是单一原因。",
-          "shops had to reduce their opening hours 是第二层结果，比 dropped sharply 更晚发生。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 5600,
       "audio": {
-        "url": "ai_tts/cet6/1021/102104.mp3",
-        "local_path": "ai_tts/cet6/1021/102104.mp3",
-        "duration_ms": 10680,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102104-kokoro-20260920-de972e2e.mp3",
+        "url": "ai_tts/cet6/1021/102104-kokoro-20260920-de972e2e.mp3",
+        "duration_ms": 11160,
+        "sha256": "sha256:afb9bf70837b7717bfa3cec02af778608c51dc62f40e20a809590217a080360b",
         "transcript": "Passenger numbers dropped sharply because the express buses were withdrawn, and therefore several small shops inside the terminal had to reduce their opening hours.",
-        "path": "ai_tts/cet6/1021/102104.mp3"
+        "voice": "bm_george",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -398,22 +400,17 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再进行影子跟读，注意 because 和 therefore 带出的因果重心。",
-        "task_prompt": "任务：先听音频，再进行影子跟读，注意 because 和 therefore 带出的因果重心。",
+        "text": "播放录音后，为什么客流下降，又带来了什么后续影响？",
+        "task_prompt": "播放录音后，为什么客流下降，又带来了什么后续影响？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：because 给出直接原因，therefore 把影响进一步推到后果层。② 核心规律：影子跟读因果句时，要把原因和结果读出层级差：because 从句解释“为什么”，therefore 后句说明“于是怎样”。③ 验证与迁移：若你把 buses were withdrawn 和 reduce their opening hours 读得没有层次，就听不出因果递进。",
+        "text": "because 给出客流下降的原因，therefore 接着引出商店的反应；不能把商店营业时间缩短反过来当成最初原因。",
         "tips": [
-          "because 和 therefore 同句出现时，通常说明是多层因果，不是单一原因。",
-          "shops had to reduce their opening hours 是第二层结果，比 dropped sharply 更晚发生。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": false,
@@ -428,6 +425,25 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "because 和 therefore 同句出现时，通常说明是多层因果，不是单一原因。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -442,36 +458,26 @@
       "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断下列哪项是音频明确给出的结果。",
-        "task_prompt": "任务：先听音频，再判断下列哪项是音频明确给出的结果。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102105.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，赞助变化对项目名额造成了什么影响？",
+        "audio_url": "ai_tts/cet6/1021/102105-kokoro-20260920-2eca1c27.mp3"
       },
       "back_content": {
-        "text": "结论：答案是 A，结果是实习项目被迫缩减名额。",
-        "explanation": "语境揭示：Since two major sponsors pulled out of the summer program, the organizing committee has had to reduce the number of internship places it can fund this year."
+        "text": "两家主要赞助方退出，委员会减少了今年能资助的实习名额。",
+        "explanation": "since 引出资金来源变化，has had to reduce 报告被迫缩减；录音没有说学生必须立即付费，也没有新增赞助方。"
       },
       "analysis_content": {
-        "text": "① 识别信号：Since 给出原因，has had to reduce the number of internship places 是结果核心。② 核心规律：因果选择题里要区分 cause 和 effect；pull out of sponsorship 是原因，不是问到结果时的正确答案。③ 验证与迁移：如果你选了赞助商退出而不是名额缩减，说明题干问法和音频结构没有对应起来。",
+        "text": "since 引出资金来源变化，has had to reduce 报告被迫缩减；录音没有说学生必须立即付费，也没有新增赞助方。",
         "tips": [
-          "since 在句首时同样承担 because 的因果功能。",
-          "reduce the number of places 这种动作结果比背景原因更可能成为结果题答案。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "options": [
         {
@@ -496,13 +502,13 @@
         }
       ],
       "audio": {
-        "url": "ai_tts/cet6/1021/102105.mp3",
-        "local_path": "ai_tts/cet6/1021/102105.mp3",
-        "duration_ms": 10008,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102105-kokoro-20260920-2eca1c27.mp3",
+        "url": "ai_tts/cet6/1021/102105-kokoro-20260920-2eca1c27.mp3",
+        "duration_ms": 9456,
+        "sha256": "sha256:eb98d110eee6a092790094f1ba13790fb6b99df82aad40c01c2fec887f8bb31f",
         "transcript": "Since two major sponsors pulled out of the summer program, the organizing committee has had to reduce the number of internship places it can fund this year.",
-        "path": "ai_tts/cet6/1021/102105.mp3"
+        "voice": "af_heart",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -518,22 +524,17 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断下列哪项是音频明确给出的结果。",
-        "task_prompt": "任务：先听音频，再判断下列哪项是音频明确给出的结果。",
+        "text": "播放录音后，赞助变化对项目名额造成了什么影响？",
+        "task_prompt": "播放录音后，赞助变化对项目名额造成了什么影响？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：Since 给出原因，has had to reduce the number of internship places 是结果核心。② 核心规律：因果选择题里要区分 cause 和 effect；pull out of sponsorship 是原因，不是问到结果时的正确答案。③ 验证与迁移：如果你选了赞助商退出而不是名额缩减，说明题干问法和音频结构没有对应起来。",
+        "text": "since 引出资金来源变化，has had to reduce 报告被迫缩减；录音没有说学生必须立即付费，也没有新增赞助方。",
         "tips": [
-          "since 在句首时同样承担 because 的因果功能。",
-          "reduce the number of places 这种动作结果比背景原因更可能成为结果题答案。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": true,
@@ -551,6 +552,25 @@
       },
       "answer_key": {
         "correct_option": "A"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "since 在句首时同样承担 because 的因果功能。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -562,52 +582,42 @@
       "card_no": 6,
       "card_box_code": "1021",
       "interaction_type": 2,
-      "card_box_name": "识别因果关系",
+      "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断消费债务快速上升的直接原因。",
-        "task_prompt": "任务：先听音频，再判断消费债务快速上升的直接原因。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102106.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，录音把消费债务上升归因于什么？",
+        "audio_url": "ai_tts/cet6/1021/102106-kokoro-20260920-922979b1.mp3"
       },
       "back_content": {
-        "text": "结论：直接原因：易信贷方案的激增降低了借贷门槛，导致消费债务上升。",
-        "explanation": "语境揭示：The dramatic rise in consumer debt can be directly attributed to the proliferation of easy-credit schemes, which lowered the threshold for borrowing to historically low levels."
+        "text": "录音将其归因于便利信贷方案增加、借款门槛降低。",
+        "explanation": "be attributed to 引出说话人给出的原因。这里练习听懂材料中的归因，不把这个模拟陈述当成对现实经济的独立研究结论。"
       },
       "analysis_content": {
-        "text": "① 识别信号：\"be directly attributed to\" = 归因于直接原因，after this phrase = cause。② 核心规律：CET6 因果表达：be attributed to / stem from / arise from / result from = 问原因，主语是结果。③ 验证与迁移：答案提取：proliferation of easy-credit schemes（原因）→ rise in consumer debt（结果）。",
+        "text": "be attributed to 引出说话人给出的原因。这里练习听懂材料中的归因，不把这个模拟陈述当成对现实经济的独立研究结论。",
         "tips": [
-          "be attributed to / stem from / result from = 结果 + 这些词 + 原因，方向从右到左。",
-          "directly attributed to = 排除间接因素，选项中最直接对应原因的为答案。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3800,
         5400
       ],
       "audio": {
-        "url": "ai_tts/cet6/1021/102106.mp3",
-        "local_path": "ai_tts/cet6/1021/102106.mp3",
-        "duration_ms": 11232,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102106-kokoro-20260920-922979b1.mp3",
+        "url": "ai_tts/cet6/1021/102106-kokoro-20260920-922979b1.mp3",
+        "duration_ms": 12192,
+        "sha256": "sha256:0a0ba80cb06dbf29c640430ee1e61acf76f6fa2eac02bb6cbf717d78fdfd615c",
         "transcript": "The dramatic rise in consumer debt can be directly attributed to the proliferation of easy-credit schemes, which lowered the threshold for borrowing to historically low levels.",
-        "path": "ai_tts/cet6/1021/102106.mp3"
+        "voice": "am_michael",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -618,27 +628,22 @@
         "group_id": "2",
         "group_name": "逻辑关系",
         "box_id": "1",
-        "box_name": "识别因果关系",
+        "box_name": "因果关系",
         "box_prefix": "1021"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断消费债务快速上升的直接原因。",
-        "task_prompt": "任务：先听音频，再判断消费债务快速上升的直接原因。",
+        "text": "播放录音后，录音把消费债务上升归因于什么？",
+        "task_prompt": "播放录音后，录音把消费债务上升归因于什么？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：\"be directly attributed to\" = 归因于直接原因，after this phrase = cause。② 核心规律：CET6 因果表达：be attributed to / stem from / arise from / result from = 问原因，主语是结果。③ 验证与迁移：答案提取：proliferation of easy-credit schemes（原因）→ rise in consumer debt（结果）。",
+        "text": "be attributed to 引出说话人给出的原因。这里练习听懂材料中的归因，不把这个模拟陈述当成对现实经济的独立研究结论。",
         "tips": [
-          "be attributed to / stem from / result from = 结果 + 这些词 + 原因，方向从右到左。",
-          "directly attributed to = 排除间接因素，选项中最直接对应原因的为答案。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": false,
@@ -653,6 +658,25 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "be attributed to / stem from / result from = 结果 + 这些词 + 原因，方向从右到左。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -664,49 +688,39 @@
       "card_no": 7,
       "card_box_code": "1021",
       "interaction_type": 3,
-      "card_box_name": "识别因果关系",
+      "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断触发地区金融系统动荡的原因链。",
-        "task_prompt": "任务：先听音频，再判断触发地区金融系统动荡的原因链。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102107.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，说出从会计丑闻到金融不稳定之间的中间环节。",
+        "audio_url": "ai_tts/cet6/1021/102107-kokoro-20260920-fd66c711.mp3"
       },
       "back_content": {
-        "text": "结论：原因链：会计丑闻 → 投资者信心崩盘 → 连锁反应 → 金融系统不稳定。",
-        "explanation": "语境揭示：The collapse of investor confidence, triggered by a series of accounting scandals, set off a chain reaction that ultimately destabilized the entire regional financial system."
+        "text": "会计丑闻触发投资者信心崩溃，随后产生连锁反应，最终影响地区金融体系。",
+        "explanation": "triggered by 指出最初触发因素，ultimately 标出后续结果；不能只连首尾而把信心变化这一环节漏掉。"
       },
       "analysis_content": {
-        "text": "① 识别信号：triggered by（触发原因）+ set off a chain reaction（链式传导）+ ultimately（最终结果）。② 核心规律：CET6 因果链追踪：多级因果结构中，问 \"what triggered\" = 找 triggered by 后的词；问 \"final result\" = 找 ultimately 后的词。③ 验证与迁移：两级因果结构：最近一级原因（investor confidence collapse）vs 根本原因（accounting scandals）= 不同题目问不同层级。",
+        "text": "triggered by 指出最初触发因素，ultimately 标出后续结果；不能只连首尾而把信心变化这一环节漏掉。",
         "tips": [
-          "triggered by = 直接触发原因；ultimately = 最终后果——两端是不同考查层级。",
-          "链式因果：A → B → C，问原因选 A，问中间环节选 B，问最终结果选 C。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 5600,
       "audio": {
-        "url": "ai_tts/cet6/1021/102107.mp3",
-        "local_path": "ai_tts/cet6/1021/102107.mp3",
-        "duration_ms": 11928,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102107-kokoro-20260920-fd66c711.mp3",
+        "url": "ai_tts/cet6/1021/102107-kokoro-20260920-fd66c711.mp3",
+        "duration_ms": 10920,
+        "sha256": "sha256:2cb0c505318437a09965c627bef77926bb7c3068ab654c38171e6840b858d668",
         "transcript": "The collapse of investor confidence, triggered by a series of accounting scandals, set off a chain reaction that ultimately destabilized the entire regional financial system.",
-        "path": "ai_tts/cet6/1021/102107.mp3"
+        "voice": "bf_emma",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -717,27 +731,22 @@
         "group_id": "2",
         "group_name": "逻辑关系",
         "box_id": "1",
-        "box_name": "识别因果关系",
+        "box_name": "因果关系",
         "box_prefix": "1021"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断触发地区金融系统动荡的原因链。",
-        "task_prompt": "任务：先听音频，再判断触发地区金融系统动荡的原因链。",
+        "text": "播放录音后，说出从会计丑闻到金融不稳定之间的中间环节。",
+        "task_prompt": "播放录音后，说出从会计丑闻到金融不稳定之间的中间环节。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：triggered by（触发原因）+ set off a chain reaction（链式传导）+ ultimately（最终结果）。② 核心规律：CET6 因果链追踪：多级因果结构中，问 \"what triggered\" = 找 triggered by 后的词；问 \"final result\" = 找 ultimately 后的词。③ 验证与迁移：两级因果结构：最近一级原因（investor confidence collapse）vs 根本原因（accounting scandals）= 不同题目问不同层级。",
+        "text": "triggered by 指出最初触发因素，ultimately 标出后续结果；不能只连首尾而把信心变化这一环节漏掉。",
         "tips": [
-          "triggered by = 直接触发原因；ultimately = 最终后果——两端是不同考查层级。",
-          "链式因果：A → B → C，问原因选 A，问中间环节选 B，问最终结果选 C。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": false,
@@ -752,6 +761,25 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "triggered by = 直接触发原因；ultimately = 最终后果——两端是不同考查层级。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -763,48 +791,38 @@
       "card_no": 8,
       "card_box_code": "1021",
       "interaction_type": 0,
-      "card_box_name": "识别因果关系",
+      "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断农业紧急状态宣布的原因链。",
-        "task_prompt": "任务：先听音频，再判断农业紧急状态宣布的原因链。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102108.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，分别说出自然条件、产量变化和政府反应。",
+        "audio_url": "ai_tts/cet6/1021/102108-kokoro-20260920-a4606b70.mp3"
       },
       "back_content": {
-        "text": "结论：原因链：干旱 → 农作物产量骤降40% → 政府宣布农业紧急状态。",
-        "explanation": "语境揭示：As a direct consequence of the prolonged drought, crop yields plummeted by forty percent, forcing the government to declare a state of agricultural emergency."
+        "text": "长期干旱；产量骤降百分之四十；政府宣布农业紧急状态。",
+        "explanation": "as a direct consequence of 建立前两项的关系，forcing 引出后续反应。百分之四十是下降幅度，不是剩余产量。"
       },
       "analysis_content": {
-        "text": "① 识别信号：\"as a direct consequence of\" = 前接原因后接结果（主句）；forcing = 进一步的延伸结果。② 核心规律：as a consequence of = result structure（前原因后结果）；forcing/causing = 次级结果。③ 验证与迁移：题目若问为何宣布紧急状态 = 找 forcing 之前的（crop yields plummeted）。",
+        "text": "as a direct consequence of 建立前两项的关系，forcing 引出后续反应。百分之四十是下降幅度，不是剩余产量。",
         "tips": [
-          "as a consequence of X, Y happened = X 是原因，Y 是直接结果——两者方向明确。",
-          "forcing/causing/prompting = 延伸次级结果动词，答案层级比主句结果下一级。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "audio": {
-        "url": "ai_tts/cet6/1021/102108.mp3",
-        "local_path": "ai_tts/cet6/1021/102108.mp3",
-        "duration_ms": 10920,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102108-kokoro-20260920-a4606b70.mp3",
+        "url": "ai_tts/cet6/1021/102108-kokoro-20260920-a4606b70.mp3",
+        "duration_ms": 11088,
+        "sha256": "sha256:ffa52429ce3343f034a6e60889c1b97e6f3e84f9abc916ca735bfdb8d78c274e",
         "transcript": "As a direct consequence of the prolonged drought, crop yields plummeted by forty percent, forcing the government to declare a state of agricultural emergency.",
-        "path": "ai_tts/cet6/1021/102108.mp3"
+        "voice": "bm_george",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -815,27 +833,22 @@
         "group_id": "2",
         "group_name": "逻辑关系",
         "box_id": "1",
-        "box_name": "识别因果关系",
+        "box_name": "因果关系",
         "box_prefix": "1021"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断农业紧急状态宣布的原因链。",
-        "task_prompt": "任务：先听音频，再判断农业紧急状态宣布的原因链。",
+        "text": "播放录音后，分别说出自然条件、产量变化和政府反应。",
+        "task_prompt": "播放录音后，分别说出自然条件、产量变化和政府反应。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：\"as a direct consequence of\" = 前接原因后接结果（主句）；forcing = 进一步的延伸结果。② 核心规律：as a consequence of = result structure（前原因后结果）；forcing/causing = 次级结果。③ 验证与迁移：题目若问为何宣布紧急状态 = 找 forcing 之前的（crop yields plummeted）。",
+        "text": "as a direct consequence of 建立前两项的关系，forcing 引出后续反应。百分之四十是下降幅度，不是剩余产量。",
         "tips": [
-          "as a consequence of X, Y happened = X 是原因，Y 是直接结果——两者方向明确。",
-          "forcing/causing/prompting = 延伸次级结果动词，答案层级比主句结果下一级。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": false,
@@ -850,6 +863,25 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "as a consequence of X, Y happened = X 是原因，Y 是直接结果——两者方向明确。",
+        "box_progression_role": "application",
+        "review_status": "draft"
       }
     },
     {
@@ -861,39 +893,29 @@
       "card_no": 9,
       "card_box_code": "1021",
       "interaction_type": 1,
-      "card_box_name": "识别因果关系",
+      "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断青少年学业表现下降的因果链。",
-        "task_prompt": "任务：先听音频，再判断青少年学业表现下降的因果链。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102109.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，录音明确表达了哪种关系？选择最符合材料的一项。",
+        "audio_url": "ai_tts/cet6/1021/102109-kokoro-20260920-3cd674f6.mp3"
       },
       "back_content": {
-        "text": "结论：屏幕时间增加 → 睡眠减少 → 学业表现下降 + 压力升高。",
-        "explanation": "语境揭示：Researchers found that increased screen time among adolescents is strongly correlated with reduced sleep duration, which in turn leads to diminished academic performance and elevated stress levels."
+        "text": "B 复述了后半句：睡眠减少会影响学业表现。屏幕时间与睡眠减少在前半句只被描述为强相关。",
+        "explanation": "correlated with 不等于直接因果，因此不能选“屏幕时间直接造成学业失败”。B 对应材料陈述，但材料本身不等于已经提供严格因果证明。"
       },
       "analysis_content": {
-        "text": "① 识别信号：\"is strongly correlated with\" = 相关关系，\"which in turn leads to\" = 因果链传导。② 核心规律：CET6 因果链：correlation 不等于 causation，但 \"leads to\" 明确表达因果方向。③ 验证与迁移：正确答案：reduced sleep → diminished academic performance（直接因果），而非 screen time → academic performance（间接）。",
+        "text": "correlated with 不等于直接因果，因此不能选“屏幕时间直接造成学业失败”。B 对应材料陈述，但材料本身不等于已经提供严格因果证明。",
         "tips": [
-          "correlated with = 相关但不一定因果；leads to = 明确因果，后者更重要。",
-          "which in turn = 链式传导词，提示前面已发生一级结果，后面还有延伸。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "options": [
         {
@@ -918,13 +940,13 @@
         }
       ],
       "audio": {
-        "url": "ai_tts/cet6/1021/102109.mp3",
-        "local_path": "ai_tts/cet6/1021/102109.mp3",
-        "duration_ms": 13128,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102109-kokoro-20260920-3cd674f6.mp3",
+        "url": "ai_tts/cet6/1021/102109-kokoro-20260920-3cd674f6.mp3",
+        "duration_ms": 13056,
+        "sha256": "sha256:915519c8bd92f5ed7117c0f4e704375d0c1ea6f066c24c0b6e135b78641c66a8",
         "transcript": "Researchers found that increased screen time among adolescents is strongly correlated with reduced sleep duration, which in turn leads to diminished academic performance and elevated stress levels.",
-        "path": "ai_tts/cet6/1021/102109.mp3"
+        "voice": "af_heart",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -935,27 +957,22 @@
         "group_id": "2",
         "group_name": "逻辑关系",
         "box_id": "1",
-        "box_name": "识别因果关系",
+        "box_name": "因果关系",
         "box_prefix": "1021"
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断青少年学业表现下降的因果链。",
-        "task_prompt": "任务：先听音频，再判断青少年学业表现下降的因果链。",
+        "text": "播放录音后，录音明确表达了哪种关系？选择最符合材料的一项。",
+        "task_prompt": "播放录音后，录音明确表达了哪种关系？选择最符合材料的一项。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：\"is strongly correlated with\" = 相关关系，\"which in turn leads to\" = 因果链传导。② 核心规律：CET6 因果链：correlation 不等于 causation，但 \"leads to\" 明确表达因果方向。③ 验证与迁移：正确答案：reduced sleep → diminished academic performance（直接因果），而非 screen time → academic performance（间接）。",
+        "text": "correlated with 不等于直接因果，因此不能选“屏幕时间直接造成学业失败”。B 对应材料陈述，但材料本身不等于已经提供严格因果证明。",
         "tips": [
-          "correlated with = 相关但不一定因果；leads to = 明确因果，后者更重要。",
-          "which in turn = 链式传导词，提示前面已发生一级结果，后面还有延伸。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": true,
@@ -973,6 +990,25 @@
       },
       "answer_key": {
         "correct_option": "B"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "correlated with = 相关但不一定因果；leads to = 明确因果，后者更重要。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -984,52 +1020,42 @@
       "card_no": 10,
       "card_box_code": "1021",
       "interaction_type": 2,
-      "card_box_name": "识别因果关系",
+      "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断谈判失败的真正原因。",
-        "task_prompt": "任务：先听音频，再判断谈判失败的真正原因。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102110.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，谈判失败的原因是否是双方没有合作意愿？",
+        "audio_url": "ai_tts/cet6/1021/102110-kokoro-20260920-75456a26.mp3"
       },
       "back_content": {
-        "text": "结论：真正原因：制度性障碍（需立法批准）阻碍了双方做出有约束力的承诺。",
-        "explanation": "语境揭示：The failure of negotiations stemmed not from a lack of willingness on either side, but from institutional barriers that prevented either party from making binding commitments without prior legislative approval."
+        "text": "不是。制度限制使双方在事先获得立法批准前，不能作出有约束力的承诺。",
+        "explanation": "not from...but from...排除缺少意愿，强调制度障碍。without prior legislative approval 表明限制条件。"
       },
       "analysis_content": {
-        "text": "① 识别信号：\"stemmed not from A, but from B\" = 否定表面原因 A，指明真正原因 B。② 核心规律：CET6 not...but 因果结构：前原因是常识陷阱，后原因是真正答案。③ 验证与迁移：\"institutional barriers\" + \"legislative approval\" = 制度约束是真正原因，\"lack of willingness\" 是被否定的干扰项。",
+        "text": "not from...but from...排除缺少意愿，强调制度障碍。without prior legislative approval 表明限制条件。",
         "tips": [
-          "not from A but from B = B 是真因，A 是被明确否定的干扰项——选项中必有 A。",
-          "制度性障碍/institutional barriers = CET6 常考社会/政治话题因果，注意识别。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         4000,
         5600
       ],
       "audio": {
-        "url": "ai_tts/cet6/1021/102110.mp3",
-        "local_path": "ai_tts/cet6/1021/102110.mp3",
-        "duration_ms": 12936,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102110-kokoro-20260920-75456a26.mp3",
+        "url": "ai_tts/cet6/1021/102110-kokoro-20260920-75456a26.mp3",
+        "duration_ms": 14544,
+        "sha256": "sha256:e3cb65bee400eb81c98c43bcce2ef62b400a38ca0c2189dd2052899f6b5458c7",
         "transcript": "The failure of negotiations stemmed not from a lack of willingness on either side, but from institutional barriers that prevented either party from making binding commitments without prior legislative approval.",
-        "path": "ai_tts/cet6/1021/102110.mp3"
+        "voice": "am_michael",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -1040,27 +1066,22 @@
         "group_id": "2",
         "group_name": "逻辑关系",
         "box_id": "1",
-        "box_name": "识别因果关系",
+        "box_name": "因果关系",
         "box_prefix": "1021"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断谈判失败的真正原因。",
-        "task_prompt": "任务：先听音频，再判断谈判失败的真正原因。",
+        "text": "播放录音后，谈判失败的原因是否是双方没有合作意愿？",
+        "task_prompt": "播放录音后，谈判失败的原因是否是双方没有合作意愿？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：\"stemmed not from A, but from B\" = 否定表面原因 A，指明真正原因 B。② 核心规律：CET6 not...but 因果结构：前原因是常识陷阱，后原因是真正答案。③ 验证与迁移：\"institutional barriers\" + \"legislative approval\" = 制度约束是真正原因，\"lack of willingness\" 是被否定的干扰项。",
+        "text": "not from...but from...排除缺少意愿，强调制度障碍。without prior legislative approval 表明限制条件。",
         "tips": [
-          "not from A but from B = B 是真因，A 是被明确否定的干扰项——选项中必有 A。",
-          "制度性障碍/institutional barriers = CET6 常考社会/政治话题因果，注意识别。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": false,
@@ -1075,6 +1096,25 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "not from A but from B = B 是真因，A 是被明确否定的干扰项——选项中必有 A。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1086,49 +1126,39 @@
       "card_no": 11,
       "card_box_code": "1021",
       "interaction_type": 3,
-      "card_box_name": "识别因果关系",
+      "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断选举高投票率的主要原因。",
-        "task_prompt": "任务：先听音频，再判断选举高投票率的主要原因。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102111.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，录音给出的主要原因与重点人群分别是什么？",
+        "audio_url": "ai_tts/cet6/1021/102111-kokoro-20260920-f200138d.mp3"
       },
       "back_content": {
-        "text": "结论：主要原因：公民组织针对首次投票者（尤其是农村和弱势社区）的持续宣传活动。",
-        "explanation": "语境揭示：The unusually high turnout in the election was largely due to a sustained campaign by civic organizations to reach first-time voters, particularly in rural and underrepresented communities."
+        "text": "持续的宣传活动是投票率高的主要原因；重点是首次投票者，尤其农村及代表性不足的群体。",
+        "explanation": "largely due to 表示主要归因而非唯一原因；particularly 进一步限定重点人群，不能扩大成只针对这一群体。"
       },
       "analysis_content": {
-        "text": "① 识别信号：\"was largely due to\" = 主要归因于，后接核心原因。② 核心规律：CET6 due to = 归因短语，\"largely due to\" = 主要原因（排他性强），选项中含 largely/mainly/primarily 方向的是答案。③ 验证与迁移：答案核心：civic organizations' campaign → first-time voters in rural areas；\"unusually high\" 是结果，不是答案。",
+        "text": "largely due to 表示主要归因而非唯一原因；particularly 进一步限定重点人群，不能扩大成只针对这一群体。",
         "tips": [
-          "due to / on account of = 归因短语，后接名词短语（原因），短语前是结果（主语）。",
-          "largely/mainly/primarily = 程度副词修饰归因词，限定是主要原因而非唯一原因。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 5200,
       "audio": {
-        "url": "ai_tts/cet6/1021/102111.mp3",
-        "local_path": "ai_tts/cet6/1021/102111.mp3",
-        "duration_ms": 12960,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102111-kokoro-20260920-f200138d.mp3",
+        "url": "ai_tts/cet6/1021/102111-kokoro-20260920-f200138d.mp3",
+        "duration_ms": 12048,
+        "sha256": "sha256:7afe668336f178f1c10d51d261247c61f6c54032d9a431ba304b00d25d397386",
         "transcript": "The unusually high turnout in the election was largely due to a sustained campaign by civic organizations to reach first-time voters, particularly in rural and underrepresented communities.",
-        "path": "ai_tts/cet6/1021/102111.mp3"
+        "voice": "bf_emma",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -1139,27 +1169,22 @@
         "group_id": "2",
         "group_name": "逻辑关系",
         "box_id": "1",
-        "box_name": "识别因果关系",
+        "box_name": "因果关系",
         "box_prefix": "1021"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断选举高投票率的主要原因。",
-        "task_prompt": "任务：先听音频，再判断选举高投票率的主要原因。",
+        "text": "播放录音后，录音给出的主要原因与重点人群分别是什么？",
+        "task_prompt": "播放录音后，录音给出的主要原因与重点人群分别是什么？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：\"was largely due to\" = 主要归因于，后接核心原因。② 核心规律：CET6 due to = 归因短语，\"largely due to\" = 主要原因（排他性强），选项中含 largely/mainly/primarily 方向的是答案。③ 验证与迁移：答案核心：civic organizations' campaign → first-time voters in rural areas；\"unusually high\" 是结果，不是答案。",
+        "text": "largely due to 表示主要归因而非唯一原因；particularly 进一步限定重点人群，不能扩大成只针对这一群体。",
         "tips": [
-          "due to / on account of = 归因短语，后接名词短语（原因），短语前是结果（主语）。",
-          "largely/mainly/primarily = 程度副词修饰归因词，限定是主要原因而非唯一原因。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": false,
@@ -1174,6 +1199,25 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "due to / on account of = 归因短语，后接名词短语（原因），短语前是结果（主语）。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     },
     {
@@ -1185,48 +1229,38 @@
       "card_no": 12,
       "card_box_code": "1021",
       "interaction_type": 0,
-      "card_box_name": "识别因果关系",
+      "card_box_name": "因果关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：先听音频，再判断客户保留率下降的根本原因。",
-        "task_prompt": "任务：先听音频，再判断客户保留率下降的根本原因。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1021/102112.mp3",
-        "highlight_ranges": []
+        "text": "播放录音后，按录音复述培训投入不足的后续影响。",
+        "audio_url": "ai_tts/cet6/1021/102112-kokoro-20260920-d2587e83.mp3"
       },
       "back_content": {
-        "text": "结论：根本原因：组织未投资持续员工培训 → 服务质量逐渐下滑 → 客户保留率下降。",
-        "explanation": "语境揭示：It is precisely because the organization failed to invest in continuous staff training that its service quality gradually eroded, leading to a significant decline in client retention rates."
+        "text": "缺少持续员工培训，服务质量逐渐下降，客户留存率随之下降。",
+        "explanation": "because 给出起点，leading to 引出后续影响；留存率下降不等于客户人数立即归零，也不能自行补出具体幅度。"
       },
       "analysis_content": {
-        "text": "① 识别信号：\"It is precisely because...that\" = 强调因果句型（cleft sentence），原因是 because 后的从句。② 核心规律：CET6 强调句 It is because X that Y = X 是强调原因，Y 是结果，语气比一般 because 更强。③ 验证与迁移：答案方向：failed to invest in staff training = 根本原因（精确答案），service quality erosion = 中间环节。",
+        "text": "because 给出起点，leading to 引出后续影响；留存率下降不等于客户人数立即归零，也不能自行补出具体幅度。",
         "tips": [
-          "It is...because...that = 强调因果句型，because 后是被强调的核心原因。",
-          "leading to = 延伸结果连接词，指向最终后果；根本原因在 because 之后。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "audio": {
-        "url": "ai_tts/cet6/1021/102112.mp3",
-        "local_path": "ai_tts/cet6/1021/102112.mp3",
-        "duration_ms": 12408,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
+        "path": "ai_tts/cet6/1021/102112-kokoro-20260920-d2587e83.mp3",
+        "url": "ai_tts/cet6/1021/102112-kokoro-20260920-d2587e83.mp3",
+        "duration_ms": 13776,
+        "sha256": "sha256:efdb60e187c42bdf4e1fdb815bea91a4a552135ccc340a25f911eb80629d01f5",
         "transcript": "It is precisely because the organization failed to invest in continuous staff training that its service quality gradually eroded, leading to a significant decline in client retention rates.",
-        "path": "ai_tts/cet6/1021/102112.mp3"
+        "voice": "bm_george",
+        "rate": "1.0"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -1237,27 +1271,22 @@
         "group_id": "2",
         "group_name": "逻辑关系",
         "box_id": "1",
-        "box_name": "识别因果关系",
+        "box_name": "因果关系",
         "box_prefix": "1021"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断客户保留率下降的根本原因。",
-        "task_prompt": "任务：先听音频，再判断客户保留率下降的根本原因。",
+        "text": "播放录音后，按录音复述培训投入不足的后续影响。",
+        "task_prompt": "播放录音后，按录音复述培训投入不足的后续影响。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别因果关系",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：\"It is precisely because...that\" = 强调因果句型（cleft sentence），原因是 because 后的从句。② 核心规律：CET6 强调句 It is because X that Y = X 是强调原因，Y 是结果，语气比一般 because 更强。③ 验证与迁移：答案方向：failed to invest in staff training = 根本原因（精确答案），service quality erosion = 中间环节。",
+        "text": "because 给出起点，leading to 引出后续影响；留存率下降不等于客户人数立即归零，也不能自行补出具体幅度。",
         "tips": [
-          "It is...because...that = 强调因果句型，because 后是被强调的核心原因。",
-          "leading to = 延伸结果连接词，指向最终后果；根本原因在 because 之后。"
+          "把每条判断对应到录音中的具体信息，不额外扩大范围。"
         ]
       },
       "auto_scoring": false,
@@ -1272,6 +1301,25 @@
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "沿录音信息辨认原因、结果及证据强度",
+        "weak_point_tags": [
+          "listening_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "It is...because...that = 强调因果句型，because 后是被强调的核心原因。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
       }
     }
   ],
