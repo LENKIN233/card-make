@@ -701,6 +701,10 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /rev-parse refs\/heads\/main/);
   assert.match(reviewJob, /fsck --strict --no-reflogs/);
   assert.match(reviewJob, /git clone --shared --no-checkout/);
+  assert.equal((reviewJob.match(/filter\.lfs\.process='git-lfs filter-process'/g) || []).length, 3);
+  assert.equal((verifyJob.match(/filter\.lfs\.process='git-lfs filter-process'/g) || []).length, 1);
+  assert.doesNotMatch(reviewJob, /diff-index --quiet "\$GITHUB_SHA" -- \. ":\(exclude\)ai_tts\/\$MEDIA_TRACK"/);
+  assert.match(reviewJob, /filter\.lfs\.required=true diff --quiet --no-ext-diff --no-textconv "\$GITHUB_SHA" -- \./);
   assert.match(reviewJob, /find "\$repository" -perm -222/);
   assert.match(reviewJob, /actions: read/);
   assert.match(reviewJob, /Download retained complete raw review package/);
