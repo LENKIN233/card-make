@@ -652,7 +652,7 @@ def run_review_package(
     model_manifest_sha256: str,
     workflow_run_id: str,
     workflow_run_attempt: int,
-    expected_asset_count: int = 301,
+    expected_asset_count: int | None = None,
     maximum_runtime_seconds: int | None = None,
     monotonic=time.monotonic,
     allow_existing_output_dir: bool = False,
@@ -660,8 +660,12 @@ def run_review_package(
     entries = worklist.get("entries")
     if worklist.get("schema_version") != "audio-perceptual-worklist.v3":
         raise ValueError("trusted media runner requires worklist v3")
-    if worklist.get("track") != "cet4" or not isinstance(entries, list):
-        raise ValueError("trusted media runner requires a CET4 worklist")
+    scopes = load_json(Path(__file__).resolve().parents[1] / "spec/trusted-media-run-producer.json")["execution"]["exact_scopes"]
+    scope = scopes.get(worklist.get("track"))
+    if scope is None or not isinstance(entries, list):
+        raise ValueError("trusted media runner requires a registered CET4 or CET6 worklist")
+    if expected_asset_count is None:
+        expected_asset_count = scope["audio_asset_count"]
     if len(entries) != expected_asset_count:
         raise ValueError(
             f"trusted media runner requires exactly {expected_asset_count} assets"

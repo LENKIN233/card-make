@@ -1,14 +1,21 @@
 name: trusted-media-run
+run-name: trusted-media-run-${{ inputs.track }}
 
 on:
   workflow_dispatch:
     inputs:
+      track:
+        description: Exact registered exam scope
+        required: true
+        type: choice
+        options: [cet4, cet6]
+        default: cet4
       worklist_path:
-        description: Tracked pending CET4 audio perceptual worklist
+        description: Tracked pending audio perceptual worklist for the selected track
         required: true
         type: string
       authorization_path:
-        description: Tracked current full-track CET4 model authorization
+        description: Tracked current full-track model authorization for the selected track
         required: true
         type: string
       retained_run_id:
@@ -31,18 +38,20 @@ permissions:
   contents: read
 
 concurrency:
-  group: trusted-media-run-cet4
+  group: trusted-media-run
   cancel-in-progress: false
 
 jobs:
   review:
     if: github.ref == 'refs/heads/main'
     runs-on: [self-hosted, macOS, ARM64, softbook-media]
-    timeout-minutes: 240
+    timeout-minutes: 360
     permissions:
       actions: read
       contents: read
     env:
+      MEDIA_TRACK: ${{ inputs.track }}
+      WORKLIST_PATH: ${{ inputs.worklist_path }}
       GIT_ATTR_NOSYSTEM: "1"
       GIT_CONFIG_GLOBAL: /dev/null
       GIT_CONFIG_NOSYSTEM: "1"
@@ -64,7 +73,7 @@ jobs:
           test ! -e "$preflight_dir"
           mkdir -m 700 "$preflight_dir"
           echo "TRUSTED_MEDIA_PREFLIGHT_DIR=$preflight_dir" >> "$GITHUB_ENV"
-          echo "TRUSTED_MEDIA_DEADLINE_EPOCH=$(( $(date +%s) + 12600 ))" >> "$GITHUB_ENV"
+          echo "TRUSTED_MEDIA_DEADLINE_EPOCH=$(( $(date +%s) + 19800 ))" >> "$GITHUB_ENV"
           echo "TRUSTED_MEDIA_EXECUTION_SOURCE_COMMIT=$GITHUB_SHA" >> "$GITHUB_ENV"
 
       - name: Materialize isolated exact source snapshots from runner mirrors
@@ -94,7 +103,7 @@ jobs:
           test "$(git --git-dir="$source_repository" rev-parse refs/heads/main)" = "$GITHUB_SHA"
           git --git-dir="$source_repository" cat-file -e "$GITHUB_SHA^{commit}"
           git --git-dir="$source_repository" fsck --strict --no-reflogs --no-dangling "$GITHUB_SHA"
-          product_commit=7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1
+          product_commit=d77d7020ba83e6826845df93bda0e31d7b7ca465
           git --git-dir="$product_repository" cat-file -e "$product_commit^{commit}"
           git --git-dir="$product_repository" fsck --strict --no-reflogs --no-dangling "$product_commit"
           source_root="$RUNNER_TEMP/trusted-source-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
@@ -105,15 +114,25 @@ jobs:
           test "$(git -C "$source_root" rev-parse refs/remotes/origin/main)" = "$GITHUB_SHA"
           test -n "${CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT:-}"
           asset_root="$(cd "$CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT" && pwd -P)"
-          test -d "$asset_root/ai_tts/cet4"
+          test -d "$asset_root/ai_tts/$MEDIA_TRACK"
           test ! -L "$CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT"
           case "$asset_root/" in
             "$GITHUB_WORKSPACE/"*) echo "asset cache must remain outside the repository" >&2; exit 1 ;;
           esac
           test -z "$(find "$asset_root" -type l -print -quit)"
-          test "$(find "$asset_root/ai_tts/cet4" -type f -name '*.mp3' | wc -l | tr -d ' ')" = 301
-          rsync -a "$asset_root/ai_tts/cet4/" "$source_root/ai_tts/cet4/"
-          git -C "$source_root" diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          # Historical formal receipts are independently replayed by preflight.
+          # Keep their exact assets available as well as this run's selected scope.
+          for manifest in "$source_root"/reviews/trusted_media_runs/*/audio-manifest.json; do
+            test -f "$manifest" || continue
+            manifest_track="$(jq -er .track "$manifest")"
+            node "$source_root/scripts/materialize_trusted_media_assets.mjs" \
+              --source-root "$asset_root" --destination-root "$source_root" \
+              --document "$manifest" --track "$manifest_track"
+          done
+          node "$source_root/scripts/materialize_trusted_media_assets.mjs" \
+            --source-root "$asset_root" --destination-root "$source_root" \
+            --document "$source_root/$WORKLIST_PATH" --track "$MEDIA_TRACK"
+          git -C "$source_root" diff-index --quiet "$GITHUB_SHA" -- . ":(exclude)ai_tts/$MEDIA_TRACK"
           test -z "$(git -C "$source_root" ls-files --others --exclude-standard)"
           product_root="$RUNNER_TEMP/softbook_cet"
           test ! -e "$product_root"
@@ -138,7 +157,7 @@ jobs:
           set -euo pipefail
           test "$(git -C "$TRUSTED_SOURCE_ROOT" rev-parse HEAD)" = "$GITHUB_SHA"
           test "$GITHUB_REF" = refs/heads/main
-          git -C "$TRUSTED_SOURCE_ROOT" diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          git -C "$TRUSTED_SOURCE_ROOT" diff-index --quiet "$GITHUB_SHA" -- . ":(exclude)ai_tts/$MEDIA_TRACK"
           test -z "$(git -C "$TRUSTED_SOURCE_ROOT" ls-files --others --exclude-standard)"
           [[ "$WORKLIST_PATH" =~ ^reviews/audio_perceptual_worklists/[A-Za-z0-9._-]+\.json$ ]]
           [[ "$AUTHORIZATION_PATH" =~ ^reviews/approved_batches/[A-Za-z0-9._-]+\.json$ ]]
@@ -196,7 +215,7 @@ jobs:
           node scripts/audit_card_quality.mjs --report-path "$RUNNER_TEMP/card-quality-audit.json"
           node scripts/validate_audio_lfs.mjs
           node scripts/validate_audio_qc.mjs
-          git diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          git diff-index --quiet "$GITHUB_SHA" -- . ":(exclude)ai_tts/$MEDIA_TRACK"
           test -z "$(git ls-files --others --exclude-standard)"
           chmod -R a-w "$TRUSTED_SOURCE_ROOT"
 
@@ -208,7 +227,7 @@ jobs:
           command -v ffmpeg >/dev/null
           replay="$RUNNER_TEMP/trusted-audio-technical-review.json"
           node "$TRUSTED_SOURCE_ROOT/scripts/audit_audio_technical.mjs" \
-            --track cet4 \
+            --track "$MEDIA_TRACK" \
             --probe ffprobe \
             --signal-probe ffmpeg \
             --report-path "$replay"
@@ -296,6 +315,8 @@ jobs:
             .github/workflows/trusted-media-run.yml \
             scripts/run_trusted_media_review.py \
             scripts/build_trusted_media_run_receipt.mjs \
+            scripts/materialize_trusted_media_assets.mjs \
+            spec/trusted-media-run-producer.json \
             scripts/replay_trusted_media_raw_outputs.py \
             scripts/audit_audio_technical.mjs \
             scripts/manage_audio_perceptual_worklist.mjs \
@@ -376,6 +397,7 @@ jobs:
     permissions:
       contents: read
     env:
+      MEDIA_TRACK: ${{ inputs.track }}
       GIT_LFS_SKIP_SMUDGE: "1"
     steps:
       - name: Checkout exact trusted main commit without LFS download
@@ -390,7 +412,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LENKIN233/softbook_cet
-          ref: 7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1
+          ref: d77d7020ba83e6826845df93bda0e31d7b7ca465
           path: product-authority-verify
           fetch-depth: 1
           persist-credentials: false
@@ -401,7 +423,7 @@ jobs:
           set -euo pipefail
           source_root="$RUNNER_TEMP/trusted-source-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           product_root="$RUNNER_TEMP/softbook_cet"
-          product_commit=7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1
+          product_commit=d77d7020ba83e6826845df93bda0e31d7b7ca465
           test ! -e "$source_root"
           test ! -e "$product_root"
           git worktree add --detach "$source_root" "$GITHUB_SHA"
@@ -448,9 +470,10 @@ jobs:
           rebuilt="$RUNNER_TEMP/trusted-media-rebuilt"
           audit_replay="$RUNNER_TEMP/trusted-audio-technical-verify.json"
           mkdir "$rebuilt"
-          test "$(find "$downloaded/ai_tts/cet4" -type f -name '*.mp3' | wc -l | tr -d ' ')" = 301
           test -z "$(find "$downloaded/ai_tts" -type l -print -quit)"
-          rsync -a "$downloaded/ai_tts/cet4/" "$TRUSTED_SOURCE_ROOT/ai_tts/cet4/"
+          node "$TRUSTED_SOURCE_ROOT/scripts/materialize_trusted_media_assets.mjs" \
+            --source-root "$downloaded" --destination-root "$TRUSTED_SOURCE_ROOT" \
+            --document "$downloaded/audio-manifest.json" --track "$MEDIA_TRACK"
           cp "$downloaded"/run-*.jsonl "$rebuilt/"
           cp "$downloaded/run-package.json" "$rebuilt/"
           cp "$downloaded/model-weights-manifest.json" "$rebuilt/"
@@ -500,7 +523,7 @@ jobs:
           command -v ffprobe >/dev/null
           command -v ffmpeg >/dev/null
           node scripts/audit_audio_technical.mjs \
-            --track cet4 \
+            --track "$MEDIA_TRACK" \
             --probe ffprobe \
             --signal-probe ffmpeg \
             --report-path "$audit_replay"
@@ -519,7 +542,7 @@ jobs:
             trusted-media-run-receipt.json; do
             cmp "$downloaded/$artifact" "$rebuilt/$artifact"
           done
-          git diff-index --quiet "$GITHUB_SHA" -- . ':(exclude)ai_tts/cet4'
+          git diff-index --quiet "$GITHUB_SHA" -- . ":(exclude)ai_tts/$MEDIA_TRACK"
           test -z "$(git ls-files --others --exclude-standard)"
           diff -qr "$downloaded/ai_tts" "$rebuilt/ai_tts"
           echo "VERIFIED_MEDIA_DIR=$rebuilt" >> "$GITHUB_ENV"

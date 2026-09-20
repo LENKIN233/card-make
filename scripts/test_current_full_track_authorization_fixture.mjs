@@ -44,6 +44,7 @@ export function createCurrentFullTrackAuthorizationFixture({
   root,
   repositoryRoot,
   cards,
+  track = 'cet4',
 }) {
   const cardIds = cards.map(card => String(card.card_id));
   const boxPrefixes = [...new Set(cards.map(card => String(card.knowledge_ref.box_prefix)))].sort();
@@ -82,7 +83,7 @@ export function createCurrentFullTrackAuthorizationFixture({
   const audit = JSON.parse(authorizationAuditBytes);
   const reviewAuditSha256 = `sha256:${sha256(reviewAuditBytes)}`;
   const authorizationAuditSha256 = `sha256:${sha256(authorizationAuditBytes)}`;
-  const reviewScope = {track: 'cet4', box_prefixes: boxPrefixes, card_ids: cardIds};
+  const reviewScope = {track, box_prefixes: boxPrefixes, card_ids: cardIds};
   const reviewInput = buildModelAcceptanceInputSha256({
     decisionType: 'full_track_review',
     scope: reviewScope,
@@ -130,7 +131,7 @@ export function createCurrentFullTrackAuthorizationFixture({
   const runtimePath = 'reviews/runtime_payloads/current-full-track-runtime.json';
   const runtimePayload = {
     source: {id: 'trusted-media-test-fixture', label: 'Trusted media test fixture'},
-    track: 'cet4',
+    track,
     card_records: cards,
     assets: [],
     release: null,
@@ -140,7 +141,7 @@ export function createCurrentFullTrackAuthorizationFixture({
   const runtimeIdentity = writeJson(root, runtimePath, runtimePayload);
   const authorizationPath = 'reviews/approved_batches/current-full-track-authorization.json';
   const authorizationScope = {
-    track: 'cet4',
+    track,
     purpose: 'formal_content',
     box_prefixes: boxPrefixes,
     card_ids: cardIds,

@@ -22,6 +22,12 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SHA256_RE = /^[0-9a-f]{64}$/;
 const COMMIT_RE = /^[0-9a-f]{40}$/;
 const CONTENT_VERSION_RE = /^sha256:[0-9a-f]{64}$/;
+const REGISTERED_SCOPES = JSON.parse(fs.readFileSync(path.join(ROOT, 'spec/trusted-media-run-producer.json'), 'utf8')).execution.exact_scopes;
+function registeredScope(track) {
+  if (!Object.hasOwn(REGISTERED_SCOPES, track)) throw new Error('trusted media track is not registered');
+  return REGISTERED_SCOPES[track];
+}
+
 const GENERAL_RESULT_TO_CHECK = Object.freeze({
   audio_matches_text: 'matches_text',
   target_signal_audible: 'target_signal_audible',
@@ -180,17 +186,17 @@ function readJsonl(bytes, label) {
   });
 }
 
-function validateAuthorization(authorization, authorizationBytes, root, authorizationPath) {
+function validateAuthorization(authorization, authorizationBytes, root, authorizationPath, expectedScope) {
   if (
     authorization?.schema_version !== 'model-owned-content-authorization.v2' ||
     authorization?.authorization_mode !== 'full_track' ||
-    authorization?.scope?.track !== 'cet4' ||
+    authorization?.scope?.track !== expectedScope.track ||
     authorization?.scope?.purpose !== 'formal_content' ||
     !CONTENT_VERSION_RE.test(authorization?.content_version || '') ||
-    authorization?.scope?.card_ids?.length !== 1180 ||
-    new Set(authorization.scope.card_ids).size !== 1180 ||
-    authorization?.scope?.box_prefixes?.length !== 108 ||
-    new Set(authorization.scope.box_prefixes).size !== 108
+    authorization?.scope?.card_ids?.length !== expectedScope.card_count ||
+    new Set(authorization.scope.card_ids).size !== expectedScope.card_count ||
+    authorization?.scope?.box_prefixes?.length !== expectedScope.box_count ||
+    new Set(authorization.scope.box_prefixes).size !== expectedScope.box_count
   ) {
     throw new Error('content authorization does not bind exact CET4 1180/108 scope');
   }
@@ -265,6 +271,7 @@ function validateAudioCoverage(value, lock, label) {
 }
 
 function validateRunPackage(runPackage, runRoot, worklist, lock) {
+  const expectedScope = registeredScope(worklist.track);
   exactKeys(
     runPackage,
     ['schema_version', 'model', 'execution', 'runs', 'decisions', 'result'],
@@ -390,15 +397,15 @@ function validateRunPackage(runPackage, runRoot, worklist, lock) {
   const blindRuns = [...runMap.values()].filter(run => run.purpose === 'blind_transcript');
   if (
     fullRuns.length < 2 ||
-    fullRuns.some(run => run.card_count !== 301) ||
+    fullRuns.some(run => run.card_count !== expectedScope.audio_asset_count) ||
     new Set(fullRuns.map(run => run.sha256)).size !== fullRuns.length ||
     blindRuns.length < 2 ||
-    blindRuns.some(run => run.card_count !== 301) ||
+    blindRuns.some(run => run.card_count !== expectedScope.audio_asset_count) ||
     new Set(blindRuns.map(run => run.sha256)).size !== blindRuns.length
   ) {
     throw new Error('run package lacks two distinct complete 301-asset perceptual and blind transcript runs');
   }
-  if (!Array.isArray(runPackage.decisions) || runPackage.decisions.length !== 301) {
+  if (!Array.isArray(runPackage.decisions) || runPackage.decisions.length !== expectedScope.audio_asset_count) {
     throw new Error('run package must contain exactly 301 decisions');
   }
   const decisions = new Map();
@@ -420,8 +427,8 @@ function validateRunPackage(runPackage, runRoot, worklist, lock) {
   }
   if (
     worklist.entries.some(entry => !decisions.has(entry.card_id)) ||
-    runPackage.result?.reviewed_card_count !== 301 ||
-    runPackage.result?.passed_card_count !== 301 ||
+    runPackage.result?.reviewed_card_count !== expectedScope.audio_asset_count ||
+    runPackage.result?.passed_card_count !== expectedScope.audio_asset_count ||
     runPackage.result?.failed_card_count !== 0
   ) {
     throw new Error('run package result is not an exact 301-card pass');
@@ -603,10 +610,11 @@ export function buildTrustedMediaArtifacts({
     'content authorization',
   );
   const worklist = worklistFile.value;
+  const expectedScope = registeredScope(worklist?.track);
   if (
     worklist?.schema_version !== 'audio-perceptual-worklist.v3' ||
-    worklist?.track !== 'cet4' ||
-    worklist?.entries?.length !== 301 ||
+    worklist?.track !== expectedScope.track ||
+    worklist?.entries?.length !== expectedScope.audio_asset_count ||
     worklist.entries.some(entry => entry?.review?.status !== 'pending')
   ) {
     throw new Error('trusted builder requires an exact fully pending 301-card CET4 worklist');
@@ -646,7 +654,7 @@ export function buildTrustedMediaArtifacts({
     technicalAuditReplayPath,
     'replayed technical audit',
   );
-  validateTechnicalAuditReplay(sourceTechnicalAudit, replayTechnicalAuditFile.value);
+  validateTechnicalAuditReplay(sourceTechnicalAudit, replayTechnicalAuditFile.value, expectedScope);
   const worklistIssues = validateAudioPerceptualWorklist(worklist, {
     root: repoRoot,
     technicalAudit: sourceTechnicalAudit,
@@ -659,6 +667,7 @@ export function buildTrustedMediaArtifacts({
     authorizationFile.bytes,
     repoRoot,
     authorizationPath,
+    expectedScope,
   );
   const authorizedCards = new Set(authorizationFile.value.scope.card_ids);
   if (worklist.entries.some(entry => !authorizedCards.has(entry.card_id))) {
@@ -778,7 +787,7 @@ export function buildTrustedMediaArtifacts({
     root: repoRoot,
     technicalAudit: JSON.parse(technicalAuditFile.bytes.toString('utf8')),
   });
-  if (reviewedIssues.length > 0 || reviewed.progress?.passed !== 301) {
+  if (reviewedIssues.length > 0 || reviewed.progress?.passed !== expectedScope.audio_asset_count) {
     throw new Error(`reviewed worklist is invalid: ${reviewedIssues.join('; ')}`);
   }
   if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, {recursive: true});
@@ -786,8 +795,8 @@ export function buildTrustedMediaArtifacts({
   const reviewedIdentity = writeJson(reviewedPath, reviewed);
   const audioManifest = {
     schema_version: 'trusted-media-audio-manifest.v1',
-    track: 'cet4',
-    asset_count: 301,
+    track: expectedScope.track,
+    asset_count: expectedScope.audio_asset_count,
     assets: reviewed.entries.map(entry => ({
       card_id: entry.card_id,
       asset_path: entry.audio.asset_path,
@@ -847,6 +856,8 @@ export function buildTrustedMediaArtifacts({
   const driverPaths = [
     'scripts/run_trusted_media_review.py',
     'scripts/build_trusted_media_run_receipt.mjs',
+    'scripts/materialize_trusted_media_assets.mjs',
+    'spec/trusted-media-run-producer.json',
     'scripts/replay_trusted_media_raw_outputs.py',
     'scripts/audit_audio_technical.mjs',
     'scripts/manage_audio_perceptual_worklist.mjs',
@@ -877,7 +888,7 @@ export function buildTrustedMediaArtifacts({
   );
   const receipt = {
     schema_version: 'trusted-media-run-receipt.v2',
-    receipt_id: `cet4-audio-${runPackageFile.value.execution.workflow_run_id}-${runPackageFile.value.execution.workflow_run_attempt}`,
+    receipt_id: `${expectedScope.track}-audio-${runPackageFile.value.execution.workflow_run_id}-${runPackageFile.value.execution.workflow_run_attempt}`,
     created_at: receiptCreatedAt.toISOString(),
     source: {
       repository: 'LENKIN233/card-make',
@@ -911,10 +922,10 @@ export function buildTrustedMediaArtifacts({
       },
     },
     candidate: {
-      track: 'cet4',
-      card_count: 1180,
-      box_count: 108,
-      audio_asset_count: 301,
+      track: expectedScope.track,
+      card_count: expectedScope.card_count,
+      box_count: expectedScope.box_count,
+      audio_asset_count: expectedScope.audio_asset_count,
       content_version: authorizationFile.value.content_version,
       content_authorization_sha256: authorizationIdentity.authorization_sha256,
       full_track_review_sha256: authorizationIdentity.model_review_sha256,
@@ -939,8 +950,8 @@ export function buildTrustedMediaArtifacts({
       raw_output_sha256: run.sha256,
     })),
     result: {
-      reviewed_card_count: 301,
-      passed_card_count: 301,
+      reviewed_card_count: expectedScope.audio_asset_count,
+      passed_card_count: expectedScope.audio_asset_count,
       failed_card_count: 0,
       every_card_has_two_independent_acceptances: true,
       all_assets_complete_consumed: true,
@@ -963,15 +974,15 @@ export function buildTrustedMediaArtifacts({
   };
 }
 
-function validateTechnicalAuditReplay(source, replay) {
+function validateTechnicalAuditReplay(source, replay, expectedScope) {
   for (const [label, value] of [['source', source], ['replay', replay]]) {
     if (
       value?.schema_version !== 'audio-technical-audit.v1' ||
-      value.track !== 'cet4' ||
+      value.track !== expectedScope.track ||
       value.ok !== true ||
       value.summary?.errors !== 0 ||
       !Array.isArray(value.assets) ||
-      value.assets.length !== 301 ||
+      value.assets.length !== expectedScope.audio_asset_count ||
       ![
         'unique_asset_path_per_card',
         'file_hash_and_size',
