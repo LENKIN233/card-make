@@ -20,45 +20,26 @@
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，感受失去爆破让辅音收尾更短。",
-        "task_prompt": "任务：先听音频，感受失去爆破让辅音收尾更短。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101201.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。复述“第二天”和“很大变化”，说出变化涉及什么。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101201-kokoro-20260920-878c0ea9.mp3"
       },
       "back_content": {
-        "text": "结论：重点现象出现在 next day 和 big change。",
-        "explanation": "语境揭示：The next day, the lab reported a big change in battery performance after the final temperature test was completed."
+        "text": "the next day；a big change，涉及电池表现。",
+        "explanation": "相邻辅音可能让 next day、big change 的词界不显著。没有独立爆破声不等于词尾必定被删除。"
       },
       "analysis_content": {
-        "text": "① 识别信号：next day、big change 都包含塞音在下一个辅音前不完全释放的典型结构。② 核心规律：失去爆破不是把音删掉，而是把辅音收住；听的时候要注意收尾被截短的感觉。③ 验证与迁移：如果你总期待 next 的 /t/ 明显爆出来，就会错把自然语流听成吞音或漏词。",
+        "text": "相邻辅音可能让 next day、big change 的词界不显著。没有独立爆破声不等于词尾必定被删除。",
         "tips": [
-          "词尾 /t/ /d/ /p/ /b/ /k/ /g/ 在下一个辅音前常出现不完全爆破。",
-          "不完全爆破最常见于两个单词衔接处，也常见于词内辅音群。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "audio": {
-        "url": "ai_tts/cet6/1012/101201.mp3",
-        "local_path": "ai_tts/cet6/1012/101201.mp3",
-        "duration_ms": 7968,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The next day, the lab reported a big change in battery performance after the final temperature test was completed.",
-        "path": "ai_tts/cet6/1012/101201.mp3"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -74,36 +55,58 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，感受失去爆破让辅音收尾更短。",
-        "task_prompt": "任务：先听音频，感受失去爆破让辅音收尾更短。",
+        "text": "播放录音，可重复听。复述“第二天”和“很大变化”，说出变化涉及什么。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。复述“第二天”和“很大变化”，说出变化涉及什么。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：next day、big change 都包含塞音在下一个辅音前不完全释放的典型结构。② 核心规律：失去爆破不是把音删掉，而是把辅音收住；听的时候要注意收尾被截短的感觉。③ 验证与迁移：如果你总期待 next 的 /t/ 明显爆出来，就会错把自然语流听成吞音或漏词。",
+        "text": "相邻辅音可能让 next day、big change 的词界不显著。没有独立爆破声不等于词尾必定被删除。",
         "tips": [
-          "词尾 /t/ /d/ /p/ /b/ /k/ /g/ 在下一个辅音前常出现不完全爆破。",
-          "不完全爆破最常见于两个单词衔接处，也常见于词内辅音群。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
         "type": 0,
         "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101201-kokoro-20260920-878c0ea9.mp3",
+        "url": "ai_tts/cet6/1012/101201-kokoro-20260920-878c0ea9.mp3",
+        "duration_ms": 7488,
+        "sha256": "sha256:c35b488bbc7c7536eb5a8b3090412a10a025829d8cdaed53ef3c8d1a63efb6a0",
+        "transcript": "The next day, the lab reported a big change in battery performance after the final temperature test was completed.",
+        "voice": "af_heart",
+        "rate": "1.0"
       }
     },
     {
@@ -114,71 +117,30 @@
       "box": 2,
       "card_no": 2,
       "card_box_code": "1012",
-      "interaction_type": 1,
+      "interaction_type": 0,
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再判断哪一组词最可能出现失去爆破。",
-        "task_prompt": "任务：先听音频，再判断哪一组词最可能出现失去爆破。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101202.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。听出要打印和要留下的两份材料。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101202-kokoro-20260920-968a3ee5.mp3"
       },
       "back_content": {
-        "text": "结论：答案是 A，fact sheet 最典型。",
-        "explanation": "语境揭示：Please print the fact sheet for the client and leave the signed draft contract on the front desk before you head out."
+        "text": "fact sheet；signed draft contract。",
+        "explanation": "这些短语含相邻辅音，词尾可能不像单独读词时明显。按完整词组识别材料，再核对前台这一放置位置。"
       },
       "analysis_content": {
-        "text": "① 识别信号：fact sheet 中 /t/ 后接 /ʃ/，draft contract 中 /t/ 后接 /k/，都容易出现失去爆破；其中 fact sheet 最集中最稳定。② 核心规律：判断失去爆破时，优先找词尾塞音后面马上跟另一个辅音的组合。③ 验证与迁移：如果你只看拼写长短，不看辅音碰撞关系，就很难稳定识别失去爆破位置。",
+        "text": "这些短语含相邻辅音，词尾可能不像单独读词时明显。按完整词组识别材料，再核对前台这一放置位置。",
         "tips": [
-          "fact sheet 常听成 fact-shee，/t/ 被收住但仍保留停顿感。",
-          "front desk 也可能有弱爆破，但这句里 fact sheet 更明显。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "options": [
-        {
-          "key": "A",
-          "text": "fact sheet",
-          "is_correct": true
-        },
-        {
-          "key": "B",
-          "text": "for the",
-          "is_correct": false
-        },
-        {
-          "key": "C",
-          "text": "leave the",
-          "is_correct": false
-        },
-        {
-          "key": "D",
-          "text": "head out",
-          "is_correct": false
-        }
-      ],
-      "audio": {
-        "url": "ai_tts/cet6/1012/101202.mp3",
-        "local_path": "ai_tts/cet6/1012/101202.mp3",
-        "duration_ms": 7368,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "Please print the fact sheet for the client and leave the signed draft contract on the front desk before you head out.",
-        "path": "ai_tts/cet6/1012/101202.mp3"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -192,41 +154,60 @@
         "box_name": "失去爆破",
         "box_prefix": "1012"
       },
-      "interaction_id": "multiple_choice",
+      "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断哪一组词最可能出现失去爆破。",
-        "task_prompt": "任务：先听音频，再判断哪一组词最可能出现失去爆破。",
+        "text": "播放录音，可重复听。听出要打印和要留下的两份材料。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。听出要打印和要留下的两份材料。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：fact sheet 中 /t/ 后接 /ʃ/，draft contract 中 /t/ 后接 /k/，都容易出现失去爆破；其中 fact sheet 最集中最稳定。② 核心规律：判断失去爆破时，优先找词尾塞音后面马上跟另一个辅音的组合。③ 验证与迁移：如果你只看拼写长短，不看辅音碰撞关系，就很难稳定识别失去爆破位置。",
+        "text": "这些短语含相邻辅音，词尾可能不像单独读词时明显。按完整词组识别材料，再核对前台这一放置位置。",
         "tips": [
-          "fact sheet 常听成 fact-shee，/t/ 被收住但仍保留停顿感。",
-          "front desk 也可能有弱爆破，但这句里 fact sheet 更明显。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
-      "auto_scoring": true,
+      "auto_scoring": false,
       "legacy_interaction": {
-        "type": 1,
-        "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
-      "answer_key": {
-        "correct_option": "A"
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101202-kokoro-20260920-968a3ee5.mp3",
+        "url": "ai_tts/cet6/1012/101202-kokoro-20260920-968a3ee5.mp3",
+        "duration_ms": 7488,
+        "sha256": "sha256:1b99e43463bfcae558153b6b1f95bcc38757960b0fd75b5fc68732656944d06b",
+        "transcript": "Please print the fact sheet for the client and leave the signed draft contract on the front desk before you head out.",
+        "voice": "am_michael",
+        "rate": "1.0"
       }
     },
     {
@@ -237,54 +218,35 @@
       "box": 2,
       "card_no": 3,
       "card_box_code": "1012",
-      "interaction_type": 2,
+      "interaction_type": 0,
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再在时限内复述哪两个位置最可能发生失去爆破。",
-        "task_prompt": "任务：先听音频，再在时限内复述哪两个位置最可能发生失去爆破。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101203.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。听出延迟的是什么活动，以及原因。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101203-kokoro-20260920-8c64dd41.mp3"
       },
       "back_content": {
-        "text": "结论：明显位置是 product launch 和 last quarter。",
-        "explanation": "语境揭示：The product launch was delayed because the marketing team discovered last quarter's packaging test had failed the stress checks."
+        "text": "产品发布延迟，因为上季度的包装测试没有通过压力检查。",
+        "explanation": "product launch、last quarter 含连续辅音边界，不能漏掉修饰范围。因果由 because 后的信息说明，不由发音现象本身决定。"
       },
       "analysis_content": {
-        "text": "① 识别信号：product launch、last quarter、packaging test 都有词尾塞音撞上后续辅音的环境。② 核心规律：复述时优先说最稳定、最好辨认的两个位置，不必把所有潜在爆破点全部罗列出来。③ 验证与迁移：如果你说不出具体词组，只说“有点含糊”，说明还没把语音现象和词语位置绑定起来。",
+        "text": "product launch、last quarter 含连续辅音边界，不能漏掉修饰范围。因果由 because 后的信息说明，不由发音现象本身决定。",
         "tips": [
-          "失去爆破训练要把“现象”落到具体词组，不要停留在抽象定义。",
-          "quarter's packaging 也有辅音堆积，但初学时先抓 product launch / last quarter 更稳。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3300,
         4800
       ],
-      "audio": {
-        "url": "ai_tts/cet6/1012/101203.mp3",
-        "local_path": "ai_tts/cet6/1012/101203.mp3",
-        "duration_ms": 8039,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The product launch was delayed because the marketing team discovered last quarter's packaging test had failed the stress checks.",
-        "path": "ai_tts/cet6/1012/101203.mp3"
-      },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -299,36 +261,58 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再在时限内复述哪两个位置最可能发生失去爆破。",
-        "task_prompt": "任务：先听音频，再在时限内复述哪两个位置最可能发生失去爆破。",
+        "text": "播放录音，可重复听。听出延迟的是什么活动，以及原因。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。听出延迟的是什么活动，以及原因。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：product launch、last quarter、packaging test 都有词尾塞音撞上后续辅音的环境。② 核心规律：复述时优先说最稳定、最好辨认的两个位置，不必把所有潜在爆破点全部罗列出来。③ 验证与迁移：如果你说不出具体词组，只说“有点含糊”，说明还没把语音现象和词语位置绑定起来。",
+        "text": "product launch、last quarter 含连续辅音边界，不能漏掉修饰范围。因果由 because 后的信息说明，不由发音现象本身决定。",
         "tips": [
-          "失去爆破训练要把“现象”落到具体词组，不要停留在抽象定义。",
-          "quarter's packaging 也有辅音堆积，但初学时先抓 product launch / last quarter 更稳。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "recognition",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101203-kokoro-20260920-8c64dd41.mp3",
+        "url": "ai_tts/cet6/1012/101203-kokoro-20260920-8c64dd41.mp3",
+        "duration_ms": 7440,
+        "sha256": "sha256:5ad1f0d025f82ac5ca35171568cfdd43b8414b95b0ff1b2de8110452a68a89f6",
+        "transcript": "The product launch was delayed because the marketing team discovered last quarter's packaging test had failed the stress checks.",
+        "voice": "bf_emma",
+        "rate": "1.0"
       }
     },
     {
@@ -339,51 +323,32 @@
       "box": 2,
       "card_no": 4,
       "card_box_code": "1012",
-      "interaction_type": 3,
+      "interaction_type": 0,
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再进行影子跟读，模仿辅音收住不爆开的感觉。",
-        "task_prompt": "任务：先听音频，再进行影子跟读，模仿辅音收住不爆开的感觉。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101204.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。听出工作人员为什么安静，以及另一组人在做什么。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101204-kokoro-20260920-4d2fba23.mp3"
       },
       "back_content": {
-        "text": "结论：完成跟读，重点模仿 kept quiet 和 packed boxes。",
-        "explanation": "语境揭示：The staff kept quiet while the crew packed boxes backstage, because the host was recording the final segment of the program next door."
+        "text": "隔壁主持人在录最后一段节目；另一组人在后台装箱。",
+        "explanation": "kept quiet 与 packed boxes 在词界处有相邻辅音。先还原完整词组，再区分保持安静的工作人员与装箱人员。"
       },
       "analysis_content": {
-        "text": "① 识别信号：kept quiet、packed boxes 都让词尾 /t/ 或 /d/ 收住后直接滑向后续辅音。② 核心规律：影子跟读时不要补出一个额外的爆破声，否则就会把原本自然的语流读得过于板正。③ 验证与迁移：如果你读 kept quiet 时明显听出一个完整的 /tə/，说明你在下意识补元音，不是真实英语节奏。",
+        "text": "kept quiet 与 packed boxes 在词界处有相邻辅音。先还原完整词组，再区分保持安静的工作人员与装箱人员。",
         "tips": [
-          "失去爆破常和连读并存，但两者关注点不同：一个看收尾，一个看衔接。",
-          "先做到“收住”，再追求整句流畅，不要反过来。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 5600,
-      "audio": {
-        "url": "ai_tts/cet6/1012/101204.mp3",
-        "local_path": "ai_tts/cet6/1012/101204.mp3",
-        "duration_ms": 9120,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The staff kept quiet while the crew packed boxes backstage, because the host was recording the final segment of the program next door.",
-        "path": "ai_tts/cet6/1012/101204.mp3"
-      },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -398,36 +363,58 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再进行影子跟读，模仿辅音收住不爆开的感觉。",
-        "task_prompt": "任务：先听音频，再进行影子跟读，模仿辅音收住不爆开的感觉。",
+        "text": "播放录音，可重复听。听出工作人员为什么安静，以及另一组人在做什么。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。听出工作人员为什么安静，以及另一组人在做什么。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：kept quiet、packed boxes 都让词尾 /t/ 或 /d/ 收住后直接滑向后续辅音。② 核心规律：影子跟读时不要补出一个额外的爆破声，否则就会把原本自然的语流读得过于板正。③ 验证与迁移：如果你读 kept quiet 时明显听出一个完整的 /tə/，说明你在下意识补元音，不是真实英语节奏。",
+        "text": "kept quiet 与 packed boxes 在词界处有相邻辅音。先还原完整词组，再区分保持安静的工作人员与装箱人员。",
         "tips": [
-          "失去爆破常和连读并存，但两者关注点不同：一个看收尾，一个看衔接。",
-          "先做到“收住”，再追求整句流畅，不要反过来。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101204-kokoro-20260920-4d2fba23.mp3",
+        "url": "ai_tts/cet6/1012/101204-kokoro-20260920-4d2fba23.mp3",
+        "duration_ms": 9336,
+        "sha256": "sha256:4ef0eef40fd438455452f716e891359c876602e7c1cb6384a1973537e1cb2814",
+        "transcript": "The staff kept quiet while the crew packed boxes backstage, because the host was recording the final segment of the program next door.",
+        "voice": "bm_george",
+        "rate": "1.0"
       }
     },
     {
@@ -438,71 +425,30 @@
       "box": 2,
       "card_no": 5,
       "card_box_code": "1012",
-      "interaction_type": 1,
+      "interaction_type": 0,
       "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再判断哪一组词最适合用“收住不爆”的方式去听。",
-        "task_prompt": "任务：先听音频，再判断哪一组词最适合用“收住不爆”的方式去听。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101205.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。听出错过火车后的替代安排。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101205-kokoro-20260920-663e59c3.mp3"
       },
       "back_content": {
-        "text": "结论：答案是 C，late train 是最典型的不完全爆破点。",
-        "explanation": "语境揭示：If we miss the late train back to campus, we'll have to wait for the night bus outside the station until nearly midnight."
+        "text": "等夜间公交，直到接近午夜。",
+        "explanation": "late train、night bus 中的连续辅音可能使边界较紧。if 表示假设条件，不能把错过火车和等车当作已经发生的事实。"
       },
       "analysis_content": {
-        "text": "① 识别信号：late train 里词尾 /t/ 后接 /tɹ/，是高频且清晰的失去爆破环境。② 核心规律：双塞音或塞音加辅音群时，优先预判不完全爆破；这样能避免把自然语流误听成漏词。③ 验证与迁移：若你总把 late train 听成两个完全分开的爆破音，就说明还没有建立英语语流的省力机制感。",
+        "text": "late train、night bus 中的连续辅音可能使边界较紧。if 表示假设条件，不能把错过火车和等车当作已经发生的事实。",
         "tips": [
-          "late train、night bus、first class 都是考试里常见的不完全爆破组合。",
-          "看到词尾 t/d 紧挨后续辅音时，就该主动预判“收住不爆”。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "options": [
-        {
-          "key": "A",
-          "text": "miss the",
-          "is_correct": false
-        },
-        {
-          "key": "B",
-          "text": "back to",
-          "is_correct": false
-        },
-        {
-          "key": "C",
-          "text": "late train",
-          "is_correct": true
-        },
-        {
-          "key": "D",
-          "text": "outside the",
-          "is_correct": false
-        }
-      ],
-      "audio": {
-        "url": "ai_tts/cet6/1012/101205.mp3",
-        "local_path": "ai_tts/cet6/1012/101205.mp3",
-        "duration_ms": 7968,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "If we miss the late train back to campus, we'll have to wait for the night bus outside the station until nearly midnight.",
-        "path": "ai_tts/cet6/1012/101205.mp3"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -516,41 +462,60 @@
         "box_name": "失去爆破",
         "box_prefix": "1012"
       },
-      "interaction_id": "multiple_choice",
+      "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断哪一组词最适合用“收住不爆”的方式去听。",
-        "task_prompt": "任务：先听音频，再判断哪一组词最适合用“收住不爆”的方式去听。",
+        "text": "播放录音，可重复听。听出错过火车后的替代安排。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。听出错过火车后的替代安排。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：late train 里词尾 /t/ 后接 /tɹ/，是高频且清晰的失去爆破环境。② 核心规律：双塞音或塞音加辅音群时，优先预判不完全爆破；这样能避免把自然语流误听成漏词。③ 验证与迁移：若你总把 late train 听成两个完全分开的爆破音，就说明还没有建立英语语流的省力机制感。",
+        "text": "late train、night bus 中的连续辅音可能使边界较紧。if 表示假设条件，不能把错过火车和等车当作已经发生的事实。",
         "tips": [
-          "late train、night bus、first class 都是考试里常见的不完全爆破组合。",
-          "看到词尾 t/d 紧挨后续辅音时，就该主动预判“收住不爆”。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
-      "auto_scoring": true,
+      "auto_scoring": false,
       "legacy_interaction": {
-        "type": 1,
-        "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
-      "answer_key": {
-        "correct_option": "C"
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101205-kokoro-20260920-663e59c3.mp3",
+        "url": "ai_tts/cet6/1012/101205-kokoro-20260920-663e59c3.mp3",
+        "duration_ms": 7368,
+        "sha256": "sha256:8e9b5e10ad16c19c44ff067f89e580bb524f57eae91027c16575baa44baefa04",
+        "transcript": "If we miss the late train back to campus, we'll have to wait for the night bus outside the station until nearly midnight.",
+        "voice": "af_heart",
+        "rate": "1.0"
       }
     },
     {
@@ -561,54 +526,35 @@
       "box": 2,
       "card_no": 6,
       "card_box_code": "1012",
-      "interaction_type": 2,
-      "card_box_name": "识别失去爆破",
+      "interaction_type": 0,
+      "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再说出失去爆破（unreleased stop）的定义与典型例子。",
-        "task_prompt": "任务：先听音频，再说出失去爆破（unreleased stop）的定义与典型例子。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101206.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。听出“最初的草稿”和“完整的报告”各需怎样处理。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101206-kokoro-20260920-a26be5c2.mp3"
       },
       "back_content": {
-        "text": "结论：失去爆破：爆破音位于辅音前时只有成阻阶段，无除阻爆破，如 act quickly 中的 /t/。",
-        "explanation": "语境揭示：Stop consonants like /p/, /b/, /t/, /d/, /k/, and /g/ are often unreleased when followed by another consonant. 'Act quickly' has no audible /t/ release — the /t/ is simply held and then the /k/ takes over."
+        "text": "保留最初的草稿；完整报告下周再交。",
+        "explanation": "first draft、complete report 的词界有相邻辅音。即使某个词尾没有独立的爆破声，也应结合整个短语和安排还原。"
       },
       "analysis_content": {
-        "text": "① 识别信号：/p,b,t,d,k,g/ + 辅音 = 失去爆破，前面的爆破音被压缩→听不到爆破声。② 核心规律：CET6 失去爆破是连续辅音群中的必然现象，听音时不要期待听到每个爆破音的爆破声。③ 验证与迁移：act quickly / best teacher / good dog = 常见失去爆破位置，识别方法是听位置而非听声音。",
+        "text": "first draft、complete report 的词界有相邻辅音。即使某个词尾没有独立的爆破声，也应结合整个短语和安排还原。",
         "tips": [
-          "失去爆破不是 \"吃掉音\"，而是只有成阻没有爆破——那个停顿本身就是那个辅音。",
-          "预期出现爆破音的位置出现短暂停顿 = 这就是失去爆破，继续听下一个音。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3500,
         5000
       ],
-      "audio": {
-        "url": "ai_tts/cet6/1012/101206.mp3",
-        "local_path": "ai_tts/cet6/1012/101206.mp3",
-        "duration_ms": 13392,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "Stop consonants like /p/, /b/, /t/, /d/, /k/, and /g/ are often unreleased when followed by another consonant. 'Act quickly' has no audible /t/ release — the /t/ is simply held and then the /k/ takes over.",
-        "path": "ai_tts/cet6/1012/101206.mp3"
-      },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -618,41 +564,64 @@
         "group_id": "1",
         "group_name": "语音现象",
         "box_id": "2",
-        "box_name": "识别失去爆破",
+        "box_name": "失去爆破",
         "box_prefix": "1012"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再说出失去爆破（unreleased stop）的定义与典型例子。",
-        "task_prompt": "任务：先听音频，再说出失去爆破（unreleased stop）的定义与典型例子。",
+        "text": "播放录音，可重复听。听出“最初的草稿”和“完整的报告”各需怎样处理。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。听出“最初的草稿”和“完整的报告”各需怎样处理。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：/p,b,t,d,k,g/ + 辅音 = 失去爆破，前面的爆破音被压缩→听不到爆破声。② 核心规律：CET6 失去爆破是连续辅音群中的必然现象，听音时不要期待听到每个爆破音的爆破声。③ 验证与迁移：act quickly / best teacher / good dog = 常见失去爆破位置，识别方法是听位置而非听声音。",
+        "text": "first draft、complete report 的词界有相邻辅音。即使某个词尾没有独立的爆破声，也应结合整个短语和安排还原。",
         "tips": [
-          "失去爆破不是 \"吃掉音\"，而是只有成阻没有爆破——那个停顿本身就是那个辅音。",
-          "预期出现爆破音的位置出现短暂停顿 = 这就是失去爆破，继续听下一个音。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101206-kokoro-20260920-a26be5c2.mp3",
+        "url": "ai_tts/cet6/1012/101206-kokoro-20260920-a26be5c2.mp3",
+        "duration_ms": 15264,
+        "sha256": "sha256:404405282da07755f7147b3a1ad14563b874a758b08e3d2ca4dd28f4a65b1183",
+        "transcript": "Keep the first draft for your own records, but do not submit the complete report until next week. The supervisor will return comments on Friday, giving you time to correct any problems before the final version is due.",
+        "voice": "am_michael",
+        "rate": "1.0"
       }
     },
     {
@@ -663,51 +632,32 @@
       "box": 2,
       "card_no": 7,
       "card_box_code": "1012",
-      "interaction_type": 3,
-      "card_box_name": "识别失去爆破",
+      "interaction_type": 0,
+      "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再判断 next day 中 /t/ 失去爆破的具体机制。",
-        "task_prompt": "任务：先听音频，再判断 next day 中 /t/ 失去爆破的具体机制。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101207.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。听出下一天的安排，并复述相关时间短语。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101207-kokoro-20260920-b76f9ecc.mp3"
       },
       "back_content": {
-        "text": "结论：next day：/t/ 在 /d/ 前无法释放，形成静默停顿（T-deletion），语法上仍存在。",
-        "explanation": "语境揭示：The word 'next' before another consonant loses its final /t/. 'Next day' becomes 'neks day' in fast speech — the /t/ is silently held but you still expect it grammatically. This is called pre-consonantal T-deletion."
+        "text": "the next day；去另一个实验室核对结果。",
+        "explanation": "next day 的连续辅音可能让边界不清楚。未释放与省音不是同一个概念，单凭粗略拼写或旁白不能确定实际过程。"
       },
       "analysis_content": {
-        "text": "① 识别信号：next day → /neks.deɪ/ = /t/ 完全静默，只有成阻无除阻。② 核心规律：CET6 T-deletion：/t/ 在辅音前最易失去爆破，尤其在 /s+t+consonant/ 的辅音群中（next, first, last）。③ 验证与迁移：next/first/last/best + 辅音开头的词 = /t/ 一定失去爆破，不要误认为音频说的是其他词。",
+        "text": "next day 的连续辅音可能让边界不清楚。未释放与省音不是同一个概念，单凭粗略拼写或旁白不能确定实际过程。",
         "tips": [
-          "next/first/last/best 接辅音 = /t/ 100% 失去爆破，已知规律无需困惑。",
-          "/ks/ 之后的 /t/ 消失更彻底，只留 /ks/ 的气流，极易听漏。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 5400,
-      "audio": {
-        "url": "ai_tts/cet6/1012/101207.mp3",
-        "local_path": "ai_tts/cet6/1012/101207.mp3",
-        "duration_ms": 15192,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The word 'next' before another consonant loses its final /t/. 'Next day' becomes 'neks day' in fast speech — the /t/ is silently held but you still expect it grammatically. This is called pre-consonantal T-deletion.",
-        "path": "ai_tts/cet6/1012/101207.mp3"
-      },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -717,41 +667,64 @@
         "group_id": "1",
         "group_name": "语音现象",
         "box_id": "2",
-        "box_name": "识别失去爆破",
+        "box_name": "失去爆破",
         "box_prefix": "1012"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断 next day 中 /t/ 失去爆破的具体机制。",
-        "task_prompt": "任务：先听音频，再判断 next day 中 /t/ 失去爆破的具体机制。",
+        "text": "播放录音，可重复听。听出下一天的安排，并复述相关时间短语。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。听出下一天的安排，并复述相关时间短语。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：next day → /neks.deɪ/ = /t/ 完全静默，只有成阻无除阻。② 核心规律：CET6 T-deletion：/t/ 在辅音前最易失去爆破，尤其在 /s+t+consonant/ 的辅音群中（next, first, last）。③ 验证与迁移：next/first/last/best + 辅音开头的词 = /t/ 一定失去爆破，不要误认为音频说的是其他词。",
+        "text": "next day 的连续辅音可能让边界不清楚。未释放与省音不是同一个概念，单凭粗略拼写或旁白不能确定实际过程。",
         "tips": [
-          "next/first/last/best 接辅音 = /t/ 100% 失去爆破，已知规律无需困惑。",
-          "/ks/ 之后的 /t/ 消失更彻底，只留 /ks/ 的气流，极易听漏。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101207-kokoro-20260920-b76f9ecc.mp3",
+        "url": "ai_tts/cet6/1012/101207-kokoro-20260920-b76f9ecc.mp3",
+        "duration_ms": 12864,
+        "sha256": "sha256:b610bcbc9fb0734dea369501941768f7d0d222c8cf8e850e89849bc0771facea",
+        "transcript": "The first test will take place on Monday. The next day, the team will visit another laboratory to compare the results. They want to check whether the difference is caused by the equipment or by the way the samples were prepared.",
+        "voice": "bf_emma",
+        "rate": "1.0"
       }
     },
     {
@@ -763,48 +736,29 @@
       "card_no": 8,
       "card_box_code": "1012",
       "interaction_type": 0,
-      "card_box_name": "识别失去爆破",
+      "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再说出两个爆破音相邻时的发音规则。",
-        "task_prompt": "任务：先听音频，再说出两个爆破音相邻时的发音规则。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101208.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。听出说话人评价的决定，以及它解决了什么问题。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101208-kokoro-20260920-93122136.mp3"
       },
       "back_content": {
-        "text": "结论：相邻爆破音：前者失去爆破，后者正常发音，听起来是一个时长较长的爆破音。",
-        "explanation": "语境揭示：When two plosives occur in sequence, the first one is unreleased and the second is fully articulated. In 'bad dog', the /d/ of 'bad' is held while the /d/ of 'dog' begins — producing what sounds like a slightly longer /d/."
+        "text": "a good decision；让各组在投票前查看相同信息。",
+        "explanation": "good decision 中相邻的辅音可以紧密衔接。重点是保留形容词和名词，不能把没有两次明显释放声误读为少了一个词。"
       },
       "analysis_content": {
-        "text": "① 识别信号：bad dog / good boy / black card = 前爆破音成阻，后爆破音完整发音，合并为一个延长音。② 核心规律：双爆破群的感知效果是 \"一个爆破音稍长\"，而非两个独立爆破，是失去爆破的特殊形态。③ 验证与迁移：听到位置上应有两个爆破音但只听到一个（稍延长的）= 双爆破失去爆破，两词均在场。",
+        "text": "good decision 中相邻的辅音可以紧密衔接。重点是保留形容词和名词，不能把没有两次明显释放声误读为少了一个词。",
         "tips": [
-          "双爆破合并：/d/ + /d/ = 一个稍长的 /d/，/k/ + /k/ = 一个稍长的 /k/，不是漏词。",
-          "遇到不理解的音节计数 = 检查是否有双爆破合并造成感知音节数减少。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "audio": {
-        "url": "ai_tts/cet6/1012/101208.mp3",
-        "local_path": "ai_tts/cet6/1012/101208.mp3",
-        "duration_ms": 14520,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "When two plosives occur in sequence, the first one is unreleased and the second is fully articulated. In 'bad dog', the /d/ of 'bad' is held while the /d/ of 'dog' begins — producing what sounds like a slightly longer /d/.",
-        "path": "ai_tts/cet6/1012/101208.mp3"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -815,41 +769,64 @@
         "group_id": "1",
         "group_name": "语音现象",
         "box_id": "2",
-        "box_name": "识别失去爆破",
+        "box_name": "失去爆破",
         "box_prefix": "1012"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再说出两个爆破音相邻时的发音规则。",
-        "task_prompt": "任务：先听音频，再说出两个爆破音相邻时的发音规则。",
+        "text": "播放录音，可重复听。听出说话人评价的决定，以及它解决了什么问题。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。听出说话人评价的决定，以及它解决了什么问题。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：bad dog / good boy / black card = 前爆破音成阻，后爆破音完整发音，合并为一个延长音。② 核心规律：双爆破群的感知效果是 \"一个爆破音稍长\"，而非两个独立爆破，是失去爆破的特殊形态。③ 验证与迁移：听到位置上应有两个爆破音但只听到一个（稍延长的）= 双爆破失去爆破，两词均在场。",
+        "text": "good decision 中相邻的辅音可以紧密衔接。重点是保留形容词和名词，不能把没有两次明显释放声误读为少了一个词。",
         "tips": [
-          "双爆破合并：/d/ + /d/ = 一个稍长的 /d/，/k/ + /k/ = 一个稍长的 /k/，不是漏词。",
-          "遇到不理解的音节计数 = 检查是否有双爆破合并造成感知音节数减少。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
         "type": 0,
         "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "application",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101208-kokoro-20260920-93122136.mp3",
+        "url": "ai_tts/cet6/1012/101208-kokoro-20260920-93122136.mp3",
+        "duration_ms": 14592,
+        "sha256": "sha256:b312c2e1395e9026c1d684f309b8c3f5f4773af2c1f7ca674d94283d68f4328f",
+        "transcript": "Waiting until all the information was available was a good decision. It gave every group a chance to examine the same evidence before voting, and several concerns were resolved without needing another formal meeting.",
+        "voice": "bm_george",
+        "rate": "1.0"
       }
     },
     {
@@ -860,71 +837,30 @@
       "box": 2,
       "card_no": 9,
       "card_box_code": "1012",
-      "interaction_type": 1,
-      "card_box_name": "识别失去爆破",
+      "interaction_type": 0,
+      "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再说出 flap-T 与失去爆破的核心区别。",
-        "task_prompt": "任务：先听音频，再说出 flap-T 与失去爆破的核心区别。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101209.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。复述“保留草稿”和“检查日期”两段表达。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101209-kokoro-20260920-91f355e4.mp3"
       },
       "back_content": {
-        "text": "结论：flap-T：/t/ 变为弹舌音 /ɾ/（两元音间）；失去爆破：/t/ 成阻无爆破（辅音前）——位置不同，现象不同。",
-        "explanation": "语境揭示：In casual speech, /t/ and /d/ between vowels or before unstressed syllables are often flapped, creating a sound that's close to /r/ in some dialects. 'Better' and 'butter' both have a flap-T that native speakers barely notice."
+        "text": "keep the draft；check the dates。",
+        "explanation": "这些短语的词界可能缺少单独、清晰的爆破声。不要把这种听感与元音间辅音的其他变化混为一谈，先核对词形和动作对象。"
       },
       "analysis_content": {
-        "text": "① 识别信号：better/ladder/water 中 /t/→/ɾ/ = flap-T（两元音间）；fast car 中 /t/ 无声 = 失去爆破（辅音前）。② 核心规律：CET6 进阶：flap vs unreleased stop 是两种不同的辅音弱化，方向不同，适用环境不同。③ 验证与迁移：flap = 有声（/ɾ/ sound）；unreleased stop = 无声（静默停顿）——通过有无声音区分。",
+        "text": "这些短语的词界可能缺少单独、清晰的爆破声。不要把这种听感与元音间辅音的其他变化混为一谈，先核对词形和动作对象。",
         "tips": [
-          "有声 /ɾ/ 音 = flap-T（两元音间）；无声停顿 = 失去爆破（辅音前）——关键在有无声音。",
-          "实际应试中无需精确区分，感知辅音位置 + 还原词义即够用。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "options": [
-        {
-          "key": "A",
-          "text": "Flap-T occurs before consonants; unreleased stops occur between vowels.",
-          "is_correct": false
-        },
-        {
-          "key": "B",
-          "text": "Flap-T produces a /ɾ/-like sound between vowels; unreleased stops are silent pauses before consonants.",
-          "is_correct": true
-        },
-        {
-          "key": "C",
-          "text": "Both phenomena produce the same type of sound.",
-          "is_correct": false
-        },
-        {
-          "key": "D",
-          "text": "Unreleased stops only occur at the end of sentences.",
-          "is_correct": false
-        }
-      ],
-      "audio": {
-        "url": "ai_tts/cet6/1012/101209.mp3",
-        "local_path": "ai_tts/cet6/1012/101209.mp3",
-        "duration_ms": 15240,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "In casual speech, /t/ and /d/ between vowels or before unstressed syllables are often flapped, creating a sound that's close to /r/ in some dialects. 'Better' and 'butter' both have a flap-T that native speakers barely notice.",
-        "path": "ai_tts/cet6/1012/101209.mp3"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -935,44 +871,64 @@
         "group_id": "1",
         "group_name": "语音现象",
         "box_id": "2",
-        "box_name": "识别失去爆破",
+        "box_name": "失去爆破",
         "box_prefix": "1012"
       },
-      "interaction_id": "multiple_choice",
+      "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再说出 flap-T 与失去爆破的核心区别。",
-        "task_prompt": "任务：先听音频，再说出 flap-T 与失去爆破的核心区别。",
+        "text": "播放录音，可重复听。复述“保留草稿”和“检查日期”两段表达。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。复述“保留草稿”和“检查日期”两段表达。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：better/ladder/water 中 /t/→/ɾ/ = flap-T（两元音间）；fast car 中 /t/ 无声 = 失去爆破（辅音前）。② 核心规律：CET6 进阶：flap vs unreleased stop 是两种不同的辅音弱化，方向不同，适用环境不同。③ 验证与迁移：flap = 有声（/ɾ/ sound）；unreleased stop = 无声（静默停顿）——通过有无声音区分。",
+        "text": "这些短语的词界可能缺少单独、清晰的爆破声。不要把这种听感与元音间辅音的其他变化混为一谈，先核对词形和动作对象。",
         "tips": [
-          "有声 /ɾ/ 音 = flap-T（两元音间）；无声停顿 = 失去爆破（辅音前）——关键在有无声音。",
-          "实际应试中无需精确区分，感知辅音位置 + 还原词义即够用。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
-      "auto_scoring": true,
+      "auto_scoring": false,
       "legacy_interaction": {
-        "type": 1,
-        "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
-      "answer_key": {
-        "correct_option": "B"
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101209-kokoro-20260920-91f355e4.mp3",
+        "url": "ai_tts/cet6/1012/101209-kokoro-20260920-91f355e4.mp3",
+        "duration_ms": 11328,
+        "sha256": "sha256:116af327af20e054c7cd88638c729b6751cfbd643e9891d6f5893ade5e97f11e",
+        "transcript": "Keep the draft and check the dates before you print anything. The timetable may still change if one of the speakers cannot travel, so it would be better to wait for the final confirmation tomorrow.",
+        "voice": "af_heart",
+        "rate": "1.0"
       }
     },
     {
@@ -983,54 +939,35 @@
       "box": 2,
       "card_no": 10,
       "card_box_code": "1012",
-      "interaction_type": 2,
-      "card_box_name": "识别失去爆破",
+      "interaction_type": 0,
+      "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再判断句末失去爆破对中国学习者的典型影响。",
-        "task_prompt": "任务：先听音频，再判断句末失去爆破对中国学习者的典型影响。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101210.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。听出三条简短指令，并说明最后要等谁。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101210-kokoro-20260920-b2be97f3.mp3"
       },
       "back_content": {
-        "text": "结论：句末爆破音（stop/back/cat）闭合但不爆破，易使中国学习者误认为该词未发音完整。",
-        "explanation": "语境揭示：A common stumbling block for Chinese learners: English speakers don't release the final /p/ in 'stop', /k/ in 'back', or /t/ in 'cat' at the end of phrases. The mouth closes but no air is released — this is final position unreleased stop."
+        "text": "先停下、再退一步、等负责人示意。",
+        "explanation": "stop、step、wait 等词的词尾释放程度会随语境与说话方式变化，不是句末辅音一律不释放。听到的词还需结合后续指令核对。"
       },
       "analysis_content": {
-        "text": "① 识别信号：句末 /p, t, k/ = 成阻无爆破，嘴型到位但无气流；中文习惯于每个音完整发出，因此感知差异明显。② 核心规律：CET6 句末失去爆破 = 英语语音的共性规律，非说话人 \"吃音\"；中国学习者需重新校准感知预期。③ 验证与迁移：听到句子末尾出现一个 \"无声停顿\" = 说话人已说完词，词以失去爆破的辅音结尾。",
+        "text": "stop、step、wait 等词的词尾释放程度会随语境与说话方式变化，不是句末辅音一律不释放。听到的词还需结合后续指令核对。",
         "tips": [
-          "end-of-phrase unreleased stops 是纠音重点，录音时自查：每个词末爆破音是否有爆破气流。",
-          "听力中看到单词有末位爆破音但听不到爆破 = 正常，不要重听确认，继续前进。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "time_window_ms": [
         3200,
         4800
       ],
-      "audio": {
-        "url": "ai_tts/cet6/1012/101210.mp3",
-        "local_path": "ai_tts/cet6/1012/101210.mp3",
-        "duration_ms": 16008,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "A common stumbling block for Chinese learners: English speakers don't release the final /p/ in 'stop', /k/ in 'back', or /t/ in 'cat' at the end of phrases. The mouth closes but no air is released — this is final position unreleased stop.",
-        "path": "ai_tts/cet6/1012/101210.mp3"
-      },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -1040,41 +977,64 @@
         "group_id": "1",
         "group_name": "语音现象",
         "box_id": "2",
-        "box_name": "识别失去爆破",
+        "box_name": "失去爆破",
         "box_prefix": "1012"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断句末失去爆破对中国学习者的典型影响。",
-        "task_prompt": "任务：先听音频，再判断句末失去爆破对中国学习者的典型影响。",
+        "text": "播放录音，可重复听。听出三条简短指令，并说明最后要等谁。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。听出三条简短指令，并说明最后要等谁。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：句末 /p, t, k/ = 成阻无爆破，嘴型到位但无气流；中文习惯于每个音完整发出，因此感知差异明显。② 核心规律：CET6 句末失去爆破 = 英语语音的共性规律，非说话人 \"吃音\"；中国学习者需重新校准感知预期。③ 验证与迁移：听到句子末尾出现一个 \"无声停顿\" = 说话人已说完词，词以失去爆破的辅音结尾。",
+        "text": "stop、step、wait 等词的词尾释放程度会随语境与说话方式变化，不是句末辅音一律不释放。听到的词还需结合后续指令核对。",
         "tips": [
-          "end-of-phrase unreleased stops 是纠音重点，录音时自查：每个词末爆破音是否有爆破气流。",
-          "听力中看到单词有末位爆破音但听不到爆破 = 正常，不要重听确认，继续前进。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101210-kokoro-20260920-b2be97f3.mp3",
+        "url": "ai_tts/cet6/1012/101210-kokoro-20260920-b2be97f3.mp3",
+        "duration_ms": 13296,
+        "sha256": "sha256:0578cd1094bb33f6ac7ff3f2931441eaccf25ea5ff2da6ca967daf6a2742b6b8",
+        "transcript": "Stop here for a moment, then step back from the entrance. Please wait until the guide signals that it is safe to move forward. Another group is leaving the room, and the doorway needs to remain clear.",
+        "voice": "am_michael",
+        "rate": "1.0"
       }
     },
     {
@@ -1085,51 +1045,32 @@
       "box": 2,
       "card_no": 11,
       "card_box_code": "1012",
-      "interaction_type": 3,
-      "card_box_name": "识别失去爆破",
+      "interaction_type": 0,
+      "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再说出 /sts/ 辅音群中失去爆破的典型表现。",
-        "task_prompt": "任务：先听音频，再说出 /sts/ 辅音群中失去爆破的典型表现。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101211.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。听出需要完成哪些检查，以及哪些结果必须报告。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101211-kokoro-20260920-d92b1b56.mp3"
       },
       "back_content": {
-        "text": "结论：/sts/ 辅音群：中间 /t/ 失去爆破，整个群被简化为 /ss/，如 tests → /tess/。",
-        "explanation": "语境揭示：The cluster /sts/ in words like 'tests', 'lists', and 'costs' presents a particular challenge because the middle /t/ and the final /s/ often merge. 'Tests' can sound like 'tess' with only one discernible /s/."
+        "text": "核对三组结果，并报告其中的差异。",
+        "explanation": "tests、lists 等辅音较多的词可能较难分辨，但不能把一种近似拼写当作固定读法。尤其要注意单复数与具体对象。"
       },
       "analysis_content": {
-        "text": "① 识别信号：tests / lists / costs / busts → /t/ 在两个 /s/ 之间完全无声化，只保留前后 /s/。② 核心规律：CET6 复杂辅音群 /sts//nts//lts/ 中，爆破音一律失去爆破，整体节奏加快。③ 验证与迁移：听到 /s/ 之后 + 另一个 /s/ = 中间可能有 /t/ 失去爆破，还原时加回 /t/。",
+        "text": "tests、lists 等辅音较多的词可能较难分辨，但不能把一种近似拼写当作固定读法。尤其要注意单复数与具体对象。",
         "tips": [
-          "tests = /tess/，lists = /liss/，听到单 /s/ 音结尾的复数词 = 考虑是否 /t/ 失去爆破。",
-          "单词末尾的音节如果比字面少一半 = 可能有辅音群简化，对照拼写还原。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "target_duration_ms": 5200,
-      "audio": {
-        "url": "ai_tts/cet6/1012/101211.mp3",
-        "local_path": "ai_tts/cet6/1012/101211.mp3",
-        "duration_ms": 13536,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The cluster /sts/ in words like 'tests', 'lists', and 'costs' presents a particular challenge because the middle /t/ and the final /s/ often merge. 'Tests' can sound like 'tess' with only one discernible /s/.",
-        "path": "ai_tts/cet6/1012/101211.mp3"
-      },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
       "knowledge_ref": {
@@ -1139,41 +1080,64 @@
         "group_id": "1",
         "group_name": "语音现象",
         "box_id": "2",
-        "box_name": "识别失去爆破",
+        "box_name": "失去爆破",
         "box_prefix": "1012"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再说出 /sts/ 辅音群中失去爆破的典型表现。",
-        "task_prompt": "任务：先听音频，再说出 /sts/ 辅音群中失去爆破的典型表现。",
+        "text": "播放录音，可重复听。听出需要完成哪些检查，以及哪些结果必须报告。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。听出需要完成哪些检查，以及哪些结果必须报告。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：tests / lists / costs / busts → /t/ 在两个 /s/ 之间完全无声化，只保留前后 /s/。② 核心规律：CET6 复杂辅音群 /sts//nts//lts/ 中，爆破音一律失去爆破，整体节奏加快。③ 验证与迁移：听到 /s/ 之后 + 另一个 /s/ = 中间可能有 /t/ 失去爆破，还原时加回 /t/。",
+        "text": "tests、lists 等辅音较多的词可能较难分辨，但不能把一种近似拼写当作固定读法。尤其要注意单复数与具体对象。",
         "tips": [
-          "tests = /tess/，lists = /liss/，听到单 /s/ 音结尾的复数词 = 考虑是否 /t/ 失去爆破。",
-          "单词末尾的音节如果比字面少一半 = 可能有辅音群简化，对照拼写还原。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101211-kokoro-20260920-d92b1b56.mp3",
+        "url": "ai_tts/cet6/1012/101211-kokoro-20260920-d92b1b56.mp3",
+        "duration_ms": 14208,
+        "sha256": "sha256:6ee10f75fbc16d176833c1e532d1c0b874996199c305ef87e5598e339a95b671",
+        "transcript": "The team has completed three tests and prepared separate lists of the results. Please compare all three lists and report any differences before the equipment is returned. Even a small difference may help explain the problem we noticed earlier.",
+        "voice": "bf_emma",
+        "rate": "1.0"
       }
     },
     {
@@ -1185,48 +1149,29 @@
       "card_no": 12,
       "card_box_code": "1012",
       "interaction_type": 0,
-      "card_box_name": "识别失去爆破",
+      "card_box_name": "失去爆破",
       "card_group_name": "语音现象",
       "front_content": {
-        "text": "任务：先听音频，再说出训练失去爆破识别的高效学习策略。",
-        "task_prompt": "任务：先听音频，再说出训练失去爆破识别的高效学习策略。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet6/1012/101212.mp3",
-        "highlight_ranges": []
+        "text": "播放录音，可重复听。复述“检查最后草稿”，并说明核对失败后怎么办。\n翻卡后核对你听到的完整词组和信息。",
+        "audio_url": "ai_tts/cet6/1012/101212-kokoro-20260920-f986c145.mp3"
       },
       "back_content": {
-        "text": "结论：失去爆破训练策略：先 0.75x 倍速标注预期位置，再 1x 倍速验证感知准确率。",
-        "explanation": "语境揭示：To train your ear for unreleased stops, try listening to authentic podcasts at 0.75x speed first, marking every point where you expect an unreleased stop. Then listen at full speed and check whether your predictions were correct."
+        "text": "check the last draft；若数字不符，立即通知办公室。",
+        "explanation": "check、last、draft 等词包含连续辅音，识别时不必强求每个音都独立突出。可重复播放核对短语，不能凭模糊听感自行补写数字或词尾。"
       },
       "analysis_content": {
-        "text": "① 识别信号：主动预测 + 验证是语音感知训练的最高效范式，比被动重复收听效果更好。② 核心规律：CET6 音训练路径：规律认知 → 材料预测 → 听音对照 → 误差纠正 → 复听内化。③ 验证与迁移：每种语音现象都可用此五步法训练；失去爆破建议以真实对话材料为主，避免念读体。",
+        "text": "check、last、draft 等词包含连续辅音，识别时不必强求每个音都独立突出。可重复播放核对短语，不能凭模糊听感自行补写数字或词尾。",
         "tips": [
-          "预测后验证比被动重听效率高3倍（认知负荷理论支撑）。",
-          "选材建议：TED Talk 口语部分、BBC Daily Podcast = 适合 CET6 语音现象训练。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "source_ref": {
-        "type": "content_pool",
+        "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "untraced_content_pool_from_legacy_card_make_batch",
-        "provenance_status": "unverified"
-      },
-      "audio": {
-        "url": "ai_tts/cet6/1012/101212.mp3",
-        "local_path": "ai_tts/cet6/1012/101212.mp3",
-        "duration_ms": 17232,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "To train your ear for unreleased stops, try listening to authentic podcasts at 0.75x speed first, marking every point where you expect an unreleased stop. Then listen at full speed and check whether your predictions were correct.",
-        "path": "ai_tts/cet6/1012/101212.mp3"
+        "note": "Standalone authored or adapted practice. Historical attributions were not authenticated; this exercise is not represented as an official exam question.",
+        "provenance_status": "synthetic"
       },
       "track_index": 1,
       "contract_version": "softbook-card-v1",
@@ -1237,41 +1182,64 @@
         "group_id": "1",
         "group_name": "语音现象",
         "box_id": "2",
-        "box_name": "识别失去爆破",
+        "box_name": "失去爆破",
         "box_prefix": "1012"
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再说出训练失去爆破识别的高效学习策略。",
-        "task_prompt": "任务：先听音频，再说出训练失去爆破识别的高效学习策略。",
+        "text": "播放录音，可重复听。复述“检查最后草稿”，并说明核对失败后怎么办。\n翻卡后核对你听到的完整词组和信息。",
+        "task_prompt": "播放录音，可重复听。复述“检查最后草稿”，并说明核对失败后怎么办。\n翻卡后核对你听到的完整词组和信息。",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "识别失去爆破",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：主动预测 + 验证是语音感知训练的最高效范式，比被动重复收听效果更好。② 核心规律：CET6 音训练路径：规律认知 → 材料预测 → 听音对照 → 误差纠正 → 复听内化。③ 验证与迁移：每种语音现象都可用此五步法训练；失去爆破建议以真实对话材料为主，避免念读体。",
+        "text": "check、last、draft 等词包含连续辅音，识别时不必强求每个音都独立突出。可重复播放核对短语，不能凭模糊听感自行补写数字或词尾。",
         "tips": [
-          "预测后验证比被动重听效率高3倍（认知负荷理论支撑）。",
-          "选材建议：TED Talk 口语部分、BBC Daily Podcast = 适合 CET6 语音现象训练。"
+          "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
         "type": 0,
         "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "unverified_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
+      },
+      "quality_metadata": {
+        "main_training_goal": "识别相邻辅音中不明显释放的爆破音，避免把它误判为词尾或词语消失",
+        "weak_point_tags": [
+          "listening_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "以实际语流和上下文核对，不把一种口音或一种读法当作唯一规则。",
+        "box_progression_role": "transfer",
+        "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet6/1012/101212-kokoro-20260920-f986c145.mp3",
+        "url": "ai_tts/cet6/1012/101212-kokoro-20260920-f986c145.mp3",
+        "duration_ms": 13416,
+        "sha256": "sha256:9d3c01f5e1df2d721c1b809a120ff671cfbc634879426bb97d67ea573c26046d",
+        "transcript": "Check the last draft against the figures in the original notes. If the numbers do not match, tell the office immediately so that the report can be corrected before it is sent to the external reviewers.",
+        "voice": "bm_george",
+        "rate": "1.0"
       }
     }
   ],
