@@ -8,7 +8,7 @@
   "push_ref": "origin/codex/cet-listening-recordings-20260920",
   "PR_url": "https://github.com/LENKIN233/card-make/pull/233",
   "PR_state": "OPEN",
-  "is_draft": true,
+  "is_draft": false,
   "scope": {
     "change_type": "audio",
     "touched_paths": [
@@ -220,6 +220,10 @@
     {
       "command": "node --test scripts/test_audio_technical_audit.mjs",
       "result": "passed"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with the six previously recorded upstream catalog warnings"
     }
   ],
   "local_status": "Adds 190 candidate recordings while preserving all historical paths. No content references or formal media acceptance changed.",
