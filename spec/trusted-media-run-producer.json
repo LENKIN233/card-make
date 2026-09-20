@@ -1,26 +1,46 @@
 {
-  "version": "trusted-media-run-producer-v2",
+  "version": "trusted-media-run-producer-v3",
   "status": "active",
   "classification": "harness_execution_contract",
-  "owners": ["spec/review-workflow.json", "spec/audio-generation-contract.json"],
-  "purpose": "Produce one GitHub-attested CET4 media receipt only after a trusted main-branch workflow actually runs two complete exact-asset audio-capable model passes, or truthfully finalizes their retained GitHub raw artifact later with separate execution and finalizer commits, then rebuilds all 301 per-card acceptances and passes current content and audio contracts.",
+  "owners": [
+    "spec/review-workflow.json",
+    "spec/audio-generation-contract.json"
+  ],
+  "purpose": "Produce one GitHub-attested CET4 or CET6 media receipt only after a trusted main-branch workflow actually runs two complete exact-asset audio-capable model passes, or truthfully finalizes their retained GitHub raw artifact later with separate execution and finalizer commits, then rebuilds all registered-track per-card acceptances and passes current content and audio contracts.",
   "workflow": {
     "path": ".github/workflows/trusted-media-run.yml",
     "trigger": "workflow_dispatch_on_refs_heads_main_only",
-    "runner": ["self-hosted", "macOS", "ARM64", "softbook-media"],
-    "attestation_runner": ["ubuntu-latest"],
-    "verification_runner": ["ubuntu-latest"],
+    "runner": [
+      "self-hosted",
+      "macOS",
+      "ARM64",
+      "softbook-media"
+    ],
+    "attestation_runner": [
+      "ubuntu-latest"
+    ],
+    "verification_runner": [
+      "ubuntu-latest"
+    ],
     "product_authority": {
       "repository": "LENKIN233/softbook_cet",
-      "commit_sha": "7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1",
+      "commit_sha": "d77d7020ba83e6826845df93bda0e31d7b7ca465",
       "materialized_as_card_workspace_sibling_in_review_and_verification": true
     },
-    "timeout_minutes": 240,
-    "model_deadline_seconds": 12600,
+    "timeout_minutes": 360,
+    "model_deadline_seconds": 19800,
     "failure_artifact_upload_reserve_minutes": 30,
-    "review_job_permissions": ["contents:read"],
-    "attestation_job_permissions": ["contents:read", "id-token:write", "attestations:write"],
-    "verification_job_permissions": ["contents:read"],
+    "review_job_permissions": [
+      "contents:read"
+    ],
+    "attestation_job_permissions": [
+      "contents:read",
+      "id-token:write",
+      "attestations:write"
+    ],
+    "verification_job_permissions": [
+      "contents:read"
+    ],
     "model_and_runner_managed_code_never_receive_oidc_or_attestation_permissions": true,
     "repository_code_never_executes_in_the_OIDC_signer_job": true,
     "pre_model_setup_failure_package_retained": true,
@@ -58,12 +78,20 @@
     "lock": "spec/trusted-media-runner-lock.json",
     "technical_audit_zone": "reviews/audio_technical_audits/",
     "technical_audit_must_be_direct_tracked_100644_append_only_JSON": true,
-    "exact_scope": {"track": "cet4", "card_count": 1180, "box_count": 108, "audio_asset_count": 301},
-    "full_perceptual_runs": ["a", "b"],
+    "full_perceptual_runs": [
+      "a",
+      "b"
+    ],
     "bounded_adjudication_run": "c",
-    "pronunciation_specialists": ["d", "e"],
+    "pronunciation_specialists": [
+      "d",
+      "e"
+    ],
     "pronunciation_override_lanes_must_use_distinct_specialists": true,
-    "blind_full_transcript_specialists": ["f", "g"],
+    "blind_full_transcript_specialists": [
+      "f",
+      "g"
+    ],
     "two_blind_full_transcript_runs_required_for_every_asset": true,
     "blind_transcript_below_the_existing_similarity_threshold_is_replayed_once_with_a_verbatim_prompt_without_lowering_the_threshold": true,
     "full_perceptual_or_adjudication_transcript_below_the_same_threshold_is_replayed_once_before_its_quality_checks_can_decide": true,
@@ -77,7 +105,6 @@
     "model_weights_and_mlx_audio_package_trees_must_match_locked_sha256": true,
     "user_site_Python_code_is_disabled_before_environment_probes_and_model_execution": true,
     "runtime_os_architecture_sample_rate_and_model_window_must_match_lock": true,
-    "two_distinct_complete_301_asset_run_artifacts_required": true,
     "complete_runs_require_exact_unique_worklist_card_ID_coverage": true,
     "unresolved_three_run_disagreement_fails_closed": true,
     "failed_final_perceptual_check_prevents_attestation": true,
@@ -85,7 +112,22 @@
     "exceptional_abort_writes_completed_raw_runs_and_failure_package_before_rethrow": true,
     "setup_or_finalization_abort_writes_a_failure_package_before_rethrow": true,
     "every_completed_model_attempt_is_fsynced_before_parse_or_retry": true,
-    "job_start_deadline_reserves_thirty_minutes_for_failure_artifact_upload": true
+    "job_start_deadline_reserves_thirty_minutes_for_failure_artifact_upload": true,
+    "exact_scopes": {
+      "cet4": {
+        "track": "cet4",
+        "card_count": 1180,
+        "box_count": 108,
+        "audio_asset_count": 301
+      },
+      "cet6": {
+        "track": "cet6",
+        "card_count": 1234,
+        "box_count": 110,
+        "audio_asset_count": 328
+      }
+    },
+    "two_distinct_complete_registered_scope_run_artifacts_required": true
   },
   "attestation": {
     "provider": "github_artifact_attestations_sigstore",
@@ -110,7 +152,7 @@
     "mlx-audio-package-manifest.json",
     "python-environment-manifest.json",
     "audio-manifest.json",
-    "exact ai_tts/cet4 audio bytes",
+    "exact registered-track audio bytes",
     "reviewed-worklist.json",
     "raw-run-manifest.json",
     "trusted-media-run-receipt.json",
@@ -125,6 +167,12 @@
     "self_hosted_runner_observed": true,
     "real_attestation_observed": false,
     "formal_media_evidence_created": false,
-    "does_not_claim": ["model_execution_before_workflow_run", "provider_or_voice_identity", "deployment", "device_playback", "closed_beta_readiness"]
+    "does_not_claim": [
+      "model_execution_before_workflow_run",
+      "provider_or_voice_identity",
+      "deployment",
+      "device_playback",
+      "closed_beta_readiness"
+    ]
   }
 }

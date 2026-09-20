@@ -4008,6 +4008,7 @@ function validateGitWorkflow(errors) {
     }
     const mediaProducer = readJson('spec/trusted-media-run-producer.json');
     const mediaWorkflow = readText('.github/workflows/trusted-media-run.yml');
+    const mediaLock = readJson('spec/trusted-media-runner-lock.json');
     const mediaAssets = [
       'spec/trusted-media-run-producer.json',
       'spec/trusted-media-runner-lock.json',
@@ -4023,14 +4024,15 @@ function validateGitWorkflow(errors) {
       pushIssue(errors, 'trusted_media_run_asset_missing', {});
     }
     if (
-      mediaProducer.version !== 'trusted-media-run-producer-v2' ||
+      mediaProducer.version !== 'trusted-media-run-producer-v3' ||
+      mediaProducer.workflow?.product_authority?.commit_sha !== mediaLock.product_authority?.commit_sha ||
       mediaProducer.workflow?.retained_raw_finalization_supported_without_model_rerun !== true ||
       mediaProducer.workflow?.receipt_v2_separately_binds_model_execution_and_attested_finalizer_commits !== true ||
       mediaProducer.current_boundary?.real_attestation_observed !== false ||
       mediaProducer.current_boundary?.formal_media_evidence_created !== false ||
       mediaProducer.workflow?.human_or_user_environment_gate !== false ||
-      mediaProducer.workflow?.timeout_minutes !== 240 ||
-      mediaProducer.workflow?.model_deadline_seconds !== 12600 ||
+      mediaProducer.workflow?.timeout_minutes !== 360 ||
+      mediaProducer.workflow?.model_deadline_seconds !== 19800 ||
       mediaProducer.workflow?.failure_artifact_upload_reserve_minutes !== 30 ||
       mediaProducer.attestation?.attestation_proves_provenance_not_result_correctness !== true
     ) {
@@ -4053,19 +4055,20 @@ function validateGitWorkflow(errors) {
       'find "$repository" -perm -222',
       'CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT',
       'asset cache must remain outside the repository',
-      'rsync -a "$downloaded/ai_tts/cet4/"',
+      'scripts/materialize_trusted_media_assets.mjs',
+      '--document "$downloaded/audio-manifest.json" --track "$MEDIA_TRACK"',
       'model root must remain outside the repository',
       'GIT_NO_REPLACE_OBJECTS: "1"',
       'GIT_GRAFT_FILE: /dev/null',
       'Replay exact technical audio audit',
       '--technical-audit-replay',
       'scripts/validate_audio_lfs.mjs',
-      '7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1',
+      mediaLock.product_authority.commit_sha,
       'product-authority-verify',
       'actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6',
       'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02',
-      'timeout-minutes: 240',
-      '$(date +%s) + 12600',
+      'timeout-minutes: 360',
+      '$(date +%s) + 19800',
       'Download retained complete raw review package',
       '--execution-source-commit',
       '--path-format=absolute --git-path index',

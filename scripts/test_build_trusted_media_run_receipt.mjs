@@ -73,6 +73,7 @@ function copyProducerAssets(root) {
   for (const relativePath of [
     '.github/workflows/trusted-media-run.yml',
     'scripts/run_trusted_media_review.py',
+    'scripts/materialize_trusted_media_assets.mjs',
     'scripts/build_trusted_media_run_receipt.mjs',
     'scripts/replay_trusted_media_raw_outputs.py',
     'scripts/audit_audio_technical.mjs',
@@ -80,24 +81,26 @@ function copyProducerAssets(root) {
     'scripts/lib/card_integrity.mjs',
     'scripts/lib/model_acceptance.mjs',
     'spec/trusted-media-runner-lock.json',
+    'spec/trusted-media-run-producer.json',
   ]) {
     write(root, relativePath, fs.readFileSync(path.join(ROOT, relativePath)));
   }
 }
 
-function buildFixture(t) {
+function buildFixture(t, track = 'cet4') {
+  const counts = track === 'cet4' ? {cards: 1180, boxes: 108, audio: 301} : {cards: 1234, boxes: 110, audio: 328};
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'trusted-media-builder-'));
   t.after(() => fs.rmSync(root, {force: true, recursive: true}));
   copyProducerAssets(root);
   const cards = [];
   const assets = [];
-  for (let index = 1; index <= 1180; index += 1) {
-    const cardId = String(index).padStart(6, '0');
+  for (let index = 1; index <= counts.cards; index += 1) {
+    const cardId = String(index + (track === 'cet6' ? 100000 : 0)).padStart(6, '0');
     const transcript = `Trusted media sentence ${cardId}.`;
-    const boxPrefix = String((index - 1) % 108).padStart(4, '0');
+    const boxPrefix = String((index - 1) % counts.boxes + (track === 'cet6' ? 1000 : 0)).padStart(4, '0');
     const card = {
       card_id: cardId,
-      track: 'cet4',
+      track,
       interaction_id: 'flip',
       knowledge_ref: {
         library_id: '0',
@@ -118,7 +121,7 @@ function buildFixture(t) {
         material: {
           text_source_type: 'simulation',
           source_note: 'Test-only simulated CET material.',
-          audio_generation_method: index <= 301 ? 'TTS_AI_generated' : 'none',
+          audio_generation_method: index <= counts.audio ? 'TTS_AI_generated' : 'none',
           tts_text_reviewed: true,
           tts_audio_reviewed: false,
         },
@@ -126,8 +129,8 @@ function buildFixture(t) {
         review_status: 'draft',
       },
     };
-    if (index <= 301) {
-      const relativeAsset = `ai_tts/cet4/${boxPrefix}/${cardId}.mp3`;
+    if (index <= counts.audio) {
+      const relativeAsset = `ai_tts/${track}/${boxPrefix}/${cardId}.mp3`;
       const file = write(root, relativeAsset, Buffer.from(`audio-${cardId}`));
       card.audio = {path: relativeAsset, transcript};
       assets.push({
@@ -155,10 +158,10 @@ function buildFixture(t) {
     }
     cards.push(card);
   }
-  write(root, 'card_boxes_json/test.json', {track: 'cet4', cards});
+  write(root, 'card_boxes_json/test.json', {track, cards});
   const technicalAudit = {
     schema_version: 'audio-technical-audit.v1',
-    track: 'cet4',
+    track,
     generated_at: '2026-08-26T12:00:00.000Z',
     authority_boundary: 'technical integrity only',
     ok: true,
@@ -182,7 +185,7 @@ function buildFixture(t) {
     clock: () => new Date('2026-08-26T12:01:00.000Z'),
     root,
     technicalAuditPath: auditFile.path,
-    track: 'cet4',
+    track,
   });
   const worklistFile = write(
     root,
@@ -193,6 +196,7 @@ function buildFixture(t) {
     root,
     repositoryRoot: ROOT,
     cards,
+    track,
   });
   const gitEnv = {
     ...process.env,
@@ -261,8 +265,8 @@ function buildFixture(t) {
       path: path.basename(file.path),
       sha256: file.sha256,
       size_bytes: file.size_bytes,
-      card_count: 301,
-      complete_asset_count: 301,
+      card_count: counts.audio,
+      complete_asset_count: counts.audio,
     });
   }
   const checks = Object.fromEntries(PERCEPTUAL_CHECKS.map(check => [check, true]));
@@ -286,7 +290,7 @@ function buildFixture(t) {
       checks,
       acceptance_sources: [['a', 'f'], ['b', 'g']],
     })),
-    result: {reviewed_card_count: 301, passed_card_count: 301, failed_card_count: 0},
+    result: {reviewed_card_count: counts.audio, passed_card_count: counts.audio, failed_card_count: 0},
   };
   const runPackageFile = write(root, 'run-output/run-package.json', runPackage);
   write(root, 'run-output/model-weights-manifest.json', {
@@ -688,8 +692,8 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.doesNotMatch(reviewJob, /actions\/checkout@/);
   assert.match(reviewJob, /TRUSTED_MEDIA_DEADLINE_EPOCH/);
   assert.match(reviewJob, /--deadline-epoch/);
-  assert.match(reviewJob, /timeout-minutes: 240/);
-  assert.match(reviewJob, /\$\(date \+%s\) \+ 12600/);
+  assert.match(reviewJob, /timeout-minutes: 360/);
+  assert.match(reviewJob, /\$\(date \+%s\) \+ 19800/);
   assert.doesNotMatch(reviewJob, /\$\(date \+%s\) \+ 9000/);
   assert.match(reviewJob, /CARD_MAKE_TRUSTED_SOURCE_REPOSITORY/);
   assert.match(reviewJob, /CARD_MAKE_TRUSTED_PRODUCT_AUTHORITY_REPOSITORY/);
@@ -712,13 +716,14 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
     receiptBuildStep,
     /diff-index --quiet "\$GITHUB_SHA" -- \. ':\(exclude\)ai_tts\/cet4'/,
   );
-  assert.match(reviewJob, /product_commit=7707f9a17b0a6ffc7ee0553cb7f49c49d31ddce1/);
+  assert.match(reviewJob, /product_commit=d77d7020ba83e6826845df93bda0e31d7b7ca465/);
   assert.match(verifyJob, /runs-on: ubuntu-latest/);
   assert.doesNotMatch(verifyJob, /id-token: write|attestations: write|actions\/attest@/);
   assert.match(verifyJob, /lfs: false/);
   assert.match(verifyJob, /Checkout exact trusted main commit without LFS download[\s\S]*fetch-depth: 0/);
   assert.doesNotMatch(verifyJob, /git -C "\$source_root" lfs pull/);
-  assert.match(verifyJob, /rsync -a "\$downloaded\/ai_tts\/cet4\/"/);
+  assert.match(verifyJob, /materialize_trusted_media_assets\.mjs/);
+  assert.match(verifyJob, /--document "\$downloaded\/audio-manifest\.json" --track "\$MEDIA_TRACK"/);
   assert.match(verifyJob, /Rebuild and byte-verify receipt on GitHub-hosted runner/);
   assert.match(verifyJob, /repository: LENKIN233\/softbook_cet/);
   assert.match(verifyJob, /product-authority-verify/);
@@ -736,7 +741,8 @@ test('workflow isolates self-hosted model execution from OIDC attestation author
   assert.match(reviewJob, /GIT_LFS_SKIP_SMUDGE: "1"/);
   assert.match(reviewJob, /CARD_MAKE_TRUSTED_MEDIA_ASSET_ROOT/);
   assert.match(reviewJob, /asset cache must remain outside the repository/);
-  assert.match(reviewJob, /find "\$asset_root\/ai_tts\/cet4" -type f -name '\*\.mp3'/);
+  assert.match(reviewJob, /--source-root "\$asset_root" --destination-root "\$source_root"/);
+  assert.match(reviewJob, /--document "\$source_root\/\$WORKLIST_PATH" --track "\$MEDIA_TRACK"/);
   assert.doesNotMatch(reviewJob, /git -C "\$source_root" lfs pull/);
   assert.match(reviewJob, /Replay exact technical audio audit/);
   assert.match(reviewJob, /--technical-audit-replay/);
@@ -763,10 +769,11 @@ test('PR contract gate downloads LFS only for formal media evidence changes', ()
   assert.match(contractJob, /git lfs pull --include='ai_tts\/\*\*\/\*\.mp3'/);
   assert.match(contractJob, /\.finalization\.commit_sha/);
   assert.match(contractJob, /actions\/workflows\/trusted-media-run\.yml\/runs/);
-  assert.match(contractJob, /test "\$\{#run_ids\[@\]\}" = 1/);
+  assert.match(contractJob, /for run_id in "\$\{run_ids\[@\]\}"/);
   assert.match(contractJob, /gh run download/);
-  assert.match(contractJob, /cmp "\$receipt" "\$artifact_dir\/trusted-media-run-receipt\.json"/);
-  assert.match(contractJob, /rsync -a "\$artifact_dir\/ai_tts\/cet4\/" ai_tts\/cet4\//);
+  assert.match(contractJob, /cmp -s "\$receipt" "\$artifact_dir\/trusted-media-run-receipt\.json"/);
+  assert.match(contractJob, /materialize_trusted_media_assets\.mjs/);
+  assert.match(contractJob, /test -n "\$matched_artifact"/);
   assert.match(contractJob, /name: Validate contracts[\s\S]*GH_TOKEN: \$\{\{ github\.token \}\}/);
   assert.match(contractJob, /apt-get install --no-install-recommends -y ffmpeg/);
   assert.match(contractJob, /ffprobe -version/);
@@ -870,4 +877,19 @@ test('builder rejects a pronunciation override supported by only one acceptance 
     }),
     /no pronunciation specialist or two distinct specialists/,
   );
+});
+
+test('builder emits the exact CET6 scope without borrowing CET4 counts', t => {
+  const fixture = buildFixture(t, 'cet6');
+  const result = buildTrustedMediaArtifacts({authorizationPath: fixture.authorizationFile.path,
+    outputDir: fixture.runDir, repoRoot: fixture.root, runPackagePath: fixture.runPackageFile.path,
+    sourceCommit: fixture.sourceCommit, worklistPath: fixture.worklistFile.path,
+    createdAt: new Date('2026-08-26T13:00:00.000Z')});
+  const receipt = JSON.parse(fs.readFileSync(result.receipt.path));
+  assert.equal(receipt.candidate.track, 'cet6');
+  assert.equal(receipt.candidate.card_count, 1234);
+  assert.equal(receipt.candidate.box_count, 110);
+  assert.equal(receipt.candidate.audio_asset_count, 328);
+  assert.equal(receipt.result.passed_card_count, 328);
+  assert.match(receipt.receipt_id, /^cet6-audio-/);
 });

@@ -175,12 +175,12 @@ class SummarizingGeneralAdapter(FakeAdapter):
         return super().generate(audio_path, prompt, temperature)
 
 
-def worklist(asset_root: Path, count=4):
+def worklist(asset_root: Path, count=4, track="cet4"):
     entries = []
     for index in range(1, count + 1):
-        card_id = f"{index:06d}"
+        card_id = f"{index + (100000 if track == 'cet6' else 0):06d}"
         payload = f"audio-{card_id}".encode()
-        relative = f"ai_tts/cet4/test/{card_id}.mp3"
+        relative = f"ai_tts/{track}/test/{card_id}.mp3"
         path = asset_root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(payload)
@@ -199,12 +199,36 @@ def worklist(asset_root: Path, count=4):
         )
     return {
         "schema_version": "audio-perceptual-worklist.v3",
-        "track": "cet4",
+        "track": track,
         "entries": entries,
     }
 
 
 class TrustedMediaRunnerTests(unittest.TestCase):
+    def test_cet6_default_scope_runs_all_328_assets(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = run_review_package(
+                worklist=worklist(root, count=328, track="cet6"), asset_root=root,
+                output_dir=root / "output", adapter=FakeAdapter(), lock=LOCK,
+                model_manifest_sha256=digest(b"weights"), workflow_run_id="32975067429",
+                workflow_run_attempt=1,
+            )
+            self.assertEqual(package["result"]["passed_card_count"], 328)
+            for name in ["a", "b", "f", "g"]:
+                self.assertEqual(next(run for run in package["runs"] if run["name"] == name)["card_count"], 328)
+
+    def test_cet6_rejects_cet4_count_before_model_execution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            with self.assertRaisesRegex(ValueError, "exactly 328"):
+                run_review_package(
+                    worklist=worklist(root, count=301, track="cet6"), asset_root=root,
+                    output_dir=root / "output", adapter=FakeAdapter(), lock=LOCK,
+                    model_manifest_sha256=digest(b"weights"), workflow_run_id="32975067429",
+                    workflow_run_attempt=1,
+                )
+
     def test_similarity_preserves_phonetic_spelling_but_rejects_omitted_clauses(self):
         self.assertGreaterEqual(
             transcript_similarity(
