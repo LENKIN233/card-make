@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
-import {execFileSync} from 'node:child_process';
+import {execFileSync, spawnSync} from 'node:child_process';
 import test from 'node:test';
 import {materializeTrustedMediaAssets} from './materialize_trusted_media_assets.mjs';
 
@@ -52,4 +52,42 @@ test('unknown or cross-track scopes fail before filesystem access',()=>{
   for(const track of ['__proto__','cet8'])assert.throws(()=>materializeTrustedMediaAssets({track,document:{track}}),/not registered/);
   assert.throws(()=>materializeTrustedMediaAssets({track:'cet6',document:{track:'cet4'}}),/does not match/);
   assert.throws(()=>materializeTrustedMediaAssets({track:'cet6',document:{schema_version:'audio-perceptual-worklist.v3',track:'cet6',entries:Array(301).fill({audio:{}})}}),/wrong asset count/);
+});
+
+test('the workflow accepts hydrated audio from both tracks and detects any changed bytes', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'media-checkout-'));
+  t.after(() => fs.rmSync(root, {recursive: true, force: true}));
+  const env = {...process.env, GIT_CONFIG_GLOBAL: os.devNull,
+    GIT_CONFIG_SYSTEM: os.devNull, GIT_CONFIG_NOSYSTEM: '1'};
+  const git = (...args) => execFileSync('git', [
+    '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.test', ...args,
+  ], {cwd: root, env, stdio: 'pipe'});
+  const paths = ['ai_tts/cet4/0000/000001-v2.mp3', 'ai_tts/cet6/1000/100001-v2.mp3'];
+  const media = paths.map(p => Buffer.from(`fixture bytes for ${p}`));
+  git('init', '-q');
+  fs.writeFileSync(path.join(root, '.gitattributes'), 'ai_tts/** filter=lfs -text\n');
+  fs.writeFileSync(path.join(root, 'source.json'), '{"scope":"both"}\n');
+  for (const [index, relative] of paths.entries()) {
+    fs.mkdirSync(path.dirname(path.join(root, relative)), {recursive: true});
+    fs.writeFileSync(path.join(root, relative),
+      `version https://git-lfs.github.com/spec/v1\noid sha256:${createHash('sha256').update(media[index]).digest('hex')}\nsize ${media[index].length}\n`);
+  }
+  git('add', '.'); git('commit', '-qm', 'immutable source and LFS pointers');
+  const head = git('rev-parse', 'HEAD').toString().trim();
+  for (const [index, relative] of paths.entries()) fs.writeFileSync(path.join(root, relative), media[index]);
+  // Reproduce the CET6 run failure: the old guard only exempts current-track audio.
+  assert.equal(spawnSync('git', ['diff-index', '--quiet', head, '--', '.', ':(exclude)ai_tts/cet6'],
+    {cwd: root, env}).status, 1);
+  const check = () => spawnSync('git', ['-c', 'filter.lfs.process=git-lfs filter-process',
+    '-c', 'filter.lfs.required=true', 'diff', '--quiet', '--no-ext-diff', '--no-textconv', head, '--', '.'],
+  {cwd: root, env, encoding: 'utf8'});
+  const clean = check();
+  assert.equal(clean.status, 0, clean.stderr);
+  for (const [index, relative] of paths.entries()) {
+    fs.appendFileSync(path.join(root, relative), 'corrupt');
+    assert.equal(check().status, 1, `must detect changed ${relative}`);
+    fs.writeFileSync(path.join(root, relative), media[index]);
+  }
+  fs.writeFileSync(path.join(root, 'source.json'), '{"scope":"tampered"}\n');
+  assert.equal(check().status, 1, 'must also detect non-media source changes');
 });
