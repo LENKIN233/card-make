@@ -1,0 +1,64 @@
+{
+  "handoff_id": "20260920-cet6-media-acceptance",
+  "created_at": "2026-09-20T14:34:54.842Z",
+  "agent": "codex",
+  "branch": "codex/cet6-media-acceptance",
+  "base_branch": "main",
+  "commit_sha": "9c92f563d2bf08578012c9bd7d2be6af31c6a019",
+  "push_ref": "origin/codex/cet6-media-acceptance",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/235",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      ".github/workflows/pr-gates.yml",
+      ".github/workflows/trusted-media-run.yml",
+      "scripts/build_trusted_media_run_receipt.mjs",
+      "scripts/materialize_trusted_media_assets.mjs",
+      "scripts/run_trusted_media_review.py",
+      "scripts/test_build_trusted_media_run_receipt.mjs",
+      "scripts/test_current_full_track_authorization_fixture.mjs",
+      "scripts/test_materialize_trusted_media_assets.mjs",
+      "scripts/test_run_trusted_media_review.py",
+      "scripts/validate_harness.mjs",
+      "spec/trusted-media-run-producer.json",
+      "spec/trusted-media-runner-lock.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "b57495876d4bbb8f155f1c203028c642b85f7e55",
+    "patch_sha256": "47166220e594c8c58c9d4881aa6a297d863512f2131e0bc60cfb61d6c97b7a6e"
+  },
+  "validation": [
+    {
+      "command": "Task-required Node regression suites",
+      "result": "272 tests passed, including model acceptance, card integrity, delivery scope, audio worklist/QC, exact media materialization and receipt builder"
+    },
+    {
+      "command": "python3 scripts/test_run_trusted_media_review.py",
+      "result": "22 tests passed, including complete default CET6 scope and wrong count rejection"
+    },
+    {
+      "command": "node --test scripts/test_build_trusted_media_run_receipt.mjs",
+      "result": "19 tests passed after product-authority pin and workflow updates"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed with six recorded upstream catalog warnings"
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "27 historical records passed, zero errors and warnings"
+    },
+    {
+      "command": "Parse both workflows with unique-key YAML parser; git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Adds complete CET6 producer support under the same exact-asset, authorization, raw-output, model-consumption and independent attestation boundaries as CET4.",
+  "remaining_risks": [
+    "No new-scope real media receipt is created by this tooling change.",
+    "The runner mirrors and asset cache must be updated to the exact immutable input commit before dispatch."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
