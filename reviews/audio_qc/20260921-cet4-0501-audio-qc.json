@@ -1,0 +1,155 @@
+{
+  "schema_version": "model-owned-audio-qc.v2",
+  "audio_qc_id": "20260921-cet4-0501-audio-qc",
+  "created_at": "2026-09-21T15:07:49.860Z",
+  "model_acceptances": [
+    {
+      "schema_version": "model-acceptance.v2",
+      "actor": {
+        "kind": "model_harness",
+        "agent": "agent:audio-evidence-aggregate-lane-1",
+        "model": "mlx-community/Qwen2-Audio-7B-Instruct-4bit",
+        "run_id": "audio-evidence:0501:lane-1:0c87886720b137f0"
+      },
+      "evidence": {
+        "reviewed_at": "2026-09-21T14:56:20.091Z",
+        "input_sha256": "sha256:3e5aa9c9336439744b20535257b225b7441736ef404c730be955baeed54b1aee",
+        "capabilities": [
+          "audio_perceptual_review"
+        ],
+        "summary": "Deterministic lane 1 aggregation of 1 exact per-card audio-capable acceptances; source evidence sha256:0c87886720b137f07c4ab2d339c0c7a77a076686a8ddf1e487081d1a359b0b73. No new media, provider, deployment, or device fact is inferred.",
+        "findings": []
+      },
+      "decision": "accepted"
+    },
+    {
+      "schema_version": "model-acceptance.v2",
+      "actor": {
+        "kind": "model_harness",
+        "agent": "agent:audio-evidence-aggregate-lane-2",
+        "model": "mlx-community/Qwen2-Audio-7B-Instruct-4bit",
+        "run_id": "audio-evidence:0501:lane-2:68c0fb1dee16f2dc"
+      },
+      "evidence": {
+        "reviewed_at": "2026-09-21T14:56:20.091Z",
+        "input_sha256": "sha256:3e5aa9c9336439744b20535257b225b7441736ef404c730be955baeed54b1aee",
+        "capabilities": [
+          "audio_perceptual_review"
+        ],
+        "summary": "Deterministic lane 2 aggregation of 1 exact per-card audio-capable acceptances; source evidence sha256:68c0fb1dee16f2dcb0d376bb5efb381405d43f31b492c595c07161b101bb3cbc. No new media, provider, deployment, or device fact is inferred.",
+        "findings": []
+      },
+      "decision": "accepted"
+    }
+  ],
+  "scope": {
+    "library": "词汇",
+    "group": "同义词替换",
+    "box": "词性转换",
+    "box_prefixes": [
+      "0501"
+    ],
+    "card_ids": [
+      "050101"
+    ]
+  },
+  "source_records": {
+    "card_files": [
+      "card_boxes_json/card_boxes_seed_cet4_vocabulary_0501.json"
+    ],
+    "linked_agent_self_reviews": [
+      "reviews/agent_self_review/20260921-cet4-release-model-review.json"
+    ],
+    "linked_approved_batch": "reviews/approved_batches/20260921-cet4-full-track-authorization.json",
+    "linked_perceptual_worklist": "reviews/audio_perceptual_worklists/cet4-audio-35602031185-1-reviewed.json",
+    "perceptual_worklist_sha256": "025d75dac61c9e3f2a420f965b30327be143787ff879f10cdaf82cff52e72c1a",
+    "trusted_media_receipt": "reviews/trusted_media_receipts/cet4-audio-35602031185-1.json",
+    "trusted_media_receipt_sha256": "3214f924cd20e190a282677a4b04f8fe841df31dacd8b64ba2b9556fa540d126",
+    "trusted_media_attestation_bundle": "reviews/trusted_media_receipts/cet4-audio-35602031185-1.attestation.jsonl",
+    "trusted_media_attestation_bundle_sha256": "894e209b2ca85cb0e72785154821bec427ba3f95e0dec2acac7c995bfe19d0ac",
+    "trusted_media_source_commit": "593e73c23cbdda50ef6f43c5c9f7c9589ead1e5b",
+    "trusted_media_model_id": "mlx-community/Qwen2-Audio-7B-Instruct-4bit",
+    "trusted_media_model_revision": "c65570002626f41b4dc08b7b54f42f99f3e82e7f"
+  },
+  "text_gate": {
+    "tts_text_reviewed": true,
+    "text_source_type": "simulation",
+    "transcripts": [
+      {
+        "card_id": "050101",
+        "transcript": "In listening and reading tasks, exam writers often shift the same root into a different word class, such as retire to retirement or protect to protection.",
+        "target_signal": "建立同词根词性转换的保义判断框架",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      }
+    ]
+  },
+  "generation_plan": {
+    "method": "TTS_AI_generated",
+    "provider": "legacy_unknown",
+    "voice_or_speaker": "legacy_unknown",
+    "speed": "legacy_unknown",
+    "style_notes": "Pre-existing candidate assets; unavailable generation details are not reconstructed.",
+    "output_dir": "ai_tts/",
+    "overwrite_existing_assets": false,
+    "replacement_reason": ""
+  },
+  "legacy_adoption": {
+    "enabled": true,
+    "reviewed_at": "2026-09-21T14:56:20.091Z",
+    "reproducibility_status": "non_reproducible"
+  },
+  "generated_assets": [
+    {
+      "card_id": "050101",
+      "path": "ai_tts/cet4/0501/050101-kokoro-20260920-affc4687.mp3",
+      "transcript_sha256": "2721718179fdd3479263fb90ecfaa719b20347cabf3a16a7d14183824fa2d463",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "bafe20af15f14f9d090f5f86d81ab4eddc8d32c29893eb4b8082fa634993e229",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    }
+  ],
+  "qa_checks": {
+    "audio_matches_text": true,
+    "target_signal_audible": true,
+    "accurate_pronunciation": true,
+    "suitable_speed": true,
+    "natural_rhythm": true,
+    "stress_and_pauses_do_not_mislead": true,
+    "no_unwanted_noise_or_clipping": true,
+    "no_autoplay_assumption": true,
+    "front_side_no_required_subtitles": true,
+    "tts_audio_not_used_as_source_authenticity": true
+  },
+  "per_card_qc": [
+    {
+      "card_id": "050101",
+      "asset_path": "ai_tts/cet4/0501/050101-kokoro-20260920-affc4687.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-21T14:56:20.091Z; cet4-current-audio-perceptual-qc."
+    }
+  ],
+  "verdict": {
+    "candidate_audio_ok": true,
+    "formal_audio_ready": true,
+    "requires_regeneration": false,
+    "reason": "All bound assets passed complete per-card model perceptual QC and the three product-semantics boundaries were explicitly attested."
+  },
+  "approval_boundary": {
+    "tts_audio_is_not_source_authenticity_evidence": true,
+    "current_model_owned_content_authorization_required": true,
+    "external_facts_must_not_be_inferred": true
+  },
+  "validation": {
+    "audio_qc": "node scripts/validate_audio_qc.mjs",
+    "harness": "node scripts/validate_harness.mjs"
+  }
+}
