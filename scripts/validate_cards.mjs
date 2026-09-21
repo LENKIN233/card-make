@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import {
   loadIntegrityPolicy,
   validateEliminationIntegrity,
+  validateLockIntegrity,
   validateQualityMetadata,
 } from './lib/card_integrity.mjs';
 
@@ -150,6 +151,11 @@ function validate() {
       else stats.integrity.elimination_invalid += 1;
     }
     errors.push(...eliminationIntegrity.issues.map(integrityIssue => ({
+      file,
+      ...integrityIssue,
+    })));
+
+    errors.push(...validateLockIntegrity(card).issues.map(integrityIssue => ({
       file,
       ...integrityIssue,
     })));
