@@ -1,0 +1,42 @@
+{
+  "handoff_id": "20260921-cet4-pending-audio",
+  "created_at": "2026-09-21T11:21:11.916Z",
+  "agent": "codex",
+  "branch": "codex/cet4-pending-audio-20260921",
+  "base_branch": "main",
+  "commit_sha": "c4ac33be37d996434e0edaee272e0c43c4ce9d94",
+  "push_ref": "origin/codex/cet4-pending-audio-20260921",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/248",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "audio",
+    "touched_paths": [
+      "reviews/audio_perceptual_worklists/20260921-cet4-kokoro-pending.json",
+      "reviews/audio_technical_audits/20260921-cet4-kokoro-technical.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "08675886a6014274a1260bde9368b1e33c5157db",
+    "patch_sha256": "685aea2e21f2c6af70bedb1d1afef42ee77f3a3b29473fbc280588f69684bc74"
+  },
+  "validation": [
+    {
+      "command": "CET4 ffprobe technical audit and pending worklist construction",
+      "result": "301/301 exact assets passed technical/transcript bindings; complete pending worklist includes23 finalr3 replacements."
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD; node scripts/validate_delivery_boundary.mjs --base origin/main --head HEAD",
+      "result": "passed for immutable payload c4ac33b (fullSHA bound by handoff)."
+    },
+    {
+      "command": "Full-track mobile learning acceptance",
+      "result": "1180 cards parse and complete;301 audio bindings;5 representative UI completions;gate_eligible=false."
+    }
+  ],
+  "local_status": "Exact full revised CET4 technical audit and pending301-asset perceptual scope; actual model run remains required.",
+  "remaining_risks": [
+    "All301 perceptual entries are pending; this PR establishes neither listening acceptance nor a formal receipt.",
+    "External deployment and real-device publication remain separate facts."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
