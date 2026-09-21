@@ -29,7 +29,7 @@
         },
         "audio_first": true,
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003201.mp3",
+        "audio_url": "ai_tts/cet4/0032/003201-kokoro-20260920-75159318.mp3",
         "highlight_ranges": []
       },
       "back_content": {
@@ -46,10 +46,13 @@
       "options": null,
       "eliminable_items": null,
       "audio": {
-        "url": "ai_tts/cet4/0032/003201.mp3",
-        "duration_ms": 4848,
+        "path": "ai_tts/cet4/0032/003201-kokoro-20260920-75159318.mp3",
+        "url": "ai_tts/cet4/0032/003201-kokoro-20260920-75159318.mp3",
+        "duration_ms": 4728,
+        "sha256": "sha256:046cf4f75452420a86fb03bd01495cb939d9e90ba851c1c192ff6eee38ca63ab",
         "transcript": "All budget forms must be submitted by Friday noon for review.",
-        "path": "ai_tts/cet4/0032/003201.mp3"
+        "voice": "af_heart",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
@@ -116,8 +119,9 @@
         "card_prototype": "knowledge_explanation",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
         "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
         "box_progression_role": "recognition",
@@ -145,7 +149,7 @@
         },
         "audio_first": true,
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003202.mp3",
+        "audio_url": "ai_tts/cet4/0032/003202-kokoro-20260920-6f8c16f3.mp3",
         "highlight_ranges": []
       },
       "back_content": {
@@ -183,10 +187,13 @@
       ],
       "eliminable_items": null,
       "audio": {
-        "url": "ai_tts/cet4/0032/003202.mp3",
-        "duration_ms": 7656,
+        "path": "ai_tts/cet4/0032/003202-kokoro-20260920-6f8c16f3.mp3",
+        "url": "ai_tts/cet4/0032/003202-kokoro-20260920-6f8c16f3.mp3",
+        "duration_ms": 9000,
+        "sha256": "sha256:ce62c2ed04d959e3d7479784a1603012ad516f6c25e523e19b397ad08fe00172",
         "transcript": "The briefing was supposed to start at six, but it has been moved to six-thirty because the inspection team is running late.",
-        "path": "ai_tts/cet4/0032/003202.mp3"
+        "voice": "am_michael",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
@@ -256,8 +263,9 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
         "exam_value": "帮助用户在CET4听力任务中依据题面证据完成选项判断，并形成可重复执行的作答步骤。",
         "box_progression_role": "recognition",
@@ -272,51 +280,33 @@
       "box": 2,
       "card_no": 3,
       "card_box_code": "0032",
-      "interaction_type": 2,
+      "interaction_type": 0,
       "card_box_name": "时间",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "任务：播放后，在你第一次听到关键时间时点击。",
-        "task_prompt": "播放后，在你第一次听到关键时间时点击。",
-        "task_schema": {
-          "action": "时间窗点击",
-          "focus": "关键时点入场定位",
-          "success_criteria": "点击命中时间词附近，并能说出这个时点控制什么"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003203.mp3",
-        "highlight_ranges": []
+        "text": "听录音：接送访学生的校车几点出发，从哪里出发？",
+        "audio_url": "ai_tts/cet4/0032/003203-kokoro-20260920-3a04e366.mp3"
       },
       "back_content": {
-        "text": "目标时间：8:15，它对应的是校车发车时点。",
-        "explanation": "语境揭示：The shuttle for visiting students leaves at eight-fifteen from the east gate. 这张卡训练的是“时间 + 事件”成对抓取。"
+        "text": "8点15分从东门出发。",
+        "explanation": "eight-fifteen 是时间，east gate 是地点。不要将 visiting students 理解成司机身份；它说明服务对象，和时间地点属于不同信息。"
       },
       "analysis_content": {
-        "text": "① 识别信号：时间词一出现，后面通常紧跟动作动词或地点补充，是最关键的信息窗口。\n\n② 核心规律：时间题不只考“几点”，更考“几点发生什么”。学生常能听到 eight-fifteen，却忘了它对应 leaves 而不是 arrives 或 opens。真正有用的记忆单位应该是“8:15 发车”。\n\n③ 验证：本句 eight-fifteen 与 leaves directly 绑定，说明它是发车时间。若题目问 departure time，就必须把 8:15 和 shuttle leaves 一起提取。",
+        "text": "eight-fifteen 是时间，east gate 是地点。不要将 visiting students 理解成司机身份；它说明服务对象，和时间地点属于不同信息。",
         "tips": [
-          "听到时间后，至少再追一个动词。",
-          "时间答案最好复述成“几点 + 做什么”。"
+          "用时间、地点、对象三个标签整理简短通知。"
         ]
       },
-      "options": null,
-      "eliminable_items": null,
       "time_window_ms": [
         0,
         5000
       ],
-      "audio": {
-        "url": "ai_tts/cet4/0032/003203.mp3",
-        "duration_ms": 5112,
-        "transcript": "The shuttle for visiting students leaves at eight-fifteen from the east gate.",
-        "path": "ai_tts/cet4/0032/003203.mp3"
-      },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "track_index": 0,
@@ -333,55 +323,59 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：播放后，在你第一次听到关键时间时点击。",
-        "task_prompt": "播放后，在你第一次听到关键时间时点击。",
+        "text": "听录音：接送访学生的校车几点出发，从哪里出发？",
+        "task_prompt": "听录音：接送访学生的校车几点出发，从哪里出发？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "时间窗点击",
-          "focus": "关键时点入场定位",
-          "success_criteria": "点击命中时间词附近，并能说出这个时点控制什么"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：时间词一出现，后面通常紧跟动作动词或地点补充，是最关键的信息窗口。\n\n② 核心规律：时间题不只考“几点”，更考“几点发生什么”。学生常能听到 eight-fifteen，却忘了它对应 leaves 而不是 arrives 或 opens。真正有用的记忆单位应该是“8:15 发车”。\n\n③ 验证：本句 eight-fifteen 与 leaves directly 绑定，说明它是发车时间。若题目问 departure time，就必须把 8:15 和 shuttle leaves 一起提取。",
+        "text": "eight-fifteen 是时间，east gate 是地点。不要将 visiting students 理解成司机身份；它说明服务对象，和时间地点属于不同信息。",
         "tips": [
-          "听到时间后，至少再追一个动词。",
-          "时间答案最好复述成“几点 + 做什么”。"
+          "用时间、地点、对象三个标签整理简短通知。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“时间”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "区分发车时间和地点",
         "weak_point_tags": [
           "listening_weak",
-          "exam_strategy_weak"
+          "vocabulary_weak"
         ],
         "difficulty": {
-          "primary": "foundation"
+          "primary": "pass"
         },
-        "card_prototype": "knowledge_explanation",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
+        "exam_value": "用时间、地点、对象三个标签整理简短通知。",
         "box_progression_role": "recognition",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0032/003203-kokoro-20260920-3a04e366.mp3",
+        "url": "ai_tts/cet4/0032/003203-kokoro-20260920-3a04e366.mp3",
+        "duration_ms": 4920,
+        "sha256": "sha256:db3e6811e8b8c898e87aac535fdc37d03c97cf4d6c014db9d99d84d1013c9523",
+        "transcript": "The shuttle for visiting students leaves at eight-fifteen from the east gate.",
+        "voice": "bf_emma",
+        "rate": "0.9"
       }
     },
     {
@@ -396,37 +390,33 @@
       "card_box_name": "时间",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "任务：按住开始听，在句子真正切到‘最终可答时间’时松手。",
-        "task_prompt": "按住开始听，在句子真正切到‘最终可答时间’时松手。",
-        "task_schema": {
-          "action": "按住并择机松手",
-          "focus": "从背景说明切到最终答题时间",
-          "success_criteria": "在有效时间起点附近松手"
-        },
+        "text": "听录音：讲解参观在几点之后开始？",
+        "task_prompt": "听录音：讲解参观在几点之后开始？",
+        "task_schema": null,
         "audio_first": true,
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003204.mp3",
+        "audio_url": "ai_tts/cet4/0032/003204-kokoro-20260920-a01f02eb.mp3",
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "有效时间起点：shortly after nine-thirty。",
-        "explanation": "语境揭示：The museum opens earlier in summer, but guided tours begin shortly after nine-thirty. 前半句是背景常识，真正答题通常考的是后半句具体时间。"
+        "text": "9点30分之后不久。",
+        "explanation": "shortly after 是略晚于，不应给出录音未提供的精确分钟。"
       },
       "analysis_content": {
-        "text": "① 识别信号：一段里出现“常规时间 + 具体业务时间”时，真正题眼常落在后者。\n\n② 核心规律：时间题的难点之一，是把“泛化背景”误听成“可答时间”。比如 opens earlier in summer 只告诉你趋势，不提供精确时点；guided tours begin shortly after nine-thirty 才给出能直接作答的时间。\n\n③ 验证：本句 earlier in summer 是背景，shortly after nine-thirty 才是导览开始时间。松手点应压在 nine-thirty 这个最终可答时间段。",
-        "tips": [
-          "时间类背景信息不等于时间答案。",
-          "题目能直接落选项的时间，通常比背景描述更具体。"
-        ]
+        "text": "shortly after 是略晚于，不应给出录音未提供的精确分钟。",
+        "tips": []
       },
       "options": null,
       "eliminable_items": null,
       "target_duration_ms": 3100,
       "audio": {
-        "url": "ai_tts/cet4/0032/003204.mp3",
-        "duration_ms": 6504,
+        "path": "ai_tts/cet4/0032/003204-kokoro-20260920-a01f02eb.mp3",
+        "url": "ai_tts/cet4/0032/003204-kokoro-20260920-a01f02eb.mp3",
+        "duration_ms": 6984,
+        "sha256": "sha256:29252f254383bacf3c8540c8942d8d6a5cca5629cd68703c847aaf6ee24e9f69",
         "transcript": "The museum opens earlier in summer, but guided tours begin shortly after nine-thirty.",
-        "path": "ai_tts/cet4/0032/003204.mp3"
+        "voice": "bm_george",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
@@ -450,23 +440,16 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：按住开始听，在句子真正切到‘最终可答时间’时松手。",
-        "task_prompt": "按住开始听，在句子真正切到‘最终可答时间’时松手。",
+        "text": "听录音：讲解参观在几点之后开始？",
+        "task_prompt": "听录音：讲解参观在几点之后开始？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "按住并择机松手",
-          "focus": "从背景说明切到最终答题时间",
-          "success_criteria": "在有效时间起点附近松手"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：一段里出现“常规时间 + 具体业务时间”时，真正题眼常落在后者。\n\n② 核心规律：时间题的难点之一，是把“泛化背景”误听成“可答时间”。比如 opens earlier in summer 只告诉你趋势，不提供精确时点；guided tours begin shortly after nine-thirty 才给出能直接作答的时间。\n\n③ 验证：本句 earlier in summer 是背景，shortly after nine-thirty 才是导览开始时间。松手点应压在 nine-thirty 这个最终可答时间段。",
-        "tips": [
-          "时间类背景信息不等于时间答案。",
-          "题目能直接落选项的时间，通常比背景描述更具体。"
-        ]
+        "text": "shortly after 是略晚于，不应给出录音未提供的精确分钟。",
+        "tips": []
       },
       "auto_scoring": false,
       "legacy_interaction": {
@@ -482,7 +465,7 @@
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“时间”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "根据录音材料准确理解时间",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -493,8 +476,9 @@
         "card_prototype": "knowledge_explanation",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
         "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
         "box_progression_role": "recognition",
@@ -522,7 +506,7 @@
         },
         "audio_first": true,
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003205.mp3",
+        "audio_url": "ai_tts/cet4/0032/003205-kokoro-20260920-baded9bf.mp3",
         "highlight_ranges": []
       },
       "back_content": {
@@ -560,10 +544,13 @@
       ],
       "eliminable_items": null,
       "audio": {
-        "url": "ai_tts/cet4/0032/003205.mp3",
-        "duration_ms": 5760,
+        "path": "ai_tts/cet4/0032/003205-kokoro-20260920-baded9bf.mp3",
+        "url": "ai_tts/cet4/0032/003205-kokoro-20260920-baded9bf.mp3",
+        "duration_ms": 5160,
+        "sha256": "sha256:d16c43daffa5483c1bd78a8da54e928c34420c98b1f055f6ca594970600d64ff",
         "transcript": "The panel starts at one, but it usually runs for about two and a half hours.",
-        "path": "ai_tts/cet4/0032/003205.mp3"
+        "voice": "af_heart",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
@@ -633,8 +620,9 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
         "exam_value": "帮助用户在CET4听力任务中依据题面证据完成选项判断，并形成可重复执行的作答步骤。",
         "box_progression_role": "application",
@@ -662,27 +650,27 @@
         },
         "audio_first": true,
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003206.mp3",
+        "audio_url": "ai_tts/cet4/0032/003206-kokoro-20260920-8d44137d.mp3",
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "示例复述：列车会在 7:45 到站，乘客需要在 8 点前完成转乘。",
-        "explanation": "语境揭示：The train arrives at seven-forty-five, and passengers need to board the connector bus before eight. 时间复述要带出事件，否则只是一串时点。"
+        "text": "火车7点45分到站，需在8点前登上接驳巴士。",
+        "explanation": "before eight 限制登车时间；没有说整段后续旅程在8点前结束。"
       },
       "analysis_content": {
-        "text": "① 识别信号：多时间句里，不同时间往往分别控制不同事件。\n\n② 核心规律：时间复述不应简化成“7:45 和 8:00”。真正有用的理解是“7:45 到站”“8:00 前转乘”。同一段里的多个时间如果不分配给具体事件，就会在题目换问法时全部混淆。\n\n③ 验证：本句 seven-forty-five 对应 train arrives；before eight 对应 board the connector bus。完整复述必须把两个时间各自挂回对应事件。",
-        "tips": [
-          "时间复述模板：几点做什么。",
-          "多时间句里，每个时间都要单独找它的事件归属。"
-        ]
+        "text": "before eight 限制登车时间；没有说整段后续旅程在8点前结束。",
+        "tips": []
       },
       "options": null,
       "eliminable_items": null,
       "audio": {
-        "url": "ai_tts/cet4/0032/003206.mp3",
-        "duration_ms": 7032,
+        "path": "ai_tts/cet4/0032/003206-kokoro-20260920-8d44137d.mp3",
+        "url": "ai_tts/cet4/0032/003206-kokoro-20260920-8d44137d.mp3",
+        "duration_ms": 7560,
+        "sha256": "sha256:d29c46131e0005c56b302a64e4df8cf5c8de1173a4785bf7c715a7a0c57969da",
         "transcript": "The train arrives at seven-forty-five, and passengers need to board the connector bus before eight.",
-        "path": "ai_tts/cet4/0032/003206.mp3"
+        "voice": "am_michael",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
@@ -718,11 +706,8 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：多时间句里，不同时间往往分别控制不同事件。\n\n② 核心规律：时间复述不应简化成“7:45 和 8:00”。真正有用的理解是“7:45 到站”“8:00 前转乘”。同一段里的多个时间如果不分配给具体事件，就会在题目换问法时全部混淆。\n\n③ 验证：本句 seven-forty-five 对应 train arrives；before eight 对应 board the connector bus。完整复述必须把两个时间各自挂回对应事件。",
-        "tips": [
-          "时间复述模板：几点做什么。",
-          "多时间句里，每个时间都要单独找它的事件归属。"
-        ]
+        "text": "before eight 限制登车时间；没有说整段后续旅程在8点前结束。",
+        "tips": []
       },
       "auto_scoring": false,
       "legacy_interaction": {
@@ -749,8 +734,9 @@
         "card_prototype": "knowledge_explanation",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
         "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
         "box_progression_role": "application",
@@ -765,50 +751,29 @@
       "box": 2,
       "card_no": 7,
       "card_box_code": "0032",
-      "interaction_type": 2,
+      "interaction_type": 0,
       "card_box_name": "时间",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "点击时间细节被精确报出的瞬间。\n\n完成初判后，专门检查否定、比较和程度限定。",
-        "task_prompt": "点击时间细节被精确报出的瞬间。\n\n完成初判后，专门检查否定、比较和程度限定。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003207.mp3",
-        "highlight_ranges": []
+        "text": "听录音：大家应几点集合？",
+        "audio_url": "ai_tts/cet4/0032/003207-kokoro-20260920-f8bdf807.mp3"
       },
       "back_content": {
-        "text": "结论：本题关键是精确提取时间细节，不能只凭大意。",
-        "explanation": "语境揭示：The report includes several distractions, but time-point capture reveals the exact 时间细节 needed for the answer."
+        "text": "八点半在图书馆外集合。",
+        "explanation": "九点是出发时间，but 后的八点半是需要提前执行的集合时间。后句解释预留时间用于点名与装设备。"
       },
       "analysis_content": {
-        "text": "① 本题定位：题面要求完成“时间”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The report includes several distractions, but time-point capture reveals the exact time detail needed for the answer.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：The report includes several distractions, but time-point capture reveals the exact 时间细节 needed for the answer.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“时间”，下一题应先复述证据关系，再提交答案。",
+        "text": "九点是出发时间，but 后的八点半是需要提前执行的集合时间。后句解释预留时间用于点名与装设备。",
         "tips": [
-          "时间题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The report includes several distractions, but ti”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "行程通知中的集合与出发往往不是同一时点。"
         ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0032/003207.mp3",
-        "url": "ai_tts/cet4/0032/003207.mp3",
-        "duration_ms": 8352,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The report includes several distractions, but time-point capture reveals the exact time detail needed for the answer."
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "time_window_ms": [
@@ -829,40 +794,32 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "点击时间细节被精确报出的瞬间。\n\n完成初判后，专门检查否定、比较和程度限定。",
-        "task_prompt": "点击时间细节被精确报出的瞬间。\n\n完成初判后，专门检查否定、比较和程度限定。",
+        "text": "听录音：大家应几点集合？",
+        "task_prompt": "听录音：大家应几点集合？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 本题定位：题面要求完成“时间”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The report includes several distractions, but time-point capture reveals the exact time detail needed for the answer.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：The report includes several distractions, but time-point capture reveals the exact 时间细节 needed for the answer.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“时间”，下一题应先复述证据关系，再提交答案。",
+        "text": "九点是出发时间，but 后的八点半是需要提前执行的集合时间。后句解释预留时间用于点名与装设备。",
         "tips": [
-          "时间题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The report includes several distractions, but ti”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "行程通知中的集合与出发往往不是同一时点。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“时间”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "区分集合时间与出发时间",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -870,15 +827,26 @@
         "difficulty": {
           "primary": "pass"
         },
-        "card_prototype": "knowledge_explanation",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "exam_value": "行程通知中的集合与出发往往不是同一时点。",
         "box_progression_role": "application",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0032/003207-kokoro-20260920-f8bdf807.mp3",
+        "url": "ai_tts/cet4/0032/003207-kokoro-20260920-f8bdf807.mp3",
+        "duration_ms": 9600,
+        "sha256": "sha256:83c2e2d8fd88ac064e84054de40c17f5aa87462904b6d48ef462035345bc7b90",
+        "transcript": "The coach leaves at nine o'clock, but please meet outside the library at eight thirty. We need time to check attendance and load the equipment before departure.",
+        "voice": "bf_emma",
+        "rate": "0.9"
       }
     },
     {
@@ -889,50 +857,29 @@
       "box": 2,
       "card_no": 8,
       "card_box_code": "0032",
-      "interaction_type": 3,
+      "interaction_type": 0,
       "card_box_name": "时间",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "长按覆盖时间细节完整语义段，避免漏听限定词。\n\n用一句话复述材料关系，确认没有只做词面匹配。",
-        "task_prompt": "长按覆盖时间细节完整语义段，避免漏听限定词。\n\n用一句话复述材料关系，确认没有只做词面匹配。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003208.mp3",
-        "highlight_ranges": []
+        "text": "听录音：作业的新截止日是哪一天？",
+        "audio_url": "ai_tts/cet4/0032/003208-kokoro-20260920-6aff0934.mp3"
       },
       "back_content": {
-        "text": "结论：本题关键是精确提取时间细节，不能只凭大意。",
-        "explanation": "语境揭示：In this section, listeners must rely on time-point capture because the tested 时间细节 appears only once."
+        "text": "延期到周四。",
+        "explanation": "Tuesday 是旧期限，extended to Thursday 是新期限，Monday 是反馈时间。系统不可用是延期原因，不改变各时间的职责。"
       },
       "analysis_content": {
-        "text": "① 本题定位：题面要求完成“时间”训练。先明确作答对象与限制条件；本题可核对的具体材料是“In this section, listeners must rely on time-point capture because the tested time detail appears only once.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：In this section, listeners must rely on time-point capture because the tested 时间细节 appears only once.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“时间”，下一题应先复述证据关系，再提交答案。",
+        "text": "Tuesday 是旧期限，extended to Thursday 是新期限，Monday 是反馈时间。系统不可用是延期原因，不改变各时间的职责。",
         "tips": [
-          "时间题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“In this section, listeners must rely on time-poi”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "同一通知中的提交、延期与反馈要分别对应。"
         ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0032/003208.mp3",
-        "url": "ai_tts/cet4/0032/003208.mp3",
-        "duration_ms": 7992,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "In this section, listeners must rely on time-point capture because the tested time detail appears only once."
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "target_duration_ms": 4120,
@@ -950,40 +897,32 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "长按覆盖时间细节完整语义段，避免漏听限定词。\n\n用一句话复述材料关系，确认没有只做词面匹配。",
-        "task_prompt": "长按覆盖时间细节完整语义段，避免漏听限定词。\n\n用一句话复述材料关系，确认没有只做词面匹配。",
+        "text": "听录音：作业的新截止日是哪一天？",
+        "task_prompt": "听录音：作业的新截止日是哪一天？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 本题定位：题面要求完成“时间”训练。先明确作答对象与限制条件；本题可核对的具体材料是“In this section, listeners must rely on time-point capture because the tested time detail appears only once.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：In this section, listeners must rely on time-point capture because the tested 时间细节 appears only once.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“时间”，下一题应先复述证据关系，再提交答案。",
+        "text": "Tuesday 是旧期限，extended to Thursday 是新期限，Monday 是反馈时间。系统不可用是延期原因，不改变各时间的职责。",
         "tips": [
-          "时间题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“In this section, listeners must rely on time-poi”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "同一通知中的提交、延期与反馈要分别对应。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“时间”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "追踪日程延期",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -991,15 +930,26 @@
         "difficulty": {
           "primary": "pass"
         },
-        "card_prototype": "knowledge_explanation",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "exam_value": "同一通知中的提交、延期与反馈要分别对应。",
         "box_progression_role": "application",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0032/003208-kokoro-20260920-6aff0934.mp3",
+        "url": "ai_tts/cet4/0032/003208-kokoro-20260920-6aff0934.mp3",
+        "duration_ms": 13392,
+        "sha256": "sha256:068df78d4211d1a4d11138039bfc6a067f456a4e720a70bb66751288f555ad91",
+        "transcript": "The assignment was due on Tuesday. Because the online system was unavailable yesterday, the deadline has been extended to Thursday. Feedback will still be returned the following Monday.",
+        "voice": "bm_george",
+        "rate": "0.9"
       }
     },
     {
@@ -1014,45 +964,25 @@
       "card_box_name": "时间",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "翻面前先复述你抓到的时间细节，再核对答案。",
-        "task_prompt": "先听音频，再完成时间细节定位训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003209.mp3",
-        "highlight_ranges": []
+        "text": "听录音：周六办公室几点关闭？",
+        "audio_url": "ai_tts/cet4/0032/003209-kokoro-20260920-ba0b6716.mp3"
       },
       "back_content": {
-        "text": "结论：本题关键是精确提取时间细节，不能只凭大意。",
-        "explanation": "语境揭示：The speaker repeats background points, yet time-point capture identifies the precise 时间细节 that should be selected."
+        "text": "周六下午两点关闭。",
+        "explanation": "工作日五点与周六两点分别适用不同日期。周日全天关闭不能当成周六安排。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练时间细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：翻面卡先做自我复述，重点检查是否遗漏限定条件。\n\n③ 验证与迁移：回听“The speaker repeats background points, yet time-point capture identifies the precise 时间细节 that should be selected.”，确认你的答案能被原句逐项对应。",
+        "text": "工作日五点与周六两点分别适用不同日期。周日全天关闭不能当成周六安排。",
         "tips": [
-          "先标限定词，再核对核心名词。",
-          "每题做一次原句回听，避免凭印象作答。"
+          "先锁定题目指定的日期，再选择对应时间。"
         ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0032/003209.mp3",
-        "url": "ai_tts/cet4/0032/003209.mp3",
-        "duration_ms": 8352,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The speaker repeats background points, yet time-point capture identifies the precise time detail that should be selected."
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "track_index": 0,
@@ -1069,55 +999,59 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "翻面前先复述你抓到的时间细节，再核对答案。",
-        "task_prompt": "先听音频，再完成时间细节定位训练。",
+        "text": "听录音：周六办公室几点关闭？",
+        "task_prompt": "听录音：周六办公室几点关闭？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练时间细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：翻面卡先做自我复述，重点检查是否遗漏限定条件。\n\n③ 验证与迁移：回听“The speaker repeats background points, yet time-point capture identifies the precise 时间细节 that should be selected.”，确认你的答案能被原句逐项对应。",
+        "text": "工作日五点与周六两点分别适用不同日期。周日全天关闭不能当成周六安排。",
         "tips": [
-          "先标限定词，再核对核心名词。",
-          "每题做一次原句回听，避免凭印象作答。"
+          "先锁定题目指定的日期，再选择对应时间。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
         "type": 0,
         "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“时间”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "从时间范围提取开放时段",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "high_score"
+          "primary": "pass"
         },
-        "card_prototype": "knowledge_explanation",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
+        "exam_value": "先锁定题目指定的日期，再选择对应时间。",
         "box_progression_role": "transfer",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0032/003209-kokoro-20260920-ba0b6716.mp3",
+        "url": "ai_tts/cet4/0032/003209-kokoro-20260920-ba0b6716.mp3",
+        "duration_ms": 10248,
+        "sha256": "sha256:fde8dba48f9dd50074c5a4317e6ed1d05352512fa617fa78cade676fae091142",
+        "transcript": "On weekdays the office is open from nine until five. On Saturdays it opens at ten and closes at two. It is closed all day on Sunday.",
+        "voice": "af_heart",
+        "rate": "0.9"
       }
     },
     {
@@ -1128,70 +1062,29 @@
       "box": 2,
       "card_no": 10,
       "card_box_code": "0032",
-      "interaction_type": 1,
+      "interaction_type": 0,
       "card_box_name": "时间",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "四选一：根据音频锁定最准确的时间细节。",
-        "task_prompt": "先听音频，再完成时间细节定位训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003210.mp3",
-        "highlight_ranges": []
+        "text": "听录音：讲座预计持续多久？",
+        "audio_url": "ai_tts/cet4/0032/003210-kokoro-20260920-e4d1d723.mp3"
       },
       "back_content": {
-        "text": "答案：B。解析：本题应以时间细节的精确信息作答。",
-        "explanation": "语境揭示：After a broad introduction, the host uses time-point capture to highlight the core 时间细节 detail in one short clause."
+        "text": "讲座本身一小时；之后另有半小时提问。",
+        "explanation": "lasts for one hour 明确讲座时长。十一点是开始时点，十二点半是包含提问在内的整场结束时间。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练时间细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：四选一先比较限定词一致性，再看核心名词是否匹配。\n\n③ 验证与迁移：回听“After a broad introduction, the host uses time-point capture to highlight the core 时间细节 detail in one short clause.”，确认你的答案能被原句逐项对应。",
+        "text": "lasts for one hour 明确讲座时长。十一点是开始时点，十二点半是包含提问在内的整场结束时间。",
         "tips": [
-          "先标限定词，再核对核心名词。",
-          "每题做一次原句回听，避免凭印象作答。"
+          "问题限定的活动范围决定要计算哪一段时间。"
         ]
-      },
-      "options": [
-        {
-          "key": "A",
-          "text": "只匹配了主题词但忽略限定词",
-          "is_correct": false
-        },
-        {
-          "key": "B",
-          "text": "主题词与时间细节限定信息都匹配",
-          "is_correct": true
-        },
-        {
-          "key": "C",
-          "text": "把背景信息当成最终答案",
-          "is_correct": false
-        },
-        {
-          "key": "D",
-          "text": "只依据语速快慢进行猜测",
-          "is_correct": false
-        }
-      ],
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0032/003210.mp3",
-        "url": "ai_tts/cet4/0032/003210.mp3",
-        "duration_ms": 8832,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "After a broad introduction, the host uses time-point capture to highlight the core time detail detail in one short clause."
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "track_index": 0,
@@ -1206,60 +1099,61 @@
         "box_name": "时间",
         "box_prefix": "0032"
       },
-      "interaction_id": "multiple_choice",
+      "interaction_id": "flip",
       "front": {
-        "text": "四选一：根据音频锁定最准确的时间细节。",
-        "task_prompt": "先听音频，再完成时间细节定位训练。",
+        "text": "听录音：讲座预计持续多久？",
+        "task_prompt": "听录音：讲座预计持续多久？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练时间细节听辨。先找限定词，再找核心信息词。\n\n② 核心规律：四选一先比较限定词一致性，再看核心名词是否匹配。\n\n③ 验证与迁移：回听“After a broad introduction, the host uses time-point capture to highlight the core 时间细节 detail in one short clause.”，确认你的答案能被原句逐项对应。",
+        "text": "lasts for one hour 明确讲座时长。十一点是开始时点，十二点半是包含提问在内的整场结束时间。",
         "tips": [
-          "先标限定词，再核对核心名词。",
-          "每题做一次原句回听，避免凭印象作答。"
+          "问题限定的活动范围决定要计算哪一段时间。"
         ]
       },
-      "auto_scoring": true,
+      "auto_scoring": false,
       "legacy_interaction": {
-        "type": 1,
-        "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
-      "answer_key": {
-        "correct_option": "B"
-      },
       "quality_metadata": {
-        "main_training_goal": "在“时间”任务中依据题面证据完成选项判断",
+        "main_training_goal": "区分持续时间与起始时点",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "high_score"
+          "primary": "pass"
         },
-        "card_prototype": "solving_action",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中依据题面证据完成选项判断，并形成可重复执行的作答步骤。",
+        "exam_value": "问题限定的活动范围决定要计算哪一段时间。",
         "box_progression_role": "transfer",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0032/003210-kokoro-20260920-e4d1d723.mp3",
+        "url": "ai_tts/cet4/0032/003210-kokoro-20260920-e4d1d723.mp3",
+        "duration_ms": 10632,
+        "sha256": "sha256:ffddd0123ff6185999f62046989771e9113bb6aa4cfe6d733d9ea12c8cdad4f3",
+        "transcript": "The lecture begins at eleven and lasts for one hour. A thirty-minute question session follows, so the whole event should finish at twelve thirty.",
+        "voice": "am_michael",
+        "rate": "0.9"
       }
     },
     {
@@ -1270,50 +1164,29 @@
       "box": 2,
       "card_no": 11,
       "card_box_code": "0032",
-      "interaction_type": 2,
+      "interaction_type": 0,
       "card_box_name": "时间",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "点击时间细节被精确报出的瞬间。\n\n注意代词和省略成分指向，避免把相邻对象混淆。",
-        "task_prompt": "点击时间细节被精确报出的瞬间。\n\n注意代词和省略成分指向，避免把相邻对象混淆。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003211.mp3",
-        "highlight_ranges": []
+        "text": "听录音：学生什么时候可以领取证件？",
+        "audio_url": "ai_tts/cet4/0032/003211-kokoro-20260920-cba68f2c.mp3"
       },
       "back_content": {
-        "text": "结论：本题关键是精确提取时间细节，不能只凭大意。",
-        "explanation": "语境揭示：Although multiple facts are mentioned, time-point capture guides listeners to the most testable 时间细节 evidence."
+        "text": "最早周一下午，并且需要先收到确认邮件。",
+        "explanation": "from Monday afternoon 给出起点，once... 增加个人领取条件。即使到了周一下午，未收到邮件也不应直接认定可以领取。"
       },
       "analysis_content": {
-        "text": "① 本题定位：题面要求完成“时间”训练。先明确作答对象与限制条件；本题可核对的具体材料是“Although multiple facts are mentioned, time-point capture guides listeners to the most testable time detail evidence.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：Although multiple facts are mentioned, time-point capture guides listeners to the most testable 时间细节 evidence.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“时间”，下一题应先复述证据关系，再提交答案。",
+        "text": "from Monday afternoon 给出起点，once... 增加个人领取条件。即使到了周一下午，未收到邮件也不应直接认定可以领取。",
         "tips": [
-          "时间题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“Although multiple facts are mentioned, time-poin”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "时间与条件同时出现时，两者都要保留。"
         ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0032/003211.mp3",
-        "url": "ai_tts/cet4/0032/003211.mp3",
-        "duration_ms": 7896,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "Although multiple facts are mentioned, time-point capture guides listeners to the most testable time detail evidence."
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "time_window_ms": [
@@ -1334,56 +1207,59 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "点击时间细节被精确报出的瞬间。\n\n注意代词和省略成分指向，避免把相邻对象混淆。",
-        "task_prompt": "点击时间细节被精确报出的瞬间。\n\n注意代词和省略成分指向，避免把相邻对象混淆。",
+        "text": "听录音：学生什么时候可以领取证件？",
+        "task_prompt": "听录音：学生什么时候可以领取证件？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 本题定位：题面要求完成“时间”训练。先明确作答对象与限制条件；本题可核对的具体材料是“Although multiple facts are mentioned, time-point capture guides listeners to the most testable time detail evidence.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：Although multiple facts are mentioned, time-point capture guides listeners to the most testable 时间细节 evidence.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“时间”，下一题应先复述证据关系，再提交答案。",
+        "text": "from Monday afternoon 给出起点，once... 增加个人领取条件。即使到了周一下午，未收到邮件也不应直接认定可以领取。",
         "tips": [
-          "时间题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“Although multiple facts are mentioned, time-poin”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "时间与条件同时出现时，两者都要保留。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“时间”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "识别条件满足后的时间安排",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "high_score"
+          "primary": "pass"
         },
-        "card_prototype": "knowledge_explanation",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "exam_value": "时间与条件同时出现时，两者都要保留。",
         "box_progression_role": "transfer",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0032/003211-kokoro-20260920-cba68f2c.mp3",
+        "url": "ai_tts/cet4/0032/003211-kokoro-20260920-cba68f2c.mp3",
+        "duration_ms": 12024,
+        "sha256": "sha256:a48176b9e038d6425c0ad0a629ef6602e1bdb7a761dfa8e356e49a7d70321d4c",
+        "transcript": "You can collect your card from Monday afternoon, once you have received a confirmation email. The office will not have the cards ready on Monday morning. Please do not come before your email arrives.",
+        "voice": "bf_emma",
+        "rate": "0.9"
       }
     },
     {
@@ -1394,50 +1270,29 @@
       "box": 2,
       "card_no": 12,
       "card_box_code": "0032",
-      "interaction_type": 3,
+      "interaction_type": 0,
       "card_box_name": "时间",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "长按覆盖时间细节完整语义段，避免漏听限定词。\n\n先定位证据出现的位置，再判断它在整段中的功能。",
-        "task_prompt": "长按覆盖时间细节完整语义段，避免漏听限定词。\n\n先定位证据出现的位置，再判断它在整段中的功能。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0032/003212.mp3",
-        "highlight_ranges": []
+        "text": "听录音：面试现在安排在几点？",
+        "audio_url": "ai_tts/cet4/0032/003212-kokoro-20260920-c7a65656.mp3"
       },
       "back_content": {
-        "text": "结论：本题关键是精确提取时间细节，不能只凭大意。",
-        "explanation": "语境揭示：The final sentence confirms the conclusion, and time-point capture helps isolate the correct 时间细节 information."
+        "text": "下午两点四十五分。",
+        "explanation": "instead 标明替代时间；增加半小时也能从2:15核对到2:45。房间未变，不能误以为需要到另一地点。"
       },
       "analysis_content": {
-        "text": "① 本题定位：题面要求完成“时间”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The final sentence confirms the conclusion, and time-point capture helps isolate the correct time detail information.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：The final sentence confirms the conclusion, and time-point capture helps isolate the correct 时间细节 information.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“时间”，下一题应先复述证据关系，再提交答案。",
+        "text": "instead 标明替代时间；增加半小时也能从2:15核对到2:45。房间未变，不能误以为需要到另一地点。",
         "tips": [
-          "时间题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The final sentence confirms the conclusion, and ”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "变更通知中用最终安排替换原来的时间。"
         ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0032/003212.mp3",
-        "url": "ai_tts/cet4/0032/003212.mp3",
-        "duration_ms": 8376,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The final sentence confirms the conclusion, and time-point capture helps isolate the correct time detail information."
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "target_duration_ms": 4600,
@@ -1455,56 +1310,59 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "长按覆盖时间细节完整语义段，避免漏听限定词。\n\n先定位证据出现的位置，再判断它在整段中的功能。",
-        "task_prompt": "长按覆盖时间细节完整语义段，避免漏听限定词。\n\n先定位证据出现的位置，再判断它在整段中的功能。",
+        "text": "听录音：面试现在安排在几点？",
+        "task_prompt": "听录音：面试现在安排在几点？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 本题定位：题面要求完成“时间”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The final sentence confirms the conclusion, and time-point capture helps isolate the correct time detail information.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：The final sentence confirms the conclusion, and time-point capture helps isolate the correct 时间细节 information.”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“时间”，下一题应先复述证据关系，再提交答案。",
+        "text": "instead 标明替代时间；增加半小时也能从2:15核对到2:45。房间未变，不能误以为需要到另一地点。",
         "tips": [
-          "时间题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The final sentence confirms the conclusion, and ”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "变更通知中用最终安排替换原来的时间。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“时间”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "把修改后的时刻作为答案",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "high_score"
+          "primary": "pass"
         },
-        "card_prototype": "knowledge_explanation",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "exam_value": "变更通知中用最终安排替换原来的时间。",
         "box_progression_role": "transfer",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0032/003212-kokoro-20260920-c7a65656.mp3",
+        "url": "ai_tts/cet4/0032/003212-kokoro-20260920-c7a65656.mp3",
+        "duration_ms": 12144,
+        "sha256": "sha256:4fad9041301712dbc03c85c8768bba6a4e1251da98766d0344012946cd2d8cc9",
+        "transcript": "Your interview was scheduled for two fifteen, but the panel needs an extra half hour after lunch. Please come at two forty-five instead. The room number has not changed.",
+        "voice": "bm_george",
+        "rate": "0.9"
       }
     }
   ],

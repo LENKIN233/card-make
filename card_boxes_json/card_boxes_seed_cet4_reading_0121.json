@@ -188,7 +188,7 @@
       "interaction_id": "multiple_choice",
       "front": {
         "text": "句子：Although the library extended its hours during exams, many commuting students still preferred digital materials that they could access from home.\n\n问题：外层主句的主谓宾是哪一项？",
-        "task_prompt": "句子：Although the library extended its hours during exams, many commuting students still preferred digital materials that they could access from home.\n\n问题：外层主句的主谓宾是哪一项？",
+        "task_prompt": "问题：外层主句的主谓宾是哪一项？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -274,26 +274,13 @@
       "card_box_name": "主谓宾",
       "card_group_name": "长难句主干",
       "front_content": {
-        "text": "模拟句子：Most customers choose private cars, with many traveling from nearby towns and only a few cycling in warm weather.\n\n任务：标出属于主句主谓宾骨架的成分（可多选）。",
+        "text": "模拟句子：Most customers choose private cars, with many traveling from nearby towns and only a few cycling in warm weather.\n\n任务：划去不属于主句主谓宾核心结构的候选成分，保留骨干。",
         "image_url": null,
         "audio_url": null,
-        "highlight_ranges": [
-          [
-            0,
-            31
-          ],
-          [
-            32,
-            37
-          ],
-          [
-            38,
-            43
-          ]
-        ]
+        "highlight_ranges": []
       },
       "back_content": {
-        "text": "应标出：Most customers / choose / private cars。with many traveling... 和 only a few cycling... 都是伴随补充，不属于主句骨架。",
+        "text": "应划去：\n• with many traveling from nearby towns\n• only a few cycling in warm weather\n\n应保留：\n• Most customers\n• choose\n• private cars\n\n应保留：Most customers / choose / private cars。with many traveling... 和 only a few cycling... 都是伴随补充，不属于主句骨架。",
         "explanation": "先确认主句已经形成完整 SVO，再处理 with 结构中的附加动作。"
       },
       "analysis_content": {
@@ -307,23 +294,23 @@
       "eliminable_items": [
         {
           "text": "Most customers",
-          "is_correct": true
+          "is_correct": false
         },
         {
           "text": "choose",
-          "is_correct": true
+          "is_correct": false
         },
         {
           "text": "private cars",
-          "is_correct": true
+          "is_correct": false
         },
         {
           "text": "with many traveling from nearby towns",
-          "is_correct": false
+          "is_correct": true
         },
         {
           "text": "only a few cycling in warm weather",
-          "is_correct": false
+          "is_correct": true
         }
       ],
       "correct_answer": null,
@@ -351,24 +338,11 @@
       },
       "interaction_id": "elimination",
       "front": {
-        "text": "模拟句子：Most customers choose private cars, with many traveling from nearby towns and only a few cycling in warm weather.\n\n任务：标出属于主句主谓宾骨架的成分（可多选）。",
-        "task_prompt": "模拟句子：Most customers choose private cars, with many traveling from nearby towns and only a few cycling in warm weather.\n\n任务：标出属于主句主谓宾骨架的成分（可多选）。",
+        "text": "模拟句子：Most customers choose private cars, with many traveling from nearby towns and only a few cycling in warm weather.\n\n任务：划去不属于主句主谓宾核心结构的候选成分，保留骨干。",
+        "task_prompt": "划去不属于主句主谓宾核心结构的候选成分，保留骨干。",
         "audio_first": false,
         "display_mode": "text_first",
-        "highlight_ranges": [
-          [
-            0,
-            31
-          ],
-          [
-            32,
-            37
-          ],
-          [
-            38,
-            43
-          ]
-        ],
+        "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
@@ -393,9 +367,8 @@
       },
       "answer_key": {
         "correct_items": [
-          "item_1",
-          "item_2",
-          "item_3"
+          "item_4",
+          "item_5"
         ]
       },
       "elimination_items": [
@@ -440,7 +413,7 @@
         },
         "exam_value": "训练长句中先闭合主句 SVO，再移除伴随动作层。",
         "box_progression_role": "recognition",
-        "review_status": "agent_pass"
+        "review_status": "draft"
       }
     },
     {
@@ -712,7 +685,7 @@
         },
         "exam_value": "训练从 more for...than for... 中区分直接宾语与原因补充。",
         "box_progression_role": "recognition",
-        "review_status": "agent_pass"
+        "review_status": "draft"
       }
     },
     {
@@ -791,7 +764,7 @@
       "interaction_id": "multiple_choice",
       "front": {
         "text": "模拟句子：Increasingly, researchers report finding strong links between sleep deprivation in adolescence and long-term impairments in executive function.\n\n问题：这句的主谓宾主干是哪一组？",
-        "task_prompt": "模拟句子：Increasingly, researchers report finding strong links between sleep deprivation in adolescence and long-term impairments in executive function.\n\n问题：这句的主谓宾主干是哪一组？",
+        "task_prompt": "问题：这句的主谓宾主干是哪一组？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -840,7 +813,7 @@
         },
         "exam_value": "训练跳过句首状语并把 -ing 内容块归入外层谓语。",
         "box_progression_role": "application",
-        "review_status": "agent_pass"
+        "review_status": "draft"
       }
     },
     {
@@ -855,12 +828,13 @@
       "card_box_name": "主谓宾",
       "card_group_name": "长难句主干",
       "front_content": {
-        "text": "模拟句子：The committee finally approved the proposal that had been submitted by the regional office after more than six months of revision.\n\n请保留属于主句主谓宾主干的成分，其余为可消除项。",
+        "text": "模拟句子：The committee finally approved the proposal that had been submitted by the regional office after more than six months of revision.\n\n任务：划去不属于主句主谓宾核心结构的候选成分，保留骨干。",
         "image_url": null,
-        "audio_url": null
+        "audio_url": null,
+        "highlight_ranges": []
       },
       "back_content": {
-        "text": "应保留（主干）：The committee / approved / the proposal\n\nthat had been submitted... 是定语从句，修饰 proposal；after more than six months of revision 是状语；均可消除。",
+        "text": "应划去：\n• finally\n• that had been submitted by the regional office\n• after more than six months of revision\n\n应保留：\n• The committee\n• approved\n• the proposal\n\nthat had been submitted... 是定语从句，修饰 proposal；after more than six months of revision 是状语；均可消除。",
         "explanation": null
       },
       "analysis_content": {
@@ -874,27 +848,27 @@
       "eliminable_items": [
         {
           "text": "The committee",
-          "is_correct": true
+          "is_correct": false
         },
         {
           "text": "finally",
-          "is_correct": false
+          "is_correct": true
         },
         {
           "text": "approved",
-          "is_correct": true
+          "is_correct": false
         },
         {
           "text": "the proposal",
-          "is_correct": true
+          "is_correct": false
         },
         {
           "text": "that had been submitted by the regional office",
-          "is_correct": false
+          "is_correct": true
         },
         {
           "text": "after more than six months of revision",
-          "is_correct": false
+          "is_correct": true
         }
       ],
       "correct_answer": null,
@@ -922,8 +896,8 @@
       },
       "interaction_id": "elimination",
       "front": {
-        "text": "模拟句子：The committee finally approved the proposal that had been submitted by the regional office after more than six months of revision.\n\n请保留属于主句主谓宾主干的成分，其余为可消除项。",
-        "task_prompt": "模拟句子：The committee finally approved the proposal that had been submitted by the regional office after more than six months of revision.\n\n请保留属于主句主谓宾主干的成分，其余为可消除项。",
+        "text": "模拟句子：The committee finally approved the proposal that had been submitted by the regional office after more than six months of revision.\n\n任务：划去不属于主句主谓宾核心结构的候选成分，保留骨干。",
+        "task_prompt": "划去不属于主句主谓宾核心结构的候选成分，保留骨干。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -951,9 +925,9 @@
       },
       "answer_key": {
         "correct_items": [
-          "item_1",
-          "item_3",
-          "item_4"
+          "item_2",
+          "item_5",
+          "item_6"
         ]
       },
       "elimination_items": [
@@ -1002,7 +976,7 @@
         },
         "exam_value": "训练用消除动作区分主句谓语与定语从句内部谓语。",
         "box_progression_role": "application",
-        "review_status": "agent_pass"
+        "review_status": "draft"
       }
     },
     {
@@ -1119,7 +1093,7 @@
         },
         "exam_value": "训练 believe that 结构中外层宾语与内层主语的层级边界。",
         "box_progression_role": "application",
-        "review_status": "agent_pass"
+        "review_status": "draft"
       }
     },
     {
@@ -1223,7 +1197,7 @@
         },
         "exam_value": "训练复杂句先外后内的双层主谓宾分析顺序。",
         "box_progression_role": "transfer",
-        "review_status": "agent_pass"
+        "review_status": "draft"
       }
     },
     {
@@ -1302,7 +1276,7 @@
       "interaction_id": "multiple_choice",
       "front": {
         "text": "模拟句子：The report gives a detailed account of how coastal communities are adapting to rising sea levels through a combination of engineering solutions and behavioral change.\n\n问题：以下哪一项正确描述了该句的宾语？",
-        "task_prompt": "模拟句子：The report gives a detailed account of how coastal communities are adapting to rising sea levels through a combination of engineering solutions and behavioral change.\n\n问题：以下哪一项正确描述了该句的宾语？",
+        "task_prompt": "问题：以下哪一项正确描述了该句的宾语？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -1351,7 +1325,7 @@
         },
         "exam_value": "训练 give an account of 结构中动词宾语与名词内部补足的层级。",
         "box_progression_role": "transfer",
-        "review_status": "agent_pass"
+        "review_status": "draft"
       }
     },
     {
@@ -1366,54 +1340,46 @@
       "card_box_name": "主谓宾",
       "card_group_name": "长难句主干",
       "front_content": {
-        "text": "模拟句子：Global health organizations have urged governments in developing nations to prioritize access to clean water over other infrastructure investments.\n\n请选出属于主句主谓宾骨架的成分（主干保留，其余可消除）。",
+        "text": "练习句子：Several community groups have requested clearer information about the bus timetable.\n\n任务：划去后置的内容说明，保留主语、谓语和宾语中心。",
         "image_url": null,
-        "audio_url": null
+        "audio_url": null,
+        "highlight_ranges": []
       },
       "back_content": {
-        "text": "应保留：Global health organizations / have urged / governments in developing nations\n\n不定式 to prioritize... 是宾语补足语（宾补），不是第二个独立宾语；over other infrastructure investments 是介词短语修饰。",
-        "explanation": null
+        "text": "划去 about the bus timetable；骨架为 Several community groups / have requested / clearer information。",
+        "explanation": "about the bus timetable 说明请求的信息涉及什么，可以在识别三部分骨架时另行标出。它在理解全文时仍有作用；这里没有 urge somebody to do something 这样的宾补结构。"
       },
       "analysis_content": {
-        "text": "① 识别信号：urge sb to do 是宾语+宾补结构（SVOC）；urge 的直接宾语是 governments，to prioritize 是宾补（告诉宾语做什么）。\n\n② 核心规律：SVO 与 SVOC 的区别：SVOC 中宾语之后还有对宾语的补充说明（宾补）；宾补不等于第二个宾语，因为它描述宾语的动作或状态。\n\n③ 验证：Global health organizations have urged governments（SVO）是骨架；to prioritize... 是对 governments 的补充说明，拿掉后主干仍成立。",
+        "text": "about the bus timetable 说明请求的信息涉及什么，可以在识别三部分骨架时另行标出。它在理解全文时仍有作用；这里没有 urge somebody to do something 这样的宾补结构。",
         "tips": [
-          "urge/ask/require/allow + 宾语 + to do：宾语后的不定式是宾补，不是独立宾语。",
-          "区分宾语（O）与宾补（OC）：宾语是动词直接支配的对象，宾补是对宾语的进一步说明或指令。"
+          "先区分句法层级与信息范围，再回到完整语境核对。"
         ]
       },
       "options": null,
       "eliminable_items": [
         {
-          "text": "Global health organizations",
-          "is_correct": true
-        },
-        {
-          "text": "have urged",
-          "is_correct": true
-        },
-        {
-          "text": "governments in developing nations",
-          "is_correct": true
-        },
-        {
-          "text": "to prioritize access to clean water",
+          "text": "Several community groups",
           "is_correct": false
         },
         {
-          "text": "over other infrastructure investments",
+          "text": "have requested",
           "is_correct": false
+        },
+        {
+          "text": "clearer information",
+          "is_correct": false
+        },
+        {
+          "text": "about the bus timetable",
+          "is_correct": true
         }
       ],
       "correct_answer": null,
       "audio": null,
       "source_ref": {
-        "type": "ai_generated",
-        "paper_id": null,
-        "question_id": null,
-        "passage_id": null,
-        "note": "Original simulated CET4 training material authored for the controlled-pilot candidate expansion; not a true exam claim.",
+        "type": "simulation",
         "provenance_status": "synthetic",
-        "model": "unknown"
+        "note": "Original practice sentence; not an official examination question."
       },
       "track_index": 0,
       "contract_version": "softbook-card-v1",
@@ -1429,18 +1395,17 @@
       },
       "interaction_id": "elimination",
       "front": {
-        "text": "模拟句子：Global health organizations have urged governments in developing nations to prioritize access to clean water over other infrastructure investments.\n\n请选出属于主句主谓宾骨架的成分（主干保留，其余可消除）。",
-        "task_prompt": "模拟句子：Global health organizations have urged governments in developing nations to prioritize access to clean water over other infrastructure investments.\n\n请选出属于主句主谓宾骨架的成分（主干保留，其余可消除）。",
+        "text": "练习句子：Several community groups have requested clearer information about the bus timetable.\n\n任务：划去后置的内容说明，保留主语、谓语和宾语中心。",
+        "task_prompt": "划去后置的内容说明，保留主语、谓语和宾语中心。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：urge sb to do 是宾语+宾补结构（SVOC）；urge 的直接宾语是 governments，to prioritize 是宾补（告诉宾语做什么）。\n\n② 核心规律：SVO 与 SVOC 的区别：SVOC 中宾语之后还有对宾语的补充说明（宾补）；宾补不等于第二个宾语，因为它描述宾语的动作或状态。\n\n③ 验证：Global health organizations have urged governments（SVO）是骨架；to prioritize... 是对 governments 的补充说明，拿掉后主干仍成立。",
+        "text": "about the bus timetable 说明请求的信息涉及什么，可以在识别三部分骨架时另行标出。它在理解全文时仍有作用；这里没有 urge somebody to do something 这样的宾补结构。",
         "tips": [
-          "urge/ask/require/allow + 宾语 + to do：宾语后的不定式是宾补，不是独立宾语。",
-          "区分宾语（O）与宾补（OC）：宾语是动词直接支配的对象，宾补是对宾语的进一步说明或指令。"
+          "先区分句法层级与信息范围，再回到完整语境核对。"
         ]
       },
       "auto_scoring": true,
@@ -1458,31 +1423,25 @@
       },
       "answer_key": {
         "correct_items": [
-          "item_1",
-          "item_2",
-          "item_3"
+          "item_4"
         ]
       },
       "elimination_items": [
         {
           "id": "item_1",
-          "text": "Global health organizations"
+          "text": "Several community groups"
         },
         {
           "id": "item_2",
-          "text": "have urged"
+          "text": "have requested"
         },
         {
           "id": "item_3",
-          "text": "governments in developing nations"
+          "text": "clearer information"
         },
         {
           "id": "item_4",
-          "text": "to prioritize access to clean water"
-        },
-        {
-          "id": "item_5",
-          "text": "over other infrastructure investments"
+          "text": "about the bus timetable"
         }
       ],
       "quality_metadata": {
@@ -1505,7 +1464,7 @@
         },
         "exam_value": "训练 SVOC 结构中先保留 SVO，再识别对宾语的动作补充。",
         "box_progression_role": "transfer",
-        "review_status": "agent_pass"
+        "review_status": "draft"
       }
     },
     {
@@ -1622,7 +1581,7 @@
         },
         "exam_value": "训练不按词序距离误判谓语，而按 that 与 when 引导的层级归属。",
         "box_progression_role": "transfer",
-        "review_status": "agent_pass"
+        "review_status": "draft"
       }
     }
   ],

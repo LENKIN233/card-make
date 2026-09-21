@@ -29,7 +29,7 @@
         },
         "audio_first": true,
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002401.mp3",
+        "audio_url": "ai_tts/cet4/0024/002401-kokoro-20260920-03739ba5.mp3",
         "highlight_ranges": []
       },
       "back_content": {
@@ -46,10 +46,13 @@
       "options": null,
       "eliminable_items": null,
       "audio": {
-        "url": "ai_tts/cet4/0024/002401.mp3",
-        "duration_ms": 6744,
+        "path": "ai_tts/cet4/0024/002401-kokoro-20260920-03739ba5.mp3",
+        "url": "ai_tts/cet4/0024/002401-kokoro-20260920-03739ba5.mp3",
+        "duration_ms": 6096,
+        "sha256": "sha256:f8f3ddc793e38416fbefa02aec820027bddea7e7f699e206066cb7514b8500ad",
         "transcript": "The team can start field testing next week, provided the safety approval comes through tonight.",
-        "path": "ai_tts/cet4/0024/002401.mp3"
+        "voice": "af_heart",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
@@ -116,8 +119,9 @@
         "card_prototype": "knowledge_explanation",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
         "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
         "box_progression_role": "recognition",
@@ -136,7 +140,7 @@
       "card_box_name": "条件关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：听完后选出计划扩大的必要前提。",
+        "text": "听录音：什么情况下机构会按所述计划扩大试点？",
         "task_prompt": "听完后选出计划扩大的必要前提。",
         "task_schema": {
           "action": "四选一作答",
@@ -145,19 +149,16 @@
         },
         "audio_first": true,
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002402.mp3",
+        "audio_url": "ai_tts/cet4/0024/002402-kokoro-20260920-776283ff.mp3",
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：试点数据还需稳定一个月。",
-        "explanation": "语境揭示：先识别门槛条件，再定位结果主句；答题优先锁定条件触发点。"
+        "text": "试点数据继续稳定一个月时，会按所述计划在全州扩大。",
+        "explanation": "if 给出计划触发条件；不能把普通 if 自动解释成排除其他可能路径的 only if。"
       },
       "analysis_content": {
-        "text": "① 识别信号：if, unless, only if 后常直接承载能否发生的判定条件。\n\n② 核心规律：若题干问“成立条件”或“必要前提”，必须回到条件从句找门槛，主句通常只是结果。\n\n③ 验证：本句结果是 expand statewide；真正门槛是 pilot data remain stable for another month。",
-        "tips": [
-          "看到 if 从句先别急着选结果，先确认条件是否满足。",
-          "把“前提”和“结果”分开记，错误率会明显下降。"
-        ]
+        "text": "if 给出计划触发条件；不能把普通 if 自动解释成排除其他可能路径的 only if。",
+        "tips": []
       },
       "options": [
         {
@@ -183,10 +184,13 @@
       ],
       "eliminable_items": null,
       "audio": {
-        "url": "ai_tts/cet4/0024/002402.mp3",
-        "duration_ms": 7176,
+        "path": "ai_tts/cet4/0024/002402-kokoro-20260920-776283ff.mp3",
+        "url": "ai_tts/cet4/0024/002402-kokoro-20260920-776283ff.mp3",
+        "duration_ms": 7920,
+        "sha256": "sha256:ef91a0ba6ffd7a6ed1d586925fb6c3fee39e7862c529fe7bfd9394fe491fdd28",
         "transcript": "If the pilot data remain stable for another month, the agency will expand the program statewide.",
-        "path": "ai_tts/cet4/0024/002402.mp3"
+        "voice": "am_michael",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
@@ -210,8 +214,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：听完后选出计划扩大的必要前提。",
-        "task_prompt": "听完后选出计划扩大的必要前提。",
+        "text": "听录音：什么情况下机构会按所述计划扩大试点？",
+        "task_prompt": "听录音：什么情况下机构会按所述计划扩大试点？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -222,11 +226,8 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：if, unless, only if 后常直接承载能否发生的判定条件。\n\n② 核心规律：若题干问“成立条件”或“必要前提”，必须回到条件从句找门槛，主句通常只是结果。\n\n③ 验证：本句结果是 expand statewide；真正门槛是 pilot data remain stable for another month。",
-        "tips": [
-          "看到 if 从句先别急着选结果，先确认条件是否满足。",
-          "把“前提”和“结果”分开记，错误率会明显下降。"
-        ]
+        "text": "if 给出计划触发条件；不能把普通 if 自动解释成排除其他可能路径的 only if。",
+        "tips": []
       },
       "auto_scoring": true,
       "legacy_interaction": {
@@ -245,7 +246,7 @@
         "correct_option": "B"
       },
       "quality_metadata": {
-        "main_training_goal": "在“条件关系”任务中依据题面证据完成选项判断",
+        "main_training_goal": "根据录音材料准确理解条件关系",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -256,8 +257,9 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
         "exam_value": "帮助用户在CET4听力任务中依据题面证据完成选项判断，并形成可重复执行的作答步骤。",
         "box_progression_role": "recognition",
@@ -272,51 +274,33 @@
       "box": 4,
       "card_no": 3,
       "card_box_code": "0024",
-      "interaction_type": 2,
+      "interaction_type": 0,
       "card_box_name": "条件关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：听到条件未满足导致后果时点击。",
-        "task_prompt": "听到条件未满足导致后果时点击。",
-        "task_schema": {
-          "action": "时机点击",
-          "focus": "unless 的反向条件",
-          "success_criteria": "在后果触发点附近点击"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002403.mp3",
-        "highlight_ranges": []
+        "text": "听录音：如果中午前没有恢复备用服务器，会有什么后果？",
+        "audio_url": "ai_tts/cet4/0024/002403-kokoro-20260920-b1d28b9a.mp3"
       },
       "back_content": {
-        "text": "结论：unless 引导反向门槛，未恢复则继续离线。",
-        "explanation": "语境揭示：先识别门槛条件，再定位结果主句；答题优先锁定条件触发点。"
+        "text": "当天余下时间的注册服务将继续离线。",
+        "explanation": "unless...restored by noon 是否定条件，will stay offline 给出条件未满足时的结果。中午是恢复期限，不是承诺服务一定在中午恢复。"
       },
       "analysis_content": {
-        "text": "① 识别信号：unless 常把必要条件未达成时的后果直接说出来。\n\n② 核心规律：unless 的逻辑等于 if not，要先翻正再作答。\n\n③ 验证：本句 unless backup server is restored by noon 等于 if not restored by noon。",
+        "text": "unless...restored by noon 是否定条件，will stay offline 给出条件未满足时的结果。中午是恢复期限，不是承诺服务一定在中午恢复。",
         "tips": [
-          "遇到 unless，先在脑中翻译成 if not 再判断。",
-          "先听清条件是否满足，再判断后果会不会发生。"
+          "期限不等于已经确定的完成时刻。"
         ]
       },
-      "options": null,
-      "eliminable_items": null,
       "time_window_ms": [
         0,
         5000
       ],
-      "audio": {
-        "url": "ai_tts/cet4/0024/002403.mp3",
-        "duration_ms": 7128,
-        "transcript": "Unless the backup server is restored by noon, registration will stay offline for the rest of the day.",
-        "path": "ai_tts/cet4/0024/002403.mp3"
-      },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "track_index": 0,
@@ -333,55 +317,59 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：听到条件未满足导致后果时点击。",
-        "task_prompt": "听到条件未满足导致后果时点击。",
+        "text": "听录音：如果中午前没有恢复备用服务器，会有什么后果？",
+        "task_prompt": "听录音：如果中午前没有恢复备用服务器，会有什么后果？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "时机点击",
-          "focus": "unless 的反向条件",
-          "success_criteria": "在后果触发点附近点击"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：unless 常把必要条件未达成时的后果直接说出来。\n\n② 核心规律：unless 的逻辑等于 if not，要先翻正再作答。\n\n③ 验证：本句 unless backup server is restored by noon 等于 if not restored by noon。",
+        "text": "unless...restored by noon 是否定条件，will stay offline 给出条件未满足时的结果。中午是恢复期限，不是承诺服务一定在中午恢复。",
         "tips": [
-          "遇到 unless，先在脑中翻译成 if not 再判断。",
-          "先听清条件是否满足，再判断后果会不会发生。"
+          "期限不等于已经确定的完成时刻。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“条件关系”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "理解未满足条件时的后果",
         "weak_point_tags": [
           "listening_weak",
-          "exam_strategy_weak"
+          "vocabulary_weak"
         ],
         "difficulty": {
-          "primary": "foundation"
+          "primary": "pass"
         },
-        "card_prototype": "knowledge_explanation",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
+        "exam_value": "期限不等于已经确定的完成时刻。",
         "box_progression_role": "recognition",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0024/002403-kokoro-20260920-b1d28b9a.mp3",
+        "url": "ai_tts/cet4/0024/002403-kokoro-20260920-b1d28b9a.mp3",
+        "duration_ms": 6888,
+        "sha256": "sha256:90cd08a4a60e4aaccc58898e4f8f0176208aed301180d14640dd550427b54bc1",
+        "transcript": "Unless the backup server is restored by noon, registration will stay offline for the rest of the day.",
+        "voice": "bf_emma",
+        "rate": "0.9"
       }
     },
     {
@@ -396,37 +384,33 @@
       "card_box_name": "条件关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "任务：按住开始听，在结果主句出现时松手。",
-        "task_prompt": "按住开始听，在结果主句出现时松手。",
-        "task_schema": {
-          "action": "按住并择机松手",
-          "focus": "前提信息与作答信息",
-          "success_criteria": "在结果主句起点附近松手"
-        },
+        "text": "听录音：博物馆可能何时重开，前提是什么？",
+        "task_prompt": "听录音：博物馆可能何时重开，前提是什么？",
+        "task_schema": null,
         "audio_first": true,
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002404.mp3",
+        "audio_url": "ai_tts/cet4/0024/002404-kokoro-20260920-2fafd2be.mp3",
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "关键结果：博物馆将于今天下午晚些时候重开。",
-        "explanation": "语境揭示：先识别门槛条件，再定位结果主句；答题优先锁定条件触发点。"
+        "text": "如果检查组上午批准，博物馆会在当天下午晚些时候重开。",
+        "explanation": "保留条件与计划时间，不把有条件安排写成无条件承诺。"
       },
       "analysis_content": {
-        "text": "① 识别信号：条件句常先交代门槛，再把真正要回答的问题放在主句。\n\n② 核心规律：时间安排类条件句里，前半句多是前提信息，后半句才是作答信息。\n\n③ 验证：本句 if inspection team signs off this morning 是门槛；museum will reopen late this afternoon 才是结果主句。",
-        "tips": [
-          "长按题先分清前提句和结果句，不要在前提处过早松手。",
-          "题目问时间时，通常答案落在结果主句里。"
-        ]
+        "text": "保留条件与计划时间，不把有条件安排写成无条件承诺。",
+        "tips": []
       },
       "options": null,
       "eliminable_items": null,
       "target_duration_ms": 2300,
       "audio": {
-        "url": "ai_tts/cet4/0024/002404.mp3",
-        "duration_ms": 6408,
+        "path": "ai_tts/cet4/0024/002404-kokoro-20260920-2fafd2be.mp3",
+        "url": "ai_tts/cet4/0024/002404-kokoro-20260920-2fafd2be.mp3",
+        "duration_ms": 7128,
+        "sha256": "sha256:c77f4786e3af046e5633e22b163eed0db2fd9d3a0f0825ef8fffb62874a74fcb",
         "transcript": "If the inspection team signs off this morning, the museum will reopen late this afternoon.",
-        "path": "ai_tts/cet4/0024/002404.mp3"
+        "voice": "bm_george",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
@@ -450,23 +434,16 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：按住开始听，在结果主句出现时松手。",
-        "task_prompt": "按住开始听，在结果主句出现时松手。",
+        "text": "听录音：博物馆可能何时重开，前提是什么？",
+        "task_prompt": "听录音：博物馆可能何时重开，前提是什么？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "按住并择机松手",
-          "focus": "前提信息与作答信息",
-          "success_criteria": "在结果主句起点附近松手"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：条件句常先交代门槛，再把真正要回答的问题放在主句。\n\n② 核心规律：时间安排类条件句里，前半句多是前提信息，后半句才是作答信息。\n\n③ 验证：本句 if inspection team signs off this morning 是门槛；museum will reopen late this afternoon 才是结果主句。",
-        "tips": [
-          "长按题先分清前提句和结果句，不要在前提处过早松手。",
-          "题目问时间时，通常答案落在结果主句里。"
-        ]
+        "text": "保留条件与计划时间，不把有条件安排写成无条件承诺。",
+        "tips": []
       },
       "auto_scoring": false,
       "legacy_interaction": {
@@ -482,7 +459,7 @@
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“条件关系”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "根据录音材料准确理解条件关系",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -493,8 +470,9 @@
         "card_prototype": "knowledge_explanation",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
         "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
         "box_progression_role": "recognition",
@@ -522,7 +500,7 @@
         },
         "audio_first": true,
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002405.mp3",
+        "audio_url": "ai_tts/cet4/0024/002405-kokoro-20260920-71eca83c.mp3",
         "highlight_ranges": []
       },
       "back_content": {
@@ -560,10 +538,13 @@
       ],
       "eliminable_items": null,
       "audio": {
-        "url": "ai_tts/cet4/0024/002405.mp3",
-        "duration_ms": 6072,
+        "path": "ai_tts/cet4/0024/002405-kokoro-20260920-71eca83c.mp3",
+        "url": "ai_tts/cet4/0024/002405-kokoro-20260920-71eca83c.mp3",
+        "duration_ms": 6192,
+        "sha256": "sha256:ae88fb759483b930cbb5b93ca789163ef9a9a2f8a3ab71be29cf7bfa1301a681",
         "transcript": "The event will go ahead as planned only if the extra volunteers confirm by Friday.",
-        "path": "ai_tts/cet4/0024/002405.mp3"
+        "voice": "af_heart",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
@@ -633,8 +614,9 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
         "exam_value": "帮助用户在CET4听力任务中依据题面证据完成选项判断，并形成可重复执行的作答步骤。",
         "box_progression_role": "application",
@@ -662,7 +644,7 @@
         },
         "audio_first": true,
         "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002406.mp3",
+        "audio_url": "ai_tts/cet4/0024/002406-kokoro-20260920-a3036fa7.mp3",
         "highlight_ranges": []
       },
       "back_content": {
@@ -679,10 +661,13 @@
       "options": null,
       "eliminable_items": null,
       "audio": {
-        "url": "ai_tts/cet4/0024/002406.mp3",
-        "duration_ms": 7560,
+        "path": "ai_tts/cet4/0024/002406-kokoro-20260920-a3036fa7.mp3",
+        "url": "ai_tts/cet4/0024/002406-kokoro-20260920-a3036fa7.mp3",
+        "duration_ms": 8064,
+        "sha256": "sha256:d748599287dbabc7d4a61a20805e747f9e46169add26f32deb3f244856c5c9de",
         "transcript": "As long as the overnight engineers fix the fault before dawn, the data transfer will finish on schedule.",
-        "path": "ai_tts/cet4/0024/002406.mp3"
+        "voice": "am_michael",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
@@ -749,8 +734,9 @@
         "card_prototype": "knowledge_explanation",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
         "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
         "box_progression_role": "application",
@@ -765,50 +751,29 @@
       "box": 4,
       "card_no": 7,
       "card_box_code": "0024",
-      "interaction_type": 2,
+      "interaction_type": 0,
       "card_box_name": "条件关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "点击条件关系信号出现并完成语义切换的瞬间。\n\n完成初判后，专门检查否定、比较和程度限定。",
-        "task_prompt": "点击条件关系信号出现并完成语义切换的瞬间。\n\n完成初判后，专门检查否定、比较和程度限定。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002407.mp3",
-        "highlight_ranges": []
+        "text": "听录音：学生在什么条件下可以借用相机？",
+        "audio_url": "ai_tts/cet4/0024/002407-kokoro-20260920-d8367cd3.mp3"
       },
       "back_content": {
-        "text": "结论：本题核心是条件关系，作答要以语义证据为锚。",
-        "explanation": "语境揭示：讲者先交代背景，再通过关系线索抬出关键信息，真正考点就落在这里。"
+        "text": "完成简短安全课程后可以借用，领取时还需学生证。",
+        "explanation": "if 引出借用条件，bring 另给领取要求。周一是未上课者下一次培训时间，不是所有人统一领取相机的日子。"
       },
       "analysis_content": {
-        "text": "① 本题定位：题面要求完成“条件关系”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The speaker first gives background details and then highlights the key point through conditional logic, which determines the tested information.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：讲者先交代背景，再通过关系线索抬出关键信息，真正考点就落在这里。”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“条件关系”，下一题应先复述证据关系，再提交答案。",
+        "text": "if 引出借用条件，bring 另给领取要求。周一是未上课者下一次培训时间，不是所有人统一领取相机的日子。",
         "tips": [
-          "条件关系题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The speaker first gives background details and t”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "条件、凭证和后续安排属于不同信息。"
         ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0024/002407.mp3",
-        "url": "ai_tts/cet4/0024/002407.mp3",
-        "duration_ms": 9144,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The speaker first gives background details and then highlights the key point through conditional logic, which determines the tested information."
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "time_window_ms": [
@@ -829,40 +794,32 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "点击条件关系信号出现并完成语义切换的瞬间。\n\n完成初判后，专门检查否定、比较和程度限定。",
-        "task_prompt": "点击条件关系信号出现并完成语义切换的瞬间。\n\n完成初判后，专门检查否定、比较和程度限定。",
+        "text": "听录音：学生在什么条件下可以借用相机？",
+        "task_prompt": "听录音：学生在什么条件下可以借用相机？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 本题定位：题面要求完成“条件关系”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The speaker first gives background details and then highlights the key point through conditional logic, which determines the tested information.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：讲者先交代背景，再通过关系线索抬出关键信息，真正考点就落在这里。”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“条件关系”，下一题应先复述证据关系，再提交答案。",
+        "text": "if 引出借用条件，bring 另给领取要求。周一是未上课者下一次培训时间，不是所有人统一领取相机的日子。",
         "tips": [
-          "条件关系题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The speaker first gives background details and t”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "条件、凭证和后续安排属于不同信息。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“条件关系”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "识别申请获批的条件",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -870,15 +827,26 @@
         "difficulty": {
           "primary": "pass"
         },
-        "card_prototype": "knowledge_explanation",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "exam_value": "条件、凭证和后续安排属于不同信息。",
         "box_progression_role": "application",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0024/002407-kokoro-20260920-d8367cd3.mp3",
+        "url": "ai_tts/cet4/0024/002407-kokoro-20260920-d8367cd3.mp3",
+        "duration_ms": 11328,
+        "sha256": "sha256:9c078b0b92a026275c7b6433b080a418ebb681a2d21dbcaf7f1b8f3ef84950cb",
+        "transcript": "You may borrow a camera if you have completed the short safety course. Bring your student card when you collect it. Students who have not taken the course can sign up for the next session on Monday.",
+        "voice": "bf_emma",
+        "rate": "0.9"
       }
     },
     {
@@ -889,50 +857,29 @@
       "box": 4,
       "card_no": 8,
       "card_box_code": "0024",
-      "interaction_type": 3,
+      "interaction_type": 0,
       "card_box_name": "条件关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "长按覆盖条件关系核心语义段，直到关键信息说完。\n\n用一句话复述材料关系，确认没有只做词面匹配。",
-        "task_prompt": "长按覆盖条件关系核心语义段，直到关键信息说完。\n\n用一句话复述材料关系，确认没有只做词面匹配。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002408.mp3",
-        "highlight_ranges": []
+        "text": "听录音：活动何时会移到室内？",
+        "audio_url": "ai_tts/cet4/0024/002408-kokoro-20260920-ac53baf9.mp3"
       },
       "back_content": {
-        "text": "结论：本题核心是条件关系，作答要以语义证据为锚。",
-        "explanation": "语境揭示：这一段要持续跟住关系线索，答案出现在信息转向核心关系的瞬间。"
+        "text": "下雨时移到主楼12室，否则在花园。",
+        "explanation": "unless it rains 相当于如果不下雨就维持花园安排。Room Twelve 是雨天替代地点，不能把两处理解成同时举行。"
       },
       "analysis_content": {
-        "text": "① 本题定位：题面要求完成“条件关系”训练。先明确作答对象与限制条件；本题可核对的具体材料是“In this segment, the listener must track conditional logic because the answer appears when the message shifts to the core conditional relation statement.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：这一段要持续跟住关系线索，答案出现在信息转向核心关系的瞬间。”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“条件关系”，下一题应先复述证据关系，再提交答案。",
+        "text": "unless it rains 相当于如果不下雨就维持花园安排。Room Twelve 是雨天替代地点，不能把两处理解成同时举行。",
         "tips": [
-          "条件关系题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“In this segment, the listener must track conditi”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "先判断条件是否成立，再选择相应的地点或行动。"
         ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0024/002408.mp3",
-        "url": "ai_tts/cet4/0024/002408.mp3",
-        "duration_ms": 9432,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "In this segment, the listener must track conditional logic because the answer appears when the message shifts to the core conditional relation statement."
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "target_duration_ms": 4120,
@@ -950,40 +897,32 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "长按覆盖条件关系核心语义段，直到关键信息说完。\n\n用一句话复述材料关系，确认没有只做词面匹配。",
-        "task_prompt": "长按覆盖条件关系核心语义段，直到关键信息说完。\n\n用一句话复述材料关系，确认没有只做词面匹配。",
+        "text": "听录音：活动何时会移到室内？",
+        "task_prompt": "听录音：活动何时会移到室内？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 本题定位：题面要求完成“条件关系”训练。先明确作答对象与限制条件；本题可核对的具体材料是“In this segment, the listener must track conditional logic because the answer appears when the message shifts to the core conditional relation statement.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：这一段要持续跟住关系线索，答案出现在信息转向核心关系的瞬间。”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“条件关系”，下一题应先复述证据关系，再提交答案。",
+        "text": "unless it rains 相当于如果不下雨就维持花园安排。Room Twelve 是雨天替代地点，不能把两处理解成同时举行。",
         "tips": [
-          "条件关系题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“In this segment, the listener must track conditi”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "先判断条件是否成立，再选择相应的地点或行动。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“条件关系”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "理解 unless 的否定条件",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
@@ -991,15 +930,26 @@
         "difficulty": {
           "primary": "pass"
         },
-        "card_prototype": "knowledge_explanation",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "exam_value": "先判断条件是否成立，再选择相应的地点或行动。",
         "box_progression_role": "application",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0024/002408-kokoro-20260920-ac53baf9.mp3",
+        "url": "ai_tts/cet4/0024/002408-kokoro-20260920-ac53baf9.mp3",
+        "duration_ms": 14232,
+        "sha256": "sha256:2b1a023f89c48de42c5fd885a754ca149584d2d8188f59a46317c193bd7358a4",
+        "transcript": "The talk will be held in the garden unless it rains. If the weather is wet, please go to Room Twelve in the main building instead. We will post the final location at the entrance an hour before the event.",
+        "voice": "bm_george",
+        "rate": "0.9"
       }
     },
     {
@@ -1014,45 +964,34 @@
       "card_box_name": "条件关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "翻面前先口述你对条件关系的判断，再核对证据。",
-        "task_prompt": "先听音频，再完成条件关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002409.mp3",
-        "highlight_ranges": []
+        "text": "听录音：进入工作坊需要先完成什么？只看海报是否足够？",
+        "audio_url": "ai_tts/cet4/0024/002409-kokoro-20260921-r3-b1b8729f.mp3"
       },
       "back_content": {
-        "text": "结论：本题核心是条件关系，作答要以语义证据为锚。",
-        "explanation": "语境揭示：对话里有干扰细节，但决定答案的是关系标记触发的核心信息。"
+        "text": "先完成安全说明会；只看海报不够。",
+        "explanation": "after completing 指出进入前的要求，下一次说明会时间只给未参加者一个补救安排。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练条件关系。先定位功能词与重心句，再执行交互动作。\n\n② 核心规律：翻面卡先自述判断路径，再核对是否被音频证据支持。信息并列较多时，优先抓结论句。\n\n③ 验证与迁移：回听关键句并复述“关系线索 -> 结论信息”的对应链，检查你的判断是否能被关键语义段直接证明。",
+        "text": "after completing 指出进入前的要求，下一次说明会时间只给未参加者一个补救安排。",
         "tips": [
-          "先判断结构关系，再抓细节证据。",
-          "作答后回听一句，确认结论可被原句支撑。"
+          "同时保留对象、数量、条件和说话人的判断强度。"
         ]
       },
-      "options": null,
-      "eliminable_items": null,
       "audio": {
-        "path": "ai_tts/cet4/0024/002409.mp3",
-        "url": "ai_tts/cet4/0024/002409.mp3",
-        "duration_ms": 9792,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The conversation includes minor facts, but the decisive clue is the conditional logic marker that points to the real conditional relation target."
+        "path": "ai_tts/cet4/0024/002409-kokoro-20260921-r3-b1b8729f.mp3",
+        "url": "ai_tts/cet4/0024/002409-kokoro-20260921-r3-b1b8729f.mp3",
+        "duration_ms": 11496,
+        "sha256": "sha256:40f8030c5ad063d4de6c63e0303456446361b58af90dd685fe00f0a18ea2130f",
+        "transcript": "You can enter the workshop after completing the safety briefing. Reading the poster alone does not count. If you missed today’s briefing, another one will be held tomorrow morning.",
+        "voice": "af_heart",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "track_index": 0,
@@ -1069,42 +1008,34 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "翻面前先口述你对条件关系的判断，再核对证据。",
-        "task_prompt": "先听音频，再完成条件关系训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "听录音：进入工作坊需要先完成什么？只看海报是否足够？",
+        "task_prompt": "听录音：进入工作坊需要先完成什么？只看海报是否足够？",
+        "audio_first": false,
+        "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练条件关系。先定位功能词与重心句，再执行交互动作。\n\n② 核心规律：翻面卡先自述判断路径，再核对是否被音频证据支持。信息并列较多时，优先抓结论句。\n\n③ 验证与迁移：回听关键句并复述“关系线索 -> 结论信息”的对应链，检查你的判断是否能被关键语义段直接证明。",
+        "text": "after completing 指出进入前的要求，下一次说明会时间只给未参加者一个补救安排。",
         "tips": [
-          "先判断结构关系，再抓细节证据。",
-          "作答后回听一句，确认结论可被原句支撑。"
+          "同时保留对象、数量、条件和说话人的判断强度。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
         "type": 0,
         "label": "T0",
-        "product_mapping_reason": "legacy flip card maps directly to flip"
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“条件关系”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "根据录音中的完整材料识别条件关系",
         "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
+          "listening_weak"
         ],
         "difficulty": {
           "primary": "high_score"
@@ -1112,10 +1043,11 @@
         "card_prototype": "knowledge_explanation",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-cet4-repair-20260921.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
+        "exam_value": "同时保留对象、数量、条件和说话人的判断强度。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       }
@@ -1132,66 +1064,34 @@
       "card_box_name": "条件关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "四选一：根据音频判断最符合条件关系的选项。",
-        "task_prompt": "先听音频，再完成条件关系训练。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002410.mp3",
-        "highlight_ranges": []
+        "text": "听录音：借到相机必须满足哪项条件？",
+        "audio_url": "ai_tts/cet4/0024/002410-kokoro-20260921-r3-d38f824b.mp3"
       },
       "back_content": {
-        "text": "答案：B。解析：本题应优先依据条件关系判断信息重心。",
-        "explanation": "语境揭示：开场铺垫后，主持人用关系线索强调了最可能被考到的细节。"
+        "text": "组长参加并完成设备说明会。",
+        "explanation": "only if 引出必要条件；提前提交表格不能代替说明会。"
       },
       "analysis_content": {
-        "text": "① 识别信号：本卡训练条件关系。先定位功能词与重心句，再执行交互动作。\n\n② 核心规律：四选一先判关系类型，再排除对象和范围错位。信息并列较多时，优先抓结论句。\n\n③ 验证与迁移：回听关键句并复述“关系线索 -> 结论信息”的对应链，检查你的判断是否能被关键语义段直接证明。",
+        "text": "only if 引出必要条件；提前提交表格不能代替说明会。",
         "tips": [
-          "先判断结构关系，再抓细节证据。",
-          "作答后回听一句，确认结论可被原句支撑。"
+          "同时保留对象、数量、条件和说话人的判断强度。"
         ]
       },
-      "options": [
-        {
-          "key": "A",
-          "text": "只依据词面重复作答",
-          "is_correct": false
-        },
-        {
-          "key": "B",
-          "text": "优先依据条件关系定位重心",
-          "is_correct": true
-        },
-        {
-          "key": "C",
-          "text": "忽略逻辑连接只记名词",
-          "is_correct": false
-        },
-        {
-          "key": "D",
-          "text": "等待结尾后随机选择",
-          "is_correct": false
-        }
-      ],
-      "eliminable_items": null,
       "audio": {
-        "path": "ai_tts/cet4/0024/002410.mp3",
-        "url": "ai_tts/cet4/0024/002410.mp3",
-        "duration_ms": 10776,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "After an introductory sentence, the host uses conditional logic to emphasize the exact conditional relation detail students are expected to identify."
+        "path": "ai_tts/cet4/0024/002410-kokoro-20260921-r3-d38f824b.mp3",
+        "url": "ai_tts/cet4/0024/002410-kokoro-20260921-r3-d38f824b.mp3",
+        "duration_ms": 14160,
+        "sha256": "sha256:b215ae6462c1af344201ccdf577d87b01182856e7411f1a9fd85df72c5a97081",
+        "transcript": "Your group may borrow the camera only if its leader attends the equipment briefing. The booking form can be sent in advance, but the camera will not be handed over before the briefing is completed.",
+        "voice": "am_michael",
+        "rate": "0.9"
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "track_index": 0,
@@ -1208,45 +1108,34 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "四选一：根据音频判断最符合条件关系的选项。",
-        "task_prompt": "先听音频，再完成条件关系训练。",
-        "audio_first": true,
-        "display_mode": "audio_first",
+        "text": "听录音：借到相机必须满足哪项条件？",
+        "task_prompt": "听录音：借到相机必须满足哪项条件？",
+        "audio_first": false,
+        "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：本卡训练条件关系。先定位功能词与重心句，再执行交互动作。\n\n② 核心规律：四选一先判关系类型，再排除对象和范围错位。信息并列较多时，优先抓结论句。\n\n③ 验证与迁移：回听关键句并复述“关系线索 -> 结论信息”的对应链，检查你的判断是否能被关键语义段直接证明。",
+        "text": "only if 引出必要条件；提前提交表格不能代替说明会。",
         "tips": [
-          "先判断结构关系，再抓细节证据。",
-          "作答后回听一句，确认结论可被原句支撑。"
+          "同时保留对象、数量、条件和说话人的判断强度。"
         ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
         "type": 1,
         "label": "T1",
-        "product_mapping_reason": "legacy four-option card maps directly to multiple_choice"
+        "product_mapping_reason": "Authored task maps to multiple_choice"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
-      "answer_key": {
-        "correct_option": "B"
-      },
       "quality_metadata": {
-        "main_training_goal": "在“条件关系”任务中依据题面证据完成选项判断",
+        "main_training_goal": "根据录音中的完整材料识别条件关系",
         "weak_point_tags": [
-          "listening_weak",
-          "exam_strategy_weak"
+          "listening_weak"
         ],
         "difficulty": {
           "primary": "high_score"
@@ -1254,13 +1143,40 @@
         "card_prototype": "solving_action",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-cet4-repair-20260921.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中依据题面证据完成选项判断，并形成可重复执行的作答步骤。",
+        "exam_value": "同时保留对象、数量、条件和说话人的判断强度。",
         "box_progression_role": "transfer",
         "review_status": "draft"
-      }
+      },
+      "options": [
+        {
+          "key": "A",
+          "text": "The group must buy a new camera.",
+          "is_correct": false
+        },
+        {
+          "key": "B",
+          "text": "The group leader must complete the equipment briefing.",
+          "is_correct": true
+        },
+        {
+          "key": "C",
+          "text": "Every member must submit a separate booking.",
+          "is_correct": false
+        },
+        {
+          "key": "D",
+          "text": "The group must finish filming before booking.",
+          "is_correct": false
+        }
+      ],
+      "answer_key": {
+        "correct_option": "B"
+      },
+      "correct_answer": "B"
     },
     {
       "card_id": "002411",
@@ -1270,50 +1186,29 @@
       "box": 4,
       "card_no": 11,
       "card_box_code": "0024",
-      "interaction_type": 2,
+      "interaction_type": 0,
       "card_box_name": "条件关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "点击条件关系信号出现并完成语义切换的瞬间。\n\n注意代词和省略成分指向，避免把相邻对象混淆。",
-        "task_prompt": "点击条件关系信号出现并完成语义切换的瞬间。\n\n注意代词和省略成分指向，避免把相邻对象混淆。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002411.mp3",
-        "highlight_ranges": []
+        "text": "听录音：学生可以延迟归还设备吗？需要怎样做？",
+        "audio_url": "ai_tts/cet4/0024/002411-kokoro-20260920-4aba8c86.mp3"
       },
       "back_content": {
-        "text": "结论：本题核心是条件关系，作答要以语义证据为锚。",
-        "explanation": "语境揭示：音频信息看似很多，但关系线索会把你带到最可考的那一处。"
+        "text": "如果没有其他预约，可以申请延期，但需在借期结束前联系办公室。",
+        "explanation": "provided that 限定许可，if another booking 则说明条件不满足的结果。possible 不表示申请一定获批，也不是可以到期后再自行决定。"
       },
       "analysis_content": {
-        "text": "① 本题定位：题面要求完成“条件关系”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The audio sounds information-heavy, yet conditional logic guides the listener to the most testable part of the conditional relation content.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：音频信息看似很多，但关系线索会把你带到最可考的那一处。”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“条件关系”，下一题应先复述证据关系，再提交答案。",
+        "text": "provided that 限定许可，if another booking 则说明条件不满足的结果。possible 不表示申请一定获批，也不是可以到期后再自行决定。",
         "tips": [
-          "条件关系题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The audio sounds information-heavy, yet conditio”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "许可类信息要连同限制条件一起理解。"
         ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0024/002411.mp3",
-        "url": "ai_tts/cet4/0024/002411.mp3",
-        "duration_ms": 9336,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The audio sounds information-heavy, yet conditional logic guides the listener to the most testable part of the conditional relation content."
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "time_window_ms": [
@@ -1334,56 +1229,59 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "点击条件关系信号出现并完成语义切换的瞬间。\n\n注意代词和省略成分指向，避免把相邻对象混淆。",
-        "task_prompt": "点击条件关系信号出现并完成语义切换的瞬间。\n\n注意代词和省略成分指向，避免把相邻对象混淆。",
+        "text": "听录音：学生可以延迟归还设备吗？需要怎样做？",
+        "task_prompt": "听录音：学生可以延迟归还设备吗？需要怎样做？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 本题定位：题面要求完成“条件关系”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The audio sounds information-heavy, yet conditional logic guides the listener to the most testable part of the conditional relation content.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：音频信息看似很多，但关系线索会把你带到最可考的那一处。”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“条件关系”，下一题应先复述证据关系，再提交答案。",
+        "text": "provided that 限定许可，if another booking 则说明条件不满足的结果。possible 不表示申请一定获批，也不是可以到期后再自行决定。",
         "tips": [
-          "条件关系题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The audio sounds information-heavy, yet conditio”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "许可类信息要连同限制条件一起理解。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 2,
-        "label": "T2",
-        "product_mapping_reason": "legacy timing click is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“条件关系”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "区分条件许可与无条件许可",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "high_score"
+          "primary": "pass"
         },
-        "card_prototype": "knowledge_explanation",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "exam_value": "许可类信息要连同限制条件一起理解。",
         "box_progression_role": "transfer",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0024/002411-kokoro-20260920-4aba8c86.mp3",
+        "url": "ai_tts/cet4/0024/002411-kokoro-20260920-4aba8c86.mp3",
+        "duration_ms": 12888,
+        "sha256": "sha256:5530e34ab3225dc21588027aba896b21282776dbe8b95331ab9a5796606383e3",
+        "transcript": "An extension is possible, provided that nobody else has reserved the equipment. Contact the office before your current loan ends. If there is another booking, the original return time still applies.",
+        "voice": "bf_emma",
+        "rate": "0.9"
       }
     },
     {
@@ -1394,50 +1292,29 @@
       "box": 4,
       "card_no": 12,
       "card_box_code": "0024",
-      "interaction_type": 3,
+      "interaction_type": 0,
       "card_box_name": "条件关系",
       "card_group_name": "逻辑关系",
       "front_content": {
-        "text": "长按覆盖条件关系核心语义段，直到关键信息说完。\n\n先定位证据出现的位置，再判断它在整段中的功能。",
-        "task_prompt": "长按覆盖条件关系核心语义段，直到关键信息说完。\n\n先定位证据出现的位置，再判断它在整段中的功能。",
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        },
-        "audio_first": true,
-        "image_url": null,
-        "audio_url": "ai_tts/cet4/0024/002412.mp3",
-        "highlight_ranges": []
+        "text": "听录音：小组何时才能使用讨论室？",
+        "audio_url": "ai_tts/cet4/0024/002412-kokoro-20260920-506dcf9b.mp3"
       },
       "back_content": {
-        "text": "结论：本题核心是条件关系，作答要以语义证据为锚。",
-        "explanation": "语境揭示：结尾句澄清了结论，抓住关系线索就能更快锁定答案。"
+        "text": "预约获确认且组长取到钥匙后；仅提交申请还不够。",
+        "explanation": "and 连接确认预约与取钥匙两项要求，not enough 排除把申请提交当成成功。once 引出开始使用的时点条件。"
       },
       "analysis_content": {
-        "text": "① 本题定位：题面要求完成“条件关系”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The final sentence clarifies the conclusion, and recognizing conditional logic helps capture the correct conditional relation answer quickly.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：结尾句澄清了结论，抓住关系线索就能更快锁定答案。”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“条件关系”，下一题应先复述证据关系，再提交答案。",
+        "text": "and 连接确认预约与取钥匙两项要求，not enough 排除把申请提交当成成功。once 引出开始使用的时点条件。",
         "tips": [
-          "条件关系题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The final sentence clarifies the conclusion, and”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "检查多个条件是否是共同要求，而非任选一个。"
         ]
-      },
-      "options": null,
-      "eliminable_items": null,
-      "audio": {
-        "path": "ai_tts/cet4/0024/002412.mp3",
-        "url": "ai_tts/cet4/0024/002412.mp3",
-        "duration_ms": 9792,
-        "voice": "en-US-AriaNeural",
-        "rate": "-8%",
-        "transcript": "The final sentence clarifies the conclusion, and recognizing conditional logic helps capture the correct conditional relation answer quickly."
       },
       "source_ref": {
         "type": "simulation",
         "paper_id": null,
         "question_id": null,
         "passage_id": null,
-        "note": "legacy_untraced_item_reclassified_as_cet4_simulation_not_true_exam",
+        "note": "Original practice material authored for this knowledge point; not an official examination question.",
         "provenance_status": "synthetic"
       },
       "target_duration_ms": 4600,
@@ -1455,56 +1332,59 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "长按覆盖条件关系核心语义段，直到关键信息说完。\n\n先定位证据出现的位置，再判断它在整段中的功能。",
-        "task_prompt": "长按覆盖条件关系核心语义段，直到关键信息说完。\n\n先定位证据出现的位置，再判断它在整段中的功能。",
+        "text": "听录音：小组何时才能使用讨论室？",
+        "task_prompt": "听录音：小组何时才能使用讨论室？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
-        "task_schema": {
-          "action": "听后操作",
-          "focus": "听觉识别",
-          "success_criteria": "准确完成交互操作"
-        }
+        "task_schema": null
       },
       "analysis": {
-        "text": "① 本题定位：题面要求完成“条件关系”训练。先明确作答对象与限制条件；本题可核对的具体材料是“The final sentence clarifies the conclusion, and recognizing conditional logic helps capture the correct conditional relation answer quickly.”。\n\n② 结论与依据：可接受的结论或输出是“语境揭示：结尾句澄清了结论，抓住关系线索就能更快锁定答案。”。 回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。\n\n③ 纠偏与迁移：回听时按“信号词—目标信息—限定范围”三步定位；如果只记住主题而漏掉时间、对象或否定词，答案仍可能偏离。 本卡的复查重点是“条件关系”，下一题应先复述证据关系，再提交答案。",
+        "text": "and 连接确认预约与取钥匙两项要求，not enough 排除把申请提交当成成功。once 引出开始使用的时点条件。",
         "tips": [
-          "条件关系题先确认任务边界，再选择表达或答案。",
-          "复查时回到材料中的“The final sentence clarifies the conclusion, and”附近定位。",
-          "把错误归因到对象、关系、范围或搭配中的一个具体环节。"
+          "检查多个条件是否是共同要求，而非任选一个。"
         ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
-        "type": 3,
-        "label": "T3",
-        "product_mapping_reason": "legacy hold-release is kept as local preview behavior and downcast to flip for product contract"
+        "type": 0,
+        "label": "T0",
+        "product_mapping_reason": "Authored task maps to flip"
       },
-      "quality_flags": [
-        "synthetic_source"
-      ],
+      "quality_flags": [],
       "production_status": "needs_review",
       "contract_migration": {
         "version": "softbook-card-contract-2026-05-02"
       },
       "quality_metadata": {
-        "main_training_goal": "在“条件关系”任务中识别并解释关键知识或解题线索",
+        "main_training_goal": "听出两个同时需要满足的条件",
         "weak_point_tags": [
           "listening_weak",
           "exam_strategy_weak"
         ],
         "difficulty": {
-          "primary": "high_score"
+          "primary": "pass"
         },
-        "card_prototype": "knowledge_explanation",
+        "card_prototype": "context_input",
         "material": {
           "text_source_type": "simulation",
-          "source_note": "CET4 preparation simulation; not true-exam material.",
-          "audio_generation_method": "TTS_AI_generated"
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
         },
-        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "exam_value": "检查多个条件是否是共同要求，而非任选一个。",
         "box_progression_role": "transfer",
         "review_status": "draft"
+      },
+      "audio": {
+        "path": "ai_tts/cet4/0024/002412-kokoro-20260920-506dcf9b.mp3",
+        "url": "ai_tts/cet4/0024/002412-kokoro-20260920-506dcf9b.mp3",
+        "duration_ms": 15168,
+        "sha256": "sha256:b660dd061364cf37da79fd44fe31362a81239c55bf486ed69051ff085a691094",
+        "transcript": "Your group can use the discussion room once the booking is confirmed and a group leader has collected the key. Sending the request alone is not enough. Please wait for the confirmation message before coming to the office.",
+        "voice": "bm_george",
+        "rate": "0.9"
       }
     }
   ],
