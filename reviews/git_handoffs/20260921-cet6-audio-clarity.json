@@ -1,0 +1,47 @@
+{
+  "handoff_id": "20260921-cet6-audio-clarity",
+  "created_at": "2026-09-21T13:03:22.551Z",
+  "agent": "codex",
+  "branch": "codex/cet6-audio-clarity-20260921",
+  "base_branch": "main",
+  "commit_sha": "cc816d860b88a68d29c2e5439cd44026e9d77a21",
+  "push_ref": "origin/codex/cet6-audio-clarity-20260921",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/249",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "audio",
+    "touched_paths": [
+      "ai_tts/audio-lfs-manifest.json",
+      "ai_tts/cet6/1052/105207-kokoro-20260921-r4-016a6fff.mp3",
+      "ai_tts/generation/kokoro-cet6-clarity-20260921.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "593e73c23cbdda50ef6f43c5c9f7c9589ead1e5b",
+    "patch_sha256": "c2572175601ec15b583e8dd295e2b935a78057b2978572cf3123f64938f86437"
+  },
+  "validation": [
+    {
+      "command": "Exact LFS manifest validation and delivery boundary",
+      "result": "1288 LFS assets including the new18.288second recording;hash/size/lineage and boundary passed."
+    },
+    {
+      "command": "Locked Qwen2-Audio full-asset local precheck",
+      "result": "Two blind transcripts eachsimilarity1.0;two fullperceptual recordsallcheckstrue;gate_eligible=false."
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs",
+      "result": "27 historical records valid;0 currentformal;0 errors."
+    },
+    {
+      "command": "git diff --cached --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Clearer complete-sentence candidate for105207; original words and prior failed evidence retained. Formal full-track review remains pending.",
+  "remaining_risks": [
+    "Local precheck is not GitHub-attested and cannot establish formal media acceptance.",
+    "The new asset still needs separate card binding, current runtime authorization and a full trusted rerun."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
