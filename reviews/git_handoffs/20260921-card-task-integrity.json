@@ -1,0 +1,48 @@
+{
+  "handoff_id": "20260921-card-task-integrity",
+  "created_at": "2026-09-21T11:08:20.873Z",
+  "agent": "codex",
+  "branch": "codex/card-task-integrity-20260921",
+  "base_branch": "main",
+  "commit_sha": "b81eb35102f79d6ac9c423bdd93c5a38abcfebad",
+  "push_ref": "origin/codex/card-task-integrity-20260921",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/247",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      "scripts/lib/card_integrity.mjs",
+      "scripts/test_card_integrity.mjs",
+      "scripts/validate_cards.mjs",
+      "spec/content-quality-contract.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "6d32839c8c6eb4ca49ae2098728c3ab893c2e337",
+    "patch_sha256": "20d0a335ec0f90ce05fb48354560eadbb3f5a5894801a015bab6a18499dfc0c3"
+  },
+  "validation": [
+    {
+      "command": "Required model, integrity, scope, delivery, approval and audio Node test suites",
+      "result": "251 tests passed including new positive and negative regressions."
+    },
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "Current2414 cards have zero errors/warnings; prior corpus reproduced10 concrete interaction errors."
+    },
+    {
+      "command": "node scripts/validate_harness.mjs; node scripts/validate_audio_qc.mjs",
+      "result": "harness passed with7 existing owner warnings;27 historicalQC records passed with0 current formal audio authorizations."
+    },
+    {
+      "command": "Immutable HEAD scope/boundary and git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Prevents unselectable or stale lock keys and reading tasks with absent statement text; current repaired corpus passes.",
+  "remaining_risks": [
+    "The reading guard targets the concrete bare-label failure; it is not a replacement for complete semantic review.",
+    "Audio acceptance remains independently bound to its full actual trusted-media results."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}

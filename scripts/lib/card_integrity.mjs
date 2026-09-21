@@ -2048,6 +2048,49 @@ function duplicateValues(values) {
   return [...duplicates];
 }
 
+export function validateLockIntegrity(card) {
+  const issues = [];
+  if (card?.interaction_id !== 'lock') return {ok: true, issues, applicable: false};
+  const answers = card.answer_key?.lock_pattern;
+  const validAnswers = Array.isArray(answers) && answers.length > 0 && answers.every(hasText);
+  if (!validAnswers) {
+    issues.push(issue('lock_answer_pattern_invalid', card, {path: 'answer_key.lock_pattern'}));
+  }
+  const bank = card.word_bank;
+  if (!Array.isArray(bank) || bank.length === 0 || !bank.every(hasText)) {
+    issues.push(issue('lock_word_bank_invalid', card, {path: 'word_bank'}));
+  } else if (validAnswers && answers.some(answer => !bank.includes(answer))) {
+    issues.push(issue('lock_answer_not_in_bank', card, {path: 'answer_key.lock_pattern'}));
+  }
+  // Repeated answers are valid: each slot can select the same bank token.
+  if (card.blank_answers != null && !isDeepStrictEqual(card.blank_answers, answers)) {
+    issues.push(issue('lock_legacy_answer_mismatch', card, {path: 'blank_answers'}));
+  }
+  if (card.lock_slots != null && (
+    !Array.isArray(card.lock_slots) ||
+    !isDeepStrictEqual(card.lock_slots.map(slot => slot?.expected), answers)
+  )) {
+    issues.push(issue('lock_slot_answer_mismatch', card, {path: 'lock_slots'}));
+  }
+  return {ok: issues.length === 0, issues, applicable: true};
+}
+
+function missingReadingStatementText(card, items) {
+  if (String(card.knowledge_ref?.library_id ?? card.library) !== '1') return false;
+  if (!Array.isArray(items) || items.length < 2) return false;
+  const labels = items.map(item => typeof item?.text === 'string' ? item.text.trim() : '');
+  if (!labels.every(label => /^[A-Z]$/u.test(label))) return false;
+  const front = String(card.front?.text ?? card.front_content?.text ?? '');
+  if (!/判断|说法|表述|选项|statements?|claims?/iu.test(front)) return false;
+  if (/字母|letters?|symbols?/iu.test(front)) return false;
+  return labels.some(label => {
+    const match = front.match(new RegExp(
+      `(?:^|\\s)${label}\\s*[).．、:：]\\s*(.*?)(?=\\s+[A-Z]\\s*[).．、:：]|$)`, 'su',
+    ));
+    return !match || !match[1].trim() || /^[A-Z]$/u.test(match[1].trim());
+  });
+}
+
 /**
  * Validates the runtime elimination payload, the local preview projection, and
  * answer truth. Runtime identity is elimination_items[].id and correct_items
@@ -2067,6 +2110,9 @@ export function validateEliminationIntegrity(
   }
 
   const canonical = card.elimination_items;
+  if (missingReadingStatementText(card, canonical)) {
+    issues.push(issue('elimination_statement_text_missing', card, {path: 'elimination_items'}));
+  }
   const canonicalIsNonEmptyArray = Array.isArray(canonical) && canonical.length > 0;
   if (!canonicalIsNonEmptyArray) {
     issues.push(issue(

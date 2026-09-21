@@ -14,6 +14,7 @@ import {
   validateCurrentApprovalRecordReference,
   validateChangedCardSelfReviewParity,
   validateEliminationIntegrity,
+  validateLockIntegrity,
   validateModelOwnedFullTrackReviewShape,
   validateQualityMetadata,
 } from './lib/card_integrity.mjs';
@@ -26,6 +27,57 @@ import {
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const POLICY = loadIntegrityPolicy(ROOT);
+
+test('lock answers remain selectable and match both stored preview representations', () => {
+  const card = {card_id: 'fixture-lock', interaction_id: 'lock',
+    answer_key: {lock_pattern: ['for', 'for']}, word_bank: ['for', 'to'],
+    blank_answers: ['for', 'for'],
+    lock_slots: [{id: 'first', expected: 'for'}, {id: 'second', expected: 'for'}]};
+  assert.equal(validateLockIntegrity(card).ok, true);
+  const unavailable = structuredClone(card);
+  unavailable.word_bank = ['to', 'with'];
+  assert.ok(validateLockIntegrity(unavailable).issues.some(x => x.code === 'lock_answer_not_in_bank'));
+  const stalePreview = structuredClone(card);
+  stalePreview.blank_answers[0] = 'to';
+  assert.ok(validateLockIntegrity(stalePreview).issues.some(x => x.code === 'lock_legacy_answer_mismatch'));
+  const staleSlot = structuredClone(card);
+  staleSlot.lock_slots[1].expected = 'to';
+  assert.ok(validateLockIntegrity(staleSlot).issues.some(x => x.code === 'lock_slot_answer_mismatch'));
+  for (const pattern of [null, [], [''], ['for', null]]) {
+    const malformed = {...card, answer_key: {lock_pattern: pattern}};
+    assert.equal(validateLockIntegrity(malformed).ok, false);
+  }
+  const canonicalOnly = structuredClone(card);
+  delete canonicalOnly.blank_answers; delete canonicalOnly.lock_slots;
+  assert.equal(validateLockIntegrity(canonicalOnly).ok, true);
+});
+
+test('reading statement tasks need statements, while inline definitions and letter tasks remain valid', () => {
+  const card = {card_id: 'fixture-reading', interaction_id: 'elimination',
+    knowledge_ref: {library_id: '1'},
+    front: {text: '阅读材料：The bus arrived late.\n任务：划去不符合材料的判断。'},
+    elimination_items: [{id: 'a', text: 'A'}, {id: 'b', text: 'B'}],
+    eliminable_items: [{text: 'A', is_correct: false}, {text: 'B', is_correct: true}],
+    answer_key: {correct_items: ['b']}};
+  const codes = value => validateEliminationIntegrity(value).issues.map(x => x.code);
+  assert.ok(codes(card).includes('elimination_statement_text_missing'));
+  const expanded = structuredClone(card);
+  expanded.front.text += '\nA. The bus was late. B. The bus arrived early.';
+  assert.equal(codes(expanded).includes('elimination_statement_text_missing'), false);
+  expanded.front.text = card.front.text + '\nA. The bus was late.';
+  assert.ok(codes(expanded).includes('elimination_statement_text_missing'));
+  const letters = structuredClone(card);
+  letters.front.text = '判断下列字母是否为元音；划去辅音字母。';
+  assert.equal(codes(letters).includes('elimination_statement_text_missing'), false);
+  const vocabulary = structuredClone(card);
+  vocabulary.knowledge_ref.library_id = '5';
+  assert.equal(codes(vocabulary).includes('elimination_statement_text_missing'), false);
+  const complete = structuredClone(card);
+  complete.elimination_items[0].text = 'The bus was late.';
+  complete.elimination_items[1].text = 'The bus arrived early.';
+  complete.eliminable_items.forEach((item, i) => { item.text = complete.elimination_items[i].text; });
+  assert.equal(validateEliminationIntegrity(complete).ok, true);
+});
 
 test('structured human reviewer identities allow real short and Unicode IDs but reject automation identities', () => {
   for (const identity of [
