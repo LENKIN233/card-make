@@ -1,0 +1,47 @@
+{
+  "handoff_id": "20260921-cet6-clarity-text",
+  "created_at": "2026-09-21T13:35:22.537Z",
+  "agent": "codex",
+  "branch": "content/cet6-audio-clarity-20260921",
+  "base_branch": "main",
+  "commit_sha": "8e919444014889b109e41430d41934aeb6fe1d01",
+  "push_ref": "origin/content/cet6-audio-clarity-20260921",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/250",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_residual_blocker_closure",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_listening_1052.json",
+      "reviews/agent_self_review/20260921-cet6-clarity-model-review.json",
+      "reviews/audit_scopes/20260921-cet6-clarity-scope-audit.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "7a808734cb0c685130a1ad55e6c393bde010a7d1",
+    "patch_sha256": "efc184509c0f6d69aa74935769d48ee6b26630e60e268dfce4edad54e4ec8d79"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "2414 cards,zero errors/warnings."
+    },
+    {
+      "command": "Current scoped CET6 audit and complete runtime export",
+      "result": "1234 cards/110 boxes/328 assets;zero hard blockers/review gaps;859 short-analysis and1234 synthetic-source signals retained."
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "passed,7 recorded owner warnings."
+    },
+    {
+      "command": "Exact immutable-HEAD scope and delivery boundary;git diff --check",
+      "result": "passed at8e919444014889b109e41430d41934aeb6fe1d01."
+    }
+  ],
+  "local_status": "105207 now binds the clearer asset; all training text and other cards unchanged, full text review/audit rebound to the current corpus.",
+  "remaining_risks": [
+    "Formal audio acceptance requires a fresh complete trusted run, not the local precheck.",
+    "Runtime authorization and pending audio inputs are separate subsequent delivery units."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
