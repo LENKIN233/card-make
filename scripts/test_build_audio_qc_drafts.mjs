@@ -14,7 +14,8 @@ import {
   reviewAudioPerceptualEntry,
 } from './manage_audio_perceptual_worklist.mjs';
 import {createCurrentFullTrackAuthorizationFixture} from './test_current_full_track_authorization_fixture.mjs';
-import {validateAudioQcRecord} from './validate_audio_qc.mjs';
+import {auditAudioQcRecord, validateAudioQcRecord} from './validate_audio_qc.mjs';
+import {createHistoricalAudioQcReplay} from './lib/historical_audio_qc.mjs';
 
 const ATTESTATIONS = Object.freeze({
   no_autoplay_assumption: true,
@@ -31,6 +32,77 @@ function buildFixtureAudioQc(fixture, options) {
     ...options,
   });
 }
+
+test('complete CET6 evidence produces QC only for its registered track and counts', t => {
+  const fixture = createFixture(t, {track: 'cet6'});
+  writeWorklist(fixture, completeWorklist(fixture.worklist));
+  commitFixture(fixture);
+  const options = {attestations: ATTESTATIONS, contentAuthorizationPath: fixture.authorizationPath,
+    root: fixture.root, worklistPath: fixture.worklistPath};
+  const result = buildFixtureAudioQc(fixture, options);
+  assert.equal(result.summary.card_count, 328);
+  assert.equal(result.records.flatMap(record => record.scope.card_ids).length, 328);
+  const receiptFile = path.join(fixture.root, fixture.trustedReceiptPath);
+  const original = fs.readFileSync(receiptFile);
+  for (const mutation of [
+    receipt => { receipt.candidate.audio_asset_count = 301; },
+    receipt => { receipt.candidate.track = 'cet4'; },
+    receipt => { receipt.candidate.track = '__proto__'; },
+  ]) {
+    const receipt = JSON.parse(original); mutation(receipt);
+    fs.writeFileSync(receiptFile, JSON.stringify(receipt) + '\n');
+    commitFixture(fixture);
+    assert.throws(() => buildFixtureAudioQc(fixture, options), /receipt does not bind/);
+  }
+});
+
+test('immutable old QC remains auditable but never authorizes changed content', t => {
+  const fixture = createFixture(t);
+  writeWorklist(fixture, completeWorklist(fixture.worklist));
+  commitFixture(fixture);
+  const built = buildFixtureAudioQc(fixture, {attestations: ATTESTATIONS,
+    contentAuthorizationPath: fixture.authorizationPath, root: fixture.root,
+    worklistPath: fixture.worklistPath});
+  const record = built.records[0], source = 'reviews/audio_qc/history.json';
+  fs.mkdirSync(path.join(fixture.root, 'reviews/audio_qc'), {recursive: true});
+  const recordBytes = JSON.stringify(record, null, 2) + '\n';
+  fs.writeFileSync(path.join(fixture.root, source), recordBytes);
+  commitFixture(fixture);
+  const options = {root: fixture.root, source, execFile: fixture.execFile,
+    typeSpecificVerifier: fixture.typeSpecificVerifier};
+  assert.deepEqual(validateAudioQcRecord(record, options), []);
+  const cardsPath = path.join(fixture.root, 'card_boxes_json/cet4.json');
+  const corpus = JSON.parse(fs.readFileSync(cardsPath));
+  corpus.cards[0].front = {text: 'A revised training question.'};
+  fs.writeFileSync(cardsPath, JSON.stringify(corpus, null, 2) + '\n');
+  // This also verifies that a cached receipt cannot hide working-tree drift.
+  assert.ok(validateAudioQcRecord(record, options).some(issue => /not current/.test(issue.message || '')));
+  const replay = createHistoricalAudioQcReplay(options);
+  t.after(() => replay.dispose());
+  assert.equal(auditAudioQcRecord(record, {...options, historicalReplay: replay}).ok, false,
+    'a new record at HEAD cannot fall back to history');
+  commitFixture(fixture);
+  const audited = auditAudioQcRecord(record, {...options, historicalReplay: replay});
+  assert.deepEqual(audited.errors, []);
+  assert.equal(audited.evidence_status, 'historical');
+  assert.equal(audited.current_formal_ready, false);
+  assert.equal(audited.historical_replay.formal_ready, false);
+  assert.ok(validateAudioQcRecord(record, options).some(issue => /not current/.test(issue.message || '')));
+  // Whitespace-only edits are still evidence-byte drift, even with the same JSON meaning.
+  fs.appendFileSync(path.join(fixture.root, source), ' ');
+  assert.equal(auditAudioQcRecord(record, {...options, historicalReplay: replay}).ok, false);
+  execFileSync('git', ['add', '--', source], {cwd: fixture.root});
+  fs.writeFileSync(path.join(fixture.root, source), recordBytes);
+  assert.equal(auditAudioQcRecord(record, {...options, historicalReplay: replay}).ok, false,
+    'restoring only the worktree must not hide a staged evidence change');
+  execFileSync('git', ['restore', '--staged', '--source=HEAD', '--', source], {cwd: fixture.root});
+  const manifest = path.join(fixture.root, 'reviews/trusted_media_runs/current-receipt/audio-manifest.json');
+  fs.appendFileSync(manifest, ' ');
+  assert.equal(auditAudioQcRecord(record, {...options, historicalReplay: replay}).ok, false);
+  commitFixture(fixture);
+  assert.equal(auditAudioQcRecord(record, {...options, historicalReplay: replay}).ok, false,
+    'committing changed linked artifacts must not relabel them as immutable history');
+});
 
 test('builds one formal-ready model-owned QC record per box after complete model review', t => {
   const fixture = createFixture(t);
@@ -318,16 +390,18 @@ test('formal QC rejects an attestation that does not bind the exact receipt', t 
 
 function createFixture(
   t,
-  {modelOwnedTextReview = false, ttsTextReviewed = true} = {},
+  {modelOwnedTextReview = false, ttsTextReviewed = true, track = 'cet4'} = {},
 ) {
+  const expected = track === 'cet6' ? {cards: 1234, boxes: 110, audio: 328} : {cards: 1180, boxes: 108, audio: 301};
   let attestationCalls = 0;
   let semanticCalls = 0;
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'audio-qc-drafts-'));
   t.after(() => fs.rmSync(root, {force: true, recursive: true}));
   const cards = [
     card({
-      boxPrefix: '0000',
-      cardId: '000001',
+      track,
+      boxPrefix: track === 'cet6' ? '1000' : '0000',
+      cardId: track === 'cet6' ? '100001' : '000001',
       groupId: '0',
       groupName: '听前预测',
       mainTrainingGoal: '根据选项关键词组合预测听力主话题',
@@ -335,8 +409,9 @@ function createFixture(
       transcript: 'The speaker compares electric buses with diesel fleets.',
     }),
     card({
-      boxPrefix: '0010',
-      cardId: '001001',
+      track,
+      boxPrefix: track === 'cet6' ? '1010' : '0010',
+      cardId: track === 'cet6' ? '101001' : '001001',
       groupId: '1',
       groupName: '语音现象',
       mainTrainingGoal: '识别 turn off 中的辅音加元音连读',
@@ -344,12 +419,13 @@ function createFixture(
       ttsTextReviewed,
     }),
   ];
-  for (let index = 0; index < 1178; index += 1) {
-    const audioCandidate = index < 299;
-    const boxPrefix = String(index % 108).padStart(4, '0');
+  for (let index = 0; index < expected.cards - 2; index += 1) {
+    const audioCandidate = index < expected.audio - 2;
+    const boxPrefix = String((track === 'cet6' ? 1000 : 0) + index % expected.boxes).padStart(4, '0');
     const generated = card({
+      track,
       boxPrefix,
-      cardId: String(100001 + index).padStart(6, '0'),
+      cardId: track === 'cet6' ? boxPrefix + String(3 + Math.floor(index / expected.boxes)).padStart(2, '0') : String(100001 + index).padStart(6, '0'),
       groupId: String(index % 9),
       groupName: '完整音频测试',
       mainTrainingGoal: '完整听取并识别训练信号',
@@ -363,9 +439,9 @@ function createFixture(
     cards.push(generated);
   }
   const audioCards = cards.filter(card => card.audio);
-  assert.equal(cards.length, 1180);
-  assert.equal(audioCards.length, 301);
-  assert.equal(new Set(cards.map(card => card.knowledge_ref.box_prefix)).size, 108);
+  assert.equal(cards.length, expected.cards);
+  assert.equal(audioCards.length, expected.audio);
+  assert.equal(new Set(cards.map(card => card.knowledge_ref.box_prefix)).size, expected.boxes);
   fs.mkdirSync(path.join(root, 'card_boxes_json'), {recursive: true});
   fs.mkdirSync(path.join(root, 'exports'), {recursive: true});
   fs.mkdirSync(path.join(root, 'reviews/audio_perceptual_worklists'), {recursive: true});
@@ -388,16 +464,16 @@ function createFixture(
     );
   }
   fs.writeFileSync(
-    path.join(root, 'card_boxes_json/cet4.json'),
-    `${JSON.stringify({track: 'cet4', cards}, null, 2)}\n`,
+    path.join(root, `card_boxes_json/${track}.json`),
+    `${JSON.stringify({track, cards}, null, 2)}\n`,
   );
   const cet6Card = structuredClone(cards.at(-1));
-  cet6Card.card_id = '900001';
-  cet6Card.track = 'cet6';
+  cet6Card.card_id = track === 'cet6' ? '000001' : '900001';
+  cet6Card.track = track === 'cet6' ? 'cet4' : 'cet6';
   cet6Card.knowledge_ref.box_prefix = '9000';
   fs.writeFileSync(
-    path.join(root, 'card_boxes_json/cet6.json'),
-    `${JSON.stringify({track: 'cet6', cards: [cet6Card]}, null, 2)}\n`,
+    path.join(root, `card_boxes_json/${cet6Card.track}.json`),
+    `${JSON.stringify({track: cet6Card.track, cards: [cet6Card]}, null, 2)}\n`,
   );
   for (const entry of audioCards) {
     const absolute = path.join(root, entry.audio.path);
@@ -407,7 +483,7 @@ function createFixture(
   const audit = {
     schema_version: 'audio-technical-audit.v1',
     generated_at: '2026-08-11T00:00:00.000Z',
-    track: 'cet4',
+    track,
     summary: {errors: 0},
     verification: {},
     errors: [],
@@ -441,14 +517,21 @@ function createFixture(
     scopeCardIds: audioCards.map(entry => entry.card_id),
     technicalAudit: audit,
     technicalAuditPath: auditPath,
-    track: 'cet4',
+    track,
   });
   const {authorizationPath} = createCurrentFullTrackAuthorizationFixture({
     root,
     repositoryRoot: path.resolve(import.meta.dirname, '..'),
     cards,
+    track,
   });
+  fs.writeFileSync(path.join(trustedRunDirectory, 'audio-manifest.json'), JSON.stringify({
+    schema_version: 'trusted-media-audio-manifest.v1', track, asset_count: audioCards.length,
+    assets: audit.assets.map(({card_id, asset_path, file_sha256, size_bytes}) => ({card_id, asset_path, file_sha256, size_bytes})),
+  }) + '\n');
   return {
+    track,
+    expected,
     attestationBundlePath: 'reviews/trusted_media_receipts/current-bundle.jsonl',
     authorizationPath,
     execFile(command, args) {
@@ -486,6 +569,7 @@ function createFixture(
 }
 
 function card({
+  track = 'cet4',
   boxPrefix,
   cardId,
   groupId,
@@ -496,12 +580,12 @@ function card({
 }) {
   return {
     card_id: cardId,
-    track: 'cet4',
+    track,
     interaction_id: 'flip',
     card_group_name: groupName,
     card_box_name: boxPrefix === '0010' ? '连读' : '根据选项预测话题',
     audio: {
-      path: `ai_tts/cet4/${boxPrefix}/${cardId}.mp3`,
+      path: `ai_tts/${track}/${boxPrefix}/${cardId}.mp3`,
       duration_ms: 1000,
       transcript,
     },
@@ -688,10 +772,10 @@ function writeWorklist(fixture, worklist) {
       },
     },
     candidate: {
-      track: 'cet4',
-      card_count: 1180,
-      box_count: 108,
-      audio_asset_count: 301,
+      track: fixture.track,
+      card_count: fixture.expected.cards,
+      box_count: fixture.expected.boxes,
+      audio_asset_count: fixture.expected.audio,
       content_version: authorization.content_version,
       content_authorization_sha256: digest(authorizationBytes),
     },
@@ -702,8 +786,8 @@ function writeWorklist(fixture, worklist) {
       },
     },
     result: {
-      reviewed_card_count: 301,
-      passed_card_count: 301,
+      reviewed_card_count: fixture.expected.audio,
+      passed_card_count: fixture.expected.audio,
       failed_card_count: 0,
       every_card_has_two_independent_acceptances: true,
       all_assets_complete_consumed: true,

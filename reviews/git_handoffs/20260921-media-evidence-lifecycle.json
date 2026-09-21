@@ -1,0 +1,50 @@
+{
+  "handoff_id": "20260921-media-evidence-lifecycle",
+  "created_at": "2026-09-21T10:34:38.226Z",
+  "agent": "codex",
+  "branch": "codex/media-evidence-lifecycle-20260921",
+  "base_branch": "main",
+  "commit_sha": "92d5125431bf10369a8feb237698b90a6eb8ae77",
+  "push_ref": "origin/codex/media-evidence-lifecycle-20260921",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/244",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "harness",
+    "touched_paths": [
+      "scripts/build_audio_qc_drafts.mjs",
+      "scripts/lib/historical_audio_qc.mjs",
+      "scripts/lib/trusted_media_reference.mjs",
+      "scripts/test_build_audio_qc_drafts.mjs",
+      "scripts/validate_audio_qc.mjs",
+      "spec/audio-generation-contract.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "a144cba6887ad6f0374763bb35f95d9519ac6be2",
+    "patch_sha256": "aadf1195eaa97359697e79a74b8fcc161cd9b2c4c1f29d49ac2f77f2f9520486"
+  },
+  "validation": [
+    {
+      "command": "Required Node suites and targeted media-consumer tests",
+      "result": "249 tests passed, including registered CET6, stale-current rejection, historical replay and tampered evidence"
+    },
+    {
+      "command": "Real historical replay against revised CET4 corpus",
+      "result": "27 valid historical records, zero current authorizations, zero errors; current-only API still rejects stale content"
+    },
+    {
+      "command": "node scripts/validate_harness.mjs; node scripts/validate_audio_qc.mjs",
+      "result": "harness passed with recorded upstream warnings; all 27 unchanged current-baseline QC records passed"
+    },
+    {
+      "command": "Post-review historical negative cases and git diff --check",
+      "result": "passed"
+    }
+  ],
+  "local_status": "Separates repository history integrity from current audio release authorization and completes registered CET6 QC consumption.",
+  "remaining_risks": [
+    "Historical validation requires retained Git history, original media bytes and unchanged linked artifacts; missing or altered evidence fails closed.",
+    "Current source audio still needs its actual full trusted perceptual result."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}

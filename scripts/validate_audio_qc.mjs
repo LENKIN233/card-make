@@ -9,6 +9,7 @@ import {
   validateIndependentModelAcceptances,
 } from './lib/model_acceptance.mjs';
 import {verifyTrustedMediaEvidence} from './lib/trusted_media_reference.mjs';
+import {createHistoricalAudioQcReplay} from './lib/historical_audio_qc.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SPEC_PATH = 'spec/audio-generation-contract.json';
@@ -178,6 +179,8 @@ function validateRecord(
     root = ROOT,
     template = false,
     typeSpecificVerifier,
+    historicalReplay = null,
+    lifecycle = null,
   } = {},
 ) {
   const spec = readJson(SPEC_PATH);
@@ -383,11 +386,23 @@ function validateRecord(
         worklistPath: record.source_records?.linked_perceptual_worklist,
         worklistSha256: record.source_records?.perceptual_worklist_sha256,
       });
+      if (lifecycle) lifecycle.status = 'current';
     } catch (error) {
-      pushIssue(errors, 'audio_qc_trusted_media_evidence_verification_failed', {
-        source,
-        message: error instanceof Error ? error.message : String(error),
-      });
+      if (historicalReplay && error?.message === 'trusted media content authorization is not current') {
+        try {
+          const replay = historicalReplay.verify(record, source);
+          if (lifecycle) Object.assign(lifecycle, {status: 'historical', ...replay});
+        } catch (historicalError) {
+          pushIssue(errors, 'audio_qc_historical_evidence_verification_failed', {
+            source, message: historicalError instanceof Error ? historicalError.message : String(historicalError),
+          });
+        }
+      } else {
+        pushIssue(errors, 'audio_qc_trusted_media_evidence_verification_failed', {
+          source,
+          message: error instanceof Error ? error.message : String(error),
+        });
+      }
     }
     for (const check of spec.formal_audio_qc?.required_checks || []) {
       if (record.qa_checks?.[check] !== true) {
@@ -454,20 +469,44 @@ export function validateAudioQcRecord(
   return errors;
 }
 
+// Repository integrity may retain valid past decisions. Release consumers use
+// validateAudioQcRecord above, which always requires current authorization.
+export function auditAudioQcRecord(record, options = {}) {
+  const errors = [];
+  const lifecycle = {status: 'not_formal'};
+  validateRecord(record, errors, options.source ?? 'audio-qc-record', {...options, lifecycle});
+  return {ok: errors.length === 0, errors, evidence_status: lifecycle.status,
+    current_formal_ready: errors.length === 0 && lifecycle.status === 'current',
+    historical_replay: lifecycle.status === 'historical' ? lifecycle : null};
+}
+
 function main() {
   const errors = [];
   const warnings = [];
   if (!exists(SPEC_PATH)) pushIssue(errors, 'audio_generation_contract_missing', { path: SPEC_PATH });
   if (!exists(TEMPLATE_PATH)) pushIssue(errors, 'audio_qc_template_missing', { path: TEMPLATE_PATH });
-  if (errors.length === 0) {
-    validateRecord(readJson(TEMPLATE_PATH), errors, TEMPLATE_PATH, { template: true });
-    for (const file of listRecordFiles()) validateRecord(readJson(file), errors, file);
-  }
+  const records = [];
+  const historicalReplay = createHistoricalAudioQcReplay({root: ROOT});
+  try {
+    if (errors.length === 0) {
+      validateRecord(readJson(TEMPLATE_PATH), errors, TEMPLATE_PATH, { template: true });
+      for (const file of listRecordFiles()) {
+        const result = auditAudioQcRecord(readJson(file), {root: ROOT, source: file, historicalReplay});
+        errors.push(...result.errors);
+        records.push({path: file, evidence_status: result.evidence_status,
+          current_formal_ready: result.current_formal_ready,
+          historical_record_commit: result.historical_replay?.record_commit ?? null});
+      }
+    }
+  } finally { historicalReplay.dispose(); }
   const result = {
     ok: errors.length === 0,
     errors,
     warnings,
     records_checked: errors.length === 0 ? listRecordFiles().length : 0,
+    current_formal_records: records.filter(record => record.current_formal_ready).length,
+    historical_records: records.filter(record => record.evidence_status === 'historical').length,
+    records,
   };
   console.log(JSON.stringify(result, null, 2));
   if (!result.ok) process.exitCode = 1;

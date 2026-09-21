@@ -10,6 +10,9 @@ import {
 
 const RECEIPT_DIRECTORY = 'reviews/trusted_media_receipts';
 const VERIFICATION_CACHE_BY_EXECUTOR = new WeakMap();
+const REGISTERED_SCOPES = JSON.parse(fs.readFileSync(
+  new URL('../../spec/trusted-media-run-producer.json', import.meta.url), 'utf8',
+)).execution.exact_scopes;
 
 function verificationCache(execFile, typeSpecificVerifier) {
   let byVerifier = VERIFICATION_CACHE_BY_EXECUTOR.get(execFile);
@@ -102,7 +105,6 @@ export function verifyTrustedMediaEvidence({
     worklistSha256: actualWorklistSha256,
   });
   const cache = verificationCache(execFile, typeSpecificVerifier);
-  if (cache.has(cacheKey)) return cache.get(cacheKey);
   const currentAuthorization = validateCurrentApprovalRecordReference({
     approvalPath: authorizationFile.relativePath,
     currentFingerprint: computeCardCorpusFingerprint(root),
@@ -111,7 +113,16 @@ export function verifyTrustedMediaEvidence({
   if (!currentAuthorization.ok) {
     throw new Error('trusted media content authorization is not current');
   }
+  const artifactDirectory = requireTrackedArtifactDirectory({
+    receiptRelativePath: receiptFile.relativePath,
+    root,
+  });
+  // The receipt replay may be cached; current-corpus authorization may not.
+  if (cache.has(cacheKey)) return cache.get(cacheKey);
+  const track = receipt.candidate?.track;
+  const scope = Object.hasOwn(REGISTERED_SCOPES, track) ? REGISTERED_SCOPES[track] : null;
   if (
+    !scope || authorization.scope?.track !== track ||
     receipt.schema_version !== 'trusted-media-run-receipt.v2' ||
     receipt.source?.repository !== 'LENKIN233/card-make' ||
     receipt.source?.ref !== 'refs/heads/main' ||
@@ -125,10 +136,9 @@ export function verifyTrustedMediaEvidence({
       receipt.execution?.workflow_run_id ||
     receipt.finalization?.retained_raw_artifact?.workflow_run_attempt !==
       receipt.execution?.workflow_run_attempt ||
-    receipt.candidate?.track !== 'cet4' ||
-    receipt.candidate?.card_count !== 1180 ||
-    receipt.candidate?.box_count !== 108 ||
-    receipt.candidate?.audio_asset_count !== 301 ||
+    receipt.candidate?.card_count !== scope.card_count ||
+    receipt.candidate?.box_count !== scope.box_count ||
+    receipt.candidate?.audio_asset_count !== scope.audio_asset_count ||
     receipt.candidate?.content_version !== authorization.content_version ||
     receipt.candidate?.content_authorization_sha256 !== authorizationSha256 ||
     receipt.artifacts?.review_worklist?.sha256 !== actualWorklistSha256 ||
@@ -136,8 +146,8 @@ export function verifyTrustedMediaEvidence({
     typeof receipt.execution?.model?.id !== 'string' ||
     receipt.execution.model.id.length < 3 ||
     !/^[a-f0-9]{40}$/.test(receipt.execution?.model?.revision || '') ||
-    receipt.result?.reviewed_card_count !== 301 ||
-    receipt.result?.passed_card_count !== 301 ||
+    receipt.result?.reviewed_card_count !== scope.audio_asset_count ||
+    receipt.result?.passed_card_count !== scope.audio_asset_count ||
     receipt.result?.failed_card_count !== 0 ||
     receipt.result?.every_card_has_two_independent_acceptances !== true ||
     receipt.result?.all_assets_complete_consumed !== true ||
@@ -189,10 +199,6 @@ export function verifyTrustedMediaEvidence({
   )) {
     throw new Error('trusted media attestation does not bind the exact receipt bytes');
   }
-  const artifactDirectory = requireTrackedArtifactDirectory({
-    receiptRelativePath: receiptFile.relativePath,
-    root,
-  });
   let semanticResult;
   try {
     semanticResult = typeSpecificVerifier({
@@ -279,7 +285,7 @@ function requireTrackedArtifactDirectory({receiptRelativePath, root}) {
   return directory;
 }
 
-function runProductTrustedMediaVerifier({
+export function runProductTrustedMediaVerifier({
   artifactDirectory,
   audioRoot,
   candidateRoot,
@@ -350,6 +356,7 @@ function requireTrackedWorkspaceFile({file, label, root}) {
   const bytes = fs.readFileSync(absolute);
   let treeEntry;
   let headBytes;
+  let indexEntry;
   try {
     treeEntry = execFileSync(
       'git',
@@ -361,12 +368,15 @@ function requireTrackedWorkspaceFile({file, label, root}) {
       ['--literal-pathspecs', 'show', `HEAD:${relativePath}`],
       {cwd: normalizedRoot, encoding: null, stdio: ['ignore', 'pipe', 'pipe']},
     );
+    indexEntry = execFileSync('git', ['--literal-pathspecs', 'ls-files', '--stage', '--', relativePath],
+      {cwd: normalizedRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe']}).trim();
   } catch {
     throw new Error(`${label} must be tracked at exact HEAD`);
   }
   if (
     !treeEntry.startsWith('100644 blob ') ||
     !treeEntry.endsWith(`\t${relativePath}`) ||
+    indexEntry !== `100644 ${treeEntry.split(' ')[2]?.split('\t')[0]} 0\t${relativePath}` ||
     !bytes.equals(Buffer.from(headBytes))
   ) {
     throw new Error(`${label} bytes must equal a regular 100644 blob at exact HEAD`);
