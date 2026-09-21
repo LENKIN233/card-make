@@ -169,7 +169,10 @@
       "peak_level_below_minus_0_1_dbfs",
       "per_asset_mean_level_within_4_db_of_track_median"
     ],
-    "supported_probe_commands": ["afinfo", "ffprobe"],
+    "supported_probe_commands": [
+      "afinfo",
+      "ffprobe"
+    ],
     "signal_diagnostic_probe_command": "ffmpeg",
     "coarse_signal_diagnostics_do_not_replace_model_perceptual_qc": true,
     "authority_boundary": "A passing technical audit excludes gross transcript-duration speed, absolute level, peak, and track-relative level outliers. These coarse signal diagnostics do not prove speech-to-transcript match, clipping/noise absence, pronunciation, natural speed, rhythm, stress, pauses, source authenticity, or formal audio readiness; those remain perceptual per-card QC.",
@@ -246,5 +249,19 @@
     "node scripts/build_audio_qc_drafts.mjs --worklist reviews/audio_perceptual_worklists/<reviewed-worklist>.json --authorization reviews/approved_batches/<current-authorization>.json --trusted-receipt reviews/trusted_media_receipts/<receipt>.json --attestation-bundle reviews/trusted_media_receipts/<bundle>.jsonl --attest-no-autoplay --attest-front-no-required-subtitles --attest-tts-not-source-authenticity",
     "node scripts/validate_audio_qc.mjs",
     "node scripts/validate_harness.mjs"
-  ]
+  ],
+  "evidence_lifecycle": {
+    "current_release_validation": "scripts/validate_audio_qc.mjs#validateAudioQcRecord always requires current exact-scope content authorization.",
+    "repository_integrity_audit": "scripts/validate_audio_qc.mjs#auditAudioQcRecord may replay an unchanged historical QC record at its last-changing immutable commit when current content authorization is stale.",
+    "historical_replay_requirements": [
+      "QC record, index and worktree bytes match the fixed current HEAD",
+      "last-changing record commit is an earlier ancestor, with replacements and grafts forbidden",
+      "linked receipt, attestation, authorization, worklist and artifact bytes remain unchanged",
+      "original audio bytes match their committed identity and manifest",
+      "full current verifier, GitHub attestation and type-specific artifact replay pass against the historical snapshot"
+    ],
+    "historical_output": "Historical integrity is reported explicitly with current_formal_ready=false; it never counts as current audio authorization.",
+    "immutable_history": "No old QC verdict, actor, transcript, hash or evidence path is rewritten to look current.",
+    "registered_tracks": "Current receipt and QC aggregation scopes come from spec/trusted-media-run-producer.json#execution.exact_scopes."
+  }
 }

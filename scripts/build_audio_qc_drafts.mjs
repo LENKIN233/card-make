@@ -81,6 +81,7 @@ export function buildAudioQcDrafts({
     contentAuthorizationPath,
     root: normalizedRoot,
     scopedCardIds: sourceWorklist.entries.map(entry => entry.card_id),
+    track: sourceWorklist.track,
   });
   const trustedMedia = requireTrustedMediaReceipt({
     attestationBundlePath,
@@ -365,6 +366,7 @@ function requireCurrentContentAuthorization({
   contentAuthorizationPath,
   root,
   scopedCardIds,
+  track,
 }) {
   const absolute = requireRegularWorkspaceFile(contentAuthorizationPath, root);
   const relativePath = relativeToRoot(absolute, root);
@@ -393,11 +395,11 @@ function requireCurrentContentAuthorization({
   }
   const record = validation.approval;
   const authorizedCards = new Set((record.scope?.card_ids || []).map(String));
-  const currentTrackCardCount = countTrackCards(root, 'cet4');
+  const currentTrackCardCount = countTrackCards(root, track);
   if (
     record.schema_version !== 'model-owned-content-authorization.v2' ||
     record.authorization_mode !== 'full_track' ||
-    record.scope?.track !== 'cet4' ||
+    !['cet4', 'cet6'].includes(track) || record.scope?.track !== track ||
     record.scope?.purpose !== 'formal_content' ||
     scopedCardIds.some(cardId => !authorizedCards.has(String(cardId))) ||
     authorizedCards.size !== currentTrackCardCount
