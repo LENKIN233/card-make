@@ -1,0 +1,485 @@
+{
+  "schema_version": "model-owned-audio-qc.v2",
+  "audio_qc_id": "20260923-cet6-1033-audio-qc",
+  "created_at": "2026-09-23T18:59:13.609Z",
+  "model_acceptances": [
+    {
+      "schema_version": "model-acceptance.v2",
+      "actor": {
+        "kind": "model_harness",
+        "agent": "agent:audio-evidence-aggregate-lane-1",
+        "model": "mlx-community/Qwen2-Audio-7B-Instruct-4bit",
+        "run_id": "audio-evidence:1033:lane-1:d1b4b43f15726deb"
+      },
+      "evidence": {
+        "reviewed_at": "2026-09-23T18:49:14.960Z",
+        "input_sha256": "sha256:c5c9f833f65e1ced48fec345ead1fb63b1ff40286f628a469c8297d19b3fe4bb",
+        "capabilities": [
+          "audio_perceptual_review"
+        ],
+        "summary": "Deterministic lane 1 aggregation of 12 exact per-card audio-capable acceptances; source evidence sha256:d1b4b43f15726debf623d2baaee5e5147bd861f1fa2946b5c2128ce96b7c7405. No new media, provider, deployment, or device fact is inferred.",
+        "findings": []
+      },
+      "decision": "accepted"
+    },
+    {
+      "schema_version": "model-acceptance.v2",
+      "actor": {
+        "kind": "model_harness",
+        "agent": "agent:audio-evidence-aggregate-lane-2",
+        "model": "mlx-community/Qwen2-Audio-7B-Instruct-4bit",
+        "run_id": "audio-evidence:1033:lane-2:37091738c7f42aeb"
+      },
+      "evidence": {
+        "reviewed_at": "2026-09-23T18:49:14.960Z",
+        "input_sha256": "sha256:c5c9f833f65e1ced48fec345ead1fb63b1ff40286f628a469c8297d19b3fe4bb",
+        "capabilities": [
+          "audio_perceptual_review"
+        ],
+        "summary": "Deterministic lane 2 aggregation of 12 exact per-card audio-capable acceptances; source evidence sha256:37091738c7f42aeb1fefa912a922cca57edd54ab511b6a932c31021699c994f2. No new media, provider, deployment, or device fact is inferred.",
+        "findings": []
+      },
+      "decision": "accepted"
+    }
+  ],
+  "scope": {
+    "library": "听力",
+    "group": "细节捕捉",
+    "box": "地点",
+    "box_prefixes": [
+      "1033"
+    ],
+    "card_ids": [
+      "103301",
+      "103302",
+      "103303",
+      "103304",
+      "103305",
+      "103306",
+      "103307",
+      "103308",
+      "103309",
+      "103310",
+      "103311",
+      "103312"
+    ]
+  },
+  "source_records": {
+    "card_files": [
+      "card_boxes_json/card_boxes_seed_cet6_listening_1033.json"
+    ],
+    "linked_agent_self_reviews": [
+      "reviews/agent_self_review/20260921-cet6-clarity-model-review.json"
+    ],
+    "linked_approved_batch": "reviews/approved_batches/20260921-cet6-clarity-authorization.json",
+    "linked_perceptual_worklist": "reviews/audio_perceptual_worklists/cet6-audio-35615656543-5-reviewed.json",
+    "perceptual_worklist_sha256": "f520f48827aa5de3705aca161cd999bbfd1c5b1a4ba32a5974e5c504f9c64741",
+    "trusted_media_receipt": "reviews/trusted_media_receipts/cet6-audio-35615656543-5.json",
+    "trusted_media_receipt_sha256": "2c4daa88b94bf46da6d06654310e91ee7958ffafcc388077223f10ced150e079",
+    "trusted_media_attestation_bundle": "reviews/trusted_media_receipts/cet6-audio-35615656543-5.attestation.jsonl",
+    "trusted_media_attestation_bundle_sha256": "32d2b05a241cfea775a6f53ce61fc8fa5cb80e99a0b2a398c31fdea56ed7c838",
+    "trusted_media_source_commit": "bd8bb7802302c6c88600302cebdeccd057211bff",
+    "trusted_media_model_id": "mlx-community/Qwen2-Audio-7B-Instruct-4bit",
+    "trusted_media_model_revision": "c65570002626f41b4dc08b7b54f42f99f3e82e7f"
+  },
+  "text_gate": {
+    "tts_text_reviewed": true,
+    "text_source_type": "simulation",
+    "transcripts": [
+      {
+        "card_id": "103301",
+        "transcript": "Please meet the research assistant outside the main library at ten. She will take the group to the community centre, where the interviews will be conducted in the small conference room. The library is only the collection point; no interviews have been booked there.",
+        "target_signal": "区分目的地与换乘地点",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "103302",
+        "transcript": "The workshop can no longer use the engineering lecture hall because an examination has been scheduled there. We have reserved the training room in the administration building instead. It is beside the reception desk, not in the separate building used by the student union.",
+        "target_signal": "根据排除信息确定新地点",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "103303",
+        "transcript": "The usual advice office is closed during renovations. A temporary desk has been set up in the foyer of the arts building, directly opposite the lifts. The room beside the stairs is being used for private appointments and should not be entered without a booking.",
+        "target_signal": "从位置关系定位服务点",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "103304",
+        "transcript": "Payment can be made at the finance office in the main building, but the application documents must be delivered to the international office across the courtyard. Keep your receipt with the documents. The finance staff can answer fee questions, but they cannot accept the application itself.",
+        "target_signal": "区分送件地址与付款地点",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "103305",
+        "transcript": "Most staff enter through the side gate, but visitors should use the main entrance on King Street, where security can issue a temporary pass. The smaller entrance beside the car park will be closed until the construction work is finished, even during normal office hours.",
+        "target_signal": "识别地点范围中的例外",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "103306",
+        "transcript": "The teams developed their projects in laboratories across the science campus. However, the final exhibition will be in the city museum's education gallery, so members of the public can attend more easily. Equipment should be delivered through the museum's service entrance rather than the gallery's public doors.",
+        "target_signal": "区分研究工作地点与展示地点",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "103307",
+        "transcript": "The first message suggested a problem in the eastern wing, but the inspection found that area to be operating normally. The faulty ventilation units are in sections B and C of the central building. Repairs will be limited to those two sections, and the rest of the building will remain open.",
+        "target_signal": "结合纠正信息确定故障区域",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "103308",
+        "transcript": "Everyone should first sign in at the reception desk. Applicants attending interviews will then be directed to Room Eight, while those completing written assessments should wait in Room Three. A volunteer will escort each group, so please remain near reception until your group is called.",
+        "target_signal": "在分流安排中匹配目标活动",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "103309",
+        "transcript": "Teaching has moved from the old laboratory to the new seminar room in the west building. The old laboratory is still available for storing samples, but students should no longer go there for the weekly class. The entrance to the seminar room is beside the outdoor seating area.",
+        "target_signal": "理解原地点继续承担的不同功能",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "103310",
+        "transcript": "While the computer centre is closed, students can use the machines in the library's media room. Staff who need specialist software should contact the technical office to arrange access to a separate workstation. The lecture theatre computers are reserved for scheduled classes and are not part of this temporary arrangement.",
+        "target_signal": "定位临时安排的实际范围",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "103311",
+        "transcript": "I will meet you outside the café that faces the station's northern exit. It is across the road from the ticket office, not the café inside the shopping centre. If your train arrives early, please wait there rather than walking to the university; I will bring the project materials with me.",
+        "target_signal": "利用相对位置判断会面点",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      },
+      {
+        "card_id": "103312",
+        "transcript": "This week's practical session will take place in the design studio beside the exhibition hall. The larger workshop mentioned in the course guide is reserved for next month's group project. For now, please bring only your sketchbook; the tools needed later will be supplied at the workshop when that project begins.",
+        "target_signal": "区别当前模块与未来模块的地点安排",
+        "pronunciation_notes": "No dedicated pronunciation phenomenon; verify clear standard pronunciation across the complete transcript.",
+        "text_review_result": "passed_before_perceptual_review"
+      }
+    ]
+  },
+  "generation_plan": {
+    "method": "TTS_AI_generated",
+    "provider": "legacy_unknown",
+    "voice_or_speaker": "legacy_unknown",
+    "speed": "legacy_unknown",
+    "style_notes": "Pre-existing candidate assets; unavailable generation details are not reconstructed.",
+    "output_dir": "ai_tts/",
+    "overwrite_existing_assets": false,
+    "replacement_reason": ""
+  },
+  "legacy_adoption": {
+    "enabled": true,
+    "reviewed_at": "2026-09-23T18:49:14.960Z",
+    "reproducibility_status": "non_reproducible"
+  },
+  "generated_assets": [
+    {
+      "card_id": "103301",
+      "path": "ai_tts/cet6/1033/103301-kokoro-20260920-fcfc0abe.mp3",
+      "transcript_sha256": "4e0fa7e77c911b5ceee22e7737d84a026815f45bb731aee31961eafd96a873cb",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "ac443f21d88e43f91488b07e3bfa208a88d09c4abd3eedf5aa389fda3f6b6cd3",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "103302",
+      "path": "ai_tts/cet6/1033/103302-kokoro-20260920-4491bf57.mp3",
+      "transcript_sha256": "4dec7085c6c5787dbe6cf4fc329d4ccdf4ad8ff4bf8012db940ba6fc47c5be97",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "553922272cfc1e60aa5011c7ad95ad2aff649f78607793fabbf5d6d55f2fd850",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "103303",
+      "path": "ai_tts/cet6/1033/103303-kokoro-20260920-f64dbe18.mp3",
+      "transcript_sha256": "19c27a142145610626fde7eae3b94856dfbc239460dfc28e1aede4ff75a023d5",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "34aee274c9c5f11c13728ca07c9482d5e203caa213fbc8008952f7103e31dad3",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "103304",
+      "path": "ai_tts/cet6/1033/103304-kokoro-20260920-e829f7ca.mp3",
+      "transcript_sha256": "20c0e378e8dc6ba9fd788cdaebcbd02688d40be6d930b3058c338744cdb4d8d1",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "1569e836b69fa3dcf387e1cb666da61352ba4440af36f6f204d8b39ecb3d065e",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "103305",
+      "path": "ai_tts/cet6/1033/103305-kokoro-20260920-22d94a18.mp3",
+      "transcript_sha256": "978b4bb04c02ae807e23756a8598e8889f480425b49bc2a656e3592a0b6bbc35",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "2f148147312f07bfc9c5876cc3ca65c0b15f5446646359d5185fac3e4470dc2d",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "103306",
+      "path": "ai_tts/cet6/1033/103306-kokoro-20260920-27020272.mp3",
+      "transcript_sha256": "22353517d736497452f76efc45aecee4bf5af2dc3c2359c22302de1e5ba81d43",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "a7501c53e62d840f721d931a7fada5404e5894fbd628e9e25d17c849982a7849",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "103307",
+      "path": "ai_tts/cet6/1033/103307-kokoro-20260920-86547519.mp3",
+      "transcript_sha256": "5f2d20bc40302a3e45cd65df5c5172435484fdafe387909015929a0fc474d630",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "0620b9d3f18524a0785f6de0a361c4c94bcf48aba262f8788584b9dec3a369f3",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "103308",
+      "path": "ai_tts/cet6/1033/103308-kokoro-20260920-a4745643.mp3",
+      "transcript_sha256": "42e909a26c2f1cd4152bd783dac99e1f80629ef143b376f38d2745484f035f89",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "e3803a8fd5bb05ebc0dd02a44b60458dcd9b6794d4eaf10ecf690a6fa8310a98",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "103309",
+      "path": "ai_tts/cet6/1033/103309-kokoro-20260920-a52ac35a.mp3",
+      "transcript_sha256": "7570e26bae0e8b27cc47f41fb8b7078d4bcb0042aab06ad513a9b6e3ea7e91f7",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "7aa37a994cdb7d87b2a10fe4fc08a2853754fdfbd0efe2ba16d564259b111662",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "103310",
+      "path": "ai_tts/cet6/1033/103310-kokoro-20260920-ec969c33.mp3",
+      "transcript_sha256": "c7eb95c27f7f3fc71777920e20af7ae27c30431a13df8219b953d936fc8b7b6c",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "d8cfcf55b0a8ec9bb17fb4adc3b54e43da4518285f602f3133754c68fe028f8e",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "103311",
+      "path": "ai_tts/cet6/1033/103311-kokoro-20260920-66091eea.mp3",
+      "transcript_sha256": "6d80907a80b25092d86ac85d346887c814a05a2864d11eb5e30ab13a194e1ad3",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "c02a3d98ca79e2f1c02c6fbe5fac359ccd6f72fae5f4f74cdd0894ee5bb7dab2",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    },
+    {
+      "card_id": "103312",
+      "path": "ai_tts/cet6/1033/103312-kokoro-20260920-05d3fe35.mp3",
+      "transcript_sha256": "538cbd8054f044234bcbfd46a6d62a5a8731fcd79d902b81472562d6c64e9309",
+      "generated_at": "legacy_unknown",
+      "generator_version": "legacy_unknown",
+      "file_sha256": "84933ec723ed8a305558c1b45c66020649ecac7deca370f5cc9c8620b56d2ac7",
+      "provenance_note": "Pre-existing TTS candidate asset with unknown provider, voice and generator version; adopted only through bound technical identity and model perceptual review."
+    }
+  ],
+  "qa_checks": {
+    "audio_matches_text": true,
+    "target_signal_audible": true,
+    "accurate_pronunciation": true,
+    "suitable_speed": true,
+    "natural_rhythm": true,
+    "stress_and_pauses_do_not_mislead": true,
+    "no_unwanted_noise_or_clipping": true,
+    "no_autoplay_assumption": true,
+    "front_side_no_required_subtitles": true,
+    "tts_audio_not_used_as_source_authenticity": true
+  },
+  "per_card_qc": [
+    {
+      "card_id": "103301",
+      "asset_path": "ai_tts/cet6/1033/103301-kokoro-20260920-fcfc0abe.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "103302",
+      "asset_path": "ai_tts/cet6/1033/103302-kokoro-20260920-4491bf57.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "103303",
+      "asset_path": "ai_tts/cet6/1033/103303-kokoro-20260920-f64dbe18.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "103304",
+      "asset_path": "ai_tts/cet6/1033/103304-kokoro-20260920-e829f7ca.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "103305",
+      "asset_path": "ai_tts/cet6/1033/103305-kokoro-20260920-22d94a18.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "103306",
+      "asset_path": "ai_tts/cet6/1033/103306-kokoro-20260920-27020272.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "103307",
+      "asset_path": "ai_tts/cet6/1033/103307-kokoro-20260920-86547519.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "103308",
+      "asset_path": "ai_tts/cet6/1033/103308-kokoro-20260920-a4745643.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "103309",
+      "asset_path": "ai_tts/cet6/1033/103309-kokoro-20260920-a52ac35a.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "103310",
+      "asset_path": "ai_tts/cet6/1033/103310-kokoro-20260920-ec969c33.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "103311",
+      "asset_path": "ai_tts/cet6/1033/103311-kokoro-20260920-66091eea.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    },
+    {
+      "card_id": "103312",
+      "asset_path": "ai_tts/cet6/1033/103312-kokoro-20260920-05d3fe35.mp3",
+      "complete_asset_consumed": true,
+      "matches_text": true,
+      "target_signal": true,
+      "pronunciation": true,
+      "speed": true,
+      "rhythm": true,
+      "stress_pauses": true,
+      "no_noise": true,
+      "notes": "Model perceptual pass at 2026-09-23T18:49:14.960Z; cet6-current-audio-perceptual-qc."
+    }
+  ],
+  "verdict": {
+    "candidate_audio_ok": true,
+    "formal_audio_ready": true,
+    "requires_regeneration": false,
+    "reason": "All bound assets passed complete per-card model perceptual QC and the three product-semantics boundaries were explicitly attested."
+  },
+  "approval_boundary": {
+    "tts_audio_is_not_source_authenticity_evidence": true,
+    "current_model_owned_content_authorization_required": true,
+    "external_facts_must_not_be_inferred": true
+  },
+  "validation": {
+    "audio_qc": "node scripts/validate_audio_qc.mjs",
+    "harness": "node scripts/validate_harness.mjs"
+  }
+}
