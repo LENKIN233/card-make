@@ -1,0 +1,86 @@
+{
+  "handoff_id": "20260924-cet6-current-media-qc",
+  "created_at": "2026-09-23T19:09:16.203Z",
+  "agent": "codex",
+  "branch": "codex/cet6-current-media-qc-20260921",
+  "base_branch": "main",
+  "commit_sha": "bafeca80c6caa30bafd23bbb6ab67100e9bc53e8",
+  "push_ref": "origin/codex/cet6-current-media-qc-20260921",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/254",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "audio",
+    "touched_paths": [
+      "reviews/audio_perceptual_worklists/cet6-audio-35615656543-5-reviewed.json",
+      "reviews/audio_qc/20260923-cet6-1000-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1001-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1002-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1010-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1011-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1012-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1020-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1021-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1022-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1023-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1024-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1030-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1031-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1032-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1033-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1034-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1035-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1036-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1040-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1041-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1042-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1043-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1050-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1051-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1052-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1520-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1601-audio-qc.json",
+      "reviews/audio_qc/20260923-cet6-1620-audio-qc.json",
+      "reviews/trusted_media_receipts/cet6-audio-35615656543-5.attestation.jsonl",
+      "reviews/trusted_media_receipts/cet6-audio-35615656543-5.json",
+      "reviews/trusted_media_runs/cet6-audio-35615656543-5/audio-manifest.json",
+      "reviews/trusted_media_runs/cet6-audio-35615656543-5/mlx-audio-package-manifest.json",
+      "reviews/trusted_media_runs/cet6-audio-35615656543-5/model-weights-manifest.json",
+      "reviews/trusted_media_runs/cet6-audio-35615656543-5/python-environment-manifest.json",
+      "reviews/trusted_media_runs/cet6-audio-35615656543-5/raw-run-manifest.json",
+      "reviews/trusted_media_runs/cet6-audio-35615656543-5/reviewed-worklist.json",
+      "reviews/trusted_media_runs/cet6-audio-35615656543-5/run-a.jsonl",
+      "reviews/trusted_media_runs/cet6-audio-35615656543-5/run-b.jsonl",
+      "reviews/trusted_media_runs/cet6-audio-35615656543-5/run-f.jsonl",
+      "reviews/trusted_media_runs/cet6-audio-35615656543-5/run-g.jsonl",
+      "reviews/trusted_media_runs/cet6-audio-35615656543-5/run-package.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "2866a9152fa39c83805ca43dc70656c71b6153f6",
+    "patch_sha256": "54af78d88bd9bf62f957bf5c673a8ebb0b3ad74dfa78ccdfa712d77fcceef48b"
+  },
+  "validation": [
+    {
+      "command": "Product trusted receipt verifier with real GitHub attestation",
+      "result": "identity_ready/formal_ready/attestation_verified/artifacts_verified true; errors []; receipt SHA-256 2c4daa88b94bf46da6d06654310e91ee7958ffafcc388077223f10ced150e079."
+    },
+    {
+      "command": "Trusted run 35615656543 attempt 5 and exact QC derivation",
+      "result": "328 reviewed/328 passed/0 failed; 28 current box-scoped CET6 formal QC records; four complete raw review lanes and signed receipt."
+    },
+    {
+      "command": "node scripts/validate_audio_qc.mjs; node scripts/validate_harness.mjs",
+      "result": "55 current formal records (27 CET4 + 28 CET6), 27 historical, zero errors; full harness passed with seven recorded owner warnings."
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD; git diff --check",
+      "result": "passed at bafeca80c6caa30bafd23bbb6ab67100e9bc53e8; all new receipt and raw artifacts are linked by current QC records in the final payload."
+    }
+  ],
+  "local_status": "Current complete CET6 audio acceptance is derived from the exact GitHub-attested model evidence; prior failed or interrupted attempts remain historical diagnostics only.",
+  "remaining_risks": [
+    "Producer-side formal media acceptance does not establish receiver deployment, production SMS or real-device distribution.",
+    "Historical audio evidence retains its original scope and cannot authorize current content."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
