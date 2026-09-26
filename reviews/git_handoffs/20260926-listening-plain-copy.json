@@ -1,0 +1,66 @@
+{
+  "handoff_id": "20260926-listening-plain-copy",
+  "created_at": "2026-09-26T02:20:36.254Z",
+  "agent": "codex",
+  "branch": "content/plain-listening-prompts",
+  "base_branch": "main",
+  "commit_sha": "52f41a752d7d5565d696c23003875c960fde741a",
+  "push_ref": "origin/content/plain-listening-prompts",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/255",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_residual_blocker_closure",
+    "box_prefixes": [
+      "0000",
+      "0001",
+      "0002",
+      "1000",
+      "1001",
+      "1002"
+    ],
+    "multi_prefix_review_unit": true,
+    "scope_reason": "One user-reported learner-language correction applied to the same listening-prediction templates in both CET tracks; 72 existing cards, no generation or deletion, one exact-scope model review.",
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0000.json",
+      "card_boxes_json/card_boxes_seed_cet4_listening_0001.json",
+      "card_boxes_json/card_boxes_seed_cet4_listening_0002.json",
+      "card_boxes_json/card_boxes_seed_cet6_listening_1000.json",
+      "card_boxes_json/card_boxes_seed_cet6_listening_1001.json",
+      "card_boxes_json/card_boxes_seed_cet6_listening_1002.json",
+      "reviews/agent_self_review/20260926-listening-plain-copy.json",
+      "reviews/audit_scopes/20260926-listening-plain-copy.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "8e7e46968c539bd9c98472303901f3aee965613c",
+    "patch_sha256": "c72a0c8a032175c6c131ff7dc868a3295e80022684a7702a75d46173d70863b6"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "2414 cards: zero structural errors and warnings."
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "passed for the complete 72-card multi-prefix model-owned review and scoped audit."
+    },
+    {
+      "command": "Front-only semantic diff and clue parity",
+      "result": "All three front text mirrors agree; clues preserved verbatim; all non-front fields are identical."
+    },
+    {
+      "command": "CET4/CET6 technical audio audits",
+      "result": "301 and 328 assets pass byte/hash, decoder, duration and transcript binding checks; no new perceptual acceptance claim."
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "Passed with existing product-owner mapping warnings."
+    }
+  ],
+  "local_status": "Natural reader-facing wording accepted for the scoped candidate cards. A fresh runtime export must carry these changes into the app.",
+  "remaining_risks": [
+    "The audit retains 72 short-analysis signals and 72 disclosed synthetic-source signals.",
+    "This scoped content correction is not full-track release authorization or new audio perceptual evidence."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}

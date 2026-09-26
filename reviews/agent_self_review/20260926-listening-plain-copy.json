@@ -1,0 +1,4330 @@
+{
+  "schema_version": "model-owned-card-review.v2",
+  "review_id": "20260926-listening-plain-copy",
+  "created_at": "2026-09-26T02:04:03.932Z",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "agent:codex-plain-copy",
+      "model": "gpt-6",
+      "run_id": "67c89f65-658e-4703-baa5-656579c00716"
+    },
+    "evidence": {
+      "reviewed_at": "2026-09-26T02:04:03.932Z",
+      "input_sha256": "sha256:0b7adc4aab138d044fac1f2ede39d47253a202f4c24394ee4fea66565014f4d2",
+      "capabilities": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "summary": "Reviewed all 72 existing listening-prediction fronts across six CET4/CET6 boxes, against original front wording and unchanged reference answers. Removed authoring-style preambles and repetitive UI instructions; every clue and the prediction-before-listening step remain. Checked topic, question focus and logical-signal meaning, and corrected drafts that narrowed library interest to attendance or activity conditions to participant eligibility. Only three mirrored front text fields changed. Answers, analyses, synthetic provenance, audio transcripts and audio references are byte-semantically unchanged. The audit retains 72 short-analysis signals and 72 explicit synthetic-source signals; this is scoped language acceptance, not full-track or audio authorization.",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
+  "scope": {
+    "purpose": "reader-facing listening-prediction wording in CET4 and CET6",
+    "box_prefixes": [
+      "0000",
+      "0001",
+      "0002",
+      "1000",
+      "1001",
+      "1002"
+    ],
+    "card_ids": [
+      "000001",
+      "000002",
+      "000003",
+      "000004",
+      "000005",
+      "000006",
+      "000007",
+      "000008",
+      "000009",
+      "000010",
+      "000011",
+      "000012",
+      "000101",
+      "000102",
+      "000103",
+      "000104",
+      "000105",
+      "000106",
+      "000107",
+      "000108",
+      "000109",
+      "000110",
+      "000111",
+      "000112",
+      "000201",
+      "000202",
+      "000203",
+      "000204",
+      "000205",
+      "000206",
+      "000207",
+      "000208",
+      "000209",
+      "000210",
+      "000211",
+      "000212",
+      "100001",
+      "100002",
+      "100003",
+      "100004",
+      "100005",
+      "100006",
+      "100007",
+      "100008",
+      "100009",
+      "100010",
+      "100011",
+      "100012",
+      "100101",
+      "100102",
+      "100103",
+      "100104",
+      "100105",
+      "100106",
+      "100107",
+      "100108",
+      "100109",
+      "100110",
+      "100111",
+      "100112",
+      "100201",
+      "100202",
+      "100203",
+      "100204",
+      "100205",
+      "100206",
+      "100207",
+      "100208",
+      "100209",
+      "100210",
+      "100211",
+      "100212"
+    ]
+  },
+  "specs_read": [
+    "spec/review-workflow.json",
+    "spec/content-quality-contract.json",
+    "spec/workspace-contract.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260926-listening-plain-copy.json",
+    "report_sha256": "sha256:6baf03c3a233f81d7b7dbf7388e89ac91accf5da1076076a9e84f726c44d462e",
+    "corpus_fingerprint": "50112f775a82134d55953d644676165cc2957e259b2e08d7beca812d66cb9aee",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "000001",
+        "000002",
+        "000003",
+        "000004",
+        "000005",
+        "000006",
+        "000007",
+        "000008",
+        "000009",
+        "000010",
+        "000011",
+        "000012",
+        "000101",
+        "000102",
+        "000103",
+        "000104",
+        "000105",
+        "000106",
+        "000107",
+        "000108",
+        "000109",
+        "000110",
+        "000111",
+        "000112",
+        "000201",
+        "000202",
+        "000203",
+        "000204",
+        "000205",
+        "000206",
+        "000207",
+        "000208",
+        "000209",
+        "000210",
+        "000211",
+        "000212",
+        "100001",
+        "100002",
+        "100003",
+        "100004",
+        "100005",
+        "100006",
+        "100007",
+        "100008",
+        "100009",
+        "100010",
+        "100011",
+        "100012",
+        "100101",
+        "100102",
+        "100103",
+        "100104",
+        "100105",
+        "100106",
+        "100107",
+        "100108",
+        "100109",
+        "100110",
+        "100111",
+        "100112",
+        "100201",
+        "100202",
+        "100203",
+        "100204",
+        "100205",
+        "100206",
+        "100207",
+        "100208",
+        "100209",
+        "100210",
+        "100211",
+        "100212"
+      ],
+      "card_count": 72,
+      "issue_count": 144,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 72,
+        "review_gap": 0,
+        "source_risk": 72
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 72,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 72,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "000001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000002",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000003",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000004",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000005",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000006",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000007",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000008",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000009",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000010",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000011",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000012",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "0000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据候选信息共同语义预判话题",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000102",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000103",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000104",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000105",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000106",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000107",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000108",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000109",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000110",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000111",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000112",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "0001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异预测需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000201",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000202",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000203",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000204",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000205",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000206",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000207",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000208",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000209",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000210",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000211",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "000212",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "0002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "预判并核对信息之间的逻辑关系",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "tts_text_reviewed": true,
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判是暂时的判断，具体答案和范围仍以材料为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100002",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100003",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100004",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100005",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100006",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100007",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100008",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100009",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100010",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100011",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100012",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100101",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100102",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100103",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100104",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100105",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100106",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100107",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100108",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100109",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100110",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100111",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100112",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "1",
+        "box_name": "根据选项预测考点",
+        "box_prefix": "1001"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项差异确定听时需要核对的信息",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100201",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100202",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100203",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100204",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100205",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100206",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100207",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100208",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100209",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100210",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100211",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    },
+    {
+      "card_id": "100212",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "2",
+        "box_name": "根据选项预测信号词",
+        "box_prefix": "1002"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "从选项信息关系预判并核对听力逻辑线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "tts_text_reviewed": true,
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the reader-facing front wording correction."
+    }
+  ],
+  "removed_cards": [],
+  "batch_review": {
+    "status": "model_accepted",
+    "box_progression": "Each track retains its three boxes in order: topic prediction, question-focus prediction, logical-signal prediction. Scope crosses the two tracks only for one shared reader-language correction; all IDs, order, difficulty and evidence stay intact.",
+    "repetition_or_gap_risks": [
+      "Short-analysis and synthetic-source audit signals remain explicit. The shared brief listening instruction expresses a common action; card-specific clues and questions remain distinct."
+    ],
+    "representative_cards": [
+      "000002",
+      "000101",
+      "000212",
+      "100001",
+      "100111",
+      "100212"
+    ],
+    "next_step": "Consume the reviewed front corrections through a fresh candidate runtime export; do not represent this as full-track formal authorization or audio perception."
+  }
+}
