@@ -1,0 +1,45 @@
+{
+  "handoff_id": "20260926-listening-hours-copy",
+  "created_at": "2026-09-26T02:49:09.115Z",
+  "agent": "codex",
+  "branch": "content/listening-hours-copy",
+  "base_branch": "main",
+  "commit_sha": "179f57ec76c59bb22d32db757a89b3b08c8aae8c",
+  "push_ref": "origin/content/listening-hours-copy",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/256",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_residual_blocker_closure",
+    "box_prefixes": [
+      "1000"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet6_listening_1000.json",
+      "reviews/agent_self_review/20260926-listening-hours-copy.json",
+      "reviews/audit_scopes/20260926-listening-hours-copy.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "0527ae02bc20b8201c82e8f7c5058766b34502df",
+    "patch_sha256": "e8f59babcbb33070462c085f05b029ae28fd051ceb8a9811a1518b12a24dce3a"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs",
+      "result": "2414 cards, zero structural errors and warnings."
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head HEAD",
+      "result": "Passed immutable-head scope and current scoped audit."
+    },
+    {
+      "command": "Full JSON diff against base",
+      "result": "Only the missing 时间 noun was added to three mirrored front fields in card 100001."
+    }
+  ],
+  "local_status": "Scoped wording correction accepted for candidate runtime export.",
+  "remaining_risks": [
+    "Existing short explanation and disclosed synthetic source remain; no new audio or release authorization."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}

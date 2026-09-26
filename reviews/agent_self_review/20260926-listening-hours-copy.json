@@ -1,0 +1,145 @@
+{
+  "schema_version": "model-owned-card-review.v2",
+  "review_id": "20260926-listening-hours-copy",
+  "created_at": "2026-09-26T02:47:49.373Z",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "agent:codex-plain-copy",
+      "model": "gpt-6",
+      "run_id": "e573a3f8-beee-4eb4-884f-e0549b234c52"
+    },
+    "evidence": {
+      "reviewed_at": "2026-09-26T02:47:49.373Z",
+      "input_sha256": "sha256:d382847f4c4967566a8609f2ba91c3e5f963110a9a65b6e6d78ddca4ee3b8ce3",
+      "capabilities": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "summary": "Visual review found the omitted noun in the library-opening clue. Added 时间 to the three mirrored front fields of card 100001. Longer opening hours matches the existing clue and reference answer; no new answer clue, changed activity, or new proposition is introduced. Full JSON diff verifies every other field and card is unchanged. Existing short-analysis and synthetic-source risks remain explicit.",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
+  "scope": {
+    "track": "cet6",
+    "box_prefixes": [
+      "1000"
+    ],
+    "card_ids": [
+      "100001"
+    ]
+  },
+  "specs_read": [
+    "spec/review-workflow.json",
+    "spec/content-quality-contract.json",
+    "spec/workspace-contract.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260926-listening-hours-copy.json",
+    "report_sha256": "sha256:427fd13d83febdc21a892b916a472c62c5b49d39cffd83a1c66b3d19f4eb5d1a",
+    "corpus_fingerprint": "4218b69b0e8fbd81f5445af6bb32bb15df692bad7c55a098795bc3b096844f7b",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "100001"
+      ],
+      "card_count": 1,
+      "issue_count": 2,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 1,
+        "review_gap": 0,
+        "source_risk": 1
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 1,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 1,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "100001",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "0",
+        "group_name": "听前预测",
+        "box_id": "0",
+        "box_name": "根据选项预测话题",
+        "box_prefix": "1000"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据选项共同语义形成可修正的话题预判",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "context_input",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "TTS_AI_generated",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "预判帮助分配注意力，具体答案仍以录音和实际问题为准。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Short existing explanations remain unchanged; this review accepts the front-copy correction.",
+        "Synthetic practice is not represented as official examination material."
+      ],
+      "recommendation": "Accept the missing noun correction."
+    }
+  ],
+  "removed_cards": [],
+  "batch_review": {
+    "status": "model_accepted",
+    "box_progression": "One existing topic-prediction card; card order, question and answer are unchanged.",
+    "repetition_or_gap_risks": [
+      "Existing short analysis and synthetic-source signals retained."
+    ],
+    "representative_cards": [
+      "100001"
+    ],
+    "next_step": "Export the corrected candidate front to the product without changing release or audio authorization."
+  }
+}
