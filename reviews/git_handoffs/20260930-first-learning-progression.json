@@ -1,0 +1,54 @@
+{
+  "handoff_id": "20260930-first-learning-progression",
+  "created_at": "2026-09-29T23:04:28.538Z",
+  "agent": "codex",
+  "branch": "content/first-learning-progression",
+  "base_branch": "main",
+  "commit_sha": "dda22abc099f3312bf1fcb314c3e6c51e76533dc",
+  "push_ref": "origin/content/first-learning-progression",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/257",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "content_candidate_residual_blocker_closure",
+    "box_prefixes": [
+      "0000"
+    ],
+    "touched_paths": [
+      "card_boxes_json/card_boxes_seed_cet4_listening_0000.json",
+      "reviews/agent_self_review/20260930-first-learning-progression.json",
+      "reviews/audit_scopes/20260930-first-learning-progression.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "dfbadb509600267ced4847a1b18286d7756d4c48",
+    "patch_sha256": "adb211d4935bacd63378a9711118cfb1723d4255e869f7a94c9b6639f346714a"
+  },
+  "validation": [
+    {
+      "command": "node scripts/validate_cards.mjs --report-path exports/card_validation_report.json",
+      "result": "2414 cards; zero structural errors and warnings."
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base dfbadb509600267ced4847a1b18286d7756d4c48 --head HEAD",
+      "result": "Passed immutable-head review parity and exact scoped audit for five changed cards."
+    },
+    {
+      "command": "node scripts/audit_card_quality.mjs --scope-card-ids 000001,000002,000003,000004,000005 --write-scope-report reviews/audit_scopes/20260930-first-learning-progression.json",
+      "result": "No hard blockers, content risks or review gaps in scope; five explicit synthetic-source signals remain."
+    },
+    {
+      "command": "node --test scripts/test_model_acceptance.mjs",
+      "result": "12 tests passed."
+    },
+    {
+      "command": "Full card JSON comparison and media SHA-256 check against base",
+      "result": "Stable card identity, knowledge_ref, interaction, auto_scoring, source_ref and entire audio objects are unchanged. Existing local audio bytes match recorded SHA-256."
+    }
+  ],
+  "local_status": "Scoped first-learning text improvement accepted for candidate export; required remote checks govern merge.",
+  "remaining_risks": [
+    "This does not renew full-track runtime release or media authorization. A separate exact-scope text authorization follows content delivery.",
+    "Learner effectiveness and physical-device results are not inferred by this text review."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
