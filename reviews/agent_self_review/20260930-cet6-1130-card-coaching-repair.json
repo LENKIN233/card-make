@@ -1,0 +1,261 @@
+{
+  "schema_version": "model-owned-card-review.v2",
+  "review_id": "20260930-cet6-1130-card-coaching-repair",
+  "created_at": "2026-09-30T05:11:55.838Z",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "agent:codex-card-coaching-repair",
+      "model": "gpt-6",
+      "run_id": "205084d1-476f-4239-8ce7-b16a8b636a84"
+    },
+    "evidence": {
+      "reviewed_at": "2026-09-30T05:11:55.838Z",
+      "input_sha256": "sha256:d85e6d3daca817e81df6f9c3a6feb1edddb89d658d4c8e6648b0dec0f4378466",
+      "capabilities": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "summary": "Reviewed twelve sentence-specific CET6 judgements across modifiers, adverbials, noun-content clauses and parenthetical comments. Each now includes a complete practice sentence and a plausible claim; seven true and five false follow the actual interpretations, with no required answer-balancing rule. Explanations preserve dependency, negation, evidence source and scope and remove absolute position-only grammar heuristics. No audio or ownership changes; synthetic provenance retained. This is candidate text review, not official exam authenticity or full-track authorization.",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
+  "scope": {
+    "track": "cet6",
+    "box_prefixes": [
+      "1130"
+    ],
+    "card_ids": [
+      "113004",
+      "113008",
+      "113012"
+    ]
+  },
+  "specs_read": [
+    "spec/review-workflow.json",
+    "spec/content-quality-contract.json",
+    "spec/workspace-contract.json",
+    "spec/git-workflow.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260930-cet6-1130-card-coaching-repair.json",
+    "report_sha256": "sha256:97ec39c2ce4de65cda088561e373b4e02ca22f0f41156ef0be73a219fd72a7b4",
+    "corpus_fingerprint": "2941f8ce7177ec2f5c6a5a32c567ac9950ab1da81b55410b7125508d85e6ce0e",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "113004",
+        "113008",
+        "113012"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "113004",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "1130"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合语义和主干识别分词短语的修饰对象",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy material adapted as an explicitly fictional exercise; not verified historical reporting.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先找 showed 的主语，再试着问“什么被拍摄”，检查 taken 与哪个名词构成合理关系。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no source-authenticity or perceptual-audio claim is made."
+      ],
+      "recommendation": "True is supported by the explicit clause/role/scope analysis. Learner method: 先找 showed 的主语，再试着问“什么被拍摄”，检查 taken 与哪个名词构成合理关系。"
+    },
+    {
+      "card_id": "113008",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "1130"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "区分修饰名词的分词与带时态的主句谓语",
+        "weak_point_tags": [
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy source attribution has not been independently authenticated; used as a practice scenario, not advertised as a true-exam question.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先圈出带时态的 has been criticized，再检查 governing 这段是在限定哪个名词。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no source-authenticity or perceptual-audio claim is made."
+      ],
+      "recommendation": "False is supported by the explicit clause/role/scope analysis. Learner method: 先圈出带时态的 has been criticized，再检查 governing 这段是在限定哪个名词。"
+    },
+    {
+      "card_id": "113012",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "0",
+        "box_name": "定语",
+        "box_prefix": "1130"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "还原介词加关系代词结构并识别主干",
+        "weak_point_tags": [
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy source attribution has not been independently authenticated; used as a practice scenario, not advertised as a true-exam question.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "将 under which 暂换成 under those conditions，检查还原后从句与 conditions 的联系。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no source-authenticity or perceptual-audio claim is made."
+      ],
+      "recommendation": "True is supported by the explicit clause/role/scope analysis. Learner method: 将 under which 暂换成 under those conditions，检查还原后从句与 conditions 的联系。"
+    }
+  ],
+  "removed_cards": [],
+  "batch_review": {
+    "status": "model_accepted",
+    "box_progression": "Four existing boxes now apply their concepts to complete sentences: modifier attachment and finite predicates; background, contrast and causal negation; content clauses versus relative clauses and complements; removable comments with retained source and scope.",
+    "repetition_or_gap_risks": [
+      "Boolean answer diversity alone is not evidence of educational effectiveness; each answer is justified from its own supplied sentence."
+    ],
+    "representative_cards": [
+      "113004",
+      "113008",
+      "113012"
+    ],
+    "next_step": "Export these reviewed candidate text corrections through the existing runtime bridge after immutable-head validation. Full-track runtime and media authorization are outside this change."
+  },
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "residual_blocker_closure": true,
+    "not_sample_approval": true
+  }
+}

@@ -1,0 +1,261 @@
+{
+  "schema_version": "model-owned-card-review.v2",
+  "review_id": "20260930-cet6-1132-card-coaching-repair",
+  "created_at": "2026-09-30T05:11:55.838Z",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "agent:codex-card-coaching-repair",
+      "model": "gpt-6",
+      "run_id": "cce09576-7ea6-45b3-9efd-0c030fe0fd7c"
+    },
+    "evidence": {
+      "reviewed_at": "2026-09-30T05:11:55.838Z",
+      "input_sha256": "sha256:0a9da47d22ae3c50f9601b8e035da34196bc241b5c7a77b07adb95973df95ec3",
+      "capabilities": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "summary": "Reviewed twelve sentence-specific CET6 judgements across modifiers, adverbials, noun-content clauses and parenthetical comments. Each now includes a complete practice sentence and a plausible claim; seven true and five false follow the actual interpretations, with no required answer-balancing rule. Explanations preserve dependency, negation, evidence source and scope and remove absolute position-only grammar heuristics. No audio or ownership changes; synthetic provenance retained. This is candidate text review, not official exam authenticity or full-track authorization.",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
+  "scope": {
+    "track": "cet6",
+    "box_prefixes": [
+      "1132"
+    ],
+    "card_ids": [
+      "113204",
+      "113208",
+      "113212"
+    ]
+  },
+  "specs_read": [
+    "spec/review-workflow.json",
+    "spec/content-quality-contract.json",
+    "spec/workspace-contract.json",
+    "spec/git-workflow.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260930-cet6-1132-card-coaching-repair.json",
+    "report_sha256": "sha256:a54ecd9f5aa8f6469635f22113f393c7cbd98e7f7b7f7ef3dddcf335dbbdeba6",
+    "corpus_fingerprint": "2941f8ce7177ec2f5c6a5a32c567ac9950ab1da81b55410b7125508d85e6ce0e",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "113204",
+        "113208",
+        "113212"
+      ],
+      "card_count": 3,
+      "issue_count": 3,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 3
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 3,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "113204",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "2",
+        "box_name": "同位语",
+        "box_prefix": "1132"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用从句中的宾语空缺区分定语与内容从句",
+        "weak_point_tags": [
+          "reading_slow",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy material adapted as an explicitly fictional exercise; not verified historical reporting.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先看 rejected 后是否还缺宾语，再检查 that 能否回指 claim 来补上这个位置。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no source-authenticity or perceptual-audio claim is made."
+      ],
+      "recommendation": "False is supported by the explicit clause/role/scope analysis. Learner method: 先看 rejected 后是否还缺宾语，再检查 that 能否回指 claim 来补上这个位置。"
+    },
+    {
+      "card_id": "113208",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "2",
+        "box_name": "同位语",
+        "box_prefix": "1132"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "分清名词内容从句与整句主干",
+        "weak_point_tags": [
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy source attribution has not been independently authenticated; used as a practice scenario, not advertised as a true-exam question.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "分别找 officials had approved 和 revelation triggered，再检查 that 是否承担了从句中缺少的成分。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no source-authenticity or perceptual-audio claim is made."
+      ],
+      "recommendation": "True is supported by the explicit clause/role/scope analysis. Learner method: 分别找 officials had approved 和 revelation triggered，再检查 that 是否承担了从句中缺少的成分。"
+    },
+    {
+      "card_id": "113212",
+      "interaction_id": "swipe",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "3",
+        "group_name": "长难句关键修饰",
+        "box_id": "2",
+        "box_name": "同位语",
+        "box_prefix": "1132"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "按支配关系区分动词宾语与假说内容",
+        "weak_point_tags": [
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy source attribution has not been independently authenticated; used as a practice scenario, not advertised as a true-exam question.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先把 lent support to 连成一组，再问 that 从句是在展开 support 还是 hypothesis 的内容。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no source-authenticity or perceptual-audio claim is made."
+      ],
+      "recommendation": "False is supported by the explicit clause/role/scope analysis. Learner method: 先把 lent support to 连成一组，再问 that 从句是在展开 support 还是 hypothesis 的内容。"
+    }
+  ],
+  "removed_cards": [],
+  "batch_review": {
+    "status": "model_accepted",
+    "box_progression": "Four existing boxes now apply their concepts to complete sentences: modifier attachment and finite predicates; background, contrast and causal negation; content clauses versus relative clauses and complements; removable comments with retained source and scope.",
+    "repetition_or_gap_risks": [
+      "Boolean answer diversity alone is not evidence of educational effectiveness; each answer is justified from its own supplied sentence."
+    ],
+    "representative_cards": [
+      "113204",
+      "113208",
+      "113212"
+    ],
+    "next_step": "Export these reviewed candidate text corrections through the existing runtime bridge after immutable-head validation. Full-track runtime and media authorization are outside this change."
+  },
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "residual_blocker_closure": true,
+    "not_sample_approval": true
+  }
+}

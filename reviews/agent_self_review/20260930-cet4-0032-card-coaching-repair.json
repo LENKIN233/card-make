@@ -1,0 +1,209 @@
+{
+  "schema_version": "model-owned-card-review.v2",
+  "review_id": "20260930-cet4-0032-card-coaching-repair",
+  "created_at": "2026-09-30T05:11:55.838Z",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "agent:codex-card-coaching-repair",
+      "model": "gpt-6",
+      "run_id": "f1ce8ee9-d8c3-4208-b6f8-3173fb31436f"
+    },
+    "evidence": {
+      "reviewed_at": "2026-09-30T05:11:55.838Z",
+      "input_sha256": "sha256:1bb9a6d826c849605c4729b3003f4615e56d50b124d15ce5e6b43310e2259ce8",
+      "capabilities": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "summary": "Read the 128 changed CET4 cards against their fronts, answers, explanations and available transcripts. Replaced 125 empty hint arrays with individually authored actions tied to each card. Corrected voice-paraphrase reasoning, because punctuation and prove predicate/object explanation; aligned the existing street-description instruction with its legitimate modifier reference. Hints direct attention or a procedure without requiring an answer reveal. Audio objects, transcripts, source identity, interactions and ownership remain identical. The 113 short-analysis audit signals remain disclosed; this accepts the focused candidate improvement, not a full-track release or measured learning outcome.",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
+  "scope": {
+    "track": "cet4",
+    "box_prefixes": [
+      "0032"
+    ],
+    "card_ids": [
+      "003204",
+      "003206"
+    ]
+  },
+  "specs_read": [
+    "spec/review-workflow.json",
+    "spec/content-quality-contract.json",
+    "spec/workspace-contract.json",
+    "spec/git-workflow.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260930-cet4-0032-card-coaching-repair.json",
+    "report_sha256": "sha256:707c8bc36a2bdef4a903ae9a5d982d0cbbd5690203db02ec435ccca0c23e54a2",
+    "corpus_fingerprint": "2941f8ce7177ec2f5c6a5a32c567ac9950ab1da81b55410b7125508d85e6ce0e",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "003204",
+        "003206"
+      ],
+      "card_count": 2,
+      "issue_count": 4,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 2,
+        "review_gap": 0,
+        "source_risk": 2
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 2,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 2,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "003204",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "根据录音材料准确理解时间",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "foundation"
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no source-authenticity or perceptual-audio claim is made."
+      ],
+      "recommendation": "The method uses the current material and a concrete action: 把开馆与讲解参观分开，听 shortly after 修饰的是哪一个时间。"
+    },
+    {
+      "card_id": "003206",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "0",
+        "library_name": "听力",
+        "group_id": "3",
+        "group_name": "细节捕捉",
+        "box_id": "2",
+        "box_name": "时间",
+        "box_prefix": "0032"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在“时间”任务中识别并解释关键知识或解题线索",
+        "weak_point_tags": [
+          "listening_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Text-source provenance remains in source_ref. Audio was generated locally with Apache-2.0 Kokoro weights; exact media acceptance is recorded separately under reviews/audio_qc.",
+          "audio_generation_method": "TTS_AI_generated",
+          "audio_generation_record": "ai_tts/generation/kokoro-20260920.json"
+        },
+        "exam_value": "帮助用户在CET4听力任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no source-authenticity or perceptual-audio claim is made."
+      ],
+      "recommendation": "The method uses the current material and a concrete action: 画两条时间线：arrives 对应到站，before 对应必须完成的登车动作。"
+    }
+  ],
+  "removed_cards": [],
+  "batch_review": {
+    "status": "model_accepted",
+    "box_progression": "Existing card order, stable identity and library progression are preserved. Listening prompts isolate logical signals and factual qualifiers; reading prompts inspect exact clause or lexical evidence; translation prompts construct and inspect the supplied sentence; grammar prompts check roles and time reference.",
+    "repetition_or_gap_risks": [
+      "113 scoped length-heuristic signals remain; concise existing explanations were not expanded merely to satisfy a character threshold.",
+      "This correction targets the 125 known author-facing fallback hints and three grammar issues, not a claim of complete corpus correctness."
+    ],
+    "representative_cards": [
+      "003204",
+      "003206"
+    ],
+    "next_step": "Export these reviewed candidate text corrections through the existing runtime bridge after immutable-head validation. Full-track runtime and media authorization are outside this change."
+  },
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "residual_blocker_closure": true,
+    "not_sample_approval": true
+  }
+}
