@@ -1,0 +1,155 @@
+{
+  "schema_version": "model-owned-card-review.v2",
+  "review_id": "20260930-cet4-0400-learning-quality-closure",
+  "created_at": "2026-09-30T08:26:39.531Z",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "agent:fix_quality_content2",
+      "model": "gpt-6",
+      "run_id": "01a0f165-6ade-7bd3-ac27-1ab03868f595"
+    },
+    "evidence": {
+      "reviewed_at": "2026-09-30T08:26:39.531Z",
+      "input_sha256": "sha256:b59cae8b83fb704c554011856313251fd10189eea80b2c58e9e3d3f55267e4ac",
+      "capabilities": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "summary": "Read the complete prompt, reference and explanation. Limited the two translation locks to an explicit paired-conjunction order exercise and removed alternate structures; clarified object complements with identity and action examples; explained the listening opening from its unchanged transcript. Audio objects and transcripts remain unchanged and were not perceptually reviewed.",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
+  "scope": {
+    "track": "cet4",
+    "box_prefixes": [
+      "0400"
+    ],
+    "card_ids": [
+      "040011"
+    ]
+  },
+  "specs_read": [
+    "spec/review-workflow.json",
+    "spec/content-quality-contract.json",
+    "spec/workspace-contract.json",
+    "spec/git-workflow.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260930-cet4-0400-learning-quality-closure.json",
+    "report_sha256": "sha256:fd85f43f7f22e805c6823bcdaa874d54c96d76541fc42a30403189785a5fc192",
+    "corpus_fingerprint": "d8bbb60072886613a2bba0b4fbac1ae7b8835b8620c6542ba986255a8fffe52b",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "040011"
+      ],
+      "card_count": 1,
+      "issue_count": 1,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 1
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 1,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "040011",
+      "interaction_id": "lock",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "4",
+        "library_name": "翻译",
+        "group_id": "0",
+        "group_name": "高级句子",
+        "box_id": "0",
+        "box_name": "并列句",
+        "box_prefix": "0400"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "在给定句子中正确排列递进并列连词并保持动作形式平行",
+        "weak_point_tags": [
+          "translation_output_weak",
+          "vocabulary_weak"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "output_imitation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "掌握指定结构的顺序，同时区分结构练习和自由翻译的可接受范围。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Checked every selectable token and reconstructed the accepted sentence; method: 先看题目指定的递进关系，再检查两个连接部分的先后顺序与后接动词形式。"
+    }
+  ],
+  "removed_cards": [],
+  "batch_review": {
+    "status": "model_accepted",
+    "box_progression": "Stable ownership and interactions remain. Each corrected task has one explicit target and front/back agreement.",
+    "repetition_or_gap_risks": [
+      "This is exact-scope closure of 154 observed content-design issues, not complete corpus semantic acceptance."
+    ],
+    "representative_cards": [
+      "040011"
+    ],
+    "next_step": "Export candidate runtime content using the current product bridge after immutable-head validation; full-track release and audio authorization are outside this change."
+  },
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "residual_blocker_closure": true,
+    "not_sample_approval": true
+  },
+  "reference_sources": [
+    {
+      "url": "https://learnenglish.britishcouncil.org/free-resources/grammar/c1/participle-clauses",
+      "use": "Confirmed while plus an -ing clause can be legitimate; the task now explicitly limits the pedagogical target rather than declaring the old competing structure ungrammatical."
+    }
+  ]
+}

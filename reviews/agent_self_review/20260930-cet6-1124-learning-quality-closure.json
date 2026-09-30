@@ -1,0 +1,152 @@
+{
+  "schema_version": "model-owned-card-review.v2",
+  "review_id": "20260930-cet6-1124-learning-quality-closure",
+  "created_at": "2026-09-30T08:26:39.531Z",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "agent:fix_quality_content2",
+      "model": "gpt-6",
+      "run_id": "01a0f165-6ade-7bd3-ac27-1ab03868f595"
+    },
+    "evidence": {
+      "reviewed_at": "2026-09-30T08:26:39.531Z",
+      "input_sha256": "sha256:bdcb6a6d24b5e5a7911dcb59f60b31686460b791cd00e8d51ad7b9944cd855bd",
+      "capabilities": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "summary": "Read the complete prompt, reference and explanation. Limited the two translation locks to an explicit paired-conjunction order exercise and removed alternate structures; clarified object complements with identity and action examples; explained the listening opening from its unchanged transcript. Audio objects and transcripts remain unchanged and were not perceptually reviewed.",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
+  "scope": {
+    "track": "cet6",
+    "box_prefixes": [
+      "1124"
+    ],
+    "card_ids": [
+      "112401"
+    ]
+  },
+  "specs_read": [
+    "spec/review-workflow.json",
+    "spec/content-quality-contract.json",
+    "spec/workspace-contract.json",
+    "spec/git-workflow.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260930-cet6-1124-learning-quality-closure.json",
+    "report_sha256": "sha256:f1d868744afc4826bebd95ba60567909258ed959bdbb39487d362911e00a8857",
+    "corpus_fingerprint": "d8bbb60072886613a2bba0b4fbac1ae7b8835b8620c6542ba986255a8fffe52b",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "112401"
+      ],
+      "card_count": 1,
+      "issue_count": 1,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 1
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 1,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "112401",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet6",
+        "library_id": "1",
+        "library_name": "仔细阅读",
+        "group_id": "2",
+        "group_name": "长难句主干",
+        "box_id": "4",
+        "box_name": "主谓宾补",
+        "box_prefix": "1124"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用身份与动作两个例句识别宾语补足语",
+        "weak_point_tags": [
+          "grammar_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "foundation",
+          "secondary": [
+            "pass"
+          ]
+        },
+        "card_prototype": "knowledge_explanation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Constructed CET6 reading simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "从补语与宾语的语义关系识别结构，不用排除动作的绝对规则。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Read the task and reference together, then checked evidence scope; method: 先问“谁是 captain、谁在 cross the field”，再看两个成分与 Maya 的关系。"
+    }
+  ],
+  "removed_cards": [],
+  "batch_review": {
+    "status": "model_accepted",
+    "box_progression": "Stable ownership and interactions remain. Each corrected task has one explicit target and front/back agreement.",
+    "repetition_or_gap_risks": [
+      "This is exact-scope closure of 154 observed content-design issues, not complete corpus semantic acceptance."
+    ],
+    "representative_cards": [
+      "112401"
+    ],
+    "next_step": "Export candidate runtime content using the current product bridge after immutable-head validation; full-track release and audio authorization are outside this change."
+  },
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "residual_blocker_closure": true,
+    "not_sample_approval": true
+  }
+}

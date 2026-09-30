@@ -1,0 +1,646 @@
+{
+  "schema_version": "model-owned-card-review.v2",
+  "review_id": "20260930-cet4-0203-learning-quality-closure",
+  "created_at": "2026-09-30T08:26:39.531Z",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "agent:fix_quality_content2",
+      "model": "gpt-6",
+      "run_id": "01a0f165-6ade-7bd3-ac27-1ab03868f595"
+    },
+    "evidence": {
+      "reviewed_at": "2026-09-30T08:26:39.531Z",
+      "input_sha256": "sha256:8ce71d6787dbd31487743052f5ea446177a2ad5a17946b6cdf55d2ddf813c809",
+      "capabilities": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "summary": "Read each sentence and all options before replacing the shared generic tip with a specific observation: head noun, modification target, actor/patient, tense, semantic relation or fixed phrase. Each hint points to visible context rather than quoting the answer option. Existing answers and explanation text remain unchanged; this is not a full-corpus accuracy claim.",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
+  "scope": {
+    "track": "cet4",
+    "box_prefixes": [
+      "0203"
+    ],
+    "card_ids": [
+      "020301",
+      "020302",
+      "020303",
+      "020304",
+      "020305",
+      "020306",
+      "020307",
+      "020308",
+      "020309",
+      "020310"
+    ]
+  },
+  "specs_read": [
+    "spec/review-workflow.json",
+    "spec/content-quality-contract.json",
+    "spec/workspace-contract.json",
+    "spec/git-workflow.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260930-cet4-0203-learning-quality-closure.json",
+    "report_sha256": "sha256:b53dcf831e6d7ad25d6601704f6a0547da1eb4f819c7a66fd113020512249217",
+    "corpus_fingerprint": "d8bbb60072886613a2bba0b4fbac1ae7b8835b8620c6542ba986255a8fffe52b",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "020301",
+        "020302",
+        "020303",
+        "020304",
+        "020305",
+        "020306",
+        "020307",
+        "020308",
+        "020309",
+        "020310"
+      ],
+      "card_count": 10,
+      "issue_count": 20,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 10,
+        "review_gap": 0,
+        "source_risk": 10
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 10,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 10,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "020301",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合句法、词形和语境完成副词练习",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先判断空格的句法位置，再核对完整句子的意思。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Checked sentence structure and candidate forms; help now directs this observation: 要修饰的是 explained 这个动作；so that 从句说明解释达到的效果。"
+    },
+    {
+      "card_id": "020302",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合句法、词形和语境完成副词练习",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先判断空格的句法位置，再核对完整句子的意思。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Checked sentence structure and candidate forms; help now directs this observation: 空格描述怎么 walk；people are reading 提示行走时应控制什么。"
+    },
+    {
+      "card_id": "020303",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合句法、词形和语境完成副词练习",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先判断空格的句法位置，再核对完整句子的意思。",
+        "box_progression_role": "recognition",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Checked sentence structure and candidate forms; help now directs this observation: similar 已说明地图相似，空格只调整相似的程度；不要再填一个表示“相似”的中心词。"
+    },
+    {
+      "card_id": "020304",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合句法、词形和语境完成副词练习",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先判断空格的句法位置，再核对完整句子的意思。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Checked sentence structure and candidate forms; help now directs this observation: 楼梯是电梯故障后的替代选择；注意空格已经在句末，后面没有可接的名词。"
+    },
+    {
+      "card_id": "020305",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合句法、词形和语境完成副词练习",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先判断空格的句法位置，再核对完整句子的意思。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Checked sentence structure and candidate forms; help now directs this observation: 先圈出 checked；空格说明核对的方式，every name against the list 提供了场景。"
+    },
+    {
+      "card_id": "020306",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合句法、词形和语境完成副词练习",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先判断空格的句法位置，再核对完整句子的意思。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Checked sentence structure and candidate forms; help now directs this observation: missed the beginning 表明到达时间造成延误；留意相似词形中“迟”和“最近”的区别。"
+    },
+    {
+      "card_id": "020307",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合句法、词形和语境完成副词练习",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先判断空格的句法位置，再核对完整句子的意思。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Checked sentence structure and candidate forms; help now directs this observation: 空格修饰 was written 的方式或质量；in both English and Chinese 只是说明语言。"
+    },
+    {
+      "card_id": "020308",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合句法、词形和语境完成副词练习",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先判断空格的句法位置，再核对完整句子的意思。",
+        "box_progression_role": "application",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Checked sentence structure and candidate forms; help now directs this observation: only one seat was free 说明还没完全坐满；选择能限制 full 程度的词。"
+    },
+    {
+      "card_id": "020309",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合句法、词形和语境完成副词练习",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先判断空格的句法位置，再核对完整句子的意思。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Checked sentence structure and candidate forms; help now directs this observation: but 后仍要核对日期，说明 finished 的程度有限；不要把“附近”当成完成程度。"
+    },
+    {
+      "card_id": "020310",
+      "interaction_id": "multiple_choice",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "2",
+        "library_name": "选词填空",
+        "group_id": "0",
+        "group_name": "词性判断",
+        "box_id": "3",
+        "box_name": "副词",
+        "box_prefix": "0203"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "结合句法、词形和语境完成副词练习",
+        "weak_point_tags": [
+          "vocabulary_weak",
+          "reading_slow"
+        ],
+        "difficulty": {
+          "primary": "high_score"
+        },
+        "card_prototype": "solving_action",
+        "material": {
+          "text_source_type": "simulation",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "先判断空格的句法位置，再核对完整句子的意思。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Checked sentence structure and candidate forms; help now directs this observation: between 两地说明路线的连接方式；空格修饰 runs，而不是命名一个方向。"
+    }
+  ],
+  "removed_cards": [],
+  "batch_review": {
+    "status": "model_accepted",
+    "box_progression": "Existing order and task answers remain; each item now points to its own sentence evidence so repeated rule families are applied to concrete context.",
+    "repetition_or_gap_risks": [
+      "This is exact-scope closure of 154 observed content-design issues, not complete corpus semantic acceptance.",
+      "10 concise explanations trigger the length heuristic; no padding was added."
+    ],
+    "representative_cards": [
+      "020301",
+      "020302",
+      "020303"
+    ],
+    "next_step": "Export candidate runtime content using the current product bridge after immutable-head validation; full-track release and audio authorization are outside this change."
+  },
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "residual_blocker_closure": true,
+    "not_sample_approval": true
+  }
+}

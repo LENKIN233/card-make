@@ -1,0 +1,206 @@
+{
+  "schema_version": "model-owned-card-review.v2",
+  "review_id": "20260930-cet4-0310-learning-quality-closure",
+  "created_at": "2026-09-30T08:26:39.531Z",
+  "model_acceptance": {
+    "schema_version": "model-acceptance.v2",
+    "actor": {
+      "kind": "model_harness",
+      "agent": "agent:fix_quality_content2",
+      "model": "gpt-6",
+      "run_id": "01a0f165-6ade-7bd3-ac27-1ab03868f595"
+    },
+    "evidence": {
+      "reviewed_at": "2026-09-30T08:26:39.531Z",
+      "input_sha256": "sha256:717a7ecf245d1b16e571091de154874c42cf6f895ac6a0f5a4e2cb7fbba91a41",
+      "capabilities": [
+        "card_semantic_review",
+        "source_provenance_review"
+      ],
+      "summary": "Replaced abstract or duplicated writing tasks with complete local scenarios, passages or explicitly simulated numerical data. Each reference answers the stated task; explanations identify the specific change and its reason. Open writing answers are examples, not a single scored string. Checked data arithmetic, percentage points, scope and causal claims. Cleared obsolete hint-layer content and aligned teaching metadata. The separate 030007 correction removes editorial history and explains the actual informing them of construction.",
+      "findings": []
+    },
+    "decision": "accepted"
+  },
+  "scope": {
+    "track": "cet4",
+    "box_prefixes": [
+      "0310"
+    ],
+    "card_ids": [
+      "031011",
+      "031012"
+    ]
+  },
+  "specs_read": [
+    "spec/review-workflow.json",
+    "spec/content-quality-contract.json",
+    "spec/workspace-contract.json",
+    "spec/git-workflow.json",
+    "../softbook_cet/spec/card-system.json",
+    "../softbook_cet/spec/interactions.json"
+  ],
+  "quality_audit": {
+    "report": "reviews/audit_scopes/20260930-cet4-0310-learning-quality-closure.json",
+    "report_sha256": "sha256:9db51a9a326a40dcdc9f3306ba6ffe214b093fe08d22e44f8a7b33aca44644f6",
+    "corpus_fingerprint": "d8bbb60072886613a2bba0b4fbac1ae7b8835b8620c6542ba986255a8fffe52b",
+    "scope_has_no_hard_blockers": true,
+    "scope_summary": {
+      "card_ids": [
+        "031011",
+        "031012"
+      ],
+      "card_count": 2,
+      "issue_count": 2,
+      "by_severity": {
+        "hard_blocker": 0,
+        "content_risk": 0,
+        "review_gap": 0,
+        "source_risk": 2
+      },
+      "by_rule": {
+        "analysis_missing_or_too_short": 0,
+        "exact_repeated_analysis": 0,
+        "exact_repeated_front": 0,
+        "front_leaks_analysis_conclusion": 0,
+        "front_leaks_correct_answer": 0,
+        "front_missing_or_too_short": 0,
+        "generic_front_pattern": 0,
+        "missing_quality_metadata": 0,
+        "multiple_choice_answer_not_in_options": 0,
+        "multiple_choice_no_options": 0,
+        "synthetic_source": 2,
+        "template_analysis_pattern": 0,
+        "unverified_source": 0
+      }
+    }
+  },
+  "cards": [
+    {
+      "card_id": "031011",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "0",
+        "box_name": "引入观点",
+        "box_prefix": "0310"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "用让步结构引入有重点的观点",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "output_imitation",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "用让步结构引入有重点的观点，用题目中的实际材料检查表达是否准确。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Read the task and reference together, then checked evidence scope; method: 把准备时间与表达训练分成两部分，再判断哪部分是你最终要强调的观点。"
+    },
+    {
+      "card_id": "031012",
+      "interaction_id": "flip",
+      "knowledge_ref": {
+        "track": "cet4",
+        "library_id": "3",
+        "library_name": "写作",
+        "group_id": "1",
+        "group_name": "模版句式",
+        "box_id": "0",
+        "box_name": "引入观点",
+        "box_prefix": "0310"
+      },
+      "status": "pass",
+      "quality_metadata": {
+        "main_training_goal": "把摇摆的评价改成边界清楚的条件观点",
+        "weak_point_tags": [
+          "writing_output_weak",
+          "exam_strategy_weak"
+        ],
+        "difficulty": {
+          "primary": "pass"
+        },
+        "card_prototype": "error_correction",
+        "material": {
+          "text_source_type": "simulation",
+          "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
+          "audio_generation_method": "none"
+        },
+        "exam_value": "把摇摆的评价改成边界清楚的条件观点，用题目中的实际材料检查表达是否准确。",
+        "box_progression_role": "transfer",
+        "review_status": "agent_pass"
+      },
+      "blocker_scan": {
+        "logic_error": false,
+        "language_error": false,
+        "inappropriate_wording": false,
+        "low_knowledge_density": false,
+        "not_meeting_requirement": false,
+        "reverse_engineered_front": false,
+        "fake_source_claim": false,
+        "low_quality_variation": false
+      },
+      "analysis_reference_check": {
+        "answer_matches_card": true,
+        "choice_or_bank_references_match_source": true,
+        "distractor_labels_match_explanations": true
+      },
+      "major_issues": [],
+      "minor_issues": [
+        "Synthetic practice remains explicit; no official-exam, learning-outcome or perceptual-audio claim is made."
+      ],
+      "recommendation": "Read the task and reference together, then checked evidence scope; method: 先区分学习活动与无关应用，再把允许的用途和限制写进同一句话。"
+    }
+  ],
+  "removed_cards": [],
+  "batch_review": {
+    "status": "model_accepted",
+    "box_progression": "Stable box ownership and sequence remain. Later writing items now apply each box skill to a concrete output or a targeted revision, covering requests, viewpoints, procedures, charts, argument, conclusions, letters, quantities and trends.",
+    "repetition_or_gap_risks": [
+      "This is exact-scope closure of 154 observed content-design issues, not complete corpus semantic acceptance."
+    ],
+    "representative_cards": [
+      "031011",
+      "031012"
+    ],
+    "next_step": "Export candidate runtime content using the current product bridge after immutable-head validation; full-track release and audio authorization are outside this change."
+  },
+  "sample_policy": {
+    "review_scope_type": "residual_blocker_closure",
+    "residual_blocker_closure": true,
+    "not_sample_approval": true
+  }
+}
