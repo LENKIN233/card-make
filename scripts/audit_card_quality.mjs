@@ -212,8 +212,18 @@ function textOf(...values) {
   return normalizeText(uniqueValues);
 }
 
+function frontTextOf(...values) {
+  const seen = new Set();
+  return values.flatMap(value => {
+    const normalized = normalizeText(value);
+    if (!normalized || seen.has(normalized)) return [];
+    seen.add(normalized);
+    return [typeof value === 'string' ? value.trim() : normalized];
+  }).join('\n\n');
+}
+
 function extractFrontText(card) {
-  return textOf(
+  return frontTextOf(
     card.front?.text,
     card.front?.prompt,
     card.front?.task_prompt,
@@ -236,7 +246,9 @@ function extractFrontText(card) {
 }
 
 function extractFrontGuideText(card) {
-  return textOf(
+  return frontTextOf(
+    card.front?.text,
+    card.front_content?.text,
     card.front?.prompt,
     card.front?.task_prompt,
     card.front?.instruction,
@@ -489,48 +501,146 @@ function stripVisibleChoiceLists(frontText, optionRecords = []) {
 }
 
 function stripLabeledMaterialSegments(frontText) {
-  let text = normalizeText(frontText);
+  const paragraphBoundary = '\uE000';
+  let text = normalizeText(typeof frontText === 'string'
+    ? frontText.replace(/\n\s*\n/g, ` ${paragraphBoundary} `)
+    : frontText);
+  const materialTexts = [];
   const promptBoundaries = [
     '改写',
     '题干',
     '问题',
+    '提示',
+    '任务',
     '以下',
     '下列',
-    '哪一项',
-    '哪项',
-    '哪个',
-    '哪一个',
+    '哪(?:一(?:项|句|个)|项|句|个|组)',
     '这里',
-    '这组',
+    '这(?:句|段|组|项|对|个)',
+    '句中',
+    '对\\s',
+    '根据',
+    '若(?:把|将)',
     '为什么',
+    '为何',
     '请选择',
+    '选择',
+    '选出',
     '判断',
     '回答',
     '本题',
+    '记住',
+    '注意',
+    '要点',
   ].join('|');
   const materialLabels = [
     '阅读片段',
     '对话片段',
     '原文片段',
+    '原文句群',
     '原文',
+    '原句',
     '改写',
     '材料',
     '语境',
     '句子',
     '例句',
+    '短文',
+    '定义',
   ].join('|');
+  const labeledMaterial = `(?:模拟)?(?:${materialLabels})\\s*[:：]`;
+  const englishAnswerDirective = '(?:(?:the\\s+)?correct\\s+(?:answer|option)\\b|please\\s+(?:choose|select|fill|use)\\b|(?:hint|answer)\\s*:)';
+  const sentenceInitialGuide = '(?:(?:please\\s+)?(?:choose|select|fill|use|remember|focus|note)\\b|the\\s+(?:main|key|core)\\s+(?:benefit|point)\\b)';
+  text = text.replace(new RegExp(`(${labeledMaterial})\\s+${paragraphBoundary}\\s+`, 'giu'), '$1 ');
 
-  const materialSegmentPattern = new RegExp(
-    `(^|\\s)(?:${materialLabels})\\s*[:：]\\s*.*?(?=\\s*(?:${promptBoundaries})\\s*[:：]?)`,
-    'giu'
+  // An exam question can itself be input to a separate reading-analysis task.
+  // Only recognize the English WH stem in that role when another labeled
+  // passage and a later learning question make the boundary explicit.
+  text = text.replace(
+    new RegExp(`(^|\\s)题干\\s*[:：]\\s*((?:Why|What|Which|How|When|Where|Who)\\b[^?？]+[?？])(?=\\s+(?:${paragraphBoundary}\\s+)?${labeledMaterial})`, 'giu'),
+    (match, prefix, material) => {
+      materialTexts.push(material);
+      return ' ';
+    }
   );
-  text = text.replace(materialSegmentPattern, ' ');
 
   const quotedMaterialPattern = new RegExp(
-    `(^|\\s)(?:${materialLabels})\\s*[:：]\\s*[\"“][^\"”]+[\"”]`,
+    `(^|\\s)${labeledMaterial}\\s*[\"“]([^\"”]+)[\"”]`,
     'giu'
   );
-  text = text.replace(quotedMaterialPattern, ' ');
+  text = text.replace(quotedMaterialPattern, (match, prefix, material) => {
+    materialTexts.push(material);
+    return ' ';
+  });
+
+  const materialSegmentPattern = new RegExp(
+    `(^|\\s)${labeledMaterial}\\s*(.*?)(?=\\s+(?:(?:${promptBoundaries})\\s*[:：]?|${labeledMaterial}|${englishAnswerDirective}|${paragraphBoundary})|(?<=[.!?])\\s+${sentenceInitialGuide})`,
+    'giu'
+  );
+  text = text.replace(materialSegmentPattern, (match, prefix, material, offset) => {
+    // Explicit paragraph boundaries delimit the whole authored passage. Without
+    // one, exclude only its first English sentence; a later sentence can be a
+    // guide and must remain available to answer-leak detection.
+    const endsAtParagraph = text.slice(offset + match.length)
+      .startsWith(` ${paragraphBoundary}`);
+    const firstSentence = material.match(/^([A-Za-z][\s\S]*?[.!?])(?:\s+|$)/u);
+    if (!endsAtParagraph && firstSentence && firstSentence[1].length < material.length) {
+      materialTexts.push(firstSentence[1]);
+      return ` ${material.slice(firstSentence[1].length)}`;
+    }
+    materialTexts.push(material);
+    return ' ';
+  });
+  text = text.replaceAll(paragraphBoundary, ' ');
+
+  // Unlabeled English is material only when it is a complete leading sentence
+  // followed by an independent question about that sentence. English guides,
+  // answer statements, and English embedded in a question remain visible.
+  const unlabeledSentence = /^([A-Z][A-Za-z0-9\s,;'’"“”()\-–—]+[.!?])\s+(?=(?:任务\s*[:：]\s*)?(?:哪(?:项|一句)改写保留[^？?]*(?:原意|的意思)|为什么\s+[A-Za-z][^？?]*\s+在\s+[A-Za-z][^？?]*\s+前|这句特别强调了哪个成分|这对[^？?]*比较|若把省略的比较部分补完整[^？?]*)[？?])/u;
+  const sentenceMatch = text.match(unlabeledSentence);
+  if (sentenceMatch && searchTokens(sentenceMatch[1]).length >= 6 &&
+      !/^(?:(?:please\s+)?(?:choose|fill|select|use|remember|focus|note|hint|answer)|correct|the\s+(?:correct\s+)?(?:answer|option|key|main\s+point))\b/iu.test(sentenceMatch[1]) &&
+      !/\b(?:correct\s+(?:answer|option)|(?:main|key|core)\s+point|should\s+(?:choose|select|fill))\b/iu.test(sentenceMatch[1])) {
+    materialTexts.push(sentenceMatch[1]);
+    text = text.slice(sentenceMatch[1].length);
+  }
+
+  if (materialTexts.length) {
+    const source = normalizeForSearch(materialTexts);
+    const isSourceReference = phrase => phrase.split(/(?:\.{2,}|…+)/u)
+      .map(normalizeForSearch).filter(Boolean)
+      .every(part => containsSearchPhrase(source, part));
+    text = text.replace(
+      /([A-Za-z][A-Za-z0-9 -]+?)\s*(?:指什么|是什么意思|的含义是什么)[？?]/giu,
+      (match, phrase) => isSourceReference(phrase) ? ' ' : match
+    );
+    // A specified word in a meaning-preserving rewrite is a task constraint.
+    // Keep every later occurrence, including a hint naming that same word.
+    text = text.replace(
+      /((?:选出|选择|请选择)\s*用\s+)[A-Za-z][A-Za-z0-9 -]{1,40}(?=\s*(?:改写后仍保留原意|表达同一意思|概括原句主要意思))/giu,
+      '$1'
+    );
+
+    // Referencing two literal source phrases to ask their grammatical roles
+    // does not assert either role. Assertions and later hints are not stripped.
+    text = text.replace(
+      /句中\s+([A-Za-z][A-Za-z0-9 -]+?)\s+和\s+([A-Za-z][A-Za-z0-9 -]+?)\s+两个修饰短语分别说明什么[？?]/giu,
+      (match, firstPhrase, secondPhrase) => {
+        return [firstPhrase, secondPhrase].every(isSourceReference) ? ' ' : match;
+      }
+    );
+    for (const pattern of [
+      /对\s+([A-Za-z][A-Za-z0-9 .…-]+?)\s*的结构分析(?=[，,]\s*下列哪项正确[？?])/giu,
+      /哪(?:项|一项|句|一句)改写保留\s+([A-Za-z][A-Za-z0-9 -]+?)\s*的意思[？?]/giu,
+    ]) {
+      text = text.replace(pattern, (match, phrase) => isSourceReference(phrase) ? ' ' : match);
+    }
+    text = text.replace(
+      /为什么\s+([A-Za-z][A-Za-z0-9 -]+?)\s+在\s+([A-Za-z][A-Za-z0-9 -]+?)\s+前[？?]/giu,
+      (match, firstPhrase, secondPhrase) =>
+        [firstPhrase, secondPhrase].every(isSourceReference) ? ' ' : match
+    );
+  }
 
   text = text.replace(
     /(^|\s)["“][^"”]*_{2,}[^"”]*["”]/giu,
@@ -572,7 +682,7 @@ function stripOptionSetHints(frontText, optionRecords = []) {
 
 function stripNonPromptAnswerLeakText(frontText, optionRecords = []) {
   return stripOptionSetHints(
-    stripLabeledMaterialSegments(stripVisibleChoiceLists(frontText, optionRecords)),
+    stripVisibleChoiceLists(stripLabeledMaterialSegments(frontText), optionRecords),
     optionRecords
   );
 }
@@ -684,7 +794,7 @@ function findFrontAnswerLeakFragments(frontText, optionRecords, answer) {
 }
 
 function findFrontGuideAnswerLeakFragments(frontGuideText, optionRecords, answer) {
-  const promptText = normalizeText(frontGuideText);
+  const promptText = stripNonPromptAnswerLeakText(frontGuideText, optionRecords);
   const normalizedFront = normalizeForSearch(promptText);
   if (!normalizedFront) return [];
 
@@ -800,7 +910,88 @@ function assertSelfTest(condition, message) {
   if (!condition) throw new Error(message);
 }
 
+function runMaterialPromptRegressionTests() {
+  const { cases, adversarial_cases: adversarialCases, typed_front_cases: typedFrontCases } = readJson(path.join(ROOT, 'scripts', 'fixtures', 'material_prompt_leak_cases.json'));
+  const failures = [];
+  for (const fixture of cases) {
+    for (const [name, findLeaks] of [
+      ['front', findFrontAnswerLeakFragments],
+      ['guide', findFrontGuideAnswerLeakFragments],
+    ]) {
+      const fragments = findLeaks(fixture.front_text, fixture.option_records, fixture.answer);
+      if (fragments.length) failures.push(`${fixture.source_card_id} ${name}: ${fragments.join(', ')}`);
+    }
+    const hintedFront = `${fixture.front_text}\n提示：重点是 ${fixture.same_word_hint}。`;
+    const hintFragments = findFrontGuideAnswerLeakFragments(hintedFront, fixture.option_records, fixture.answer);
+    if (!hintFragments.includes(fixture.same_word_hint)) {
+      failures.push(`${fixture.source_card_id} guide missed same-word hint: ${fixture.same_word_hint}`);
+    }
+  }
+  assertSelfTest(failures.length === 0, `Material/prompt regression failures (${failures.length}):\n${failures.join('\n')}`);
+  for (const fixture of adversarialCases) {
+    const detected = [findFrontAnswerLeakFragments, findFrontGuideAnswerLeakFragments]
+      .some(findLeaks => findLeaks(fixture.front_text, fixture.options, fixture.answer).length > 0);
+    assertSelfTest(detected === fixture.expected_leak, `Adversarial material boundary case: ${fixture.id}`);
+  }
+  const leaksForCard = card => {
+    const options = extractOptionRecords(card);
+    const answer = extractAnswerRecord(card, options);
+    const front = extractFrontText(card);
+    return [
+      ...findFrontAnswerLeakFragments(front, options, answer),
+      ...findFrontGuideAnswerLeakFragments(extractFrontGuideText(card), options, answer),
+      ...findFrontAnswerHindsightFragments(front, options),
+      ...findFrontAnalysisConclusionLeakFragments(front),
+    ];
+  };
+  for (const fixture of typedFrontCases) {
+    assertSelfTest(leaksForCard(fixture.card).length === 0, `Typed material/question: ${fixture.source_card_id}`);
+    for (const variant of fixture.variant_expectations) {
+      const card = structuredClone(fixture.card);
+      if (variant.field === 'task_schema.focus') {
+        card.front.task_schema = {focus: variant.suffix};
+      } else {
+        card.front[variant.field] = `${card.front[variant.field] ?? ''}${variant.suffix}`;
+      }
+      assertSelfTest(leaksForCard(card).length > 0, `Typed material must preserve guide: ${fixture.source_card_id}/${variant.id}`);
+    }
+  }
+
+  const englishHintOptions = [
+    { key: 'A', text: 'architecture' },
+    { key: 'B', text: 'probability' },
+    { key: 'C', text: 'narrative' },
+    { key: 'D', text: 'adaptable' },
+  ];
+  for (const englishHint of [
+    'Use probability because it is the correct answer.',
+    'The correct answer is probability for this blank.',
+    'The core point is probability rather than architecture.',
+    'Please select probability to complete this sentence.',
+    'Please fill the gap with the word probability.',
+    '原句：The estimate describes how likely the outcome is. The correct answer is probability.',
+  ]) {
+    const frontText = `${englishHint} 哪项最适合填入空格？`;
+    assertSelfTest(
+      findFrontAnswerLeakFragments(frontText, englishHintOptions, { text: 'B' }).includes('probability') &&
+      findFrontGuideAnswerLeakFragments(frontText, englishHintOptions, { text: 'B' }).includes('probability'),
+      `English answer instructions must not be classified as unlabeled source sentences: ${englishHint}`
+    );
+  }
+  const roleFixture = cases.find(fixture => fixture.source_card_id === '113007');
+  const assertedRoleFront = roleFixture.front_text.replace(
+    /句中[^？]+？/u,
+    '提示：inherent in financial systems 修饰 vulnerabilities，built on short-term credit creation 修饰 systems。'
+  );
+  assertSelfTest(
+    findFrontGuideAnswerLeakFragments(assertedRoleFront, roleFixture.option_records, roleFixture.answer).includes('inherent'),
+    'Asserting the grammatical roles of literal source phrases must remain a leak.'
+  );
+  return cases.length;
+}
+
 function runSelfTest() {
+  const materialPromptCases = runMaterialPromptRegressionTests();
   const visibleOptionList = {
     frontText: '句子填空：The committee has yet to decide _____ the project should be scaled down or completely restructured. 选择正确的连接词： A. that B. what C. whether D. which',
     optionRecords: [
@@ -1500,6 +1691,8 @@ function runSelfTest() {
 
   return {
     ok: true,
+    material_prompt_cases: materialPromptCases,
+    same_word_hint_counterexamples: materialPromptCases,
     cases: [
       'visible_option_list_only_is_not_leak',
       'prompt_answer_text_is_leak',
@@ -1535,6 +1728,10 @@ function runSelfTest() {
       'structural_causal_guide_without_answer_content_is_not_leak',
       'result_side_hindsight_guide_leak_is_audited',
       'long_option_shared_topic_context_is_not_leak',
+      'reviewed_material_prompt_boundaries_are_not_leaks',
+      'same_source_words_in_later_hints_still_leak',
+      'english_answer_instructions_still_leak',
+      'asserted_source_phrase_roles_still_leak',
     ],
   };
 }
