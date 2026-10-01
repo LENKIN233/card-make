@@ -6,7 +6,18 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {TextDecoder} from 'node:util';
+import {isDeepStrictEqual, TextDecoder} from 'node:util';
+import {
+  computeCardCorpusFingerprint,
+  isDirectScopedAuditRecordPath,
+  isDirectSelfReviewRecordPath,
+  validateModelOwnedFullTrackReviewShape,
+} from './lib/card_integrity.mjs';
+import {
+  buildModelAcceptanceInputSha256,
+  isLegacyV1HumanAuthorityRecord,
+  validateIndependentModelAcceptances,
+} from './lib/model_acceptance.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const HANDOFF_DIRECTORY = 'reviews/git_handoffs/';
@@ -536,6 +547,171 @@ function hasUniqueNonEmptyStrings(values) {
     && new Set(values).size === values.length;
 }
 
+function sameStringSet(left, right) {
+  return hasUniqueNonEmptyStrings(left)
+    && hasUniqueNonEmptyStrings(right)
+    && left.length === right.length
+    && left.every(value => right.includes(value));
+}
+
+function isFullTrackReviewCandidate(record) {
+  return record?.schema_version?.startsWith?.('model-owned-full-track-review.')
+    || record?.sample_policy?.review_scope_type === 'full_track_remediation'
+    || Object.hasOwn(record || {}, 'model_acceptances')
+    || ['reviewed_card_ids', 'expected_card_count', 'boxes'].some(field =>
+      Object.hasOwn(record?.coverage || {}, field))
+    || (record?.schema_version === 'model-owned-card-review.v2'
+      && (!Array.isArray(record.cards) || record.cards.length === 0));
+}
+
+function fullTrackCorpusAtHead(root, headOid, changedCardFiles, errors) {
+  // Use immutable Git bytes and the shared fingerprint implementation. The
+  // temporary tree contains only card JSON; no audit/semantic replay is added
+  // here. That remains the content-scope gate's responsibility.
+  const snapshotRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'delivery-track-snapshot-'));
+  try {
+    fs.mkdirSync(path.join(snapshotRoot, 'card_boxes_json'));
+    const files = decodeGitUtf8(gitBuffer(root, [
+      '--literal-pathspecs', 'ls-tree', '-r', '--name-only', '-z', headOid,
+      '--', 'card_boxes_json/',
+    ]), 'full-track card corpus paths').split('\0').filter(repositoryPath =>
+      /^card_boxes_json\/[^/]+\.json$/.test(repositoryPath));
+    const scopes = new Map();
+    const changedTracks = new Set();
+    const allCardIds = new Set();
+    for (const file of files) {
+      const document = readRegularJsonBlobAtHead(root, headOid, file, errors, 'full-track card corpus');
+      if (!document) continue;
+      if (!Array.isArray(document.cards)) {
+        errors.push(`full-track card corpus must contain a cards array: ${file}`);
+        continue;
+      }
+      const entry = treeEntryAtCommit(root, headOid, file, 'full-track card corpus blob');
+      fs.writeFileSync(
+        path.join(snapshotRoot, 'card_boxes_json', path.posix.basename(file)),
+        gitBuffer(root, ['cat-file', 'blob', entry.objectOid]),
+      );
+      for (const card of document.cards) {
+        const track = card?.track;
+        const cardId = card?.card_id;
+        const boxPrefix = card?.knowledge_ref?.box_prefix;
+        if (!['cet4', 'cet6'].includes(track) || !hasText(cardId) || !hasText(boxPrefix) || allCardIds.has(cardId)) {
+          errors.push(`full-track card corpus has invalid or duplicate scope identity: ${file}`);
+          continue;
+        }
+        allCardIds.add(cardId);
+        if (!scopes.has(track)) scopes.set(track, {cardIds: [], boxPrefixes: new Set()});
+        scopes.get(track).cardIds.push(cardId);
+        scopes.get(track).boxPrefixes.add(boxPrefix);
+        if (changedCardFiles.includes(file)) changedTracks.add(track);
+      }
+    }
+    for (const file of changedCardFiles) {
+      if (!files.includes(file)) errors.push(`full-track changed card file is absent or noncanonical at HEAD: ${file}`);
+    }
+    return {scopes, changedTracks, fingerprint: computeCardCorpusFingerprint(snapshotRoot)};
+  } finally {
+    fs.rmSync(snapshotRoot, {recursive: true, force: true});
+  }
+}
+
+function validateFullTrackEvidenceBundle(root, headOid, changedCardFiles, selfReviews, scopedAudits, errors) {
+  const entries = selfReviews.map(reviewPath => ({
+    path: reviewPath,
+    record: readRegularJsonBlobAtHead(root, headOid, reviewPath, errors, 'candidate self-review'),
+  }));
+  if (!entries.some(entry => isFullTrackReviewCandidate(entry.record))) return false;
+
+  const errorCount = errors.length;
+  const corpus = fullTrackCorpusAtHead(root, headOid, changedCardFiles, errors);
+  if (errors.length !== errorCount) return true;
+  if (
+    corpus.changedTracks.size === 0
+    || selfReviews.length !== corpus.changedTracks.size
+    || scopedAudits.length !== corpus.changedTracks.size
+  ) {
+    errors.push('full-track evidence requires exactly one review and one changed scoped audit for each changed track');
+  }
+  const reviewedTracks = new Set();
+  const linkedAuditPaths = new Set();
+  for (const {path: reviewPath, record: review} of entries) {
+    if (!isDirectSelfReviewRecordPath(reviewPath) || review?.schema_version !== 'model-owned-full-track-review.v2') {
+      errors.push(`full-track evidence requires only direct canonical model-owned-full-track-review.v2 records: ${reviewPath}`);
+      continue;
+    }
+    if (isLegacyV1HumanAuthorityRecord(review)) {
+      errors.push(`full-track current evidence cannot use legacy person-authority fields: ${reviewPath}`);
+    }
+    const track = review.scope?.track;
+    if (!corpus.changedTracks.has(track) || reviewedTracks.has(track)) {
+      errors.push(`full-track review track is unexpected or duplicated: ${String(track)}`);
+      continue;
+    }
+    reviewedTracks.add(track);
+    const expected = corpus.scopes.get(track);
+    const expectedBoxPrefixes = [...expected.boxPrefixes].sort();
+    if (!sameStringSet(review.scope?.card_ids, expected.cardIds) || !sameStringSet(review.scope?.box_prefixes, expectedBoxPrefixes)) {
+      errors.push(`full-track review scope does not match the complete current track: ${reviewPath}`);
+    }
+    const shape = validateModelOwnedFullTrackReviewShape(review, {
+      expectedCardIds: expected.cardIds,
+      expectedBoxPrefixes,
+    });
+    for (const issue of shape.issues) errors.push(`full-track review ${reviewPath}: ${issue.code}`);
+    for (const issue of validateIndependentModelAcceptances(review.model_acceptances, {
+      requiredCapabilities: ['card_semantic_review', 'source_provenance_review'],
+    })) errors.push(`full-track acceptance ${reviewPath}: ${issue.code}`);
+
+    const binding = review.quality_audit;
+    const auditPath = binding?.report;
+    if (!isDirectScopedAuditRecordPath(auditPath) || !scopedAudits.includes(auditPath) || linkedAuditPaths.has(auditPath)) {
+      errors.push(`full-track review must link its own unique changed scoped audit: ${reviewPath}`);
+      continue;
+    }
+    linkedAuditPaths.add(auditPath);
+    const audit = readRegularJsonBlobAtHead(root, headOid, auditPath, errors, 'full-track scoped audit');
+    if (!audit) continue;
+    const auditEntry = treeEntryAtCommit(root, headOid, auditPath, 'full-track scoped audit blob');
+    const auditSha256 = `sha256:${crypto.createHash('sha256').update(gitBuffer(root, ['cat-file', 'blob', auditEntry.objectOid])).digest('hex')}`;
+    if (binding.report_sha256 !== auditSha256) errors.push(`full-track scoped audit byte hash mismatch: ${auditPath}`);
+    if (
+      audit.report_type !== 'scoped_card_quality_audit'
+      || audit.ok !== true
+      || binding.scope_has_no_hard_blockers !== true
+      || !Array.isArray(audit.scope?.missing_card_ids) || audit.scope.missing_card_ids.length !== 0
+      || !sameStringSet(audit.scope?.card_ids, expected.cardIds)
+      || !sameStringSet(audit.scope_summary?.card_ids, expected.cardIds)
+      || audit.scope_summary?.card_count !== expected.cardIds.length
+      || audit.scope_summary?.by_severity?.hard_blocker !== 0
+      || !Array.isArray(audit.scoped_hard_blocker_issues) || audit.scoped_hard_blocker_issues.length !== 0
+      || !isDeepStrictEqual(binding.scope_summary, audit.scope_summary)
+    ) errors.push(`full-track scoped audit scope, status or summary mismatch: ${auditPath}`);
+    if (binding.corpus_fingerprint !== corpus.fingerprint.digest || audit.corpus_fingerprint?.digest !== corpus.fingerprint.digest) {
+      errors.push(`full-track scoped audit corpus fingerprint is stale: ${auditPath}`);
+    }
+    try {
+      const inputSha256 = buildModelAcceptanceInputSha256({
+        decisionType: 'full_track_review',
+        scope: review.scope,
+        corpusFingerprint: corpus.fingerprint.digest,
+        auditSha256,
+      });
+      if (!review.model_acceptances?.every(acceptance => acceptance.evidence?.input_sha256 === inputSha256)) {
+        errors.push(`full-track acceptance input binding mismatch: ${reviewPath}`);
+      }
+    } catch (error) {
+      errors.push(`full-track acceptance input is invalid: ${reviewPath}: ${error.message}`);
+    }
+  }
+  for (const track of corpus.changedTracks) {
+    if (!reviewedTracks.has(track)) errors.push(`full-track evidence is missing the changed track: ${track}`);
+  }
+  for (const auditPath of scopedAudits) {
+    if (!linkedAuditPaths.has(auditPath)) errors.push(`full-track scoped audit is unlinked: ${auditPath}`);
+  }
+  return true;
+}
+
 function validateMultiPrefixResidualClosureBundle(
   root,
   headOid,
@@ -610,7 +786,8 @@ function validateMultiPrefixResidualClosureBundle(
   return true;
 }
 
-function validateCandidateEvidenceBundle(root, headOid, handoff, selfReviews, scopedAudits, errors) {
+function validateCandidateEvidenceBundle(root, headOid, handoff, selfReviews, scopedAudits, errors, changedCardFiles) {
+  if (headOid && validateFullTrackEvidenceBundle(root, headOid, changedCardFiles, selfReviews, scopedAudits, errors)) return;
   if (selfReviews.length === 1 && scopedAudits.length === 1) return;
 
   if (headOid && validateMultiPrefixResidualClosureBundle(
@@ -1253,7 +1430,7 @@ export function validateDeliveryRecord({
     if (record) {
       validateHandoffSchema(record, handoffPath, errors);
       if (cardFiles.length > 0) {
-        validateCandidateEvidenceBundle(root, resolvedHeadOid, record, selfReviews, scopedAudits, errors);
+        validateCandidateEvidenceBundle(root, resolvedHeadOid, record, selfReviews, scopedAudits, errors, cardFiles);
       }
       if (cardFiles.length > 0 && !CONTENT_CHANGE_TYPES.has(record.scope?.change_type)) {
         errors.push('candidate card payload must use a content change_type and validated auto-merge authority');
