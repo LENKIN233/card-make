@@ -110,7 +110,7 @@
       "card_box_name": "句内语义线索",
       "card_group_name": "上下文猜词",
       "front_content": {
-        "text": "句子：Some business owners viewed the policy as an existential risk, a threat so severe that they compared it to the worst crisis they had ever faced. 问题：existential 在该句中最接近哪一项含义？",
+        "text": "句子：Some business owners viewed the policy as an existential risk, a threat so severe that they compared it to the worst crisis they had ever faced.\n\n任务：existential 在该句中最接近哪一项含义？",
         "highlight_ranges": [
           [
             43,
@@ -129,7 +129,7 @@
       "analysis_content": {
         "text": "后面的同位解释 a threat so severe... 直接限定 existential risk 的强度，语义是“生存层面的、关乎存亡的风险”。",
         "tips": [
-          "候选含义须能解释材料中的具体线索，不能仅凭熟悉词形确定答案。"
+          "先读 a threat so severe，再看危机比较说明的是风险的哪种程度。"
         ]
       },
       "options": [
@@ -179,8 +179,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "句子：Some business owners viewed the policy as an existential risk, a threat so severe that they compared it to the worst crisis they had ever faced. 问题：existential 在该句中最接近哪一项含义？",
-        "task_prompt": "问题：existential 在该句中最接近哪一项含义？",
+        "text": "句子：Some business owners viewed the policy as an existential risk, a threat so severe that they compared it to the worst crisis they had ever faced.\n\n任务：existential 在该句中最接近哪一项含义？",
+        "task_prompt": "existential 在该句中最接近哪一项含义？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [
@@ -198,7 +198,7 @@
       "analysis": {
         "text": "后面的同位解释 a threat so severe... 直接限定 existential risk 的强度，语义是“生存层面的、关乎存亡的风险”。",
         "tips": [
-          "候选含义须能解释材料中的具体线索，不能仅凭熟悉词形确定答案。"
+          "先读 a threat so severe，再看危机比较说明的是风险的哪种程度。"
         ]
       },
       "auto_scoring": true,
@@ -232,7 +232,7 @@
           "source_note": "CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "候选含义须能解释材料中的具体线索，不能仅凭熟悉词形确定答案。",
+        "exam_value": "先读 a threat so severe，再看危机比较说明的是风险的哪种程度。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       }
@@ -258,7 +258,9 @@
       },
       "analysis_content": {
         "text": "intuitive 表示凭直觉显得合理；yet 和 opposite direction 表明数据没有支持这一初步印象。",
-        "tips": []
+        "tips": [
+          "把 yet 前的直觉印象与后面的数据方向分开，检查 intuitive 是否等于已被证实。"
+        ]
       },
       "eliminable_items": [
         {
@@ -304,7 +306,7 @@
       "interaction_id": "elimination",
       "front": {
         "text": "练习材料（虚构情境）\n阅读片段：The claim sounds intuitive, yet the data consistently point in the opposite direction.\n\n任务：划去与 intuitive 的语境义或句内关系不符的说法。",
-        "task_prompt": "练习材料（虚构情境）\n阅读片段：The claim sounds intuitive, yet the data consistently point in the opposite direction.\n\n任务：划去与 intuitive 的语境义或句内关系不符的说法。",
+        "task_prompt": "划去与 intuitive 的语境义或句内关系不符的说法。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -312,7 +314,9 @@
       },
       "analysis": {
         "text": "intuitive 表示凭直觉显得合理；yet 和 opposite direction 表明数据没有支持这一初步印象。",
-        "tips": []
+        "tips": [
+          "把 yet 前的直觉印象与后面的数据方向分开，检查 intuitive 是否等于已被证实。"
+        ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
@@ -366,7 +370,7 @@
           "source_note": "CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "候选含义须能解释材料中的具体线索，不能仅凭熟悉词形确定答案。",
+        "exam_value": "把 yet 前的直觉印象与后面的数据方向分开，检查 intuitive 是否等于已被证实。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       }
@@ -383,17 +387,18 @@
       "card_box_name": "句内语义线索",
       "card_group_name": "上下文猜词",
       "front_content": {
-        "text": "判断：如果句中出现 in other words，后面的内容通常可以作为前面生词的近义复述线索。",
+        "text": "练习材料（虚构情境）\nThe procedure is reversible; in other words, its effects can be undone.\n\n任务：判断：reversible 在这里表示“产生的效果可以被消除或恢复”。",
         "highlight_ranges": [],
         "task_prompt": "判断：如果句中出现 in other words，后面的内容通常可以作为前面生词的近义复述线索。"
       },
       "back_content": {
-        "text": "正确。\n\nin other words 的常见功能就是“换句话说”，后半句常对前句关键词进行同义解释或范围收窄，是句内猜词的高价值证据。"
+        "text": "True。can be undone解释了reversible。",
+        "explanation": "in other words后说效果can be undone，即可以撤销或恢复，并不是效果会永久留下。因此reversible在这里是可逆的。"
       },
       "analysis_content": {
-        "text": "正确。\n\nin other words 的常见功能就是“换句话说”，后半句常对前句关键词进行同义解释或范围收窄，是句内猜词的高价值证据。",
+        "text": "in other words后说效果can be undone，即可以撤销或恢复，并不是效果会永久留下。因此reversible在这里是可逆的。",
         "tips": [
-          "候选含义须能解释材料中的具体线索，不能仅凭熟悉词形确定答案。"
+          "先读换句话说后面的说明，再把它代回生词所在位置。"
         ]
       },
       "options": [],
@@ -422,17 +427,17 @@
       },
       "interaction_id": "swipe",
       "front": {
-        "text": "判断：如果句中出现 in other words，后面的内容通常可以作为前面生词的近义复述线索。",
-        "task_prompt": "判断：如果句中出现 in other words，后面的内容通常可以作为前面生词的近义复述线索。",
+        "text": "练习材料（虚构情境）\nThe procedure is reversible; in other words, its effects can be undone.\n\n任务：判断：reversible 在这里表示“产生的效果可以被消除或恢复”。",
+        "task_prompt": "判断：reversible 在这里表示“产生的效果可以被消除或恢复”。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "正确。\n\nin other words 的常见功能就是“换句话说”，后半句常对前句关键词进行同义解释或范围收窄，是句内猜词的高价值证据。",
+        "text": "in other words后说效果can be undone，即可以撤销或恢复，并不是效果会永久留下。因此reversible在这里是可逆的。",
         "tips": [
-          "候选含义须能解释材料中的具体线索，不能仅凭熟悉词形确定答案。"
+          "先读换句话说后面的说明，再把它代回生词所在位置。"
         ]
       },
       "auto_scoring": true,
@@ -476,7 +481,7 @@
           "source_note": "CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "候选含义须能解释材料中的具体线索，不能仅凭熟悉词形确定答案。",
+        "exam_value": "先读换句话说后面的说明，再把它代回生词所在位置。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       }
@@ -493,7 +498,7 @@
       "card_box_name": "句内语义线索",
       "card_group_name": "上下文猜词",
       "front_content": {
-        "text": "句子：The recommendation is feasible in theory, but impractical in neighborhoods where most customers drive from distant suburbs. 问题：impractical 在句中最可能表示什么？",
+        "text": "句子：The recommendation is feasible in theory, but impractical in neighborhoods where most customers drive from distant suburbs.\n\n任务：impractical 在句中最可能表示什么？",
         "highlight_ranges": [
           [
             46,
@@ -512,7 +517,7 @@
       "analysis_content": {
         "text": "but 构成对比：feasible in theory 对应 impractical in neighborhoods。\n后半句又给出原因（多数顾客远距离开车），说明该建议在现实执行层面“不切实际、难落地”。",
         "tips": [
-          "候选含义须能解释材料中的具体线索，不能仅凭熟悉词形确定答案。"
+          "对照 in theory 与 neighborhoods 中的现实条件，判断 impractical 否定的是哪一层可行性。"
         ]
       },
       "options": [
@@ -562,8 +567,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "句子：The recommendation is feasible in theory, but impractical in neighborhoods where most customers drive from distant suburbs. 问题：impractical 在句中最可能表示什么？",
-        "task_prompt": "问题：impractical 在句中最可能表示什么？",
+        "text": "句子：The recommendation is feasible in theory, but impractical in neighborhoods where most customers drive from distant suburbs.\n\n任务：impractical 在句中最可能表示什么？",
+        "task_prompt": "impractical 在句中最可能表示什么？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [
@@ -581,7 +586,7 @@
       "analysis": {
         "text": "but 构成对比：feasible in theory 对应 impractical in neighborhoods。\n后半句又给出原因（多数顾客远距离开车），说明该建议在现实执行层面“不切实际、难落地”。",
         "tips": [
-          "候选含义须能解释材料中的具体线索，不能仅凭熟悉词形确定答案。"
+          "对照 in theory 与 neighborhoods 中的现实条件，判断 impractical 否定的是哪一层可行性。"
         ]
       },
       "auto_scoring": true,
@@ -615,7 +620,7 @@
           "source_note": "CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "候选含义须能解释材料中的具体线索，不能仅凭熟悉词形确定答案。",
+        "exam_value": "对照 in theory 与 neighborhoods 中的现实条件，判断 impractical 否定的是哪一层可行性。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -629,16 +634,16 @@
       "card_no": 6,
       "interaction_type": 1,
       "front_content": {
-        "text": "句子：\"The committee described the proposal as onerous, meaning that small firms would struggle to comply without additional staff.\"\n\n根据句内线索，onerous 最可能是什么意思？"
+        "text": "句子：\"The committee described the proposal as onerous, meaning that small firms would struggle to comply without additional staff.\"\n\n任务：根据句内线索，onerous 最可能是什么意思？"
       },
       "back_content": {
-        "text": "正确答案：B\n\nmeaning that... 给出解释：小公司若无额外人员就难以遵守。\n\n由此可推，onerous = 负担重的、执行成本高的。"
+        "text": "答案：B。负担沉重的/要求过高的",
+        "explanation": "meaning that后说明小公司不增加员工就难以遵守，体现的是要求带来的负担，故B正确。原文没有说政策期限短、创新程度高，反而不能随意忽略这些要求。"
       },
       "analysis_content": {
-        "text": "① 识别信号：meaning that / namely / in other words 常直接释义前词。\n\n② 核心规律：先读释义线索，再反推生词语义，避免仅凭词形猜测。\n\n③ 验证：把“负担重”代回原句，语义连贯。",
+        "text": "meaning that后说明小公司不增加员工就难以遵守，体现的是要求带来的负担，故B正确。原文没有说政策期限短、创新程度高，反而不能随意忽略这些要求。",
         "tips": [
-          "guess-word 先找释义标记词，再回填验证。",
-          "compliance difficulty 常指向“苛重/繁琐”语义。"
+          "先把解释部分说成自己的话：“不加人就难做到”，再选贴合它的形容词。"
         ]
       },
       "options": [
@@ -678,18 +683,17 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "句子：\"The committee described the proposal as onerous, meaning that small firms would struggle to comply without additional staff.\"\n\n根据句内线索，onerous 最可能是什么意思？",
-        "task_prompt": "句子：\"The committee described the proposal as onerous, meaning that small firms would struggle to comply without additional staff.\"\n\n根据句内线索，onerous 最可能是什么意思？",
+        "text": "句子：\"The committee described the proposal as onerous, meaning that small firms would struggle to comply without additional staff.\"\n\n任务：根据句内线索，onerous 最可能是什么意思？",
+        "task_prompt": "根据句内线索，onerous 最可能是什么意思？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：meaning that / namely / in other words 常直接释义前词。\n\n② 核心规律：先读释义线索，再反推生词语义，避免仅凭词形猜测。\n\n③ 验证：把“负担重”代回原句，语义连贯。",
+        "text": "meaning that后说明小公司不增加员工就难以遵守，体现的是要求带来的负担，故B正确。原文没有说政策期限短、创新程度高，反而不能随意忽略这些要求。",
         "tips": [
-          "guess-word 先找释义标记词，再回填验证。",
-          "compliance difficulty 常指向“苛重/繁琐”语义。"
+          "先把解释部分说成自己的话：“不加人就难做到”，再选贴合它的形容词。"
         ]
       },
       "auto_scoring": true,
@@ -731,7 +735,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中依据题面证据完成选项判断，并形成可重复执行的作答步骤。",
+        "exam_value": "先把解释部分说成自己的话：“不加人就难做到”，再选贴合它的形容词。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -794,7 +798,7 @@
       "interaction_id": "elimination",
       "front": {
         "text": "练习材料（虚构情境）\n阅读片段：The campaign looked spontaneous, but internal emails revealed a meticulously orchestrated rollout.\n\n任务：划去对 spontaneous 或前后对比的错误解释。",
-        "task_prompt": "练习材料（虚构情境）\n阅读片段：The campaign looked spontaneous, but internal emails revealed a meticulously orchestrated rollout.\n\n任务：划去对 spontaneous 或前后对比的错误解释。",
+        "task_prompt": "划去对 spontaneous 或前后对比的错误解释。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -866,7 +870,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中逐项排除不符合证据的内容，并形成可重复执行的作答步骤。",
+        "exam_value": "对照 looked 与 revealed，把表面印象和邮件揭示的情况分开，再判断 but 的作用。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -882,16 +886,16 @@
       "card_no": 8,
       "interaction_type": 7,
       "front_content": {
-        "text": "句子：The meeting had one prerequisite, namely that all participants read the report beforehand.\n\n判断：namely 后的内容说明这里 prerequisite 指会前阅读报告这一前提要求。"
+        "text": "句子：The meeting had one prerequisite, namely that all participants read the report beforehand.\n\n任务：判断下面的说法是否符合原文：Participants are required to read the report before the meeting."
       },
       "back_content": {
-        "text": "正确。",
-        "explanation": "namely 引出具体说明，that 从句补充 prerequisite 的内容。不是任何随后出现的词都属于定义，要看它实际对应的对象。"
+        "text": "True。会前读报告是参加会议的前提要求。",
+        "explanation": "prerequisite指前提条件，namely后具体说明all participants read the report beforehand。beforehand在这里就是会前，因此判断句保留了同一要求。"
       },
       "analysis_content": {
-        "text": "namely 引出具体说明，that 从句补充 prerequisite 的内容。不是任何随后出现的词都属于定义，要看它实际对应的对象。",
+        "text": "prerequisite指前提条件，namely后具体说明all participants read the report beforehand。beforehand在这里就是会前，因此判断句保留了同一要求。",
         "tips": [
-          "找到 namely 后的完整要求，检查它是否能回答“prerequisite 具体是什么”。"
+          "看到namely，先找它在具体说明前面的哪一个名词。"
         ]
       },
       "correct_answer": true,
@@ -910,17 +914,17 @@
       },
       "interaction_id": "swipe",
       "front": {
-        "text": "句子：The meeting had one prerequisite, namely that all participants read the report beforehand.\n\n判断：namely 后的内容说明这里 prerequisite 指会前阅读报告这一前提要求。",
-        "task_prompt": "句子：The meeting had one prerequisite, namely that all participants read the report beforehand.\n\n判断：namely 后的内容说明这里 prerequisite 指会前阅读报告这一前提要求。",
+        "text": "句子：The meeting had one prerequisite, namely that all participants read the report beforehand.\n\n任务：判断下面的说法是否符合原文：Participants are required to read the report before the meeting.",
+        "task_prompt": "判断下面的说法是否符合原文：Participants are required to read the report before the meeting.",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "namely 引出具体说明，that 从句补充 prerequisite 的内容。不是任何随后出现的词都属于定义，要看它实际对应的对象。",
+        "text": "prerequisite指前提条件，namely后具体说明all participants read the report beforehand。beforehand在这里就是会前，因此判断句保留了同一要求。",
         "tips": [
-          "找到 namely 后的完整要求，检查它是否能回答“prerequisite 具体是什么”。"
+          "看到namely，先找它在具体说明前面的哪一个名词。"
         ]
       },
       "auto_scoring": true,
@@ -972,7 +976,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中快速判断当前表达或策略是否成立，并形成可重复执行的作答步骤。",
+        "exam_value": "看到namely，先找它在具体说明前面的哪一个名词。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -1077,16 +1081,16 @@
       "card_no": 10,
       "interaction_type": 1,
       "front_content": {
-        "text": "句子：\"The medicine is palliative rather than curative; it eases symptoms but does not eliminate the underlying disease.\"\n\n根据句内线索，palliative 最接近哪项？"
+        "text": "句子：\"The medicine is palliative rather than curative; it eases symptoms but does not eliminate the underlying disease.\"\n\n任务：根据句内线索，palliative 最接近哪项？"
       },
       "back_content": {
-        "text": "正确答案：A\n\nrather than curative + eases symptoms but does not eliminate disease 给出清晰对比。\n\npalliative 指“缓解性的”，即减轻症状而非根治。"
+        "text": "答案：A。缓解症状而非根治的",
+        "explanation": "eases symptoms说明减轻症状，does not eliminate the underlying disease说明没有消除根本疾病，所以palliative对应A。副作用、价格和研发阶段都不是这两处线索讨论的内容。"
       },
       "analysis_content": {
-        "text": "① 识别信号：rather than 与 but not 提供双重对比释义。\n\n② 核心规律：医学语境下 curative（治愈）对立词常是 palliative（缓解）。\n\n③ 验证：代入“缓解性”后，全句语义一致。",
+        "text": "eases symptoms说明减轻症状，does not eliminate the underlying disease说明没有消除根本疾病，所以palliative对应A。副作用、价格和研发阶段都不是这两处线索讨论的内容。",
         "tips": [
-          "双重线索（rather than + but）出现时，词义判断可靠度更高。",
-          "根治 vs 缓解是医学阅读常见猜词对。"
+          "把缓解症状与治愈疾病分开，分别对照eases和eliminate。"
         ]
       },
       "options": [
@@ -1126,18 +1130,17 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "句子：\"The medicine is palliative rather than curative; it eases symptoms but does not eliminate the underlying disease.\"\n\n根据句内线索，palliative 最接近哪项？",
-        "task_prompt": "句子：\"The medicine is palliative rather than curative; it eases symptoms but does not eliminate the underlying disease.\"\n\n根据句内线索，palliative 最接近哪项？",
+        "text": "句子：\"The medicine is palliative rather than curative; it eases symptoms but does not eliminate the underlying disease.\"\n\n任务：根据句内线索，palliative 最接近哪项？",
+        "task_prompt": "根据句内线索，palliative 最接近哪项？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：rather than 与 but not 提供双重对比释义。\n\n② 核心规律：医学语境下 curative（治愈）对立词常是 palliative（缓解）。\n\n③ 验证：代入“缓解性”后，全句语义一致。",
+        "text": "eases symptoms说明减轻症状，does not eliminate the underlying disease说明没有消除根本疾病，所以palliative对应A。副作用、价格和研发阶段都不是这两处线索讨论的内容。",
         "tips": [
-          "双重线索（rather than + but）出现时，词义判断可靠度更高。",
-          "根治 vs 缓解是医学阅读常见猜词对。"
+          "把缓解症状与治愈疾病分开，分别对照eases和eliminate。"
         ]
       },
       "auto_scoring": true,
@@ -1179,7 +1182,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中依据题面证据完成选项判断，并形成可重复执行的作答步骤。",
+        "exam_value": "把缓解症状与治愈疾病分开，分别对照eases和eliminate。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       },
@@ -1242,7 +1245,7 @@
       "interaction_id": "elimination",
       "front": {
         "text": "练习材料（虚构情境）\n阅读片段：The witness gave an equivocal answer, neither fully denying nor explicitly confirming the allegation.\n\n任务：划去对 equivocal 或后半句释义的错误解释。",
-        "task_prompt": "练习材料（虚构情境）\n阅读片段：The witness gave an equivocal answer, neither fully denying nor explicitly confirming the allegation.\n\n任务：划去对 equivocal 或后半句释义的错误解释。",
+        "task_prompt": "划去对 equivocal 或后半句释义的错误解释。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -1314,7 +1317,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中逐项排除不符合证据的内容，并形成可重复执行的作答步骤。",
+        "exam_value": "将 neither denying 与 nor confirming 逐一还原，检查选项有没有把不明确改成明确表态。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       },
@@ -1330,16 +1333,16 @@
       "card_no": 12,
       "interaction_type": 7,
       "front_content": {
-        "text": "判断：\n\n句子 \"The policy was hailed as pragmatic, that is, realistic within existing fiscal constraints.\" 中，that is 后面的内容可以用来界定 pragmatic 的语义范围。\n\n这个判断正确吗？"
+        "text": "句子：The policy was hailed as pragmatic, that is, realistic within existing fiscal constraints.\n\n任务：判断：pragmatic 在这里指“在现有财政条件下切实可行”，不表示“不受预算限制”。"
       },
       "back_content": {
-        "text": "✅ 正确\n\nthat is 是释义标记，后半句通常对前词作定义或范围限定。\n\n此句中 pragmatic 被界定为“在现有财政约束下现实可行”。"
+        "text": "True。realistic within existing fiscal constraints给出了具体解释。",
+        "explanation": "that is后的realistic说明现实可行，within ... constraints保留财政限制。评价说的是考虑到现有条件的可行性，并不是保证资金无限或政策完美。"
       },
       "analysis_content": {
-        "text": "① 识别信号：that is/namely/in other words 典型释义标记。\n\n② 核心规律：释义标记后的信息是猜词的高置信证据。\n\n③ 验证：将“现实可行”代回 pragmatic，语义一致。",
+        "text": "that is后的realistic说明现实可行，within ... constraints保留财政限制。评价说的是考虑到现有条件的可行性，并不是保证资金无限或政策完美。",
         "tips": [
-          "释义标记后的内容通常可直接作为选项表述依据。",
-          "遇到抽象评价词（pragmatic）优先找同句释义而非字典第一义。"
+          "猜词时连同解释中的条件词within一起保留，不只摘出realistic。"
         ]
       },
       "correct_answer": true,
@@ -1358,18 +1361,17 @@
       },
       "interaction_id": "swipe",
       "front": {
-        "text": "判断：\n\n句子 \"The policy was hailed as pragmatic, that is, realistic within existing fiscal constraints.\" 中，that is 后面的内容可以用来界定 pragmatic 的语义范围。\n\n这个判断正确吗？",
-        "task_prompt": "判断：\n\n句子 \"The policy was hailed as pragmatic, that is, realistic within existing fiscal constraints.\" 中，that is 后面的内容可以用来界定 pragmatic 的语义范围。\n\n这个判断正确吗？",
+        "text": "句子：The policy was hailed as pragmatic, that is, realistic within existing fiscal constraints.\n\n任务：判断：pragmatic 在这里指“在现有财政条件下切实可行”，不表示“不受预算限制”。",
+        "task_prompt": "判断：pragmatic 在这里指“在现有财政条件下切实可行”，不表示“不受预算限制”。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：that is/namely/in other words 典型释义标记。\n\n② 核心规律：释义标记后的信息是猜词的高置信证据。\n\n③ 验证：将“现实可行”代回 pragmatic，语义一致。",
+        "text": "that is后的realistic说明现实可行，within ... constraints保留财政限制。评价说的是考虑到现有条件的可行性，并不是保证资金无限或政策完美。",
         "tips": [
-          "释义标记后的内容通常可直接作为选项表述依据。",
-          "遇到抽象评价词（pragmatic）优先找同句释义而非字典第一义。"
+          "猜词时连同解释中的条件词within一起保留，不只摘出realistic。"
         ]
       },
       "auto_scoring": true,
@@ -1421,7 +1423,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中快速判断当前表达或策略是否成立，并形成可重复执行的作答步骤。",
+        "exam_value": "猜词时连同解释中的条件词within一起保留，不只摘出realistic。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       },

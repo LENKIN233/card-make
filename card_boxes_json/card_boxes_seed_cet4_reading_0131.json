@@ -102,7 +102,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
+        "exam_value": "先括出逗号外的两段修饰，再检查 throughout the night 是否包含在其中一段内部。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       }
@@ -119,7 +119,7 @@
       "card_box_name": "状语",
       "card_group_name": "长难句关键修饰",
       "front_content": {
-        "text": "句子：\"Driven by the desire to cut production costs, many manufacturers have shifted their operations to countries with lower labor expenses.\" Driven by the desire to cut production costs 在句中的功能是什么？",
+        "text": "句子：\"Driven by the desire to cut production costs, many manufacturers have shifted their operations to countries with lower labor expenses.\"\n\n任务：Driven by the desire to cut production costs 在句中的功能是什么？",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": [],
@@ -131,7 +131,9 @@
       },
       "analysis_content": {
         "text": "Driven by... 在此说明行动原因，隐含的受驱动者是主句主语 manufacturers。不能让句首分词短语的执行或承受对象与主句主语错配；本句的两个位置都指制造商。",
-        "tips": []
+        "tips": [
+          "先找谁想降低成本，再检查 Driven by 的受驱动者是否与 manufacturers 相同。"
+        ]
       },
       "options": [
         {
@@ -180,8 +182,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "句子：\"Driven by the desire to cut production costs, many manufacturers have shifted their operations to countries with lower labor expenses.\" Driven by the desire to cut production costs 在句中的功能是什么？",
-        "task_prompt": "句子：\"Driven by the desire to cut production costs, many manufacturers have shifted their operations to countries with lower labor expenses.\" Driven by the desire to cut production costs 在句中的功能是什么？",
+        "text": "句子：\"Driven by the desire to cut production costs, many manufacturers have shifted their operations to countries with lower labor expenses.\"\n\n任务：Driven by the desire to cut production costs 在句中的功能是什么？",
+        "task_prompt": "Driven by the desire to cut production costs 在句中的功能是什么？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -189,7 +191,9 @@
       },
       "analysis": {
         "text": "Driven by... 在此说明行动原因，隐含的受驱动者是主句主语 manufacturers。不能让句首分词短语的执行或承受对象与主句主语错配；本句的两个位置都指制造商。",
-        "tips": []
+        "tips": [
+          "先找谁想降低成本，再检查 Driven by 的受驱动者是否与 manufacturers 相同。"
+        ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
@@ -222,7 +226,7 @@
           "source_note": "CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "候选含义须能解释材料中的具体线索，不能仅凭熟悉词形确定答案。",
+        "exam_value": "先找谁想降低成本，再检查 Driven by 的受驱动者是否与 manufacturers 相同。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       }
@@ -239,19 +243,19 @@
       "card_box_name": "状语",
       "card_group_name": "长难句关键修饰",
       "front_content": {
-        "text": "句子：\"Although carbon emissions have been declining steadily in recent years, global temperatures continue to rise at an alarming rate.\"\n\n请消除这句话中充当让步状语的成分。",
+        "text": "句子：\"Although carbon emissions have been declining steadily in recent years, global temperatures continue to rise at an alarming rate.\"\n\n任务：请消除这句话中充当让步状语的成分。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "正确消除项：Although carbon emissions have been declining steadily in recent years\n\n这是 although 引导的让步状语从句，修饰主句 global temperatures continue to rise at an alarming rate。\n\nat an alarming rate 是方式/程度状语（修饰 rise 的方式），不是让步状语。"
+        "text": "应划去：\nAlthough carbon emissions have been declining steadily in recent years",
+        "explanation": "Although引出的整段说明排放下降这一让步背景，主句仍说气温上升，应划去第一项。at an alarming rate说明上升速度，不表示让步。两部分都是材料陈述，不能把although从句当成被否认的信息。"
       },
       "analysis_content": {
-        "text": "① 识别信号：Although/Even though/While 引导的从句放在句首，是让步状语从句，修饰主句。\n\n② 核心规律：让步状语从句建立「虽然 A，但仍 B」的逻辑，A 是让步条件，B 是主句结论。让步不改变主句的事实。\n\n③ 验证：去掉 although 从句后，global temperatures continue to rise at an alarming rate 仍完整。",
+        "text": "Although引出的整段说明排放下降这一让步背景，主句仍说气温上升，应划去第一项。at an alarming rate说明上升速度，不表示让步。两部分都是材料陈述，不能把although从句当成被否认的信息。",
         "tips": [
-          "Although 从句是让步状语，考试中 although 所在从句的信息不代表作者立场，主句才代表。",
-          "although / though / while（让步） + 主句；主句中不能再加 but（although 和 but 不能共用）。"
+          "把句子读成“虽然排放下降，气温仍上升”，分别保留两个事实。"
         ]
       },
       "options": null,
@@ -297,18 +301,17 @@
       },
       "interaction_id": "elimination",
       "front": {
-        "text": "句子：\"Although carbon emissions have been declining steadily in recent years, global temperatures continue to rise at an alarming rate.\"\n\n请消除这句话中充当让步状语的成分。",
-        "task_prompt": "句子：\"Although carbon emissions have been declining steadily in recent years, global temperatures continue to rise at an alarming rate.\"\n\n请消除这句话中充当让步状语的成分。",
+        "text": "句子：\"Although carbon emissions have been declining steadily in recent years, global temperatures continue to rise at an alarming rate.\"\n\n任务：请消除这句话中充当让步状语的成分。",
+        "task_prompt": "请消除这句话中充当让步状语的成分。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：Although/Even though/While 引导的从句放在句首，是让步状语从句，修饰主句。\n\n② 核心规律：让步状语从句建立「虽然 A，但仍 B」的逻辑，A 是让步条件，B 是主句结论。让步不改变主句的事实。\n\n③ 验证：去掉 although 从句后，global temperatures continue to rise at an alarming rate 仍完整。",
+        "text": "Although引出的整段说明排放下降这一让步背景，主句仍说气温上升，应划去第一项。at an alarming rate说明上升速度，不表示让步。两部分都是材料陈述，不能把although从句当成被否认的信息。",
         "tips": [
-          "Although 从句是让步状语，考试中 although 所在从句的信息不代表作者立场，主句才代表。",
-          "although / though / while（让步） + 主句；主句中不能再加 but（although 和 but 不能共用）。"
+          "把句子读成“虽然排放下降，气温仍上升”，分别保留两个事实。"
         ]
       },
       "auto_scoring": true,
@@ -362,7 +365,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中逐项排除不符合证据的内容，并形成可重复执行的作答步骤。",
+        "exam_value": "把句子读成“虽然排放下降，气温仍上升”，分别保留两个事实。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       }
@@ -379,7 +382,7 @@
       "card_box_name": "状语",
       "card_group_name": "长难句关键修饰",
       "front_content": {
-        "text": "判断：\n\n句子 \"The project was completed on time because the team worked overtime for three weeks.\" 中，because the team worked overtime for three weeks 是宾语从句。\n\n这个判断正确吗？",
+        "text": "句子 \"The project was completed on time because the team worked overtime for three weeks.\" 中，because the team worked overtime for three weeks 是宾语从句。\n\n任务：这个判断正确吗？",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -420,8 +423,8 @@
       },
       "interaction_id": "swipe",
       "front": {
-        "text": "判断：\n\n句子 \"The project was completed on time because the team worked overtime for three weeks.\" 中，because the team worked overtime for three weeks 是宾语从句。\n\n这个判断正确吗？",
-        "task_prompt": "判断：\n\n句子 \"The project was completed on time because the team worked overtime for three weeks.\" 中，because the team worked overtime for three weeks 是宾语从句。\n\n这个判断正确吗？",
+        "text": "句子 \"The project was completed on time because the team worked overtime for three weeks.\" 中，because the team worked overtime for three weeks 是宾语从句。\n\n任务：这个判断正确吗？",
+        "task_prompt": "这个判断正确吗？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -474,7 +477,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中快速判断当前表达或策略是否成立，并形成可重复执行的作答步骤。",
+        "exam_value": "先问 because 从句回答“完成了什么”还是“为什么按时完成”，再确定它与主句的关系。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       }
@@ -491,19 +494,19 @@
       "card_box_name": "状语",
       "card_group_name": "长难句关键修饰",
       "front_content": {
-        "text": "阅读片段：\"To minimize the risk of data loss, organizations are increasingly adopting cloud storage solutions that automatically back up files.\"\n\n句首的 To minimize the risk of data loss 在句中充当什么功能？",
+        "text": "阅读片段：\"To minimize the risk of data loss, organizations are increasingly adopting cloud storage solutions that automatically back up files.\"\n\n任务：句首的 To minimize the risk of data loss 在句中充当什么功能？",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "正确答案：A\n\nTo minimize the risk of data loss 是不定式短语，置于句首作目的状语，修饰主句谓语 are adopting，说明「为什么采取行动」。\n\n去掉后：organizations are increasingly adopting cloud storage solutions that automatically back up files. ✓ 主句完整。"
+        "text": "答案：A。目的状语，修饰主句谓语 are adopting",
+        "explanation": "organizations采用云存储，是为了minimize the risk of data loss，因此选A。句首to短语回答“为什么采取这一措施”，不是另一个主语，也不是采用的对象；真正采用的是cloud storage solutions。"
       },
       "analysis_content": {
-        "text": "① 识别信号：不定式短语（to do）置于句首，逗号后跟主句，通常作目的状语（In order to do = to do）。\n\n② 核心规律：目的状语不定式的逻辑主语是主句主语；此处 organizations 想要 minimize risk，逻辑一致。\n\n③ 验证：In order to minimize the risk of data loss，改写后意思不变，确认是目的状语。",
+        "text": "organizations采用云存储，是为了minimize the risk of data loss，因此选A。句首to短语回答“为什么采取这一措施”，不是另一个主语，也不是采用的对象；真正采用的是cloud storage solutions。",
         "tips": [
-          "句首 to do 短语 + 逗号 = 目的状语（等于 in order to）；to do 在谓语之后可能是宾语或宾补。",
-          "目的状语 to do 的逻辑主语必须与主句主语一致，否则句子逻辑有误。"
+          "把本句to短语换成in order to，检查是否仍在说明行动目的。"
         ]
       },
       "options": [
@@ -553,18 +556,17 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "阅读片段：\"To minimize the risk of data loss, organizations are increasingly adopting cloud storage solutions that automatically back up files.\"\n\n句首的 To minimize the risk of data loss 在句中充当什么功能？",
-        "task_prompt": "阅读片段：\"To minimize the risk of data loss, organizations are increasingly adopting cloud storage solutions that automatically back up files.\"\n\n句首的 To minimize the risk of data loss 在句中充当什么功能？",
+        "text": "阅读片段：\"To minimize the risk of data loss, organizations are increasingly adopting cloud storage solutions that automatically back up files.\"\n\n任务：句首的 To minimize the risk of data loss 在句中充当什么功能？",
+        "task_prompt": "句首的 To minimize the risk of data loss 在句中充当什么功能？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：不定式短语（to do）置于句首，逗号后跟主句，通常作目的状语（In order to do = to do）。\n\n② 核心规律：目的状语不定式的逻辑主语是主句主语；此处 organizations 想要 minimize risk，逻辑一致。\n\n③ 验证：In order to minimize the risk of data loss，改写后意思不变，确认是目的状语。",
+        "text": "organizations采用云存储，是为了minimize the risk of data loss，因此选A。句首to短语回答“为什么采取这一措施”，不是另一个主语，也不是采用的对象；真正采用的是cloud storage solutions。",
         "tips": [
-          "句首 to do 短语 + 逗号 = 目的状语（等于 in order to）；to do 在谓语之后可能是宾语或宾补。",
-          "目的状语 to do 的逻辑主语必须与主句主语一致，否则句子逻辑有误。"
+          "把本句to短语换成in order to，检查是否仍在说明行动目的。"
         ]
       },
       "auto_scoring": true,
@@ -598,7 +600,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中依据题面证据完成选项判断，并形成可重复执行的作答步骤。",
+        "exam_value": "把本句to短语换成in order to，检查是否仍在说明行动目的。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -612,16 +614,16 @@
       "card_no": 6,
       "interaction_type": 1,
       "front_content": {
-        "text": "句子：\"Having reviewed all the available evidence, the jury reached a unanimous verdict within two hours.\"\n\n句首的 Having reviewed all the available evidence 充当什么功能？"
+        "text": "句子：\"Having reviewed all the available evidence, the jury reached a unanimous verdict within two hours.\"\n\n任务：句首的 Having reviewed all the available evidence 充当什么功能？"
       },
       "back_content": {
-        "text": "正确答案：A\n\nHaving reviewed all the available evidence 是完成时分词短语（Having + past participle），置于句首作原因/时间状语，隐含主语与主句主语相同（the jury）。\n\n去掉后：the jury reached a unanimous verdict within two hours. ✓ 主干完整。"
+        "text": "答案：A。原因/时间状语，修饰主句谓语 reached",
+        "explanation": "Having reviewed表示陪审团先审阅了全部证据，随后reached a verdict。审阅者和裁决者都是the jury，句首短语补充先前行动，选A。verdict是裁决结果，不是审阅的执行者。"
       },
       "analysis_content": {
-        "text": "① 识别信号：Having + 过去分词置于句首，是完成分词状语，表示先于主句动作完成的动作（审阅在先，裁决在后）。\n\n② 核心规律：Having done 表时序（先做了…后再…），也常隐含原因（因为已经…，所以…）。分词的隐含主语必须与主句主语一致。\n\n③ 验证：The jury, having reviewed all the evidence, reached a verdict. ✓",
+        "text": "Having reviewed表示陪审团先审阅了全部证据，随后reached a verdict。审阅者和裁决者都是the jury，句首短语补充先前行动，选A。verdict是裁决结果，不是审阅的执行者。",
         "tips": [
-          "Having + past participle 开头的分词状语表\"先完成\"，常表原因或时序，注意主语一致原则。",
-          "去掉分词状语后主句独立成立，是状语的标志；若去掉后语法残缺，则不是状语。"
+          "看到having done，先找谁先做了什么，再读主句随后发生什么。"
         ]
       },
       "options": [
@@ -661,18 +663,17 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "句子：\"Having reviewed all the available evidence, the jury reached a unanimous verdict within two hours.\"\n\n句首的 Having reviewed all the available evidence 充当什么功能？",
-        "task_prompt": "句子：\"Having reviewed all the available evidence, the jury reached a unanimous verdict within two hours.\"\n\n句首的 Having reviewed all the available evidence 充当什么功能？",
+        "text": "句子：\"Having reviewed all the available evidence, the jury reached a unanimous verdict within two hours.\"\n\n任务：句首的 Having reviewed all the available evidence 充当什么功能？",
+        "task_prompt": "句首的 Having reviewed all the available evidence 充当什么功能？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：Having + 过去分词置于句首，是完成分词状语，表示先于主句动作完成的动作（审阅在先，裁决在后）。\n\n② 核心规律：Having done 表时序（先做了…后再…），也常隐含原因（因为已经…，所以…）。分词的隐含主语必须与主句主语一致。\n\n③ 验证：The jury, having reviewed all the evidence, reached a verdict. ✓",
+        "text": "Having reviewed表示陪审团先审阅了全部证据，随后reached a verdict。审阅者和裁决者都是the jury，句首短语补充先前行动，选A。verdict是裁决结果，不是审阅的执行者。",
         "tips": [
-          "Having + past participle 开头的分词状语表\"先完成\"，常表原因或时序，注意主语一致原则。",
-          "去掉分词状语后主句独立成立，是状语的标志；若去掉后语法残缺，则不是状语。"
+          "看到having done，先找谁先做了什么，再读主句随后发生什么。"
         ]
       },
       "auto_scoring": true,
@@ -714,7 +715,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中依据题面证据完成选项判断，并形成可重复执行的作答步骤。",
+        "exam_value": "看到having done，先找谁先做了什么，再读主句随后发生什么。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -780,7 +781,7 @@
       "interaction_id": "elimination",
       "front": {
         "text": "句子：\"Even though the candidate had little prior experience, the hiring committee was impressed by her analytical skills.\"\n\n任务：消除句中充当让步状语的成分。",
-        "task_prompt": "句子：\"Even though the candidate had little prior experience, the hiring committee was impressed by her analytical skills.\"\n\n任务：消除句中充当让步状语的成分。",
+        "task_prompt": "消除句中充当让步状语的成分。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -855,7 +856,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中逐项排除不符合证据的内容，并形成可重复执行的作答步骤。",
+        "exam_value": "找到 Even though 的起点和逗号的终点，连起来判断它提出了什么让步背景。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -871,16 +872,16 @@
       "card_no": 8,
       "interaction_type": 7,
       "front_content": {
-        "text": "判断正误：\n\n句子 \"If the government fails to address infrastructure gaps, economic growth in rural areas will remain stagnant.\" 中，If the government fails to address infrastructure gaps 是主语从句。\n\n这个判断正确吗？"
+        "text": "句子 \"If the government fails to address infrastructure gaps, economic growth in rural areas will remain stagnant.\" 中，If the government fails to address infrastructure gaps 是主语从句。\n\n任务：这个判断正确吗？"
       },
       "back_content": {
-        "text": "❌ 错误\n\nIf the government fails to address infrastructure gaps 是条件状语从句，不是主语从句。\n\n• 条件状语从句由 if 引导，修饰主句谓语 will remain，表示\"在什么条件下\"主句结果成立。\n• 主语从句通常由 that/what/whether 引导，置于句首充当句子的逻辑主语。\n\n验证：去掉 if 从句后，主句 economic growth in rural areas will remain stagnant 仍完整。"
+        "text": "False。If从句提出条件，主句的主语是economic growth in rural areas。",
+        "explanation": "主句已是economic growth ... will remain stagnant。If ... gaps说明在政府未填补基础设施缺口的条件下，增长会停滞，不是把这个条件当作“停滞”的主语。"
       },
       "analysis_content": {
-        "text": "① 识别信号：if 引导的从句是条件状语从句，而非主语从句；主语从句不以 if 开头（if 主语从句需替换为 whether）。\n\n② 核心规律：区分条件从句 vs 主语从句：条件从句去掉后主句仍完整；主语从句去掉后主句缺少主语。\n\n③ 验证：economic growth will remain stagnant ✓（条件从句去掉主句成立，说明是状语）。",
+        "text": "主句已是economic growth ... will remain stagnant。If ... gaps说明在政府未填补基础设施缺口的条件下，增长会停滞，不是把这个条件当作“停滞”的主语。",
         "tips": [
-          "if 引导条件状语从句（可去除，主句仍成立）；whether 引导主语/宾语从句（去除后主句残缺）。",
-          "条件状语从句可置于主句前后，位置灵活；主语从句固定在句首或用 it 占位。"
+          "先找主句是谁会怎样，再问if从句是否在说明这一结果成立的条件。"
         ]
       },
       "correct_answer": false,
@@ -899,18 +900,17 @@
       },
       "interaction_id": "swipe",
       "front": {
-        "text": "判断正误：\n\n句子 \"If the government fails to address infrastructure gaps, economic growth in rural areas will remain stagnant.\" 中，If the government fails to address infrastructure gaps 是主语从句。\n\n这个判断正确吗？",
-        "task_prompt": "判断正误：\n\n句子 \"If the government fails to address infrastructure gaps, economic growth in rural areas will remain stagnant.\" 中，If the government fails to address infrastructure gaps 是主语从句。\n\n这个判断正确吗？",
+        "text": "句子 \"If the government fails to address infrastructure gaps, economic growth in rural areas will remain stagnant.\" 中，If the government fails to address infrastructure gaps 是主语从句。\n\n任务：这个判断正确吗？",
+        "task_prompt": "这个判断正确吗？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：if 引导的从句是条件状语从句，而非主语从句；主语从句不以 if 开头（if 主语从句需替换为 whether）。\n\n② 核心规律：区分条件从句 vs 主语从句：条件从句去掉后主句仍完整；主语从句去掉后主句缺少主语。\n\n③ 验证：economic growth will remain stagnant ✓（条件从句去掉主句成立，说明是状语）。",
+        "text": "主句已是economic growth ... will remain stagnant。If ... gaps说明在政府未填补基础设施缺口的条件下，增长会停滞，不是把这个条件当作“停滞”的主语。",
         "tips": [
-          "if 引导条件状语从句（可去除，主句仍成立）；whether 引导主语/宾语从句（去除后主句残缺）。",
-          "条件状语从句可置于主句前后，位置灵活；主语从句固定在句首或用 it 占位。"
+          "先找主句是谁会怎样，再问if从句是否在说明这一结果成立的条件。"
         ]
       },
       "auto_scoring": true,
@@ -962,7 +962,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中快速判断当前表达或策略是否成立，并形成可重复执行的作答步骤。",
+        "exam_value": "先找主句是谁会怎样，再问if从句是否在说明这一结果成立的条件。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -1054,7 +1054,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中识别并解释关键知识或解题线索，并形成可重复执行的作答步骤。",
+        "exam_value": "先各圈出主句谓语 increase 和 caused，再检查 Oil prices rising 在第二句中占据哪个位置。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       },
@@ -1070,7 +1070,7 @@
       "card_no": 10,
       "interaction_type": 1,
       "front_content": {
-        "text": "阅读片段：\"As the global demand for semiconductors continues to surge, manufacturers are struggling to expand production capacity fast enough.\"\n\n句首 As the global demand for semiconductors continues to surge 充当什么功能？"
+        "text": "阅读片段：\"As the global demand for semiconductors continues to surge, manufacturers are struggling to expand production capacity fast enough.\"\n\n任务：句首 As the global demand for semiconductors continues to surge 充当什么功能？"
       },
       "back_content": {
         "text": "As 从句交代需求继续增长的背景，可结合上下文理解其时间与原因色彩。as 表示随着时属于时间关系；表示如同某人所做的那样时才是方式用法。",
@@ -1119,8 +1119,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "阅读片段：\"As the global demand for semiconductors continues to surge, manufacturers are struggling to expand production capacity fast enough.\"\n\n句首 As the global demand for semiconductors continues to surge 充当什么功能？",
-        "task_prompt": "阅读片段：\"As the global demand for semiconductors continues to surge, manufacturers are struggling to expand production capacity fast enough.\"\n\n句首 As the global demand for semiconductors continues to surge 充当什么功能？",
+        "text": "阅读片段：\"As the global demand for semiconductors continues to surge, manufacturers are struggling to expand production capacity fast enough.\"\n\n任务：句首 As the global demand for semiconductors continues to surge 充当什么功能？",
+        "task_prompt": "句首 As the global demand for semiconductors continues to surge 充当什么功能？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -1171,7 +1171,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中依据题面证据完成选项判断，并形成可重复执行的作答步骤。",
+        "exam_value": "把 As 从句与主句配对，试读“随着需求增长”是否说明制造商扩产的背景。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       },
@@ -1237,7 +1237,7 @@
       "interaction_id": "elimination",
       "front": {
         "text": "句子：\"By consistently investing in employee training over the past decade, the company has maintained its competitive edge in the market.\"\n\n任务：划去句首完整的方式状语短语；不要重复选择它内部的单个词。",
-        "task_prompt": "句子：\"By consistently investing in employee training over the past decade, the company has maintained its competitive edge in the market.\"\n\n任务：划去句首完整的方式状语短语；不要重复选择它内部的单个词。",
+        "task_prompt": "划去句首完整的方式状语短语；不要重复选择它内部的单个词。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -1312,7 +1312,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中逐项排除不符合证据的内容，并形成可重复执行的作答步骤。",
+        "exam_value": "从 By 一直读到 decade，先框出整个方式短语，再检查选项是否只截取了内部词语。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       },
@@ -1328,16 +1328,16 @@
       "card_no": 12,
       "interaction_type": 7,
       "front_content": {
-        "text": "判断正误：\n\n句子 \"The project succeeded largely because team members communicated openly and resolved conflicts early.\" 中，because team members communicated openly and resolved conflicts early 是宾语从句，说明项目成功\"知道了什么\"。\n\n这个判断正确吗？"
+        "text": "句子：The project succeeded largely because team members communicated openly and resolved conflicts early.\n\n任务：判断：because 引出的从句是 succeeded 的宾语。"
       },
       "back_content": {
-        "text": "❌ 错误\n\nbecause team members communicated… 是原因状语从句，不是宾语从句。\n\n• 它修饰谓语 succeeded，说明\"为什么成功\"\n• 宾语从句接在及物动词之后，用 that/whether/what 等引导，且主句动词需能带宾语\n• succeeded 是不及物动词，无法接宾语从句\n\n验证：去掉 because 从句后，The project succeeded ✓（成立，因此是状语而非句子必需成分）。"
+        "text": "False。because从句说明项目为何成功，是原因状语。",
+        "explanation": "succeeded在这里表示成功，后面不是“成功了某个对象”。because ...回答成功的原因：成员公开沟通并及早解决冲突。largely说明这是主要原因。"
       },
       "analysis_content": {
-        "text": "① 识别信号：because 引导原因状语从句，修饰谓语，可去除主句仍成立。\n\n② 核心规律：宾语从句须接在及物动词之后；succeeded 为不及物动词，无法带宾语从句，排除误判。\n\n③ 验证：The project succeeded ✓（独立成立，because 从句为状语）。",
+        "text": "succeeded在这里表示成功，后面不是“成功了某个对象”。because ...回答成功的原因：成员公开沟通并及早解决冲突。largely说明这是主要原因。",
         "tips": [
-          "because 引导原因状语从句（可去除）；that/whether 引导宾语从句（去除后主句缺宾语）。",
-          "不及物动词（succeed/occur/happen）后不能接宾语从句，遇到 because/since 时直接判状语。"
+          "先判断后面回答“什么”还是“为什么”，再确定它与主句动作的关系。"
         ]
       },
       "correct_answer": false,
@@ -1356,18 +1356,17 @@
       },
       "interaction_id": "swipe",
       "front": {
-        "text": "判断正误：\n\n句子 \"The project succeeded largely because team members communicated openly and resolved conflicts early.\" 中，because team members communicated openly and resolved conflicts early 是宾语从句，说明项目成功\"知道了什么\"。\n\n这个判断正确吗？",
-        "task_prompt": "判断正误：\n\n句子 \"The project succeeded largely because team members communicated openly and resolved conflicts early.\" 中，because team members communicated openly and resolved conflicts early 是宾语从句，说明项目成功\"知道了什么\"。\n\n这个判断正确吗？",
+        "text": "句子：The project succeeded largely because team members communicated openly and resolved conflicts early.\n\n任务：判断：because 引出的从句是 succeeded 的宾语。",
+        "task_prompt": "判断：because 引出的从句是 succeeded 的宾语。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：because 引导原因状语从句，修饰谓语，可去除主句仍成立。\n\n② 核心规律：宾语从句须接在及物动词之后；succeeded 为不及物动词，无法带宾语从句，排除误判。\n\n③ 验证：The project succeeded ✓（独立成立，because 从句为状语）。",
+        "text": "succeeded在这里表示成功，后面不是“成功了某个对象”。because ...回答成功的原因：成员公开沟通并及早解决冲突。largely说明这是主要原因。",
         "tips": [
-          "because 引导原因状语从句（可去除）；that/whether 引导宾语从句（去除后主句缺宾语）。",
-          "不及物动词（succeed/occur/happen）后不能接宾语从句，遇到 because/since 时直接判状语。"
+          "先判断后面回答“什么”还是“为什么”，再确定它与主句动作的关系。"
         ]
       },
       "auto_scoring": true,
@@ -1419,7 +1418,7 @@
           "source_note": "Legacy untraced item reclassified as a CET4 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET4仔细阅读任务中快速判断当前表达或策略是否成立，并形成可重复执行的作答步骤。",
+        "exam_value": "先判断后面回答“什么”还是“为什么”，再确定它与主句动作的关系。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       },

@@ -20,8 +20,8 @@
       "card_box_name": "地点",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "任务：先听音频，再判断说话人提到的地点是在说发生地、集合点，还是办理地点。",
-        "task_prompt": "先听音频，再判断说话人提到的地点是在说发生地、集合点，还是办理地点。",
+        "text": "听录音：参观者先在哪里集合，随后去哪里？",
+        "task_prompt": "听录音：参观者先在哪里集合，随后去哪里？",
         "task_schema": {
           "action": "听后判断地点角色",
           "focus": "地点名称与事件功能绑定",
@@ -33,14 +33,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：这里的 west lobby 是集合点，不是活动正式举行的地点。",
-        "explanation": "语境揭示：Visitors should meet in the west lobby before being guided into the main auditorium. 地点类题常会同时出现两个地点，但它们在流程里的功能并不一样。"
+        "text": "先在西侧大厅集合，再由人带入主演讲厅。",
+        "explanation": "meet in the west lobby 是集合地点，guided into the main auditorium 是随后进入的场地。before 把两个动作排成先后，不能把第一处大厅当成活动主场。"
       },
       "analysis_content": {
-        "text": "① 识别信号：地点出现后，要立刻看它和哪个动作动词绑定，如 meet, register, deliver, perform。\n\n② 核心规律：地点题不是简单地记一个地名，而是判断这个地名在事件流程中的功能。lobby、auditorium、office、gate 这些词经常同句出现，若不区分“集合点”和“正式发生地”，就很容易答错。\n\n③ 验证：本句 meet in the west lobby 表示先集合；guided into the main auditorium 才表示后续进入正式场地。因此 west lobby 的功能是集合点，而不是主会场。",
+        "text": "meet in the west lobby 是集合地点，guided into the main auditorium 是随后进入的场地。before 把两个动作排成先后，不能把第一处大厅当成活动主场。",
         "tips": [
-          "地点要和动作一起记，不能只记场所名。",
-          "同句多个地点时，先判断它们在流程中的先后功能。"
+          "分别记录 meet 和 guided into 后面的地点。"
         ]
       },
       "options": null,
@@ -76,8 +75,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断说话人提到的地点是在说发生地、集合点，还是办理地点。",
-        "task_prompt": "先听音频，再判断说话人提到的地点是在说发生地、集合点，还是办理地点。",
+        "text": "听录音：参观者先在哪里集合，随后去哪里？",
+        "task_prompt": "听录音：参观者先在哪里集合，随后去哪里？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -88,10 +87,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：地点出现后，要立刻看它和哪个动作动词绑定，如 meet, register, deliver, perform。\n\n② 核心规律：地点题不是简单地记一个地名，而是判断这个地名在事件流程中的功能。lobby、auditorium、office、gate 这些词经常同句出现，若不区分“集合点”和“正式发生地”，就很容易答错。\n\n③ 验证：本句 meet in the west lobby 表示先集合；guided into the main auditorium 才表示后续进入正式场地。因此 west lobby 的功能是集合点，而不是主会场。",
+        "text": "meet in the west lobby 是集合地点，guided into the main auditorium 是随后进入的场地。before 把两个动作排成先后，不能把第一处大厅当成活动主场。",
         "tips": [
-          "地点要和动作一起记，不能只记场所名。",
-          "同句多个地点时，先判断它们在流程中的先后功能。"
+          "分别记录 meet 和 guided into 后面的地点。"
         ]
       },
       "auto_scoring": false,
@@ -140,8 +138,8 @@
       "card_box_name": "地点",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "任务：听完后，选出‘真正办理手续的地点’。",
-        "task_prompt": "听完后，选出‘真正办理手续的地点’。",
+        "text": "听录音：参观者应在哪里登记？",
+        "task_prompt": "听录音：参观者应在哪里登记？",
         "task_schema": {
           "action": "四选一作答",
           "focus": "经过地点与业务办理点区分",
@@ -153,14 +151,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：真正办理手续的是 second-floor service desk。",
-        "explanation": "语境揭示：Go past the exhibition hall and register at the second-floor service desk. 地点题很容易被第一个出现的场所带偏。"
+        "text": "B：二楼服务台。",
+        "explanation": "Go past the exhibition hall 是经过展厅；register at the second-floor service desk 才是登记地点。A把途中经过的地点当目的地，B对应register后的服务台。"
       },
       "analysis_content": {
-        "text": "① 识别信号：一句里有多个地点时，要看哪个地点和 register, collect, pick up, submit 等业务动词绑定。\n\n② 核心规律：地点类题常用“路线提示”做干扰。先出现的地点未必是答案，它可能只是路标或经过点。真正该答的地点往往出现在与核心动作直接相连的位置。\n\n③ 验证：本句 exhibition hall 只是路过点；register at the second-floor service desk 才是办理动作与地点的直接绑定。因此答案必须是 second-floor service desk。",
+        "text": "Go past the exhibition hall 是经过展厅；register at the second-floor service desk 才是登记地点。A把途中经过的地点当目的地，B对应register后的服务台。",
         "tips": [
-          "地点题不要只记第一个地名，要看哪个地名后面跟着关键动作。",
-          "路线中的路标不等于目的地。"
+          "重点听 register at，而不是遇到第一个地名就结束。"
         ]
       },
       "options": [
@@ -217,8 +214,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：听完后，选出‘真正办理手续的地点’。",
-        "task_prompt": "听完后，选出‘真正办理手续的地点’。",
+        "text": "听录音：参观者应在哪里登记？",
+        "task_prompt": "听录音：参观者应在哪里登记？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -229,10 +226,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：一句里有多个地点时，要看哪个地点和 register, collect, pick up, submit 等业务动词绑定。\n\n② 核心规律：地点类题常用“路线提示”做干扰。先出现的地点未必是答案，它可能只是路标或经过点。真正该答的地点往往出现在与核心动作直接相连的位置。\n\n③ 验证：本句 exhibition hall 只是路过点；register at the second-floor service desk 才是办理动作与地点的直接绑定。因此答案必须是 second-floor service desk。",
+        "text": "Go past the exhibition hall 是经过展厅；register at the second-floor service desk 才是登记地点。A把途中经过的地点当目的地，B对应register后的服务台。",
         "tips": [
-          "地点题不要只记第一个地名，要看哪个地名后面跟着关键动作。",
-          "路线中的路标不等于目的地。"
+          "重点听 register at，而不是遇到第一个地名就结束。"
         ]
       },
       "auto_scoring": true,
@@ -289,12 +285,12 @@
       },
       "back_content": {
         "text": "在4号站台等候替换列车到达。",
-        "explanation": "platform 4 是位置，until the replacement train arrives 是等待结束条件。录音没有要求乘客立即前往另一座车站，也没有给出准确到达时刻。"
+        "explanation": "wait on platform 4 指在4号站台等；until the replacement train arrives 表示替换列车到达后才结束等待。replacement train 是来替代原车的列车，录音未给确切到达时间。"
       },
       "analysis_content": {
-        "text": "platform 4 是位置，until the replacement train arrives 是等待结束条件。录音没有要求乘客立即前往另一座车站，也没有给出准确到达时刻。",
+        "text": "wait on platform 4 指在4号站台等；until the replacement train arrives 表示替换列车到达后才结束等待。replacement train 是来替代原车的列车，录音未给确切到达时间。",
         "tips": [
-          "地点安排与结束等待的条件要同时保留。"
+          "把 wait 后的位置与 until 后的结束条件分开。"
         ]
       },
       "time_window_ms": [
@@ -331,9 +327,9 @@
         "task_schema": null
       },
       "analysis": {
-        "text": "platform 4 是位置，until the replacement train arrives 是等待结束条件。录音没有要求乘客立即前往另一座车站，也没有给出准确到达时刻。",
+        "text": "wait on platform 4 指在4号站台等；until the replacement train arrives 表示替换列车到达后才结束等待。replacement train 是来替代原车的列车，录音未给确切到达时间。",
         "tips": [
-          "地点安排与结束等待的条件要同时保留。"
+          "把 wait 后的位置与 until 后的结束条件分开。"
         ]
       },
       "auto_scoring": false,
@@ -400,12 +396,12 @@
       },
       "back_content": {
         "text": "较低楼层的档案室；主入口只是进入大楼的位置。",
-        "explanation": "lower level 没有直接说明是地下室，不能凭空增加楼层编号。"
+        "explanation": "enter through the main gate 是进入大楼的路线；documents are stored in the archive room 才是文件位置。on the lower level 表示较低楼层，没有给具体层号。"
       },
       "analysis_content": {
-        "text": "lower level 没有直接说明是地下室，不能凭空增加楼层编号。",
+        "text": "enter through the main gate 是进入大楼的路线；documents are stored in the archive room 才是文件位置。on the lower level 表示较低楼层，没有给具体层号。",
         "tips": [
-          "分别找 enter 和 stored 对应的地点，不要把入口当作文件存放处。"
+          "听 stored in 后的房间，再把入口信息单独放开。"
         ]
       },
       "options": null,
@@ -450,9 +446,9 @@
         "task_schema": null
       },
       "analysis": {
-        "text": "lower level 没有直接说明是地下室，不能凭空增加楼层编号。",
+        "text": "enter through the main gate 是进入大楼的路线；documents are stored in the archive room 才是文件位置。on the lower level 表示较低楼层，没有给具体层号。",
         "tips": [
-          "分别找 enter 和 stored 对应的地点，不要把入口当作文件存放处。"
+          "听 stored in 后的房间，再把入口信息单独放开。"
         ]
       },
       "auto_scoring": false,
@@ -502,7 +498,7 @@
       "card_group_name": "细节捕捉",
       "front_content": {
         "text": "听录音：投诉针对哪一处的延误？",
-        "task_prompt": "听完后，选出‘真正发生投诉的地点’。",
+        "task_prompt": "听录音：投诉针对哪一处的延误？",
         "task_schema": {
           "action": "四选一作答",
           "focus": "提及地点与事件发生地绑定",
@@ -515,12 +511,12 @@
       },
       "back_content": {
         "text": "停车场出口处的延误。",
-        "explanation": "complaints were about delays at... 说明投诉针对的情况，不是投诉登记办公室的位置。"
+        "explanation": "entered through the main gate 说多数游客从哪里入内。complaints were about delays at the parking exit 才说投诉涉及停车场出口延误，对应B。入口与延误地点不是同一处。"
       },
       "analysis_content": {
-        "text": "complaints were about delays at... 说明投诉针对的情况，不是投诉登记办公室的位置。",
+        "text": "entered through the main gate 说多数游客从哪里入内。complaints were about delays at the parking exit 才说投诉涉及停车场出口延误，对应B。入口与延误地点不是同一处。",
         "tips": [
-          "追踪 complaints were about 后的完整短语，区分游客入口与发生延误的地方。"
+          "跟着 complaints were about 听到底，找到 delays at 后的位置。"
         ]
       },
       "options": [
@@ -589,9 +585,9 @@
         }
       },
       "analysis": {
-        "text": "complaints were about delays at... 说明投诉针对的情况，不是投诉登记办公室的位置。",
+        "text": "entered through the main gate 说多数游客从哪里入内。complaints were about delays at the parking exit 才说投诉涉及停车场出口延误，对应B。入口与延误地点不是同一处。",
         "tips": [
-          "追踪 complaints were about 后的完整短语，区分游客入口与发生延误的地方。"
+          "跟着 complaints were about 听到底，找到 delays at 后的位置。"
         ]
       },
       "auto_scoring": true,
@@ -643,8 +639,8 @@
       "card_box_name": "地点",
       "card_group_name": "细节捕捉",
       "front_content": {
-        "text": "任务：听完后，用一句话复述“地点在哪里，以及它对应什么事件或功能”。",
-        "task_prompt": "听完后，用一句话复述“地点在哪里，以及它对应什么事件或功能”。",
+        "text": "听录音：研讨会在哪间房举行，签到又在哪里？",
+        "task_prompt": "听录音：研讨会在哪间房举行，签到又在哪里？",
         "task_schema": {
           "action": "口头复述地点绑定",
           "focus": "地点、功能与事件三点合并",
@@ -657,12 +653,12 @@
       },
       "back_content": {
         "text": "活动在北楼3B室举行，签到在外面的接待台。",
-        "explanation": "3B 是房间编号，原文没有直接说明它位于三层。"
+        "explanation": "seminar 本身在北楼3B室，check-in 在房间外的接待台。while 将两个安排分开。3B是房号，不必据此猜测楼层。"
       },
       "analysis_content": {
-        "text": "3B 是房间编号，原文没有直接说明它位于三层。",
+        "text": "seminar 本身在北楼3B室，check-in 在房间外的接待台。while 将两个安排分开。3B是房号，不必据此猜测楼层。",
         "tips": [
-          "把 seminar 与 check-in 各配一个地点；房间编号和楼层信息不要混记。"
+          "分别给 seminar 和 check-in 配上地点。"
         ]
       },
       "options": null,
@@ -698,8 +694,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：听完后，用一句话复述“地点在哪里，以及它对应什么事件或功能”。",
-        "task_prompt": "听完后，用一句话复述“地点在哪里，以及它对应什么事件或功能”。",
+        "text": "听录音：研讨会在哪间房举行，签到又在哪里？",
+        "task_prompt": "听录音：研讨会在哪间房举行，签到又在哪里？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -710,9 +706,9 @@
         }
       },
       "analysis": {
-        "text": "3B 是房间编号，原文没有直接说明它位于三层。",
+        "text": "seminar 本身在北楼3B室，check-in 在房间外的接待台。while 将两个安排分开。3B是房号，不必据此猜测楼层。",
         "tips": [
-          "把 seminar 与 check-in 各配一个地点；房间编号和楼层信息不要混记。"
+          "分别给 seminar 和 check-in 配上地点。"
         ]
       },
       "auto_scoring": false,
@@ -766,12 +762,12 @@
       },
       "back_content": {
         "text": "一楼正对主入口的信息台。",
-        "explanation": "there 回指information desk；楼上办公室负责住宿，不能因也叫office就把它当作资料领取处。"
+        "explanation": "Printed course materials are available there 中 there 回指前句的 information desk。它在地面层、正对主入口；楼上办公室只处理住宿问题，不发课程资料。"
       },
       "analysis_content": {
-        "text": "there 回指information desk；楼上办公室负责住宿，不能因也叫office就把它当作资料领取处。",
+        "text": "Printed course materials are available there 中 there 回指前句的 information desk。它在地面层、正对主入口；楼上办公室只处理住宿问题，不发课程资料。",
         "tips": [
-          "地点题要连同该处提供的服务一起定位。"
+          "先找 available there，再回到前句确定 there 指哪一处。"
         ]
       },
       "source_ref": {
@@ -808,9 +804,9 @@
         "task_schema": null
       },
       "analysis": {
-        "text": "there 回指information desk；楼上办公室负责住宿，不能因也叫office就把它当作资料领取处。",
+        "text": "Printed course materials are available there 中 there 回指前句的 information desk。它在地面层、正对主入口；楼上办公室只处理住宿问题，不发课程资料。",
         "tips": [
-          "地点题要连同该处提供的服务一起定位。"
+          "先找 available there，再回到前句确定 there 指哪一处。"
         ]
       },
       "auto_scoring": false,
@@ -1179,12 +1175,12 @@
       },
       "back_content": {
         "text": "演讲厅旁的临时办公室。",
-        "explanation": "temporary office是借还书服务替代点；阅览室仍在原处不代表借还台也未移动。while限定了维修期间的安排。"
+        "explanation": "borrowing and returns 指借还书，维修期间改在演讲厅旁 temporary office 办理。reading rooms remain…usual location 只说明阅览室没搬，不代表借还书台也还在原处。"
       },
       "analysis_content": {
-        "text": "temporary office是借还书服务替代点；阅览室仍在原处不代表借还台也未移动。while限定了维修期间的安排。",
+        "text": "borrowing and returns 指借还书，维修期间改在演讲厅旁 temporary office 办理。reading rooms remain…usual location 只说明阅览室没搬，不代表借还书台也还在原处。",
         "tips": [
-          "部分服务搬迁不等于整座设施全部移动。"
+          "先确定要办的是 borrowing/returns，再听 handled in 后的地点。"
         ]
       },
       "source_ref": {
@@ -1221,9 +1217,9 @@
         "task_schema": null
       },
       "analysis": {
-        "text": "temporary office是借还书服务替代点；阅览室仍在原处不代表借还台也未移动。while限定了维修期间的安排。",
+        "text": "borrowing and returns 指借还书，维修期间改在演讲厅旁 temporary office 办理。reading rooms remain…usual location 只说明阅览室没搬，不代表借还书台也还在原处。",
         "tips": [
-          "部分服务搬迁不等于整座设施全部移动。"
+          "先确定要办的是 borrowing/returns，再听 handled in 后的地点。"
         ]
       },
       "auto_scoring": false,
@@ -1285,11 +1281,13 @@
       },
       "back_content": {
         "text": "学生中心4号房间。",
-        "explanation": "Room Four 对应新生，Room Nine 对应继续就读的学生；不要交换人群与房间。"
+        "explanation": "New students 对应 Room Four；Continuing students 对应 Room Nine。题目问新生，应选4号房；Both rooms…student centre 只说明两个房间都在学生中心。"
       },
       "analysis_content": {
-        "text": "Room Four 对应新生，Room Nine 对应继续就读的学生；不要交换人群与房间。",
-        "tips": []
+        "text": "New students 对应 Room Four；Continuing students 对应 Room Nine。题目问新生，应选4号房；Both rooms…student centre 只说明两个房间都在学生中心。",
+        "tips": [
+          "给 New 与 Continuing 两类学生各配一个房号。"
+        ]
       },
       "source_ref": {
         "type": "simulation",
@@ -1322,8 +1320,10 @@
         "task_schema": null
       },
       "analysis": {
-        "text": "Room Four 对应新生，Room Nine 对应继续就读的学生；不要交换人群与房间。",
-        "tips": []
+        "text": "New students 对应 Room Four；Continuing students 对应 Room Nine。题目问新生，应选4号房；Both rooms…student centre 只说明两个房间都在学生中心。",
+        "tips": [
+          "给 New 与 Continuing 两类学生各配一个房号。"
+        ]
       },
       "auto_scoring": false,
       "legacy_interaction": {

@@ -29,7 +29,7 @@
       "analysis_content": {
         "text": "否定改写必须同时核对方向和强度。两句话都不积极，并不意味着其数量或时间范围相同。",
         "tips": [
-          "核对句中具体定义，不把局部近义扩大为整句等值。"
+          "分别用“从未有帮助”和“只有很少帮助”复述两句，再比较。"
         ]
       },
       "audio": null,
@@ -71,7 +71,7 @@
       "analysis": {
         "text": "否定改写必须同时核对方向和强度。两句话都不积极，并不意味着其数量或时间范围相同。",
         "tips": [
-          "核对句中具体定义，不把局部近义扩大为整句等值。"
+          "分别用“从未有帮助”和“只有很少帮助”复述两句，再比较。"
         ]
       },
       "auto_scoring": false,
@@ -99,7 +99,7 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "核对句中具体定义，不把局部近义扩大为整句等值。",
+        "exam_value": "分别用“从未有帮助”和“只有很少帮助”复述两句，再比较。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       }
@@ -116,23 +116,23 @@
       "card_box_name": "翻译否定",
       "card_group_name": "同义词替换",
       "front_content": {
-        "text": "原句：The guide has never been helpful.\n改写：The guide has provided little help.\n\n问题：哪项判断准确？"
+        "text": "原句：The guide has never been helpful.\n改写：The guide has provided little help.\n\n任务：哪项判断准确？"
       },
       "back_content": {
-        "text": "B。改写保留不积极的方向，但减弱了原句的绝对否定。",
-        "explanation": "never 与 little 的否定强度不同，不能仅凭主题或评价方向相同就判为完全等值。"
+        "text": "答案：B。The second sentence allows a small amount of help, while the first rules out past helpful instances.",
+        "explanation": "never排除过去有帮助的情况，little通常表示有一点但很少，所以B正确。A错误地让never允许少量帮助，C反转比较，D把两句都读成每次有用。"
       },
       "analysis_content": {
-        "text": "never 与 little 的否定强度不同，不能仅凭主题或评价方向相同就判为完全等值。",
+        "text": "never排除过去有帮助的情况，little通常表示有一点但很少，所以B正确。A错误地让never允许少量帮助，C反转比较，D把两句都读成每次有用。",
         "tips": [
-          "核对句中具体定义，不把局部近义扩大为整句等值。"
+          "把never与little的数量差别说出来，而不只判断两句都是负面评价。"
         ]
       },
       "audio": null,
       "extra_fields": {
-        "focus_expression": "never helpful -> contributes little",
-        "substitution_type": "explicit_negation_to_low_contribution",
-        "key_word_cn": "显性否定转低贡献表达",
+        "focus_expression": "has never been helpful versus has provided little help",
+        "substitution_type": "negative_evaluation_strength_comparison",
+        "key_word_cn": "never排除过去有帮助的情况；little允许少量帮助",
         "source_origin": "constructed_negation_paraphrase_context"
       },
       "source_ref": {
@@ -157,17 +157,17 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "原句：The guide has never been helpful.\n改写：The guide has provided little help.\n\n问题：哪项判断准确？",
-        "task_prompt": "原句：The guide has never been helpful.\n改写：The guide has provided little help.\n\n问题：哪项判断准确？",
+        "text": "原句：The guide has never been helpful.\n改写：The guide has provided little help.\n\n任务：哪项判断准确？",
+        "task_prompt": "哪项判断准确？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "never 与 little 的否定强度不同，不能仅凭主题或评价方向相同就判为完全等值。",
+        "text": "never排除过去有帮助的情况，little通常表示有一点但很少，所以B正确。A错误地让never允许少量帮助，C反转比较，D把两句都读成每次有用。",
         "tips": [
-          "核对句中具体定义，不把局部近义扩大为整句等值。"
+          "把never与little的数量差别说出来，而不只判断两句都是负面评价。"
         ]
       },
       "auto_scoring": true,
@@ -195,29 +195,29 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "核对句中具体定义，不把局部近义扩大为整句等值。",
+        "exam_value": "把never与little的数量差别说出来，而不只判断两句都是负面评价。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       },
       "options": [
         {
           "key": "A",
-          "text": "改写变成了强烈赞同。",
+          "text": "Both sentences allow a small amount of useful help.",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "改写保留不积极的方向，但减弱了原句的绝对否定。",
+          "text": "The second sentence allows a small amount of help, while the first rules out past helpful instances.",
           "is_correct": true
         },
         {
           "key": "C",
-          "text": "改写证明指南毫无内容。",
+          "text": "The first sentence says the guide helps more often than the second.",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "两句在任何语境中都可互换。",
+          "text": "Both sentences guarantee useful help on every occasion.",
           "is_correct": false
         }
       ],
@@ -238,41 +238,40 @@
       "card_box_name": "翻译否定",
       "card_group_name": "同义词替换",
       "front_content": {
-        "text": "原文：\n\"most potential health conditions cannot be identified by genetic testing alone\"\n\n改写：\n\"genetic testing by itself is insufficient to identify most potential health conditions\"\n\n这组改写的关键等值点是：",
+        "text": "原句：Most potential health conditions cannot be identified by genetic testing alone.\n\n任务：哪句改写最准确？",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：A\n\ncannot ... alone 与 is insufficient by itself 都表达\"单一手段不够\"。核心边界词 alone/by itself 被保留，所以语义等值。\n\nB 错：原文不是说完全无法识别任何疾病。\nC 错：原文并未否定遗传检测的全部价值。\nD 错：把多数（most）改成全部（all）造成范围扩大。",
-        "explanation": "翻译否定里，cannot ... alone 常被改为 insufficient by itself / not enough on its own。真正不能丢的是边界限定词 alone。"
+        "text": "答案：A。Genetic testing by itself is insufficient to identify most potential health conditions.",
+        "explanation": "A的by itself对应alone，insufficient对应不能单独做到，most也保留。B、C把单独不足扩大为任何情况都无作用，D反转结论并把most改成all。"
       },
       "analysis_content": {
-        "text": "① 识别信号：原句显性否定 cannot，改写句用 insufficient，都是\"能力不足\"方向。\n\n② 核心规律：cannot do X alone 与 be insufficient to do X 是高频等值模板，前提是 alone/on its own 边界必须保留。\n\n③ 验证：对象（most potential health conditions）一致，边界（alone/by itself）一致，结论（单独不够）一致 -> 成立。",
+        "text": "A的by itself对应alone，insufficient对应不能单独做到，most也保留。B、C把单独不足扩大为任何情况都无作用，D反转结论并把most改成all。",
         "tips": [
-          "读到 cannot ... alone，先在选项中找 insufficient / not enough 类表达。",
-          "most 与 all 严禁混换，范围词是高危陷阱。"
+          "“不能只靠它”仍允许它有帮助，别译成“它毫无用处”。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "保留了\"单独不足\"这一核心边界与结论",
+          "text": "Genetic testing by itself is insufficient to identify most potential health conditions.",
           "is_correct": true
         },
         {
           "key": "B",
-          "text": "强调遗传检测完全不能识别任何疾病",
+          "text": "Genetic testing can never identify any health condition.",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "把原文改写为遗传检测毫无价值",
+          "text": "Genetic testing has no useful role in identifying health conditions.",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "把原文中的多数疾病扩大为全部疾病",
+          "text": "All health conditions can be identified by genetic testing alone.",
           "is_correct": false
         }
       ],
@@ -309,18 +308,17 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "原文：\n\"most potential health conditions cannot be identified by genetic testing alone\"\n\n改写：\n\"genetic testing by itself is insufficient to identify most potential health conditions\"\n\n这组改写的关键等值点是：",
-        "task_prompt": "原文：\n\"most potential health conditions cannot be identified by genetic testing alone\"\n\n改写：\n\"genetic testing by itself is insufficient to identify most potential health conditions\"\n\n这组改写的关键等值点是：",
+        "text": "原句：Most potential health conditions cannot be identified by genetic testing alone.\n\n任务：哪句改写最准确？",
+        "task_prompt": "哪句改写最准确？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：原句显性否定 cannot，改写句用 insufficient，都是\"能力不足\"方向。\n\n② 核心规律：cannot do X alone 与 be insufficient to do X 是高频等值模板，前提是 alone/on its own 边界必须保留。\n\n③ 验证：对象（most potential health conditions）一致，边界（alone/by itself）一致，结论（单独不够）一致 -> 成立。",
+        "text": "A的by itself对应alone，insufficient对应不能单独做到，most也保留。B、C把单独不足扩大为任何情况都无作用，D反转结论并把most改成all。",
         "tips": [
-          "读到 cannot ... alone，先在选项中找 insufficient / not enough 类表达。",
-          "most 与 all 严禁混换，范围词是高危陷阱。"
+          "“不能只靠它”仍允许它有帮助，别译成“它毫无用处”。"
         ]
       },
       "auto_scoring": true,
@@ -356,7 +354,7 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练单一手段不足型否定的等值识别。",
+        "exam_value": "“不能只靠它”仍允许它有帮助，别译成“它毫无用处”。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       }
@@ -373,41 +371,40 @@
       "card_box_name": "翻译否定",
       "card_group_name": "同义词替换",
       "front_content": {
-        "text": "原文：\n\"A single percentage label hardly reflects a person's full ancestry.\"\n\n改写：\n\"One percentage figure fails to represent the person's complete ancestry accurately.\"\n\n该改写成立的核心原因是：",
+        "text": "原句：A single percentage label hardly reflects a person’s full ancestry.\n\n任务：哪句改写最接近原意？",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：C\n\nhardly reflects 与 fails to represent ... accurately 都是否定充分反映，方向一致；full ancestry 与 complete ancestry 也保持同一对象范围。\n\nA 错：改写不是转为强肯定。\nB 错：改写没有把完整血缘背景缩成一次调查结果。\nD 错：改写没有新增因果结论。",
-        "explanation": "hardly 是“几乎不能”，常被改写为 fail to / be far from enough。它是隐性否定高频词。"
+        "text": "答案：C。A single percentage figure scarcely reflects a person’s full ancestry.",
+        "explanation": "hardly与scarcely都表示几乎不，C保留原意。A、B反写成准确或完整呈现，D把描绘祖源换成决定祖源。"
       },
       "analysis_content": {
-        "text": "① 识别信号：原句 hardly（隐性否定）改写为 fail to（显性否定），两者都表示“不能充分反映”。\n\n② 核心规律：hardly/scarcely/barely 常与 fail to/not fully 对应，属于否定显化改写。关键是保留“不足以反映”而非“完全没有信息”。\n\n③ 验证：对象（full ancestry/complete ancestry）一致，结论（反映不足）一致，范围未扩展，所以改写成立。",
+        "text": "hardly与scarcely都表示几乎不，C保留原意。A、B反写成准确或完整呈现，D把描绘祖源换成决定祖源。",
         "tips": [
-          "hardly 不等于完全否定，而是“几乎不”；对应 fail to 时要看程度是否匹配。",
-          "fail to 后面通常接动作动词，语义上常与 hardly + 动词可互换。"
+          "否定程度也要对应，hardly/scarcely比笼统的not fully更接近。"
         ]
       },
       "options": [
         {
           "key": "A",
-          "text": "改写把原文的不足反映转成了高度准确反映",
+          "text": "A single percentage figure accurately describes a person’s full ancestry.",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "改写把完整血缘背景偷换成一次调查结果",
+          "text": "A single percentage figure gives a complete family history.",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "改写把隐性否定 hardly 显化为 fail to，结论方向不变",
+          "text": "A single percentage figure scarcely reflects a person’s full ancestry.",
           "is_correct": true
         },
         {
           "key": "D",
-          "text": "改写新增了原文没有的因果推断",
+          "text": "A single percentage figure determines a person’s ancestry.",
           "is_correct": false
         }
       ],
@@ -417,9 +414,9 @@
       "correct_answer": null,
       "audio": null,
       "extra_fields": {
-        "focus_expression": "hardly reflects -> fails to represent",
-        "substitution_type": "implicit_to_explicit_negation",
-        "key_word_cn": "隐性否定显化",
+        "focus_expression": "hardly reflects -> scarcely reflects",
+        "substitution_type": "near_negative_synonym_paraphrase",
+        "key_word_cn": "hardly与scarcely：保留几乎不能反映的强度",
         "source_origin": "constructed_negation_paraphrase_context"
       },
       "source_ref": {
@@ -444,18 +441,17 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "原文：\n\"A single percentage label hardly reflects a person's full ancestry.\"\n\n改写：\n\"One percentage figure fails to represent the person's complete ancestry accurately.\"\n\n该改写成立的核心原因是：",
-        "task_prompt": "原文：\n\"A single percentage label hardly reflects a person's full ancestry.\"\n\n改写：\n\"One percentage figure fails to represent the person's complete ancestry accurately.\"\n\n该改写成立的核心原因是：",
+        "text": "原句：A single percentage label hardly reflects a person’s full ancestry.\n\n任务：哪句改写最接近原意？",
+        "task_prompt": "哪句改写最接近原意？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 识别信号：原句 hardly（隐性否定）改写为 fail to（显性否定），两者都表示“不能充分反映”。\n\n② 核心规律：hardly/scarcely/barely 常与 fail to/not fully 对应，属于否定显化改写。关键是保留“不足以反映”而非“完全没有信息”。\n\n③ 验证：对象（full ancestry/complete ancestry）一致，结论（反映不足）一致，范围未扩展，所以改写成立。",
+        "text": "hardly与scarcely都表示几乎不，C保留原意。A、B反写成准确或完整呈现，D把描绘祖源换成决定祖源。",
         "tips": [
-          "hardly 不等于完全否定，而是“几乎不”；对应 fail to 时要看程度是否匹配。",
-          "fail to 后面通常接动作动词，语义上常与 hardly + 动词可互换。"
+          "否定程度也要对应，hardly/scarcely比笼统的not fully更接近。"
         ]
       },
       "auto_scoring": true,
@@ -489,7 +485,7 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练隐性否定与显性否定之间的保义转换。",
+        "exam_value": "否定程度也要对应，hardly/scarcely比笼统的not fully更接近。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -506,7 +502,7 @@
       "card_box_name": "翻译否定",
       "card_group_name": "同义词替换",
       "front_content": {
-        "text": "句子：At present, the evidence supporting these applications is extremely limited.\n\n问题：哪一句保留当前时点和证据数量的限制？"
+        "text": "句子：At present, the evidence supporting these applications is extremely limited.\n\n任务：哪一句保留当前时点和证据数量的限制？"
       },
       "back_content": {
         "text": "D。Only a very small amount of supporting evidence is currently available.",
@@ -515,14 +511,14 @@
       "analysis_content": {
         "text": "extremely limited 说明可用支持证据很有限。不能仅由数量少就断定应用永远无效，也不能把当前改成未来的永久结论。",
         "tips": [
-          "核对句中具体定义，不把局部近义扩大为整句等值。"
+          "分别划出 At present 与 extremely limited，核对改写是否保留当前时点和有限证据。"
         ]
       },
       "audio": null,
       "extra_fields": {
-        "focus_expression": "non-existent or weak -> do not make sense at present",
-        "substitution_type": "evidence_negation_reframing",
-        "key_word_cn": "科学依据不足型否定",
+        "focus_expression": "extremely limited evidence at present -> a very small amount of evidence currently available",
+        "substitution_type": "evidence_amount_and_time_preserving_paraphrase",
+        "key_word_cn": "当前证据很少；不推成永久无效",
         "source_origin": "constructed_negation_paraphrase_context"
       },
       "source_ref": {
@@ -547,8 +543,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "句子：At present, the evidence supporting these applications is extremely limited.\n\n问题：哪一句保留当前时点和证据数量的限制？",
-        "task_prompt": "问题：哪一句保留当前时点和证据数量的限制？",
+        "text": "句子：At present, the evidence supporting these applications is extremely limited.\n\n任务：哪一句保留当前时点和证据数量的限制？",
+        "task_prompt": "哪一句保留当前时点和证据数量的限制？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -557,7 +553,7 @@
       "analysis": {
         "text": "extremely limited 说明可用支持证据很有限。不能仅由数量少就断定应用永远无效，也不能把当前改成未来的永久结论。",
         "tips": [
-          "核对句中具体定义，不把局部近义扩大为整句等值。"
+          "分别划出 At present 与 extremely limited，核对改写是否保留当前时点和有限证据。"
         ]
       },
       "auto_scoring": true,
@@ -585,7 +581,7 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "核对句中具体定义，不把局部近义扩大为整句等值。",
+        "exam_value": "分别划出 At present 与 extremely limited，核对改写是否保留当前时点和有限证据。",
         "box_progression_role": "application",
         "review_status": "draft"
       },
@@ -628,20 +624,19 @@
       "card_box_name": "翻译否定",
       "card_group_name": "同义词替换",
       "front_content": {
-        "text": "用词库补全改写句，使两句保持同一结论。\n\n原句：Most of the conditions cannot be identified by a single screening method.\n改写：A single screening method {{blank}} identify most conditions accurately.",
+        "text": "原句：Most of the conditions cannot be identified by a single screening method.\n改写：A single screening method {{blank}} identify most conditions.\n\n任务：用词库补全改写句，保留“单一方法不足”的意思。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：is insufficient to\n\n原句否定的是单一方法的充分性，不是否定这种方法的一切价值。is insufficient to 保留了“单独不足”的结论，同时 most 仍对应 most，没有扩大为 all。",
-        "explanation": "cannot be done by one method alone 常可改写为 one method is insufficient to do it；判断时必须同时保留数量范围和单一手段边界。"
+        "text": "is insufficient to。",
+        "explanation": "cannot be identified by a single ...表示单靠一种方法不够，is insufficient to表达同一不足。其他词库项说保证、确定、设计目的或已证明有效，都不能替代实际能力不足。"
       },
       "analysis_content": {
-        "text": "① 句法定位：空格后是动词原形 identify，因此候选短语需要能直接接不定式。\n\n② 语义筛选：原句只说单一方法不够，不能选 guaranteed / certain / always able 这类强肯定表达。\n\n③ 回填验证：A single screening method is insufficient to identify most conditions accurately 既保留 most，也保留“单独不足”，与原句等值。",
+        "text": "cannot be identified by a single ...表示单靠一种方法不够，is insufficient to表达同一不足。其他词库项说保证、确定、设计目的或已证明有效，都不能替代实际能力不足。",
         "tips": [
-          "看到 cannot ... by X alone，优先寻找 X is insufficient / not enough。",
-          "保留 most、some、at present 等边界词后再确认答案。"
+          "不足、设计目的与保证成功是三种不同说法，不能互换。"
         ]
       },
       "options": null,
@@ -687,18 +682,17 @@
       },
       "interaction_id": "lock",
       "front": {
-        "text": "用词库补全改写句，使两句保持同一结论。\n\n原句：Most of the conditions cannot be identified by a single screening method.\n改写：A single screening method {{blank}} identify most conditions accurately.",
-        "task_prompt": "用词库补全改写句，使两句保持同一结论。\n\n原句：Most of the conditions cannot be identified by a single screening method.\n改写：A single screening method {{blank}} identify most conditions accurately.",
+        "text": "原句：Most of the conditions cannot be identified by a single screening method.\n改写：A single screening method {{blank}} identify most conditions.\n\n任务：用词库补全改写句，保留“单一方法不足”的意思。",
+        "task_prompt": "用词库补全改写句，保留“单一方法不足”的意思。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 句法定位：空格后是动词原形 identify，因此候选短语需要能直接接不定式。\n\n② 语义筛选：原句只说单一方法不够，不能选 guaranteed / certain / always able 这类强肯定表达。\n\n③ 回填验证：A single screening method is insufficient to identify most conditions accurately 既保留 most，也保留“单独不足”，与原句等值。",
+        "text": "cannot be identified by a single ...表示单靠一种方法不够，is insufficient to表达同一不足。其他词库项说保证、确定、设计目的或已证明有效，都不能替代实际能力不足。",
         "tips": [
-          "看到 cannot ... by X alone，优先寻找 X is insufficient / not enough。",
-          "保留 most、some、at present 等边界词后再确认答案。"
+          "不足、设计目的与保证成功是三种不同说法，不能互换。"
         ]
       },
       "auto_scoring": true,
@@ -740,7 +734,7 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练否定方向与数量范围的同步回填。",
+        "exam_value": "不足、设计目的与保证成功是三种不同说法，不能互换。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -757,7 +751,7 @@
       "card_box_name": "翻译否定",
       "card_group_name": "同义词替换",
       "front_content": {
-        "text": "用词库补全改写句，使两句保持同一评价方向。\n\n原句：The framework has never been useful for predicting individual choices.\n改写：The framework {{blank}} accurate predictions about individual choices.",
+        "text": "原句：The framework has never been useful for predicting individual choices.\n改写：The framework {{blank}} accurate predictions about individual choices.\n\n任务：用词库补全改写句，使两句保持同一评价方向。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -768,7 +762,9 @@
       },
       "analysis_content": {
         "text": "该短语保留作用不大的评价方向，但比 never been useful 更弱。题目只要求方向一致，不能据此断言两句在程度和时间上严格等值。",
-        "tips": []
+        "tips": [
+          "先把 never useful 与 contributes little to 的负面方向对应，再留意二者程度并不完全相同。"
+        ]
       },
       "options": null,
       "word_bank": [
@@ -788,7 +784,7 @@
       "extra_fields": {
         "focus_expression": "never useful -> contributes little to",
         "substitution_type": "explicit_negation_to_low_contribution_fill",
-        "key_word_cn": "显性否定转低贡献表达",
+        "key_word_cn": "never useful与contributes little to：同为负面评价，强度不完全相同",
         "source_origin": "constructed_negation_paraphrase_context"
       },
       "source_ref": {
@@ -813,8 +809,8 @@
       },
       "interaction_id": "lock",
       "front": {
-        "text": "用词库补全改写句，使两句保持同一评价方向。\n\n原句：The framework has never been useful for predicting individual choices.\n改写：The framework {{blank}} accurate predictions about individual choices.",
-        "task_prompt": "用词库补全改写句，使两句保持同一评价方向。\n\n原句：The framework has never been useful for predicting individual choices.\n改写：The framework {{blank}} accurate predictions about individual choices.",
+        "text": "原句：The framework has never been useful for predicting individual choices.\n改写：The framework {{blank}} accurate predictions about individual choices.\n\n任务：用词库补全改写句，使两句保持同一评价方向。",
+        "task_prompt": "用词库补全改写句，使两句保持同一评价方向。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -822,7 +818,9 @@
       },
       "analysis": {
         "text": "该短语保留作用不大的评价方向，但比 never been useful 更弱。题目只要求方向一致，不能据此断言两句在程度和时间上严格等值。",
-        "tips": []
+        "tips": [
+          "先把 never useful 与 contributes little to 的负面方向对应，再留意二者程度并不完全相同。"
+        ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
@@ -863,7 +861,7 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练弱肯定词形下的否定极性识别。",
+        "exam_value": "先把 never useful 与 contributes little to 的负面方向对应，再留意二者程度并不完全相同。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -880,7 +878,7 @@
       "card_box_name": "翻译否定",
       "card_group_name": "同义词替换",
       "front_content": {
-        "text": "用词库补全改写句，使两句保持同一信息强度。\n\n原句：A percentage label barely represents a person's full family history.\n改写：A percentage label {{blank}} represent a person's family history in full.",
+        "text": "原句：A percentage label barely represents a person's full family history.\n改写：A percentage label {{blank}} represent a person's family history in full.\n\n任务：用词库补全改写句，使两句保持同一信息强度。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -891,7 +889,9 @@
       },
       "analysis_content": {
         "text": "barely 与 can barely 都保留几乎不能充分呈现这一强度；in full 对应 full family history。不能把 barely 简化为范围更宽的 not fully 后仍称完全等值。",
-        "tips": []
+        "tips": [
+          "把 barely 换成“几乎不能”，检查改写是否仍表达这个程度。"
+        ]
       },
       "options": null,
       "word_bank": [
@@ -910,8 +910,8 @@
       "audio": null,
       "extra_fields": {
         "focus_expression": "barely represents -> can barely represent",
-        "substitution_type": "implicit_negation_to_explicit_failure_fill",
-        "key_word_cn": "隐性否定显化",
+        "substitution_type": "near_negative_degree_preserving_fill",
+        "key_word_cn": "保留barely的几乎不能程度",
         "source_origin": "constructed_negation_paraphrase_context"
       },
       "source_ref": {
@@ -936,8 +936,8 @@
       },
       "interaction_id": "lock",
       "front": {
-        "text": "用词库补全改写句，使两句保持同一信息强度。\n\n原句：A percentage label barely represents a person's full family history.\n改写：A percentage label {{blank}} represent a person's family history in full.",
-        "task_prompt": "用词库补全改写句，使两句保持同一信息强度。\n\n原句：A percentage label barely represents a person's full family history.\n改写：A percentage label {{blank}} represent a person's family history in full.",
+        "text": "原句：A percentage label barely represents a person's full family history.\n改写：A percentage label {{blank}} represent a person's family history in full.\n\n任务：用词库补全改写句，使两句保持同一信息强度。",
+        "task_prompt": "用词库补全改写句，使两句保持同一信息强度。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -945,7 +945,9 @@
       },
       "analysis": {
         "text": "barely 与 can barely 都保留几乎不能充分呈现这一强度；in full 对应 full family history。不能把 barely 简化为范围更宽的 not fully 后仍称完全等值。",
-        "tips": []
+        "tips": [
+          "把 barely 换成“几乎不能”，检查改写是否仍表达这个程度。"
+        ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
@@ -986,7 +988,7 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练程度边界在否定改写中的保留。",
+        "exam_value": "把 barely 换成“几乎不能”，检查改写是否仍表达这个程度。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -1003,7 +1005,7 @@
       "card_box_name": "翻译否定",
       "card_group_name": "同义词替换",
       "front_content": {
-        "text": "用词库补全改写句，使两句保持相同的时间范围和证据强度。\n\n原句：At present, this application does not have strong supporting evidence.\n改写：At present, the application {{blank}} by strong evidence.",
+        "text": "原句：At present, this application does not have strong supporting evidence.\n改写：At present, the application {{blank}} by strong evidence.\n\n任务：用词库补全改写句，使两句保持相同的时间范围和证据强度。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -1014,7 +1016,9 @@
       },
       "analysis_content": {
         "text": "原句直接说没有强支持证据，改写为 is not supported by strong evidence，保留否定对象与目前时点。单纯证据数量少不能自动推出它质量弱。",
-        "tips": []
+        "tips": [
+          "核对 At present 和 strong evidence，分别保留时点与证据强度。"
+        ]
       },
       "options": null,
       "word_bank": [
@@ -1059,8 +1063,8 @@
       },
       "interaction_id": "lock",
       "front": {
-        "text": "用词库补全改写句，使两句保持相同的时间范围和证据强度。\n\n原句：At present, this application does not have strong supporting evidence.\n改写：At present, the application {{blank}} by strong evidence.",
-        "task_prompt": "用词库补全改写句，使两句保持相同的时间范围和证据强度。\n\n原句：At present, this application does not have strong supporting evidence.\n改写：At present, the application {{blank}} by strong evidence.",
+        "text": "原句：At present, this application does not have strong supporting evidence.\n改写：At present, the application {{blank}} by strong evidence.\n\n任务：用词库补全改写句，使两句保持相同的时间范围和证据强度。",
+        "task_prompt": "用词库补全改写句，使两句保持相同的时间范围和证据强度。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -1068,7 +1072,9 @@
       },
       "analysis": {
         "text": "原句直接说没有强支持证据，改写为 is not supported by strong evidence，保留否定对象与目前时点。单纯证据数量少不能自动推出它质量弱。",
-        "tips": []
+        "tips": [
+          "核对 At present 和 strong evidence，分别保留时点与证据强度。"
+        ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
@@ -1109,7 +1115,7 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练证据强度与时间范围的联合判断。",
+        "exam_value": "核对 At present 和 strong evidence，分别保留时点与证据强度。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -1126,38 +1132,40 @@
       "card_box_name": "翻译否定",
       "card_group_name": "同义词替换",
       "front_content": {
-        "text": "下面四组改写中，哪一组越过了原句的范围边界，不能视为保义改写？",
+        "text": "哪一组改写增加了原句不能支持的永久结论？",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "D。the evidence is limited at present → the claim can never be valid。",
-        "explanation": "D 从当前证据有限跳到永远不可能成立。B 的新表述都否定产出有用结果，避免把很少产出与贡献很少混为一谈；少量成果也可能有较大贡献。"
+        "text": "答案：D。the evidence is limited at present → the claim can never be valid",
+        "explanation": "D把at present的当前证据有限变成never的永远不成立。A保留一种措施不足，B保留尚未产出有用结果，C用scarcely保留barely的几乎不。"
       },
       "analysis_content": {
-        "text": "D 从当前证据有限跳到永远不可能成立。B 的新表述都否定产出有用结果，避免把很少产出与贡献很少混为一谈；少量成果也可能有较大贡献。",
-        "tips": []
+        "text": "D把at present的当前证据有限变成never的永远不成立。A保留一种措施不足，B保留尚未产出有用结果，C用scarcely保留barely的几乎不。",
+        "tips": [
+          "现有证据不够，是关于目前知道多少；永远不能成立，是另一项更强的判断。"
+        ]
       },
       "options": [
         {
           "key": "A",
-          "text": "cannot succeed through one measure alone -> requires more than one measure",
+          "text": "cannot succeed through one measure alone → requires more than one measure",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "has not produced useful results -> has failed to produce useful results",
+          "text": "has not produced useful results → has failed to produce useful results",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "barely represents the whole picture -> fails to represent it fully",
+          "text": "barely represents the whole picture → scarcely represents the whole picture",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "the evidence is limited at present -> the claim can never be valid",
+          "text": "the evidence is limited at present → the claim can never be valid",
           "is_correct": true
         }
       ],
@@ -1194,16 +1202,18 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "下面四组改写中，哪一组越过了原句的范围边界，不能视为保义改写？",
-        "task_prompt": "下面四组改写中，哪一组越过了原句的范围边界，不能视为保义改写？",
+        "text": "哪一组改写增加了原句不能支持的永久结论？",
+        "task_prompt": "哪一组改写增加了原句不能支持的永久结论？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "D 从当前证据有限跳到永远不可能成立。B 的新表述都否定产出有用结果，避免把很少产出与贡献很少混为一谈；少量成果也可能有较大贡献。",
-        "tips": []
+        "text": "D把at present的当前证据有限变成never的永远不成立。A保留一种措施不足，B保留尚未产出有用结果，C用scarcely保留barely的几乎不。",
+        "tips": [
+          "现有证据不够，是关于目前知道多少；永远不能成立，是另一项更强的判断。"
+        ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
@@ -1238,7 +1248,7 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "迁移极性、范围和真值条件核验。",
+        "exam_value": "现有证据不够，是关于目前知道多少；永远不能成立，是另一项更强的判断。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       }
@@ -1255,20 +1265,19 @@
       "card_box_name": "翻译否定",
       "card_group_name": "同义词替换",
       "front_content": {
-        "text": "用词库补全句子，使表达保留样本范围，避免把有限调查写成绝对结论。\n\nBecause the survey covered only one city, the report should {{blank}} that its result applies nationwide.",
+        "text": "Because the survey covered only one city, the report should {{blank}} that its result applies nationwide.\n\n任务：用词库补全句子，使表达保留样本范围，避免把有限调查写成绝对结论。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：avoid claiming\n\nonly one city 限定了证据范围，因此报告应避免声称结果适用于全国。avoid claiming 与后面的 that 从句搭配自然，也准确保留谨慎否定语气。",
-        "explanation": "当证据范围有限时，英语常用 avoid claiming、cannot conclude、is not enough to show 等表达限制结论，而不是机械添加 not。"
+        "text": "avoid claiming。",
+        "explanation": "调查只覆盖one city，材料不足以支持nationwide，故应avoid claiming，即避免如此声称。confirm、demonstrate、guarantee、prove会把未获支持的全国结论写成已确认；insist则坚持该主张。"
       },
       "analysis_content": {
-        "text": "① 证据边界：only one city 表明样本无法直接代表全国。\n\n② 搭配核验：should avoid claiming that... 是自然结构；insist / confirm / demonstrate / guarantee / prove 都会把尚未得到支持的全国结论写成肯定事实。\n\n③ 逻辑验证：填入 avoid claiming 后，句子形成“样本有限，所以限制推论”的完整关系。",
+        "text": "调查只覆盖one city，材料不足以支持nationwide，故应avoid claiming，即避免如此声称。confirm、demonstrate、guarantee、prove会把未获支持的全国结论写成已确认；insist则坚持该主张。",
         "tips": [
-          "先找 only、some、at present 等限制证据范围的信号。",
-          "avoid claiming that... 可用于表达证据不足时的谨慎否定。"
+          "先比较调查覆盖范围与结论覆盖范围，后者不能无依据扩大。"
         ]
       },
       "options": null,
@@ -1314,18 +1323,17 @@
       },
       "interaction_id": "lock",
       "front": {
-        "text": "用词库补全句子，使表达保留样本范围，避免把有限调查写成绝对结论。\n\nBecause the survey covered only one city, the report should {{blank}} that its result applies nationwide.",
-        "task_prompt": "用词库补全句子，使表达保留样本范围，避免把有限调查写成绝对结论。\n\nBecause the survey covered only one city, the report should {{blank}} that its result applies nationwide.",
+        "text": "Because the survey covered only one city, the report should {{blank}} that its result applies nationwide.\n\n任务：用词库补全句子，使表达保留样本范围，避免把有限调查写成绝对结论。",
+        "task_prompt": "用词库补全句子，使表达保留样本范围，避免把有限调查写成绝对结论。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 证据边界：only one city 表明样本无法直接代表全国。\n\n② 搭配核验：should avoid claiming that... 是自然结构；insist / confirm / demonstrate / guarantee / prove 都会把尚未得到支持的全国结论写成肯定事实。\n\n③ 逻辑验证：填入 avoid claiming 后，句子形成“样本有限，所以限制推论”的完整关系。",
+        "text": "调查只覆盖one city，材料不足以支持nationwide，故应avoid claiming，即避免如此声称。confirm、demonstrate、guarantee、prove会把未获支持的全国结论写成已确认；insist则坚持该主张。",
         "tips": [
-          "先找 only、some、at present 等限制证据范围的信号。",
-          "avoid claiming that... 可用于表达证据不足时的谨慎否定。"
+          "先比较调查覆盖范围与结论覆盖范围，后者不能无依据扩大。"
         ]
       },
       "auto_scoring": true,
@@ -1369,7 +1377,7 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练从证据范围生成合适的否定性结论。",
+        "exam_value": "先比较调查覆盖范围与结论覆盖范围，后者不能无依据扩大。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       }
@@ -1386,20 +1394,19 @@
       "card_box_name": "翻译否定",
       "card_group_name": "同义词替换",
       "front_content": {
-        "text": "原句：这个结论并非毫无争议。\n\n哪项译法最贴近原句的弱否定语气？",
+        "text": "原句：这个结论并非毫无争议。\n\n任务：哪项译法最贴近原句的弱否定语气？",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：A\n\nremains open to dispute 表示该结论仍可被质疑，保留“并非毫无争议”的弱否定。B 反转为完全无争议；C 偷换为话题无关；D 夸大为解决所有分歧。",
-        "explanation": "汉语双重否定或弱否定不必逐词直译；只要英语表达保留可争议性，而不升级成绝对否定或绝对肯定，就能保持语气。"
+        "text": "答案：A。This conclusion remains open to dispute.",
+        "explanation": "“并非毫无争议”表示还存在争议，A的open to dispute保留这一点。B说完全无争议，方向反了；C说与辩论无关，换了问题；D声称解决所有分歧，也不符合原意。"
       },
       "analysis_content": {
-        "text": "① 语气定位：“并非毫无争议”不是说结论彻底错误，而是说仍存在合理争议空间。\n\n② 选项对照：open to dispute 与这一强度相符；beyond dispute 把方向反转，nothing to do with 更换关系，settles every disagreement 则绝对化。\n\n③ 回译验证：This conclusion remains open to dispute 可回译为“这个结论仍有争议”，与原句的审慎语气一致。",
+        "text": "“并非毫无争议”表示还存在争议，A的open to dispute保留这一点。B说完全无争议，方向反了；C说与辩论无关，换了问题；D声称解决所有分歧，也不符合原意。",
         "tips": [
-          "双重否定先还原成实际语气强度，再选择英语表达。",
-          "弱否定不能误译成 totally false，也不能反译成 completely certain。"
+          "先把双重否定还原成普通中文“仍有争议”，再选择英文。"
         ]
       },
       "options": [
@@ -1457,18 +1464,17 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "原句：这个结论并非毫无争议。\n\n哪项译法最贴近原句的弱否定语气？",
-        "task_prompt": "原句：这个结论并非毫无争议。\n\n哪项译法最贴近原句的弱否定语气？",
+        "text": "原句：这个结论并非毫无争议。\n\n任务：哪项译法最贴近原句的弱否定语气？",
+        "task_prompt": "哪项译法最贴近原句的弱否定语气？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
         "task_schema": null
       },
       "analysis": {
-        "text": "① 语气定位：“并非毫无争议”不是说结论彻底错误，而是说仍存在合理争议空间。\n\n② 选项对照：open to dispute 与这一强度相符；beyond dispute 把方向反转，nothing to do with 更换关系，settles every disagreement 则绝对化。\n\n③ 回译验证：This conclusion remains open to dispute 可回译为“这个结论仍有争议”，与原句的审慎语气一致。",
+        "text": "“并非毫无争议”表示还存在争议，A的open to dispute保留这一点。B说完全无争议，方向反了；C说与辩论无关，换了问题；D声称解决所有分歧，也不符合原意。",
         "tips": [
-          "双重否定先还原成实际语气强度，再选择英语表达。",
-          "弱否定不能误译成 totally false，也不能反译成 completely certain。"
+          "先把双重否定还原成普通中文“仍有争议”，再选择英文。"
         ]
       },
       "auto_scoring": true,
@@ -1504,7 +1510,7 @@
           "text_source_type": "simulation",
           "audio_generation_method": "none"
         },
-        "exam_value": "训练否定语气强度的跨语言保持。",
+        "exam_value": "先把双重否定还原成普通中文“仍有争议”，再选择英文。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       }
