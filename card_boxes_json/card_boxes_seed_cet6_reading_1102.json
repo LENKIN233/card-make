@@ -100,7 +100,7 @@
           "source_note": "CET6 preparation simulation; not true-exam material.",
           "audio_generation_method": "none"
         },
-        "exam_value": "帮助用户在CET6仔细阅读任务中识别并解释关键知识或解题线索，并形成可重复执行的证据核对步骤。",
+        "exam_value": "先分别问哪些人、是否一定、需要什么条件，再核对选项。",
         "box_progression_role": "recognition",
         "review_status": "draft"
       }
@@ -117,7 +117,7 @@
       "card_box_name": "逻辑限定词",
       "card_group_name": "定位词抓取",
       "front_content": {
-        "text": "练习材料（虚构情境）\n阅读片段：\n\nMost participants reported improved sleep quality after the intervention, but only a minority showed measurable changes in blood pressure.\n\n问题：哪项与原文一致？",
+        "text": "练习材料（虚构情境）\n阅读片段：\n\nMost participants reported improved sleep quality after the intervention, but only a minority showed measurable changes in blood pressure.\n\n任务：哪项与原文一致？",
         "highlight_ranges": []
       },
       "back_content": {
@@ -177,11 +177,12 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "练习材料（虚构情境）\n阅读片段：\n\nMost participants reported improved sleep quality after the intervention, but only a minority showed measurable changes in blood pressure.\n\n问题：哪项与原文一致？",
+        "text": "练习材料（虚构情境）\n阅读片段：\n\nMost participants reported improved sleep quality after the intervention, but only a minority showed measurable changes in blood pressure.\n\n任务：哪项与原文一致？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": null,
+        "task_prompt": "哪项与原文一致？"
       },
       "analysis": {
         "text": "most对应reported improved sleep，only a minority对应measurable blood-pressure changes，B两项保留。A把多数挪给血压，C加入压力指标，D把两个结果都扩大到所有人。",
@@ -218,7 +219,7 @@
           "source_note": "Legacy material adapted as an explicitly fictional exercise; not verified historical reporting.",
           "audio_generation_method": "none"
         },
-        "exam_value": "范围词、概率词和条件词不能在改写时被删除或强化。",
+        "exam_value": "报告的感受与测量的指标要分别核对，不只记most和minority。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -354,7 +355,7 @@
           "source_note": "Legacy material adapted as an explicitly fictional exercise; not verified historical reporting.",
           "audio_generation_method": "none"
         },
-        "exam_value": "范围词、概率词和条件词不能在改写时被删除或强化。",
+        "exam_value": "把“可能有效”与“无论条件都有效”分开，两句不是同一结论。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -371,7 +372,7 @@
       "card_box_name": "逻辑限定词",
       "card_group_name": "定位词抓取",
       "front_content": {
-        "text": "练习材料（虚构情境）\nMost participants reported better sleep after the programme, although several noticed no change.\n\n判断：Every participant reported an improvement in sleep.",
+        "text": "练习材料（虚构情境）\nMost participants reported better sleep after the programme, although several noticed no change.\n\n任务：判断：Every participant reported an improvement in sleep.",
         "highlight_ranges": []
       },
       "back_content": {
@@ -410,8 +411,8 @@
       },
       "interaction_id": "swipe",
       "front": {
-        "text": "练习材料（虚构情境）\nMost participants reported better sleep after the programme, although several noticed no change.\n\n判断：Every participant reported an improvement in sleep.",
-        "task_prompt": "练习材料（虚构情境）\nMost participants reported better sleep after the programme, although several noticed no change.\n\n判断：Every participant reported an improvement in sleep.",
+        "text": "练习材料（虚构情境）\nMost participants reported better sleep after the programme, although several noticed no change.\n\n任务：判断：Every participant reported an improvement in sleep.",
+        "task_prompt": "判断：Every participant reported an improvement in sleep.",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -462,7 +463,7 @@
           "source_note": "Legacy material adapted as an explicitly fictional exercise; not verified historical reporting.",
           "audio_generation_method": "none"
         },
-        "exam_value": "范围词、概率词和条件词不能在改写时被删除或强化。",
+        "exam_value": "先找原文有没有例外，再判断every是否成立。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -479,7 +480,7 @@
       "card_box_name": "逻辑限定词",
       "card_group_name": "定位词抓取",
       "front_content": {
-        "text": "练习材料（虚构情境）\n阅读片段：\n\nResearchers found that students who reviewed notes weekly were more likely to retain key concepts. However, the study did not prove that weekly review alone caused higher final scores.\n\n问题：哪项准确？",
+        "text": "练习材料（虚构情境）\n阅读片段：\n\nResearchers found that students who reviewed notes weekly were more likely to retain key concepts. However, the study did not prove that weekly review alone caused higher final scores.\n\n任务：哪项准确？",
         "highlight_ranges": []
       },
       "back_content": {
@@ -489,7 +490,7 @@
       "analysis_content": {
         "text": "more likely 比较保留概念的概率；后句明确说没有证明仅靠每周复习导致期末分提高。概念保留与期末分数是不同指标，且概率差异本身不等于已证明唯一因果。",
         "tips": [
-          "先区分句法层级与信息范围，再回到完整语境核对。"
+          "先把概念保留与期末分数分开，再看 did not prove 排除了哪项因果结论。"
         ]
       },
       "options": [
@@ -539,16 +540,17 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "练习材料（虚构情境）\n阅读片段：\n\nResearchers found that students who reviewed notes weekly were more likely to retain key concepts. However, the study did not prove that weekly review alone caused higher final scores.\n\n问题：哪项准确？",
+        "text": "练习材料（虚构情境）\n阅读片段：\n\nResearchers found that students who reviewed notes weekly were more likely to retain key concepts. However, the study did not prove that weekly review alone caused higher final scores.\n\n任务：哪项准确？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": null,
+        "task_prompt": "哪项准确？"
       },
       "analysis": {
         "text": "more likely 比较保留概念的概率；后句明确说没有证明仅靠每周复习导致期末分提高。概念保留与期末分数是不同指标，且概率差异本身不等于已证明唯一因果。",
         "tips": [
-          "先区分句法层级与信息范围，再回到完整语境核对。"
+          "先把概念保留与期末分数分开，再看 did not prove 排除了哪项因果结论。"
         ]
       },
       "auto_scoring": true,
@@ -580,7 +582,7 @@
           "source_note": "Legacy material adapted as an explicitly fictional exercise; not verified historical reporting.",
           "audio_generation_method": "none"
         },
-        "exam_value": "范围词、概率词和条件词不能在改写时被删除或强化。",
+        "exam_value": "先把概念保留与期末分数分开，再看 did not prove 排除了哪项因果结论。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -597,7 +599,7 @@
       "card_box_name": "逻辑限定词",
       "card_group_name": "定位词抓取",
       "front_content": {
-        "text": "练习材料（虚构情境）\n阅读片段：The authors suggest that algorithmic screening can reduce hiring time in some sectors, but they stop short of claiming that it improves match quality across the board.\n\n题干：What do the authors say about match quality?\n\n哪项最准确？",
+        "text": "练习材料（虚构情境）\n阅读片段：The authors suggest that algorithmic screening can reduce hiring time in some sectors, but they stop short of claiming that it improves match quality across the board.\n\n任务：哪项最准确？",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -659,11 +661,12 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "练习材料（虚构情境）\n阅读片段：The authors suggest that algorithmic screening can reduce hiring time in some sectors, but they stop short of claiming that it improves match quality across the board.\n\n题干：What do the authors say about match quality?\n\n哪项最准确？",
+        "text": "练习材料（虚构情境）\n阅读片段：The authors suggest that algorithmic screening can reduce hiring time in some sectors, but they stop short of claiming that it improves match quality across the board.\n\n任务：哪项最准确？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": null,
+        "task_prompt": "哪项最准确？"
       },
       "analysis": {
         "text": "stop short of claiming ... across the board表示没有宣称在所有情形都改善匹配质量，A准确。reduce hiring time说效率，不是match quality；B、D扩大到全部，C又错误否认任何效率好处。",
@@ -701,7 +704,7 @@
           "source_note": "Legacy source attribution has not been independently authenticated; used as a practice scenario, not advertised as a true-exam question.",
           "audio_generation_method": "none"
         },
-        "exam_value": "问哪一层信息，就抓那一层的限定词。",
+        "exam_value": "先分清题目问招聘耗时还是匹配质量，再找相应限制。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -718,7 +721,7 @@
       "card_box_name": "逻辑限定词",
       "card_group_name": "定位词抓取",
       "front_content": {
-        "text": "练习材料（虚构情境）\n阅读片段：The briefing states that some flood defenses performed better than expected, although only under moderate storm conditions. During extreme events, failure risk remained substantial.\n\n保留说明数量、适用情景和风险程度的表达；划去设施名称和笼统的良好表现。",
+        "text": "练习材料（虚构情境）\n阅读片段：The briefing states that some flood defenses performed better than expected, although only under moderate storm conditions. During extreme events, failure risk remained substantial.\n\n任务：保留说明数量、适用情景和风险程度的表达；划去设施名称和笼统的良好表现。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -784,8 +787,8 @@
       },
       "interaction_id": "elimination",
       "front": {
-        "text": "练习材料（虚构情境）\n阅读片段：The briefing states that some flood defenses performed better than expected, although only under moderate storm conditions. During extreme events, failure risk remained substantial.\n\n保留说明数量、适用情景和风险程度的表达；划去设施名称和笼统的良好表现。",
-        "task_prompt": "练习材料（虚构情境）\n阅读片段：The briefing states that some flood defenses performed better than expected, although only under moderate storm conditions. During extreme events, failure risk remained substantial.\n\n保留说明数量、适用情景和风险程度的表达；划去设施名称和笼统的良好表现。",
+        "text": "练习材料（虚构情境）\n阅读片段：The briefing states that some flood defenses performed better than expected, although only under moderate storm conditions. During extreme events, failure risk remained substantial.\n\n任务：保留说明数量、适用情景和风险程度的表达；划去设施名称和笼统的良好表现。",
+        "task_prompt": "保留说明数量、适用情景和风险程度的表达；划去设施名称和笼统的良好表现。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -856,7 +859,7 @@
           "source_note": "Legacy source attribution has not been independently authenticated; used as a practice scenario, not advertised as a true-exam question.",
           "audio_generation_method": "none"
         },
-        "exam_value": "条件有效不等于普遍有效。",
+        "exam_value": "把适用场景与风险程度一起保留，别将某些条件下表现好扩大成全面安全。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -873,7 +876,7 @@
       "card_box_name": "逻辑限定词",
       "card_group_name": "定位词抓取",
       "front_content": {
-        "text": "阅读：The researchers describe the evidence as limited and say further trials are needed before reaching a firm conclusion.\n判断：这段话可改写为“研究者已经获得确凿结论”。",
+        "text": "阅读：The researchers describe the evidence as limited and say further trials are needed before reaching a firm conclusion.\n\n任务：判断：这段话可改写为“研究者已经获得确凿结论”。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -914,11 +917,12 @@
       },
       "interaction_id": "swipe",
       "front": {
-        "text": "阅读：The researchers describe the evidence as limited and say further trials are needed before reaching a firm conclusion.\n判断：这段话可改写为“研究者已经获得确凿结论”。",
+        "text": "阅读：The researchers describe the evidence as limited and say further trials are needed before reaching a firm conclusion.\n\n任务：判断：这段话可改写为“研究者已经获得确凿结论”。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": null,
+        "task_prompt": "判断：这段话可改写为“研究者已经获得确凿结论”。"
       },
       "analysis": {
         "text": "further trials are needed before reaching a firm conclusion说还需试验才能形成确定结论，与“已经获得确凿结论”相反。limited表示当前证据有限，不能删掉后面的待研究条件。",
@@ -966,7 +970,7 @@
           "source_note": "Legacy source attribution has not been independently authenticated; used as a practice scenario, not advertised as a true-exam question.",
           "audio_generation_method": "none"
         },
-        "exam_value": "证据等级词不能随意升级。",
+        "exam_value": "before reaching说明结论还没到那一步，注意完成状态。",
         "box_progression_role": "application",
         "review_status": "draft"
       }
@@ -983,7 +987,7 @@
       "card_box_name": "逻辑限定词",
       "card_group_name": "定位词抓取",
       "front_content": {
-        "text": "练习材料（虚构情境）\n阅读片段：The memo notes that a universal basic income could stabilize income volatility for some gig workers, but the outcome depends heavily on local rent levels and benefit design.\n\n题干：Which option best preserves the memo’s logic?\n\n哪项最准确？",
+        "text": "练习材料（虚构情境）\n阅读片段：The memo notes that a universal basic income could stabilize income volatility for some gig workers, but the outcome depends heavily on local rent levels and benefit design.\n\n任务：哪项最准确？",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -1045,11 +1049,12 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "练习材料（虚构情境）\n阅读片段：The memo notes that a universal basic income could stabilize income volatility for some gig workers, but the outcome depends heavily on local rent levels and benefit design.\n\n题干：Which option best preserves the memo’s logic?\n\n哪项最准确？",
+        "text": "练习材料（虚构情境）\n阅读片段：The memo notes that a universal basic income could stabilize income volatility for some gig workers, but the outcome depends heavily on local rent levels and benefit design.\n\n任务：哪项最准确？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": null,
+        "task_prompt": "哪项最准确？"
       },
       "analysis": {
         "text": "could是可能，for some gig workers限定部分人，depends on rent levels and benefit design限定当地租金与方案。C全部保留；A变成all/will，B否认任何作用，D否认租金影响，都不符。",
@@ -1087,7 +1092,7 @@
           "source_note": "Legacy source attribution has not been independently authenticated; used as a practice scenario, not advertised as a true-exam question.",
           "audio_generation_method": "none"
         },
-        "exam_value": "多层限定出现时，正确选项往往要同时保留多层。",
+        "exam_value": "三个问题分别核对：可能还是必然、哪些人、还取决于什么。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       }
@@ -1104,7 +1109,7 @@
       "card_box_name": "逻辑限定词",
       "card_group_name": "定位词抓取",
       "front_content": {
-        "text": "练习材料（虚构情境）\n阅读片段：The review concludes that early reading interventions are generally effective, though gains appear to fade somewhat without continued support in later grades.\n\n这次只标出总体程度、转折、效果减弱程度和有无持续支持这四项说明；划去研究对象名称及年级时间词。",
+        "text": "练习材料（虚构情境）\n阅读片段：The review concludes that early reading interventions are generally effective, though gains appear to fade somewhat without continued support in later grades.\n\n任务：这次只标出总体程度、转折、效果减弱程度和有无持续支持这四项说明；划去研究对象名称及年级时间词。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -1170,8 +1175,8 @@
       },
       "interaction_id": "elimination",
       "front": {
-        "text": "练习材料（虚构情境）\n阅读片段：The review concludes that early reading interventions are generally effective, though gains appear to fade somewhat without continued support in later grades.\n\n这次只标出总体程度、转折、效果减弱程度和有无持续支持这四项说明；划去研究对象名称及年级时间词。",
-        "task_prompt": "练习材料（虚构情境）\n阅读片段：The review concludes that early reading interventions are generally effective, though gains appear to fade somewhat without continued support in later grades.\n\n这次只标出总体程度、转折、效果减弱程度和有无持续支持这四项说明；划去研究对象名称及年级时间词。",
+        "text": "练习材料（虚构情境）\n阅读片段：The review concludes that early reading interventions are generally effective, though gains appear to fade somewhat without continued support in later grades.\n\n任务：这次只标出总体程度、转折、效果减弱程度和有无持续支持这四项说明；划去研究对象名称及年级时间词。",
+        "task_prompt": "这次只标出总体程度、转折、效果减弱程度和有无持续支持这四项说明；划去研究对象名称及年级时间词。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
@@ -1242,7 +1247,7 @@
           "source_note": "Legacy source attribution has not been independently authenticated; used as a practice scenario, not advertised as a true-exam question.",
           "audio_generation_method": "none"
         },
-        "exam_value": "主结论和保留条款需要一起抓。",
+        "exam_value": "先看本题要求标哪些成分；暂不标记的时间信息不等于理解时可忽略。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       }
@@ -1259,7 +1264,7 @@
       "card_box_name": "逻辑限定词",
       "card_group_name": "定位词抓取",
       "front_content": {
-        "text": "阅读：The method is generally effective, though gains may fade without continued support.\n判断：该方法在任何条件下都具有永久效果。",
+        "text": "阅读：The method is generally effective, though gains may fade without continued support.\n\n任务：判断：该方法在任何条件下都具有永久效果。",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -1300,11 +1305,12 @@
       },
       "interaction_id": "swipe",
       "front": {
-        "text": "阅读：The method is generally effective, though gains may fade without continued support.\n判断：该方法在任何条件下都具有永久效果。",
+        "text": "阅读：The method is generally effective, though gains may fade without continued support.\n\n任务：判断：该方法在任何条件下都具有永久效果。",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": null,
+        "task_prompt": "判断：该方法在任何条件下都具有永久效果。"
       },
       "analysis": {
         "text": "generally只说通常有效，may fade又指出无持续支持时可能减弱。因此“任何条件、永久效果”同时扩大了适用情况和持续时间。",
@@ -1352,7 +1358,7 @@
           "source_note": "Legacy source attribution has not been independently authenticated; used as a practice scenario, not advertised as a true-exam question.",
           "audio_generation_method": "none"
         },
-        "exam_value": "题干问程度时，要优先找让步词。",
+        "exam_value": "既读总体评价，也读though后说明效果可能变化的条件。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       }
@@ -1369,7 +1375,7 @@
       "card_box_name": "逻辑限定词",
       "card_group_name": "定位词抓取",
       "front_content": {
-        "text": "练习材料（虚构情境）\n阅读片段：The authors argue that the correlation is unlikely to be explained entirely by income, since neighborhood density and transit access still account for part of the pattern.\n\n题干：What do the authors argue about income?\n\n哪项最准确？",
+        "text": "练习材料（虚构情境）\n阅读片段：The authors argue that the correlation is unlikely to be explained entirely by income, since neighborhood density and transit access still account for part of the pattern.\n\n任务：哪项最准确？",
         "image_url": null,
         "audio_url": null,
         "highlight_ranges": []
@@ -1431,11 +1437,12 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "练习材料（虚构情境）\n阅读片段：The authors argue that the correlation is unlikely to be explained entirely by income, since neighborhood density and transit access still account for part of the pattern.\n\n题干：What do the authors argue about income?\n\n哪项最准确？",
+        "text": "练习材料（虚构情境）\n阅读片段：The authors argue that the correlation is unlikely to be explained entirely by income, since neighborhood density and transit access still account for part of the pattern.\n\n任务：哪项最准确？",
         "audio_first": false,
         "display_mode": "text_first",
         "highlight_ranges": [],
-        "task_schema": null
+        "task_schema": null,
+        "task_prompt": "哪项最准确？"
       },
       "analysis": {
         "text": "unlikely ... entirely by income说不太可能完全由收入解释，B保留收入可能有关但不足以独自解释。density与transit access解释部分现象，因此A过强；材料也没有支持C的完全无关，D又否认已提到的交通因素。",
@@ -1473,7 +1480,7 @@
           "source_note": "Legacy source attribution has not been independently authenticated; used as a practice scenario, not advertised as a true-exam question.",
           "audio_generation_method": "none"
         },
-        "exam_value": "部分否定比全否定更难，需要特别留意 entirely / solely / purely。",
+        "exam_value": "“不是全部由X解释”并不证明X毫无作用，也不必然证明X一定有多大作用。",
         "box_progression_role": "transfer",
         "review_status": "draft"
       }
