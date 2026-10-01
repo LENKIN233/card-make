@@ -20,8 +20,8 @@
       "card_box_name": "因果逻辑",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断说话人给出的主要因果链。",
-        "task_prompt": "先听音频，再用一句话复述“因”与“果”。",
+        "text": "听录音：客服团队的平均响应时间怎样变化？说话人把变化归因于什么？",
+        "task_prompt": "听录音：客服团队的平均响应时间怎样变化？说话人把变化归因于什么？",
         "task_schema": {
           "action": "听后因果复述",
           "focus": "because / so / therefore",
@@ -33,12 +33,14 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "每周练习被说话人解释为响应时间缩短近20%的原因。",
-        "explanation": "材料给出 weekly practice，没有交代以前的频率，不能另说培训次数已经增加。"
+        "text": "平均响应时间缩短了近20%；说话人认为这是每周练习带来的。",
+        "explanation": "Because 后是每周参加练习，主句 response time dropped by nearly 20 percent 是结果。dropped 说时间减少，也就是响应更快；nearly 表示接近20%，不是精确20%。"
       },
       "analysis_content": {
-        "text": "材料给出 weekly practice，没有交代以前的频率，不能另说培训次数已经增加。",
-        "tips": []
+        "text": "Because 后是每周参加练习，主句 response time dropped by nearly 20 percent 是结果。dropped 说时间减少，也就是响应更快；nearly 表示接近20%，不是精确20%。",
+        "tips": [
+          "把 weekly practice 与 response time dropped 对应成措施和结果。"
+        ]
       },
       "options": null,
       "eliminable_items": null,
@@ -73,8 +75,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断说话人给出的主要因果链。",
-        "task_prompt": "先听音频，再用一句话复述“因”与“果”。",
+        "text": "听录音：客服团队的平均响应时间怎样变化？说话人把变化归因于什么？",
+        "task_prompt": "听录音：客服团队的平均响应时间怎样变化？说话人把变化归因于什么？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -85,8 +87,10 @@
         }
       },
       "analysis": {
-        "text": "材料给出 weekly practice，没有交代以前的频率，不能另说培训次数已经增加。",
-        "tips": []
+        "text": "Because 后是每周参加练习，主句 response time dropped by nearly 20 percent 是结果。dropped 说时间减少，也就是响应更快；nearly 表示接近20%，不是精确20%。",
+        "tips": [
+          "把 weekly practice 与 response time dropped 对应成措施和结果。"
+        ]
       },
       "auto_scoring": false,
       "legacy_interaction": {
@@ -145,7 +149,7 @@
       "card_group_name": "推理判断",
       "front_content": {
         "text": "听录音：提醒推出后，逾期提交的比例如何变化？",
-        "task_prompt": "先听音频，再选出由原因最直接导向的结果。",
+        "task_prompt": "听录音：提醒推出后，逾期提交的比例如何变化？",
         "task_schema": {
           "action": "四选一：因果匹配",
           "focus": "cause-result binding",
@@ -157,32 +161,34 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "一个月内逾期提交比例从22%降到11%。",
-        "explanation": "这是提醒引入前后的变化，单凭 after 不能认定提醒是唯一原因。"
+        "text": "C：一个月内逾期提交比例从22%降到11%。",
+        "explanation": "fell from 22 percent to 11 percent 说明逾期提交的比例下降了，降到原来的一半。in one month 是变化用时。录音说的是比例，不是所有逾期都消失；after 说明提醒推出后的变化。"
       },
       "analysis_content": {
-        "text": "这是提醒引入前后的变化，单凭 after 不能认定提醒是唯一原因。",
-        "tips": []
+        "text": "fell from 22 percent to 11 percent 说明逾期提交的比例下降了，降到原来的一半。in one month 是变化用时。录音说的是比例，不是所有逾期都消失；after 说明提醒推出后的变化。",
+        "tips": [
+          "听 from 后的原比例和 to 后的新比例，别把两者对调。"
+        ]
       },
       "options": [
         {
           "key": "A",
-          "text": "Students became more interested in all courses",
+          "text": "The share of late submissions rose from 11% to 22%.",
           "is_correct": false
         },
         {
           "key": "B",
-          "text": "Teachers reduced assignment difficulty",
+          "text": "The share of late submissions fell to 22%.",
           "is_correct": false
         },
         {
           "key": "C",
-          "text": "Fewer late submissions occurred",
+          "text": "The share of late submissions fell from 22% to 11%.",
           "is_correct": true
         },
         {
           "key": "D",
-          "text": "The school cancelled all penalties",
+          "text": "Late submissions were completely eliminated.",
           "is_correct": false
         }
       ],
@@ -230,8 +236,10 @@
         }
       },
       "analysis": {
-        "text": "这是提醒引入前后的变化，单凭 after 不能认定提醒是唯一原因。",
-        "tips": []
+        "text": "fell from 22 percent to 11 percent 说明逾期提交的比例下降了，降到原来的一半。in one month 是变化用时。录音说的是比例，不是所有逾期都消失；after 说明提醒推出后的变化。",
+        "tips": [
+          "听 from 后的原比例和 to 后的新比例，别把两者对调。"
+        ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
@@ -292,8 +300,8 @@
       "card_box_name": "因果逻辑",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "听完后先别翻面：说出供应商行为和生产结果，并用 as a result 把两者连起来。",
-        "task_prompt": "先复述原因，再复述结果。",
+        "text": "听录音：供应商做了什么，导致生产出现什么结果？",
+        "task_prompt": "听录音：供应商做了什么，导致生产出现什么结果？",
         "task_schema": {
           "action": "听后复述显式因果链",
           "focus": "分号两侧与 as a result 的因果方向",
@@ -305,14 +313,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "原因：多家供应商本月延迟发货。\n结果：生产目标未能按计划完成。\n\nas a result 明确把后半句标成前述事件的结果。",
-        "explanation": "分号先给原因事件，as a result 再引出结果；on schedule 是否定范围的一部分。"
+        "text": "多家供应商本月延迟发货，结果生产目标未能按时完成。",
+        "explanation": "delayed shipment 是发货推迟，as a result 后说明 production targets were not met on schedule，即生产目标没能按计划完成。on schedule 限定的是按时完成，不是说完全没有产出。"
       },
       "analysis_content": {
-        "text": "① 原因事件：Several suppliers delayed shipment this month。\n\n② 结果标记：as a result 明确要求把后半句解释为结果。\n\n③ 完整结果：production targets were not met on schedule，重点是不按期完成，而不是目标永久取消。",
+        "text": "delayed shipment 是发货推迟，as a result 后说明 production targets were not met on schedule，即生产目标没能按计划完成。on schedule 限定的是按时完成，不是说完全没有产出。",
         "tips": [
-          "as a result / consequently 后面通常是结果。",
-          "not...on schedule 表示时间未达标，不能改写为完全没有产出。"
+          "以 as a result 为界，分别记发货情况和生产结果。"
         ]
       },
       "options": null,
@@ -352,8 +359,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "听完后先别翻面：说出供应商行为和生产结果，并用 as a result 把两者连起来。",
-        "task_prompt": "先复述原因，再复述结果。",
+        "text": "听录音：供应商做了什么，导致生产出现什么结果？",
+        "task_prompt": "听录音：供应商做了什么，导致生产出现什么结果？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -364,10 +371,9 @@
         }
       },
       "analysis": {
-        "text": "① 原因事件：Several suppliers delayed shipment this month。\n\n② 结果标记：as a result 明确要求把后半句解释为结果。\n\n③ 完整结果：production targets were not met on schedule，重点是不按期完成，而不是目标永久取消。",
+        "text": "delayed shipment 是发货推迟，as a result 后说明 production targets were not met on schedule，即生产目标没能按计划完成。on schedule 限定的是按时完成，不是说完全没有产出。",
         "tips": [
-          "as a result / consequently 后面通常是结果。",
-          "not...on schedule 表示时间未达标，不能改写为完全没有产出。"
+          "以 as a result 为界，分别记发货情况和生产结果。"
         ]
       },
       "auto_scoring": false,
@@ -426,8 +432,8 @@
       "card_box_name": "因果逻辑",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "听完后先别翻面：说出利润下降的两个并列原因，缺一不可。",
-        "task_prompt": "以 because 为入口，复述 and 连接的两项原因。",
+        "text": "听录音：季度利润下降，录音给出了哪两个原因？",
+        "task_prompt": "听录音：季度利润下降，录音给出了哪两个原因？",
         "task_schema": {
           "action": "听后复述并列原因",
           "focus": "because 后的两个并列变化",
@@ -439,14 +445,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结果：季度利润下降。\n原因一：出席率下降。\n原因二：营销成本上升得比预期更快。\n\nbecause 后的两个原因由 and 并列。",
-        "explanation": "declined 是结果；attendance dropped 与 marketing costs rose faster than expected 共同解释利润变化。"
+        "text": "出席率下降，同时营销成本上升得比预期更快。",
+        "explanation": "because 后有两个原因，由 and 连接：attendance dropped 与 marketing costs rose faster than expected。一个是出席减少，一个是营销成本增长过快。两者都在解释 profit declined。"
       },
       "analysis_content": {
-        "text": "① 结果锚点：Quarterly profit declined。\n\n② 原因入口：because 后开始解释利润下降。\n\n③ 并列范围：attendance dropped 和 marketing costs rose faster than expected 同属原因；第二项的比较边界不能省略。",
+        "text": "because 后有两个原因，由 and 连接：attendance dropped 与 marketing costs rose faster than expected。一个是出席减少，一个是营销成本增长过快。两者都在解释 profit declined。",
         "tips": [
-          "because 后遇到 and，要判断是否连接多个同层原因。",
-          "faster than expected 不是装饰，它决定成本上升的异常程度。"
+          "听到 because 后别只记第一项，继续找 and 连接的另一项。"
         ]
       },
       "options": null,
@@ -483,8 +488,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "听完后先别翻面：说出利润下降的两个并列原因，缺一不可。",
-        "task_prompt": "以 because 为入口，复述 and 连接的两项原因。",
+        "text": "听录音：季度利润下降，录音给出了哪两个原因？",
+        "task_prompt": "听录音：季度利润下降，录音给出了哪两个原因？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -495,10 +500,9 @@
         }
       },
       "analysis": {
-        "text": "① 结果锚点：Quarterly profit declined。\n\n② 原因入口：because 后开始解释利润下降。\n\n③ 并列范围：attendance dropped 和 marketing costs rose faster than expected 同属原因；第二项的比较边界不能省略。",
+        "text": "because 后有两个原因，由 and 连接：attendance dropped 与 marketing costs rose faster than expected。一个是出席减少，一个是营销成本增长过快。两者都在解释 profit declined。",
         "tips": [
-          "because 后遇到 and，要判断是否连接多个同层原因。",
-          "faster than expected 不是装饰，它决定成本上升的异常程度。"
+          "听到 because 后别只记第一项，继续找 and 连接的另一项。"
         ]
       },
       "auto_scoring": false,
@@ -555,8 +559,8 @@
       "card_box_name": "因果逻辑",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "听录音：哪些事情在同一时期发生？哪些因果结论尚不能确定？",
-        "task_prompt": "先听音频，再选出证据支持的因果关系。",
+        "text": "听录音：哪一项准确描述了入门活动延期与新用户流失的关系？",
+        "task_prompt": "听录音：哪一项准确描述了入门活动延期与新用户流失的关系？",
         "task_schema": {
           "action": "四选一：判断证据允许的推断强度",
           "focus": "同期变化与因果断言的证据边界",
@@ -569,16 +573,18 @@
       },
       "back_content": {
         "text": "B。新用户流失增加与入门活动延期同期出现，单凭同期不能确定因果。",
-        "explanation": "录音只有 in the same period，未提供控制其他因素的证据，也未直接说谁导致谁。"
+        "explanation": "in the same period 只说明两件事同期发生：入门活动反复延期，新用户流失增加。录音没有说延期 caused 流失，因此B保留了原话的范围。churn 指用户流失，onboarding sessions 是帮助新用户入门的活动。"
       },
       "analysis_content": {
-        "text": "录音只有 in the same period，未提供控制其他因素的证据，也未直接说谁导致谁。",
-        "tips": []
+        "text": "in the same period 只说明两件事同期发生：入门活动反复延期，新用户流失增加。录音没有说延期 caused 流失，因此B保留了原话的范围。churn 指用户流失，onboarding sessions 是帮助新用户入门的活动。",
+        "tips": [
+          "重点听连接两件事的时间表达，判断有没有明确说“导致”。"
+        ]
       },
       "options": [
         {
           "key": "A",
-          "text": "Onboarding delay was definitely the only cause of churn",
+          "text": "Postponing onboarding sessions caused the rise in new-user churn.",
           "is_correct": false
         },
         {
@@ -588,12 +594,12 @@
         },
         {
           "key": "C",
-          "text": "Churn dropped because onboarding was postponed",
+          "text": "Fewer new users left while onboarding sessions were postponed.",
           "is_correct": false
         },
         {
           "key": "D",
-          "text": "There is no relation between onboarding and churn",
+          "text": "Churn increased before onboarding sessions began to be postponed.",
           "is_correct": false
         }
       ],
@@ -629,8 +635,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "听录音：哪些事情在同一时期发生？哪些因果结论尚不能确定？",
-        "task_prompt": "听录音：哪些事情在同一时期发生？哪些因果结论尚不能确定？",
+        "text": "听录音：哪一项准确描述了入门活动延期与新用户流失的关系？",
+        "task_prompt": "听录音：哪一项准确描述了入门活动延期与新用户流失的关系？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -641,8 +647,10 @@
         }
       },
       "analysis": {
-        "text": "录音只有 in the same period，未提供控制其他因素的证据，也未直接说谁导致谁。",
-        "tips": []
+        "text": "in the same period 只说明两件事同期发生：入门活动反复延期，新用户流失增加。录音没有说延期 caused 流失，因此B保留了原话的范围。churn 指用户流失，onboarding sessions 是帮助新用户入门的活动。",
+        "tips": [
+          "重点听连接两件事的时间表达，判断有没有明确说“导致”。"
+        ]
       },
       "auto_scoring": true,
       "legacy_interaction": {
@@ -701,8 +709,8 @@
       "card_box_name": "因果逻辑",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：听完音频，用自己的话复述从原因到决策的完整链条。",
-        "task_prompt": "听完音频，复述原因、结果与最终决策。",
+        "text": "听录音：哪些试点结果促使团队决定扩大试点？准备立即全国推出吗？",
+        "task_prompt": "听录音：哪些试点结果促使团队决定扩大试点？准备立即全国推出吗？",
         "task_schema": {
           "action": "听后因果决策链复述",
           "focus": "because... therefore we decided to...",
@@ -714,14 +722,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：因为试点地区复购率上升且投诉率下降，他们决定先扩大试点而非立刻全国铺开。",
-        "explanation": "语境揭示：Because repeat purchase rates rose and complaint rates fell in the pilot cities, we decided to expand the pilot first instead of launching nationwide immediately."
+        "text": "试点城市复购率上升、投诉率下降，因此决定先扩大试点，暂不立即全国推出。",
+        "explanation": "Because 从句给出复购上升和投诉下降两项依据。主句 expand the pilot first 是决定；instead of launching nationwide immediately 明确先继续试点，不是直接全国推广。"
       },
       "analysis_content": {
-        "text": "① 两项依据：repeat purchase rates rose 与 complaint rates fell 都位于 Because 从句内。\n\n② 决策结果：we decided to expand the pilot first 是依据导出的行动。\n\n③ 边界选择：instead of launching nationwide immediately 说明没有立即全国推广，先扩大试点仍保留谨慎范围。",
+        "text": "Because 从句给出复购上升和投诉下降两项依据。主句 expand the pilot first 是决定；instead of launching nationwide immediately 明确先继续试点，不是直接全国推广。",
         "tips": [
-          "Because 从句可包含多个证据点，复述时要完整。",
-          "instead of 会限定最终决策；遗漏它会把分阶段扩展误说成全国上线。"
+          "先记 rose 与 fell 各自对应什么指标，再听 instead of 排除了什么。"
         ]
       },
       "options": null,
@@ -757,8 +764,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：听完音频，用自己的话复述从原因到决策的完整链条。",
-        "task_prompt": "听完音频，复述原因、结果与最终决策。",
+        "text": "听录音：哪些试点结果促使团队决定扩大试点？准备立即全国推出吗？",
+        "task_prompt": "听录音：哪些试点结果促使团队决定扩大试点？准备立即全国推出吗？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -769,10 +776,9 @@
         }
       },
       "analysis": {
-        "text": "① 两项依据：repeat purchase rates rose 与 complaint rates fell 都位于 Because 从句内。\n\n② 决策结果：we decided to expand the pilot first 是依据导出的行动。\n\n③ 边界选择：instead of launching nationwide immediately 说明没有立即全国推广，先扩大试点仍保留谨慎范围。",
+        "text": "Because 从句给出复购上升和投诉下降两项依据。主句 expand the pilot first 是决定；instead of launching nationwide immediately 明确先继续试点，不是直接全国推广。",
         "tips": [
-          "Because 从句可包含多个证据点，复述时要完整。",
-          "instead of 会限定最终决策；遗漏它会把分阶段扩展误说成全国上线。"
+          "先记 rose 与 fell 各自对应什么指标，再听 instead of 排除了什么。"
         ]
       },
       "auto_scoring": false,
@@ -829,8 +835,8 @@
       "card_box_name": "因果逻辑",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断导致项目延误的直接原因。",
-        "task_prompt": "任务：先听音频，再判断导致项目延误的直接原因。",
+        "text": "听录音：项目为什么延误？",
+        "task_prompt": "听录音：项目为什么延误？",
         "task_schema": {
           "action": "听后定位直接原因",
           "focus": "because 原因与 which caused 下游结果",
@@ -842,14 +848,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：直接原因是供应商未能按时交货，引发连锁反应。",
-        "explanation": "语境揭示：The project was delayed because the supplier failed to deliver the components on time, which caused a chain reaction throughout the whole production schedule."
+        "text": "供应商没按时交付零部件，影响了整个生产进度。",
+        "explanation": "because 后的 failed to deliver the components on time 是原因：零部件迟交。which caused a chain reaction 再说这种延误连带影响整个生产安排；不是把后果拿来解释最初为什么迟交。"
       },
       "analysis_content": {
-        "text": "① 直接原因：because 后的 supplier failed to deliver the components on time 直接解释项目延误。\n\n② 第一结果：The project was delayed。\n\n③ 下游影响：which caused a chain reaction... 进一步描述整个生产进度的连锁反应；若问直接原因，不能用这个宏观结果替代供应商迟交。",
+        "text": "because 后的 failed to deliver the components on time 是原因：零部件迟交。which caused a chain reaction 再说这种延误连带影响整个生产安排；不是把后果拿来解释最初为什么迟交。",
         "tips": [
-          "because 后找直接原因，which caused 后找下游结果。",
-          "同一段出现多层因果时，先按设问确定要回答哪一层。"
+          "听 failed to deliver 的对象与 on time，确定直接原因。"
         ]
       },
       "source_ref": {
@@ -887,8 +892,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断导致项目延误的直接原因。",
-        "task_prompt": "任务：先听音频，再判断导致项目延误的直接原因。",
+        "text": "听录音：项目为什么延误？",
+        "task_prompt": "听录音：项目为什么延误？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -899,10 +904,9 @@
         }
       },
       "analysis": {
-        "text": "① 直接原因：because 后的 supplier failed to deliver the components on time 直接解释项目延误。\n\n② 第一结果：The project was delayed。\n\n③ 下游影响：which caused a chain reaction... 进一步描述整个生产进度的连锁反应；若问直接原因，不能用这个宏观结果替代供应商迟交。",
+        "text": "because 后的 failed to deliver the components on time 是原因：零部件迟交。which caused a chain reaction 再说这种延误连带影响整个生产安排；不是把后果拿来解释最初为什么迟交。",
         "tips": [
-          "because 后找直接原因，which caused 后找下游结果。",
-          "同一段出现多层因果时，先按设问确定要回答哪一层。"
+          "听 failed to deliver 的对象与 on time，确定直接原因。"
         ]
       },
       "auto_scoring": false,
@@ -959,8 +963,8 @@
       "card_box_name": "因果逻辑",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断部门重组的原因。",
-        "task_prompt": "任务：先听音频，再判断部门重组的原因。",
+        "text": "听录音：什么事情促使整个部门重组？",
+        "task_prompt": "听录音：什么事情促使整个部门重组？",
         "task_schema": {
           "action": "听后回溯部门重组原因",
           "focus": "resulted in 前后的原因与结果",
@@ -972,14 +976,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：部门重组的原因是 his 突然辞职。",
-        "explanation": "语境揭示：His sudden resignation resulted in a reorganization of the entire department, prompting the company to rethink its succession planning strategy."
+        "text": "他突然辞职，促使整个部门重组。",
+        "explanation": "His sudden resignation 是突然辞职，resulted in 后是结果：部门重组。之后公司还重新考虑了 succession planning，即后继人选安排。问重组原因，应回答前面的辞职。"
       },
       "analysis_content": {
-        "text": "① 起点：His sudden resignation 是触发事件。\n\n② 中间结果：resulted in a reorganization 把辞职与部门重组连接起来。\n\n③ 后续反应：prompting the company to rethink... 表示重组/辞职进一步促使公司重审继任规划。问重组原因时，应回到 resulted in 之前。",
+        "text": "His sudden resignation 是突然辞职，resulted in 后是结果：部门重组。之后公司还重新考虑了 succession planning，即后继人选安排。问重组原因，应回答前面的辞职。",
         "tips": [
-          "result in 后面是结果，前面的主语是原因。",
-          "prompting 可继续推进因果链，但不一定是当前设问所需层级。"
+          "找到 resulted in，把前后分别记成原因和结果。"
         ]
       },
       "source_ref": {
@@ -1014,8 +1017,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断部门重组的原因。",
-        "task_prompt": "任务：先听音频，再判断部门重组的原因。",
+        "text": "听录音：什么事情促使整个部门重组？",
+        "task_prompt": "听录音：什么事情促使整个部门重组？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -1026,10 +1029,9 @@
         }
       },
       "analysis": {
-        "text": "① 起点：His sudden resignation 是触发事件。\n\n② 中间结果：resulted in a reorganization 把辞职与部门重组连接起来。\n\n③ 后续反应：prompting the company to rethink... 表示重组/辞职进一步促使公司重审继任规划。问重组原因时，应回到 resulted in 之前。",
+        "text": "His sudden resignation 是突然辞职，resulted in 后是结果：部门重组。之后公司还重新考虑了 succession planning，即后继人选安排。问重组原因，应回答前面的辞职。",
         "tips": [
-          "result in 后面是结果，前面的主语是原因。",
-          "prompting 可继续推进因果链，但不一定是当前设问所需层级。"
+          "找到 resulted in，把前后分别记成原因和结果。"
         ]
       },
       "auto_scoring": false,
@@ -1086,8 +1088,8 @@
       "card_box_name": "因果逻辑",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断路面结冰的原因。",
-        "task_prompt": "任务：先听音频，再判断路面结冰的原因。",
+        "text": "听录音：路面为什么严重结冰？",
+        "task_prompt": "听录音：路面为什么严重结冰？",
         "task_schema": {
           "action": "听后定位路面结冰原因",
           "focus": "Since 原因从句与后续事故链",
@@ -1099,14 +1101,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：路面结冰的原因是气温降至冰点以下。",
-        "explanation": "语境揭示：Since the temperature dropped below freezing point, the roads became extremely icy, and several accidents were reported by the local authorities."
+        "text": "气温降到了冰点以下。",
+        "explanation": "Since 在这句解释原因：temperature dropped below freezing point，气温低于冰点。主句 roads became extremely icy 是路面严重结冰。后面还提到事故报告，不能用这项后续情况代替温度原因。"
       },
       "analysis_content": {
-        "text": "① 原因从句：Since the temperature dropped below freezing point，这里的 Since 表原因。\n\n② 直接结果：the roads became extremely icy。\n\n③ 次级结果：several accidents were reported 再由结冰道路引出。回答路面结冰原因时应停在温度降至冰点以下。",
+        "text": "Since 在这句解释原因：temperature dropped below freezing point，气温低于冰点。主句 roads became extremely icy 是路面严重结冰。后面还提到事故报告，不能用这项后续情况代替温度原因。",
         "tips": [
-          "Since 可表时间也可表原因，要看主句是否构成合理因果。",
-          "三段链先标 C→R1→R2，再按问题选择对应箭头。"
+          "听 below 后面的温度界限，再核对它引出的路况。"
         ]
       },
       "source_ref": {
@@ -1140,8 +1141,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断路面结冰的原因。",
-        "task_prompt": "任务：先听音频，再判断路面结冰的原因。",
+        "text": "听录音：路面为什么严重结冰？",
+        "task_prompt": "听录音：路面为什么严重结冰？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -1152,10 +1153,9 @@
         }
       },
       "analysis": {
-        "text": "① 原因从句：Since the temperature dropped below freezing point，这里的 Since 表原因。\n\n② 直接结果：the roads became extremely icy。\n\n③ 次级结果：several accidents were reported 再由结冰道路引出。回答路面结冰原因时应停在温度降至冰点以下。",
+        "text": "Since 在这句解释原因：temperature dropped below freezing point，气温低于冰点。主句 roads became extremely icy 是路面严重结冰。后面还提到事故报告，不能用这项后续情况代替温度原因。",
         "tips": [
-          "Since 可表时间也可表原因，要看主句是否构成合理因果。",
-          "三段链先标 C→R1→R2，再按问题选择对应箭头。"
+          "听 below 后面的温度界限，再核对它引出的路况。"
         ]
       },
       "auto_scoring": false,
@@ -1213,7 +1213,7 @@
       "card_group_name": "推理判断",
       "front_content": {
         "text": "听录音：按照说话人的解释，学生应考吃力的主要原因是什么？",
-        "task_prompt": "任务：先听音频，再判断学生考试失利的真正原因。",
+        "task_prompt": "听录音：按照说话人的解释，学生应考吃力的主要原因是什么？",
         "task_schema": {
           "action": "四选一：识别被排除原因与真正原因",
           "focus": "not A but rather B 的因果对比",
@@ -1225,14 +1225,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：真正原因不是题目难度，而是缺乏系统性练习。",
-        "explanation": "语境揭示：The reason why so many students struggle with the exam is not the difficulty of the questions, but rather the lack of systematic practice over time."
+        "text": "B：说话人认为学生长期缺少系统练习。",
+        "explanation": "not the difficulty 否定题目难度这个解释；but rather 后才提出 lack of systematic practice over time，长期缺少系统练习。B符合说话人的观点，A是他明确排除的解释。"
       },
       "analysis_content": {
-        "text": "① 原因框架：The reason why... is... 明确宣布要解释考试困难。\n\n② 排除项：not the difficulty of the questions 主动否定题目难度。\n\n③ 真正原因：but rather the lack of systematic practice over time 把答案落在长期缺少系统练习，B 与该命题一致。",
+        "text": "not the difficulty 否定题目难度这个解释；but rather 后才提出 lack of systematic practice over time，长期缺少系统练习。B符合说话人的观点，A是他明确排除的解释。",
         "tips": [
-          "not A but rather B 中，A 是被排除项，B 是最终落点。",
-          "over time 限定问题是长期积累，不是一次练习不足。"
+          "对照 not 与 but rather 两边分别说了什么原因。"
         ]
       },
       "source_ref": {
@@ -1300,10 +1299,9 @@
         }
       },
       "analysis": {
-        "text": "① 原因框架：The reason why... is... 明确宣布要解释考试困难。\n\n② 排除项：not the difficulty of the questions 主动否定题目难度。\n\n③ 真正原因：but rather the lack of systematic practice over time 把答案落在长期缺少系统练习，B 与该命题一致。",
+        "text": "not the difficulty 否定题目难度这个解释；but rather 后才提出 lack of systematic practice over time，长期缺少系统练习。B符合说话人的观点，A是他明确排除的解释。",
         "tips": [
-          "not A but rather B 中，A 是被排除项，B 是最终落点。",
-          "over time 限定问题是长期积累，不是一次练习不足。"
+          "对照 not 与 but rather 两边分别说了什么原因。"
         ]
       },
       "auto_scoring": true,
@@ -1365,8 +1363,8 @@
       "card_box_name": "因果逻辑",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断研究得以继续的原因。",
-        "task_prompt": "任务：先听音频，再判断研究得以继续的原因。",
+        "text": "听录音：研究团队为什么能够继续项目？",
+        "task_prompt": "听录音：研究团队为什么能够继续项目？",
         "task_schema": {
           "action": "听后定位研究继续的正向原因",
           "focus": "Thanks to 原因与 eventually 最终成果",
@@ -1378,14 +1376,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：研究得以继续的原因是基金会的慷慨资助。",
-        "explanation": "语境揭示：Thanks to the generous grant from the foundation, our research team was able to continue the project, and we eventually made a significant breakthrough."
+        "text": "基金会提供了充足资助。",
+        "explanation": "Thanks to the generous grant from the foundation 说基金会的资助使研究得以继续。eventually made a breakthrough 是后来的突破，不是先有突破才得到继续研究的条件。grant 在这里指资助款。"
       },
       "analysis_content": {
-        "text": "① 正向原因：Thanks to the generous grant 把基金会资助标为积极推动因素。\n\n② 直接结果：research team was able to continue the project。\n\n③ 最终成果：eventually made a significant breakthrough 是继续项目后的下游结果；若问研究为何能继续，应回答资助。",
+        "text": "Thanks to the generous grant from the foundation 说基金会的资助使研究得以继续。eventually made a breakthrough 是后来的突破，不是先有突破才得到继续研究的条件。grant 在这里指资助款。",
         "tips": [
-          "Thanks to 后接正向原因，语气极性有助于验证关系。",
-          "was able to 是直接结果，eventually 常提示更晚的下游成果。"
+          "先听 Thanks to 后的支持，再把 eventually 后的成果放到后面。"
         ]
       },
       "source_ref": {
@@ -1423,8 +1420,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断研究得以继续的原因。",
-        "task_prompt": "任务：先听音频，再判断研究得以继续的原因。",
+        "text": "听录音：研究团队为什么能够继续项目？",
+        "task_prompt": "听录音：研究团队为什么能够继续项目？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -1435,10 +1432,9 @@
         }
       },
       "analysis": {
-        "text": "① 正向原因：Thanks to the generous grant 把基金会资助标为积极推动因素。\n\n② 直接结果：research team was able to continue the project。\n\n③ 最终成果：eventually made a significant breakthrough 是继续项目后的下游结果；若问研究为何能继续，应回答资助。",
+        "text": "Thanks to the generous grant from the foundation 说基金会的资助使研究得以继续。eventually made a breakthrough 是后来的突破，不是先有突破才得到继续研究的条件。grant 在这里指资助款。",
         "tips": [
-          "Thanks to 后接正向原因，语气极性有助于验证关系。",
-          "was able to 是直接结果，eventually 常提示更晚的下游成果。"
+          "先听 Thanks to 后的支持，再把 eventually 后的成果放到后面。"
         ]
       },
       "auto_scoring": false,
@@ -1497,8 +1493,8 @@
       "card_box_name": "因果逻辑",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断预算削减的直接后果。",
-        "task_prompt": "任务：先听音频，再判断预算削减的直接后果。",
+        "text": "听录音：预算削减之后，哪些事情被迫缩减了？",
+        "task_prompt": "听录音：预算削减之后，哪些事情被迫缩减了？",
         "task_schema": {
           "action": "听后定位预算削减的直接后果",
           "focus": "主句直接后果与 ultimately 最终影响",
@@ -1510,14 +1506,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：直接后果是多个关键项目被压缩，进而影响长期目标。",
-        "explanation": "语境揭示：As a consequence of the budget cuts, several key programs had to be scaled back, which ultimately undermined the organization's long-term goals."
+        "text": "多个重要项目被迫缩减，并影响了机构长期目标。",
+        "explanation": "As a consequence of the budget cuts 交代预算削减这一原因。had to be scaled back 表示重要项目不得不缩减；ultimately undermined long-term goals 是接下来的长期影响。"
       },
       "analysis_content": {
-        "text": "① 原因短语：As a consequence of the budget cuts 把预算削减设为起点。\n\n② 直接后果：several key programs had to be scaled back。\n\n③ 最终影响：which ultimately undermined... 把损害长期目标标为更晚结果。题目问直接后果时，应选项目缩减。",
+        "text": "As a consequence of the budget cuts 交代预算削减这一原因。had to be scaled back 表示重要项目不得不缩减；ultimately undermined long-term goals 是接下来的长期影响。",
         "tips": [
-          "as a consequence of 后是原因，主句是其直接结果。",
-          "ultimately 会提示最终层级，不能替代设问要求的直接后果。"
+          "重点听 scaled back 的主语，弄清缩减的对象。"
         ]
       },
       "source_ref": {
@@ -1552,8 +1547,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断预算削减的直接后果。",
-        "task_prompt": "任务：先听音频，再判断预算削减的直接后果。",
+        "text": "听录音：预算削减之后，哪些事情被迫缩减了？",
+        "task_prompt": "听录音：预算削减之后，哪些事情被迫缩减了？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -1564,10 +1559,9 @@
         }
       },
       "analysis": {
-        "text": "① 原因短语：As a consequence of the budget cuts 把预算削减设为起点。\n\n② 直接后果：several key programs had to be scaled back。\n\n③ 最终影响：which ultimately undermined... 把损害长期目标标为更晚结果。题目问直接后果时，应选项目缩减。",
+        "text": "As a consequence of the budget cuts 交代预算削减这一原因。had to be scaled back 表示重要项目不得不缩减；ultimately undermined long-term goals 是接下来的长期影响。",
         "tips": [
-          "as a consequence of 后是原因，主句是其直接结果。",
-          "ultimately 会提示最终层级，不能替代设问要求的直接后果。"
+          "重点听 scaled back 的主语，弄清缩减的对象。"
         ]
       },
       "auto_scoring": false,

@@ -20,8 +20,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断说话人总体态度偏正向还是负向，并给依据。",
-        "task_prompt": "任务：先听音频，再判断说话人总体态度偏正向还是负向，并给依据。",
+        "text": "听录音：说话人是否支持这份提案？还希望补充什么？",
+        "task_prompt": "听录音：说话人是否支持这份提案？还希望补充什么？",
         "task_schema": {
           "action": "听后判断总体态度",
           "focus": "主评价与转折后的限制信息",
@@ -33,14 +33,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：总体态度偏正向，但带保留。\n\n关键点：支持与保留并存时，不能误判为完全支持。",
-        "explanation": "语境揭示：I am generally positive about the proposal, although we still need a clearer timeline."
+        "text": "总体看好提案，但还需要更清楚的时间表。",
+        "explanation": "generally positive 表示总体看好；although 后的 clearer timeline 说明仍希望时间安排更清楚。这个保留意见没有把前面的看好改成反对。"
       },
       "analysis_content": {
-        "text": "① 识别信号：generally positive 直接给出正向基调，although 引出尚需更清晰时间表的保留条件。\n\n② 核心规律：态度题要把方向和强度分开记录。正向评价后出现限制，不会自动把态度反转为负向，而是把“完全支持”降为“有保留的支持”。\n\n③ 验证：proposal 仍被正面评价；需要 clearer timeline 只是支持成立前还要补充的信息，因此结论应同时保留正向与保留两层。",
+        "text": "generally positive 表示总体看好；although 后的 clearer timeline 说明仍希望时间安排更清楚。这个保留意见没有把前面的看好改成反对。",
         "tips": [
-          "先记主态度方向，再用 although/but 修正强度。",
-          "不要把保留条件误听成反对。"
+          "先听 positive，再找 although 后还欠缺的信息。"
         ]
       },
       "options": null,
@@ -76,8 +75,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断说话人总体态度偏正向还是负向，并给依据。",
-        "task_prompt": "任务：先听音频，再判断说话人总体态度偏正向还是负向，并给依据。",
+        "text": "听录音：说话人是否支持这份提案？还希望补充什么？",
+        "task_prompt": "听录音：说话人是否支持这份提案？还希望补充什么？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -88,10 +87,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：generally positive 直接给出正向基调，although 引出尚需更清晰时间表的保留条件。\n\n② 核心规律：态度题要把方向和强度分开记录。正向评价后出现限制，不会自动把态度反转为负向，而是把“完全支持”降为“有保留的支持”。\n\n③ 验证：proposal 仍被正面评价；需要 clearer timeline 只是支持成立前还要补充的信息，因此结论应同时保留正向与保留两层。",
+        "text": "generally positive 表示总体看好；although 后的 clearer timeline 说明仍希望时间安排更清楚。这个保留意见没有把前面的看好改成反对。",
         "tips": [
-          "先记主态度方向，再用 although/but 修正强度。",
-          "不要把保留条件误听成反对。"
+          "先听 positive，再找 although 后还欠缺的信息。"
         ]
       },
       "auto_scoring": false,
@@ -144,8 +142,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再选出最准确的态度描述。",
-        "task_prompt": "任务：先听音频，再选出最准确的态度描述。",
+        "text": "听录音：说话人对新的评估方法持什么态度？",
+        "task_prompt": "听录音：说话人对新的评估方法持什么态度？",
         "task_schema": {
           "action": "四选一：判断态度方向与强度",
           "focus": "评价方向、程度副词与证据条件",
@@ -157,14 +155,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：B. Cautiously supportive\n\n解析：cautiously optimistic 说明态度正向但不激进。",
-        "explanation": "语境揭示：I'm cautiously optimistic about the new assessment method, but I need to see one full semester of results."
+        "text": "B：谨慎支持。",
+        "explanation": "cautiously optimistic 是谨慎乐观；后面还要看一整个学期的结果，说明支持中有保留。因此B最接近。只听 optimistic 会把态度夸成C的完全热情，只听等待结果又可能误判为反对。"
       },
       "analysis_content": {
-        "text": "① 识别信号：cautiously optimistic 表示正向预期但态度克制；but 后面要求观察一个完整学期的结果，进一步限制支持强度。\n\n② 核心规律：选项必须同时覆盖态度方向和把握程度。只抓 optimistic 会误选过强支持，只抓 need to see results 又会误判为反对或中立。\n\n③ 验证：说话人认可新评估方法的前景，但仍等待长期证据，因此“正向但有保留”比强烈热情、反对或完全中立更准确。",
+        "text": "cautiously optimistic 是谨慎乐观；后面还要看一整个学期的结果，说明支持中有保留。因此B最接近。只听 optimistic 会把态度夸成C的完全热情，只听等待结果又可能误判为反对。",
         "tips": [
-          "态度形容词与程度副词要连读。",
-          "but 后的证据要求通常调低强度，不一定改变方向。"
+          "把 cautiously 与 optimistic 当成一组，再用后面的等待要求核对。"
         ]
       },
       "options": [
@@ -221,8 +218,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再选出最准确的态度描述。",
-        "task_prompt": "任务：先听音频，再选出最准确的态度描述。",
+        "text": "听录音：说话人对新的评估方法持什么态度？",
+        "task_prompt": "听录音：说话人对新的评估方法持什么态度？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -233,10 +230,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：cautiously optimistic 表示正向预期但态度克制；but 后面要求观察一个完整学期的结果，进一步限制支持强度。\n\n② 核心规律：选项必须同时覆盖态度方向和把握程度。只抓 optimistic 会误选过强支持，只抓 need to see results 又会误判为反对或中立。\n\n③ 验证：说话人认可新评估方法的前景，但仍等待长期证据，因此“正向但有保留”比强烈热情、反对或完全中立更准确。",
+        "text": "cautiously optimistic 是谨慎乐观；后面还要看一整个学期的结果，说明支持中有保留。因此B最接近。只听 optimistic 会把态度夸成C的完全热情，只听等待结果又可能误判为反对。",
         "tips": [
-          "态度形容词与程度副词要连读。",
-          "but 后的证据要求通常调低强度，不一定改变方向。"
+          "把 cautiously 与 optimistic 当成一组，再用后面的等待要求核对。"
         ]
       },
       "auto_scoring": true,
@@ -292,8 +288,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，记下说话人首次作出明确态度评价的词，再翻面核对。",
-        "task_prompt": "任务：先听音频，记下说话人首次作出明确态度评价的词，再翻面核对。",
+        "text": "听录音：说话人用哪个词直接评价这次回应率的结果？",
+        "task_prompt": "听录音：说话人用哪个词直接评价这次回应率的结果？",
         "task_schema": {
           "action": "听后定位首次明确态度词",
           "focus": "事实描述与态度评价的边界",
@@ -305,14 +301,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "关键态度词：disappointing。\n\nlower than expected 先陈述结果与预期的差距；frankly that result is disappointing 才直接给出说话人的负向评价。",
-        "explanation": "定位态度触发点时，要区分客观结果描述与显性的情绪评价。"
+        "text": "disappointing：令人失望。",
+        "explanation": "lower than expected 先说回应率低于预期；后面的 disappointing 才直接评价“令人失望”。frankly 表示坦率地说，提示接下来要给出自己的看法。"
       },
       "analysis_content": {
-        "text": "① 识别信号：lower than expected 说明表现不如预期，但 disappointing 才是直接标记情绪的评价词。\n\n② 核心规律：听力中的事实可以暗示态度，显性评价词则能确认态度。若任务要求定位态度信号，应等到评价真正出现，而不是在背景事实处提前判断。\n\n③ 验证：response rate 是评价对象，disappointing 给出负向情绪，for all of us 扩展了受影响范围；三者共同支持失望结论。",
+        "text": "lower than expected 先说回应率低于预期；后面的 disappointing 才直接评价“令人失望”。frankly 表示坦率地说，提示接下来要给出自己的看法。",
         "tips": [
-          "先区分事实描述和评价表达。",
-          "听到 frankly 等提示语后，留意紧随其后的真实立场。"
+          "听到 frankly 后，找直接表达感受的形容词。"
         ]
       },
       "options": null,
@@ -352,8 +347,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，记下说话人首次作出明确态度评价的词，再翻面核对。",
-        "task_prompt": "任务：先听音频，记下说话人首次作出明确态度评价的词，再翻面核对。",
+        "text": "听录音：说话人用哪个词直接评价这次回应率的结果？",
+        "task_prompt": "听录音：说话人用哪个词直接评价这次回应率的结果？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -364,10 +359,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：lower than expected 说明表现不如预期，但 disappointing 才是直接标记情绪的评价词。\n\n② 核心规律：听力中的事实可以暗示态度，显性评价词则能确认态度。若任务要求定位态度信号，应等到评价真正出现，而不是在背景事实处提前判断。\n\n③ 验证：response rate 是评价对象，disappointing 给出负向情绪，for all of us 扩展了受影响范围；三者共同支持失望结论。",
+        "text": "lower than expected 先说回应率低于预期；后面的 disappointing 才直接评价“令人失望”。frankly 表示坦率地说，提示接下来要给出自己的看法。",
         "tips": [
-          "先区分事实描述和评价表达。",
-          "听到 frankly 等提示语后，留意紧随其后的真实立场。"
+          "听到 frankly 后，找直接表达感受的形容词。"
         ]
       },
       "auto_scoring": false,
@@ -420,8 +414,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，概括说话人的当前立场、转折和保留条件，再翻面核对。",
-        "task_prompt": "任务：先听音频，概括说话人的当前立场、转折和保留条件，再翻面核对。",
+        "text": "听录音：说话人完全支持这项计划吗？他还需要先弄清什么？",
+        "task_prompt": "听录音：说话人完全支持这项计划吗？他还需要先弄清什么？",
         "task_schema": {
           "action": "听后复述保留态度链",
           "focus": "初始立场、转折后的主判断与条件",
@@ -433,14 +427,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "立场：不反对方案，但在预算假设澄清前不能完全支持。\n\nnot against 排除了明确反对；but I can't fully support 与 until... 给出保留程度和解除保留的条件。",
-        "explanation": "完整态度链由初始立场、转折后的主判断和条件三部分组成，不应截取单句。"
+        "text": "还不能完全支持；需要先澄清预算所依据的假设。",
+        "explanation": "not against 只是说不反对，不等于完全支持。but 后明确 can’t fully support；until we clarify the budget assumptions 说明保留意见来自预算信息还没讲清。"
       },
       "analysis_content": {
-        "text": "① 识别信号：not against 是否定式的弱正向或中性起点；but 把重心转向 can't fully support；until 引出预算澄清这一条件。\n\n② 核心规律：双重限制句不能只按第一个态度词判断。转折后的主判断通常权重更高，条件从句则解释为何尚未完全支持。\n\n③ 验证：说话人既没有否定方案，也没有无条件赞成，而是把进一步支持绑定到预算信息上，因此属于明确的保留态度。",
+        "text": "not against 只是说不反对，不等于完全支持。but 后明确 can’t fully support；until we clarify the budget assumptions 说明保留意见来自预算信息还没讲清。",
         "tips": [
-          "not against 不等于 fully support。",
-          "按“起点—转折—条件”复述复杂立场。"
+          "把 not against 与 can’t fully support 一起读，再找 until 后的条件。"
         ]
       },
       "options": null,
@@ -477,8 +470,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，概括说话人的当前立场、转折和保留条件，再翻面核对。",
-        "task_prompt": "任务：先听音频，概括说话人的当前立场、转折和保留条件，再翻面核对。",
+        "text": "听录音：说话人完全支持这项计划吗？他还需要先弄清什么？",
+        "task_prompt": "听录音：说话人完全支持这项计划吗？他还需要先弄清什么？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -489,10 +482,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：not against 是否定式的弱正向或中性起点；but 把重心转向 can't fully support；until 引出预算澄清这一条件。\n\n② 核心规律：双重限制句不能只按第一个态度词判断。转折后的主判断通常权重更高，条件从句则解释为何尚未完全支持。\n\n③ 验证：说话人既没有否定方案，也没有无条件赞成，而是把进一步支持绑定到预算信息上，因此属于明确的保留态度。",
+        "text": "not against 只是说不反对，不等于完全支持。but 后明确 can’t fully support；until we clarify the budget assumptions 说明保留意见来自预算信息还没讲清。",
         "tips": [
-          "not against 不等于 fully support。",
-          "按“起点—转折—条件”复述复杂立场。"
+          "把 not against 与 can’t fully support 一起读，再找 until 后的条件。"
         ]
       },
       "auto_scoring": false,
@@ -543,8 +535,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再选出说话人的态度方向。",
-        "task_prompt": "任务：先听音频，再选出说话人的态度方向。",
+        "text": "听录音：说话人总体是否支持这项改变？",
+        "task_prompt": "听录音：说话人总体是否支持这项改变？",
         "task_schema": {
           "action": "四选一：判断总体态度",
           "focus": "让步背景与主句比较结论",
@@ -556,14 +548,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：A. Mostly supportive\n\n解析：句中强调 benefits outweigh the drawbacks，主立场是支持。",
-        "explanation": "语境揭示：Despite a few concerns, I still believe the benefits of this change outweigh the drawbacks."
+        "text": "A：总体支持。",
+        "explanation": "Despite a few concerns 承认有一些担心；但主句说 benefits outweigh the drawbacks，收益大于缺点，所以总体支持。outweigh 在这里是“比……更重要、占优势”，不是没有缺点。"
       },
       "analysis_content": {
-        "text": "① 识别信号：Despite a few concerns 是让步背景；主句 still believe 把重心放在 benefits outweigh the drawbacks。\n\n② 核心规律：despite/although 引出的内容通常不是最终立场。判断态度要找到主句结论，并比较正负因素最后哪一方被说话人认为更重要。\n\n③ 验证：说话人承认少量担忧，却明确认为收益大于缺点，所以总体支持改变，但强度低于毫无保留的赞成。",
+        "text": "Despite a few concerns 承认有一些担心；但主句说 benefits outweigh the drawbacks，收益大于缺点，所以总体支持。outweigh 在这里是“比……更重要、占优势”，不是没有缺点。",
         "tips": [
-          "让步信息先记账，主句结论再定方向。",
-          "outweigh 表示比较后的主判断。"
+          "听说话人最后怎样比较 benefits 与 drawbacks。"
         ]
       },
       "options": [
@@ -620,8 +611,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再选出说话人的态度方向。",
-        "task_prompt": "任务：先听音频，再选出说话人的态度方向。",
+        "text": "听录音：说话人总体是否支持这项改变？",
+        "task_prompt": "听录音：说话人总体是否支持这项改变？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -632,10 +623,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：Despite a few concerns 是让步背景；主句 still believe 把重心放在 benefits outweigh the drawbacks。\n\n② 核心规律：despite/although 引出的内容通常不是最终立场。判断态度要找到主句结论，并比较正负因素最后哪一方被说话人认为更重要。\n\n③ 验证：说话人承认少量担忧，却明确认为收益大于缺点，所以总体支持改变，但强度低于毫无保留的赞成。",
+        "text": "Despite a few concerns 承认有一些担心；但主句说 benefits outweigh the drawbacks，收益大于缺点，所以总体支持。outweigh 在这里是“比……更重要、占优势”，不是没有缺点。",
         "tips": [
-          "让步信息先记账，主句结论再定方向。",
-          "outweigh 表示比较后的主判断。"
+          "听说话人最后怎样比较 benefits 与 drawbacks。"
         ]
       },
       "auto_scoring": true,
@@ -689,8 +679,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：听完音频，用自己的话复述说话人态度变化的过程。",
-        "task_prompt": "任务：听完音频，用自己的话复述说话人态度变化的过程。",
+        "text": "听录音：说话人的态度怎样改变？是什么促成了变化？",
+        "task_prompt": "听录音：说话人的态度怎样改变？是什么促成了变化？",
         "task_schema": {
           "action": "听后复述态度变化链",
           "focus": "初始态度、证据节点与当前立场",
@@ -702,14 +692,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：说话人从最初的怀疑转为支持分阶段推进；促成转变的是看过试点结果。",
-        "explanation": "态度变化题要保留初始立场、证据节点和当前立场，不能给证据添加音频未表达的评价。"
+        "text": "从起初怀疑，转为支持分阶段推广；变化发生在看过试点结果之后。",
+        "explanation": "skeptical at first 是最初怀疑，I now support 是现在支持；中间 after seeing the pilot outcomes 交代改变依据。phased rollout 指分阶段推广，不是一次铺开。"
       },
       "analysis_content": {
-        "text": "① 识别信号：at first 标记初始怀疑，but after seeing 标记证据节点，I now support 给出当前立场。\n\n② 核心规律：态度变化题应还原时间链，而不是只报最后方向。转变依据只能复述音频明说的 pilot outcomes，不能自行补成“结果优于预期”。\n\n③ 验证：完整链条是 skeptical → saw the pilot outcomes → support a phased rollout；phased 又说明支持的是渐进推进而非一次性全面展开。",
+        "text": "skeptical at first 是最初怀疑，I now support 是现在支持；中间 after seeing the pilot outcomes 交代改变依据。phased rollout 指分阶段推广，不是一次铺开。",
         "tips": [
-          "用 at first/but/now 画出态度时间线。",
-          "复述依据时不要加入材料未说的好坏判断。"
+          "按 at first、after seeing、now 的顺序记变化。"
         ]
       },
       "options": null,
@@ -745,8 +734,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：听完音频，用自己的话复述说话人态度变化的过程。",
-        "task_prompt": "任务：听完音频，用自己的话复述说话人态度变化的过程。",
+        "text": "听录音：说话人的态度怎样改变？是什么促成了变化？",
+        "task_prompt": "听录音：说话人的态度怎样改变？是什么促成了变化？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -757,10 +746,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：at first 标记初始怀疑，but after seeing 标记证据节点，I now support 给出当前立场。\n\n② 核心规律：态度变化题应还原时间链，而不是只报最后方向。转变依据只能复述音频明说的 pilot outcomes，不能自行补成“结果优于预期”。\n\n③ 验证：完整链条是 skeptical → saw the pilot outcomes → support a phased rollout；phased 又说明支持的是渐进推进而非一次性全面展开。",
+        "text": "skeptical at first 是最初怀疑，I now support 是现在支持；中间 after seeing the pilot outcomes 交代改变依据。phased rollout 指分阶段推广，不是一次铺开。",
         "tips": [
-          "用 at first/but/now 画出态度时间线。",
-          "复述依据时不要加入材料未说的好坏判断。"
+          "按 at first、after seeing、now 的顺序记变化。"
         ]
       },
       "auto_scoring": false,
@@ -811,8 +799,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断说话人对新政策的态度。",
-        "task_prompt": "任务：先听音频，再判断说话人对新政策的态度。",
+        "text": "听录音：说话人赞同新政策吗？long overdue 表达什么看法？",
+        "task_prompt": "听录音：说话人赞同新政策吗？long overdue 表达什么看法？",
         "task_schema": {
           "action": "听后判断政策态度",
           "focus": "直接评价与实施时机评价",
@@ -824,14 +812,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：说话人持明显正向态度，认为该政策合理且早该实施。",
-        "explanation": "语境揭示：Honestly, I think the new policy is quite reasonable. It's long overdue, if you ask me."
+        "text": "赞同，认为新政策合理，而且早该实施。",
+        "explanation": "quite reasonable 直接肯定政策合理。long overdue 在这里是“早就该做却拖到现在”，所以是不满实施太晚，而不是反对政策本身。"
       },
       "analysis_content": {
-        "text": "① 识别信号：quite reasonable 是直接正向评价，long overdue 表示政策早就应该实施，进一步加强赞同。\n\n② 核心规律：overdue 字面涉及“迟到”，但 long overdue 在政策语境中常表达措施必要且实施太晚，态度指向政策本身仍是正向。\n\n③ 验证：两处表达都支持新政策，只是第二处同时批评实施时机过迟，因此应判断为明显赞同而非负面反对。",
+        "text": "quite reasonable 直接肯定政策合理。long overdue 在这里是“早就该做却拖到现在”，所以是不满实施太晚，而不是反对政策本身。",
         "tips": [
-          "评价对象要分清：赞同政策，不满的是实施太晚。",
-          "long overdue 常强化“早该如此”的立场。"
+          "分开看说话人评价的是政策内容，还是实施时间。"
         ]
       },
       "source_ref": {
@@ -869,8 +856,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断说话人对新政策的态度。",
-        "task_prompt": "任务：先听音频，再判断说话人对新政策的态度。",
+        "text": "听录音：说话人赞同新政策吗？long overdue 表达什么看法？",
+        "task_prompt": "听录音：说话人赞同新政策吗？long overdue 表达什么看法？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -881,10 +868,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：quite reasonable 是直接正向评价，long overdue 表示政策早就应该实施，进一步加强赞同。\n\n② 核心规律：overdue 字面涉及“迟到”，但 long overdue 在政策语境中常表达措施必要且实施太晚，态度指向政策本身仍是正向。\n\n③ 验证：两处表达都支持新政策，只是第二处同时批评实施时机过迟，因此应判断为明显赞同而非负面反对。",
+        "text": "quite reasonable 直接肯定政策合理。long overdue 在这里是“早就该做却拖到现在”，所以是不满实施太晚，而不是反对政策本身。",
         "tips": [
-          "评价对象要分清：赞同政策，不满的是实施太晚。",
-          "long overdue 常强化“早该如此”的立场。"
+          "分开看说话人评价的是政策内容，还是实施时间。"
         ]
       },
       "auto_scoring": false,
@@ -935,8 +921,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断说话人对调查结果的态度。",
-        "task_prompt": "任务：先听音频，再判断说话人对调查结果的态度。",
+        "text": "听录音：说话人为什么怀疑这项调查结果？",
+        "task_prompt": "听录音：说话人为什么怀疑这项调查结果？",
         "task_schema": {
           "action": "听后判断调查结果态度",
           "focus": "态度词、程度词与方法论依据",
@@ -948,14 +934,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：说话人持怀疑态度，质疑样本代表性。",
-        "explanation": "语境揭示：I'm somewhat skeptical about the results of that survey. The sample size was really quite small, and I'm not sure it's representative."
+        "text": "样本太小，未必有代表性，因此对结果持怀疑态度。",
+        "explanation": "somewhat skeptical 表示有些怀疑。理由是 sample size 很小，而且不确定是否 representative，有代表性。题目问的是对这项结果的看法，不是他是否反对所有调查。"
       },
       "analysis_content": {
-        "text": "① 识别信号：somewhat skeptical 直接给出怀疑但非全盘否定；not sure 延续不确定性，sample size small 和 representative 给出具体理由。\n\n② 核心规律：态度标签需要与依据绑定。对调查结果的怀疑来自样本规模和代表性，而不是说话人普遍反对调查方法。\n\n③ 验证：两个评价信号和两个方法论理由方向一致，支持“对结果可信度持保留和怀疑”的结论。",
+        "text": "somewhat skeptical 表示有些怀疑。理由是 sample size 很小，而且不确定是否 representative，有代表性。题目问的是对这项结果的看法，不是他是否反对所有调查。",
         "tips": [
-          "程度词 somewhat 表明怀疑强度有限。",
-          "原因句决定怀疑针对的是结果可信度。"
+          "听 skeptical 后继续找 sample 和 representative 两个理由词。"
         ]
       },
       "source_ref": {
@@ -990,8 +975,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断说话人对调查结果的态度。",
-        "task_prompt": "任务：先听音频，再判断说话人对调查结果的态度。",
+        "text": "听录音：说话人为什么怀疑这项调查结果？",
+        "task_prompt": "听录音：说话人为什么怀疑这项调查结果？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -1002,10 +987,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：somewhat skeptical 直接给出怀疑但非全盘否定；not sure 延续不确定性，sample size small 和 representative 给出具体理由。\n\n② 核心规律：态度标签需要与依据绑定。对调查结果的怀疑来自样本规模和代表性，而不是说话人普遍反对调查方法。\n\n③ 验证：两个评价信号和两个方法论理由方向一致，支持“对结果可信度持保留和怀疑”的结论。",
+        "text": "somewhat skeptical 表示有些怀疑。理由是 sample size 很小，而且不确定是否 representative，有代表性。题目问的是对这项结果的看法，不是他是否反对所有调查。",
         "tips": [
-          "程度词 somewhat 表明怀疑强度有限。",
-          "原因句决定怀疑针对的是结果可信度。"
+          "听 skeptical 后继续找 sample 和 representative 两个理由词。"
         ]
       },
       "auto_scoring": false,
@@ -1056,8 +1040,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断说话人的整体态度。",
-        "task_prompt": "任务：先听音频，再判断说话人的整体态度。",
+        "text": "听录音：说话人怎样评价团队表现，为什么？",
+        "task_prompt": "听录音：说话人怎样评价团队表现，为什么？",
         "task_schema": {
           "action": "听后判断团队表现态度",
           "focus": "直接赞许、预期差与时间信息",
@@ -1069,14 +1053,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：说话人表达积极称赞态度，对团队表现感到惊喜。",
-        "explanation": "语境揭示：I have to say, I'm pretty impressed with how quickly the team turned things around. No one expected that kind of turnaround in just two weeks."
+        "text": "赞赏并感到意外：团队只用两周就扭转了局面。",
+        "explanation": "pretty impressed 表示很赞赏。turn things around 是扭转局面；in just two weeks 与 No one expected… 说明扭转得比大家预想的快，带来惊喜。"
       },
       "analysis_content": {
-        "text": "① 识别信号：pretty impressed 是直接赞许，No one expected 与 in just two weeks 突出成果超出预期且速度很快。\n\n② 核心规律：态度强度不仅来自情感词，也来自说话人用来解释惊喜的对比信息。turn things around 表示扭转局面，不是简单完成任务。\n\n③ 验证：说话人对团队改善速度和结果都作正面评价，因此整体态度是赞赏并带惊喜。",
+        "text": "pretty impressed 表示很赞赏。turn things around 是扭转局面；in just two weeks 与 No one expected… 说明扭转得比大家预想的快，带来惊喜。",
         "tips": [
-          "impressed 定方向，超预期信息定强度。",
-          "turn things around 要按“扭转局面”整体理解。"
+          "先听 impressed，再找解释惊喜的时间和预期对比。"
         ]
       },
       "source_ref": {
@@ -1110,8 +1093,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断说话人的整体态度。",
-        "task_prompt": "任务：先听音频，再判断说话人的整体态度。",
+        "text": "听录音：说话人怎样评价团队表现，为什么？",
+        "task_prompt": "听录音：说话人怎样评价团队表现，为什么？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -1122,10 +1105,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：pretty impressed 是直接赞许，No one expected 与 in just two weeks 突出成果超出预期且速度很快。\n\n② 核心规律：态度强度不仅来自情感词，也来自说话人用来解释惊喜的对比信息。turn things around 表示扭转局面，不是简单完成任务。\n\n③ 验证：说话人对团队改善速度和结果都作正面评价，因此整体态度是赞赏并带惊喜。",
+        "text": "pretty impressed 表示很赞赏。turn things around 是扭转局面；in just two weeks 与 No one expected… 说明扭转得比大家预想的快，带来惊喜。",
         "tips": [
-          "impressed 定方向，超预期信息定强度。",
-          "turn things around 要按“扭转局面”整体理解。"
+          "先听 impressed，再找解释惊喜的时间和预期对比。"
         ]
       },
       "auto_scoring": false,
@@ -1178,8 +1160,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断说话人对当前讨论的态度。",
-        "task_prompt": "任务：先听音频，再判断说话人对当前讨论的态度。",
+        "text": "听录音：说话人对继续讨论这件事有什么看法？",
+        "task_prompt": "听录音：说话人对继续讨论这件事有什么看法？",
         "task_schema": {
           "action": "四选一：判断对讨论过程的态度",
           "focus": "直接立场提示、耗时评价与建议",
@@ -1191,14 +1173,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "答案：C。\n\nwasting a lot of time 批评讨论效率，should have moved on ages ago 表明说话人认为早该结束，因此态度是不耐烦并带批评。",
-        "explanation": "态度选项应同时覆盖情绪和评价对象，不能只抓 to be frank 这一提示语。"
+        "text": "C：不耐烦，并批评讨论拖得太久。",
+        "explanation": "wasting a lot of time 是在批评耗时；should have moved on ages ago 表示早就该进入下一项。说话人并非漠不关心，而是对讨论拖延不满，所以选C。"
       },
       "analysis_content": {
-        "text": "① 识别信号：To be frank 预告直接立场，wasting a lot of time 给出负面评价，should have moved on ages ago 表达对延误的不耐烦。\n\n② 核心规律：态度题要区分对议题本身和对讨论过程的评价。这里说话人批评的是继续耗时，而不是支持延长讨论。\n\n③ 验证：三处信号共同排除支持、冷漠和热情，只有“不耐烦并批评拖延”同时匹配情绪与对象。",
+        "text": "wasting a lot of time 是在批评耗时；should have moved on ages ago 表示早就该进入下一项。说话人并非漠不关心，而是对讨论拖延不满，所以选C。",
         "tips": [
-          "提示语后紧跟的句子通常是真实立场。",
-          "答案要包含态度对象：这里是讨论拖延。"
+          "听 should have moved on 说明他希望会议怎样继续。"
         ]
       },
       "source_ref": {
@@ -1254,8 +1235,8 @@
       },
       "interaction_id": "multiple_choice",
       "front": {
-        "text": "任务：先听音频，再判断说话人对当前讨论的态度。",
-        "task_prompt": "任务：先听音频，再判断说话人对当前讨论的态度。",
+        "text": "听录音：说话人对继续讨论这件事有什么看法？",
+        "task_prompt": "听录音：说话人对继续讨论这件事有什么看法？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -1266,10 +1247,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：To be frank 预告直接立场，wasting a lot of time 给出负面评价，should have moved on ages ago 表达对延误的不耐烦。\n\n② 核心规律：态度题要区分对议题本身和对讨论过程的评价。这里说话人批评的是继续耗时，而不是支持延长讨论。\n\n③ 验证：三处信号共同排除支持、冷漠和热情，只有“不耐烦并批评拖延”同时匹配情绪与对象。",
+        "text": "wasting a lot of time 是在批评耗时；should have moved on ages ago 表示早就该进入下一项。说话人并非漠不关心，而是对讨论拖延不满，所以选C。",
         "tips": [
-          "提示语后紧跟的句子通常是真实立场。",
-          "答案要包含态度对象：这里是讨论拖延。"
+          "听 should have moved on 说明他希望会议怎样继续。"
         ]
       },
       "auto_scoring": true,
@@ -1325,8 +1305,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，分别判断 she 当前的态度，以及说话人对此的反应。",
-        "task_prompt": "任务：先听音频，分别判断 she 当前的态度，以及说话人对此的反应。",
+        "text": "听录音：那位女性当前的态度是什么？说话人为什么感到意外？",
+        "task_prompt": "听录音：那位女性当前的态度是什么？说话人为什么感到意外？",
         "task_schema": {
           "action": "听后区分两层态度主体",
           "focus": "被描述者当前态度与说话人反应",
@@ -1338,14 +1318,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "she 当前态度：中立。\n说话人的反应：意外，因为她平时会对环境议题积极发声。",
-        "explanation": "同一句可同时包含被描述者的态度和说话人的元态度，必须区分两个主体。"
+        "text": "她现在态度中立；说话人觉得意外，因为她平时常对环境问题积极发表意见。",
+        "explanation": "she seems quite neutral 描写那位女性；surprising 是说话人对此的感受。given 后说明原因：她平时很 vocal，常主动发声。两种态度分别属于不同的人。"
       },
       "analysis_content": {
-        "text": "① 识别信号：she seems quite neutral 描述 she；which is actually surprising 描述说话人的反应；given how vocal she usually is 给出意外原因。\n\n② 核心规律：多主体态度句先给每个评价绑定主体。neutral 不能误记为说话人中立，surprising 也不能误记为 she 感到意外。\n\n③ 验证：当前中立与平时积极发声形成 expected-versus-actual 对比，说话人的元态度正是对这种反差感到惊讶。",
+        "text": "she seems quite neutral 描写那位女性；surprising 是说话人对此的感受。given 后说明原因：她平时很 vocal，常主动发声。两种态度分别属于不同的人。",
         "tips": [
-          "每个态度词旁标记是谁的态度。",
-          "which/given 引出的信息常解释说话人的反应。"
+          "给 neutral 和 surprising 分别标明是谁的态度。"
         ]
       },
       "source_ref": {
@@ -1383,8 +1362,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，分别判断 she 当前的态度，以及说话人对此的反应。",
-        "task_prompt": "任务：先听音频，分别判断 she 当前的态度，以及说话人对此的反应。",
+        "text": "听录音：那位女性当前的态度是什么？说话人为什么感到意外？",
+        "task_prompt": "听录音：那位女性当前的态度是什么？说话人为什么感到意外？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -1395,10 +1374,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：she seems quite neutral 描述 she；which is actually surprising 描述说话人的反应；given how vocal she usually is 给出意外原因。\n\n② 核心规律：多主体态度句先给每个评价绑定主体。neutral 不能误记为说话人中立，surprising 也不能误记为 she 感到意外。\n\n③ 验证：当前中立与平时积极发声形成 expected-versus-actual 对比，说话人的元态度正是对这种反差感到惊讶。",
+        "text": "she seems quite neutral 描写那位女性；surprising 是说话人对此的感受。given 后说明原因：她平时很 vocal，常主动发声。两种态度分别属于不同的人。",
         "tips": [
-          "每个态度词旁标记是谁的态度。",
-          "which/given 引出的信息常解释说话人的反应。"
+          "给 neutral 和 surprising 分别标明是谁的态度。"
         ]
       },
       "auto_scoring": false,
@@ -1451,8 +1429,8 @@
       "card_box_name": "观点、态度",
       "card_group_name": "推理判断",
       "front_content": {
-        "text": "任务：先听音频，再判断说话人对项目结果的态度。",
-        "task_prompt": "任务：先听音频，再判断说话人对项目结果的态度。",
+        "text": "听录音：说话人对项目结果是什么感受，原因是什么？",
+        "task_prompt": "听录音：说话人对项目结果是什么感受，原因是什么？",
         "task_schema": {
           "action": "听后判断项目结果态度",
           "focus": "直接情感、反差结构与评价对象",
@@ -1464,14 +1442,13 @@
         "highlight_ranges": []
       },
       "back_content": {
-        "text": "结论：说话人明显表达失望情绪，认为结果未达预期。",
-        "explanation": "语境揭示：Quite frankly, I'm disappointed. We had all the resources we needed, and yet the outcome was nowhere near what we'd hoped for."
+        "text": "很失望：资源充足，结果却远未达到预期。",
+        "explanation": "I’m disappointed 直接说明失望。and yet 把资源齐全与结果不佳对照；nowhere near 表示距离预期还差很远。说话人不是在抱怨没有资源，而是在批评做出的结果。"
       },
       "analysis_content": {
-        "text": "① 识别信号：I'm disappointed 直接表明失望；and yet 标出资源充分与结果不佳的反差；nowhere near 强化未达预期的程度。\n\n② 核心规律：直接情感词定方向，反事实或反差结构解释态度为何更强。已有全部资源却远未达到目标，使失望不仅存在，而且证据充分。\n\n③ 验证：评价对象是项目结果，原因是 outcome 与 hoped-for result 的巨大差距，因此不能把态度误判为对资源不足的抱怨。",
+        "text": "I’m disappointed 直接说明失望。and yet 把资源齐全与结果不佳对照；nowhere near 表示距离预期还差很远。说话人不是在抱怨没有资源，而是在批评做出的结果。",
         "tips": [
-          "direct emotion 先定方向，yet/nowhere near 再定强度。",
-          "核对态度对象：这里针对结果而非资源。"
+          "先记 disappointed，再听 yet 后哪一点让他失望。"
         ]
       },
       "source_ref": {
@@ -1506,8 +1483,8 @@
       },
       "interaction_id": "flip",
       "front": {
-        "text": "任务：先听音频，再判断说话人对项目结果的态度。",
-        "task_prompt": "任务：先听音频，再判断说话人对项目结果的态度。",
+        "text": "听录音：说话人对项目结果是什么感受，原因是什么？",
+        "task_prompt": "听录音：说话人对项目结果是什么感受，原因是什么？",
         "audio_first": true,
         "display_mode": "audio_first",
         "highlight_ranges": [],
@@ -1518,10 +1495,9 @@
         }
       },
       "analysis": {
-        "text": "① 识别信号：I'm disappointed 直接表明失望；and yet 标出资源充分与结果不佳的反差；nowhere near 强化未达预期的程度。\n\n② 核心规律：直接情感词定方向，反事实或反差结构解释态度为何更强。已有全部资源却远未达到目标，使失望不仅存在，而且证据充分。\n\n③ 验证：评价对象是项目结果，原因是 outcome 与 hoped-for result 的巨大差距，因此不能把态度误判为对资源不足的抱怨。",
+        "text": "I’m disappointed 直接说明失望。and yet 把资源齐全与结果不佳对照；nowhere near 表示距离预期还差很远。说话人不是在抱怨没有资源，而是在批评做出的结果。",
         "tips": [
-          "direct emotion 先定方向，yet/nowhere near 再定强度。",
-          "核对态度对象：这里针对结果而非资源。"
+          "先记 disappointed，再听 yet 后哪一点让他失望。"
         ]
       },
       "auto_scoring": false,
