@@ -10,6 +10,8 @@ import {
   computePatchSha256,
   validateDeliveryRecord,
 } from './validate_delivery_record.mjs';
+import {computeCardCorpusFingerprint} from './lib/card_integrity.mjs';
+import {buildModelAcceptanceInputSha256} from './lib/model_acceptance.mjs';
 
 const HANDOFF_PATH = 'reviews/git_handoffs/20260731-test-delivery.json';
 const PAYLOAD_PATHS = ['assets/payload.bin', 'docs/payload.txt'];
@@ -369,6 +371,102 @@ function assertError(result, pattern) {
 
 function cleanUp(t, fixture) {
   t.after(() => fs.rmSync(fixture.root, {recursive: true, force: true}));
+}
+
+function createFullTrackFixture({tracks = ['cet4', 'cet6'], mutate, afterWrite} = {}) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'delivery-full-track-'));
+  git(root, 'init', '-b', 'main');
+  git(root, 'config', 'user.name', 'Delivery Full Track Test');
+  git(root, 'config', 'user.email', 'delivery-full-track@example.com');
+  git(root, 'remote', 'add', 'origin', 'https://github.com/example/card-make.git');
+  const prefixFor = track => track === 'cet4' ? '0000' : '1000';
+  const cardPathFor = track => `card_boxes_json/card_boxes_seed_${track}_listening_${prefixFor(track)}.json`;
+  const documents = new Map(['cet4', 'cet6'].map(track => [track, {
+    cards: ['01', '02'].map(suffix => ({
+      card_id: `${prefixFor(track)}${suffix}`,
+      track,
+      knowledge_ref: {box_prefix: prefixFor(track)},
+      front: {text: 'The library opens at eight.'},
+    })),
+  }]));
+  for (const [track, document] of documents) {
+    write(root, cardPathFor(track), `${JSON.stringify(document)}\n`);
+  }
+  const baseCommitSha = commitAll(root, 'base complete tracks');
+  const branch = 'content/full-track-fixture';
+  git(root, 'switch', '-c', branch);
+  for (const track of tracks) {
+    documents.get(track).cards[0].front.text = 'The library opens at eight on weekdays.';
+    write(root, cardPathFor(track), `${JSON.stringify(documents.get(track))}\n`);
+  }
+  const fingerprint = computeCardCorpusFingerprint(root);
+  const reviews = new Map();
+  const audits = new Map();
+  const reviewPathFor = track => `reviews/agent_self_review/${track}-full.json`;
+  const auditPathFor = track => `reviews/audit_scopes/${track}-full.json`;
+  const bytesFor = value => Buffer.from(`${JSON.stringify(value, null, 2)}\n`);
+  const hashFor = value => `sha256:${crypto.createHash('sha256').update(bytesFor(value)).digest('hex')}`;
+  const bindReview = (review, auditPath, audit) => {
+    review.quality_audit = {
+      report: auditPath,
+      report_sha256: hashFor(audit),
+      corpus_fingerprint: fingerprint.digest,
+      scope_has_no_hard_blockers: true,
+      scope_summary: structuredClone(audit.scope_summary),
+    };
+    const input = buildModelAcceptanceInputSha256({
+      decisionType: 'full_track_review',
+      scope: review.scope,
+      corpusFingerprint: fingerprint.digest,
+      auditSha256: review.quality_audit.report_sha256,
+    });
+    review.model_acceptances = ['a', 'b'].map(pass => ({
+      schema_version: 'model-acceptance.v2',
+      actor: {kind: 'model_harness', agent: 'agent:delivery-fixture', model: 'fixture-model', run_id: `fixture:${review.scope.track}:${pass}`},
+      evidence: {reviewed_at: '2026-10-01T10:00:00Z', input_sha256: input, capabilities: ['card_semantic_review', 'source_provenance_review'], summary: 'Test-only structural acceptance fixture.', findings: []},
+      decision: 'accepted',
+    }));
+  };
+  for (const track of tracks) {
+    const ids = documents.get(track).cards.map(card => card.card_id);
+    const audit = {
+      ok: true,
+      report_type: 'scoped_card_quality_audit',
+      audit_version: 'card-make-quality-audit-v1',
+      corpus_fingerprint: structuredClone(fingerprint),
+      scope: {card_dir: 'card_boxes_json', card_ids: ids, missing_card_ids: []},
+      scope_summary: {card_ids: ids, card_count: ids.length, issue_count: 0, by_severity: {hard_blocker: 0, content_risk: 0, review_gap: 0, source_risk: 0}, by_rule: {}},
+      scoped_hard_blocker_issues: [],
+    };
+    const review = {
+      schema_version: 'model-owned-full-track-review.v2',
+      review_id: `${track}-full-fixture`,
+      created_at: '2026-10-01T10:00:00Z',
+      scope: {track, card_ids: ids, box_prefixes: [prefixFor(track)]},
+      specs_read: ['spec/review-workflow.json'],
+      coverage: {expected_card_count: ids.length, reviewed_card_ids: ids, analysis_reference_check: {answer_matches_card: true, choice_or_bank_references_match_source: true, distractor_labels_match_explanations: true}, boxes: [{box_prefix: prefixFor(track), status: 'pass'}]},
+      representative_cards: [ids[0]],
+      removed_cards: [],
+      batch_review: {status: 'ready_for_model_authorization', summary: 'Test-only complete-track review.', remaining_risks: [], next_step: 'Separate authorization delivery.'},
+    };
+    bindReview(review, auditPathFor(track), audit);
+    reviews.set(reviewPathFor(track), review);
+    audits.set(auditPathFor(track), audit);
+  }
+  const state = {root, tracks, documents, fingerprint, reviews, audits, reviewPathFor, auditPathFor, bindReview, bytesFor};
+  mutate?.(state);
+  for (const [relativePath, record] of [...reviews, ...audits]) write(root, relativePath, bytesFor(record));
+  afterWrite?.(state);
+  const payloadCommitSha = commitAll(root, 'current full-track payload');
+  const touchedPaths = git(root, 'diff', '--name-only', baseCommitSha, payloadCommitSha).split('\n').sort();
+  const record = {
+    handoff_id: '20260731-test-delivery', created_at: '2026-10-01T10:00:00Z', agent: 'codex', branch, base_branch: 'main', commit_sha: payloadCommitSha, push_ref: `origin/${branch}`, PR_url: 'https://github.com/example/card-make/pull/123', PR_state: 'OPEN', is_draft: false,
+    scope: {change_type: 'content_candidate_front_answer_leak_queue', multi_prefix_review_unit: true, scope_reason: 'Complete current track reviews are one content delivery unit.', box_prefixes: tracks.map(prefixFor).sort(), touched_paths: touchedPaths, patch_format: PATCH_FORMAT_V2, base_commit_sha: baseCommitSha, patch_sha256: computePatchSha256({root, baseCommitSha, commitSha: payloadCommitSha, touchedPaths, patchFormat: PATCH_FORMAT_V2})},
+    validation: [{command: 'node --test', result: 'test fixture'}], local_status: 'test fixture', remaining_risks: [], merge_authority: 'standing_delegation_auto_merge_for_all_validated_change_classes',
+  };
+  write(root, HANDOFF_PATH, bytesFor(record));
+  const handoffCommitSha = commitAll(root, 'handoff only');
+  return {root, branch, baseCommitSha, payloadCommitSha, handoffCommitSha, ...state};
 }
 
 function commitHandoffWithMode(fixture, mode) {
@@ -1194,6 +1292,119 @@ test('rejects an arbitrary two-review candidate evidence bundle', t => {
   commitAll(fixture.root, 'corrupt expansion evidence');
 
   assertError(validate(fixture), /exactly one three-card sample and one confirmed box expansion/);
+});
+
+test('current full-track delivery accepts complete one- and two-track review/audit pairs', async t => {
+  for (const tracks of [['cet4'], ['cet6'], ['cet4', 'cet6']]) {
+    await t.test(tracks.join('+'), subtest => {
+      const fixture = createFullTrackFixture({tracks});
+      cleanUp(subtest, fixture);
+      const result = validate(fixture, {branch: fixture.branch});
+      assert.equal(result.ok, true, JSON.stringify(result.errors, null, 2));
+    });
+  }
+});
+
+test('current full-track delivery rejects missing, duplicated, mixed and stale bindings', async t => {
+  const cases = [
+    ['missing entire second pair', state => {state.reviews.delete(state.reviewPathFor('cet6')); state.audits.delete(state.auditPathFor('cet6'));}],
+    ['duplicate review track', state => {state.reviews.get(state.reviewPathFor('cet6')).scope.track = 'cet4';}],
+    ['shared audit', state => {state.reviews.get(state.reviewPathFor('cet6')).quality_audit.report = state.auditPathFor('cet4');}],
+    ['orphan audit', state => {state.audits.set('reviews/audit_scopes/orphan.json', structuredClone(state.audits.values().next().value));}],
+    ['replaced audit bytes', state => {state.audits.get(state.auditPathFor('cet4')).scope_summary.issue_count = 1;}],
+    ['wrong audit hash', state => {state.reviews.get(state.reviewPathFor('cet4')).quality_audit.report_sha256 = `sha256:${'a'.repeat(64)}`;}],
+    ['old acceptance input in both passes', state => {for (const pass of state.reviews.get(state.reviewPathFor('cet4')).model_acceptances) pass.evidence.input_sha256 = `sha256:${'a'.repeat(64)}`;}],
+    ['stale corpus fingerprint', state => {const review = state.reviews.get(state.reviewPathFor('cet4')), audit = state.audits.get(state.auditPathFor('cet4')); audit.corpus_fingerprint.digest = 'a'.repeat(64); state.bindReview(review, state.auditPathFor('cet4'), audit);}],
+    ['mixed legacy and modern reviews', state => {state.reviews.get(state.reviewPathFor('cet6')).schema_version = 'agent-self-review.v1';}],
+    ['duplicate acceptance run', state => {const passes = state.reviews.get(state.reviewPathFor('cet4')).model_acceptances; passes[1].actor.run_id = passes[0].actor.run_id;}],
+    ['incomplete current-track coverage', state => {const review = state.reviews.get(state.reviewPathFor('cet4')), audit = state.audits.get(state.auditPathFor('cet4')); review.scope.card_ids = review.scope.card_ids.slice(0, 1); review.coverage.expected_card_count = 1; review.coverage.reviewed_card_ids = [...review.scope.card_ids]; audit.scope.card_ids = [...review.scope.card_ids]; audit.scope_summary.card_ids = [...review.scope.card_ids]; audit.scope_summary.card_count = 1; state.bindReview(review, state.auditPathFor('cet4'), audit);}],
+    ['legacy person authority on a modern record', state => {state.reviews.values().next().value.human_reviewer = 'legacy:person';}],
+    ['nested review path', state => {const oldPath = state.reviewPathFor('cet4'), review = state.reviews.get(oldPath); state.reviews.delete(oldPath); state.reviews.set('reviews/agent_self_review/nested/cet4-full.json', review);}],
+    ['template is not current review evidence', state => {const oldPath = state.reviewPathFor('cet4'), review = state.reviews.get(oldPath); state.reviews.delete(oldPath); state.reviews.set('reviews/agent_self_review/FULL_TRACK_TEMPLATE.json', review);}],
+    ['audit retains a hard blocker', state => {const review = state.reviews.get(state.reviewPathFor('cet4')), audit = state.audits.get(state.auditPathFor('cet4')); audit.ok = false; audit.scope_summary.by_severity.hard_blocker = 1; audit.scoped_hard_blocker_issues = [{card_id: '000001', rule_id: 'fixture_blocker'}]; state.bindReview(review, state.auditPathFor('cet4'), audit);}],
+  ];
+  for (const [name, mutate] of cases) {
+    await t.test(name, subtest => {
+      const fixture = createFullTrackFixture({mutate});
+      cleanUp(subtest, fixture);
+      assertError(validate(fixture, {branch: fixture.branch}), /full-track/);
+    });
+  }
+});
+
+test('current full-track delivery cannot downgrade a single aggregate or substitute worktree evidence', async t => {
+  await t.test('single aggregate schema downgrade', subtest => {
+    const fixture = createFullTrackFixture({tracks: ['cet4'], mutate: state => {state.reviews.values().next().value.schema_version = 'model-owned-card-review.v2';}});
+    cleanUp(subtest, fixture);
+    assertError(validate(fixture, {branch: fixture.branch}), /full-track/);
+  });
+  await t.test('schema and one coverage key cannot hide rejected aggregate evidence', subtest => {
+    const fixture = createFullTrackFixture({tracks: ['cet4'], mutate: state => {
+      const review = state.reviews.values().next().value;
+      review.schema_version = 'model-owned-card-review.v2';
+      delete review.coverage.reviewed_card_ids;
+      review.model_acceptances[0].decision = 'rejected';
+      review.quality_audit.report_sha256 = `sha256:${'a'.repeat(64)}`;
+    }});
+    cleanUp(subtest, fixture);
+    assertError(validate(fixture, {branch: fixture.branch}), /full-track/);
+  });
+  await t.test('dropping coverage cannot hide a plural-acceptance aggregate', subtest => {
+    const fixture = createFullTrackFixture({tracks: ['cet4'], mutate: state => {
+      const review = state.reviews.values().next().value;
+      review.schema_version = 'model-owned-card-review.v2';
+      delete review.coverage;
+      review.quality_audit.report = 'reviews/audit_scopes/absent.json';
+    }});
+    cleanUp(subtest, fixture);
+    assertError(validate(fixture, {branch: fixture.branch}), /full-track/);
+  });
+  await t.test('uncommitted repair cannot replace invalid fixed-HEAD acceptance', subtest => {
+    const fixture = createFullTrackFixture({tracks: ['cet4'], mutate: state => {state.reviews.values().next().value.model_acceptances[0].decision = 'rejected';}});
+    cleanUp(subtest, fixture);
+    const reviewPath = fixture.reviewPathFor('cet4');
+    const review = JSON.parse(fs.readFileSync(path.join(fixture.root, reviewPath), 'utf8'));
+    review.model_acceptances[0].decision = 'accepted';
+    write(fixture.root, reviewPath, JSON.stringify(review));
+    assertError(validate(fixture, {branch: fixture.branch}), /full-track/);
+  });
+  await t.test('symlinked audit', subtest => {
+    const fixture = createFullTrackFixture({tracks: ['cet4'], afterWrite: state => {const relative = state.auditPathFor('cet4'); fs.renameSync(path.join(state.root, relative), path.join(state.root, 'audit-target.json')); fs.symlinkSync('../../audit-target.json', path.join(state.root, relative));}});
+    cleanUp(subtest, fixture);
+    assertError(validate(fixture, {branch: fixture.branch}), /full-track.*regular|full-track.*audit/);
+  });
+});
+
+test('current full-track routing preserves the per-card single-pair compatibility route', t => {
+  const fixture = createFullTrackFixture({tracks: ['cet4'], mutate: state => {
+    const review = state.reviews.values().next().value;
+    review.schema_version = 'model-owned-card-review.v2';
+    review.cards = structuredClone(state.documents.get('cet4').cards);
+    review.model_acceptance = review.model_acceptances[0];
+    delete review.coverage;
+    delete review.model_acceptances;
+  }});
+  cleanUp(t, fixture);
+  // Per-card snapshot/input semantics remain owned by content-scope.
+  assert.equal(validate(fixture, {branch: fixture.branch}).ok, true);
+});
+
+test('current full-track delivery fingerprints immutable HEAD instead of dirty worktree cards', t => {
+  const fixture = createFullTrackFixture();
+  cleanUp(t, fixture);
+  write(fixture.root, 'card_boxes_json/card_boxes_seed_cet4_listening_0000.json', '{"cards":[]}\n');
+  const result = validate(fixture, {branch: fixture.branch});
+  assert.equal(result.ok, true, JSON.stringify(result.errors, null, 2));
+});
+
+test('current full-track content still cannot mix authorization records into its delivery type', t => {
+  const fixture = createFullTrackFixture({afterWrite: state => {
+    write(state.root, 'reviews/approved_batches/current.json', '{"schema_version":"model-owned-content-authorization.v2"}\n');
+  }});
+  cleanUp(t, fixture);
+  assertError(validate(fixture, {branch: fixture.branch}), /content authorization evidence must use scope.change_type=authorization/);
+  mutateRecord(fixture, record => {record.scope.change_type = 'authorization';});
+  assertError(validate(fixture, {branch: fixture.branch}), /candidate card payload must use a content change_type/);
 });
 
 test('binds real pull-request records to exact event metadata', async t => {

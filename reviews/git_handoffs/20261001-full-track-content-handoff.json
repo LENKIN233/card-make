@@ -1,0 +1,60 @@
+{
+  "handoff_id": "20261001-full-track-content-handoff",
+  "created_at": "2026-10-01T10:37:42.126Z",
+  "agent": "codex",
+  "branch": "tooling/full-track-content-handoff",
+  "base_branch": "main",
+  "commit_sha": "1b4d10d247ff482d60ad38bedafc89094ff72060",
+  "push_ref": "origin/tooling/full-track-content-handoff",
+  "PR_url": "https://github.com/LENKIN233/card-make/pull/262",
+  "PR_state": "OPEN",
+  "is_draft": false,
+  "scope": {
+    "change_type": "tooling",
+    "touched_paths": [
+      "scripts/test_validate_delivery_record.mjs",
+      "scripts/validate_delivery_record.mjs",
+      "spec/git-workflow.json"
+    ],
+    "patch_format": "git-diff-binary-v2",
+    "base_commit_sha": "49babe35bf148a6e0afce587c637cdf1d73799d1",
+    "patch_sha256": "bc7dac1181ebc4cd5a684590e19fa98b9d52188a57bab7d52dd07c921d1800bd"
+  },
+  "validation": [
+    {
+      "command": "node --test --test-name-pattern=\"current full-track\" scripts/test_validate_delivery_record.mjs",
+      "result": "29 tests passed. New positive/negative cases were first run against the old route, reproducing the 2+2 rejection and single-pair downgrade/invalid-evidence acceptance, then passed with the fix."
+    },
+    {
+      "command": "node --test scripts/test_model_acceptance.mjs scripts/test_validate_delivery_record.mjs",
+      "result": "124 passed, 0 failed, including the canonical v2 text/binary golden hash test."
+    },
+    {
+      "command": "node --test scripts/test_validate_pr_scope.mjs",
+      "result": "106 passed, 0 failed."
+    },
+    {
+      "command": "node scripts/validate_harness.mjs",
+      "result": "Passed, 0 errors; 7 existing upstream reference/group alignment warnings remain."
+    },
+    {
+      "command": "node scripts/validate_pr_scope.mjs --base origin/main --head 1b4d10d247ff482d60ad38bedafc89094ff72060",
+      "result": "Passed: three-file tooling payload, no content-candidate diff."
+    },
+    {
+      "command": "node scripts/validate_delivery_boundary.mjs --base origin/main --head 1b4d10d247ff482d60ad38bedafc89094ff72060",
+      "result": "Passed: three tooling files, no card/approval/audio files."
+    },
+    {
+      "command": "git diff --check",
+      "result": "Passed."
+    }
+  ],
+  "local_status": "Payload committed and pushed. Only this new handoff is appended after the payload; final-head delivery validation and GitHub required checks follow.",
+  "remaining_risks": [
+    "Final exact-head required checks and GitHub mergeability are required before squash merge.",
+    "The legacy payload-history guard remains strict; the separate unpublished content branch must replay onto the updated main before its own delivery.",
+    "No content cards, formal review/authorization/runtime evidence or media assets are changed by this tooling unit."
+  ],
+  "merge_authority": "standing_delegation_auto_merge_for_all_validated_change_classes"
+}
