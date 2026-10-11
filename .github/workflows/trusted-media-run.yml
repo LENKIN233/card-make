@@ -266,7 +266,7 @@ jobs:
 
       - name: Download retained complete raw review package
         if: inputs.retained_run_id != ''
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           name: trusted-media-raw-${{ inputs.retained_run_id }}-${{ inputs.retained_run_attempt }}
           path: ${{ runner.temp }}/trusted-media-retained-${{ github.run_id }}-${{ github.run_attempt }}
@@ -444,7 +444,7 @@ jobs:
           echo "TRUSTED_PRODUCT_AUTHORITY_ROOT=$product_root" >> "$GITHUB_ENV"
 
       - name: Download unprivileged raw review package
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           name: trusted-media-raw-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/trusted-media-downloaded
@@ -571,7 +571,7 @@ jobs:
       attestations: write
     steps:
       - name: Download code-free verified media package
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
         with:
           name: trusted-media-verified-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/trusted-media-verified
